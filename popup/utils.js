@@ -7,6 +7,7 @@ export const runScript = async (func, tabId) => {
   return chrome.scripting.executeScript({
     target: { tabId: tabId },
     func: func,
+    world: 'MAIN',
   });
 };
 
@@ -14,6 +15,7 @@ export const runScriptFile = (scriptFile, tabId) => {
   return chrome.scripting.executeScript({
     target: { tabId: tabId },
     files: [scriptFile],
+    world: 'MAIN',
   });
 };
 

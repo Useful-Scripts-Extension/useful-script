@@ -7,5 +7,11 @@ export function whatFont() {
     "src",
     "//www.typesample.com/assets/typesample.js?r=" + Math.random() * 99999999
   );
+  e.onload = () => {
+    alert("Script loaded, now use can use WhatFont.");
+  };
+  e.onerror = (event) => {
+    alert("ERROR: " + event.message);
+  };
   d.body.appendChild(e);
 }

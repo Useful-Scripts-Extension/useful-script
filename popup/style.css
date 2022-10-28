@@ -3,6 +3,12 @@ body {
     min-width: 300px;
 }
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 h1,
 h3 {
     text-align: center;
@@ -100,8 +106,8 @@ a:hover {
 .tooltip .tooltiptext {
     visibility: hidden;
     min-width: 120px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    background-color: rgb(133, 133, 133);
+    color: rgb(255, 255, 255);
     text-align: center;
     border-radius: 6px;
     padding: 5px;
