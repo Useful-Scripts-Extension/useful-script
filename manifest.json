@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Useful Scripts",
+  "description": "",
+  "version": "1.0",
+  "action": {
+    "default_popup": "./popup/popup.html",
+    "default_icon": "./assets/hello_extensions.png"
+  },
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "./background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./content.js"]
+    }
+  ],
+  "options_page": "./options/options.html"
+}
