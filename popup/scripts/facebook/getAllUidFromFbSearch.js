@@ -13,7 +13,7 @@ export function getAllUidFromFBSearch() {
   const main = async () => {
     alert("Đang lấy thông tin uid, mở console để xem tiến trình...");
     let list_a = Array.from(
-      document.querySelectorAll(".sjgh65i0 a[role=%27presentation%27]")
+      document.querySelectorAll("a[role='presentation']")
     );
     let uids = [];
     for (let a of list_a) {
