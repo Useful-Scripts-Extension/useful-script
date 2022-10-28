@@ -32,7 +32,7 @@ function createTabs() {
       for (let script of tab.scripts) {
         const button = document.createElement("button");
         button.innerText = script.name;
-        button.title = script.description;
+        button.className = "tooltip";
 
         if (script.file && typeof script.file === "string") {
           button.onclick = () => runScriptFileInCurrentTab(script.file);
@@ -41,6 +41,11 @@ function createTabs() {
         } else {
           button.onclick = () => alert("empty script");
         }
+
+        const tooltip = document.createElement("span");
+        tooltip.className = "tooltiptext";
+        tooltip.innerText = script.description;
+        button.appendChild(tooltip);
 
         contentContainer.appendChild(button);
         contentContainer.appendChild(document.createElement("br"));
