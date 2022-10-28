@@ -390,7 +390,7 @@ export const tabs = [
         func: removeImages,
       },
       {
-        name: "Remove bloat (ifram, embed)",
+        name: "Remove bloat (iframe, embed)",
         description: "Remove iframe, embeds, applets from website",
         func: removeBloat,
       },

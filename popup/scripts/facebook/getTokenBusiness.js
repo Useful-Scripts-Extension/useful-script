@@ -1,7 +1,7 @@
 export function getTokenBusiness() {
   if (window.location.host !== "business.facebook.com") {
     alert(
-      "Bookmark này chỉ hoạt động trên trang https://business.facebook.com/content_management/\nBạn hãy vào trang web trên và ấn lại bookmark để lấy token an toàn nhé."
+      "Bookmark này chỉ hoạt động trên trang https://business.facebook.com/content_management/"
     );
     window.open("https://business.facebook.com/content_management/");
     return;

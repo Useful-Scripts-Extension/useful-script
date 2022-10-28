@@ -1,34 +1,26 @@
 export function getTokenMFacebook() {
-  if (window.location.host !== "www.facebook.com") {
-    alert(
-      "Bookmark này chỉ dùng được trong trang www.facebook.com.\nBạn hãy vào trang www.facebook.com và ấn lại bookmark để lấy token nhé."
-    );
-    window.open("https://www.facebook.com");
+  if (window.location.host !== "m.facebook.com") {
+    alert("Bookmark này chỉ hoạt động trên trang m.facebook.com");
+    window.open("https://m.facebook.com");
     return;
   }
-  var uid = /(?<=c_user=)(\d+)/.exec(document.cookie)[0],
-    dtsg =
-      require("DTSGInitialData").token ||
-      document.querySelector('[name="fb_dtsg"]').value,
-    http = new XMLHttpRequest(),
-    url = "//www.facebook.com/v1.0/dialog/oauth/confirm",
-    params =
-      "fb_dtsg=" +
-      dtsg +
-      "&app_id=124024574287414&redirect_uri=fbconnect%3A%2F%2Fsuccess&display=page&access_token=&from_post=1&return_format=access_token&domain=&sso_device=ios&_CONFIRM=1&_user=" +
-      uid;
-  http.open("POST", url, !0),
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded"),
-    (http.onreadystatechange = function () {
-      if (4 == http.readyState && 200 == http.status) {
-        var a = http.responseText.match(/(?<=access_token=)(.*?)(?=\&)/);
-        console.log(http.responseText);
-        if (a && a[0]) {
-          prompt("Token", a[0]);
-        } else {
-          alert("Failed to Get Access Token.");
-        }
+  console.log("Đang lấy token ...");
+  fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
+    .then((response) => response.text())
+    .then((text) => {
+      if ("<" == text[0]) {
+        alert("Chưa đăng nhập. Bạn cần đăng nhập fb thì mới lấy được token.");
+      } else {
+        const data = {
+          token: /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)[0],
+          fb_dtsg: /(?<=fb_dtsg\\" value=\\")(.*?)(?=\\")/.exec(text)[0],
+          id: /(?<=USER_ID\\":\\").*?(?=\\",\\")/gm.exec(text)[0],
+        };
+        console.log(data);
+        window.prompt("Access Token của bạn:", data.token);
       }
-    }),
-    http.send(params);
+    })
+    .catch((e) => {
+      alert("ERROR: " + e.message);
+    });
 }
