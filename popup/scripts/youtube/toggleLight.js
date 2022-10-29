@@ -3,7 +3,7 @@ export function toggleLight() {
   let currentState = window.localStorage.getItem(key);
   let newState = currentState == 1 ? 0 : 1;
 
-  ["#columns", "#masthead-container"].forEach((_) => {
+  ["#below", "#secondary", "#masthead-container"].forEach((_) => {
     let dom = document.querySelector(_);
     if (dom) dom.style.opacity = Number(newState);
     else alert("ERROR: Cannot find element" + _);

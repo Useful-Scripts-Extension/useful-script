@@ -19,4 +19,6 @@ export function removeCookies() {
               "; expires=" +
               new Date(new Date().getTime() - 1e11).toGMTString();
           }
+
+  alert("Remove cookies DONE");
 }
