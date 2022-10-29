@@ -29,6 +29,13 @@ export function getFlag() {
 
 export function t(o) {
   if (typeof o === "string") return o;
-  if (typeof o === "object" && currentLangKey in o) return o[currentLangKey];
+  if (typeof o === "object") {
+    for (let key of [currentLangKey, LANG.vi, LANG.en]) {
+      if (key in o && o[key] != "") {
+        return o[key];
+      }
+    }
+  }
+
   return "?";
 }

@@ -45,6 +45,6 @@ export const localStorage = {
   },
   get: async (key, defaultValue = "") => {
     let result = await chrome.storage.sync.get([key]);
-    return result[key];
+    return result[key] || defaultValue;
   },
 };
