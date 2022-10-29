@@ -52,25 +52,37 @@ async function createTabs() {
       contentContainer.appendChild(emptyText);
     } else {
       for (let script of tab.scripts) {
-        const button = document.createElement("button");
-        button.innerText = t(script.name);
-        button.className = "tooltip";
+        // Section title
+        if (script.type === "title") {
+          const title = document.createElement("h3");
+          title.textContent = t(script.name);
+          title.classList.add("section-title");
 
-        if (script.file && typeof script.file === "string") {
-          button.onclick = () => runScriptFileInCurrentTab(script.file);
-        } else if (script.func && typeof script.func === "function") {
-          button.onclick = () => runScriptInCurrentTab(script.func);
-        } else {
-          button.onclick = () => alert("empty script");
+          contentContainer.appendChild(title);
         }
 
-        const tooltip = document.createElement("span");
-        tooltip.className = "tooltiptext";
-        tooltip.innerText = t(script.description);
-        button.appendChild(tooltip);
+        // Function button
+        else {
+          const button = document.createElement("button");
+          button.innerText = t(script.name);
+          button.className = "tooltip";
 
-        contentContainer.appendChild(button);
-        contentContainer.appendChild(document.createElement("br"));
+          if (script.file && typeof script.file === "string") {
+            button.onclick = () => runScriptFileInCurrentTab(script.file);
+          } else if (script.func && typeof script.func === "function") {
+            button.onclick = () => runScriptInCurrentTab(script.func);
+          } else {
+            button.onclick = () => alert("empty script");
+          }
+
+          const tooltip = document.createElement("span");
+          tooltip.className = "tooltiptext";
+          tooltip.innerText = t(script.description);
+          button.appendChild(tooltip);
+
+          contentContainer.appendChild(button);
+          contentContainer.appendChild(document.createElement("br"));
+        }
       }
     }
 

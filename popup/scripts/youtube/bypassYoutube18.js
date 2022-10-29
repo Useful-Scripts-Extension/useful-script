@@ -11,7 +11,7 @@ export function bypassYoutube18() {
     7: replace 'youtube' with 'pwnyoutube'
 
     Your Choice:`,
-      0
+      1
     );
     if (!option) return;
 

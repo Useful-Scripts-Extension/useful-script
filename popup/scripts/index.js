@@ -42,7 +42,7 @@ import { viewHiddenPassword } from "./password/viewHiddenPassword.js";
 import { addSortTable } from "./table/addSortTable.js";
 import { addNumberColumn } from "./table/addNumberColumn.js";
 import { swapRowAndColumn } from "./table/swapRowAndColumn.js";
-import { editPage } from "./webUI/editPage.js";
+import { toggleEditPage } from "./webUI/toggleEditPage.js";
 import { whatFont } from "./webUI/whatFont.js";
 import { listAllImagesInWeb } from "./more/listAllImagesInWeb.js";
 import { checkWebDie } from "./unlock/checkWebDie.js";
@@ -59,6 +59,7 @@ import { passwordGenerator } from "./password/passwordGenerator.js";
 import { bypassYoutube18 } from "./youtube/bypassYoutube18.js";
 import { getWindowSize } from "./webUI/getWindowSize.js";
 import { toggleLight } from "./youtube/toggleLight.js";
+import { toggleLight as toggleLightFB } from "./facebook/toggleLight.js";
 
 export const tabs = [
   {
@@ -72,6 +73,22 @@ export const tabs = [
       vi: "Scripts hay cho facebook",
     },
     scripts: [
+      {
+        type: "title",
+        name: { en: "--- UI ---", vi: "--- Giao diện ---" },
+      },
+      {
+        name: { en: "Hide side UI", vi: "Ẩn giao diện 2 bên" },
+        description: {
+          en: "Hide Navigator bar and complementary bar",
+          vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
+        },
+        func: toggleLightFB,
+      },
+      {
+        type: "title",
+        name: { en: "--- Access Token ---", vi: "--- Access Token ---" },
+      },
       {
         name: {
           en: "Get Token (business.facebook.com)",
@@ -104,6 +121,10 @@ export const tabs = [
           vi: "Lấy facebook access token từ trang m.facebook.com",
         },
         func: getTokenMFacebook,
+      },
+      {
+        type: "title",
+        name: { en: "--- Get ID ---", vi: "--- Lấy ID ---" },
       },
       {
         name: {
@@ -195,17 +216,6 @@ export const tabs = [
       },
       {
         name: {
-          en: "Get avatar from user id",
-          vi: "Tải avatar từ user id",
-        },
-        description: {
-          en: "Get avatar from list user ids",
-          vi: "Tải danh sách avatar từ danh sách user id",
-        },
-        func: getAvatarFromUid,
-      },
-      {
-        name: {
           en: "Get all Album ID",
           vi: "Lấy tất cả album id",
         },
@@ -238,6 +248,21 @@ export const tabs = [
         func: getAllVideoId,
       },
       {
+        type: "title",
+        name: { en: "--- Download ---", vi: "--- Tải xuống ---" },
+      },
+      {
+        name: {
+          en: "Get avatar from user id",
+          vi: "Tải avatar từ user id",
+        },
+        description: {
+          en: "Get avatar from list user ids",
+          vi: "Tải danh sách avatar từ danh sách user id",
+        },
+        func: getAvatarFromUid,
+      },
+      {
         name: {
           en: "Get download link of current video",
           vi: "Tải video đang xem",
@@ -257,48 +282,67 @@ export const tabs = [
           en: "Get download link of current video",
           vi: "Lấy link để tải video đang xem",
         },
-        name: "Download album media (beta)",
-        description: "Download all media link in album",
         func: downloadAlbumMedia,
       },
     ],
   },
   {
     id: "instagram",
-    name: "Instagram",
-    description: "",
+    name: { en: "Instagram", vi: "Instagram" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Get Token",
-        description: "Get instagram access token",
+        name: { en: "Get Token", vi: "Lấy token" },
+        description: {
+          en: "Get instagram access token",
+          vi: "Lấy instagram access token",
+        },
         func: getTokenInsta,
       },
       {
-        name: "Get User ID",
-        description: "Get id of instagram user",
+        name: { en: "Get your User ID", vi: "Lấy user id của bạn" },
+        description: {
+          en: "Get id of your instagram user",
+          vi: "Lấy id của người dùng instagram đang đăng nhập",
+        },
         func: getUidInsta,
       },
       {
-        name: "Get all media of user",
-        description: "Get all media of instagram user",
+        name: { en: "Get all media of user", vi: "Tải về tất media của user" },
+        description: {
+          en: "Get all media of instagram user",
+          vi: "Tải về tất cả ảnh/video của người dùng insta",
+        },
         func: getAllUserMedia,
       },
       {
-        name: "Get all images in newfeed",
-        description: "Get all images in newfeed",
+        name: {
+          en: "Get all images in newfeed",
+          vi: "Tải về tất cả ảnh newfeed",
+        },
+        description: {
+          en: "Get all images in newfeed",
+          vi: "Tải về tất cả ảnh đang có trên newfeed",
+        },
         func: getAllImagesInNewFeed,
       },
       {
-        name: "Get all images in user profile",
-        description: "Get all images in user profile",
+        name: {
+          en: "Get all images in user profile",
+          vi: "Tải tất cả ảnh user profile",
+        },
+        description: {
+          en: "Get all images in user profile",
+          vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
+        },
         func: getAllImagesInUserProfile,
       },
     ],
   },
   {
     id: "youtube",
-    name: "Youtube",
-    description: "",
+    name: { en: "Youtube", vi: "Youtube" },
+    description: { en: "", vi: "" },
     scripts: [
       {
         name: {
@@ -326,259 +370,393 @@ export const tabs = [
   },
   {
     id: "github",
-    name: "Github",
-    description: "",
+    name: { en: "Github", vi: "Github" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Go to first commit",
-        description: "Go to first commit of repo",
+        name: { en: "Go to first commit", vi: "Đi tới commit đầu tiên" },
+        description: {
+          en: "Go to first commit of repo",
+          vi: "Đi tới commit đầu tiên của repo",
+        },
         func: goToFirstCommit,
       },
       {
-        name: "Open repo in github1s.com",
-        description: "Open current repo in github1s.com",
+        name: {
+          en: "Open repo in github1s.com",
+          vi: "Mở repo trong github1s.com",
+        },
+        description: {
+          en: "Open current repo in github1s.com",
+          vi: "Mở repo hiện tại trong trang github1s.com để xem code",
+        },
         func: github1s,
       },
     ],
   },
   {
     id: "doutube",
-    name: "Doutu.be",
-    description: "",
+    name: { en: "Doutu.be", vi: "Doutu.be" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Enable download all video",
-        description: "Enable download button for all video",
+        name: { en: "Enable download all video", vi: "Bật tải mọi video" },
+        description: {
+          en: "Enable download button for all video",
+          vi: "Bật chức năng download cho mọi video trong trang",
+        },
         func: enableDownloadVideo,
       },
       {
-        name: "Download watching video",
-        description: "Download video that you are watching",
+        name: { en: "Download watching video", vi: "Tải video đang xem" },
+        description: {
+          en: "Download video that you are watching",
+          vi: "Tải video bạn đang xem",
+        },
         func: downloadWatchingVideo,
       },
       {
-        name: "Download watching story",
-        description: "Download story that you are watching",
+        name: { en: "Download watching story", vi: "Tải story đang xem" },
+        description: {
+          en: "Download story that you are watching",
+          vi: "Tải story bạn đang xem",
+        },
         func: downloadWatchingStory,
       },
       {
-        name: "Get all video from user profile ",
-        description: "Get all video in user profile",
+        name: {
+          en: "Get all video from user profile ",
+          vi: "Tải tất cả video từ profile",
+        },
+        description: {
+          en: "Get all video in user profile",
+          vi: "Tải tất cả video từ profile của user bất kỳ",
+        },
         func: getAllVideoInUserProfile,
       },
     ],
   },
   {
     id: "pdf",
-    name: "PDF",
-    description: "",
+    name: { en: "PDF", vi: "PDF" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Darkmode for pdf",
-        description: "Enable darkmode for PDF",
+        name: { en: "Darkmode for pdf", vi: "Chế độ tối cho PDF" },
+        description: {
+          en: "Enable darkmode for PDF",
+          vi: "Bật chế độ tối cho PDF bạn đang xem",
+        },
         func: darkModePDF,
       },
       {
-        name: "Web to PDF",
-        description: "Convert current website to PDF",
+        name: { en: "Web to PDF", vi: "In web ra PDF" },
+        description: {
+          en: "Convert current website to PDF",
+          vi: "Chuyển trang web hiện tại thành PDF",
+        },
         func: webToPDF,
       },
     ],
   },
   {
     id: "qrcode",
-    name: "QR Code",
-    description: "",
+    name: { en: "QR Code", vi: "QR Code" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "URL to QR Code",
-        description: "Convert current website URL to QR Code",
+        name: { en: "URL to QR Code", vi: "Lấy QRCode cho web hiện tại" },
+        description: {
+          en: "Convert current website URL to QR Code",
+          vi: "Chuyển URL của trang web sang QR Code",
+        },
         func: webToQRCode,
       },
       {
-        name: "Text to QR Code",
-        description: "Convert text to QR Code",
+        name: { en: "Text to QR Code", vi: "Chuyển chữ thành QRCode" },
+        description: {
+          en: "Convert text to QR Code",
+          vi: "Nhập vào chữ và nhận về QRCode tương ứng",
+        },
         func: textToQRCode,
       },
     ],
   },
   {
     id: "automation",
-    name: "Automation",
-    description: "",
+    name: { en: "Automation", vi: "Tự động hoá" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Scroll to very end",
-        description:
-          "Scoll to end, then wait for load data, then scroll again...",
+        name: { en: "Scroll to very end", vi: "Cuộn trang xuống cuối cùng" },
+        description: {
+          en: "Scoll to end, then wait for load data, then scroll again...",
+          vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi.",
+        },
         func: scrollToVeryEnd,
       },
     ],
   },
   {
     id: "password",
-    name: "Password",
-    description: "",
+    name: { en: "Password", vi: "Mật khẩu" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Password generator",
-        description:
-          "Generate unique password for website using master password",
+        name: { en: "Password generator", vi: "Tạo mật khẩu cho trang web" },
+        description: {
+          en: "You only have to remember 1 password",
+          vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
+        },
         func: passwordGenerator,
       },
       {
-        name: "Find shared login",
-        description: "Get free account from bugmenot",
+        name: { en: "Find shared login", vi: "Tìm tài khoản miễn phí" },
+        description: {
+          en: "Get free account from bugmenot",
+          vi: "Tìm tài khoản được chia sẻ trên mạng cho trang web hiện tại",
+        },
         func: bugMeNot,
       },
       {
-        name: "View hidden passwords",
-        description: "View hidden password",
+        name: { en: "View hidden passwords", vi: "Xem mật khẩu bị ẩn" },
+        description: {
+          en: "View hidden password",
+          vi: "Bạn sẽ xem được mật khẩu bị ẩn (dấu sao *) trong khung đăng nhập",
+        },
         func: viewHiddenPassword,
       },
     ],
   },
   {
     id: "unlock",
-    name: "Unlock",
-    description: "",
+    name: { en: "Unlock", vi: "Mở khoá" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Remove cookies",
-        description: "Remove cookies from current website",
+        name: { en: "Remove cookies", vi: "Xoá Cookies" },
+        description: {
+          en: "Remove cookies from current website",
+          vi: "Xoá cookies trang hiện tại",
+        },
         func: removeCookies,
       },
       {
-        name: "Re-Enable text selection",
-        description: "Enable text selection for website",
+        name: { en: "Re-Enable text selection", vi: "Bật text selection" },
+        description: {
+          en: "Enable text selection for website",
+          vi: "Dùng cho web nào không cho phép bôi đen văn bản",
+        },
         func: enableTextSelection,
       },
       {
-        name: "Re-Enable context menu (right click)",
-        description: "Enable context menu for website",
+        name: {
+          en: "Re-Enable context menu (right click)",
+          vi: "Bật menu chuột phải",
+        },
+        description: {
+          en: "Enable context menu for website",
+          vi: "Dùng cho web nào không cho phép bật menu chuột phải",
+        },
         func: reEnableContextMenu,
       },
     ],
   },
   {
     id: "table",
-    name: "Table",
-    description: "",
+    name: { en: "Table", vi: "Table" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Add sort to table",
-        description: "Add sort functions to table",
+        name: { en: "Add sort to table", vi: "Thêm sắp xếp cho bảng" },
+        description: {
+          en: "Add sort functions to table",
+          vi: "Thêm nút chức năng sắp xếp cho từng cột trong table",
+        },
         func: addSortTable,
       },
       {
-        name: "Add number columns",
-        description: "Add number columns to table",
+        name: { en: "Add number columns", vi: "Thêm cột số thứ tự" },
+        description: {
+          en: "Add number columns to table",
+          vi: "Thêm cột STT vào bên trái bảng",
+        },
         func: addNumberColumn,
       },
       {
-        name: "Swap rows and columns",
-        description: "Swap rows and columns (transpose)",
+        name: { en: "Swap rows and columns", vi: "Đổi chỗ hàng và cột" },
+        description: {
+          en: "Swap rows and columns (transpose)",
+          vi: "Hàng thành cột và cột thành hàng",
+        },
         func: swapRowAndColumn,
       },
     ],
   },
   {
     id: "webui",
-    name: "Web UI",
-    description: "",
+    name: { en: "Web UI", vi: "Giao diện" },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Check web die",
-        description: "Check web die using downforeveryoneorjustme",
+        name: { en: "Check web die", vi: "Kiểm tra tình trạng web die" },
+        description: {
+          en: "Check web die using downforeveryoneorjustme",
+          vi: "Dùng bên thứ 3 để kiểm tra xem website có bị die thật không",
+        },
         func: checkWebDie,
       },
       {
-        name: "Edit page",
-        description: "Edit all text in website",
-        func: editPage,
+        name: {
+          en: "Toggle edit page",
+          vi: "Bật/tắt chế độ chỉnh sửa website",
+        },
+        description: {
+          en: "Edit all text in website",
+          vi: "Cho phép chỉnh sửa mọi văn bản trong website",
+        },
+        func: toggleEditPage,
       },
       {
-        name: "What font",
-        description: "Check font used in webpage",
+        name: { en: "What font", vi: "Kiểm tra font chữ" },
+        description: {
+          en: "Check font used in webpage",
+          vi: "Kiểm tra xem từng phần từ trong web dùng font chữ gì",
+        },
         func: whatFont,
       },
       {
-        name: "Remove all colors in web",
-        description: "Remove all colours in the web",
+        name: { en: "Remove all colors in web", vi: "Xoá màu website" },
+        description: {
+          en: "Remove all colours in the web",
+          vi: "Xoá mọi màu có trong website",
+        },
         func: removeColours,
       },
       {
-        name: "Remove stylesheet",
-        description: "Remove all stylesheet from website",
+        name: { en: "Remove stylesheet", vi: "Xoá stylesheet" },
+        description: {
+          en: "Remove all stylesheet from website",
+          vi: "Xem trang web sẽ ra sao khi không có css",
+        },
         func: removeStylesheet,
       },
       {
-        name: "Remove images",
-        description: "Remove all images from website",
+        name: { en: "Remove images", vi: "Xoá mọi hình ảnh" },
+        description: {
+          en: "Remove all images from website",
+          vi: "Chỉ để lại văn bản, giúp tập trung hơn",
+        },
         func: removeImages,
       },
       {
-        name: "Remove bloat (iframe, embed)",
-        description: "Remove iframe, embeds, applets from website",
+        name: {
+          en: "Remove bloat (iframe, embed)",
+          vi: "Xoá mọi iframe/embed",
+        },
+        description: {
+          en: "Remove iframe, embeds, applets from website",
+          vi: "Xoá mọi thứ gây xao nhãng (quảng cáo, web nhúng, ..)",
+        },
         func: removeBloat,
       },
       {
-        name: "Highlight internal/external link",
-        description:
-          "Red = Internal_link / Orange = Currently_opened_link / Blue = External_link",
+        name: { en: "Highlight internal/external link", vi: "Tô màu cho link" },
+        description: {
+          en: "+Red = Internal_link\n+Orange = Currently_opened_link\n+Blue = External_link",
+          vi: "+Đỏ: cùng domain\n+Cam: hiện tại\n+Xanh: khác domain",
+        },
         func: internalOrExternalLink,
       },
       {
-        name: "Get window size",
-        description:
-          "Alerts the width and height in pixels of the inner window.",
+        name: { en: "Get window size", vi: "Lấy kích thước trang web" },
+        description: {
+          en: "Alerts the width and height in pixels of the inner window.",
+          vi: "đơn vị pixels",
+        },
         func: getWindowSize,
       },
       {
-        name: "Let it snow",
-        description: "Make website like it snowing",
+        name: { en: "Let it snow", vi: "Hiệu ứng tuyết rơi" },
+        description: {
+          en: "Make website like it snowing",
+          vi: "Thêm hiệu ứng tuyết rơi vào trang web",
+        },
         func: letItSnow,
       },
     ],
   },
   {
     id: "more",
-    name: "More...",
-    description: "",
+    name: { en: "More...", vi: "Khác..." },
+    description: { en: "", vi: "" },
     scripts: [
       {
-        name: "Shorten URL (j2team)",
-        description: "Shorten URL using j2team.dev",
+        name: { en: "Shorten URL (j2team)", vi: "Rút gọn link (j2team)" },
+        description: {
+          en: "Shorten URL using j2team.dev",
+          vi: "Rút gọn link dùng công cụ của j2team",
+        },
         func: shortenURL,
       },
       {
-        name: "View all images in web",
-        description: "View all images in web",
+        name: {
+          en: "View all images in web",
+          vi: "Xem mọi hình ảnh có trong website",
+        },
+        description: {
+          en: "View all images in web",
+          vi: "Xem danh sách hình ảnh trong tab mới",
+        },
         func: listAllImagesInWeb,
       },
       {
-        name: "View scripts used in website",
-        description: "View all scripts used in current website",
+        name: {
+          en: "View scripts used in website",
+          vi: "Xem tất cả scripts có trong web",
+        },
+        description: {
+          en: "View all scripts used in current website",
+          vi: "Mở danh sách scripts trong tab mới",
+        },
         func: viewScriptsUsed,
       },
       {
-        name: "View stylesheet used in website",
-        description: "View all stylesheet used in current website",
+        name: {
+          en: "View stylesheet used in website",
+          vi: "Xem tất cả stylesheet (css)",
+        },
+        description: {
+          en: "View all stylesheet used in current website",
+          vi: "Mở danh sách css trong tab mới",
+        },
         func: viewStylesUsed,
       },
       {
-        name: "View source code of selected area",
-        description: "Just select the area and use this bookmarklet",
+        name: {
+          en: "View source code of selected area",
+          vi: "Xem mã nguồn của phần bôi đen",
+        },
+        description: {
+          en: "Just select the area and use this bookmarklet",
+          vi: "Mở mã nguồn của phần được bôi đen trong tab mới",
+        },
         func: viewPartialSource,
       },
       {
-        name: "Open wayback url",
-        description: "Open wayback url for current website",
+        name: { en: "Open wayback url", vi: "Xem wayback url của website" },
+        description: {
+          en: "Open wayback url for current website",
+          vi: "Giúp xem nội dung website trong quá khứ",
+        },
         func: openWaybackUrl,
       },
       {
-        name: "Run Stat.js",
-        description: "Run stat.js in current website",
+        name: { en: "Run Stat.js", vi: "Chạy stats.js" },
+        description: {
+          en: "Run stat.js in current website",
+          vi: "Tính toán FPS website",
+        },
         func: runStatJs,
       },
     ],

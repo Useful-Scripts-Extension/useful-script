@@ -1,6 +1,6 @@
 html,
 body {
-    min-width: 300px;
+    min-width: 350px;
     background-color: #e6e6e6;
 }
 
@@ -31,6 +31,10 @@ a:hover {
     top: 0px;
     right: 5px;
     cursor: pointer;
+}
+
+.section-title {
+    margin: 5px 0;
 }
 
 .content {
