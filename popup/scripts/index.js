@@ -58,94 +58,205 @@ import { letItSnow } from "./webUI/letItSnow.js";
 import { passwordGenerator } from "./password/passwordGenerator.js";
 import { bypassYoutube18 } from "./youtube/bypassYoutube18.js";
 import { getWindowSize } from "./webUI/getWindowSize.js";
+import { toggleLight } from "./youtube/toggleLight.js";
 
 export const tabs = [
   {
     id: "facebook",
-    name: "Facebook",
-    description: "Facebook script tools",
+    name: {
+      vi: "Facebook",
+      en: "Facebook",
+    },
+    description: {
+      en: "Facebook script tools",
+      vi: "Scripts hay cho facebook",
+    },
     scripts: [
       {
-        name: "Get Token (business.facebook.com)",
-        description: "Get facebook access token from business.facebook.com",
+        name: {
+          en: "Get Token (business.facebook.com)",
+          vi: "Lấy token (business.facebook.com)",
+        },
+        description: {
+          en: "Get facebook access token from business.facebook.com",
+          vi: "Lấy facebook access token từ trang business.facebook.com",
+        },
         func: getTokenBusiness,
       },
       {
-        name: "Get Token (www.facebook.com)",
-        description: "Get facebook access token from www.facebook.com",
+        name: {
+          en: "Get Token (www.facebook.com)",
+          vi: "Lấy Token (www.facebook.com)",
+        },
+        description: {
+          en: "Get facebook access token from www.facebook.com",
+          vi: "Lấy facebook access token từ trang www.facebook.com",
+        },
         func: getTokenFacebook,
       },
       {
-        name: "Get Token (m.facebook.com)",
-        description: "Get facebook access token from m.facebook.com",
+        name: {
+          en: "Get Token (m.facebook.com)",
+          vi: "Lấy token (m.facebook.com)",
+        },
+        description: {
+          en: "Get facebook access token from m.facebook.com",
+          vi: "Lấy facebook access token từ trang m.facebook.com",
+        },
         func: getTokenMFacebook,
       },
       {
-        name: "Get User ID",
-        description: "Get id of user in current website",
+        name: {
+          en: "Get User ID",
+          vi: "Lấy User ID",
+        },
+        description: {
+          en: "Get id of user in current website",
+          vi: "Lấy id của user trong trang web hiện tại",
+        },
         func: getFbUid,
       },
       {
-        name: "Get Group ID",
-        description: "Get id of group in current website",
+        name: {
+          en: "Get Group ID",
+          vi: "Lấy Group ID",
+        },
+        description: {
+          en: "Get id of group in current website",
+          vi: "Lấy id của group trong trang web hiện tại",
+        },
         func: getGroupId,
       },
       {
-        name: "Get Page ID",
-        description: "Get id of page in current website",
+        name: {
+          en: "Get Page ID",
+          vi: "Lấy Page ID",
+        },
+        description: {
+          en: "Get id of page in current website",
+          vi: "Lấy id của page trong trang web hiện tại",
+        },
         func: getPageId,
       },
       {
-        name: "Get Album ID",
-        description: "Get id of album in current website",
+        name: {
+          en: "Get Album ID",
+          vi: "Lấy Album ID",
+        },
+        description: {
+          en: "Get id of album in current website",
+          vi: "Lấy id của album trong trang web hiện tại",
+        },
         func: getAlbumId,
       },
       {
-        name: "Get User ID from url",
-        description: "Get id of user from entered url",
+        name: {
+          en: "Get User ID from url",
+          vi: "Lấy User ID từ URL",
+        },
+        description: {
+          en: "Get id of user from entered url",
+          vi: "Lấy id của user từ URL truyền vào",
+        },
         func: getUidFromUrl,
       },
       {
-        name: "Get all User ID from Friends page",
-        description: "Get id of all user from friends page",
+        name: {
+          en: "Get all User ID from Friends page",
+          vi: "Lấy tất cả user id từ danh sách bạn bè",
+        },
+        description: {
+          en: "Get id of all user from friends page",
+          vi: "Lấy tất cả user ID từ trang danh sách bạn bè",
+        },
         func: getAllUidFromFriendsPage,
       },
       {
-        name: "Get all User ID from group",
-        description: "Get id of all user from group members",
+        name: {
+          en: "Get all User ID from group",
+          vi: "Lấy tất cả user ID từ group",
+        },
+        description: {
+          en: "Get id of all user from group members",
+          vi: "Lấy id của tất cả user từ group",
+        },
         func: getAllUidOfGroupMembers,
       },
       {
-        name: "Get all User ID from search page",
-        description: "Get id of all user from fb search page",
+        name: {
+          en: "Get all User ID from search page",
+          vi: "Lấy tất cả user ID từ trang tìm kiếm",
+        },
+        description: {
+          en: "Get id of all user from fb search page",
+          vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng",
+        },
         func: getAllUidFromFBSearch,
       },
       {
-        name: "Get avatar from user id",
-        description: "Get avatar from list user ids",
+        name: {
+          en: "Get avatar from user id",
+          vi: "Tải avatar từ user id",
+        },
+        description: {
+          en: "Get avatar from list user ids",
+          vi: "Tải danh sách avatar từ danh sách user id",
+        },
         func: getAvatarFromUid,
       },
       {
-        name: "Get all Album ID",
-        description: "Get all id of album in current website",
+        name: {
+          en: "Get all Album ID",
+          vi: "Lấy tất cả album id",
+        },
+        description: {
+          en: "Get all id of album in current website",
+          vi: "Lấy tất cả album id có trong trang web",
+        },
         func: getAllAlbumId,
       },
       {
-        name: "Get timeline Album ID of page",
-        description: "Get timeline album id of page in current website",
+        name: {
+          en: "Get timeline Album ID of page",
+          vi: "Tìm timeline album id của page",
+        },
+        description: {
+          en: "Get timeline album id of page in current website",
+          vi: "Tìm timeline album id của page hiện tại",
+        },
         func: getTimelineAlbumId,
       },
       {
-        name: "Get all Video ID",
-        description: "Get id of all video in current website",
+        name: {
+          en: "Get all Video ID",
+          vi: "Tìm tất cả video id",
+        },
+        description: {
+          en: "Get id of all video in current website",
+          vi: "Tìm tất cả video id trong trang web",
+        },
         func: getAllVideoId,
       },
       {
-        name: "Get download link of current video",
-        description: "Get download link of current video",
+        name: {
+          en: "Get download link of current video",
+          vi: "Tải video đang xem",
+        },
+        description: {
+          en: "Get download link of current video",
+          vi: "Lấy link để tải video đang xem",
+        },
         func: downloadCurrentVideo,
       },
       {
+        name: {
+          en: "Get download link of current video",
+          vi: "Tải video đang xem",
+        },
+        description: {
+          en: "Get download link of current video",
+          vi: "Lấy link để tải video đang xem",
+        },
         name: "Download album media (beta)",
         description: "Download all media link in album",
         func: downloadAlbumMedia,
@@ -190,9 +301,26 @@ export const tabs = [
     description: "",
     scripts: [
       {
-        name: "Bypass 18+ youtube video",
-        description: "Bypass Youtube Adult filter without Sign In",
+        name: {
+          en: "Bypass 18+ youtube video",
+          vi: "Xem video giới hạn độ tuổi",
+        },
+        description: {
+          en: "Bypass Youtube Adult filter without Sign In",
+          vi: "Xem video giới hạn độ tuổi, không cần đăng nhập",
+        },
         func: bypassYoutube18,
+      },
+      {
+        name: {
+          en: "Toggle light",
+          vi: "Tắt/Mở đèn",
+        },
+        description: {
+          en: "Toggle light on/off to focus to video",
+          vi: "Tắt/Mở đèn để tập trung xem video",
+        },
+        func: toggleLight,
       },
     ],
   },

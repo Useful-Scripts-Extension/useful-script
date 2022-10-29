@@ -7,15 +7,25 @@
     "default_popup": "./popup/popup.html",
     "default_icon": "./assets/hello_extensions.png"
   },
-  "permissions": ["tabs", "scripting"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "./background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["./content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "./content.js"
+      ]
     }
   ],
   "options_page": "./options/options.html"

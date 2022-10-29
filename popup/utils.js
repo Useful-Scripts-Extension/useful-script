@@ -7,7 +7,7 @@ export const runScript = async (func, tabId) => {
   return chrome.scripting.executeScript({
     target: { tabId: tabId },
     func: func,
-    world: 'MAIN',
+    world: "MAIN",
   });
 };
 
@@ -15,7 +15,7 @@ export const runScriptFile = (scriptFile, tabId) => {
   return chrome.scripting.executeScript({
     target: { tabId: tabId },
     files: [scriptFile],
-    world: 'MAIN',
+    world: "MAIN",
   });
 };
 
@@ -36,4 +36,15 @@ export const openUrlInNewTab = async (url) => {
 export const openUrlAndRunScript = async (url, func) => {
   let tab = await openUrlInNewTab(url);
   return await runScript(func, tab.id);
+};
+
+// https://developer.chrome.com/docs/extensions/reference/storage/
+export const localStorage = {
+  set: async (key, value) => {
+    return chrome.storage.sync.set({ [key]: value });
+  },
+  get: async (key, defaultValue = "") => {
+    let result = await chrome.storage.sync.get([key]);
+    return result[key];
+  },
 };
