@@ -1,10 +1,30 @@
+import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
 import { tabs } from "./scripts/index.js";
-import { runScriptFileInCurrentTab, runScriptInCurrentTab } from "./utils.js";
+import {
+  localStorage,
+  runScriptFileInCurrentTab,
+  runScriptInCurrentTab,
+} from "./utils.js";
 
-function createTabs() {
-  const tabDiv = document.querySelector("div.tab");
-  const contentDiv = document.querySelector("div.content");
+const tabDiv = document.querySelector("div.tab");
+const contentDiv = document.querySelector("div.content");
+const flagImg = document.querySelector("img#flag");
 
+async function initLanguage() {
+  let lang = await localStorage.get("lang", LANG.vi);
+  setLang(lang);
+
+  flagImg.onclick = () => {
+    let newLang = toggleLang();
+    localStorage.set("lang", newLang);
+    flagImg.setAttribute("src", getFlag());
+
+    // reset UI
+    createTabs();
+  };
+}
+
+async function createTabs() {
   // clear UI
   tabDiv.innerHTML = "";
   contentDiv.innerHTML = "";
@@ -13,10 +33,12 @@ function createTabs() {
   for (let tab of tabs) {
     // create tab button
     const tabBtn = document.createElement("button");
-    tabBtn.className = "tabLinks";
-    tabBtn.textContent = tab.name;
-    tabBtn.title = tab.description;
-    tabBtn.onclick = () => openTab(tabBtn, tab.id);
+    tabBtn.className = "tablinks";
+    tabBtn.textContent = t(tab.name);
+    tabBtn.title = t(tab.description);
+    tabBtn.type = "button";
+    tabBtn.setAttribute("content-id", tab.id);
+    tabBtn.onclick = () => openTab(tab.id);
 
     // create tab content
     const contentContainer = document.createElement("div");
@@ -31,7 +53,7 @@ function createTabs() {
     } else {
       for (let script of tab.scripts) {
         const button = document.createElement("button");
-        button.innerText = script.name;
+        button.innerText = t(script.name);
         button.className = "tooltip";
 
         if (script.file && typeof script.file === "string") {
@@ -44,7 +66,7 @@ function createTabs() {
 
         const tooltip = document.createElement("span");
         tooltip.className = "tooltiptext";
-        tooltip.innerText = script.description;
+        tooltip.innerText = t(script.description);
         button.appendChild(tooltip);
 
         contentContainer.appendChild(button);
@@ -56,20 +78,28 @@ function createTabs() {
     tabDiv.appendChild(tabBtn);
     contentDiv.appendChild(contentContainer);
   }
+
+  // open tab
+  let activeTab = await localStorage.get("activeTab", tabs[0].id);
+  activeTab && openTab(activeTab);
 }
 
-function openTab(btn, contentId) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(contentId).style.display = "block";
-  btn.className += " active";
+function openTab(tabId) {
+  localStorage.set("activeTab", tabId);
+
+  Array.from(document.querySelectorAll(".tabcontent")).forEach((_) => {
+    _.style.display = "none";
+  });
+  Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
+    _.classList.remove("active");
+  });
+  document.querySelector(".tabcontent#" + tabId).style.display = "block";
+  document
+    .querySelector('.tablinks[content-id="' + tabId + '"]')
+    .classList.add("active");
 }
 
-createTabs();
+(async function () {
+  await initLanguage();
+  await createTabs();
+})();
