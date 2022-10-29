@@ -1,7 +1,7 @@
 html,
 body {
     min-width: 300px;
-    background-color: transparent;
+    background-color: #e6e6e6;
 }
 
 * {
@@ -18,6 +18,7 @@ h3 {
 a {
     text-decoration: none;
     display: inline-block;
+    padding: 5px 0;
 }
 
 a:hover {
@@ -43,20 +44,26 @@ a:hover {
     margin: 0.25em;
     padding: 0.75em 1em;
     color: #333;
+    background-color: #c6c6c6;
     transition: all 200ms;
 }
 
-.content button:hover,
-.content button:focus {
-    background-color: rgb(150, 215, 255);
+.content button:hover {
+    background-color: #96d7ff;
     cursor: pointer;
+    transform: translateY(-3px);
+    z-index: 100;
+}
+
+.content button:active {
+    transform: none;
+    transition: all 50ms;
 }
 
 /* Style the tab */
 .tab {
     overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    background-color: #cccccc;
     overflow: auto;
 }
 
@@ -73,26 +80,24 @@ a:hover {
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-    background-color: #ddd;
+    background-color: #afafaf;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: rgb(150, 215, 255);
+    background-color: #96d7ff;
 }
 
 /* Style the tab content */
 .tabcontent {
     display: none;
     padding: 6px 12px;
-    border: 1px solid #ccc;
     border-top: none;
     padding-bottom: 50px;
 }
 
 .tabcontent {
     animation: fadeEffect 1s;
-    /* Fading effect takes 1 second */
 }
 
 /* Go from zero to full opacity */
@@ -135,7 +140,7 @@ a:hover {
     visibility: visible;
     top: 105%;
     opacity: 1;
-    transition: all .3s;
+    transition: all .3s linear .7s;
 }
 
 .tooltip .tooltiptext::after {
