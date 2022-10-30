@@ -5,7 +5,7 @@ import {
   runScriptFileInCurrentTab,
   runScriptInCurrentTab,
 } from "./utils.js";
-import ver from "../version.json" assert { type: "json" };
+import config from "../config.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -118,12 +118,11 @@ function openTab(tabId) {
 
 async function checkForUpdate() {
   try {
-    let response = await fetch(ver.server);
-    let lastestVer = (await response.json()).version;
-    let currentVer = ver.version;
-
+    const currentVer = (await chrome.runtime.getManifest()).version;
     versionSpan.innerHTML = currentVer;
 
+    const { version_check, source_code } = config;
+    const lastestVer = (await (await fetch(version_check)).json()).version;
     if (lastestVer > currentVer) {
       updateBtn.style.display = "inline-block";
       updateBtn.innerHTML = t({
@@ -131,7 +130,7 @@ async function checkForUpdate() {
         en: "update " + lastestVer,
       });
       updateBtn.onclick = () => {
-        window.open(ver.source);
+        window.open(source_code);
       };
     } else {
       updateBtn.style.display = "none";

@@ -3,6 +3,8 @@
   "name": "Useful Scripts",
   "description": "",
   "version": "1.0",
+  "version_check": "https://raw.githubusercontent.com/HoangTran0410/useful-script/main/manifest.json",
+  "source_code": "https://github.com/HoangTran0410/useful-script",
   "action": {
     "default_popup": "./popup/popup.html",
     "default_icon": "./assets/hello_extensions.png"
