@@ -12,16 +12,22 @@ export default {
     let currentState = window.localStorage.getItem(key);
     let newState = currentState == 1 ? 0 : 1;
 
+    let changed = false;
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {
       let dom = document.querySelector(_);
-      if (dom) dom.style.opacity = Number(newState);
-      else alert("ERROR: Cannot find element" + _);
+      if (dom) {
+        dom.style.opacity = Number(newState);
+        changed = true;
+      } else alert("ERROR: Cannot find element" + _);
     });
 
     document.querySelector("#player-theater-container")?.scrollIntoView?.({
       behavior: "smooth",
     });
 
-    window.localStorage.setItem(key, newState);
+    changed && window.localStorage.setItem(key, newState);
+    window.onbeforeunload = () => {
+      window.localStorage.setItem(key, 1);
+    };
   },
 };
