@@ -1,6 +1,15 @@
-export function darkModePDF() {
-  var cover = document.createElement("div");
-  let css = `position: fixed;
+export default {
+  name: {
+    en: "Darkmode for pdf",
+    vi: "Chế độ tối cho PDF",
+  },
+  description: {
+    en: "Enable darkmode for PDF",
+    vi: "Bật chế độ tối cho PDF bạn đang xem",
+  },
+  func() {
+    var cover = document.createElement("div");
+    let css = `position: fixed;
     pointer-events: none;
     top: 0;
     left: 0;
@@ -9,6 +18,8 @@ export function darkModePDF() {
     background-color: #fffbfbcf;
     mix-blend-mode: difference;
     z-index: 1;`;
-  cover.setAttribute("style", css);
-  document.body.appendChild(cover);
-}
+    cover.setAttribute("style", css);
+    document.body.appendChild(cover);
+  },
+};
+
