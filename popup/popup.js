@@ -1,5 +1,5 @@
 import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { tabs } from "./scripts/index.js";
+import { tabs } from "./scripts/tabs.js";
 import {
   localStorage,
   runScriptFileInCurrentTab,
@@ -53,7 +53,7 @@ async function createTabs() {
     } else {
       for (let script of tab.scripts) {
         // Section title
-        if (script.type === "title") {
+        if (!script.func) {
           const title = document.createElement("h3");
           title.textContent = t(script.name);
           title.classList.add("section-title");

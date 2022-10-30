@@ -1,46 +1,38 @@
-export function bypassYoutube18() {
-  if (window.location.host === "www.youtube.com") {
-    let option = window.prompt(
-      `Options:
-    1: replace 'watch?v=' with 'v/'
-    2: replace 'watch?v=' with 'embed/'
-    3: replace 'youtube' with 'nsfwyoutube'
-    4: replace 'youtube' with 'listenonrepeat'
-    5: replace 'youtube' with 'puritube'
-    6: replace 'youtube' with 'ssyoutube'
-    7: replace 'youtube' with 'pwnyoutube'
+export default {
+  name: {
+    en: "Bypass 18+ youtube video",
+    vi: "Xem video giới hạn độ tuổi",
+  },
+  description: {
+    en: "Bypass Youtube Adult filter without Sign In",
+    vi: "Xem video giới hạn độ tuổi, không cần đăng nhập",
+  },
+  func() {
+    if (window.location.host !== "www.youtube.com") {
+      alert("Can only used in www.youtube.com");
+    } else {
+      let replaces = [
+        ["watch?v=", "v/"],
+        ["watch?v=", "embed/"],
+        ["youtube", "nsfwyoutube"],
+        ["youtube", "listenonrepeat"],
+        ["youtube", "puritube"],
+        ["youtube", "ssyoutube"],
+        ["youtube", "pwnyoutube"],
+      ];
 
-    Your Choice:`,
-      1
-    );
-    if (!option) return;
-
-    switch (option) {
-      case "1":
-        window.open(document.URL.replace("watch?v=", "v/"));
-        break;
-      case "2":
-        window.open(document.URL.replace("watch?v=", "embed/"));
-        break;
-      case "3":
-        window.open(document.URL.replace("youtube", "nsfwyoutube"));
-        break;
-      case "4":
-        window.open(document.URL.replace("youtube", "listenonrepeat"));
-        break;
-      case "5":
-        window.open(document.URL.replace("youtube", "puritube"));
-        break;
-      case "6":
-        window.open(document.URL.replace("youtube", "ssyoutube"));
-        break;
-      case "7":
-        window.open(document.URL.replace("youtube", "pwnyoutube"));
-        break;
-      default:
-        alert("Wrong choice");
+      let replacesStr = replaces
+        .map((_, i) => `${i + 1}: replace '${_[0]}' with '${_[1]}'`)
+        .join("\n");
+      let option = window.prompt(`Options:\n${replacesStr}\n\nYour Choice:`, 1);
+      if (option > 0 && option <= replaces.length) {
+        window.open(
+          document.URL.replace(
+            replaces[Number(option) - 1][0],
+            replaces[Number(option) - 1][1]
+          )
+        );
+      } else if (option) alert("Wrong choice");
     }
-  } else {
-    alert("Can only used in www.youtube.com");
-  }
-}
+  },
+};
