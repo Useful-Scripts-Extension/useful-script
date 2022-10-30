@@ -131,8 +131,8 @@ const tabs = [
     ...CATEGORY.youtube,
     scripts: [
       addBadge(pictureInPicture, BADGES.new),
+      addBadge(toggleLightYoutube, BADGES.hot),
       bypassYoutube18,
-      toggleLightYoutube,
     ],
   },
   {
