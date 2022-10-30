@@ -27,6 +27,11 @@ export const CATEGORY = {
     name: { en: "Doutu.be", vi: "Doutu.be" },
     description: { en: "", vi: "" },
   },
+  vimeo: {
+    id: "vimeo",
+    name: { en: "Vimeo", vi: "Vimeo" },
+    description: { en: "", vi: "" },
+  },
   pdf: {
     id: "pdf",
     name: { en: "PDF", vi: "PDF" },
