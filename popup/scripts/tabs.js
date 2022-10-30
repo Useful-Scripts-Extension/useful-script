@@ -70,7 +70,7 @@ const tabs = [
       toggleLightFB,
       { name: { en: "--- Access Token ---", vi: "--- Access Token ---" } },
       getTokenBusinessFB,
-      getUidFB,
+      getTokenFacebook,
       getTokenMFacebook,
       { name: { en: "--- Get ID ---", vi: "--- Lấy ID ---" } },
       getUidFB,
