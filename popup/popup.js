@@ -142,15 +142,15 @@ function openTab(tabId) {
 async function checkForUpdate() {
   try {
     const currentVer = (await chrome.runtime.getManifest()).version;
-    versionSpan.innerHTML = currentVer;
+    versionSpan.innerHTML = "v" + currentVer;
 
     const { version_check, source_code } = config;
     const lastestVer = (await (await fetch(version_check)).json()).version;
     if (lastestVer > currentVer) {
       updateBtn.style.display = "inline-block";
       updateBtn.innerHTML = t({
-        vi: "cập nhật " + lastestVer,
-        en: "update " + lastestVer,
+        vi: "cập nhật v" + lastestVer,
+        en: "update v" + lastestVer,
       });
       updateBtn.onclick = () => {
         window.open(source_code);
