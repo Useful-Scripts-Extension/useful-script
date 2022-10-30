@@ -1,5 +1,5 @@
 import { CATEGORY } from "./category.js";
-import toggleLightFB from "./facebook/getTokenBusiness.js";
+import toggleLightFB from "./facebook/toggleLight.js";
 import getTokenBusinessFB from "./facebook/getTokenBusiness.js";
 import getTokenFacebook from "./facebook/getTokenFacebook.js";
 import getTokenMFacebook from "./facebook/getTokenMFacebook.js";
