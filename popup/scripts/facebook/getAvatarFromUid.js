@@ -9,7 +9,9 @@ export default {
   },
   func: async function () {
     let accessToken = prompt("Nhập facebook access token: ");
+    if (!accessToken) return;
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
+    if (!uids) return;
     uids = uids.split("\n");
     let urls = [];
     for (let uid of uids) {

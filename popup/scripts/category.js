@@ -67,4 +67,9 @@ export const CATEGORY = {
     name: { en: "More...", vi: "Khác..." },
     description: { en: "", vi: "" },
   },
+  recommend: {
+    id: "recommend",
+    name: { en: "Recommend", vi: "Khuyên dùng" },
+    description: { en: "", vi: "" },
+  },
 };

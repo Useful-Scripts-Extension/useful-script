@@ -1,7 +1,7 @@
 export default {
   name: {
     en: "Get all media of user",
-    vi: "Tải về tất media của user",
+    vi: "Tải về tất cả media của user",
   },
   description: {
     en: "Get all media of instagram user",
