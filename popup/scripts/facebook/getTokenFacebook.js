@@ -7,7 +7,7 @@ export default {
     en: "Get facebook access token from www.facebook.com",
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
-  func() {
+  func: function () {
     if (window.location.host !== "www.facebook.com") {
       alert("Bookmark này chỉ dùng được trong trang www.facebook.com");
       window.open("https://www.facebook.com");

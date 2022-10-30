@@ -7,7 +7,7 @@ export default {
     en: "Get id of your instagram user",
     vi: "Lấy id của người dùng instagram đang đăng nhập",
   },
-  func() {
+  func: function () {
     if (window.location.host === "www.instagram.com") {
       alert("Đang lấy user id... bấm ok để tiếp tục");
       fetch(location.href + "?__a=1")

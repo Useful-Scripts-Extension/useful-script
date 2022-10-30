@@ -7,7 +7,7 @@ export default {
     en: "Alerts the width and height in pixels of the inner window.",
     vi: "đơn vị pixels",
   },
-  func() {
+  func: function () {
     alert(
       "Window inner dimensions:\n\n   " +
         document.body.clientWidth +

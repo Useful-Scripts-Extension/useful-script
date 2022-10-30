@@ -7,7 +7,7 @@ export default {
     en: "View all images in web",
     vi: "Xem danh sách hình ảnh trong tab mới",
   },
-  func() {
+  func: function () {
     var A = {},
       B = [],
       D = document,

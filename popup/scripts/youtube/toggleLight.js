@@ -7,7 +7,7 @@ export default {
     en: "Toggle light on/off to focus to video",
     vi: "Tắt/Mở đèn để tập trung xem video",
   },
-  func() {
+  func: function () {
     let key = "useful-scripts/youtube/togglelight";
     let currentState = window.localStorage.getItem(key);
     let newState = currentState == 1 ? 0 : 1;

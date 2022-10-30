@@ -13,6 +13,7 @@ const flagImg = document.querySelector("img#flag");
 async function initLanguage() {
   let lang = await localStorage.get("lang", LANG.vi);
   setLang(lang);
+  flagImg.setAttribute("src", getFlag());
 
   flagImg.onclick = () => {
     let newLang = toggleLang();
@@ -53,7 +54,7 @@ async function createTabs() {
     } else {
       for (let script of tab.scripts) {
         // Section title
-        if (!script.func) {
+        if (!script.func && !script.file) {
           const title = document.createElement("h3");
           title.textContent = t(script.name);
           title.classList.add("section-title");

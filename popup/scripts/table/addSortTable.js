@@ -7,7 +7,7 @@ export default {
     en: "Add sort functions to table",
     vi: "Thêm nút chức năng sắp xếp cho từng cột trong table",
   },
-  func() {
+  func: function () {
     function toArray(c) {
       var a, k;
       a = new Array();

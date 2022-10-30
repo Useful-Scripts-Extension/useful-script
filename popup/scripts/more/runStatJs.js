@@ -7,7 +7,7 @@ export default {
     en: "Run stat.js in current website",
     vi: "Tính toán FPS website",
   },
-  func() {
+  func: function () {
     var script = document.createElement("script");
     script.onload = function () {
       var stats = new Stats();

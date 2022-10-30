@@ -7,7 +7,7 @@ export default {
     en: "Get download link of current video",
     vi: "Lấy link để tải video đang xem",
   },
-  func() {
+  func: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;
     const albumId = prompt("Enter album id: ", "");

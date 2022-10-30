@@ -7,7 +7,7 @@ export default {
     en: "Get all images in user profile",
     vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
   },
-  async func() {
+  func: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;
     const getOriginalVideoFromBlob = (videoEl) => {

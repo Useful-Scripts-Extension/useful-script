@@ -9,7 +9,7 @@ export default {
   },
 
   // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
-  func() {
+  func: function () {
     const user_name = document.title;
     const found = (check) => {
       if (check && check[0]) {

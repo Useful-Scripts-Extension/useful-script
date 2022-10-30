@@ -7,7 +7,7 @@ export default {
     en: "Edit all text in website",
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
-  func() {
+  func: function () {
     let key = "useful-scripts/webUI/editPage";
     let currentState = window.localStorage.getItem(key);
     let newState = currentState == 1 ? 0 : 1;

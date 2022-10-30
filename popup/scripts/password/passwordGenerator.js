@@ -21,7 +21,7 @@ export default {
     en: "You only have to remember 1 password",
     vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
   },
-  func() {
+  func: function () {
     var b64pad = "";
     var chrsz = 8;
 

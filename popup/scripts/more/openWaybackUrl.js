@@ -7,7 +7,7 @@ export default {
     en: "Open wayback url for current website",
     vi: "Giúp xem nội dung website trong quá khứ",
   },
-  func() {
+  func: function () {
     window.open("https://web.archive.org/web/*/" + location.href);
   },
 };

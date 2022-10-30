@@ -7,7 +7,7 @@ export default {
     en: "Check font used in webpage",
     vi: "Kiểm tra xem từng phần tử trong web dùng font chữ gì",
   },
-  func() {
+  func: function () {
     let d = document;
     var e = d.createElement("script");
     e.setAttribute("type", "text/javascript");

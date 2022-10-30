@@ -7,7 +7,7 @@ export default {
     en: "Get all video in user profile",
     vi: "Tải tất cả video từ profile của user bất kỳ",
   },
-  async func() {
+  func: async function () {
     const WAIT_FOR_FULL_VIDEO_LOADED = 5000;
     const FIND_FULL_VIDEO_INTERVAL = 100;
     const sleep = (m) => new Promise((r) => setTimeout(r, m));
