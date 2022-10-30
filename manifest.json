@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Useful Scripts",
-  "description": "",
+  "description": "Scripts that can make your life faster and better",
   "version": "1.0",
   "action": {
     "default_popup": "./popup/popup.html",
@@ -10,13 +10,15 @@
   "permissions": [
     "tabs",
     "scripting",
-    "storage"
+    "storage",
+    "webRequest"
   ],
   "host_permissions": [
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "./background.js"
+    "service_worker": "./background.js",
+    "type": "module"
   },
   "content_scripts": [
     {

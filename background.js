@@ -5,3 +5,19 @@
 //     text: "NEW",
 //   });
 // });
+
+import * as scripts from "./popup/scripts/scripts.js";
+
+let scriptsNeedRunBackground = Object.values(scripts).filter(
+  (script) =>
+    script.backgroundFunc && typeof script.backgroundFunc === "function"
+);
+
+console.log(
+  `run ${scriptsNeedRunBackground.length} background scripts`,
+  scriptsNeedRunBackground
+);
+
+scriptsNeedRunBackground.forEach((script) => {
+  script.backgroundFunc();
+});

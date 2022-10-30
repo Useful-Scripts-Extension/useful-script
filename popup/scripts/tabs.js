@@ -1,67 +1,70 @@
 import { CATEGORY } from "./category.js";
-import toggleLightFB from "./facebook/toggleLight.js";
-import getTokenBusinessFB from "./facebook/getTokenBusiness.js";
-import getTokenFacebook from "./facebook/getTokenFacebook.js";
-import getTokenMFacebook from "./facebook/getTokenMFacebook.js";
-import getUidFB from "./facebook/getUid.js";
-import getPageIdFB from "./facebook/getPageId.js";
-import getGroupIdFB from "./facebook/getGroupId.js";
-import getAlbumIdFB from "./facebook/getAlbumId.js";
-import getTimelineAlbumIdFB from "./facebook/getTimelineAlbumId.js";
-import getAllVideoIdFB from "./facebook/getAllVideoId.js";
-import getAllAlbumIdFB from "./facebook/getAllAlbumId.js";
-import getUidFromUrlFB from "./facebook/getUidFromUrl.js";
-import getAllUidFromFBSearch from "./facebook/getAllUidFromFBSearch.js";
-import getAllUidFromFriendsPageFB from "./facebook/getAllUidFromFriendsPage.js";
-import getAllUidOfGroupMembersFB from "./facebook/getAllUidOfGroupMembers.js";
-import getAvatarFromUidFB from "./facebook/getAvatarFromUid.js";
-import downloadCurrentVideoFB from "./facebook/downloadCurrentVideo.js";
-import downloadAlbumMediaFB from "./facebook/downloadAlbumMedia.js";
-import getTokenInsta from "./instagram/getToken.js";
-import getUidInsta from "./instagram/getUid.js";
-import getAllUserMediaInsta from "./instagram/getAllUserMedia.js";
-import getAllImagesInNewFeedInsta from "./instagram/getAllImagesInNewFeed.js";
-import getAllImagesInUserProfileInsta from "./instagram/getAllImagesInUserProfile.js";
-import pictureInPicture from "./youtube/pictureInPicture.js";
-import bypassYoutube18 from "./youtube/bypassYoutube18.js";
-import toggleLightYoutube from "./youtube/toggleLight.js";
-import goToFirstCommit from "./github/goToFirstCommit.js";
-import github1s from "./github/github1s.js";
-import enableDownloadVideoDoutube from "./doutube/enableDownloadVideo.js";
-import downloadWatchingStoryDoutube from "./doutube/downloadWatchingStory.js";
-import downloadWatchingVideoDoutube from "./doutube/downloadWatchingVideo.js";
-import getAllVideoInUserProfileDoutube from "./doutube/getAllVideoInUserProfile.js";
-import darkModePDF from "./pdf/darkModePDF.js";
-import webToPDF from "./pdf/webToPDF.js";
-import webToQRCode from "./qrcode/webToQRCode.js";
-import textToQRCode from "./qrcode/textToQRCode.js";
-import scrollToVeryEndAuto from "./automation/scrollToVeryEnd.js";
-import passwordGenerator from "./password/passwordGenerator.js";
-import bugMeNotPassword from "./password/bugMeNot.js";
-import viewHiddenPassword from "./password/viewHiddenPassword.js";
-import enableTextSelection from "./unlock/enableTextSelection.js";
-import reEnableContextMenu from "./unlock/reEnableContextMenu.js";
-import removeCookies from "./unlock/removeCookies.js";
-import checkWebDie from "./unlock/checkWebDie.js";
-import addSortTable from "./table/addSortTable.js";
-import addNumberColumn from "./table/addNumberColumn.js";
-import swapRowAndColumn from "./table/swapRowAndColumn.js";
-import toggleEditPage from "./webUI/toggleEditPage.js";
-import whatFont from "./webUI/whatFont.js";
-import removeColours from "./webUI/removeColours.js";
-import removeStylesheet from "./webUI/removeStylesheet.js";
-import removeImages from "./webUI/removeImages.js";
-import removeBloat from "./webUI/removeBloat.js";
-import internalOrExternalLink from "./webUI/internalOrExternalLink.js";
-import getWindowSize from "./webUI/getWindowSize.js";
-import letItSnow from "./webUI/letItSnow.js";
-import shortenURL from "./more/shortenURL.js";
-import listAllImagesInWeb from "./more/listAllImagesInWeb.js";
-import viewScriptsUsed from "./more/viewScriptsUsed.js";
-import viewStylesUsed from "./more/viewStylesUsed.js";
-import viewPartialSource from "./more/viewPartialSource.js";
-import openWaybackUrl from "./more/openWaybackUrl.js";
-import runStatJs from "./more/runStatJs.js";
+import {
+  toggleLightFB,
+  getTokenBusinessFB,
+  getTokenFacebook,
+  getTokenMFacebook,
+  getUidFB,
+  getPageIdFB,
+  getGroupIdFB,
+  getAlbumIdFB,
+  getTimelineAlbumIdFB,
+  getAllVideoIdFB,
+  getAllAlbumIdFB,
+  getUidFromUrlFB,
+  getAllUidFromFBSearch,
+  getAllUidFromFriendsPageFB,
+  getAllUidOfGroupMembersFB,
+  getAvatarFromUidFB,
+  downloadCurrentVideoFB,
+  downloadAlbumMediaFB,
+  getTokenInsta,
+  getUidInsta,
+  getAllUserMediaInsta,
+  getAllImagesInNewFeedInsta,
+  getAllImagesInUserProfileInsta,
+  pictureInPicture,
+  bypassYoutube18,
+  toggleLightYoutube,
+  downloadVideo,
+  goToFirstCommit,
+  github1s,
+  enableDownloadVideoDoutube,
+  downloadWatchingStoryDoutube,
+  downloadWatchingVideoDoutube,
+  getAllVideoInUserProfileDoutube,
+  darkModePDF,
+  webToPDF,
+  webToQRCode,
+  textToQRCode,
+  scrollToVeryEndAuto,
+  passwordGenerator,
+  bugMeNotPassword,
+  viewHiddenPassword,
+  enableTextSelection,
+  reEnableContextMenu,
+  removeCookies,
+  checkWebDie,
+  addSortTable,
+  addNumberColumn,
+  swapRowAndColumn,
+  toggleEditPage,
+  whatFont,
+  removeColours,
+  removeStylesheet,
+  removeImages,
+  removeBloat,
+  internalOrExternalLink,
+  getWindowSize,
+  letItSnow,
+  shortenURL,
+  listAllImagesInWeb,
+  viewScriptsUsed,
+  viewStylesUsed,
+  viewPartialSource,
+  openWaybackUrl,
+  runStatJs,
+} from "./scripts.js";
 
 const addBadge = (
   script,
@@ -112,6 +115,7 @@ const tabs = [
       getAllUidFromFriendsPageFB,
       getAllUidOfGroupMembersFB,
       { name: { en: "--- Download ---", vi: "--- Tải xuống ---" } },
+      addBadge(downloadVideo, BADGES.new),
       getAvatarFromUidFB,
       addBadge(downloadCurrentVideoFB, BADGES.beta),
       addBadge(downloadAlbumMediaFB, BADGES.beta),
@@ -121,10 +125,11 @@ const tabs = [
     ...CATEGORY.instagram,
     scripts: [
       getTokenInsta,
-      getUidInsta,
-      getAllUserMediaInsta,
-      getAllImagesInNewFeedInsta,
-      getAllImagesInUserProfileInsta,
+      addBadge(getUidInsta, BADGES.hot),
+      addBadge(downloadVideo, BADGES.new),
+      addBadge(getAllUserMediaInsta, BADGES.beta),
+      addBadge(getAllImagesInNewFeedInsta, BADGES.beta),
+      addBadge(getAllImagesInUserProfileInsta, BADGES.beta),
     ],
   },
   {
@@ -134,6 +139,10 @@ const tabs = [
       addBadge(toggleLightYoutube, BADGES.hot),
       bypassYoutube18,
     ],
+  },
+  {
+    ...CATEGORY.vimeo,
+    scripts: [addBadge(downloadVideo, BADGES.new)],
   },
   {
     ...CATEGORY.github,
@@ -266,6 +275,18 @@ const tabs = [
           vi: "Chặn quảng cáo cho mọi website",
         },
         link: "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb",
+      },
+      {
+        icon: "https://lh3.googleusercontent.com/s-86QIqiZeS3NSGiw95oJAm9ExGyUat2oF3hqOu4xVypfn18HX6LYNwJUtKoSYFRtf4-qBSvBYr41ZZWPqbh5Hh-xrQ=w128-h128-e365-rj-sc0x00ffffff",
+        name: {
+          en: "Video Downloader professional",
+          vi: "Video Downloader professional",
+        },
+        description: {
+          en: "Download video from almost any websites",
+          vi: "Tải video từ hầu như mọi website",
+        },
+        link: "https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil",
       },
       {
         icon: "https://lh3.googleusercontent.com/3ZU5aHnsnQUl9ySPrGBqe5LXz_z9DK05DEfk10tpKHv5cvG19elbOr0BdW_k8GjLMFDexT2QHlDwAmW62iLVdek--Q=w128-h128-e365-rj-sc0x00ffffff",
