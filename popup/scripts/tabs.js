@@ -172,7 +172,7 @@ const tabs = [
     ...CATEGORY.unlock,
     scripts: [
       checkWebDie,
-      removeCookies,
+      addBadge(removeCookies, BADGES.hot),
       enableTextSelection,
       reEnableContextMenu,
     ],
@@ -184,8 +184,8 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
-      toggleEditPage,
-      whatFont,
+      addBadge(toggleEditPage, BADGES.hot),
+      addBadge(whatFont, BADGES.hot),
       removeColours,
       removeStylesheet,
       removeImages,
