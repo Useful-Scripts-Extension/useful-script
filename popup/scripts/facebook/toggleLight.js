@@ -8,26 +8,17 @@ export default {
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
   },
   func: function () {
-    let key = "useful-scripts/facebook/togglelight";
-    let currentState = window.localStorage.getItem(key);
-    let newState = currentState == 1 ? 0 : 1;
-
-    let changed = false;
     [
       "div[role='navigation'].x9f619.x1ja2u2z.xnp8db0.x112wk31",
       "div[role='complementary'].x9f619.x1ja2u2z.xnp8db0.x112wk31",
     ].forEach((_) => {
       let dom = document.querySelector(_);
       if (dom) {
-        dom.style.opacity = Number(newState);
-        changed = true;
+        let current = dom.style.opacity || 1;
+        let newValue = current == 1 ? 0 : 1;
+        dom.style.opacity = newValue;
       } else alert("ERROR: Cannot find element" + _);
     });
-
-    changed && window.localStorage.setItem(key, newState);
-    window.onbeforeunload = () => {
-      window.localStorage.setItem(key, 1);
-    };
   },
 };
 
