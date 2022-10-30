@@ -64,6 +64,25 @@ a:hover {
     transition: all 50ms;
 }
 
+.content button span {
+    vertical-align: middle;
+}
+
+.content button .icon {
+    display: inline-block;
+    vertical-align: middle;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.content button .badge {
+    padding: 3px 5px;
+    margin-right: 5px;
+    margin-left: -10px;
+    border-radius: 5px;
+    transform: rotate(-30deg);
+}
+
 /* Style the tab */
 .tab {
     overflow: hidden;
@@ -172,35 +191,4 @@ a:hover {
 #update-btn:hover {
     color: #fff;
     background-color: #00c200;
-}
-
-/* ==================== Update animation: https://codepen.io/t_afif/pen/wvdvYPJ ===================== */
-.update-arrow {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    overflow: hidden;
-    transform: rotate(-90deg);
-}
-
-.update-arrow:before,
-.update-arrow:after {
-    content: "";
-    grid-area: 1/1;
-    background: #00c200;
-    clip-path: polygon(0 10px, calc(100% - 15px) 10px, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, calc(100% - 15px) calc(100% - 10px), 0 calc(100% - 10px));
-    animation: a5 1s infinite;
-    transform: translate(calc(0% + var(--s, 0%)));
-}
-
-.update-arrow:after {
-    --s: -100%;
-}
-
-@keyframes a5 {
-
-    80%,
-    100% {
-        transform: translate(calc(100% + var(--s, 0%)))
-    }
 }

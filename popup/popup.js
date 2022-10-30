@@ -58,7 +58,7 @@ async function createTabs() {
     } else {
       for (let script of tab.scripts) {
         // Section title
-        if (!script.func && !script.file) {
+        if (!script.func && !script.file && !script.link) {
           const title = document.createElement("h3");
           title.textContent = t(script.name);
           title.classList.add("section-title");
@@ -69,16 +69,39 @@ async function createTabs() {
         // Function button
         else {
           const button = document.createElement("button");
-          button.innerText = t(script.name);
           button.className = "tooltip";
 
           if (script.file && typeof script.file === "string") {
             button.onclick = () => runScriptFileInCurrentTab(script.file);
           } else if (script.func && typeof script.func === "function") {
             button.onclick = () => runScriptInCurrentTab(script.func);
+          } else if (script.link && typeof script.link === "string") {
+            button.onclick = () => window.open(script.link);
           } else {
             button.onclick = () => alert("empty script");
           }
+
+          if (script.badge?.text) {
+            const { text, color, backgroundColor } = script.badge;
+            const badge = document.createElement("span");
+            badge.classList.add("badge");
+            badge.innerText = t(text);
+            badge.style.color = color;
+            badge.style.backgroundColor = backgroundColor;
+
+            button.appendChild(badge);
+          }
+
+          if (script.icon && typeof script.icon === "string") {
+            const icon = document.createElement("img");
+            icon.classList.add("icon");
+            icon.src = script.icon;
+            button.appendChild(icon);
+          }
+
+          const title = document.createElement("span");
+          title.innerText = t(script.name);
+          button.appendChild(title);
 
           const tooltip = document.createElement("span");
           tooltip.className = "tooltiptext";
