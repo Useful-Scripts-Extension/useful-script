@@ -22,6 +22,7 @@ import getUidInsta from "./instagram/getUid.js";
 import getAllUserMediaInsta from "./instagram/getAllUserMedia.js";
 import getAllImagesInNewFeedInsta from "./instagram/getAllImagesInNewFeed.js";
 import getAllImagesInUserProfileInsta from "./instagram/getAllImagesInUserProfile.js";
+import pictureInPicture from "./youtube/pictureInPicture.js";
 import bypassYoutube18 from "./youtube/bypassYoutube18.js";
 import toggleLightYoutube from "./youtube/toggleLight.js";
 import goToFirstCommit from "./github/goToFirstCommit.js";
@@ -102,7 +103,7 @@ const tabs = [
   },
   {
     ...CATEGORY.youtube,
-    scripts: [bypassYoutube18, toggleLightYoutube],
+    scripts: [pictureInPicture, bypassYoutube18, toggleLightYoutube],
   },
   {
     ...CATEGORY.github,
