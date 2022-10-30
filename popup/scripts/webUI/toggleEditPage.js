@@ -8,11 +8,10 @@ export default {
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
   func: function () {
-    let key = "useful-scripts/webUI/editPage";
-    let currentState = window.localStorage.getItem(key);
-    let newState = currentState == 1 ? 0 : 1;
+    let isOn = document.designMode == "on";
+    let willOn = isOn ? false : true;
 
-    if (newState) {
+    if (willOn) {
       document.body.contentEditable = "true";
       document.designMode = "on";
 
@@ -23,10 +22,5 @@ export default {
 
       alert("Đã tắt chế độ chỉnh sửa");
     }
-
-    window.localStorage.setItem(key, newState);
-    window.onbeforeunload = () => {
-      window.localStorage.setItem(key, 0);
-    };
   },
 };

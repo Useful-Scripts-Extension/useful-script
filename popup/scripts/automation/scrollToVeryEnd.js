@@ -25,7 +25,7 @@ export default {
         document.removeEventListener("click", clickToCancel);
         alert("scroll to very end STOPPED by user click");
       };
-      document.body.addEventListener("click", clickToCancel);
+      document.addEventListener("click", clickToCancel);
 
       while (running) {
         down();
