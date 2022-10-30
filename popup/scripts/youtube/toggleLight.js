@@ -9,12 +9,12 @@ export default {
   },
   func: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {
-      let dom = document.querySelector(_);
-      if (dom) {
+      let doms = document.querySelectorAll(_);
+      Array.from(doms).forEach((dom) => {
         let current = dom.style.opacity || 1;
         let newValue = current == 1 ? 0 : 1;
         dom.style.opacity = newValue;
-      } else alert("ERROR: Cannot find element" + _);
+      });
     });
 
     document.querySelector("#player-theater-container")?.scrollIntoView?.({
