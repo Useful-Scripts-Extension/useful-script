@@ -7,7 +7,7 @@ export default {
     en: "Download video that you are watching",
     vi: "Tải video bạn đang xem",
   },
-  func() {
+  func: function () {
     const isElementInViewport = (el) => {
       const rect = el.getBoundingClientRect();
       return (

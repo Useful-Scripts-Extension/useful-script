@@ -7,7 +7,7 @@ export default {
     en: "Get id of all video in current website",
     vi: "Tìm tất cả video id trong trang web",
   },
-  func() {
+  func: function () {
     const list_a = document.querySelectorAll("a");
     const list_id = [];
     for (let a of Array.from(list_a)) {

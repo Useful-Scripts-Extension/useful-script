@@ -7,7 +7,7 @@ export default {
     en: "Hide Navigator bar and complementary bar",
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
   },
-  func() {
+  func: function () {
     let key = "useful-scripts/facebook/togglelight";
     let currentState = window.localStorage.getItem(key);
     let newState = currentState == 1 ? 0 : 1;

@@ -9,7 +9,7 @@ export default {
   },
 
   // Source: https://github.com/FarhadG/init
-  func() {
+  func: function () {
     let args = window.location.pathname.match(
       /\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/
     );

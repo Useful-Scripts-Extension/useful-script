@@ -7,7 +7,7 @@ export default {
     en: "Enable darkmode for PDF",
     vi: "Bật chế độ tối cho PDF bạn đang xem",
   },
-  func() {
+  func: function () {
     var cover = document.createElement("div");
     let css = `position: fixed;
     pointer-events: none;

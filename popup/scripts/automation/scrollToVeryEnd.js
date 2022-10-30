@@ -7,7 +7,7 @@ export default {
     en: "Scoll to end, then wait for load data, then scroll again...",
     vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi.",
   },
-  func() {
+  func: function () {
     let height = () => document.body.scrollHeight;
     let down = () => window.scrollTo({ left: 0, top: height() });
     let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

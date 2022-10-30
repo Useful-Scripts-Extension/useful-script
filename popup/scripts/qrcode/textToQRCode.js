@@ -7,7 +7,7 @@ export default {
     en: "Convert text to QR Code",
     vi: "Nhập vào chữ và nhận về QRCode tương ứng",
   },
-  func() {
+  func: function () {
     var text = prompt("Enter text", "");
     var url =
       "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" + text;

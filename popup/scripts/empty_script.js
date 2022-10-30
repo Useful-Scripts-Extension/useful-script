@@ -7,5 +7,5 @@ export default {
     en: "",
     vi: "",
   },
-  func() {},
+  func: function () {},
 };

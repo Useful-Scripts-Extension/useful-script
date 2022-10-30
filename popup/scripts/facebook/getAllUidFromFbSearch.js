@@ -7,7 +7,7 @@ export default {
     en: "Get id of all user from fb search page",
     vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng",
   },
-  func() {
+  func: function () {
     const getUid = async (url) => {
       var response = await fetch(url);
       if (response.status == 200) {

@@ -7,7 +7,7 @@ export default {
     en: "Bypass Youtube Adult filter without Sign In",
     vi: "Xem video giới hạn độ tuổi, không cần đăng nhập",
   },
-  func() {
+  func: function () {
     if (window.location.host !== "www.youtube.com") {
       alert("Can only used in www.youtube.com");
     } else {

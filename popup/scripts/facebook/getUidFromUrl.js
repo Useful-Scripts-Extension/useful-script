@@ -9,7 +9,7 @@ export default {
   },
 
   // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
-  func() {
+  func: function () {
     const _getUidFromUrl = async (url) => {
       var response = await fetch(url);
       if (response.status == 200) {

@@ -53,7 +53,7 @@ a:hover {
 }
 
 .content button:hover {
-    background-color: #96d7ff;
+    background-color: #a8a8a8;
     cursor: pointer;
     transform: translateY(-3px);
     z-index: 100;
@@ -89,7 +89,7 @@ a:hover {
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: #96d7ff;
+    background-color: #a8a8a8;
 }
 
 /* Style the tab content */

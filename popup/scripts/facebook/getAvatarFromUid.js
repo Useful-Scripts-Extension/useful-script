@@ -7,7 +7,7 @@ export default {
     en: "Get avatar from list user ids",
     vi: "Tải danh sách avatar từ danh sách user id",
   },
-  async func() {
+  func: async function () {
     let accessToken = prompt("Nhập facebook access token: ");
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
     uids = uids.split("\n");

@@ -7,7 +7,7 @@ export default {
     en: "Remove all colours in the web",
     vi: "Xoá mọi màu có trong website",
   },
-  func() {
+  func: function () {
     var newSS,
       styles =
         "* { background: white ! important; color: black !important } :link, :link * { color: #0000EE !important } :visited, :visited * { color: #551A8B !important }";

@@ -7,7 +7,7 @@ export default {
     en: "Shorten URL using j2team.dev",
     vi: "Rút gọn link dùng công cụ của j2team",
   },
-  func() {
+  func: function () {
     window.open(
       `https://j2team.dev/home/?prefill_url=${encodeURIComponent(
         window.top.location.href

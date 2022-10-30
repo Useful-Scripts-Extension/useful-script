@@ -7,7 +7,7 @@ export default {
     en: "Get instagram access token",
     vi: "Lấy instagram access token",
   },
-  func() {
+  func: function () {
     try {
       const encoded = document.cookie
         .split("; ")

@@ -7,7 +7,7 @@ export default {
     en: "View all stylesheet used in current website",
     vi: "Mở danh sách css trong tab mới",
   },
-  func() {
+  func: function () {
     s = document.getElementsByTagName("STYLE");
     ex = document.getElementsByTagName("LINK");
     d = window.open().document; /*set base href*/

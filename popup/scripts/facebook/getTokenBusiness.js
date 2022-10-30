@@ -7,7 +7,7 @@ export default {
     en: "Get facebook access token from business.facebook.com",
     vi: "Lấy facebook access token từ trang business.facebook.com",
   },
-  func() {
+  func: function () {
     if (window.location.host !== "business.facebook.com") {
       alert(
         "Bookmark này chỉ hoạt động trên trang https://business.facebook.com/content_management/"

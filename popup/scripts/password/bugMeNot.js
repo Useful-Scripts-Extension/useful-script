@@ -7,7 +7,7 @@ export default {
     en: "Get free account from bugmenot",
     vi: "Tìm tài khoản được chia sẻ trên mạng cho trang web hiện tại",
   },
-  func() {
+  func: function () {
     var url = "http://www.bugmenot.com/view/" + escape(location.hostname);
     w = open(
       url,

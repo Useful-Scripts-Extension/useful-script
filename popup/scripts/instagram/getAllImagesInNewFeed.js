@@ -7,7 +7,7 @@ export default {
     en: "Get all images in newfeed",
     vi: "Tải về tất cả ảnh đang có trên newfeed",
   },
-  async func() {
+  func: async function () {
     const getAllImgTag = () =>
       Array.from(document.querySelectorAll("img[sizes*=px]")) || [];
     const sleep = (milliseconds) => {
