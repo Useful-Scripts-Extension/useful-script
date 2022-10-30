@@ -1,11 +1,11 @@
 export default {
   name: {
-    en: "Get download link of current video",
-    vi: "Tải video đang xem",
+    en: "Download album media links",
+    vi: "Tải link ảnh/video từ album",
   },
   description: {
-    en: "Get download link of current video",
-    vi: "Lấy link để tải video đang xem",
+    en: "Download photo/video links from album",
+    vi: "Tải về danh sách link ảnh/video",
   },
   func: function () {
     const accessToken = prompt("Enter access token:", "");

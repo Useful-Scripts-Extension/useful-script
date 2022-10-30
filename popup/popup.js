@@ -10,6 +10,8 @@ import ver from "../version.json" assert { type: "json" };
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
+const versionSpan = document.querySelector("#version");
+const updateBtn = document.querySelector("#update-btn");
 
 async function initLanguage() {
   let lang = await localStorage.get("lang", LANG.vi);
@@ -23,6 +25,7 @@ async function initLanguage() {
 
     // reset UI
     createTabs();
+    checkForUpdate();
   };
 }
 
@@ -119,10 +122,19 @@ async function checkForUpdate() {
     let lastestVer = (await response.json()).version;
     let currentVer = ver.version;
 
-    document.querySelector("#version").innerHTML = currentVer;
+    versionSpan.innerHTML = currentVer;
 
     if (lastestVer > currentVer) {
-      alert("New version available: " + lastestVer);
+      updateBtn.style.display = "inline-block";
+      updateBtn.innerHTML = t({
+        vi: "cập nhật " + lastestVer,
+        en: "update " + lastestVer,
+      });
+      updateBtn.onclick = () => {
+        window.open(ver.source);
+      };
+    } else {
+      updateBtn.style.display = "none";
     }
   } catch (e) {
     console.warn("Check for update failed", e);
