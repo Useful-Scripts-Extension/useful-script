@@ -5,6 +5,7 @@ import {
   runScriptFileInCurrentTab,
   runScriptInCurrentTab,
 } from "./utils.js";
+import ver from "../version.json" assert { type: "json" };
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -112,7 +113,24 @@ function openTab(tabId) {
     .classList.add("active");
 }
 
+async function checkForUpdate() {
+  try {
+    let response = await fetch(ver.server);
+    let lastestVer = (await response.json()).version;
+    let currentVer = ver.version;
+
+    document.querySelector("#version").innerHTML = currentVer;
+
+    if (lastestVer > currentVer) {
+      alert("New version available: " + lastestVer);
+    }
+  } catch (e) {
+    console.warn("Check for update failed", e);
+  }
+}
+
 (async function () {
   await initLanguage();
   await createTabs();
+  await checkForUpdate();
 })();
