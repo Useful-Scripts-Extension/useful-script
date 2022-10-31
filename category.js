@@ -1,10 +1,13 @@
 export const CATEGORY = {
   recently: {
     id: "recently",
-    style: {
-      textDecoration: "underline",
-    },
+    style: { textDecoration: "underline" },
     name: { en: "Recently", vi: "Gần đây" },
+  },
+  available: {
+    id: "available",
+    style: { textDecoration: "underline" },
+    name: { en: "Available", vi: "Có thể dùng" },
   },
   search: { id: "search", name: { en: "Search", vi: "Tìm kiếm" } },
   download: { id: "download", name: { en: "Download", vi: "Tải xuống" } },
@@ -26,9 +29,7 @@ export const CATEGORY = {
   more: { id: "more", name: { en: "More...", vi: "Khác..." } },
   recommend: {
     id: "recommend",
-    style: {
-      textDecoration: "underline",
-    },
+    style: { textDecoration: "underline" },
     name: { en: "Recommend", vi: "Khuyên dùng" },
   },
 };

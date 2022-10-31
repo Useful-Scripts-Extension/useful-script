@@ -1,3 +1,4 @@
+import { t } from "./lang.js";
 import { scriptsWithId } from "./scriptsWithId.js";
 
 export const getTabId = async () => {
@@ -74,3 +75,60 @@ export const recentScripts = {
       }));
   },
 };
+
+export async function getCurrentURL() {
+  let tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  let url = tabs[0].url;
+  return new URL(url);
+}
+
+export async function checkBlackWhiteList(
+  script,
+  willAlert = true,
+  hostname = null
+) {
+  if (!hostname) {
+    hostname = (await getCurrentURL()).hostname;
+  }
+
+  let hasWhiteList = script.whiteList?.length > 0;
+  let hasBlackList = script.blackList?.length > 0;
+  let inWhiteList = script.whiteList?.findIndex((_) => _ === hostname) >= 0;
+  let inBlackList = script.blackList?.findIndex((_) => _ === hostname) >= 0;
+
+  let willRun =
+    (!hasWhiteList && !hasBlackList) ||
+    (hasWhiteList && inWhiteList) ||
+    (hasBlackList && !inBlackList);
+
+  if (!willRun && willAlert) {
+    alert(
+      t({
+        en:
+          "Script is not supported in current website: \n" +
+          `+ Only run in: ${script.whiteList?.join(", ") || "<empty>"}\n` +
+          `+ Not run in: ${script.blackList?.join(", ") || "empty"}`,
+        vi:
+          "Script không hỗ trợ website hiện tại: \n" +
+          `+ Chỉ chạy tại:  ${script.whiteList?.join(", ") || "<rỗng>"}\n` +
+          `+ Không chạy tại:  ${script.blackList?.join(", ") || "<rỗng>"}`,
+      })
+    );
+  }
+
+  return willRun;
+}
+
+export async function getAvailableScripts() {
+  let hostname = (await getCurrentURL()).hostname;
+  let avai = [];
+  for (let script of Object.values(scriptsWithId)) {
+    if (await checkBlackWhiteList(script, false, hostname)) {
+      avai.push(script);
+    }
+  }
+
+  // sort by relative name/description
+
+  return avai;
+}
