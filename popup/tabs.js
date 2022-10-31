@@ -38,7 +38,7 @@ import webToQRCode from "./scripts/webToQRCode.js";
 import textToQRCode from "./scripts/textToQRCode.js";
 import scrollToVeryEnd from "./scripts/scrollToVeryEnd.js";
 import passwordGenerator from "./scripts/passwordGenerator.js";
-import searchSharedAccount from "./scripts/searchSharedAccount.js";
+import search_sharedAccount from "./scripts/search_sharedAccount.js";
 import viewHiddenPassword from "./scripts/viewHiddenPassword.js";
 import checkWebDie from "./scripts/checkWebDie.js";
 import removeCookies from "./scripts/removeCookies.js";
@@ -64,9 +64,12 @@ import viewStylesUsed from "./scripts/viewStylesUsed.js";
 import viewPartialSource from "./scripts/viewPartialSource.js";
 import openWaybackUrl from "./scripts/openWaybackUrl.js";
 import runStatJs from "./scripts/runStatJs.js";
-import googleSiteSearch from "./scripts/googleSiteSearch.js";
+import search_googleSite from "./scripts/search_googleSite.js";
 import viewWebsiteAnalyticsOnline from "./scripts/viewWebsiteAnalyticsOnline.js";
-import checkTotalIndexedPages from "./scripts/checkTotalIndexedPages.js";
+import seach_totalIndexedPages from "./scripts/seach_totalIndexedPages.js";
+import whatWebsiteStack from "./scripts/whatWebsiteStack.js";
+import youtube_downloadVideo from "./scripts/youtube_downloadVideo.js";
+import search_paperWhere from "./scripts/search_paperWhere.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 
@@ -100,10 +103,12 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       addBadge(whatFont, BADGES.hot),
-      addBadge(searchSharedAccount, BADGES.hot),
-      addBadge(googleSiteSearch, BADGES.new),
+      addBadge(search_sharedAccount, BADGES.hot),
+      addBadge(whatWebsiteStack, BADGES.new),
+      addBadge(search_googleSite, BADGES.new),
+      addBadge(search_paperWhere, BADGES.new),
       addBadge(viewWebsiteAnalyticsOnline, BADGES.new),
-      addBadge(checkTotalIndexedPages, BADGES.new),
+      addBadge(seach_totalIndexedPages, BADGES.new),
       checkWebDie,
       openWaybackUrl,
     ],
@@ -150,6 +155,7 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
+      addBadge(youtube_downloadVideo, BADGES.beta),
       addBadge(pictureInPicture, BADGES.new),
       addBadge(youtube_toggleLight, BADGES.hot),
       youtube_bypass18,
@@ -174,11 +180,11 @@ const tabs = [
   },
   {
     ...CATEGORY.pdf,
-    scripts: [darkModePDF, webToPDF],
+    scripts: [addBadge(darkModePDF, BADGES.hot), webToPDF],
   },
   {
     ...CATEGORY.qrcode,
-    scripts: [webToQRCode, addBadge(textToQRCode, BADGES.hot)],
+    scripts: [addBadge(textToQRCode, BADGES.hot), webToQRCode],
   },
   {
     ...CATEGORY.automation,
@@ -188,7 +194,7 @@ const tabs = [
     ...CATEGORY.password,
     scripts: [
       addBadge(passwordGenerator, BADGES.hot),
-      addBadge(searchSharedAccount, BADGES.hot),
+      addBadge(search_sharedAccount, BADGES.hot),
       viewHiddenPassword,
     ],
   },
@@ -359,6 +365,18 @@ const tabs = [
           vi: "Cây thư mục cho github",
         },
         link: "https://www.octotree.io/",
+      },
+      {
+        icon: "https://lh3.googleusercontent.com/J7n7qDIrekKpjDDP-oLo03rvP2drIRqOqTDdSK5MyUBhE2UCkYx1LXurAVNA_4lgHCkdZUtnVaEt0SvGed9gaSKhAA=w128-h128-e365-rj-sc0x00ffffff",
+        name: {
+          en: "Omni - Bookmark, History & Tab Manager",
+          vi: "Omni - Bookmark, History & Tab Manager",
+        },
+        description: {
+          en: "Supercharge Chrome with commands, shortcuts, and more",
+          vi: "Dùng trình duyệt nhanh hơn với commands và phím tắt",
+        },
+        link: "https://chrome.google.com/webstore/detail/omni-bookmark-history-tab/mapjgeachilmcbbokkgcbgpbakaaeehi",
       },
     ],
   },
