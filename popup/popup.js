@@ -1,5 +1,5 @@
 import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { tabs } from "./tabs.js";
+import { defaultTabID, tabs } from "./tabs.js";
 import {
   localStorage,
   runScriptFileInCurrentTab,
@@ -53,7 +53,10 @@ async function createTabs() {
     // create button for scripts in tabcontent
     if (!tab.scripts?.length) {
       const emptyText = document.createElement("h3");
-      emptyText.innerText = "Coming soon...";
+      emptyText.innerText = t({
+        en: "Nothing here yet...",
+        vi: "Chưa có gì ở đây hết...",
+      });
       contentContainer.appendChild(emptyText);
     } else {
       for (let script of tab.scripts) {
@@ -120,7 +123,7 @@ async function createTabs() {
   }
 
   // open tab
-  let activeTab = await localStorage.get("activeTab", tabs[0].id);
+  let activeTab = await localStorage.get("activeTab", defaultTabID);
   activeTab && openTab(activeTab);
 }
 
