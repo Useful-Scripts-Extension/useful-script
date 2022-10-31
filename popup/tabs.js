@@ -70,6 +70,8 @@ import seach_totalIndexedPages from "./scripts/seach_totalIndexedPages.js";
 import whatWebsiteStack from "./scripts/whatWebsiteStack.js";
 import youtube_downloadVideo from "./scripts/youtube_downloadVideo.js";
 import search_paperWhere from "./scripts/search_paperWhere.js";
+import { localStorage } from "./utils.js";
+import viewCookies from "./scripts/viewCookies.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 
@@ -98,7 +100,15 @@ const BADGES = {
   },
 };
 
-const tabs = [
+const getRecently = async () => await localStorage.get("recently", []);
+
+export const defaultTabID = CATEGORY.search.id;
+
+export const tabs = [
+  {
+    ...CATEGORY.recently,
+    scripts: await getRecently(),
+  },
   {
     ...CATEGORY.search,
     scripts: [
@@ -201,6 +211,7 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      addBadge(viewCookies, BADGES.new),
       addBadge(removeCookies, BADGES.hot),
       enableTextSelection,
       reEnableContextMenu,
@@ -381,7 +392,3 @@ const tabs = [
     ],
   },
 ];
-
-console.log(tabs);
-
-export { tabs };

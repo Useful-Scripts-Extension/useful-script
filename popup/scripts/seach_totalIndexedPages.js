@@ -1,7 +1,7 @@
 export default {
   name: {
     en: "Check total indexed pages",
-    vi: "Xem các trang con được google quét",
+    vi: "Xem các pages được google quét",
   },
   description: {
     en: "Know how many pages of current website is indexed in Google",

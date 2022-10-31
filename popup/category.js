@@ -1,4 +1,9 @@
 export const CATEGORY = {
+  recently: {
+    id: "recently",
+    name: { en: "Recently", vi: "Gần đây" },
+    description: { en: "", vi: "" },
+  },
   search: {
     id: "search",
     name: { en: "Search", vi: "Tìm kiếm" },
