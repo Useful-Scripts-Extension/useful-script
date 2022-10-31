@@ -1,7 +1,12 @@
 export const CATEGORY = {
+  search: {
+    id: "search",
+    name: { en: "Search", vi: "Tìm kiếm" },
+    description: { en: "", vi: "" },
+  },
   facebook: {
     id: "facebook",
-    name: { vi: "Facebook", en: "Facebook" },
+    name: { en: "Facebook", vi: "Facebook" },
     description: {
       en: "Facebook script tools",
       vi: "Scripts hay cho facebook",
@@ -55,11 +60,6 @@ export const CATEGORY = {
   unlock: {
     id: "unlock",
     name: { en: "Unlock", vi: "Mở khoá" },
-    description: { en: "", vi: "" },
-  },
-  table: {
-    id: "table",
-    name: { en: "Table", vi: "Table" },
     description: { en: "", vi: "" },
   },
   webUI: {
