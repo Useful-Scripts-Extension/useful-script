@@ -1,71 +1,69 @@
 import { CATEGORY } from "./category.js";
-import {
-  toggleLightFB,
-  getTokenBusinessFB,
-  getTokenFacebook,
-  getTokenMFacebook,
-  getUidFB,
-  getPageIdFB,
-  getGroupIdFB,
-  getAlbumIdFB,
-  getTimelineAlbumIdFB,
-  getAllVideoIdFB,
-  getAllAlbumIdFB,
-  getUidFromUrlFB,
-  getAllUidFromFBSearch,
-  getAllUidFromFriendsPageFB,
-  getAllUidOfGroupMembersFB,
-  getAvatarFromUidFB,
-  downloadCurrentVideoFB,
-  downloadAlbumMediaFB,
-  getTokenInsta,
-  getUidInsta,
-  getAllUserMediaInsta,
-  getAllImagesInNewFeedInsta,
-  getAllImagesInUserProfileInsta,
-  pictureInPicture,
-  bypassYoutube18,
-  toggleLightYoutube,
-  downloadVideo,
-  goToFirstCommit,
-  github1s,
-  enableDownloadVideoDoutube,
-  downloadWatchingStoryDoutube,
-  downloadWatchingVideoDoutube,
-  getAllVideoInUserProfileDoutube,
-  darkModePDF,
-  webToPDF,
-  webToQRCode,
-  textToQRCode,
-  scrollToVeryEndAuto,
-  passwordGenerator,
-  bugMeNotPassword,
-  viewHiddenPassword,
-  enableTextSelection,
-  reEnableContextMenu,
-  removeCookies,
-  checkWebDie,
-  addSortTable,
-  addNumberColumn,
-  swapRowAndColumn,
-  toggleEditPage,
-  whatFont,
-  removeColours,
-  removeStylesheet,
-  removeImages,
-  removeBloat,
-  internalOrExternalLink,
-  getWindowSize,
-  letItSnow,
-  shortenURL,
-  listAllImagesInWeb,
-  viewScriptsUsed,
-  viewStylesUsed,
-  viewPartialSource,
-  openWaybackUrl,
-  runStatJs,
-  performanceAnalyzer,
-} from "./scripts.js";
+import fb_toggleLight from "./scripts/fb_toggleLight.js";
+import fb_getTokenBusiness from "./scripts/fb_getTokenBusiness.js";
+import fb_getTokenFacebook from "./scripts/fb_getTokenFacebook.js";
+import fb_getTokenMFacebook from "./scripts/fb_getTokenMFacebook.js";
+import fb_getUid from "./scripts/fb_getUid.js";
+import fb_getPageId from "./scripts/fb_getPageId.js";
+import fb_getGroupId from "./scripts/fb_getGroupId.js";
+import fb_getAlbumId from "./scripts/fb_getAlbumId.js";
+import fb_getTimelineAlbumId from "./scripts/fb_getTimelineAlbumId.js";
+import fb_getAllVideoId from "./scripts/fb_getAllVideoId.js";
+import fb_getAllAlbumId from "./scripts/fb_getAllAlbumId.js";
+import fb_getUidFromUrl from "./scripts/fb_getUidFromUrl.js";
+import fb_getAllUidFromFbSearch from "./scripts/fb_getAllUidFromFbSearch.js";
+import fb_getAllUidFromFriendsPage from "./scripts/fb_getAllUidFromFriendsPage.js";
+import fb_getAllUidOfGroupMembers from "./scripts/fb_getAllUidOfGroupMembers.js";
+import downloadVideo from "./scripts/downloadVideo.js";
+import fb_getAvatarFromUid from "./scripts/fb_getAvatarFromUid.js";
+import fb_downloadCurrentVideo from "./scripts/fb_downloadCurrentVideo.js";
+import fb_downloadAlbumMedia from "./scripts/fb_downloadAlbumMedia.js";
+import insta_getToken from "./scripts/insta_getToken.js";
+import insta_getUid from "./scripts/insta_getUid.js";
+import insta_getAllUserMedia from "./scripts/insta_getAllUserMedia.js";
+import insta_getAllImagesInNewFeed from "./scripts/insta_getAllImagesInNewFeed.js";
+import insta_getAllImagesInUserProfile from "./scripts/insta_getAllImagesInUserProfile.js";
+import pictureInPicture from "./scripts/pictureInPicture.js";
+import youtube_toggleLight from "./scripts/youtube_toggleLight.js";
+import youtube_bypass18 from "./scripts/youtube_bypass18.js";
+import github_goToFirstCommit from "./scripts/github_goToFirstCommit.js";
+import github1s from "./scripts/github1s.js";
+import doutube_enableDownloadVideo from "./scripts/doutube_enableDownloadVideo.js";
+import doutube_downloadWatchingVideo from "./scripts/doutube_downloadWatchingVideo.js";
+import doutube_downloadWatchingStory from "./scripts/doutube_downloadWatchingStory.js";
+import doutube_getAllVideoInUserProfile from "./scripts/doutube_getAllVideoInUserProfile.js";
+import darkModePDF from "./scripts/darkModePDF.js";
+import webToPDF from "./scripts/webToPDF.js";
+import webToQRCode from "./scripts/webToQRCode.js";
+import textToQRCode from "./scripts/textToQRCode.js";
+import scrollToVeryEnd from "./scripts/scrollToVeryEnd.js";
+import passwordGenerator from "./scripts/passwordGenerator.js";
+import bugMeNot from "./scripts/bugMeNot.js";
+import viewHiddenPassword from "./scripts/viewHiddenPassword.js";
+import checkWebDie from "./scripts/checkWebDie.js";
+import removeCookies from "./scripts/removeCookies.js";
+import enableTextSelection from "./scripts/enableTextSelection.js";
+import reEnableContextMenu from "./scripts/reEnableContextMenu.js";
+import table_addSortTable from "./scripts/table_addSortTable.js";
+import table_addNumberColumn from "./scripts/table_addNumberColumn.js";
+import table_swapRowAndColumn from "./scripts/table_swapRowAndColumn.js";
+import toggleEditPage from "./scripts/toggleEditPage.js";
+import whatFont from "./scripts/whatFont.js";
+import performanceAnalyzer from "./scripts/performanceAnalyzer.js";
+import removeColours from "./scripts/removeColours.js";
+import removeStylesheet from "./scripts/removeStylesheet.js";
+import removeImages from "./scripts/removeImages.js";
+import removeBloat from "./scripts/removeBloat.js";
+import internalOrExternalLink from "./scripts/internalOrExternalLink.js";
+import getWindowSize from "./scripts/getWindowSize.js";
+import letItSnow from "./scripts/letItSnow.js";
+import shortenURL from "./scripts/shortenURL.js";
+import listAllImagesInWeb from "./scripts/listAllImagesInWeb.js";
+import viewScriptsUsed from "./scripts/viewScriptsUsed.js";
+import viewStylesUsed from "./scripts/viewStylesUsed.js";
+import viewPartialSource from "./scripts/viewPartialSource.js";
+import openWaybackUrl from "./scripts/openWaybackUrl.js";
+import runStatJs from "./scripts/runStatJs.js";
 
 const addBadge = (script, ...badges) => ({ ...script, badges: badges });
 
@@ -97,47 +95,47 @@ const tabs = [
     ...CATEGORY.facebook,
     scripts: [
       { name: { en: "--- UI ---", vi: "--- Giao diện ---" } },
-      addBadge(toggleLightFB, BADGES.new),
+      addBadge(fb_toggleLight, BADGES.new),
       { name: { en: "--- Access Token ---", vi: "--- Access Token ---" } },
-      getTokenBusinessFB,
-      getTokenFacebook,
-      getTokenMFacebook,
+      fb_getTokenBusiness,
+      fb_getTokenFacebook,
+      fb_getTokenMFacebook,
       { name: { en: "--- Get ID ---", vi: "--- Lấy ID ---" } },
-      addBadge(getUidFB, BADGES.hot),
-      addBadge(getPageIdFB, BADGES.hot),
-      addBadge(getGroupIdFB, BADGES.hot),
-      addBadge(getAlbumIdFB, BADGES.hot),
-      addBadge(getTimelineAlbumIdFB, BADGES.hot),
-      getAllVideoIdFB,
-      getAllAlbumIdFB,
-      addBadge(getUidFromUrlFB, BADGES.hot),
-      getAllUidFromFBSearch,
-      getAllUidFromFriendsPageFB,
-      getAllUidOfGroupMembersFB,
+      addBadge(fb_getUid, BADGES.hot),
+      addBadge(fb_getPageId, BADGES.hot),
+      addBadge(fb_getGroupId, BADGES.hot),
+      addBadge(fb_getAlbumId, BADGES.hot),
+      addBadge(fb_getTimelineAlbumId, BADGES.hot),
+      fb_getAllVideoId,
+      fb_getAllAlbumId,
+      addBadge(fb_getUidFromUrl, BADGES.hot),
+      fb_getAllUidFromFbSearch,
+      fb_getAllUidFromFriendsPage,
+      fb_getAllUidOfGroupMembers,
       { name: { en: "--- Download ---", vi: "--- Tải xuống ---" } },
       addBadge(downloadVideo, BADGES.new),
-      getAvatarFromUidFB,
-      addBadge(downloadCurrentVideoFB, BADGES.beta),
-      addBadge(downloadAlbumMediaFB, BADGES.beta),
+      fb_getAvatarFromUid,
+      addBadge(fb_downloadCurrentVideo, BADGES.beta),
+      addBadge(fb_downloadAlbumMedia, BADGES.beta),
     ],
   },
   {
     ...CATEGORY.instagram,
     scripts: [
-      getTokenInsta,
-      addBadge(getUidInsta, BADGES.hot),
+      insta_getToken,
+      addBadge(insta_getUid, BADGES.hot),
       addBadge(downloadVideo, BADGES.new),
-      addBadge(getAllUserMediaInsta, BADGES.beta),
-      addBadge(getAllImagesInNewFeedInsta, BADGES.beta),
-      addBadge(getAllImagesInUserProfileInsta, BADGES.beta),
+      addBadge(insta_getAllUserMedia, BADGES.beta),
+      addBadge(insta_getAllImagesInNewFeed, BADGES.beta),
+      addBadge(insta_getAllImagesInUserProfile, BADGES.beta),
     ],
   },
   {
     ...CATEGORY.youtube,
     scripts: [
       addBadge(pictureInPicture, BADGES.new),
-      addBadge(toggleLightYoutube, BADGES.hot),
-      bypassYoutube18,
+      addBadge(youtube_toggleLight, BADGES.hot),
+      youtube_bypass18,
     ],
   },
   {
@@ -146,15 +144,15 @@ const tabs = [
   },
   {
     ...CATEGORY.github,
-    scripts: [addBadge(goToFirstCommit, BADGES.hot), github1s],
+    scripts: [addBadge(github_goToFirstCommit, BADGES.hot), github1s],
   },
   {
     ...CATEGORY.doutube,
     scripts: [
-      addBadge(enableDownloadVideoDoutube, BADGES.hot),
-      downloadWatchingVideoDoutube,
-      downloadWatchingStoryDoutube,
-      getAllVideoInUserProfileDoutube,
+      addBadge(doutube_enableDownloadVideo, BADGES.hot),
+      doutube_downloadWatchingVideo,
+      doutube_downloadWatchingStory,
+      doutube_getAllVideoInUserProfile,
     ],
   },
   {
@@ -167,13 +165,13 @@ const tabs = [
   },
   {
     ...CATEGORY.automation,
-    scripts: [scrollToVeryEndAuto],
+    scripts: [scrollToVeryEnd],
   },
   {
     ...CATEGORY.password,
     scripts: [
       addBadge(passwordGenerator, BADGES.hot),
-      bugMeNotPassword,
+      bugMeNot,
       viewHiddenPassword,
     ],
   },
@@ -188,7 +186,11 @@ const tabs = [
   },
   {
     ...CATEGORY.table,
-    scripts: [addSortTable, addNumberColumn, swapRowAndColumn],
+    scripts: [
+      table_addSortTable,
+      table_addNumberColumn,
+      table_swapRowAndColumn,
+    ],
   },
   {
     ...CATEGORY.webUI,

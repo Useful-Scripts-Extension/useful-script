@@ -1,5 +1,5 @@
 import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { tabs } from "./scripts/tabs.js";
+import { tabs } from "./tabs.js";
 import {
   localStorage,
   runScriptFileInCurrentTab,
