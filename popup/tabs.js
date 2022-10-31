@@ -1,5 +1,5 @@
 import { scriptsWithId as scripts } from "./scriptsWithId.js";
-import { CATEGORY } from "./category.js";
+import { CATEGORY } from "../category.js";
 import { recentScripts } from "./utils.js";
 import { addBadge, BADGES } from "./badge.js";
 
