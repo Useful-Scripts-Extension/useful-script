@@ -7,28 +7,7 @@
     "default_popup": "./popup/popup.html",
     "default_icon": "./assets/hello_extensions.png"
   },
-  "permissions": [
-    "tabs",
-    "scripting",
-    "storage",
-    "webRequest"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "background": {
-    "service_worker": "./background.js",
-    "type": "module"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "./content.js"
-      ]
-    }
-  ],
+  "permissions": ["tabs", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
   "options_page": "./options/options.html"
 }

@@ -8,8 +8,6 @@ export default {
     vi: "Dùng được cho gần như tất cả trang web",
   },
 
-  backgroundFunc: function () {},
-
   // Source code extracted from https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil
   func: function () {
     function scanPage() {

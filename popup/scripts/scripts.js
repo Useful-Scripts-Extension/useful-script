@@ -62,3 +62,4 @@ export { default as viewStylesUsed } from "./more/viewStylesUsed.js";
 export { default as viewPartialSource } from "./more/viewPartialSource.js";
 export { default as openWaybackUrl } from "./more/openWaybackUrl.js";
 export { default as runStatJs } from "./more/runStatJs.js";
+export { default as performanceAnalyzer } from "./webUI/performanceAnalyzer.js";

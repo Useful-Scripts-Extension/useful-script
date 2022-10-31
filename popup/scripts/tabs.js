@@ -64,21 +64,16 @@ import {
   viewPartialSource,
   openWaybackUrl,
   runStatJs,
+  performanceAnalyzer,
 } from "./scripts.js";
 
-const addBadge = (
-  script,
-  { text, color = "#fff", backgroundColor = "#f00" }
-) => ({
-  ...script,
-  badge: { text, color, backgroundColor },
-});
+const addBadge = (script, ...badges) => ({ ...script, badges: badges });
 
 const BADGES = {
   hot: {
     text: { en: "hot", vi: "hot" },
     color: "#fff",
-    backgroundColor: "#f00",
+    backgroundColor: "#d40",
   },
   beta: {
     text: { en: "beta", vi: "beta" },
@@ -89,6 +84,11 @@ const BADGES = {
     text: { en: "new", vi: "mới" },
     color: "#fff",
     backgroundColor: "#44d",
+  },
+  unstable: {
+    text: { en: "unstable", vi: "chưa ổn định" },
+    color: "#fff",
+    backgroundColor: "#a77",
   },
 };
 
@@ -195,6 +195,7 @@ const tabs = [
     scripts: [
       addBadge(toggleEditPage, BADGES.hot),
       addBadge(whatFont, BADGES.hot),
+      addBadge(performanceAnalyzer, BADGES.new, BADGES.unstable),
       removeColours,
       removeStylesheet,
       removeImages,
