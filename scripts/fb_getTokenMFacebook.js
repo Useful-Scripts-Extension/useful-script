@@ -1,18 +1,16 @@
 export default {
   name: {
-    en: "Get Token (m.facebook.com)",
-    vi: "Lấy token (m.facebook.com)",
+    en: "Get fb Token (m.facebook.com)",
+    vi: "Lấy fb token (m.facebook.com)",
   },
   description: {
     en: "Get facebook access token from m.facebook.com",
     vi: "Lấy facebook access token từ trang m.facebook.com",
   },
+  blackList: [],
+  whiteList: ["m.facebook.com"],
+
   func: function () {
-    if (window.location.host !== "m.facebook.com") {
-      alert("Bookmark này chỉ hoạt động trên trang m.facebook.com");
-      window.open("https://m.facebook.com");
-      return;
-    }
     console.log("Đang lấy token ...");
     fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
       .then((response) => response.text())
@@ -34,4 +32,3 @@ export default {
       });
   },
 };
-

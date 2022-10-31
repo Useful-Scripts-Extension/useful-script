@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get avatar from user id",
-    vi: "Tải avatar từ user id",
+    en: "Get avatar from fb user id",
+    vi: "Tải avatar từ fb user id",
   },
   description: {
     en: "Get avatar from list user ids",
     vi: "Tải danh sách avatar từ danh sách user id",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
+
   func: async function () {
     let accessToken = prompt("Nhập facebook access token: ");
     if (!accessToken) return;

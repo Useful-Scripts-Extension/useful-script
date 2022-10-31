@@ -69,8 +69,8 @@ export const recentScripts = {
     return (await localStorage.get(recentScripts.key, []))
       .filter((savedScript) => savedScript.id in scriptsWithId)
       .map((savedScript) => ({
-        ...savedScript,
-        func: scriptsWithId[savedScript.id],
+        ...scriptsWithId[savedScript.id],
+        badges: savedScript.badges,
       }));
   },
 };

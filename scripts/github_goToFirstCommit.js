@@ -4,9 +4,12 @@ export default {
     vi: "Đi tới commit đầu tiên",
   },
   description: {
-    en: "Go to first commit of repo",
-    vi: "Đi tới commit đầu tiên của repo",
+    en: "Go to first commit of github repo",
+    vi: "Đi tới commit đầu tiên của repo github",
   },
+
+  blackList: [],
+  whiteList: ["github.com"],
 
   // Source: https://github.com/FarhadG/init
   func: function () {

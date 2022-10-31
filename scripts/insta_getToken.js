@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get Token",
-    vi: "Lấy token",
+    en: "Get token insta",
+    vi: "Lấy token insta",
   },
   description: {
     en: "Get instagram access token",
     vi: "Lấy instagram access token",
   },
+  blackList: [],
+  whiteList: ["www.instagram.com"],
+
   func: function () {
     try {
       const encoded = document.cookie
@@ -27,4 +30,3 @@ export default {
     }
   },
 };
-

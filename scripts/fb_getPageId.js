@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get Page ID",
-    vi: "Lấy Page ID",
+    en: "Get fb Page ID",
+    vi: "Lấy fb Page ID",
   },
   description: {
     en: "Get id of page in current website",
     vi: "Lấy id của page trong trang web hiện tại",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
   func: function () {
@@ -28,4 +30,3 @@ export default {
     );
   },
 };
-

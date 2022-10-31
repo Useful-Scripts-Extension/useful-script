@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get User ID",
-    vi: "Lấy User ID",
+    en: "Get fb User ID",
+    vi: "Lấy fb User ID",
   },
   description: {
     en: "Get id of user in current website",
     vi: "Lấy id của user trong trang web hiện tại",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
   func: function () {
@@ -39,4 +41,3 @@ export default {
     );
   },
 };
-

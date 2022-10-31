@@ -25,6 +25,41 @@ async function initLanguage() {
   };
 }
 
+function runScript(script) {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    let url = tabs[0].url;
+    let hostname = new URL(url).hostname;
+
+    let hasWhiteList = script.whiteList?.length > 0;
+    let hasBlackList = script.blackList?.length > 0;
+    let inWhiteList = script.whiteList?.findIndex((_) => _ === hostname) >= 0;
+    let inBlackList = script.blackList?.findIndex((_) => _ === hostname) >= 0;
+
+    let willRun =
+      (!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList);
+
+    if (willRun) {
+      recentScripts.add(script);
+      runScriptInCurrentTab(script.func);
+    } else {
+      alert(
+        t({
+          en:
+            "Script is not supported in current website: \n" +
+            `+ Only run in: ${script.whiteList?.join(", ") || "<empty>"}\n` +
+            `+ Not run in: ${script.blackList?.join(", ") || "empty"}`,
+          vi:
+            "Script không hỗ trợ website hiện tại: \n" +
+            `+ Chỉ chạy tại:  ${script.whiteList?.join(", ") || "<rỗng>"}\n` +
+            `+ Không chạy tại:  ${script.blackList?.join(", ") || "<rỗng>"}`,
+        })
+      );
+    }
+  });
+}
+
 async function createTabs() {
   // clear UI
   tabDiv.innerHTML = "";
@@ -39,6 +74,10 @@ async function createTabs() {
     tabBtn.type = "button";
     tabBtn.setAttribute("content-id", tab.id);
     tabBtn.onclick = () => openTab(tab.id);
+    if (tab.style && typeof tab.style === "object")
+      Object.entries(tab.style).forEach(([key, value]) => {
+        tabBtn.style[key] = value;
+      });
 
     // create tab content
     const contentContainer = document.createElement("div");
@@ -70,11 +109,7 @@ async function createTabs() {
           button.className = "tooltip";
 
           if (script.func && typeof script.func === "function") {
-            console.log(script);
-            button.onclick = () => {
-              recentScripts.add(script);
-              runScriptInCurrentTab(script.func);
-            };
+            button.onclick = () => runScript(script);
           } else if (script.link && typeof script.link === "string") {
             button.onclick = () => window.open(script.link);
           } else {

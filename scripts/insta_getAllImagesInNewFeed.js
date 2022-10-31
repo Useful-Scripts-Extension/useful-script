@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get all images in newfeed",
-    vi: "Tải về tất cả ảnh newfeed",
+    en: "Get all images in insta newfeed",
+    vi: "Tải về tất cả ảnh insta newfeed",
   },
   description: {
     en: "Get all images in newfeed",
     vi: "Tải về tất cả ảnh đang có trên newfeed",
   },
+  blackList: [],
+  whiteList: ["www.instagram.com"],
+
   func: async function () {
     const getAllImgTag = () =>
       Array.from(document.querySelectorAll("img[sizes*=px]")) || [];

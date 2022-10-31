@@ -7,6 +7,7 @@ export default {
     en: "Search in google while limiting the search result to currently opened webpage.",
     vi: "Sử dụng google site search",
   },
+
   func: function () {
     let q =
       "" +

@@ -7,6 +7,9 @@ export default {
     en: "Download video you are watching",
     vi: "Tải video youtube đang xem",
   },
+  blackList: [],
+  whiteList: ["www.youtube.com"],
+
   func: function () {
     var regeX = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&\?]*).*/,
       getYTURL = location.href,

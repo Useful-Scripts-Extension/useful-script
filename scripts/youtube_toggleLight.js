@@ -7,6 +7,9 @@ export default {
     en: "Toggle light on/off to focus to video",
     vi: "Tắt/Mở đèn để tập trung xem video",
   },
+  blackList: [],
+  whiteList: ["www.youtube.com"],
+
   func: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {
       let doms = document.querySelectorAll(_);

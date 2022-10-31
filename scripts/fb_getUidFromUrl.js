@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get User ID from url",
-    vi: "Lấy User ID từ URL",
+    en: "Get fb User ID from url",
+    vi: "Lấy fb User ID từ URL",
   },
   description: {
     en: "Get id of user from entered url",
     vi: "Lấy id của user từ URL truyền vào",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
   func: function () {

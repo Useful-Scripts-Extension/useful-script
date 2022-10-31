@@ -1,18 +1,16 @@
 export default {
   name: {
-    en: "Get Token (www.facebook.com)",
-    vi: "Lấy Token (www.facebook.com)",
+    en: "Get fb Token (www.facebook.com)",
+    vi: "Lấy fb Token (www.facebook.com)",
   },
   description: {
     en: "Get facebook access token from www.facebook.com",
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
+
   func: function () {
-    if (window.location.host !== "www.facebook.com") {
-      alert("Bookmark này chỉ dùng được trong trang www.facebook.com");
-      window.open("https://www.facebook.com");
-      return;
-    }
     var uid = /(?<=c_user=)(\d+)/.exec(document.cookie)[0],
       dtsg =
         require("DTSGInitialData").token ||

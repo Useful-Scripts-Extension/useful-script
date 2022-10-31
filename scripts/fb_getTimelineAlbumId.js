@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get timeline Album ID of page",
-    vi: "Tìm timeline album id của page",
+    en: "Get timeline Album ID of fb page",
+    vi: "Tìm timeline album id của fb page",
   },
   description: {
     en: "Get timeline album id of page in current website",
     vi: "Tìm timeline album id của page hiện tại",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy timeline album id của page - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/profile.php?id=100057998562930
   func: function () {

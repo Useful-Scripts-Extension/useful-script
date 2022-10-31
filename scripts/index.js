@@ -65,7 +65,7 @@ export { default as openWaybackUrl } from "./openWaybackUrl.js";
 export { default as runStatJs } from "./runStatJs.js";
 export { default as search_googleSite } from "./search_googleSite.js";
 export { default as viewWebsiteAnalyticsOnline } from "./viewWebsiteAnalyticsOnline.js";
-export { default as seach_totalIndexedPages } from "./seach_totalIndexedPages.js";
+export { default as search_totalIndexedPages } from "./search_totalIndexedPages.js";
 export { default as whatWebsiteStack } from "./whatWebsiteStack.js";
 export { default as youtube_downloadVideo } from "./youtube_downloadVideo.js";
 export { default as search_paperWhere } from "./search_paperWhere.js";
