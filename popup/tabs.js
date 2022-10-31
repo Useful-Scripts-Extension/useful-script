@@ -1,6 +1,6 @@
 import { scriptsWithId as scripts } from "./scriptsWithId.js";
 import { CATEGORY } from "../category.js";
-import { recentScripts } from "./utils.js";
+import { getAvailableScripts, recentScripts } from "./utils.js";
 import { addBadge, BADGES } from "./badge.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
@@ -9,7 +9,11 @@ export const DEFAULT_TABID = CATEGORY.search.id;
 export const tabs = [
   {
     ...CATEGORY.recently,
-    scripts: [...(await recentScripts.get())],
+    scripts: await recentScripts.get(),
+  },
+  {
+    ...CATEGORY.available,
+    scripts: await getAvailableScripts(),
   },
   {
     ...CATEGORY.search,
