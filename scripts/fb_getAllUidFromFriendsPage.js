@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get all User ID from Friends page",
-    vi: "Lấy tất cả user id từ danh sách bạn bè",
+    en: "Get all fb User ID from Friends page",
+    vi: "Lấy tất cả fb user id từ danh sách bạn bè",
   },
   description: {
     en: "Get id of all user from friends page",
     vi: "Lấy tất cả user ID từ trang danh sách bạn bè",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy tất cả uid từ trang facebook search bạn bè
   // Ví dụ: https://www.facebook.com/search/people/?q=*a&epa=FILTERS&filters=eyJmcmllbmRzIjoie1wibmFtZVwiOlwidXNlcnNfZnJpZW5kc19vZl9wZW9wbGVcIixcImFyZ3NcIjpcIjEwMDA2NDI2NzYzMjI0MlwifSJ9

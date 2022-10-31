@@ -1,5 +1,11 @@
 export const CATEGORY = {
-  recently: { id: "recently", name: { en: "Recently", vi: "Gần đây" } },
+  recently: {
+    id: "recently",
+    style: {
+      textDecoration: "underline",
+    },
+    name: { en: "Recently", vi: "Gần đây" },
+  },
   search: { id: "search", name: { en: "Search", vi: "Tìm kiếm" } },
   download: { id: "download", name: { en: "Download", vi: "Tải xuống" } },
   facebook: { id: "facebook", name: { en: "Facebook", vi: "Facebook" } },
@@ -18,5 +24,11 @@ export const CATEGORY = {
   unlock: { id: "unlock", name: { en: "Unlock", vi: "Mở khoá" } },
   webUI: { id: "webui", name: { en: "Web UI", vi: "Giao diện" } },
   more: { id: "more", name: { en: "More...", vi: "Khác..." } },
-  recommend: { id: "recommend", name: { en: "Recommend", vi: "Khuyên dùng" } },
+  recommend: {
+    id: "recommend",
+    style: {
+      textDecoration: "underline",
+    },
+    name: { en: "Recommend", vi: "Khuyên dùng" },
+  },
 };

@@ -7,6 +7,8 @@ export default {
     en: "Enable download button for all video",
     vi: "Bật chức năng download cho mọi video trong trang",
   },
+  blackList: [],
+  whiteList: [],
   func: function () {
     Array.from(document.querySelectorAll("video")).map(
       (_) => (_.attributes.controlslist.value = "nofullscreen noremoteplayback")

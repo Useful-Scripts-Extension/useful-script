@@ -7,6 +7,8 @@ export default {
     en: "Download video that you are watching",
     vi: "Tải video bạn đang xem",
   },
+  blackList: [],
+  whiteList: [],
   func: function () {
     const isElementInViewport = (el) => {
       const rect = el.getBoundingClientRect();

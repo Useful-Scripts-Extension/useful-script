@@ -7,5 +7,7 @@ export default {
     en: "",
     vi: "",
   },
+  blackList: [],
+  whiteList: [],
   func: function () {},
 };

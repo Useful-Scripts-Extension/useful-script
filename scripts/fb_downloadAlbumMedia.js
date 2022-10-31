@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Download album media links",
-    vi: "Tải link ảnh/video từ album",
+    en: "Download fb album media links",
+    vi: "Tải link ảnh/video từ album fb",
   },
   description: {
     en: "Download photo/video links from album",
     vi: "Tải về danh sách link ảnh/video",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
   func: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;

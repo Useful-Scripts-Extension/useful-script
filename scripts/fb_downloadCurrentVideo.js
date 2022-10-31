@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get download link of current video",
-    vi: "Tải video đang xem",
+    en: "Get download link of current fb video",
+    vi: "Tải video fb đang xem",
   },
   description: {
     en: "Get download link of current video",
     vi: "Lấy link để tải video đang xem",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Tải video đang xem - khi đang trong trang web video, dạng: https://www.facebook.com/watch?v=254222479732213
   // Nếu bạn muốn tải HD thì dùng snapsave: https://snapsave.app/vn

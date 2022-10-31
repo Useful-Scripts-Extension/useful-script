@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get all images in user profile",
-    vi: "Tải tất cả ảnh user profile",
+    en: "Get all images in insta user profile",
+    vi: "Tải tất cả ảnh insta user profile",
   },
   description: {
     en: "Get all images in user profile",
     vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
   },
+  blackList: [],
+  whiteList: ["www.instagram.com"],
+
   func: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;

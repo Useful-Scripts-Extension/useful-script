@@ -20,7 +20,7 @@ export const tabs = [
       addBadge(scripts.search_googleSite, BADGES.new),
       addBadge(scripts.search_paperWhere, BADGES.new),
       addBadge(scripts.viewWebsiteAnalyticsOnline, BADGES.new),
-      addBadge(scripts.seach_totalIndexedPages, BADGES.new),
+      addBadge(scripts.search_totalIndexedPages, BADGES.new),
       scripts.checkWebDie,
       scripts.openWaybackUrl,
     ],

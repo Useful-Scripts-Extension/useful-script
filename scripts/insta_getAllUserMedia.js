@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get all media of user",
-    vi: "Tải về tất cả media của user",
+    en: "Get all media of insta user",
+    vi: "Tải về tất cả media của insta user",
   },
   description: {
     en: "Get all media of instagram user",
     vi: "Tải về tất cả ảnh/video của người dùng insta",
   },
+  blackList: [],
+  whiteList: ["www.instagram.com"],
+
   func: async function () {
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;

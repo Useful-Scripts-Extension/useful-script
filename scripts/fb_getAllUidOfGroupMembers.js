@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get all User ID from group",
-    vi: "Lấy tất cả user ID từ group",
+    en: "Get all fb User ID from group",
+    vi: "Lấy tất cả fb user ID từ group",
   },
   description: {
     en: "Get id of all user from group members",
     vi: "Lấy id của tất cả user từ group",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy tất cả id của member trong group
   // source: https://gist.github.com/thinhbuzz/d8ba04c66f69dc78265b9a9ce5a118c0?fbclid=IwAR37QPDL1zlGWIv_pPq4UydYbFcQKlw7Dio-dP-jtztSJODGPD1RoIGFzZU#file-group-uuid-js-L1

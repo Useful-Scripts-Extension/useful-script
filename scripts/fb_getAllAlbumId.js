@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get all Album ID",
-    vi: "Lấy tất cả album id",
+    en: "Get all fb Album ID",
+    vi: "Lấy tất cả fb album id",
   },
   description: {
     en: "Get all id of album in current website",
     vi: "Lấy tất cả album id có trong trang web",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
   func: function () {

@@ -5,7 +5,7 @@ export default {
   },
   description: {
     en: "Know how many pages of current website is indexed in Google",
-    vi: "Biết có bao nhiêu trang con của website hiện tại đã được quét bởi Google",
+    vi: "Biết có bao nhiêu trang con của website hiện tại đã được quét bởi Google",
   },
   func: function () {
     window.open(

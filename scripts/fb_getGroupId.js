@@ -1,12 +1,14 @@
 export default {
   name: {
-    en: "Get Group ID",
-    vi: "Lấy Group ID",
+    en: "Get fb Group ID",
+    vi: "Lấy fb Group ID",
   },
   description: {
     en: "Get id of group in current website",
     vi: "Lấy id của group trong trang web hiện tại",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
 
   // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls
   func: async function () {

@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Hide side UI",
-    vi: "Ẩn giao diện 2 bên",
+    en: "Hide fb side UI",
+    vi: "Ẩn giao diện 2 bên fb",
   },
   description: {
     en: "Hide Navigator bar and complementary bar",
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
+
   func: function () {
     [
       "div[role='navigation'].x9f619.x1ja2u2z.xnp8db0.x112wk31",

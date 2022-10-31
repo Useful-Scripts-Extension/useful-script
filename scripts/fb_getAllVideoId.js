@@ -1,12 +1,15 @@
 export default {
   name: {
-    en: "Get all Video ID",
-    vi: "Tìm tất cả video id",
+    en: "Get all fb Video ID",
+    vi: "Tìm tất cả fb video id",
   },
   description: {
     en: "Get id of all video in current website",
     vi: "Tìm tất cả video id trong trang web",
   },
+  blackList: [],
+  whiteList: ["www.facebook.com"],
+
   func: function () {
     const list_a = document.querySelectorAll("a");
     const list_id = [];
@@ -28,4 +31,3 @@ export default {
       );
   },
 };
-
