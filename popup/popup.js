@@ -81,16 +81,16 @@ async function createTabs() {
             button.onclick = () => alert("empty script");
           }
 
-          if (script.badge?.text) {
-            const { text, color, backgroundColor } = script.badge;
-            const badge = document.createElement("span");
-            badge.classList.add("badge");
-            badge.innerText = t(text);
-            badge.style.color = color;
-            badge.style.backgroundColor = backgroundColor;
+          script.badges?.map((badge) => {
+            const { text, color, backgroundColor } = badge;
+            const badgeSpan = document.createElement("span");
+            badgeSpan.classList.add("badge");
+            badgeSpan.innerText = t(text);
+            badgeSpan.style.color = color;
+            badgeSpan.style.backgroundColor = backgroundColor;
 
-            button.appendChild(badge);
-          }
+            button.appendChild(badgeSpan);
+          });
 
           if (script.icon && typeof script.icon === "string") {
             const icon = document.createElement("img");

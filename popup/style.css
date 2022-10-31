@@ -37,9 +37,7 @@ a:hover {
     margin: 5px 0;
 }
 
-.content {
-
-}
+.content {}
 
 .content button {
     border: none;
@@ -75,10 +73,16 @@ a:hover {
 
 .content button .badge {
     padding: 3px 5px;
-    margin-right: 5px;
-    margin-left: -10px;
     border-radius: 5px;
     transform: rotate(-30deg);
+}
+
+.content button .badge:first-child {
+    margin-left: -10px;
+}
+
+.content button .badge:last-child {
+    margin-right: 5px;
 }
 
 /* Style the tab */
