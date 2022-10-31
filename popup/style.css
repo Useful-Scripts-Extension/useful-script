@@ -180,6 +180,7 @@ a:hover {
 #update-btn {
     display: none;
     border: none;
+    border-radius: 5px;
     padding: 3px;
     color: #eee;
     background-color: #009e00;

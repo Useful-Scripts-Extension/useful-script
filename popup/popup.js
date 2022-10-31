@@ -157,6 +157,7 @@ async function checkForUpdate() {
       };
     } else {
       updateBtn.style.display = "none";
+      versionSpan.innerHTML += t({ vi: " (mới nhất)", en: " (lastest)" });
     }
   } catch (e) {
     console.warn("Check for update failed", e);

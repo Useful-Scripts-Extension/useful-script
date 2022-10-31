@@ -38,7 +38,7 @@ import webToQRCode from "./scripts/webToQRCode.js";
 import textToQRCode from "./scripts/textToQRCode.js";
 import scrollToVeryEnd from "./scripts/scrollToVeryEnd.js";
 import passwordGenerator from "./scripts/passwordGenerator.js";
-import bugMeNot from "./scripts/bugMeNot.js";
+import searchSharedAccount from "./scripts/searchSharedAccount.js";
 import viewHiddenPassword from "./scripts/viewHiddenPassword.js";
 import checkWebDie from "./scripts/checkWebDie.js";
 import removeCookies from "./scripts/removeCookies.js";
@@ -64,6 +64,11 @@ import viewStylesUsed from "./scripts/viewStylesUsed.js";
 import viewPartialSource from "./scripts/viewPartialSource.js";
 import openWaybackUrl from "./scripts/openWaybackUrl.js";
 import runStatJs from "./scripts/runStatJs.js";
+import googleSiteSearch from "./scripts/googleSiteSearch.js";
+import viewWebsiteAnalyticsOnline from "./scripts/viewWebsiteAnalyticsOnline.js";
+import checkTotalIndexedPages from "./scripts/checkTotalIndexedPages.js";
+
+const createTitle = (en, vi) => ({ name: { en, vi } });
 
 const addBadge = (script, ...badges) => ({ ...script, badges: badges });
 
@@ -92,15 +97,27 @@ const BADGES = {
 
 const tabs = [
   {
+    ...CATEGORY.search,
+    scripts: [
+      addBadge(whatFont, BADGES.hot),
+      addBadge(searchSharedAccount, BADGES.hot),
+      addBadge(googleSiteSearch, BADGES.new),
+      addBadge(viewWebsiteAnalyticsOnline, BADGES.new),
+      addBadge(checkTotalIndexedPages, BADGES.new),
+      checkWebDie,
+      openWaybackUrl,
+    ],
+  },
+  {
     ...CATEGORY.facebook,
     scripts: [
-      { name: { en: "--- UI ---", vi: "--- Giao diện ---" } },
+      createTitle("--- UI ---", "--- Giao diện ---"),
       addBadge(fb_toggleLight, BADGES.new),
-      { name: { en: "--- Access Token ---", vi: "--- Access Token ---" } },
+      createTitle("--- Access Token ---", "--- Access Token ---"),
       fb_getTokenBusiness,
       fb_getTokenFacebook,
       fb_getTokenMFacebook,
-      { name: { en: "--- Get ID ---", vi: "--- Lấy ID ---" } },
+      createTitle("--- Get ID ---", "--- Lấy ID ---"),
       addBadge(fb_getUid, BADGES.hot),
       addBadge(fb_getPageId, BADGES.hot),
       addBadge(fb_getGroupId, BADGES.hot),
@@ -112,7 +129,7 @@ const tabs = [
       fb_getAllUidFromFbSearch,
       fb_getAllUidFromFriendsPage,
       fb_getAllUidOfGroupMembers,
-      { name: { en: "--- Download ---", vi: "--- Tải xuống ---" } },
+      createTitle("--- Download ---", "--- Tải xuống ---"),
       addBadge(downloadVideo, BADGES.new),
       fb_getAvatarFromUid,
       addBadge(fb_downloadCurrentVideo, BADGES.beta),
@@ -171,37 +188,33 @@ const tabs = [
     ...CATEGORY.password,
     scripts: [
       addBadge(passwordGenerator, BADGES.hot),
-      bugMeNot,
+      addBadge(searchSharedAccount, BADGES.hot),
       viewHiddenPassword,
     ],
   },
   {
     ...CATEGORY.unlock,
     scripts: [
-      checkWebDie,
       addBadge(removeCookies, BADGES.hot),
       enableTextSelection,
       reEnableContextMenu,
     ],
   },
   {
-    ...CATEGORY.table,
-    scripts: [
-      table_addSortTable,
-      table_addNumberColumn,
-      table_swapRowAndColumn,
-    ],
-  },
-  {
     ...CATEGORY.webUI,
     scripts: [
       addBadge(toggleEditPage, BADGES.hot),
-      addBadge(whatFont, BADGES.hot),
       addBadge(performanceAnalyzer, BADGES.new, BADGES.unstable),
+      createTitle("--- Remove ---", "--- Xoá ---"),
       removeColours,
       removeStylesheet,
       removeImages,
       removeBloat,
+      createTitle("--- Table ---", "--- Table ---"),
+      table_addSortTable,
+      table_addNumberColumn,
+      table_swapRowAndColumn,
+      createTitle("--- More ---", "--- Khác ---"),
       internalOrExternalLink,
       getWindowSize,
       letItSnow,
@@ -215,7 +228,6 @@ const tabs = [
       viewScriptsUsed,
       viewStylesUsed,
       viewPartialSource,
-      openWaybackUrl,
       runStatJs,
     ],
   },
