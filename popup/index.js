@@ -1,10 +1,6 @@
 import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { defaultTabID, tabs } from "./tabs.js";
-import {
-  localStorage,
-  runScriptFileInCurrentTab,
-  runScriptInCurrentTab,
-} from "./utils.js";
+import { DEFAULT_TABID, tabs } from "./tabs.js";
+import { localStorage, recentScripts, runScriptInCurrentTab } from "./utils.js";
 import config from "../config.js";
 
 const tabDiv = document.querySelector("div.tab");
@@ -40,7 +36,6 @@ async function createTabs() {
     const tabBtn = document.createElement("button");
     tabBtn.className = "tablinks";
     tabBtn.textContent = t(tab.name);
-    tabBtn.title = t(tab.description);
     tabBtn.type = "button";
     tabBtn.setAttribute("content-id", tab.id);
     tabBtn.onclick = () => openTab(tab.id);
@@ -74,10 +69,12 @@ async function createTabs() {
           const button = document.createElement("button");
           button.className = "tooltip";
 
-          if (script.file && typeof script.file === "string") {
-            button.onclick = () => runScriptFileInCurrentTab(script.file);
-          } else if (script.func && typeof script.func === "function") {
-            button.onclick = () => runScriptInCurrentTab(script.func);
+          if (script.func && typeof script.func === "function") {
+            console.log(script);
+            button.onclick = () => {
+              recentScripts.add(script);
+              runScriptInCurrentTab(script.func);
+            };
           } else if (script.link && typeof script.link === "string") {
             button.onclick = () => window.open(script.link);
           } else {
@@ -123,7 +120,7 @@ async function createTabs() {
   }
 
   // open tab
-  let activeTab = await localStorage.get("activeTab", defaultTabID);
+  let activeTab = await localStorage.get("activeTab", DEFAULT_TABID);
   activeTab && openTab(activeTab);
 }
 
