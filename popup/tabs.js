@@ -188,7 +188,7 @@ const tabs = [
         },
         link: "https://github.com/HoangTran0410/PTTK",
       },
-      { name: { en: "--- Recommend ---", vi: "--- Khuyên dùng ---" } },
+      { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
       {
         icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
         name: { en: "J2Team Security", vi: "J2Team Security" },
@@ -208,6 +208,27 @@ const tabs = [
         link: "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb",
       },
       {
+        icon: "https://lh3.googleusercontent.com/3ZU5aHnsnQUl9ySPrGBqe5LXz_z9DK05DEfk10tpKHv5cvG19elbOr0BdW_k8GjLMFDexT2QHlDwAmW62iLVdek--Q=w128-h128-e365-rj-sc0x00ffffff",
+        name: { en: "Google translate", vi: "Google dịch" },
+        description: {
+          en: "Instant translation for all website",
+          vi: "Dịch nhanh, trực tiếp trong mọi website",
+        },
+        link: "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb",
+      },
+      {
+        icon: "https://lh3.googleusercontent.com/_l4UaD5Gwub2AwFZdomRpfMD2737y0Ow6k2sfVuWdm0fQ0iGSdEfhd9X77taeQ-0VM6Wi3HnpecLWUAI9uHq11TSktw=w128-h128-e365-rj-sc0x00ffffff",
+        name: {
+          en: "Read Aloud: Text to speech voice reader",
+          vi: "Read Aloud: Đọc cho tôi nghe",
+        },
+        description: {
+          en: "Read aloud website content, multilanguage",
+          vi: "Đọc nội dung trang web, đa ngôn ngữ",
+        },
+        link: "https://chrome.google.com/webstore/detail/read-aloud-a-text-to-spee/hdhinadidafjejdhmfkjgnolgimiaplp",
+      },
+      {
         icon: "https://lh3.googleusercontent.com/s-86QIqiZeS3NSGiw95oJAm9ExGyUat2oF3hqOu4xVypfn18HX6LYNwJUtKoSYFRtf4-qBSvBYr41ZZWPqbh5Hh-xrQ=w128-h128-e365-rj-sc0x00ffffff",
         name: {
           en: "Video Downloader professional",
@@ -218,15 +239,6 @@ const tabs = [
           vi: "Tải video từ hầu như mọi website",
         },
         link: "https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil",
-      },
-      {
-        icon: "https://lh3.googleusercontent.com/3ZU5aHnsnQUl9ySPrGBqe5LXz_z9DK05DEfk10tpKHv5cvG19elbOr0BdW_k8GjLMFDexT2QHlDwAmW62iLVdek--Q=w128-h128-e365-rj-sc0x00ffffff",
-        name: { en: "Google translate", vi: "Google dịch" },
-        description: {
-          en: "Instant translation for all website",
-          vi: "Dịch nhanh, trực tiếp trong mọi website",
-        },
-        link: "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb",
       },
       {
         icon: "https://lh3.googleusercontent.com/tGvFFAf_mkjk-mfiRipdYU_WTMCZSReAy4opGxvWJppyHzHTKy6f1NO1tSpV998-ZcKJjPOWpWbtEFLEMr0Y_SyBKA=w128-h128-e365-rj-sc0x00ffffff",
