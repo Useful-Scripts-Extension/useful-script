@@ -6,6 +6,7 @@ export const CATEGORY = {
   },
   available: {
     id: "available",
+    showCount: true,
     style: { textDecoration: "underline" },
     name: { en: "Available", vi: "Có thể dùng" },
   },
