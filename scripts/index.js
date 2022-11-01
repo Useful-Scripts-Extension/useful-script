@@ -76,7 +76,7 @@ import download_image from "./download_image.js";
 
 // inject badges
 const allScripts = {
-  fb_toggleLight,
+  fb_toggleLight: addBadge(fb_toggleLight, BADGES.new),
   fb_getTokenBusiness: addBadge(fb_getTokenBusiness, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
   fb_getTokenMFacebook,

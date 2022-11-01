@@ -6,7 +6,7 @@ export const LANG = {
   en: "en",
 };
 
-let currentLangKey = LANG.vi;
+let currentLangKey = await localStorage.get(langStorageKey, LANG.vi);
 
 export async function setLang(lang) {
   if (lang in LANG) {
