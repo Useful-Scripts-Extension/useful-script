@@ -7,6 +7,8 @@ export default {
     en: "Can be used on almost any website",
     vi: "Dùng được cho gần như tất cả trang web",
   },
+  blackList: ["www.youtube.com"],
+  whiteList: [],
 
   // Source code extracted from https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil
   func: function () {

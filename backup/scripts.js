@@ -53,3 +53,6 @@ javascript: (function () {
     if (clickerIsMouseDown) clickerCurrentMouseTarget.click();
   }, 0);
 })();
+
+// download vimeo video 
+// https://superuser.com/a/1130616

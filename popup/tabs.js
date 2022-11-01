@@ -57,6 +57,7 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
+      s.insta_enableDownloadImage,
       s.insta_getToken,
       s.insta_getUid,
       s.insta_getAllUserMedia,
