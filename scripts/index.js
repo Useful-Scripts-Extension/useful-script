@@ -73,8 +73,8 @@ import youtube_downloadVideo from "./youtube_downloadVideo.js";
 import search_paperWhere from "./search_paperWhere.js";
 import viewCookies from "./viewCookies.js";
 import download_image from "./download_image.js";
-import githubdev from "./githubdev.js"
-import scrollByDrag from "./scrollByDrag.js"
+import githubdev from "./githubdev.js";
+import scrollByDrag from "./scrollByDrag.js";
 
 // inject badges
 const allScripts = {
@@ -151,7 +151,7 @@ const allScripts = {
   search_paperWhere,
   viewCookies,
   download_image: addBadge(download_image, BADGES.hot),
-  githubdev,
+  githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
 };
 

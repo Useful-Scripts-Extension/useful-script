@@ -11,8 +11,35 @@ export default {
   whiteList: [],
   func: async function () {
     let X, Y;
-    with(document){
-        if(document.onmousedown&&document.onmouseup&&document.onmousemove){body.style.cursor='auto';document.onmousedown=document.onmouseup=document.onmousemove=null}else{body.style.cursor='all-scroll';document.onmousedown=function(e){if((e&&!e.button)||(window.event&&event.button&1)){with(e||event){X=clientX;Y=clientY;return(false)}}};document.onmouseup=function(e){if((e&&!e.button)||(window.event&&event.button&1)){X=Y=null;return(false)}};document.onmousemove=function(e){if(X||Y){with(e||event){scrollBy(X-clientX,Y-clientY);X=clientX;Y=clientY;return(false)}}}}
+
+    if (document.onmousedown && document.onmouseup && document.onmousemove) {
+      body.style.cursor = "auto";
+      document.onmousedown = document.onmouseup = document.onmousemove = null;
+      alert("Scroll by dragging DISABLED");
+    } else {
+      body.style.cursor = "all-scroll";
+      document.onmousedown = function (e) {
+        if ((e && !e.button) || (window.event && event.button & 1)) {
+          X = e.clientX;
+          Y = e.clientY;
+          return false;
+        }
+      };
+      document.onmouseup = function (e) {
+        if ((e && !e.button) || (window.event && event.button & 1)) {
+          X = Y = null;
+          return false;
+        }
+      };
+      document.onmousemove = function (e) {
+        if (X || Y) {
+          window.scrollBy(X - e.clientX, Y - e.clientY);
+          X = e.clientX;
+          Y = e.clientY;
+          return false;
+        }
+      };
+      alert("Scroll by dragging ENABLED");
     }
   },
 };
