@@ -20,8 +20,6 @@ const tabs = [
       s.search_totalIndexedPages,
       s.checkWebDie,
       s.openWaybackUrl,
-      s.githubdev,
-      s.scrollByDrag
     ],
   },
   {
@@ -80,7 +78,7 @@ const tabs = [
   },
   {
     ...CATEGORY.github,
-    scripts: [s.github_goToFirstCommit, s.github1s],
+    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
   },
   {
     ...CATEGORY.doutube,
@@ -125,6 +123,7 @@ const tabs = [
     scripts: [
       s.toggleEditPage,
       s.performanceAnalyzer,
+      s.scrollByDrag,
       createTitle("--- View ---", "--- Xem ---"),
       s.listAllImagesInWeb,
       s.viewScriptsUsed,
