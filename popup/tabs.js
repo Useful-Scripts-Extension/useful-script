@@ -20,6 +20,8 @@ const tabs = [
       s.search_totalIndexedPages,
       s.checkWebDie,
       s.openWaybackUrl,
+      s.githubdev,
+      s.scrollByDrag
     ],
   },
   {
