@@ -76,6 +76,7 @@ import viewAllLinks from "./viewAllLinks.js";
 import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
 import scrollByDrag from "./scrollByDrag.js";
+import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
 
 // inject badges
 const allScripts = {
@@ -94,14 +95,18 @@ const allScripts = {
   fb_getAllUidFromFbSearch,
   fb_getAllUidFromFriendsPage,
   fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.hot),
-  download_video,
+  download_video: addBadge(download_video, BADGES.beta),
   fb_getAvatarFromUid,
   fb_downloadCurrentVideo,
   fb_downloadAlbumMedia,
   insta_getToken: addBadge(insta_getToken, BADGES.hot),
   insta_getUid,
   insta_getAllUserMedia,
-  insta_getAllImagesInNewFeed,
+  insta_getAllImagesInNewFeed: addBadge(
+    insta_getAllImagesInNewFeed,
+    BADGES.hot
+  ),
+  insta_enableDownloadImage: addBadge(insta_enableDownloadImage, BADGES.hot),
   insta_getAllImagesInUserProfile,
   pictureInPicture: addBadge(pictureInPicture, BADGES.hot),
   youtube_toggleLight,
