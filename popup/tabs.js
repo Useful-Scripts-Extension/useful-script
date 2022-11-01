@@ -364,9 +364,10 @@ tabs.unshift(
 
 // add script count to tab name
 tabs.forEach((tab) => {
+  // prettier-ignore
   if (tab.showCount) {
-    tab.name.vi += ` (${tab.scripts.length})`;
-    tab.name.en += ` (${tab.scripts.length})`;
+    tab.name.vi += ` (${tab.scripts.filter(script => !isTitle(script)).length})`;
+    tab.name.en += ` (${tab.scripts.filter(script => !isTitle(script)).length})`;
   }
 });
 
