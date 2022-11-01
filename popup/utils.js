@@ -1,5 +1,5 @@
+import { allScripts } from "../scripts/index.js";
 import { t } from "./lang.js";
-import { scriptsWithId } from "./scriptsWithId.js";
 
 export const getTabId = async () => {
   let tabArray = await chrome.tabs.query({ currentWindow: true, active: true });
@@ -57,10 +57,9 @@ export const recentScripts = {
   maxLength: 20,
   add: async (script) => {
     let current = await localStorage.get(recentScripts.key, []);
-    current = current.filter((_) => _.id != script.id); // remove duplicate
-    current.unshift(script);
+    current = current.filter((id) => id != script.id); // remove duplicate
+    current.unshift(script.id); // only save script id
     if (current.length > recentScripts.maxLength) current.pop();
-
     await localStorage.set(recentScripts.key, current);
   },
   clear: async () => {
@@ -68,11 +67,8 @@ export const recentScripts = {
   },
   get: async () => {
     return (await localStorage.get(recentScripts.key, []))
-      .filter((savedScript) => savedScript.id in scriptsWithId)
-      .map((savedScript) => ({
-        ...scriptsWithId[savedScript.id],
-        badges: savedScript.badges,
-      }));
+      .filter((savedScriptId) => savedScriptId in allScripts)
+      .map((savedScriptId) => allScripts[savedScriptId]);
   },
 };
 
@@ -122,13 +118,11 @@ export async function checkBlackWhiteList(
 export async function getAvailableScripts() {
   let hostname = (await getCurrentURL()).hostname;
   let avai = [];
-  for (let script of Object.values(scriptsWithId)) {
+  for (let script of Object.values(allScripts)) {
     if (await checkBlackWhiteList(script, false, hostname)) {
       avai.push(script);
     }
   }
-
-  // sort by relative name/description
 
   return avai;
 }

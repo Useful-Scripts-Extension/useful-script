@@ -1,157 +1,151 @@
-import { scriptsWithId as scripts } from "./scriptsWithId.js";
-import { CATEGORY } from "../category.js";
+import { allScripts as s } from "../scripts/index.js";
+import { CATEGORY } from "./category.js";
 import { getAvailableScripts, recentScripts } from "./utils.js";
 import { addBadge, BADGES } from "./badge.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isTitle = (script) => !script.func && !script.file && !script.link;
 
-const DEFAULT_TABID = CATEGORY.search.id;
+const DEFAULT_TABID = CATEGORY.available.id;
 const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      addBadge(scripts.whatFont, BADGES.hot),
-      addBadge(scripts.search_sharedAccount, BADGES.hot),
-      addBadge(scripts.whatWebsiteStack, BADGES.new),
-      addBadge(scripts.search_googleSite, BADGES.new),
-      addBadge(scripts.search_paperWhere, BADGES.new),
-      addBadge(scripts.viewWebsiteAnalyticsOnline, BADGES.new),
-      addBadge(scripts.search_totalIndexedPages, BADGES.new),
-      scripts.checkWebDie,
-      scripts.openWaybackUrl,
+      s.whatFont,
+      s.search_sharedAccount,
+      s.whatWebsiteStack,
+      s.search_googleSite,
+      s.search_paperWhere,
+      s.viewWebsiteAnalyticsOnline,
+      s.search_totalIndexedPages,
+      s.checkWebDie,
+      s.openWaybackUrl,
     ],
   },
   {
     ...CATEGORY.download,
-    scripts: [
-      addBadge(scripts.download_video, BADGES.new),
-      addBadge(scripts.download_image, BADGES.hot),
-    ],
+    scripts: [s.download_video, s.download_image],
   },
   {
     ...CATEGORY.facebook,
     scripts: [
       createTitle("--- UI ---", "--- Giao diện ---"),
-      addBadge(scripts.fb_toggleLight, BADGES.new),
+      s.fb_toggleLight,
       createTitle("--- Access Token ---", "--- Access Token ---"),
-      scripts.fb_getTokenBusiness,
-      scripts.fb_getTokenFacebook,
-      scripts.fb_getTokenMFacebook,
+      s.fb_getTokenBusiness,
+      s.fb_getTokenFacebook,
+      s.fb_getTokenMFacebook,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
-      addBadge(scripts.fb_getUid, BADGES.hot),
-      addBadge(scripts.fb_getPageId, BADGES.hot),
-      addBadge(scripts.fb_getGroupId, BADGES.hot),
-      addBadge(scripts.fb_getAlbumId, BADGES.hot),
-      addBadge(scripts.fb_getTimelineAlbumId, BADGES.hot),
-      scripts.fb_getAllVideoId,
-      scripts.fb_getAllAlbumId,
-      addBadge(scripts.fb_getUidFromUrl, BADGES.hot),
-      scripts.fb_getAllUidFromFbSearch,
-      scripts.fb_getAllUidFromFriendsPage,
-      scripts.fb_getAllUidOfGroupMembers,
+      s.fb_getUid,
+      s.fb_getPageId,
+      s.fb_getGroupId,
+      s.fb_getAlbumId,
+      s.fb_getTimelineAlbumId,
+      s.fb_getAllVideoId,
+      s.fb_getAllAlbumId,
+      s.fb_getUidFromUrl,
+      s.fb_getAllUidFromFbSearch,
+      s.fb_getAllUidFromFriendsPage,
+      s.fb_getAllUidOfGroupMembers,
       createTitle("--- Download ---", "--- Tải xuống ---"),
-      scripts.fb_getAvatarFromUid,
-      addBadge(scripts.fb_downloadCurrentVideo, BADGES.beta),
-      addBadge(scripts.fb_downloadAlbumMedia, BADGES.beta),
+      s.fb_getAvatarFromUid,
+      s.fb_downloadCurrentVideo,
+      s.fb_downloadAlbumMedia,
     ],
   },
   {
     ...CATEGORY.instagram,
     scripts: [
-      scripts.insta_getToken,
-      addBadge(scripts.insta_getUid, BADGES.hot),
-      addBadge(scripts.insta_getAllUserMedia, BADGES.beta),
-      addBadge(scripts.insta_getAllImagesInNewFeed, BADGES.beta),
-      addBadge(scripts.insta_getAllImagesInUserProfile, BADGES.beta),
+      s.insta_getToken,
+      s.insta_getUid,
+      s.insta_getAllUserMedia,
+      s.insta_getAllImagesInNewFeed,
+      s.insta_getAllImagesInUserProfile,
     ],
   },
   {
     ...CATEGORY.youtube,
     scripts: [
-      addBadge(scripts.youtube_downloadVideo, BADGES.beta),
-      addBadge(scripts.pictureInPicture, BADGES.new),
-      addBadge(scripts.youtube_toggleLight, BADGES.hot),
-      scripts.youtube_bypass18,
+      s.youtube_downloadVideo,
+      s.pictureInPicture,
+      s.youtube_toggleLight,
+      s.youtube_bypass18,
     ],
   },
   {
     ...CATEGORY.vimeo,
-    scripts: [addBadge(scripts.download_video, BADGES.new)],
+    scripts: [s.download_video],
   },
   {
     ...CATEGORY.github,
-    scripts: [
-      addBadge(scripts.github_goToFirstCommit, BADGES.hot),
-      scripts.github1s,
-    ],
+    scripts: [s.github_goToFirstCommit, s.github1s],
   },
   {
     ...CATEGORY.doutube,
     scripts: [
-      addBadge(scripts.doutube_enableDownloadVideo, BADGES.hot),
-      scripts.doutube_downloadWatchingVideo,
-      scripts.doutube_downloadWatchingStory,
-      scripts.doutube_getAllVideoInUserProfile,
+      s.doutube_enableDownloadVideo,
+      s.doutube_downloadWatchingVideo,
+      s.doutube_downloadWatchingStory,
+      s.doutube_getAllVideoInUserProfile,
     ],
   },
   {
     ...CATEGORY.pdf,
-    scripts: [addBadge(scripts.darkModePDF, BADGES.hot), scripts.webToPDF],
+    scripts: [s.darkModePDF, s.webToPDF],
   },
   {
     ...CATEGORY.qrcode,
-    scripts: [addBadge(scripts.textToQRCode, BADGES.hot), scripts.webToQRCode],
+    scripts: [s.textToQRCode, s.webToQRCode],
   },
   {
     ...CATEGORY.automation,
-    scripts: [scripts.scrollToVeryEnd],
+    scripts: [s.scrollToVeryEnd],
   },
   {
     ...CATEGORY.password,
     scripts: [
-      addBadge(scripts.passwordGenerator, BADGES.hot),
-      addBadge(scripts.search_sharedAccount, BADGES.hot),
-      scripts.viewHiddenPassword,
+      s.passwordGenerator,
+      s.search_sharedAccount,
+      s.viewHiddenPassword,
     ],
   },
   {
     ...CATEGORY.unlock,
     scripts: [
-      addBadge(scripts.viewCookies, BADGES.new),
-      addBadge(scripts.removeCookies, BADGES.hot),
-      scripts.enableTextSelection,
-      scripts.reEnableContextMenu,
+      s.viewCookies,
+      s.removeCookies,
+      s.enableTextSelection,
+      s.reEnableContextMenu,
     ],
   },
   {
     ...CATEGORY.webUI,
     scripts: [
-      addBadge(scripts.toggleEditPage, BADGES.hot),
-      addBadge(scripts.performanceAnalyzer, BADGES.new, BADGES.unstable),
+      s.toggleEditPage,
+      s.performanceAnalyzer,
       createTitle("--- View ---", "--- Xem ---"),
-      scripts.listAllImagesInWeb,
-      scripts.viewScriptsUsed,
-      scripts.viewStylesUsed,
-      scripts.viewPartialSource,
+      s.listAllImagesInWeb,
+      s.viewScriptsUsed,
+      s.viewStylesUsed,
+      s.viewPartialSource,
       createTitle("--- Remove ---", "--- Xoá ---"),
-      scripts.removeColours,
-      scripts.removeStylesheet,
-      scripts.removeImages,
-      scripts.removeBloat,
+      s.removeColours,
+      s.removeStylesheet,
+      s.removeImages,
+      s.removeBloat,
       createTitle("--- Table ---", "--- Bảng ---"),
-      scripts.table_addSortTable,
-      scripts.table_addNumberColumn,
-      scripts.table_swapRowAndColumn,
+      s.table_addSortTable,
+      s.table_addNumberColumn,
+      s.table_swapRowAndColumn,
       createTitle("--- More ---", "--- Khác ---"),
-      scripts.internalOrExternalLink,
-      scripts.getWindowSize,
-      scripts.letItSnow,
+      s.internalOrExternalLink,
+      s.getWindowSize,
+      s.letItSnow,
     ],
   },
   {
     ...CATEGORY.more,
-    scripts: [addBadge(scripts.shortenURL, BADGES.hot), scripts.runStatJs],
+    scripts: [s.shortenURL, s.runStatJs],
   },
   {
     ...CATEGORY.recommend,
@@ -318,10 +312,10 @@ async function getAvailableScriptsInTabs(_tabs) {
   for (let tab of Object.values(_tabs)) {
     let avaiScriptsInTab = [];
 
-    for (let scriptWithBadges of tab.scripts) {
-      let avaiScript = avai.find((_) => _.id === scriptWithBadges.id);
-      if (avaiScript) {
-        avaiScriptsInTab.push(scriptWithBadges);
+    for (let script of tab.scripts) {
+      let isAvai = avai.findIndex((_) => _.id === script.id) >= 0;
+      if (isAvai) {
+        avaiScriptsInTab.push(script);
       }
     }
 
@@ -334,10 +328,33 @@ async function getAvailableScriptsInTabs(_tabs) {
   return result;
 }
 
+async function getRecentScriptsInTabs(_tabs) {
+  let result = [];
+  const recents = await recentScripts.get();
+
+  for (let tab of Object.values(_tabs)) {
+    let recentScriptsInTab = [];
+
+    for (let script of tab.scripts) {
+      let isRecent = recents.findIndex((_) => _.id === script.id) >= 0;
+      if (isRecent) {
+        recentScriptsInTab.push(script);
+      }
+    }
+
+    if (recentScriptsInTab.length) {
+      result.push(createTitle(tab.name.en, tab.name.vi));
+      result.push(...recentScriptsInTab);
+    }
+  }
+
+  return result;
+}
+
 tabs.unshift(
   {
     ...CATEGORY.recently,
-    scripts: await recentScripts.get(),
+    scripts: await getRecentScriptsInTabs(tabs),
   },
   {
     ...CATEGORY.available,
