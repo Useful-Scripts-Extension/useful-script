@@ -15,13 +15,11 @@ const versionSpan = document.querySelector("#version");
 const updateBtn = document.querySelector("#update-btn");
 
 async function initLanguage() {
-  let lang = await localStorage.get("lang", LANG.vi);
-  setLang(lang);
+  setLang(await localStorage.get("lang", LANG.vi));
   flagImg.setAttribute("src", getFlag());
 
-  flagImg.onclick = () => {
-    let newLang = toggleLang();
-    localStorage.set("lang", newLang);
+  flagImg.onclick = async () => {
+    await toggleLang();
     flagImg.setAttribute("src", getFlag());
 
     // reset UI

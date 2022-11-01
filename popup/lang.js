@@ -1,3 +1,6 @@
+import { localStorage } from "./utils.js";
+
+const langStorageKey = "useful-scripts-lang";
 export const LANG = {
   vi: "vi",
   en: "en",
@@ -5,17 +8,19 @@ export const LANG = {
 
 let currentLangKey = LANG.vi;
 
-export function setLang(lang) {
+export async function setLang(lang) {
   if (lang in LANG) {
     currentLangKey = lang;
+    await localStorage.set(langStorageKey, lang);
   } else {
     alert("WRONG LANG KEY " + lang);
   }
 }
 
-export function toggleLang() {
+export async function toggleLang() {
   let newLang = currentLangKey === LANG.vi ? LANG.en : LANG.vi;
   currentLangKey = newLang;
+  await localStorage.set(langStorageKey, newLang);
   return newLang;
 }
 
