@@ -1,5 +1,5 @@
 import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { DEFAULT_TABID, tabs } from "./tabs.js";
+import { DEFAULT_TABID, isTitle, tabs } from "./tabs.js";
 import {
   checkBlackWhiteList,
   localStorage,
@@ -73,7 +73,7 @@ async function createTabs() {
     } else {
       for (let script of tab.scripts) {
         // Section title
-        if (!script.func && !script.file && !script.link) {
+        if (isTitle(script)) {
           const title = document.createElement("h3");
           title.textContent = t(script.name);
           title.classList.add("section-title");

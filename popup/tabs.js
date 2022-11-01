@@ -4,17 +4,10 @@ import { getAvailableScripts, recentScripts } from "./utils.js";
 import { addBadge, BADGES } from "./badge.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
+const isTitle = (script) => !script.func && !script.file && !script.link;
 
-export const DEFAULT_TABID = CATEGORY.search.id;
-export const tabs = [
-  {
-    ...CATEGORY.recently,
-    scripts: await recentScripts.get(),
-  },
-  {
-    ...CATEGORY.available,
-    scripts: await getAvailableScripts(),
-  },
+const DEFAULT_TABID = CATEGORY.search.id;
+const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
@@ -316,3 +309,40 @@ export const tabs = [
     ],
   },
 ];
+
+// add recently and available to head of array
+async function getAvailableScriptsInTabs(_tabs) {
+  let result = [];
+  const avai = await getAvailableScripts();
+
+  for (let tab of Object.values(_tabs)) {
+    let avaiScriptsInTab = [];
+
+    for (let scriptWithBadges of tab.scripts) {
+      let avaiScript = avai.find((_) => _.id === scriptWithBadges.id);
+      if (avaiScript) {
+        avaiScriptsInTab.push(scriptWithBadges);
+      }
+    }
+
+    if (avaiScriptsInTab.length) {
+      result.push(createTitle(tab.name.en, tab.name.vi));
+      result.push(...avaiScriptsInTab);
+    }
+  }
+
+  return result;
+}
+
+tabs.unshift(
+  {
+    ...CATEGORY.recently,
+    scripts: await recentScripts.get(),
+  },
+  {
+    ...CATEGORY.available,
+    scripts: await getAvailableScriptsInTabs(tabs),
+  }
+);
+
+export { isTitle, tabs, DEFAULT_TABID };
