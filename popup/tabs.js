@@ -20,6 +20,7 @@ const tabs = [
       s.search_totalIndexedPages,
       s.checkWebDie,
       s.openWaybackUrl,
+      s.googleCache,
     ],
   },
   {
@@ -69,12 +70,7 @@ const tabs = [
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
-      s.youtube_bypass18,
     ],
-  },
-  {
-    ...CATEGORY.vimeo,
-    scripts: [s.download_video],
   },
   {
     ...CATEGORY.github,
@@ -125,6 +121,7 @@ const tabs = [
       s.performanceAnalyzer,
       createTitle("--- View ---", "--- Xem ---"),
       s.listAllImagesInWeb,
+      s.viewAllLinks,
       s.viewScriptsUsed,
       s.viewStylesUsed,
       s.viewPartialSource,
