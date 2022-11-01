@@ -1,7 +1,7 @@
 export default {
   name: {
-    en: "Hide fb side UI",
-    vi: "Ẩn giao diện 2 bên fb",
+    en: "Toggle light fb newfeed",
+    vi: "Bật/tắt đèn fb newfeed",
   },
   description: {
     en: "Hide Navigator bar and complementary bar",
@@ -20,6 +20,7 @@ export default {
         let current = dom.style.opacity || 1;
         let newValue = current == 1 ? 0 : 1;
         dom.style.opacity = newValue;
+        dom.style.pointerEvents = newValue ? "" : "none";
       } else alert("ERROR: Cannot find element" + _);
     });
   },

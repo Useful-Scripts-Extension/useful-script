@@ -15,7 +15,6 @@ const versionSpan = document.querySelector("#version");
 const updateBtn = document.querySelector("#update-btn");
 
 async function initLanguage() {
-  setLang(await localStorage.get("lang", LANG.vi));
   flagImg.setAttribute("src", getFlag());
 
   flagImg.onclick = async () => {

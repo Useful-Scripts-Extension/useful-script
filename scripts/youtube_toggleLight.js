@@ -17,6 +17,7 @@ export default {
         let current = dom.style.opacity || 1;
         let newValue = current == 1 ? 0 : 1;
         dom.style.opacity = newValue;
+        dom.style.pointerEvents = newValue ? "" : "none";
       });
     });
 

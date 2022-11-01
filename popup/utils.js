@@ -98,16 +98,17 @@ export async function checkBlackWhiteList(
     (hasBlackList && !inBlackList);
 
   if (!willRun && willAlert) {
+    const { whiteList: w, blackList: b } = script;
     alert(
       t({
         en:
-          "Script is not supported in current website: \n" +
-          `+ Only run in: ${script.whiteList?.join(", ") || "<empty>"}\n` +
-          `+ Not run in: ${script.blackList?.join(", ") || "empty"}`,
+          `Script not supported in current website: \n\n` +
+          `${w?.length ? `+ Only run at:  ${w?.join(", ")}` : ""}\n` +
+          `${b?.length ? `+ Not run at:  ${b?.join(", ")}` : ""}`,
         vi:
-          "Script không hỗ trợ website hiện tại: \n" +
-          `+ Chỉ chạy tại:  ${script.whiteList?.join(", ") || "<rỗng>"}\n` +
-          `+ Không chạy tại:  ${script.blackList?.join(", ") || "<rỗng>"}`,
+          `Script không hỗ trợ website hiện tại: \n\n` +
+          `${w?.length ? `+ Chỉ chạy tại:  ${w?.join(", ")}` : ""}\n` +
+          `${b?.length ? `+ Không chạy tại:  ${b?.join(", ")}` : ""}`,
       })
     );
   }
