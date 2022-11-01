@@ -1,13 +1,13 @@
-html,
-body {
-    min-width: 350px;
-    background-color: #e6e6e6;
-}
-
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+html,
+body {
+    min-width: 350px;
+    background-color: #e6e6e6;
 }
 
 h1,
@@ -33,11 +33,62 @@ a:hover {
     cursor: pointer;
 }
 
+#update-btn {
+    display: none;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    color: #eee;
+    background-color: #009e00;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#update-btn:hover {
+    color: #fff;
+    background-color: #00c200;
+}
+
+/* ---------- Tab button ---------- */
+.tab {
+    overflow: hidden;
+    background-color: #cccccc;
+    overflow: auto;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 12px;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #afafaf;
+}
+
+.tab button.active {
+    background-color: #a8a8a8;
+}
+
+/* ---------- Content & content button ---------- */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+    padding-bottom: 50px;
+}
+
+.tabcontent {
+    animation: fadeEffect 1s;
+}
+
 .section-title {
     margin: 5px 0;
 }
-
-.content {}
 
 .content button {
     border: none;
@@ -82,46 +133,6 @@ a:hover {
     margin-left: -10px;
 }
 
-/* Style the tab */
-.tab {
-    overflow: hidden;
-    background-color: #cccccc;
-    overflow: auto;
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 10px 12px;
-    transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #afafaf;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #a8a8a8;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border-top: none;
-    padding-bottom: 50px;
-}
-
-.tabcontent {
-    animation: fadeEffect 1s;
-}
-
 /* Go from zero to full opacity */
 @keyframes fadeEffect {
     from {
@@ -133,6 +144,7 @@ a:hover {
     }
 }
 
+/* ---------- Tooltip ---------- */
 .tooltip {
     position: relative;
     display: inline-block;
@@ -177,18 +189,24 @@ a:hover {
     border-color: transparent transparent rgb(133, 133, 133) transparent;
 }
 
-#update-btn {
-    display: none;
-    border: none;
-    border-radius: 5px;
-    padding: 3px;
-    color: #eee;
-    background-color: #009e00;
-    font-weight: bold;
-    cursor: pointer;
+
+/* --------- scrollbar --------- */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-#update-btn:hover {
-    color: #fff;
-    background-color: #00c200;
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
