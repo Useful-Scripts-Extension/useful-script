@@ -54,12 +54,10 @@ export const localStorage = {
 
 export const recentScripts = {
   key: "useful-script-recently",
-  maxLength: 20,
   add: async (script) => {
     let current = await localStorage.get(recentScripts.key, []);
     current = current.filter((id) => id != script.id); // remove duplicate
     current.unshift(script.id); // only save script id
-    if (current.length > recentScripts.maxLength) current.pop();
     await localStorage.set(recentScripts.key, current);
   },
   clear: async () => {

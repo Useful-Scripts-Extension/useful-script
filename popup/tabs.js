@@ -355,7 +355,7 @@ tabs.unshift(
 tabs.forEach((tab) => {
   if (tab.showCount) {
     let avaiCount = tab.scripts.filter((script) => !isTitle(script)).length;
-    let allCount = tab.scripts.length;
+    let allCount = Object.keys(s).length;
 
     tab.name.vi += ` (${avaiCount}/${allCount})`;
     tab.name.en += ` (${avaiCount}/${allCount})`;
