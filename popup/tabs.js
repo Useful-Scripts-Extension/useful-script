@@ -328,33 +328,10 @@ async function getAvailableScriptsInTabs(_tabs) {
   return result;
 }
 
-async function getRecentScriptsInTabs(_tabs) {
-  let result = [];
-  const recents = await recentScripts.get();
-
-  for (let tab of Object.values(_tabs)) {
-    let recentScriptsInTab = [];
-
-    for (let script of tab.scripts) {
-      let isRecent = recents.findIndex((_) => _.id === script.id) >= 0;
-      if (isRecent) {
-        recentScriptsInTab.push(script);
-      }
-    }
-
-    if (recentScriptsInTab.length) {
-      result.push(createTitle(tab.name.en, tab.name.vi));
-      result.push(...recentScriptsInTab);
-    }
-  }
-
-  return result;
-}
-
 tabs.unshift(
   {
     ...CATEGORY.recently,
-    scripts: await getRecentScriptsInTabs(tabs),
+    scripts: await recentScripts.get(),
   },
   {
     ...CATEGORY.available,
