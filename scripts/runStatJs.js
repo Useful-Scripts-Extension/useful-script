@@ -8,6 +8,7 @@ export default {
     vi: "Tính toán FPS website",
   },
   func: function () {
+    let src = "//mrdoob.github.io/stats.js/build/stats.min.js";
     var script = document.createElement("script");
     script.onload = function () {
       var stats = new Stats();
@@ -17,8 +18,15 @@ export default {
         requestAnimationFrame(loop);
       });
     };
-    script.src = "//mrdoob.github.io/stats.js/build/stats.min.js";
+    script.onerror = (event) => {
+      alert(
+        'Looks like the Content Security Policy directive is blocking the use of script\n\nYou can copy and paste the content of:\n\n"' +
+          src +
+          '"\n\ninto your console instead\n\n(link is in console already)'
+      );
+      console.log(src);
+    };
+    script.src = src;
     document.head.appendChild(script);
   },
 };
-
