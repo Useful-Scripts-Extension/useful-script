@@ -362,4 +362,12 @@ tabs.unshift(
   }
 );
 
+// add script count to tab name
+tabs.forEach((tab) => {
+  if (tab.showCount) {
+    tab.name.vi += ` (${tab.scripts.length})`;
+    tab.name.en += ` (${tab.scripts.length})`;
+  }
+});
+
 export { isTitle, tabs, DEFAULT_TABID };
