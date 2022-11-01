@@ -74,6 +74,8 @@ import viewCookies from "./viewCookies.js";
 import download_image from "./download_image.js";
 import viewAllLinks from "./viewAllLinks.js";
 import googleCache from "./googleCache.js";
+import githubdev from "./githubdev.js";
+import scrollByDrag from "./scrollByDrag.js";
 
 // inject badges
 const allScripts = {
@@ -151,6 +153,8 @@ const allScripts = {
   download_image: addBadge(download_image, BADGES.hot),
   viewAllLinks,
   googleCache: addBadge(googleCache, BADGES.new),
+  githubdev: addBadge(githubdev, BADGES.hot),
+  scrollByDrag,
 };
 
 // inject id to all scripts
