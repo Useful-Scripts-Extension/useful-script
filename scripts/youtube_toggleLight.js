@@ -1,7 +1,7 @@
 export default {
   name: {
-    en: "Toggle light",
-    vi: "Tắt/Mở đèn",
+    en: "Toggle light youtube",
+    vi: "Tắt/Mở đèn youtube",
   },
   description: {
     en: "Toggle light on/off to focus to video",
