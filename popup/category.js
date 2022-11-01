@@ -17,7 +17,6 @@ export const CATEGORY = {
   youtube: { id: "youtube", name: { en: "Youtube", vi: "Youtube" } },
   github: { id: "github", name: { en: "Github", vi: "Github" } },
   doutube: { id: "doutube", name: { en: "Doutu.be", vi: "Doutu.be" } },
-  vimeo: { id: "vimeo", name: { en: "Vimeo", vi: "Vimeo" } },
   pdf: { id: "pdf", name: { en: "PDF", vi: "PDF" } },
   qrcode: { id: "qrcode", name: { en: "QR Code", vi: "QR Code" } },
   automation: {

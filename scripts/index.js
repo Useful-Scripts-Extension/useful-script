@@ -26,7 +26,6 @@ import insta_getAllImagesInNewFeed from "./insta_getAllImagesInNewFeed.js";
 import insta_getAllImagesInUserProfile from "./insta_getAllImagesInUserProfile.js";
 import pictureInPicture from "./pictureInPicture.js";
 import youtube_toggleLight from "./youtube_toggleLight.js";
-import youtube_bypass18 from "./youtube_bypass18.js";
 import github_goToFirstCommit from "./github_goToFirstCommit.js";
 import github1s from "./github1s.js";
 import doutube_enableDownloadVideo from "./doutube_enableDownloadVideo.js";
@@ -73,6 +72,8 @@ import youtube_downloadVideo from "./youtube_downloadVideo.js";
 import search_paperWhere from "./search_paperWhere.js";
 import viewCookies from "./viewCookies.js";
 import download_image from "./download_image.js";
+import viewAllLinks from "./viewAllLinks.js";
+import googleCache from "./googleCache.js";
 
 // inject badges
 const allScripts = {
@@ -102,7 +103,6 @@ const allScripts = {
   insta_getAllImagesInUserProfile,
   pictureInPicture: addBadge(pictureInPicture, BADGES.hot),
   youtube_toggleLight,
-  youtube_bypass18: addBadge(youtube_bypass18, BADGES.beta),
   github_goToFirstCommit: addBadge(github_goToFirstCommit, BADGES.hot),
   github1s,
   doutube_enableDownloadVideo,
@@ -145,10 +145,12 @@ const allScripts = {
   viewWebsiteAnalyticsOnline: addBadge(viewWebsiteAnalyticsOnline, BADGES.hot),
   search_totalIndexedPages,
   whatWebsiteStack: addBadge(whatWebsiteStack, BADGES.hot),
-  youtube_downloadVideo,
+  youtube_downloadVideo: addBadge(youtube_downloadVideo, BADGES.hot),
   search_paperWhere,
   viewCookies,
   download_image: addBadge(download_image, BADGES.hot),
+  viewAllLinks,
+  googleCache: addBadge(googleCache, BADGES.new),
 };
 
 // inject id to all scripts
