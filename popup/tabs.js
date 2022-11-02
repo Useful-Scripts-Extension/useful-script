@@ -6,7 +6,6 @@ import { addBadge, BADGES } from "./badge.js";
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isTitle = (script) => !script.func && !script.file && !script.link;
 
-const DEFAULT_TABID = CATEGORY.available.id;
 const tabs = [
   {
     ...CATEGORY.search,
@@ -373,4 +372,4 @@ tabs.forEach((tab) => {
   }
 });
 
-export { isTitle, tabs, DEFAULT_TABID };
+export { isTitle, tabs };
