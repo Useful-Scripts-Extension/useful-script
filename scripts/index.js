@@ -77,6 +77,7 @@ import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
 import scrollByDrag from "./scrollByDrag.js";
 import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
+import toggleLightVideo from "./toggleLightVideo.js";
 
 // inject badges
 const allScripts = {
@@ -160,6 +161,7 @@ const allScripts = {
   googleCache: addBadge(googleCache, BADGES.new),
   githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
+  toggleLightVideo: addBadge(toggleLightVideo, BADGES.new),
 };
 
 // inject id to all scripts

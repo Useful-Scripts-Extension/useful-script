@@ -118,6 +118,7 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
+      s.toggleLightVideo,
       s.toggleEditPage,
       s.performanceAnalyzer,
       s.scrollByDrag,
