@@ -19,6 +19,7 @@ const tabs = [
       s.viewWebsiteAnalyticsOnline,
       s.search_totalIndexedPages,
       s.checkWebDie,
+      s.downDetector,
       s.openWaybackUrl,
       s.googleCache,
     ],

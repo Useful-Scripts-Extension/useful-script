@@ -78,6 +78,7 @@ import githubdev from "./githubdev.js";
 import scrollByDrag from "./scrollByDrag.js";
 import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
 import youtube_viewDislikes from "./youtube_viewDislikes.js";
+import downDetector from "./downDetector.js";
 
 // inject badges
 const allScripts = {
@@ -162,6 +163,7 @@ const allScripts = {
   githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.new),
+  downDetector: addBadge(downDetector, BADGES.new),
 };
 
 // inject id to all scripts
