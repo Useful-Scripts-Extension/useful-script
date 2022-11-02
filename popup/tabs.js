@@ -12,11 +12,11 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       s.whatFont,
+      s.similarWeb,
       s.search_sharedAccount,
       s.whatWebsiteStack,
       s.search_googleSite,
       s.search_paperWhere,
-      s.viewWebsiteAnalyticsOnline,
       s.search_totalIndexedPages,
       s.checkWebDie,
       s.downDetector,
