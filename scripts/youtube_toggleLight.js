@@ -4,8 +4,8 @@ export default {
     vi: "Tắt/Mở đèn youtube",
   },
   description: {
-    en: "Toggle light on/off to focus to video",
-    vi: "Tắt/Mở đèn để tập trung xem video",
+    en: "Toggle light on/off to focus to youtube video",
+    vi: "Tắt/Mở đèn để tập trung xem video youtube",
   },
   blackList: [],
   whiteList: ["www.youtube.com"],
