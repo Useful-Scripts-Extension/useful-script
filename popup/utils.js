@@ -1,5 +1,6 @@
 import { allScripts } from "../scripts/index.js";
 import { t } from "./lang.js";
+import { DEFAULT_TABID } from "./tabs.js";
 
 export const getTabId = async () => {
   let tabArray = await chrome.tabs.query({ currentWindow: true, active: true });
@@ -49,6 +50,16 @@ export const localStorage = {
   get: async (key, defaultValue = "") => {
     let result = await chrome.storage.sync.get([key]);
     return result[key] || defaultValue;
+  },
+};
+
+export const activeTab = {
+  key: "useful-script-activeTab",
+  set: async (tabId) => {
+    await localStorage.set(activeTab.key, tabId);
+  },
+  get: async () => {
+    return await localStorage.get(activeTab.key, DEFAULT_TABID);
   },
 };
 

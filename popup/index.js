@@ -1,6 +1,7 @@
-import { getFlag, LANG, setLang, t, toggleLang } from "./lang.js";
-import { DEFAULT_TABID, isTitle, tabs } from "./tabs.js";
+import { getFlag, t, toggleLang } from "./lang.js";
+import { isTitle, tabs } from "./tabs.js";
 import {
+  activeTab,
   checkBlackWhiteList,
   localStorage,
   recentScripts,
@@ -48,105 +49,111 @@ async function createTabs() {
     tabBtn.textContent = t(tab.name);
     tabBtn.type = "button";
     tabBtn.setAttribute("content-id", tab.id);
-    tabBtn.onclick = () => openTab(tab.id);
     if (tab.style && typeof tab.style === "object")
       Object.entries(tab.style).forEach(([key, value]) => {
         tabBtn.style[key] = value;
       });
 
-    // create tab content
-    const contentContainer = document.createElement("div");
-    contentContainer.id = tab.id;
-    contentContainer.className = "tabcontent";
+    tabBtn.onclick = () => {
+      openTab(tab);
+    };
 
-    // create button for scripts in tabcontent
-    if (!tab.scripts?.length) {
-      const emptyText = document.createElement("h3");
-      emptyText.innerText = t({
-        en: "Nothing here yet...",
-        vi: "Chưa có gì ở đây hết...",
-      });
-      contentContainer.appendChild(emptyText);
-    } else {
-      for (let script of tab.scripts) {
-        // Section title
-        if (isTitle(script)) {
-          const title = document.createElement("h3");
-          title.textContent = t(script.name);
-          title.classList.add("section-title");
-
-          contentContainer.appendChild(title);
-        }
-
-        // Function button
-        else {
-          const button = document.createElement("button");
-          button.className = "tooltip";
-
-          if (script.func && typeof script.func === "function") {
-            button.onclick = () => runScript(script);
-          } else if (script.link && typeof script.link === "string") {
-            button.onclick = () => window.open(script.link);
-          } else {
-            button.onclick = () => alert("empty script");
-          }
-
-          script.badges?.map((badge) => {
-            const { text, color, backgroundColor } = badge;
-            const badgeSpan = document.createElement("span");
-            badgeSpan.classList.add("badge");
-            badgeSpan.innerText = t(text);
-            badgeSpan.style.color = color;
-            badgeSpan.style.backgroundColor = backgroundColor;
-
-            button.appendChild(badgeSpan);
-          });
-
-          if (script.icon && typeof script.icon === "string") {
-            const icon = document.createElement("img");
-            icon.classList.add("icon");
-            icon.src = script.icon;
-            button.appendChild(icon);
-          }
-
-          const title = document.createElement("span");
-          title.innerText = t(script.name);
-          button.appendChild(title);
-
-          const tooltip = document.createElement("span");
-          tooltip.className = "tooltiptext";
-          tooltip.innerText = t(script.description);
-          button.appendChild(tooltip);
-
-          contentContainer.appendChild(button);
-          contentContainer.appendChild(document.createElement("br"));
-        }
-      }
-    }
-
-    // inject to DOM
     tabDiv.appendChild(tabBtn);
-    contentDiv.appendChild(contentContainer);
   }
 
   // open tab
-  let activeTab = await localStorage.get("activeTab", DEFAULT_TABID);
-  activeTab && openTab(activeTab);
+  let activeTabId = await activeTab.get();
+  activeTabId && openTab(tabs.find((tab) => tab.id === activeTabId));
 }
 
-function openTab(tabId) {
-  localStorage.set("activeTab", tabId);
+function openTab(tab) {
+  activeTab.set(tab.id);
 
-  Array.from(document.querySelectorAll(".tabcontent")).forEach((_) => {
-    _.style.display = "none";
-  });
+  // Array.from(document.querySelectorAll(".tabcontent")).forEach((_) => {
+  //   _.style.display = "none";
+  // });
+  // document.querySelector(".tabcontent#" + tabId).style.display = "block";
+
   Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
     _.classList.remove("active");
   });
-  document.querySelector(".tabcontent#" + tabId).style.display = "block";
   document
-    .querySelector('.tablinks[content-id="' + tabId + '"]')
+    .querySelector('.tablinks[content-id="' + tab.id + '"]')
     .classList.add("active");
+
+  // create tab content
+  const contentContainer = document.createElement("div");
+  contentContainer.id = tab.id;
+  contentContainer.className = "tabcontent";
+
+  // create button for scripts in tabcontent
+  if (!tab.scripts?.length) {
+    const emptyText = document.createElement("h3");
+    emptyText.innerText = t({
+      en: "Nothing here yet...",
+      vi: "Chưa có gì ở đây hết...",
+    });
+    contentContainer.appendChild(emptyText);
+  } else {
+    for (let script of tab.scripts) {
+      // Section title
+      if (isTitle(script)) {
+        const title = document.createElement("h3");
+        title.textContent = t(script.name);
+        title.classList.add("section-title");
+
+        contentContainer.appendChild(title);
+      }
+
+      // Function button
+      else {
+        const button = document.createElement("button");
+        button.className = "tooltip";
+
+        if (script.func && typeof script.func === "function") {
+          button.onclick = () => runScript(script);
+        } else if (script.link && typeof script.link === "string") {
+          button.onclick = () => window.open(script.link);
+        } else {
+          button.onclick = () => alert("empty script");
+        }
+
+        script.badges?.map((badge) => {
+          const { text, color, backgroundColor } = badge;
+          const badgeSpan = document.createElement("span");
+          badgeSpan.classList.add("badge");
+          badgeSpan.innerText = t(text);
+          badgeSpan.style.color = color;
+          badgeSpan.style.backgroundColor = backgroundColor;
+
+          button.appendChild(badgeSpan);
+        });
+
+        if (script.icon && typeof script.icon === "string") {
+          const icon = document.createElement("img");
+          icon.classList.add("icon");
+          icon.src = script.icon;
+          button.appendChild(icon);
+        }
+
+        const title = document.createElement("span");
+        title.innerText = t(script.name);
+        button.appendChild(title);
+
+        const tooltip = document.createElement("span");
+        tooltip.className = "tooltiptext";
+        tooltip.innerText = t(script.description);
+        button.appendChild(tooltip);
+
+        contentContainer.appendChild(button);
+        contentContainer.appendChild(document.createElement("br"));
+      }
+    }
+  }
+
+  // inject to DOM
+  contentDiv.innerHTML = "";
+  contentDiv.appendChild(contentContainer);
 }
 
 async function checkForUpdate() {
