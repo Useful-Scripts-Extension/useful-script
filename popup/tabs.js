@@ -71,6 +71,7 @@ const tabs = [
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
+      s.youtube_viewDislikes,
     ],
   },
   {
@@ -118,7 +119,6 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
-      s.toggleLightVideo,
       s.toggleEditPage,
       s.performanceAnalyzer,
       s.scrollByDrag,
@@ -199,6 +199,15 @@ const tabs = [
         link: "https://chrome.google.com/webstore/detail/j2team-security/hmlcjjclebjnfohgmgikjfnbmfkigocc",
       },
       {
+        icon: "https://lh3.googleusercontent.com/fD5QA80tZj1up43xmnxnxiqKNEq7515-HNtLfjoZlz_I626zxXmjlhKaQPUme_evpCEnN5-U7VnG3VfOcnTPzv_i=w128-h128-e365-rj-sc0x00ffffff",
+        name: { en: "CRX Viewer", vi: "CRX Viewer" },
+        description: {
+          en: "View/Download source code of any extension",
+          vi: "Xem/Tải source code của mọi extension",
+        },
+        link: "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin",
+      },
+      {
         icon: "https://lh3.googleusercontent.com/nnMASpwJY4U5ukhKl4PfIdaOpuKXNrVvfIc9n8-NJOJIY7m3RLgsazN6ATmDkXyaMll8zADOXuBR574MwC7T71kJcQ=w128-h128-e365-rj-sc0x00ffffff",
         name: { en: "Adblock Plus", vi: "Adblock Plus" },
         description: {
@@ -270,14 +279,15 @@ const tabs = [
         },
         link: "https://beecost.vn/",
       },
+
       {
-        icon: "https://lh3.googleusercontent.com/fD5QA80tZj1up43xmnxnxiqKNEq7515-HNtLfjoZlz_I626zxXmjlhKaQPUme_evpCEnN5-U7VnG3VfOcnTPzv_i=w128-h128-e365-rj-sc0x00ffffff",
-        name: { en: "CRX Viewer", vi: "CRX Viewer" },
+        icon: "https://lh3.googleusercontent.com/ZzWGiT5YRGYjeltQ5vkZmsLAQ7Qj4eQnltDmE34KyUnGKNofHRqPF_cy19i2rc58sajKbamz-9rX2BZ2zXgPUm0e2g=w128-h128-e365-rj-sc0x00ffffff",
+        name: { en: "Web Developer", vi: "Web Developer" },
         description: {
-          en: "View/Download source code of any extension",
-          vi: "Xem/Tải source code của mọi extension",
+          en: "Adds a toolbar button with various web developer tools.",
+          vi: "Các công cụ hay cho web developer",
         },
-        link: "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin",
+        link: "https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm",
       },
       {
         icon: "https://lh3.googleusercontent.com/wafm5uFaPRSo1RHMbhcdEghFzTPUfYo5GosPmBhkdNuYlGz8WigoAQM-8lulzuhWQBGTbbUyRvfoyIMDypJzuAVZ=w128-h128-e365-rj-sc0x00ffffff",

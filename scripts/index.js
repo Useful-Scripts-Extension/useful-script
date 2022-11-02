@@ -77,7 +77,7 @@ import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
 import scrollByDrag from "./scrollByDrag.js";
 import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
-import toggleLightVideo from "./toggleLightVideo.js";
+import youtube_viewDislikes from "./youtube_viewDislikes.js";
 
 // inject badges
 const allScripts = {
@@ -105,7 +105,7 @@ const allScripts = {
   insta_getAllUserMedia,
   insta_getAllImagesInNewFeed: addBadge(
     insta_getAllImagesInNewFeed,
-    BADGES.hot
+    BADGES.beta
   ),
   insta_enableDownloadImage: addBadge(insta_enableDownloadImage, BADGES.hot),
   insta_getAllImagesInUserProfile,
@@ -161,7 +161,7 @@ const allScripts = {
   googleCache: addBadge(googleCache, BADGES.new),
   githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
-  toggleLightVideo: addBadge(toggleLightVideo, BADGES.new),
+  youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.new),
 };
 
 // inject id to all scripts

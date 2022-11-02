@@ -6,7 +6,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 1 extension chứa 1 đống extensions nhỏ :)
 
-chức năng mới được cập nhật mỗi ngày :*
+chức năng mới được cập nhật mỗi ngày :\*
 
 ### How to install
 
@@ -20,6 +20,7 @@ chức năng mới được cập nhật mỗi ngày :*
 
 ### Extension Tips
 
+<https://github.com/muaz-khan/Chrome-Extensions>
 <https://developer.chrome.com/docs/extensions/reference/scripting/>
 <https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js>
 <https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script>

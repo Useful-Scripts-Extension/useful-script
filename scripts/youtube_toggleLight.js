@@ -1,4 +1,5 @@
 export default {
+  icon: "https://lh3.googleusercontent.com/Apmrldj2Vnje0MIEvqYslaGRjDj2R3u72YboNiUHJ8sSORBmLCYJNJ50FTCFhXrCuXs3e6vaCTJqOKeq-I3AMkIFLw=w128-h128-e365-rj-sc0x00ffffff",
   name: {
     en: "Toggle light youtube",
     vi: "Tắt/Mở đèn youtube",
