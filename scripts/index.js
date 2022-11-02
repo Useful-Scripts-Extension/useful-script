@@ -65,7 +65,7 @@ import viewPartialSource from "./viewPartialSource.js";
 import openWaybackUrl from "./openWaybackUrl.js";
 import runStatJs from "./runStatJs.js";
 import search_googleSite from "./search_googleSite.js";
-import viewWebsiteAnalyticsOnline from "./viewWebsiteAnalyticsOnline.js";
+import similarWeb from "./similarWeb.js";
 import search_totalIndexedPages from "./search_totalIndexedPages.js";
 import whatWebsiteStack from "./whatWebsiteStack.js";
 import youtube_downloadVideo from "./youtube_downloadVideo.js";
@@ -151,7 +151,7 @@ const allScripts = {
   openWaybackUrl,
   runStatJs,
   search_googleSite,
-  viewWebsiteAnalyticsOnline: addBadge(viewWebsiteAnalyticsOnline, BADGES.hot),
+  similarWeb: addBadge(similarWeb, BADGES.hot),
   search_totalIndexedPages,
   whatWebsiteStack: addBadge(whatWebsiteStack, BADGES.hot),
   youtube_downloadVideo: addBadge(youtube_downloadVideo, BADGES.hot),
