@@ -9,7 +9,9 @@ export default {
   },
   func: function () {
     let url = prompt("Enter web url to check", location.hostname);
-    window.open("https://downforeveryoneorjustme.com/" + url);
+
+    if (url) {
+      window.open("https://downforeveryoneorjustme.com/" + url);
+    }
   },
 };
-
