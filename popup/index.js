@@ -3,7 +3,6 @@ import { isTitle, tabs } from "./tabs.js";
 import {
   activeTab,
   checkBlackWhiteList,
-  localStorage,
   recentScripts,
   runScriptInCurrentTab,
 } from "./utils.js";

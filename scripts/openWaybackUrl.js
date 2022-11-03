@@ -1,4 +1,5 @@
 export default {
+  icon: "https://archive.org/web/images/logo_wayback_210x77.png",
   name: {
     en: "Open wayback url",
     vi: "Xem wayback url của website",
