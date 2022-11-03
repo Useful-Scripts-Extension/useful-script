@@ -1,17 +1,16 @@
-import { localStorage } from "./utils.js";
+import { langSaver } from "./localstorage.js";
 
-const langStorageKey = "useful-scripts-lang";
 export const LANG = {
   vi: "vi",
   en: "en",
 };
 
-let currentLangKey = await localStorage.get(langStorageKey, LANG.vi);
+let currentLangKey = await langSaver.get(LANG.vi);
 
 export async function setLang(lang) {
   if (lang in LANG) {
     currentLangKey = lang;
-    await localStorage.set(langStorageKey, lang);
+    await langSaver.set(lang);
   } else {
     alert("WRONG LANG KEY " + lang);
   }
@@ -20,7 +19,7 @@ export async function setLang(lang) {
 export async function toggleLang() {
   let newLang = currentLangKey === LANG.vi ? LANG.en : LANG.vi;
   currentLangKey = newLang;
-  await localStorage.set(langStorageKey, newLang);
+  await langSaver.set(newLang);
   return newLang;
 }
 

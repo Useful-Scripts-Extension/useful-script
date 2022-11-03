@@ -1,5 +1,4 @@
 import { allScripts } from "../scripts/index.js";
-import { CATEGORY } from "./category.js";
 import { t } from "./lang.js";
 
 export const getTabId = async () => {
@@ -40,45 +39,6 @@ export const openUrlInNewTab = async (url) => {
 export const openUrlAndRunScript = async (url, func) => {
   let tab = await openUrlInNewTab(url);
   return await runScript(func, tab.id);
-};
-
-// https://developer.chrome.com/docs/extensions/reference/storage/
-export const localStorage = {
-  set: async (key, value) => {
-    return chrome.storage.sync.set({ [key]: value });
-  },
-  get: async (key, defaultValue = "") => {
-    let result = await chrome.storage.sync.get([key]);
-    return result[key] || defaultValue;
-  },
-};
-
-export const activeTab = {
-  key: "useful-script-activeTab",
-  set: async (tabId) => {
-    await localStorage.set(activeTab.key, tabId);
-  },
-  get: async () => {
-    return await localStorage.get(activeTab.key, CATEGORY.available.id);
-  },
-};
-
-export const recentScripts = {
-  key: "useful-script-recently",
-  add: async (script) => {
-    let current = await localStorage.get(recentScripts.key, []);
-    current = current.filter((id) => id != script.id); // remove duplicate
-    current.unshift(script.id); // only save script id
-    await localStorage.set(recentScripts.key, current);
-  },
-  clear: async () => {
-    await localStorage.set(recentScripts.key, []);
-  },
-  get: async () => {
-    return (await localStorage.get(recentScripts.key, []))
-      .filter((savedScriptId) => savedScriptId in allScripts)
-      .map((savedScriptId) => allScripts[savedScriptId]);
-  },
 };
 
 export async function getCurrentURL() {

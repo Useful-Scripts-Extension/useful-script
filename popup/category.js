@@ -1,4 +1,9 @@
 export const CATEGORY = {
+  favorite: {
+    id: "favorite",
+    style: { textDecoration: "underline" },
+    name: { en: "Favorite", vi: "Yêu thích" },
+  },
   recently: {
     id: "recently",
     style: { textDecoration: "underline" },
