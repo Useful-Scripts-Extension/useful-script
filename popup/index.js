@@ -1,12 +1,8 @@
-import { getFlag, t, toggleLang } from "./lang.js";
-import { isTitle, tabs } from "./tabs.js";
-import {
-  activeTab,
-  checkBlackWhiteList,
-  recentScripts,
-  runScriptInCurrentTab,
-} from "./utils.js";
 import config from "../config.js";
+import { isTitle, tabs } from "./tabs.js";
+import { getFlag, t, toggleLang } from "./lang.js";
+import { checkBlackWhiteList, runScriptInCurrentTab } from "./utils.js";
+import { activeTabIdSaver, recentScriptsSaver } from "./localstorage.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -30,7 +26,7 @@ async function initLanguage() {
 async function runScript(script) {
   let willRun = await checkBlackWhiteList(script);
   if (willRun) {
-    recentScripts.add(script);
+    recentScriptsSaver.add(script);
     runScriptInCurrentTab(script.func);
   }
 }
@@ -61,12 +57,12 @@ async function createTabs() {
   }
 
   // open tab
-  let activeTabId = await activeTab.get();
+  let activeTabId = await activeTabIdSaver.get();
   activeTabId && openTab(tabs.find((tab) => tab.id === activeTabId));
 }
 
-function openTab(tab) {
-  activeTab.set(tab.id);
+async function openTab(tab) {
+  activeTabIdSaver.set(tab.id);
 
   // Array.from(document.querySelectorAll(".tabcontent")).forEach((_) => {
   //   _.style.display = "none";

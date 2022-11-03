@@ -1,7 +1,8 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./category.js";
-import { getAvailableScripts, recentScripts } from "./utils.js";
+import { getAvailableScripts } from "./utils.js";
 import { addBadge, BADGES } from "./badge.js";
+import { favoriteScriptsSaver, recentScriptsSaver } from "./localstorage.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isTitle = (script) => !script.func && !script.file && !script.link;
@@ -353,7 +354,11 @@ async function getAvailableScriptsInTabs(_tabs) {
 tabs.unshift(
   {
     ...CATEGORY.recently,
-    scripts: await recentScripts.get(),
+    scripts: await recentScriptsSaver.get(),
+  },
+  {
+    ...CATEGORY.favorite,
+    scripts: await favoriteScriptsSaver.get(),
   },
   {
     ...CATEGORY.available,
