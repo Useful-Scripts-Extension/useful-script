@@ -1,4 +1,4 @@
-import { langSaver } from "./localstorage.js";
+import { langSaver } from "./storage.js";
 
 export const LANG = {
   vi: "vi",

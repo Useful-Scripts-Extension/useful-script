@@ -2,10 +2,7 @@ import config from "../config.js";
 import { isTitle, tabs } from "./tabs.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { checkBlackWhiteList, runScriptInCurrentTab } from "./helpers/utils.js";
-import {
-  activeTabIdSaver,
-  recentScriptsSaver,
-} from "./helpers/localstorage.js";
+import { activeTabIdSaver, recentScriptsSaver } from "./helpers/storage.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
