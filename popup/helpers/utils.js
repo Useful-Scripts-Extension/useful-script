@@ -1,4 +1,4 @@
-import { allScripts } from "../scripts/index.js";
+import { allScripts } from "../../scripts/index.js";
 import { t } from "./lang.js";
 
 export const getTabId = async () => {
@@ -47,6 +47,18 @@ export async function getCurrentURL() {
   return new URL(url);
 }
 
+export async function getAvailableScripts() {
+  let hostname = (await getCurrentURL()).hostname;
+  let avai = [];
+  for (let script of Object.values(allScripts)) {
+    if (await checkBlackWhiteList(script, false, hostname)) {
+      avai.push(script);
+    }
+  }
+
+  return avai;
+}
+
 export async function checkBlackWhiteList(
   script,
   willAlert = true,
@@ -83,16 +95,4 @@ export async function checkBlackWhiteList(
   }
 
   return willRun;
-}
-
-export async function getAvailableScripts() {
-  let hostname = (await getCurrentURL()).hostname;
-  let avai = [];
-  for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, false, hostname)) {
-      avai.push(script);
-    }
-  }
-
-  return avai;
 }

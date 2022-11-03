@@ -1,3 +1,5 @@
+import { allScripts } from "../../scripts/index.js";
+
 // https://developer.chrome.com/docs/extensions/reference/storage/
 export const localStorage = {
   set: async (key, value) => {
