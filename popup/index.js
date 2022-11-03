@@ -53,24 +53,62 @@ async function createTabs() {
   activeTabId && openTab(tabs.find((tab) => tab.id === activeTabId));
 }
 
-async function openTab(tab) {
-  activeTabIdSaver.set(tab.id);
+function createScriptButton(script) {
+  // Section title
+  if (isTitle(script)) {
+    const title = document.createElement("h3");
+    title.textContent = t(script.name);
+    title.classList.add("section-title");
 
-  // Array.from(document.querySelectorAll(".tabcontent")).forEach((_) => {
-  //   _.style.display = "none";
-  // });
-  // document.querySelector(".tabcontent#" + tabId).style.display = "block";
+    return title;
+  }
 
-  Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
-    _.classList.remove("active");
+  // Function button
+
+  const button = document.createElement("button");
+  button.className = "tooltip";
+
+  if (script.func && typeof script.func === "function") {
+    button.onclick = () => runScript(script);
+  } else if (script.link && typeof script.link === "string") {
+    button.onclick = () => window.open(script.link);
+  } else {
+    button.onclick = () => alert("empty script");
+  }
+
+  script.badges?.map((badge) => {
+    const { text, color, backgroundColor } = badge;
+    const badgeSpan = document.createElement("span");
+    badgeSpan.classList.add("badge");
+    badgeSpan.innerText = t(text);
+    badgeSpan.style.color = color;
+    badgeSpan.style.backgroundColor = backgroundColor;
+
+    button.appendChild(badgeSpan);
   });
-  document
-    .querySelector('.tablinks[content-id="' + tab.id + '"]')
-    .classList.add("active");
 
+  if (script.icon && typeof script.icon === "string") {
+    const icon = document.createElement("img");
+    icon.classList.add("icon");
+    icon.src = script.icon;
+    button.appendChild(icon);
+  }
+
+  const title = document.createElement("span");
+  title.innerText = t(script.name);
+  button.appendChild(title);
+
+  const tooltip = document.createElement("span");
+  tooltip.className = "tooltiptext";
+  tooltip.innerText = t(script.description);
+  button.appendChild(tooltip);
+
+  return button;
+}
+
+function createTabContent(tab) {
   // create tab content
   const contentContainer = document.createElement("div");
-  contentContainer.id = tab.id;
   contentContainer.className = "tabcontent";
 
   // create button for scripts in tabcontent
@@ -83,64 +121,26 @@ async function openTab(tab) {
     contentContainer.appendChild(emptyText);
   } else {
     for (let script of tab.scripts) {
-      // Section title
-      if (isTitle(script)) {
-        const title = document.createElement("h3");
-        title.textContent = t(script.name);
-        title.classList.add("section-title");
-
-        contentContainer.appendChild(title);
-      }
-
-      // Function button
-      else {
-        const button = document.createElement("button");
-        button.className = "tooltip";
-
-        if (script.func && typeof script.func === "function") {
-          button.onclick = () => runScript(script);
-        } else if (script.link && typeof script.link === "string") {
-          button.onclick = () => window.open(script.link);
-        } else {
-          button.onclick = () => alert("empty script");
-        }
-
-        script.badges?.map((badge) => {
-          const { text, color, backgroundColor } = badge;
-          const badgeSpan = document.createElement("span");
-          badgeSpan.classList.add("badge");
-          badgeSpan.innerText = t(text);
-          badgeSpan.style.color = color;
-          badgeSpan.style.backgroundColor = backgroundColor;
-
-          button.appendChild(badgeSpan);
-        });
-
-        if (script.icon && typeof script.icon === "string") {
-          const icon = document.createElement("img");
-          icon.classList.add("icon");
-          icon.src = script.icon;
-          button.appendChild(icon);
-        }
-
-        const title = document.createElement("span");
-        title.innerText = t(script.name);
-        button.appendChild(title);
-
-        const tooltip = document.createElement("span");
-        tooltip.className = "tooltiptext";
-        tooltip.innerText = t(script.description);
-        button.appendChild(tooltip);
-
-        contentContainer.appendChild(button);
-        contentContainer.appendChild(document.createElement("br"));
-      }
+      contentContainer.appendChild(createScriptButton(script));
+      // contentContainer.appendChild(document.createElement("br"));
     }
   }
 
   // inject to DOM
   contentDiv.innerHTML = "";
   contentDiv.appendChild(contentContainer);
+}
+
+async function openTab(tab) {
+  activeTabIdSaver.set(tab.id);
+  createTabContent(tab);
+
+  Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
+    _.classList.remove("active");
+  });
+  document
+    .querySelector('.tablinks[content-id="' + tab.id + '"]')
+    .classList.add("active");
 }
 
 async function checkForUpdate() {

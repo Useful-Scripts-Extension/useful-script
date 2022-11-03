@@ -1,11 +1,11 @@
 export default {
   name: {
-    en: "Get all video from user profile ",
-    vi: "Tải tất cả video từ profile",
+    en: "Get all video from user doutu.be profile",
+    vi: "Tải tất cả video từ doutu.be profile",
   },
   description: {
-    en: "Get all video in user profile",
-    vi: "Tải tất cả video từ profile của user bất kỳ",
+    en: "Get all video in doutu.be user profile",
+    vi: "Tải tất cả video từ profile của user doutu.be bất kỳ",
   },
   blackList: [],
   whiteList: ["doutu.be"],

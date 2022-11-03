@@ -1,7 +1,7 @@
 export default {
   name: {
-    en: "Check web die",
-    vi: "Kiểm tra tình trạng web die",
+    en: "Dowfor - Check web die",
+    vi: "Dowfor - Kiểm tra web die",
   },
   description: {
     en: "Check web die using downforeveryoneorjustme",

@@ -1,11 +1,11 @@
 export default {
   name: {
-    en: "View stylesheet used in website",
-    vi: "Xem tất cả stylesheet (css)",
+    en: "View stylesheet used",
+    vi: "Xem tất cả stylesheet",
   },
   description: {
     en: "View all stylesheet used in current website",
-    vi: "Mở danh sách css trong tab mới",
+    vi: "Mở danh sách css được dùng bởi website trong tab mới",
   },
   func: function () {
     s = document.getElementsByTagName("STYLE");
@@ -67,4 +67,3 @@ export default {
     }
   },
 };
- 

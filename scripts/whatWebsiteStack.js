@@ -1,7 +1,7 @@
 export default {
   name: {
     en: "View website stack",
-    vi: "Web dùng công nghệ gì",
+    vi: "Web dùng công nghệ gì?",
   },
   description: {
     en: "Technology that current website is using",

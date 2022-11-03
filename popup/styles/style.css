@@ -87,11 +87,12 @@ a:hover {
 
 .section-title {
     padding: 10px 0 5px;
-    margin-top: 5px;
     position: sticky;
     top: 0;
     background-color: #e6e6e6;
-    z-index: 999;
+    z-index: 10;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .content button {
