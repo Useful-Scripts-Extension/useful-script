@@ -1,11 +1,11 @@
 export default {
   name: {
-    en: "View scripts used in website",
-    vi: "Xem tất cả scripts có trong web",
+    en: "View scripts used",
+    vi: "Xem tất cả scripts",
   },
   description: {
     en: "View all scripts used in current website",
-    vi: "Mở danh sách scripts trong tab mới",
+    vi: "Mở danh sách scripts đươc dùng bởi trang web trong tab mới",
   },
   func: function () {
     s = document.getElementsByTagName("SCRIPT");

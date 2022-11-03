@@ -1,7 +1,7 @@
 export default {
   icon: "https://cdn2.downdetector.com/dc31f7f27fda396/images/v2/problem.svg",
   name: {
-    en: "Website Down Detector",
+    en: "DownDetector - Detect website down or not",
     vi: "DownDetector - Kiểm tra web die",
   },
   description: {

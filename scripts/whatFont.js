@@ -7,6 +7,8 @@ export default {
     en: "Check font used in webpage",
     vi: "Kiểm tra xem từng phần tử trong web dùng font chữ gì",
   },
+
+  // https://www.typewolf.com/type-sample
   func: function () {
     let src = "https://www.typesample.com/assets/typesample.js";
     let d = document;

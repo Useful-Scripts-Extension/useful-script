@@ -1,8 +1,8 @@
 export default {
   icon: "",
   name: {
-    en: "View all links in website",
-    vi: "Xem tất cả link trong web",
+    en: "View all links",
+    vi: "Xem tất cả link",
   },
   description: {
     en: "Show all links and anchor text of current page.",

@@ -1,7 +1,7 @@
 export default {
   name: {
-    en: "Download doutu.be watching story",
-    vi: "Tải story doutu.be đang xem",
+    en: "Download doutu.be story",
+    vi: "Tải story doutu.be",
   },
   description: {
     en: "Download story that you are watching",

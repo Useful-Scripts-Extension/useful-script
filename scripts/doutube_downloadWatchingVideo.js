@@ -1,11 +1,11 @@
 export default {
   name: {
-    en: "Download watching video",
-    vi: "Tải video đang xem",
+    en: "Download video doutu.be",
+    vi: "Tải video doutu.be",
   },
   description: {
-    en: "Download video that you are watching",
-    vi: "Tải video bạn đang xem",
+    en: "Download video doutu.be that you are watching",
+    vi: "Tải video doutu.be bạn đang xem",
   },
   blackList: [],
   whiteList: [],
