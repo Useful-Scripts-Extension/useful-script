@@ -76,7 +76,7 @@ a:hover {
 
 /* ---------- Content & content button ---------- */
 .tabcontent {
-    padding: 6px 12px;
+    padding: 6px;
     border-top: none;
     padding-bottom: 50px;
 }
@@ -86,7 +86,12 @@ a:hover {
 }
 
 .section-title {
-    margin: 5px 0;
+    padding: 10px 0 5px;
+    margin-top: 5px;
+    position: sticky;
+    top: 0;
+    background-color: #e6e6e6;
+    z-index: 999;
 }
 
 .content button {
@@ -122,14 +127,14 @@ a:hover {
 }
 
 .content button .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(50%) translateY(-40%);
+
     padding: 3px 5px;
     border-radius: 5px;
     margin-right: 5px;
-    transform: rotate(-30deg);
-}
-
-.content button .badge:first-child {
-    margin-left: -10px;
 }
 
 /* Go from zero to full opacity */
