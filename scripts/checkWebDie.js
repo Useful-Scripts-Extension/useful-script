@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-skull-crossbones"></i>`,
   name: {
     en: "Dowfor - Check web die",
     vi: "Dowfor - Kiểm tra web die",

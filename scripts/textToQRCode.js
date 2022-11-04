@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-qrcode"></i>`,
   name: {
     en: "Text to QR Code",
     vi: "Chuyển chữ thành QRCode",

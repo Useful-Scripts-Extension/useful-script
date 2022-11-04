@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-droplet-slash"></i>`,
   name: {
     en: "Remove all colors in web",
     vi: "Xoá màu website",

@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-lock"></i>`,
   name: {
     en: "Password generator",
     vi: "Tạo mật khẩu cho trang web",

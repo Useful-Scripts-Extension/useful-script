@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-hashtag"></i>`,
   name: {
     en: "Add number columns",
     vi: "Thêm cột số thứ tự",

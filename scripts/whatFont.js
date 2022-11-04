@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-font"></i>`,
   name: {
     en: "What font",
     vi: "Kiểm tra font chữ",

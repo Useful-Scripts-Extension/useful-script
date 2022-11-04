@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-computer-mouse"></i>`,
   name: {
     en: "Re-Enable context menu (right click)",
     vi: "Bật lại menu chuột phải",
@@ -20,4 +21,3 @@ export default {
     alert("ReEnable context menu - Done");
   },
 };
-

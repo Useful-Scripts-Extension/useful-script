@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-arrow-pointer"></i>`,
   name: {
     en: "Re-Enable text selection",
     vi: "Bật text selection",

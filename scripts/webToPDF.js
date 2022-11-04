@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-print"></i>`,
   name: {
     en: "Web to PDF",
     vi: "In web ra PDF",

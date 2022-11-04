@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-angles-down"></i>`,
   name: {
     en: "Scroll to very end",
     vi: "Cuộn trang xuống cuối cùng",

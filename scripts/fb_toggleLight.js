@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-lightbulb"></i>`,
   name: {
     en: "Toggle light fb newfeed",
     vi: "Bật/tắt đèn fb newfeed",

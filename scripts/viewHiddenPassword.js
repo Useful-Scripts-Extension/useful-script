@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-eye-low-vision"></i>`,
   name: {
     en: "View hidden passwords",
     vi: "Xem mật khẩu bị ẩn",

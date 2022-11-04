@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-circle-half-stroke"></i>`,
   name: {
     en: "Darkmode for pdf",
     vi: "Chế độ tối cho PDF",
@@ -22,4 +23,3 @@ export default {
     document.body.appendChild(cover);
   },
 };
-

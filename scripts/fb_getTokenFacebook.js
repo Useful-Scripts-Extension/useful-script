@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-key"></i>`,
   name: {
     en: "Get fb Token (www.facebook.com)",
     vi: "Lấy fb Token (www.facebook.com)",
