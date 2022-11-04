@@ -96,11 +96,6 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.content .favorite {
-    transform: scale(0);
-    transition: all .2s;
-}
-
 .content button {
     display: block;
     border: none;
