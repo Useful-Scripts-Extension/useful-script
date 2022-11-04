@@ -1,6 +1,13 @@
 import config from "../config.js";
 import { allScripts } from "../scripts/index.js";
-import { isTitle, refreshSpecialTabs, specialTabs, tabs } from "./tabs.js";
+import {
+  isFunc,
+  isLink,
+  isTitle,
+  refreshSpecialTabs,
+  specialTabs,
+  tabs,
+} from "./tabs.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { checkBlackWhiteList, runScriptInCurrentTab } from "./helpers/utils.js";
 import {
@@ -125,9 +132,9 @@ function createScriptButton(script, isFavorite = false) {
   const button = document.createElement("button");
   button.className = "tooltip";
 
-  if (script.func && typeof script.func === "function") {
+  if (isFunc(script)) {
     button.onclick = () => runScript(script);
-  } else if (script.link && typeof script.link === "string") {
+  } else if (isLink(script)) {
     button.onclick = () => window.open(script.link);
   } else {
     button.onclick = () => alert("empty script");
@@ -181,17 +188,19 @@ function createScriptButton(script, isFavorite = false) {
   button.appendChild(title);
 
   // add to favorite button
-  const addFavoriteBtn = document.createElement("i");
-  addFavoriteBtn.className = isFavorite
-    ? "fa-solid fa-star star active"
-    : "fa-regular fa-star star";
-  addFavoriteBtn.onclick = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+  if (isFunc(script)) {
+    const addFavoriteBtn = document.createElement("i");
+    addFavoriteBtn.className = isFavorite
+      ? "fa-solid fa-star star active"
+      : "fa-regular fa-star star";
+    addFavoriteBtn.onclick = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
 
-    favoriteScriptsSaver.toggle(script).then(createTabs);
-  };
-  button.appendChild(addFavoriteBtn);
+      favoriteScriptsSaver.toggle(script).then(createTabs);
+    };
+    button.appendChild(addFavoriteBtn);
+  }
 
   // tooltip
   const tooltip = document.createElement("span");

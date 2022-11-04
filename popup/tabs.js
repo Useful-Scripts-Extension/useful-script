@@ -5,7 +5,9 @@ import { addBadge, BADGES } from "./helpers/badge.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
-const isTitle = (script) => !script.func && !script.file && !script.link;
+const isFunc = (script) => script.func && typeof script.func === "function";
+const isLink = (script) => script.link && typeof script.link === "string";
+const isTitle = (script) => !isFunc(script) && !isLink(script);
 
 const specialTabs = [
   {
@@ -184,6 +186,7 @@ const tabs = [
       ),
       addBadge(
         {
+          icon: "https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-square2-256.png",
           name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
           description: {
             en: "Tool download media from facebook automatic",
@@ -193,17 +196,6 @@ const tabs = [
         },
         BADGES.hot
       ),
-      {
-        name: {
-          en: "Relational Database Tools",
-          vi: "Giải toán môn PTTK HTTT",
-        },
-        description: {
-          en: "Solve problems in relational data field",
-          vi: "Tính toán các vấn đề trong môn phân tích thiết kế hệ thống thông tin",
-        },
-        link: "https://github.com/HoangTran0410/PTTK",
-      },
       { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
       {
         icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
@@ -378,4 +370,4 @@ async function refreshSpecialTabs() {
   if (avaiab) avaiab.scripts = await getAvailableScriptsInTabs(tabs);
 }
 
-export { isTitle, refreshSpecialTabs, tabs, specialTabs };
+export { isTitle, isFunc, isLink, refreshSpecialTabs, tabs, specialTabs };
