@@ -53,57 +53,16 @@ async function createTabs() {
   activeTabId && openTab(tabs.find((tab) => tab.id === activeTabId));
 }
 
-function createScriptButton(script) {
-  // Section title
-  if (isTitle(script)) {
-    const title = document.createElement("h3");
-    title.textContent = t(script.name);
-    title.classList.add("section-title");
+async function openTab(tab) {
+  activeTabIdSaver.set(tab.id);
+  createTabContent(tab);
 
-    return title;
-  }
-
-  // Function button
-
-  const button = document.createElement("button");
-  button.className = "tooltip";
-
-  if (script.func && typeof script.func === "function") {
-    button.onclick = () => runScript(script);
-  } else if (script.link && typeof script.link === "string") {
-    button.onclick = () => window.open(script.link);
-  } else {
-    button.onclick = () => alert("empty script");
-  }
-
-  script.badges?.map((badge) => {
-    const { text, color, backgroundColor } = badge;
-    const badgeSpan = document.createElement("span");
-    badgeSpan.classList.add("badge");
-    badgeSpan.innerText = t(text);
-    badgeSpan.style.color = color;
-    badgeSpan.style.backgroundColor = backgroundColor;
-
-    button.appendChild(badgeSpan);
+  Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
+    _.classList.remove("active");
   });
-
-  if (script.icon && typeof script.icon === "string") {
-    const icon = document.createElement("img");
-    icon.classList.add("icon");
-    icon.src = script.icon;
-    button.appendChild(icon);
-  }
-
-  const title = document.createElement("span");
-  title.innerText = t(script.name);
-  button.appendChild(title);
-
-  const tooltip = document.createElement("span");
-  tooltip.className = "tooltiptext";
-  tooltip.innerText = t(script.description);
-  button.appendChild(tooltip);
-
-  return button;
+  document
+    .querySelector('.tablinks[content-id="' + tab.id + '"]')
+    .classList.add("active");
 }
 
 function createTabContent(tab) {
@@ -131,16 +90,71 @@ function createTabContent(tab) {
   contentDiv.appendChild(contentContainer);
 }
 
-async function openTab(tab) {
-  activeTabIdSaver.set(tab.id);
-  createTabContent(tab);
+function createScriptButton(script) {
+  // Section title
+  if (isTitle(script)) {
+    const title = document.createElement("h3");
+    title.textContent = t(script.name);
+    title.classList.add("section-title");
 
-  Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
-    _.classList.remove("active");
-  });
-  document
-    .querySelector('.tablinks[content-id="' + tab.id + '"]')
-    .classList.add("active");
+    return title;
+  }
+
+  // Function button
+  const button = document.createElement("button");
+  button.className = "tooltip";
+
+  if (script.func && typeof script.func === "function") {
+    button.onclick = () => runScript(script);
+  } else if (script.link && typeof script.link === "string") {
+    button.onclick = () => window.open(script.link);
+  } else {
+    button.onclick = () => alert("empty script");
+  }
+
+  if (script.badges?.length > 0) {
+    const badgeContainer = document.createElement("div");
+    badgeContainer.classList.add("badgeContainer");
+
+    script.badges?.map((badge) => {
+      const { text, color, backgroundColor } = badge;
+      const badgeItem = document.createElement("span");
+      badgeItem.classList.add("badge");
+      badgeItem.innerText = t(text);
+      badgeItem.style.color = color;
+      badgeItem.style.backgroundColor = backgroundColor;
+
+      badgeContainer.appendChild(badgeItem);
+    });
+
+    button.appendChild(badgeContainer);
+  }
+
+  if (script.icon && typeof script.icon === "string") {
+    const icon = document.createElement("img");
+    icon.classList.add("icon");
+    icon.src = script.icon;
+    button.appendChild(icon);
+  }
+
+  const title = document.createElement("span");
+  title.innerText = t(script.name);
+  button.appendChild(title);
+
+  const tooltip = document.createElement("span");
+  tooltip.className = "tooltiptext";
+  tooltip.innerText = t(script.description);
+  button.appendChild(tooltip);
+
+  return button;
+}
+
+async function runScript(script) {
+  let willRun = await checkBlackWhiteList(script);
+  if (willRun) {
+    recentScriptsSaver.add(script);
+    runScriptInCurrentTab(script.func);
+  }
 }
 
 async function checkForUpdate() {
@@ -165,14 +179,6 @@ async function checkForUpdate() {
     }
   } catch (e) {
     console.warn("Check for update failed", e);
-  }
-}
-
-async function runScript(script) {
-  let willRun = await checkBlackWhiteList(script);
-  if (willRun) {
-    recentScriptsSaver.add(script);
-    runScriptInCurrentTab(script.func);
   }
 }
 
