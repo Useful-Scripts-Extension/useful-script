@@ -100,7 +100,15 @@ function createScriptButton(script) {
     return title;
   }
 
-  // Function button
+  const btnContainer = document.createElement("div");
+
+  // favorite
+  // const favoriteBtn = document.createElement("span");
+  // favoriteBtn.classList.add("favorite");
+  // favoriteBtn.innerHTML = `<i class="fa-regular fa-star"></i>`;
+  // btnContainer.appendChild(favoriteBtn);
+
+  // Button
   const button = document.createElement("button");
   button.className = "tooltip";
 
@@ -112,6 +120,7 @@ function createScriptButton(script) {
     button.onclick = () => alert("empty script");
   }
 
+  // script badges
   if (script.badges?.length > 0) {
     const badgeContainer = document.createElement("div");
     badgeContainer.classList.add("badgeContainer");
@@ -130,6 +139,7 @@ function createScriptButton(script) {
     button.appendChild(badgeContainer);
   }
 
+  // button icon
   if (script.icon && typeof script.icon === "string") {
     const icon = document.createElement("img");
     icon.classList.add("icon");
@@ -137,16 +147,19 @@ function createScriptButton(script) {
     button.appendChild(icon);
   }
 
+  // button title
   const title = document.createElement("span");
+  title.classList.add("btn-title");
   title.innerText = t(script.name);
   button.appendChild(title);
 
   const tooltip = document.createElement("span");
-  tooltip.className = "tooltiptext";
+  tooltip.classList.add("tooltiptext");
   tooltip.innerText = t(script.description);
   button.appendChild(tooltip);
+  btnContainer.appendChild(button);
 
-  return button;
+  return btnContainer;
 }
 
 async function runScript(script) {
