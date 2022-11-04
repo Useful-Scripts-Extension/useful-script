@@ -7,6 +7,21 @@ import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isTitle = (script) => !script.func && !script.file && !script.link;
 
+const specialTabs = [
+  {
+    ...CATEGORY.recently,
+    scripts: [],
+  },
+  {
+    ...CATEGORY.favorite,
+    scripts: [],
+  },
+  {
+    ...CATEGORY.available,
+    scripts: [],
+  },
+];
+
 const tabs = [
   {
     ...CATEGORY.search,
@@ -351,30 +366,16 @@ async function getAvailableScriptsInTabs(_tabs) {
   return result;
 }
 
-tabs.unshift(
-  {
-    ...CATEGORY.recently,
-    scripts: await recentScriptsSaver.get(),
-  },
-  {
-    ...CATEGORY.favorite,
-    scripts: await favoriteScriptsSaver.get(),
-  },
-  {
-    ...CATEGORY.available,
-    scripts: await getAvailableScriptsInTabs(tabs),
-  }
-);
+async function refreshSpecialTabs() {
+  // add data to special tabs
+  let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
+  if (recentTab) recentTab.scripts = await recentScriptsSaver.get();
 
-// add script count to tab name
-tabs.forEach((tab) => {
-  if (tab.showCount) {
-    let avaiCount = tab.scripts.filter((script) => !isTitle(script)).length;
-    let allCount = Object.keys(s).length;
+  let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
+  if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
 
-    tab.name.vi += ` (${avaiCount}/${allCount})`;
-    tab.name.en += ` (${avaiCount}/${allCount})`;
-  }
-});
+  let avaiab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
+  if (avaiab) avaiab.scripts = await getAvailableScriptsInTabs(tabs);
+}
 
-export { isTitle, tabs };
+export { isTitle, refreshSpecialTabs, tabs, specialTabs };

@@ -1,8 +1,13 @@
 import config from "../config.js";
-import { isTitle, tabs } from "./tabs.js";
+import { allScripts } from "../scripts/index.js";
+import { isTitle, refreshSpecialTabs, specialTabs, tabs } from "./tabs.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { checkBlackWhiteList, runScriptInCurrentTab } from "./helpers/utils.js";
-import { activeTabIdSaver, recentScriptsSaver } from "./helpers/storage.js";
+import {
+  activeTabIdSaver,
+  favoriteScriptsSaver,
+  recentScriptsSaver,
+} from "./helpers/storage.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -24,18 +29,31 @@ async function initLanguage() {
 }
 
 async function createTabs() {
+  // prepare tabs
+  await refreshSpecialTabs();
+
   // clear UI
   tabDiv.innerHTML = "";
   contentDiv.innerHTML = "";
 
   // make new UI
-  for (let tab of tabs) {
+  const allTabs = [...specialTabs, ...tabs];
+  for (let tab of allTabs) {
     // create tab button
     const tabBtn = document.createElement("button");
     tabBtn.className = "tablinks";
     tabBtn.innerHTML = t(tab.name);
     tabBtn.type = "button";
     tabBtn.setAttribute("content-id", tab.id);
+
+    // show scripts count
+    if (tab.showCount) {
+      let avaiCount = tab.scripts.filter((script) => !isTitle(script)).length;
+      let allCount = Object.keys(allScripts).length;
+      tabBtn.innerHTML += ` (${avaiCount}/${allCount})`;
+    }
+
+    // custom style
     if (tab.style && typeof tab.style === "object")
       Object.entries(tab.style).forEach(([key, value]) => {
         tabBtn.style[key] = value;
@@ -50,7 +68,7 @@ async function createTabs() {
 
   // open tab
   let activeTabId = await activeTabIdSaver.get();
-  activeTabId && openTab(tabs.find((tab) => tab.id === activeTabId));
+  activeTabId && openTab(allTabs.find((tab) => tab.id === activeTabId));
 }
 
 async function openTab(tab) {
@@ -65,7 +83,7 @@ async function openTab(tab) {
     .classList.add("active");
 }
 
-function createTabContent(tab) {
+async function createTabContent(tab) {
   // create tab content
   const contentContainer = document.createElement("div");
   contentContainer.className = "tabcontent";
@@ -73,14 +91,18 @@ function createTabContent(tab) {
   // create button for scripts in tabcontent
   if (!tab.scripts?.length) {
     const emptyText = document.createElement("h3");
-    emptyText.innerText = t({
-      en: "Nothing here yet...",
-      vi: "Chưa có gì ở đây hết...",
+    emptyText.style.padding = "30px 0";
+    emptyText.style.color = "#19143b";
+    emptyText.innerHTML = t({
+      en: `<i class="fa-solid fa-circle-info"></i> Nothing here yet...`,
+      vi: `<i class="fa-solid fa-circle-info"></i> Chưa có gì ở đây hết...`,
     });
     contentContainer.appendChild(emptyText);
   } else {
+    const favoriteScriptIds = await favoriteScriptsSaver.getIds();
     tab.scripts.forEach((script) => {
-      contentContainer.appendChild(createScriptButton(script));
+      let isFavorite = favoriteScriptIds.find((id) => script.id === id);
+      contentContainer.appendChild(createScriptButton(script, isFavorite));
     });
   }
 
@@ -89,7 +111,7 @@ function createTabContent(tab) {
   contentDiv.appendChild(contentContainer);
 }
 
-function createScriptButton(script) {
+function createScriptButton(script, isFavorite = false) {
   // Section title
   if (isTitle(script)) {
     const title = document.createElement("h3");
@@ -143,6 +165,19 @@ function createScriptButton(script) {
   title.classList.add("btn-title");
   title.innerText = t(script.name);
   button.appendChild(title);
+
+  // add to favorite button
+  const addFavoriteBtn = document.createElement("i");
+  addFavoriteBtn.className = isFavorite
+    ? "fa-solid fa-star active"
+    : "fa-regular fa-star";
+  addFavoriteBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    favoriteScriptsSaver.toggle(script).then(createTabs);
+  };
+  button.appendChild(addFavoriteBtn);
 
   // tooltip
   const tooltip = document.createElement("span");
