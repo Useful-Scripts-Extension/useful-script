@@ -95,6 +95,17 @@ a:hover {
     margin-bottom: 10px;
 }
 
+.content .btnContainer {}
+
+.content .favorite {
+    transform: scale(0);
+    transition: all .2s;
+}
+
+.content .btnContainer:hover .favorite {
+    transform: scale(1);
+}
+
 .content button {
     border: none;
     margin: 0.25em;
@@ -116,7 +127,7 @@ a:hover {
     transition: all 50ms;
 }
 
-.content button span {
+.content button .btn-title {
     vertical-align: middle;
 }
 
