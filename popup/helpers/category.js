@@ -2,39 +2,126 @@ export const CATEGORY = {
   favorite: {
     id: "favorite",
     style: { textDecoration: "underline" },
-    name: { en: "Favorite", vi: "Yêu thích" },
+    name: {
+      en: `<i class="fa-solid fa-star" style="color:#1F51FF"></i> Favorite`,
+      vi: `<i class="fa-solid fa-star" style="color:#1F51FF"></i> Yêu thích`,
+    },
   },
   recently: {
     id: "recently",
     style: { textDecoration: "underline" },
-    name: { en: "Recently", vi: "Gần đây" },
+    name: {
+      en: `<i class="fa-solid fa-clock" style="color:#1F51FF"></i> Recently`,
+      vi: `<i class="fa-solid fa-clock" style="color:#1F51FF"></i> Gần đây`,
+    },
   },
   available: {
     id: "available",
     showCount: true,
     style: { textDecoration: "underline" },
-    name: { en: "Available", vi: "Có thể dùng" },
+    name: {
+      en: `<i class="fa-solid fa-play" style="color:#1F51FF"></i> Available`,
+      vi: `<i class="fa-solid fa-play" style="color:#1F51FF"></i> Có thể dùng`,
+    },
   },
-  search: { id: "search", name: { en: "Search", vi: "Tìm kiếm" } },
-  download: { id: "download", name: { en: "Download", vi: "Tải xuống" } },
-  facebook: { id: "facebook", name: { en: "Facebook", vi: "Facebook" } },
-  instagram: { id: "instagram", name: { en: "Instagram", vi: "Instagram" } },
-  youtube: { id: "youtube", name: { en: "Youtube", vi: "Youtube" } },
-  github: { id: "github", name: { en: "Github", vi: "Github" } },
+  search: {
+    id: "search",
+    name: {
+      en: `<i class="fa-solid fa-magnifying-glass"></i> Search`,
+      vi: `<i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm`,
+    },
+  },
+  download: {
+    id: "download",
+    name: {
+      en: `<i class="fa-solid fa-download"></i> Download`,
+      vi: `<i class="fa-solid fa-download"></i> Tải xuống`,
+    },
+  },
+  facebook: {
+    id: "facebook",
+    name: {
+      en: `<i class="fa-brands fa-facebook"></i> Facebook`,
+      vi: `<i class="fa-brands fa-facebook"></i> Facebook`,
+    },
+  },
+  instagram: {
+    id: "instagram",
+    name: {
+      en: `<i class="fa-brands fa-instagram"></i> Instagram`,
+      vi: `<i class="fa-brands fa-instagram"></i> Instagram`,
+    },
+  },
+  youtube: {
+    id: "youtube",
+    name: {
+      en: `<i class="fa-brands fa-youtube"></i> Youtube`,
+      vi: `<i class="fa-brands fa-youtube"></i> Youtube`,
+    },
+  },
+  github: {
+    id: "github",
+    name: {
+      en: `<i class="fa-brands fa-github"></i> Github`,
+      vi: `<i class="fa-brands fa-github"></i> Github`,
+    },
+  },
   doutube: { id: "doutube", name: { en: "Doutu.be", vi: "Doutu.be" } },
-  pdf: { id: "pdf", name: { en: "PDF", vi: "PDF" } },
-  qrcode: { id: "qrcode", name: { en: "QR Code", vi: "QR Code" } },
+  pdf: {
+    id: "pdf",
+    name: {
+      en: `<i class="fa-solid fa-file-pdf"></i> PDF`,
+      vi: `<i class="fa-solid fa-file-pdf"></i> PDF`,
+    },
+  },
+  qrcode: {
+    id: "qrcode",
+    name: {
+      en: `<i class="fa-solid fa-qrcode"></i> QR Code`,
+      vi: `<i class="fa-solid fa-qrcode"></i> QR Code`,
+    },
+  },
   automation: {
     id: "automation",
-    name: { en: "Automation", vi: "Tự động hoá" },
+    name: {
+      en: `<i class="fa-solid fa-robot"></i> Automation`,
+      vi: `<i class="fa-solid fa-robot"></i> Tự động hoá`,
+    },
   },
-  password: { id: "password", name: { en: "Password", vi: "Mật khẩu" } },
-  unlock: { id: "unlock", name: { en: "Unlock", vi: "Mở khoá" } },
-  webUI: { id: "webui", name: { en: "Web UI", vi: "Giao diện" } },
-  more: { id: "more", name: { en: "More...", vi: "Khác..." } },
+  password: {
+    id: "password",
+    name: {
+      en: `<i class="fa-solid fa-key"></i> Password`,
+      vi: `<i class="fa-solid fa-key"></i> Mật khẩu`,
+    },
+  },
+  unlock: {
+    id: "unlock",
+    name: {
+      en: `<i class="fa-solid fa-unlock"></i> Unlock`,
+      vi: `<i class="fa-solid fa-unlock"></i> Mở khoá`,
+    },
+  },
+  webUI: {
+    id: "webui",
+    name: {
+      en: `<i class="fa-solid fa-eye"></i> Web UI`,
+      vi: `<i class="fa-solid fa-eye"></i> Giao diện`,
+    },
+  },
+  more: {
+    id: "more",
+    name: {
+      en: `<i class="fa-solid fa-ellipsis"></i> More`,
+      vi: `<i class="fa-solid fa-ellipsis"></i> Khác`,
+    },
+  },
   recommend: {
     id: "recommend",
     style: { textDecoration: "underline" },
-    name: { en: "Recommend", vi: "Khuyên dùng" },
+    name: {
+      en: `<i class="fa-solid fa-thumbs-up" style="color:#1F51FF"></i> Recommend`,
+      vi: `<i class="fa-solid fa-thumbs-up" style="color:#1F51FF"></i> Khuyên dùng`,
+    },
   },
 };

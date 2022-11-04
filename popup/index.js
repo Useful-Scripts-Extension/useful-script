@@ -33,7 +33,7 @@ async function createTabs() {
     // create tab button
     const tabBtn = document.createElement("button");
     tabBtn.className = "tablinks";
-    tabBtn.textContent = t(tab.name);
+    tabBtn.innerHTML = t(tab.name);
     tabBtn.type = "button";
     tabBtn.setAttribute("content-id", tab.id);
     if (tab.style && typeof tab.style === "object")
@@ -79,10 +79,9 @@ function createTabContent(tab) {
     });
     contentContainer.appendChild(emptyText);
   } else {
-    for (let script of tab.scripts) {
+    tab.scripts.forEach((script) => {
       contentContainer.appendChild(createScriptButton(script));
-      // contentContainer.appendChild(document.createElement("br"));
-    }
+    });
   }
 
   // inject to DOM
@@ -94,19 +93,11 @@ function createScriptButton(script) {
   // Section title
   if (isTitle(script)) {
     const title = document.createElement("h3");
-    title.textContent = t(script.name);
+    title.innerHTML = t(script.name);
     title.classList.add("section-title");
 
     return title;
   }
-
-  const btnContainer = document.createElement("div");
-
-  // favorite
-  // const favoriteBtn = document.createElement("span");
-  // favoriteBtn.classList.add("favorite");
-  // favoriteBtn.innerHTML = `<i class="fa-regular fa-star"></i>`;
-  // btnContainer.appendChild(favoriteBtn);
 
   // Button
   const button = document.createElement("button");
@@ -153,13 +144,13 @@ function createScriptButton(script) {
   title.innerText = t(script.name);
   button.appendChild(title);
 
+  // tooltip
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
   tooltip.innerText = t(script.description);
   button.appendChild(tooltip);
-  btnContainer.appendChild(button);
 
-  return btnContainer;
+  return button;
 }
 
 async function runScript(script) {
