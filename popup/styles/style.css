@@ -15,14 +15,15 @@ h3 {
     text-align: center;
 }
 
-a {
+h3 a {
+    background-color: #ddd;
     text-decoration: none;
     display: inline-block;
-    padding: 5px 0;
+    padding: 5px 5px;
 }
 
 a:hover {
-    background-color: #ddd;
+    background-color: #bbb;
 }
 
 #flag {
