@@ -20,7 +20,7 @@ const createVariableSaver = (key, defaultValue = null) => ({
   },
 });
 
-const createScriptsSaver = (key) => {
+const createScriptsSaver = (key, addToHead = true) => {
   const getIds = async () =>
     (await localStorage.get(key, [])).filter(
       (savedScriptId) => savedScriptId in allScripts
@@ -30,7 +30,7 @@ const createScriptsSaver = (key) => {
     let exist = current.findIndex((id) => id === script.id) >= 0;
     return exist;
   };
-  const add = async (script, addToHead = true) => {
+  const add = async (script) => {
     let current = await getIds();
     let newList = current.filter((id) => id != script.id); // remove duplicate
     if (addToHead) newList.unshift(script.id); // only save script id
