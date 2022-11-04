@@ -82,7 +82,7 @@ a:hover {
 }
 
 .tabcontent {
-    animation: fadeEffect 1s;
+    animation: fadeEffect .3s;
 }
 
 .section-title {
@@ -120,6 +120,27 @@ a:hover {
 .content button:active {
     transform: none;
     transition: all 50ms;
+}
+
+.content button i {
+    opacity: 0;
+    width: 0;
+    transition: all .2s;
+}
+
+.content button i.active {
+    color: #0048ad;
+}
+
+.content button i:hover {
+    transform: scale(1.8);
+}
+
+.content button:hover i,
+.content button i.active {
+    width: auto;
+    margin-left: 5px;
+    opacity: 1;
 }
 
 .content button .btn-title {

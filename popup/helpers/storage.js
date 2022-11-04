@@ -20,22 +20,42 @@ const createVariableSaver = (key, defaultValue = null) => ({
   },
 });
 
-const createScriptsSaver = (key) => ({
-  add: async (script) => {
-    let current = await localStorage.get(key, []);
-    current = current.filter((id) => id != script.id); // remove duplicate
-    current.unshift(script.id); // only save script id
-    await localStorage.set(key, current);
-  },
-  clear: async () => {
+const createScriptsSaver = (key) => {
+  const getIds = async () =>
+    (await localStorage.get(key, [])).filter(
+      (savedScriptId) => savedScriptId in allScripts
+    );
+  const has = async (script) => {
+    let current = await getIds();
+    let exist = current.findIndex((id) => id === script.id) >= 0;
+    return exist;
+  };
+  const add = async (script, addToHead = true) => {
+    let current = await getIds();
+    let newList = current.filter((id) => id != script.id); // remove duplicate
+    if (addToHead) newList.unshift(script.id); // only save script id
+    else newList.push(script.id);
+    await localStorage.set(key, newList);
+  };
+  const remove = async (script) => {
+    let current = await getIds();
+    let newList = current.filter((id) => id !== script.id);
+    await localStorage.set(key, newList);
+    console.log("removed ", script);
+  };
+  const toggle = async (script) => {
+    let exist = await has(script);
+    if (exist) await remove(script);
+    else await add(script);
+  };
+  const clear = async () => {
     await localStorage.set(key, []);
-  },
-  get: async () => {
-    return (await localStorage.get(key, []))
-      .filter((savedScriptId) => savedScriptId in allScripts)
-      .map((savedScriptId) => allScripts[savedScriptId]);
-  },
-});
+  };
+  const get = async () =>
+    (await getIds()).map((savedScriptId) => allScripts[savedScriptId]);
+
+  return { add, remove, has, toggle, clear, getIds, get };
+};
 
 export const langSaver = createVariableSaver("useful-scripts-lang");
 export const activeTabIdSaver = createVariableSaver(
