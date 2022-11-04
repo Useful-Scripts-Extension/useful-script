@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-square-arrow-up-right"></i>`,
   name: {
     en: "Open repo in github.dev",
     vi: "Mở repo trong github.dev",

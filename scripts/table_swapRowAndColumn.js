@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-right-left"></i>`,
   name: {
     en: "Swap rows and columns",
     vi: "Đổi chỗ hàng và cột",

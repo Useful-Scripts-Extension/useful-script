@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-brands fa-searchengin"></i>`,
   name: {
     en: "Google site search",
     vi: "Tìm kiếm trên trang web này",

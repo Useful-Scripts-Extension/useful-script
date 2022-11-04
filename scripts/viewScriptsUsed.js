@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-brands fa-square-js"></i>`,
   name: {
     en: "View scripts used",
     vi: "Xem tất cả scripts",

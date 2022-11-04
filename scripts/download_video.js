@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-down-long"></i>`,
   name: {
     en: "Download video",
     vi: "Tải video",

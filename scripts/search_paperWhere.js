@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-book"></i>`,
   name: {
     en: "Where to find papers/books/pdf/...",
     vi: "Tìm bài báo/sách/pdf/...ở đâu?",

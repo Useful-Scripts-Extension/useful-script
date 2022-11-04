@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-microchip"></i>`,
   name: {
     en: "View website stack",
     vi: "Web dùng công nghệ gì?",

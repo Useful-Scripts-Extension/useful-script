@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: `<i class="fa-solid fa-link"></i>`,
   name: {
     en: "View all links",
     vi: "Xem tất cả link",

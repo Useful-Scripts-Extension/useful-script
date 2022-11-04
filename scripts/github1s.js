@@ -1,5 +1,5 @@
 export default {
-  icon: "https://github1s.com/favicon-dark.svg",
+  icon: `<i class="fa-solid fa-square-arrow-up-right"></i>`,
   name: {
     en: "Open repo in github1s.com",
     vi: "Mở repo trong github1s.com",

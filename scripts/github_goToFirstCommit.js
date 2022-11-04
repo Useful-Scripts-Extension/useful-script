@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-backward-fast"></i>`,
   name: {
     en: "Go to first commit",
     vi: "Đi tới commit đầu tiên",

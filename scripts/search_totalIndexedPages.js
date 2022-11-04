@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-brands fa-google"></i>`,
   name: {
     en: "Check total indexed pages",
     vi: "Xem các pages được google quét",

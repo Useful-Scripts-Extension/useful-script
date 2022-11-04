@@ -1,7 +1,8 @@
 export default {
+  icon: `<i class="fa-solid fa-hand"></i>`,
   name: {
     en: "Scroll by dragging",
-    vi: "cuộn web bằng cách kéo thả",
+    vi: "Cuộn web bằng cách kéo thả",
   },
   description: {
     en: "Use this will turn the cursor into a scroller and use it again will return it back to normal.",

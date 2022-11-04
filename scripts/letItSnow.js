@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-snowflake"></i>`,
   name: {
     en: "Let it snow",
     vi: "Hiệu ứng tuyết rơi",

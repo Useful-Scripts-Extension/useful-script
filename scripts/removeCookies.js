@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-cookie-bite"></i>`,
   name: {
     en: "Remove cookies",
     vi: "Xoá Cookies",
@@ -32,4 +33,3 @@ export default {
     alert("Remove cookies DONE");
   },
 };
-

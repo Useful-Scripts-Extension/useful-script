@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-laptop-code"></i>`,
   name: {
     en: "View source code of selected area",
     vi: "Xem mã nguồn của phần bôi đen",
@@ -52,4 +53,3 @@ export default {
     }
   },
 };
-

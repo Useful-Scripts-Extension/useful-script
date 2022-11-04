@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-image"></i>`,
   name: {
     en: "View all images in web",
     vi: "Xem mọi hình ảnh có trong website",
@@ -78,4 +79,3 @@ export default {
     P(G.body, t);
   },
 };
-

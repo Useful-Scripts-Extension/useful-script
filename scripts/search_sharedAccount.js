@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-user"></i>`,
   name: {
     en: "Find shared login",
     vi: "Tìm tài khoản miễn phí",
