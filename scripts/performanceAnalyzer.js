@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-gauge-max"></i>`,
   name: {
     en: "Performance Analyzer",
     vi: "Phân tích hiệu suất",

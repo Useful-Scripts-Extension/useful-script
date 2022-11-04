@@ -1,4 +1,5 @@
 export default {
+  icon: `<i class="fa-solid fa-pen-to-square"></i>`,
   name: {
     en: "Toggle edit page",
     vi: "Bật/tắt chế độ chỉnh sửa website",

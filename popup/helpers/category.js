@@ -3,16 +3,16 @@ export const CATEGORY = {
     id: "favorite",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-star" style="color:#1F51FF"></i> Favorite`,
-      vi: `<i class="fa-solid fa-star" style="color:#1F51FF"></i> Yêu thích`,
+      en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Favorite`,
+      vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Yêu thích`,
     },
   },
   recently: {
     id: "recently",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-clock" style="color:#1F51FF"></i> Recently`,
-      vi: `<i class="fa-solid fa-clock" style="color:#1F51FF"></i> Gần đây`,
+      en: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Recently`,
+      vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Gần đây`,
     },
   },
   available: {
@@ -20,8 +20,8 @@ export const CATEGORY = {
     showCount: true,
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-play" style="color:#1F51FF"></i> Available`,
-      vi: `<i class="fa-solid fa-play" style="color:#1F51FF"></i> Có thể dùng`,
+      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Available`,
+      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Có thể dùng`,
     },
   },
   search: {
@@ -120,8 +120,8 @@ export const CATEGORY = {
     id: "recommend",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-thumbs-up" style="color:#1F51FF"></i> Recommend`,
-      vi: `<i class="fa-solid fa-thumbs-up" style="color:#1F51FF"></i> Khuyên dùng`,
+      en: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Recommend`,
+      vi: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Khuyên dùng`,
     },
   },
 };
