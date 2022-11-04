@@ -154,23 +154,37 @@ function createScriptButton(script, isFavorite = false) {
 
   // button icon
   if (script.icon && typeof script.icon === "string") {
-    const icon = document.createElement("img");
-    icon.classList.add("icon");
-    icon.src = script.icon;
-    button.appendChild(icon);
+    // image icon
+    if (
+      script.icon.indexOf("http://") === 0 ||
+      script.icon.indexOf("https://") === 0
+    ) {
+      const icon = document.createElement("img");
+      icon.classList.add("icon-img");
+      icon.src = script.icon;
+      button.appendChild(icon);
+    }
+
+    // text/html icon
+    else {
+      const icon = document.createElement("span");
+      icon.classList.add("icon-html");
+      icon.innerHTML = script.icon;
+      button.appendChild(icon);
+    }
   }
 
   // button title
   const title = document.createElement("span");
   title.classList.add("btn-title");
-  title.innerText = t(script.name);
+  title.innerHTML = t(script.name);
   button.appendChild(title);
 
   // add to favorite button
   const addFavoriteBtn = document.createElement("i");
   addFavoriteBtn.className = isFavorite
-    ? "fa-solid fa-star active"
-    : "fa-regular fa-star";
+    ? "fa-solid fa-star star active"
+    : "fa-regular fa-star star";
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();

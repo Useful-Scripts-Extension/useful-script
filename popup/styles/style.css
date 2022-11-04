@@ -122,22 +122,22 @@ a:hover {
     transition: all 50ms;
 }
 
-.content button i {
+.content button i.star {
     opacity: 0;
     width: 0;
     transition: all .2s;
 }
 
-.content button i.active {
+.content button i.star.active {
     color: #0048ad;
 }
 
-.content button i:hover {
+.content button i.star:hover {
     transform: scale(1.8);
 }
 
-.content button:hover i,
-.content button i.active {
+.content button:hover i.star,
+.content button i.star.active {
     width: auto;
     margin-left: 5px;
     opacity: 1;
@@ -147,10 +147,16 @@ a:hover {
     vertical-align: middle;
 }
 
-.content button .icon {
+.content button .icon-img {
     display: inline-block;
     vertical-align: middle;
     height: 30px;
+    margin-right: 5px;
+}
+
+.content button .icon-html {
+    display: inline-block;
+    vertical-align: middle;
     margin-right: 5px;
 }
 
