@@ -4,6 +4,37 @@
     box-sizing: border-box;
 }
 
+/* https://www.cssfontstack.com/Segoe-UI */
+h1 {
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 700;
+    line-height: 26.4px;
+}
+
+h3 {
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 700;
+    line-height: 15.4px;
+}
+
+p,
+div {
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* ============== End font =============== */
+
 html,
 body {
     min-width: 350px;
@@ -91,7 +122,7 @@ a:hover {
     position: sticky;
     top: 0;
     background-color: #e6e6e6;
-    z-index: 10;
+    z-index: 1;
     margin-top: 15px;
     margin-bottom: 10px;
 }
@@ -110,7 +141,7 @@ a:hover {
     background-color: #a8a8a8;
     cursor: pointer;
     transform: translateY(-3px);
-    z-index: 100;
+    z-index: 2;
 }
 
 .content button:active {
@@ -118,7 +149,8 @@ a:hover {
     transition: all 50ms;
 }
 
-.content button i.star {
+.content button i.star,
+.content button i.view-source {
     opacity: 0;
     width: 0;
     transition: all .2s;
@@ -128,12 +160,14 @@ a:hover {
     color: #0048ad;
 }
 
-.content button i.star:hover {
+.content button i.star:hover,
+.content button i.view-source:hover {
     transform: scale(1.8);
 }
 
 .content button:hover i.star,
-.content button i.star.active {
+.content button i.star.active,
+.content button:hover i.view-source {
     width: auto;
     margin-left: 5px;
     opacity: 1;
@@ -225,11 +259,59 @@ a:hover {
     border-color: transparent transparent rgb(133, 133, 133) transparent;
 }
 
+/* --------- Modal ---------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-height: 90%;
+}
+
+.modal-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title {
+    margin: 10px auto 15px;
+}
+
+.modal-body {
+    max-height: 70%;
+    overflow: auto;
+}
 
 /* --------- scrollbar --------- */
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
 }
 
 /* Track */

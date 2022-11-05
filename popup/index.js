@@ -1,5 +1,14 @@
-import config from "../config.js";
 import { allScripts } from "../scripts/index.js";
+import { checkForUpdate } from "./helpers/checkForUpdate.js";
+import { getFlag, t, toggleLang } from "./helpers/lang.js";
+import { runScriptInCurrentTab } from "./helpers/utils.js";
+import { checkBlackWhiteList } from "./helpers/scriptHelpers.js";
+import { openModal } from "./helpers/modal.js";
+import {
+  activeTabIdSaver,
+  favoriteScriptsSaver,
+  recentScriptsSaver,
+} from "./helpers/storage.js";
 import {
   isFunc,
   isLink,
@@ -8,19 +17,10 @@ import {
   specialTabs,
   tabs,
 } from "./tabs.js";
-import { getFlag, t, toggleLang } from "./helpers/lang.js";
-import { checkBlackWhiteList, runScriptInCurrentTab } from "./helpers/utils.js";
-import {
-  activeTabIdSaver,
-  favoriteScriptsSaver,
-  recentScriptsSaver,
-} from "./helpers/storage.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
-const versionSpan = document.querySelector("#version");
-const updateBtn = document.querySelector("#update-btn");
 
 async function initLanguage() {
   flagImg.setAttribute("src", getFlag());
@@ -187,19 +187,36 @@ function createScriptButton(script, isFavorite = false) {
   title.innerHTML = t(script.name);
   button.appendChild(title);
 
-  // add to favorite button
   if (isFunc(script)) {
+    // add to favorite button
     const addFavoriteBtn = document.createElement("i");
+    addFavoriteBtn.title = t({
+      en: "Add to farovite",
+      vi: "Thêm vào yêu thích",
+    });
     addFavoriteBtn.className = isFavorite
       ? "fa-solid fa-star star active"
       : "fa-regular fa-star star";
     addFavoriteBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-
       favoriteScriptsSaver.toggle(script).then(createTabs);
     };
     button.appendChild(addFavoriteBtn);
+
+    // view source button
+    const viewSourceBtn = document.createElement("i");
+    viewSourceBtn.title = t({
+      en: "View script source",
+      vi: "Xem mã nguồn",
+    });
+    viewSourceBtn.className = "fa-solid fa-code view-source";
+    viewSourceBtn.onclick = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      openModal(t(script.name), `<pre>${script.func?.toString()}</pre>`);
+    };
+    button.appendChild(viewSourceBtn);
   }
 
   // tooltip
@@ -216,31 +233,22 @@ async function runScript(script) {
   if (willRun) {
     recentScriptsSaver.add(script);
     runScriptInCurrentTab(script.func);
-  }
-}
-
-async function checkForUpdate() {
-  try {
-    const currentVer = (await chrome.runtime.getManifest()).version;
-    versionSpan.innerHTML = "v" + currentVer;
-
-    const { version_check, source_code } = config;
-    const lastestVer = (await (await fetch(version_check)).json()).version;
-    if (lastestVer > currentVer) {
-      updateBtn.style.display = "inline-block";
-      updateBtn.innerHTML = t({
-        vi: "cập nhật v" + lastestVer,
-        en: "update v" + lastestVer,
-      });
-      updateBtn.onclick = () => {
-        window.open(source_code);
-      };
-    } else {
-      updateBtn.style.display = "none";
-      versionSpan.innerHTML += t({ vi: " (mới nhất)", en: " (lastest)" });
-    }
-  } catch (e) {
-    console.warn("Check for update failed", e);
+  } else {
+    const { whiteList: w, blackList: b } = script;
+    openModal(
+      t({
+        en: `Script not supported in current website`,
+        vi: `Script không hỗ trợ website hiện tại`,
+      }),
+      t({
+        en:
+          `${w?.length ? `+ Only run at:  ${w?.join(", ")}` : ""}\n` +
+          `${b?.length ? `+ Not run at:  ${b?.join(", ")}` : ""}`,
+        vi:
+          `${w?.length ? `+ Chỉ chạy tại:  ${w?.join(", ")}` : ""}\n` +
+          `${b?.length ? `+ Không chạy tại:  ${b?.join(", ")}` : ""}`,
+      })
+    );
   }
 }
 

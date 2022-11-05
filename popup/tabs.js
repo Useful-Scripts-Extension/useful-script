@@ -1,6 +1,6 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
-import { getAvailableScripts } from "./helpers/utils.js";
+import { getAvailableScripts } from "./helpers/scriptHelpers.js";
 import { addBadge, BADGES } from "./helpers/badge.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 
@@ -51,6 +51,7 @@ const tabs = [
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       createTitle("--- Access Token ---", "--- Access Token ---"),
+      s.fb_getTokenFfb,
       s.fb_getTokenBusiness,
       s.fb_getTokenFacebook,
       s.fb_getTokenMFacebook,
