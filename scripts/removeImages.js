@@ -7,6 +7,7 @@ export default {
     en: "Remove all images from website",
     vi: "Chỉ để lại văn bản, giúp tập trung hơn",
   },
+
   func: function () {
     function toArray(c) {
       var a, k;
@@ -23,4 +24,3 @@ export default {
     }
   },
 };
-

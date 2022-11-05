@@ -8,6 +8,7 @@ export default {
     en: "Download all images in viewport",
     vi: "Tải tất cả hình ảnh đang thấy trong trang web",
   },
+
   func: function () {
     // images downloader: https://chrome.google.com/webstore/detail/image-downloader/cnpniohnfphhjihaiiggeabnkjhpaldj
     const imageUrlRegex =

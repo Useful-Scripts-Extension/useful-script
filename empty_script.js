@@ -10,5 +10,6 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {},
 };

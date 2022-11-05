@@ -8,6 +8,7 @@ export default {
     en: "Enable text selection for website",
     vi: "Dùng cho web nào không cho phép bôi đen văn bản",
   },
+
   func: function () {
     function R(a) {
       ona = "on" + a;

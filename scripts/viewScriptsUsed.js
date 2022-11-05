@@ -8,6 +8,7 @@ export default {
     en: "View all scripts used in current website",
     vi: "Mở danh sách scripts đươc dùng bởi trang web trong tab mới",
   },
+
   func: function () {
     s = document.getElementsByTagName("SCRIPT");
     d = window.open().document;

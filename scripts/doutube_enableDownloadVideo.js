@@ -9,6 +9,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {
     Array.from(document.querySelectorAll("video")).map(
       (_) => (_.attributes.controlslist.value = "nofullscreen noremoteplayback")

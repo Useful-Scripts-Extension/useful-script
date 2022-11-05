@@ -1,5 +1,5 @@
 export default {
-  icon: 'https://lh3.googleusercontent.com/6PBcKpsoS15e2SUqMi6_KGBHsnvUdaRrRYXkHM3zkn5Zzj8TAEJp1_RtykaCfn1DCmyH9PJOKHrMbmtAOnQqtAU8aLs=w128-h128-e365-rj-sc0x00ffffff',
+  icon: "https://lh3.googleusercontent.com/6PBcKpsoS15e2SUqMi6_KGBHsnvUdaRrRYXkHM3zkn5Zzj8TAEJp1_RtykaCfn1DCmyH9PJOKHrMbmtAOnQqtAU8aLs=w128-h128-e365-rj-sc0x00ffffff",
   name: {
     en: "Youtube popup player",
     vi: "Xem youtube trong popup",
@@ -10,6 +10,7 @@ export default {
   },
   blackList: [],
   whiteList: ["www.youtube.com", "m.youtube.com"],
+
   func: function () {
     const urlObject = new URL(location.href);
     const key = urlObject.searchParams.get("v");

@@ -8,6 +8,7 @@ export default {
     en: "Watch videos in a floating window",
     vi: "Xem video trong cửa sổ nổi",
   },
+
   func: function () {
     // Copyright 2018 Google LLC
     //

@@ -8,6 +8,7 @@ export default {
     en: "Check performance metrics of website",
     vi: "Phân tích hiệu suất website không cần biết code",
   },
+
   func: function () {
     let src =
       "https://micmro.github.io/performance-bookmarklet/dist/performanceBookmarklet.min.js";

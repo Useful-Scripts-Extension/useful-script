@@ -10,6 +10,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {
     let urls = [
       ["Google Doc", "https://doc.new"],

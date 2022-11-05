@@ -8,6 +8,7 @@ export default {
     en: "Get free shared account on internet",
     vi: "Tìm tài khoản được chia sẻ trên mạng cho trang web hiện tại",
   },
+
   func: function () {
     const providers = [
       {

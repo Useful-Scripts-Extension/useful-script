@@ -9,6 +9,7 @@ export default {
   },
   blackList: [],
   whiteList: ["www.facebook.com"],
+
   func: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;

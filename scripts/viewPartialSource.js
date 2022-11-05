@@ -8,6 +8,7 @@ export default {
     en: "Just select the area and use this bookmarklet",
     vi: "Mở mã nguồn của phần được bôi đen trong tab mới",
   },
+
   func: function () {
     function getSelSource() {
       x = document.createElement("div");

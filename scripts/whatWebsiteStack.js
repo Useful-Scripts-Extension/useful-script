@@ -8,6 +8,7 @@ export default {
     en: "Technology that current website is using",
     vi: "Xem những công nghệ/thư viện trang web đang dùng",
   },
+
   func: function () {
     var d = document,
       e = d.getElementById("wappalyzer-container");

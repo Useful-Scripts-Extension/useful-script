@@ -8,6 +8,7 @@ export default {
     en: "Scoll to end, then wait for load data, then scroll again... Mouse click to cancel",
     vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi. Click chuột để huỷ.",
   },
+
   func: function () {
     let height = () =>
       (document.scrollingElement || document.body).scrollHeight;

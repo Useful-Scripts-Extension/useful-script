@@ -8,6 +8,7 @@ export default {
     en: "Remove cookies from current website",
     vi: "Xoá cookies trang hiện tại",
   },
+
   func: function () {
     C = document.cookie.split("; ");
     for (d = "." + location.host; d; d = ("" + d).substr(1).match(/\..*$/))
