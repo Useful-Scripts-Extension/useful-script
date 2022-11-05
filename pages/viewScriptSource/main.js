@@ -7,7 +7,10 @@ window.onload = () => {
     const { name, source, description } = sharedData;
     if (name && source) {
       document.title = "Useful-script / " + name + " / " + description;
-      document.querySelector("code").innerHTML = source;
+      document.querySelector("code").innerHTML = source.replace(
+        "function",
+        "function _"
+      );
       hljs.highlightAll();
     }
   } catch (e) {}

@@ -140,13 +140,12 @@ a:hover {
 .content button:hover {
     background-color: #a8a8a8;
     cursor: pointer;
-    transform: translateY(-3px);
     z-index: 2;
 }
 
 .content button:active {
-    transform: none;
-    transition: all 50ms;
+    background-color: #666;
+    color: #ddd;
 }
 
 .content button i.star,
