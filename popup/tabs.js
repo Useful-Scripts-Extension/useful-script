@@ -89,6 +89,7 @@ const tabs = [
     scripts: [
       s.youtube_downloadVideo,
       s.pictureInPicture,
+      s.youtube_popupPlayer,
       s.youtube_toggleLight,
       s.youtube_viewDislikes,
     ],
