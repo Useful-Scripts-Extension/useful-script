@@ -23,7 +23,7 @@ Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
 ## Screenshots
 
-![](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
+![screenshot](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
 
 ## Extension Tips
 
