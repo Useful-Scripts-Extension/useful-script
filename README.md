@@ -4,9 +4,10 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## Overview
 
-1 extension chứa 1 đống extensions nhỏ :)
+1 extension chứa 1 đống extensions nhỏ.
 
-chức năng mới được cập nhật mỗi ngày :\*
+- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
 ## How to install
 
@@ -16,7 +17,7 @@ chức năng mới được cập nhật mỗi ngày :\*
 
 ## Screenshots
 
-![](./assets/screenshots/Screen%20Shot%202022-11-02%20at%2012.22.18.png)
+![](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
 
 ## Extension Tips
 

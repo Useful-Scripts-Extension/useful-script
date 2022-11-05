@@ -14,9 +14,9 @@ import {
   isLink,
   isTitle,
   refreshSpecialTabs,
-  specialTabs,
-  tabs,
+  getAllTabs,
 } from "./tabs.js";
+import _ from "./helpers/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -44,7 +44,7 @@ async function createTabs() {
   contentDiv.innerHTML = "";
 
   // make new UI
-  const allTabs = [...specialTabs, ...tabs];
+  const allTabs = getAllTabs();
   for (let tab of allTabs) {
     // create tab button
     const tabBtn = document.createElement("button");
