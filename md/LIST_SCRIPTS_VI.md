@@ -1,4 +1,4 @@
-<i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+###  Tìm kiếm
 
   1. [Kiểm tra font chữ](./scripts/whatFont.js)
 
@@ -22,19 +22,19 @@
 
   11. [Xem Google cache của trang web](./scripts/googleCache.js)
 
-<i class="fa-solid fa-download"></i> Tải xuống
+###  Tải xuống
 
   12. [Tải video](./scripts/download_video.js)
 
   13. [Image Downloader - Tải hình ảnh](./scripts/download_image.js)
 
-<i class="fa-brands fa-facebook"></i> Facebook
+###  Facebook
 
-- --- Giao diện ---
+--- Giao diện ---
 
   14. [Bật/tắt đèn fb newfeed](./scripts/fb_toggleLight.js)
 
-- --- Access Token ---
+--- Access Token ---
 
   15. [Lấy token fb đủ quyền (ffb.vn)](./scripts/fb_getTokenFfb.js)
 
@@ -44,7 +44,7 @@
 
   18. [Lấy fb token (m.facebook.com)](./scripts/fb_getTokenMFacebook.js)
 
-- --- Lấy ID ---
+--- Lấy ID ---
 
   19. [Lấy fb User ID](./scripts/fb_getUid.js)
 
@@ -68,7 +68,7 @@
 
   29. [Lấy tất cả fb user ID từ group](./scripts/fb_getAllUidOfGroupMembers.js)
 
-- --- Tải xuống ---
+--- Tải xuống ---
 
   30. [Tải avatar từ fb user id](./scripts/fb_getAvatarFromUid.js)
 
@@ -76,7 +76,7 @@
 
   32. [Tải link ảnh/video từ album fb](./scripts/fb_downloadAlbumMedia.js)
 
-<i class="fa-brands fa-instagram"></i> Instagram
+###  Instagram
 
   33. [Cho phép chuột phải tải ảnh/video instagram](./scripts/insta_enableDownloadImage.js)
 
@@ -90,7 +90,7 @@
 
   38. [Tải tất cả ảnh insta user profile](./scripts/insta_getAllImagesInUserProfile.js)
 
-<i class="fa-brands fa-youtube"></i> Youtube
+###  Youtube
 
   39. [Tải video youtube (bypass 18+)](./scripts/youtube_downloadVideo.js)
 
@@ -102,7 +102,7 @@
 
   43. [Xem lượng dislike video youtube](./scripts/youtube_viewDislikes.js)
 
-<i class="fa-brands fa-github"></i> Github
+###  Github
 
   44. [Đi tới commit đầu tiên](./scripts/github_goToFirstCommit.js)
 
@@ -110,7 +110,7 @@
 
   46. [Mở repo trong github1s.com](./scripts/github1s.js)
 
-Doutu.be
+### Doutu.be
 
   47. [Bật tải mọi video](./scripts/doutube_enableDownloadVideo.js)
 
@@ -120,23 +120,23 @@ Doutu.be
 
   50. [Tải tất cả video từ doutu.be profile](./scripts/doutube_getAllVideoInUserProfile.js)
 
-<i class="fa-solid fa-file-pdf"></i> PDF
+###  PDF
 
   51. [Chế độ tối cho PDF](./scripts/darkModePDF.js)
 
   52. [In web ra PDF](./scripts/webToPDF.js)
 
-<i class="fa-solid fa-qrcode"></i> QR Code
+###  QR Code
 
   53. [Chuyển chữ thành QRCode](./scripts/textToQRCode.js)
 
   54. [Lấy QRCode cho web hiện tại](./scripts/webToQRCode.js)
 
-<i class="fa-solid fa-robot"></i> Tự động hoá
+###  Tự động hoá
 
   55. [Cuộn trang xuống cuối cùng](./scripts/scrollToVeryEnd.js)
 
-<i class="fa-solid fa-key"></i> Mật khẩu
+###  Mật khẩu
 
   56. [Tạo mật khẩu cho trang web](./scripts/passwordGenerator.js)
 
@@ -144,7 +144,7 @@ Doutu.be
 
   58. [Xem mật khẩu bị ẩn](./scripts/viewHiddenPassword.js)
 
-<i class="fa-solid fa-unlock"></i> Mở khoá
+###  Mở khoá
 
   59. [Xem cookies](./scripts/viewCookies.js)
 
@@ -154,7 +154,7 @@ Doutu.be
 
   62. [Bật lại menu chuột phải](./scripts/reEnableContextMenu.js)
 
-<i class="fa-solid fa-eye"></i> Giao diện
+###  Giao diện
 
   63. [Bật/tắt chế độ chỉnh sửa website](./scripts/toggleEditPage.js)
 
@@ -162,7 +162,7 @@ Doutu.be
 
   65. [Cuộn web bằng cách kéo thả](./scripts/scrollByDrag.js)
 
-- --- Xem ---
+--- Xem ---
 
   66. [Xem mọi hình ảnh có trong website](./scripts/listAllImagesInWeb.js)
 
@@ -174,7 +174,7 @@ Doutu.be
 
   70. [Xem mã nguồn của phần bôi đen](./scripts/viewPartialSource.js)
 
-- --- Xoá ---
+--- Xoá ---
 
   71. [Xoá màu website](./scripts/removeColours.js)
 
@@ -184,7 +184,7 @@ Doutu.be
 
   74. [Xoá mọi iframe/embed](./scripts/removeBloat.js)
 
-- --- Bảng ---
+--- Bảng ---
 
   75. [Thêm sắp xếp cho bảng](./scripts/table_addSortTable.js)
 
@@ -192,7 +192,7 @@ Doutu.be
 
   77. [Đổi chỗ hàng và cột](./scripts/table_swapRowAndColumn.js)
 
-- --- Khác ---
+--- Khác ---
 
   78. [Tô màu cho link](./scripts/internalOrExternalLink.js)
 
@@ -200,7 +200,7 @@ Doutu.be
 
   80. [Hiệu ứng tuyết rơi](./scripts/letItSnow.js)
 
-<i class="fa-solid fa-ellipsis"></i> Khác
+###  Khác
 
   81. [Rút gọn link (j2team)](./scripts/shortenURL.js)
 
