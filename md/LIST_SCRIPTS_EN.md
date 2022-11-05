@@ -1,4 +1,4 @@
-<i class="fa-solid fa-magnifying-glass"></i> Search
+###  Search
 
   1. [What font](./scripts/whatFont.js)
 
@@ -22,19 +22,19 @@
 
   11. [View Google cache of website](./scripts/googleCache.js)
 
-<i class="fa-solid fa-download"></i> Download
+###  Download
 
   12. [Download video](./scripts/download_video.js)
 
   13. [Image Downloader](./scripts/download_image.js)
 
-<i class="fa-brands fa-facebook"></i> Facebook
+###  Facebook
 
-- --- UI ---
+--- UI ---
 
   14. [Toggle light fb newfeed](./scripts/fb_toggleLight.js)
 
-- --- Access Token ---
+--- Access Token ---
 
   15. [Get fb token full permission (ffb.vn)](./scripts/fb_getTokenFfb.js)
 
@@ -44,7 +44,7 @@
 
   18. [Get fb Token (m.facebook.com)](./scripts/fb_getTokenMFacebook.js)
 
-- --- Get ID ---
+--- Get ID ---
 
   19. [Get fb User ID](./scripts/fb_getUid.js)
 
@@ -68,7 +68,7 @@
 
   29. [Get all fb User ID from group](./scripts/fb_getAllUidOfGroupMembers.js)
 
-- --- Download ---
+--- Download ---
 
   30. [Get avatar from fb user id](./scripts/fb_getAvatarFromUid.js)
 
@@ -76,7 +76,7 @@
 
   32. [Download fb album media links](./scripts/fb_downloadAlbumMedia.js)
 
-<i class="fa-brands fa-instagram"></i> Instagram
+###  Instagram
 
   33. [Enable download instagram photos/videos](./scripts/insta_enableDownloadImage.js)
 
@@ -90,7 +90,7 @@
 
   38. [Get all images in insta user profile](./scripts/insta_getAllImagesInUserProfile.js)
 
-<i class="fa-brands fa-youtube"></i> Youtube
+###  Youtube
 
   39. [Download youtube video (bypass 18+)](./scripts/youtube_downloadVideo.js)
 
@@ -102,7 +102,7 @@
 
   43. [View youtube video dislikes](./scripts/youtube_viewDislikes.js)
 
-<i class="fa-brands fa-github"></i> Github
+###  Github
 
   44. [Go to first commit](./scripts/github_goToFirstCommit.js)
 
@@ -110,7 +110,7 @@
 
   46. [Open repo in github1s.com](./scripts/github1s.js)
 
-Doutu.be
+### Doutu.be
 
   47. [Enable download all video](./scripts/doutube_enableDownloadVideo.js)
 
@@ -120,23 +120,23 @@ Doutu.be
 
   50. [Get all video from user doutu.be profile](./scripts/doutube_getAllVideoInUserProfile.js)
 
-<i class="fa-solid fa-file-pdf"></i> PDF
+###  PDF
 
   51. [Darkmode for pdf](./scripts/darkModePDF.js)
 
   52. [Web to PDF](./scripts/webToPDF.js)
 
-<i class="fa-solid fa-qrcode"></i> QR Code
+###  QR Code
 
   53. [Text to QR Code](./scripts/textToQRCode.js)
 
   54. [URL to QR Code](./scripts/webToQRCode.js)
 
-<i class="fa-solid fa-robot"></i> Automation
+###  Automation
 
   55. [Scroll to very end](./scripts/scrollToVeryEnd.js)
 
-<i class="fa-solid fa-key"></i> Password
+###  Password
 
   56. [Password generator](./scripts/passwordGenerator.js)
 
@@ -144,7 +144,7 @@ Doutu.be
 
   58. [View hidden passwords](./scripts/viewHiddenPassword.js)
 
-<i class="fa-solid fa-unlock"></i> Unlock
+###  Unlock
 
   59. [View cookies](./scripts/viewCookies.js)
 
@@ -154,7 +154,7 @@ Doutu.be
 
   62. [Re-Enable context menu (right click)](./scripts/reEnableContextMenu.js)
 
-<i class="fa-solid fa-eye"></i> Web UI
+###  Web UI
 
   63. [Toggle edit page](./scripts/toggleEditPage.js)
 
@@ -162,7 +162,7 @@ Doutu.be
 
   65. [Scroll by dragging](./scripts/scrollByDrag.js)
 
-- --- View ---
+--- View ---
 
   66. [View all images in web](./scripts/listAllImagesInWeb.js)
 
@@ -174,7 +174,7 @@ Doutu.be
 
   70. [View source code of selected area](./scripts/viewPartialSource.js)
 
-- --- Remove ---
+--- Remove ---
 
   71. [Remove all colors in web](./scripts/removeColours.js)
 
@@ -184,7 +184,7 @@ Doutu.be
 
   74. [Remove bloat (iframe, embed)](./scripts/removeBloat.js)
 
-- --- Table ---
+--- Table ---
 
   75. [Add sort to table](./scripts/table_addSortTable.js)
 
@@ -192,7 +192,7 @@ Doutu.be
 
   77. [Swap rows and columns](./scripts/table_swapRowAndColumn.js)
 
-- --- More ---
+--- More ---
 
   78. [Highlight internal/external link](./scripts/internalOrExternalLink.js)
 
@@ -200,7 +200,7 @@ Doutu.be
 
   80. [Let it snow](./scripts/letItSnow.js)
 
-<i class="fa-solid fa-ellipsis"></i> More
+###  More
 
   81. [Shorten URL (j2team)](./scripts/shortenURL.js)
 
