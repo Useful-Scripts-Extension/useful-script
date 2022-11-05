@@ -8,6 +8,7 @@ export default {
     en: "Convert text to QR Code",
     vi: "Nhập vào chữ và nhận về QRCode tương ứng",
   },
+
   func: function () {
     var text = window.prompt("Enter text", "");
     var url =

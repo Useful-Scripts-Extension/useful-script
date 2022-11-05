@@ -8,6 +8,7 @@ export default {
     en: "Edit all text in website",
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
+
   func: function () {
     let isOn = document.designMode == "on";
     let willOn = isOn ? false : true;

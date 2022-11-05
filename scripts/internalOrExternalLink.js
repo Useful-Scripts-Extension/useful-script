@@ -8,6 +8,7 @@ export default {
     en: "+Red = Internal_link\n+Orange = Currently_opened_link\n+Blue = External_link",
     vi: "+Đỏ: cùng domain\n+Cam: hiện tại\n+Xanh: khác domain",
   },
+
   func: function () {
     var i, x;
     for (i = 0; (x = document.links[i]); ++i)

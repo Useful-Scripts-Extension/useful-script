@@ -7,6 +7,7 @@ export default {
     en: "Run stat.js in current website",
     vi: "Tính toán FPS website",
   },
+
   func: function () {
     let src = "//mrdoob.github.io/stats.js/build/stats.min.js";
     var script = document.createElement("script");

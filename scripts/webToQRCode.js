@@ -8,6 +8,7 @@ export default {
     en: "Convert current website URL to QR Code",
     vi: "Chuyển URL của trang web sang QR Code",
   },
+
   func: function () {
     var url =
       "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" +

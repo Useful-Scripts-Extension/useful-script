@@ -8,6 +8,7 @@ export default {
     en: "Swap rows and columns (transpose)",
     vi: "Hàng thành cột và cột thành hàng",
   },
+
   func: function () {
     var d = document,
       q = "table",

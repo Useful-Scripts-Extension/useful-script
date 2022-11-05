@@ -8,6 +8,7 @@ export default {
     en: "Remove all colours in the web",
     vi: "Xoá mọi màu có trong website",
   },
+
   func: function () {
     var newSS,
       styles =

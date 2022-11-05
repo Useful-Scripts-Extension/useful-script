@@ -10,6 +10,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: async function () {
     let X, Y;
 

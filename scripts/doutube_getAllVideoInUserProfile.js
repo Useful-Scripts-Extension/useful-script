@@ -9,6 +9,7 @@ export default {
   },
   blackList: [],
   whiteList: ["doutu.be"],
+
   func: async function () {
     const WAIT_FOR_FULL_VIDEO_LOADED = 5000;
     const FIND_FULL_VIDEO_INTERVAL = 100;

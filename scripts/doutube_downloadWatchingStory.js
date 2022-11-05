@@ -9,6 +9,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {
     const src = document.querySelector("video")?.src;
     if (src) window.open(src);

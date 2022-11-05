@@ -7,6 +7,7 @@ export default {
     en: "Remove iframe, embeds, applets from website",
     vi: "Xoá mọi thứ gây xao nhãng (quảng cáo, web nhúng, ..)",
   },
+
   func: function () {
     function R(w) {
       try {

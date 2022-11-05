@@ -8,6 +8,7 @@ export default {
     en: "Add number columns to table",
     vi: "Thêm cột STT vào bên trái bảng",
   },
+
   func: function () {
     function has(par, ctag) {
       for (var k = 0; k < par.childNodes.length; ++k)

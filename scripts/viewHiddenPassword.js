@@ -8,6 +8,7 @@ export default {
     en: "View hidden password",
     vi: "Bạn sẽ xem được mật khẩu bị ẩn (dấu sao *) trong khung đăng nhập",
   },
+
   func: function () {
     var s, F, j, f, i;
     s = "";

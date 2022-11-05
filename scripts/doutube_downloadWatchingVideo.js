@@ -9,6 +9,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {
     const isElementInViewport = (el) => {
       const rect = el.getBoundingClientRect();

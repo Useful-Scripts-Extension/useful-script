@@ -8,6 +8,7 @@ export default {
     en: "Enable context menu for website",
     vi: "Dùng cho web nào không cho phép bật menu chuột phải",
   },
+
   func: function () {
     document.onmousedown = "return true";
     document.onmouseup = "return true";

@@ -10,6 +10,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+
   func: function () {
     window.open("https://ffb.vn/get-token");
   },
