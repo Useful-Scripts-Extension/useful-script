@@ -16,7 +16,7 @@ import {
   refreshSpecialTabs,
   getAllTabs,
 } from "./tabs.js";
-import _ from "../md/exportScriptsToMd.js";
+// import _ from "../md/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");

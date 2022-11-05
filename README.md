@@ -11,7 +11,9 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## How to install
 
-[Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
+- Chrome Webstore - Coming soon...
+
+- Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
