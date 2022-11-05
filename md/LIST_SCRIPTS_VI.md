@@ -155,3 +155,53 @@
   62. [Bật lại menu chuột phải](/scripts/reEnableContextMenu.js)
 
 ###  Giao diện
+
+  63. [Bật/tắt chế độ chỉnh sửa website](/scripts/toggleEditPage.js)
+
+  64. [Phân tích hiệu suất](/scripts/performanceAnalyzer.js)
+
+  65. [Cuộn web bằng cách kéo thả](/scripts/scrollByDrag.js)
+
+--- Xem ---
+
+  66. [Xem mọi hình ảnh có trong website](/scripts/listAllImagesInWeb.js)
+
+  67. [Xem tất cả link](/scripts/viewAllLinks.js)
+
+  68. [Xem tất cả scripts](/scripts/viewScriptsUsed.js)
+
+  69. [Xem tất cả stylesheet](/scripts/viewStylesUsed.js)
+
+  70. [Xem mã nguồn của phần bôi đen](/scripts/viewPartialSource.js)
+
+--- Xoá ---
+
+  71. [Xoá màu website](/scripts/removeColours.js)
+
+  72. [Xoá stylesheet](/scripts/removeStylesheet.js)
+
+  73. [Xoá mọi hình ảnh](/scripts/removeImages.js)
+
+  74. [Xoá mọi iframe/embed](/scripts/removeBloat.js)
+
+--- Bảng ---
+
+  75. [Thêm sắp xếp cho bảng](/scripts/table_addSortTable.js)
+
+  76. [Thêm cột số thứ tự](/scripts/table_addNumberColumn.js)
+
+  77. [Đổi chỗ hàng và cột](/scripts/table_swapRowAndColumn.js)
+
+--- Khác ---
+
+  78. [Tô màu cho link](/scripts/internalOrExternalLink.js)
+
+  79. [Lấy kích thước trang web](/scripts/getWindowSize.js)
+
+  80. [Hiệu ứng tuyết rơi](/scripts/letItSnow.js)
+
+###  Khác
+
+  81. [Rút gọn link (j2team)](/scripts/shortenURL.js)
+
+  82. [Chạy stats.js](/scripts/runStatJs.js)
