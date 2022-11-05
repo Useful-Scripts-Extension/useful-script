@@ -9,6 +9,10 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 - Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
 - View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
+## Contribute - Đóng góp công sức của bạn
+
+Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
+
 ## How to install
 
 - Chrome Webstore - Coming soon...
