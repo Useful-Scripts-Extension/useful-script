@@ -1,7 +1,7 @@
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
-import { runScriptInCurrentTab } from "./helpers/utils.js";
+import { viewScriptSource, runScriptInCurrentTab } from "./helpers/utils.js";
 import { checkBlackWhiteList } from "./helpers/scriptHelpers.js";
 import { openModal } from "./helpers/modal.js";
 import {
@@ -190,13 +190,18 @@ function createScriptButton(script, isFavorite = false) {
   if (isFunc(script)) {
     // add to favorite button
     const addFavoriteBtn = document.createElement("i");
-    addFavoriteBtn.title = t({
-      en: "Add to farovite",
-      vi: "Thêm vào yêu thích",
-    });
     addFavoriteBtn.className = isFavorite
       ? "fa-solid fa-star star active"
       : "fa-regular fa-star star";
+    addFavoriteBtn.title = isFavorite
+      ? t({
+          en: "Remove from favorite",
+          vi: "Xoá khỏi yêu thích",
+        })
+      : t({
+          en: "Add to farovite",
+          vi: "Thêm vào yêu thích",
+        });
     addFavoriteBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -214,7 +219,9 @@ function createScriptButton(script, isFavorite = false) {
     viewSourceBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-      openModal(t(script.name), `<pre>${script.func?.toString()}</pre>`);
+
+      viewScriptSource(script);
+      // openModal(t(script.name), `<pre>${script.func?.toString()}</pre>`);
     };
     button.appendChild(viewSourceBtn);
   }

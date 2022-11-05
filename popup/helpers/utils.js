@@ -1,3 +1,5 @@
+import { t } from "./lang.js";
+
 export const getTabId = async () => {
   let tabArray = await chrome.tabs.query({ currentWindow: true, active: true });
   return tabArray[0].id;
@@ -44,4 +46,17 @@ export async function getCurrentURL() {
   return new URL(url);
 }
 
+export function viewScriptSource(script) {
+  localStorage.viewScriptSource_sharedData = JSON.stringify({
+    name: t(script.name),
+    description: t(script.description),
+    source: script.func?.toString(),
+  });
 
+  chrome.windows.create({
+    url: chrome.runtime.getURL("viewScriptSource/index.html"),
+    type: "popup",
+    height: 450,
+    width: 700,
+  });
+}
