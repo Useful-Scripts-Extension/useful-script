@@ -33,7 +33,6 @@ const tabs = [
       s.search_sharedAccount,
       s.whatWebsiteStack,
       s.search_paperWhere,
-      s.search_totalIndexedPages,
       s.checkWebDie,
       s.downDetector,
       s.openWaybackUrl,
@@ -45,7 +44,12 @@ const tabs = [
   },
   {
     ...CATEGORY.google,
-    scripts: [s.search_googleSite, s.googleShortcuts, s.googleCache],
+    scripts: [
+      s.search_totalIndexedPages,
+      s.search_googleSite,
+      s.googleShortcuts,
+      s.googleCache,
+    ],
   },
   {
     ...CATEGORY.facebook,

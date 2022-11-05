@@ -9,7 +9,8 @@ export default {
     vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
   },
 
-  /*
+  func: function () {
+    /*
   It’s a good practice to always use unique passwords while creating accounts on websites, So if one website’s password gets compromised your other accounts are safe.
   If you are not using any password manager like LastPass, Bitwarden or 1Password then it’s really hard to keep track of all the passwords.
   To solve this problem Nic Wolff has created a bookmarklet that will create a unique password for every website you signed up for,
@@ -17,7 +18,7 @@ export default {
   This bookmarklet will use the currently opened website’s domain name + your master password to create a unique password. This password will always be the same for you as long as your domain name and your master password.
   What’s best about this extension is, if you run this bookmarklet on the sign-up or sign-in page it will automatically fill the password field with generated password.
 */
-  func: function () {
+
     var b64pad = "";
     var chrsz = 8;
 

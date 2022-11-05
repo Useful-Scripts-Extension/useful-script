@@ -10,8 +10,9 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls
   func: async function () {
+    // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls
+
     const group_name = document.title;
     const found = (check) => {
       if (check && check[0]) {

@@ -10,8 +10,9 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
   func: function () {
+    // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
+
     const _getUidFromUrl = async (url) => {
       var response = await fetch(url);
       if (response.status == 200) {

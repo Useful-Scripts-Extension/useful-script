@@ -12,8 +12,9 @@ export default {
   blackList: [],
   whiteList: ["github.com"],
 
-  // Source: https://github.com/FarhadG/init
   func: function () {
+    // Source: https://github.com/FarhadG/init
+
     let args = window.location.pathname.match(
       /\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/
     );

@@ -12,8 +12,9 @@ export default {
   blackList: [],
   whiteList: [],
 
-  // https://cachedviews.com/
   func: function () {
+    // https://cachedviews.com/
+
     var a = location.href.replace(/^http\:\/\/(.*)$/, "$1");
     window.open("http://www.google.com/search?q=cache:" + escape(a));
   },

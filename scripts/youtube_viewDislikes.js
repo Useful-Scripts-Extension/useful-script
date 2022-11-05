@@ -11,8 +11,9 @@ export default {
   blackList: [],
   whiteList: ["www.youtube.com", "m.youtube.com"],
 
-  // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
   func: async function () {
+    // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
+
     function getVideoId(url) {
       const urlObject = new URL(url);
       const pathname = urlObject.pathname;

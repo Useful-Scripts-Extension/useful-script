@@ -10,9 +10,10 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Tải video đang xem - khi đang trong trang web video, dạng: https://www.facebook.com/watch?v=254222479732213
-  // Nếu bạn muốn tải HD thì dùng snapsave: https://snapsave.app/vn
   func: function () {
+    // Tải video đang xem - khi đang trong trang web video, dạng: https://www.facebook.com/watch?v=254222479732213
+    // Nếu bạn muốn tải HD thì dùng snapsave: https://snapsave.app/vn
+
     const found = (check) => {
       if (check && check[0]) {
         const url = window.location.href.replace(

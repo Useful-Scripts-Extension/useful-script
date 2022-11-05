@@ -49,6 +49,7 @@ export async function getCurrentURL() {
 export function viewScriptSource(script) {
   localStorage.viewScriptSource_sharedData = JSON.stringify({
     name: t(script.name),
+    id: script.id,
     description: t(script.description),
     source: script.func?.toString(),
   });

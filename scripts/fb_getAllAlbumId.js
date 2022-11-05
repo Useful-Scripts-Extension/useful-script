@@ -10,8 +10,9 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
   func: function () {
+    // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
+
     const list_a = document.querySelectorAll("a");
     const list_id = [];
     for (let a of [location, ...Array.from(list_a)]) {

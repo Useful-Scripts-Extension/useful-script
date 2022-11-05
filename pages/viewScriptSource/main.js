@@ -4,12 +4,12 @@ window.onload = () => {
   let sharedData;
   try {
     sharedData = JSON.parse(localStorage.viewScriptSource_sharedData);
-    const { name, source, description } = sharedData;
+    const { name, source, description, id } = sharedData;
     if (name && source) {
       document.title = "Useful-script / " + name + " / " + description;
       document.querySelector("code").innerHTML = source.replace(
-        "function",
-        "function _"
+        "function ",
+        "function " + (id || "_")
       );
       hljs.highlightAll();
     }
