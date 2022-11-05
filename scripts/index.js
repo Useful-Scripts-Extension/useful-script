@@ -79,6 +79,7 @@ import scrollByDrag from "./scrollByDrag.js";
 import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
 import youtube_viewDislikes from "./youtube_viewDislikes.js";
 import downDetector from "./downDetector.js";
+import fb_getTokenFfb from "./fb_getTokenFfb.js";
 
 // inject badges
 const allScripts = {
@@ -164,6 +165,7 @@ const allScripts = {
   scrollByDrag,
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.new),
   downDetector: addBadge(downDetector, BADGES.new),
+  fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
 };
 
 // inject id to all scripts

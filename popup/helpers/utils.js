@@ -1,6 +1,3 @@
-import { allScripts } from "../../scripts/index.js";
-import { t } from "./lang.js";
-
 export const getTabId = async () => {
   let tabArray = await chrome.tabs.query({ currentWindow: true, active: true });
   return tabArray[0].id;
@@ -47,52 +44,4 @@ export async function getCurrentURL() {
   return new URL(url);
 }
 
-export async function getAvailableScripts() {
-  let hostname = (await getCurrentURL()).hostname;
-  let avai = [];
-  for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, false, hostname)) {
-      avai.push(script);
-    }
-  }
 
-  return avai;
-}
-
-export async function checkBlackWhiteList(
-  script,
-  willAlert = true,
-  hostname = null
-) {
-  if (!hostname) {
-    hostname = (await getCurrentURL()).hostname;
-  }
-
-  let hasWhiteList = script.whiteList?.length > 0;
-  let hasBlackList = script.blackList?.length > 0;
-  let inWhiteList = script.whiteList?.findIndex((_) => _ === hostname) >= 0;
-  let inBlackList = script.blackList?.findIndex((_) => _ === hostname) >= 0;
-
-  let willRun =
-    (!hasWhiteList && !hasBlackList) ||
-    (hasWhiteList && inWhiteList) ||
-    (hasBlackList && !inBlackList);
-
-  if (!willRun && willAlert) {
-    const { whiteList: w, blackList: b } = script;
-    alert(
-      t({
-        en:
-          `Script not supported in current website: \n\n` +
-          `${w?.length ? `+ Only run at:  ${w?.join(", ")}` : ""}\n` +
-          `${b?.length ? `+ Not run at:  ${b?.join(", ")}` : ""}`,
-        vi:
-          `Script không hỗ trợ website hiện tại: \n\n` +
-          `${w?.length ? `+ Chỉ chạy tại:  ${w?.join(", ")}` : ""}\n` +
-          `${b?.length ? `+ Không chạy tại:  ${b?.join(", ")}` : ""}`,
-      })
-    );
-  }
-
-  return willRun;
-}
