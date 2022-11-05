@@ -10,8 +10,9 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
   func: function () {
+    // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
+
     const page_name = document.title;
     const found = (check) => {
       if (check && check[0]) {

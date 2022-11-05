@@ -10,8 +10,9 @@ export default {
   blackList: [],
   whiteList: ["www.facebook.com"],
 
-  // Lấy timeline album id của page - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/profile.php?id=100057998562930
   func: function () {
+    // Lấy timeline album id của page - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/profile.php?id=100057998562930
+
     const page_name = document.title;
     const list_a = document.querySelectorAll("a");
     for (let a of Array.from(list_a)) {

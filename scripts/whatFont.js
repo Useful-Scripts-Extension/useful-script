@@ -9,8 +9,9 @@ export default {
     vi: "Kiểm tra xem từng phần tử trong web dùng font chữ gì",
   },
 
-  // https://www.typewolf.com/type-sample
   func: function () {
+    // https://www.typewolf.com/type-sample
+
     let src = "https://www.typesample.com/assets/typesample.js";
     let d = document;
     var e = d.createElement("script");

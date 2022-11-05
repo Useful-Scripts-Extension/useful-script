@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: '<i class="fa-regular fa-square-plus"></i>',
   name: {
     en: "Google shortcuts",
     vi: "Google phím tắt",
