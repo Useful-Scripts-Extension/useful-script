@@ -13,7 +13,7 @@ function generateMd(lang = "vi") {
           if (isTitle(script)) {
             return "\n" + script.name[lang];
           }
-          return `\n  ${index++}. [${script.name[lang]}](./scripts/${
+          return `\n  ${index++}. [${script.name[lang]}](/scripts/${
             script.id
           }.js)`;
         })
@@ -26,6 +26,6 @@ function generateMd(lang = "vi") {
   console.log(md);
 }
 
-generateMd("en");
+generateMd("vi");
 
 export default null;
