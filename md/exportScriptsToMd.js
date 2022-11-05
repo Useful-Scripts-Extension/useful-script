@@ -27,5 +27,6 @@ function generateMd(lang = "vi") {
 }
 
 generateMd("vi");
+generateMd("en");
 
 export default null;
