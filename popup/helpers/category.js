@@ -38,6 +38,13 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-download"></i> Tải xuống`,
     },
   },
+  google: {
+    id: "google",
+    name: {
+      en: `<i class="fa-brands fa-google"></i> Google`,
+      vi: `<i class="fa-brands fa-google"></i> Google`,
+    },
+  },
   facebook: {
     id: "facebook",
     name: {

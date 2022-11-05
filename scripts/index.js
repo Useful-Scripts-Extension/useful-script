@@ -81,6 +81,7 @@ import youtube_viewDislikes from "./youtube_viewDislikes.js";
 import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
 import youtube_popupPlayer from "./youtube_popupPlayer.js";
+import googleShortcuts from "./googleShortcuts.js";
 
 // inject badges
 const allScripts = {
@@ -168,6 +169,7 @@ const allScripts = {
   downDetector: addBadge(downDetector, BADGES.new),
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
   youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.new),
+  googleShortcuts: addBadge(googleShortcuts, BADGES.new),
 };
 
 // inject id to all scripts

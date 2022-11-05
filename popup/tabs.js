@@ -32,18 +32,20 @@ const tabs = [
       s.similarWeb,
       s.search_sharedAccount,
       s.whatWebsiteStack,
-      s.search_googleSite,
       s.search_paperWhere,
       s.search_totalIndexedPages,
       s.checkWebDie,
       s.downDetector,
       s.openWaybackUrl,
-      s.googleCache,
     ],
   },
   {
     ...CATEGORY.download,
     scripts: [s.download_video, s.download_image],
+  },
+  {
+    ...CATEGORY.google,
+    scripts: [s.search_googleSite, s.googleShortcuts, s.googleCache],
   },
   {
     ...CATEGORY.facebook,
