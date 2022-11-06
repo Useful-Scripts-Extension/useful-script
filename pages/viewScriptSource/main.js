@@ -6,11 +6,13 @@ window.onload = () => {
     sharedData = JSON.parse(localStorage.viewScriptSource_sharedData);
     const { name, source, description, id } = sharedData;
     if (name && source) {
-      document.title = "Useful-script / " + name + " / " + description;
-      document.querySelector("code").innerHTML = source.replace(
-        "function ",
-        "function " + (id || "_")
-      );
+      let title = "Useful-script / " + name + " / " + description;
+      let comment = `// ${name}\n// ${description}\n\n`;
+      let sourceCode = source.replace("function ", "function " + (id || "_"));
+
+      document.title = title;
+      document.querySelector("code").innerHTML = comment + sourceCode;
+
       hljs.highlightAll();
     }
   } catch (e) {}
