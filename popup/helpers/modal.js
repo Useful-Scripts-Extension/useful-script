@@ -19,7 +19,12 @@ function initModal() {
 
 export function openModal(title, body) {
   modalTitle.innerHTML = title;
-  modalBody.innerHTML = body;
+  if (typeof body === "string") {
+    modalBody.innerHTML = body;
+  } else if (typeof body === "object" && nodeName in body) {
+    modalBody.innerHTML = "";
+    modalBody.appendChild(body);
+  }
   modal.style.display = "block";
 }
 

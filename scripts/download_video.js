@@ -8,7 +8,7 @@ export default {
     en: "Can be used on almost any website",
     vi: "Dùng được cho gần như tất cả trang web",
   },
-  blackList: ["www.youtube.com"],
+  blackList: ["*://*.youtube.com"],
   whiteList: [],
 
   func: function () {

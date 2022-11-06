@@ -8,7 +8,7 @@ export default {
     vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     const getUid = async (url) => {

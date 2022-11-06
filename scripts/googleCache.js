@@ -7,7 +7,7 @@ export default {
   },
   description: {
     en: "View blocked website",
-    vi: "Phù hơp để xem các trang web bị block",
+    vi: "Phù hơp để xem các trang web bị block",
   },
   blackList: [],
   whiteList: [],

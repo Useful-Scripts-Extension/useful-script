@@ -9,7 +9,7 @@ export default {
     vi: "Lấy id của user trong trang web hiện tại",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe

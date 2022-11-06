@@ -8,7 +8,7 @@ export default {
     vi: "Tải về tất cả ảnh/video của người dùng insta",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: async function () {
     let user_id = prompt("Enter user id:", "");

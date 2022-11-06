@@ -2,10 +2,10 @@ import { allScripts } from "../../scripts/index.js";
 import { getCurrentURL } from "./utils.js";
 
 export async function getAvailableScripts() {
-  let hostname = (await getCurrentURL()).hostname;
+  let url = await getCurrentURL();
   let avai = [];
   for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, hostname)) {
+    if (await checkBlackWhiteList(script, url)) {
       avai.push(script);
     }
   }
@@ -13,15 +13,17 @@ export async function getAvailableScripts() {
   return avai;
 }
 
-export async function checkBlackWhiteList(script, hostname = null) {
-  if (!hostname) {
-    hostname = (await getCurrentURL()).hostname;
+export async function checkBlackWhiteList(script, url = null) {
+  if (!url) {
+    url = await getCurrentURL();
   }
 
-  let hasWhiteList = script.whiteList?.length > 0;
-  let hasBlackList = script.blackList?.length > 0;
-  let inWhiteList = script.whiteList?.findIndex((_) => _ === hostname) >= 0;
-  let inBlackList = script.blackList?.findIndex((_) => _ === hostname) >= 0;
+  let w = script.whiteList,
+    b = script.blackList,
+    hasWhiteList = w?.length > 0,
+    hasBlackList = b?.length > 0,
+    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
 
   let willRun =
     (!hasWhiteList && !hasBlackList) ||
@@ -29,4 +31,17 @@ export async function checkBlackWhiteList(script, hostname = null) {
     (hasBlackList && !inBlackList);
 
   return willRun;
+}
+
+export function isUrlMatchPattern(url, pattern) {
+  let curIndex = 0,
+    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+
+  for (let p of visiblePartsInPattern) {
+    let index = url.indexOf(p, curIndex);
+    if (index < 0) return false;
+    curIndex = index + p.length;
+  }
+
+  return true;
 }

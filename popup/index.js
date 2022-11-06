@@ -241,7 +241,9 @@ async function runScript(script) {
     recentScriptsSaver.add(script);
     runScriptInCurrentTab(script.func);
   } else {
-    const { whiteList: w, blackList: b } = script;
+    let w = script.whiteList?.join(", ");
+    let b = script.blackList?.join(", ");
+
     openModal(
       t({
         en: `Script not supported in current website`,
@@ -249,11 +251,11 @@ async function runScript(script) {
       }),
       t({
         en:
-          `${w?.length ? `+ Only run at:  ${w?.join(", ")}` : ""}\n` +
-          `${b?.length ? `+ Not run at:  ${b?.join(", ")}` : ""}`,
+          `${w ? `+ Only run at:  ${w}` : ""}\n` +
+          `${b ? `+ Not run at:  ${b}` : ""}`,
         vi:
-          `${w?.length ? `+ Chỉ chạy tại:  ${w?.join(", ")}` : ""}\n` +
-          `${b?.length ? `+ Không chạy tại:  ${b?.join(", ")}` : ""}`,
+          `${w ? `+ Chỉ chạy tại:  ${w}` : ""}\n` +
+          `${b ? `+ Không chạy tại:  ${b}` : ""}`,
       })
     );
   }

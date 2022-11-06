@@ -10,7 +10,7 @@ export default {
   },
 
   blackList: [],
-  whiteList: ["github.com"],
+  whiteList: ["*://github.com"],
 
   func: function () {
     // Source: https://github.com/FarhadG/init

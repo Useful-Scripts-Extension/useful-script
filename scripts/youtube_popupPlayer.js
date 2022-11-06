@@ -9,7 +9,7 @@ export default {
     vi: "Xem video youtube hiện tại trong cửa sổ popup mới",
   },
   blackList: [],
-  whiteList: ["www.youtube.com", "m.youtube.com"],
+  whiteList: ["*://*.youtube.com/*"],
 
   func: function () {
     const urlObject = new URL(location.href);

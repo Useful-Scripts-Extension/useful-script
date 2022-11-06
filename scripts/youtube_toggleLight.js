@@ -9,7 +9,7 @@ export default {
     vi: "Tắt/Mở đèn để tập trung xem video youtube",
   },
   blackList: [],
-  whiteList: ["www.youtube.com"],
+  whiteList: ["*://www.youtube.com/*"],
 
   func: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {

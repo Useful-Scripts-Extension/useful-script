@@ -9,7 +9,7 @@ export default {
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     [

@@ -8,7 +8,7 @@ export default {
     vi: "Lấy id của user từ URL truyền vào",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://.facebook.com"],
 
   func: function () {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran

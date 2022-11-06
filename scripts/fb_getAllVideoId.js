@@ -8,7 +8,7 @@ export default {
     vi: "Tìm tất cả video id trong trang web",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     const list_a = document.querySelectorAll("a");

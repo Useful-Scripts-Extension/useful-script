@@ -8,7 +8,7 @@ export default {
     vi: "Tải cả video giới hạn độ tuổi, không cần đăng nhập",
   },
   blackList: [],
-  whiteList: ["www.youtube.com"],
+  whiteList: ["*://*.youtube.com/*"],
 
   func: function () {
     window.open("https://9xbuddy.com/process?url=" + location.href);

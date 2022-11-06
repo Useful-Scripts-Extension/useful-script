@@ -9,7 +9,7 @@ export default {
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     var uid = /(?<=c_user=)(\d+)/.exec(document.cookie)[0],
