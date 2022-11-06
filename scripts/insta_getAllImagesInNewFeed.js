@@ -8,7 +8,7 @@ export default {
     vi: "Tải về tất cả ảnh đang có trên newfeed",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: async function () {
     function renderInNewWindow({ link, url } = {}) {

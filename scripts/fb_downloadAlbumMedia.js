@@ -8,7 +8,7 @@ export default {
     vi: "Tải về danh sách link ảnh/video",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     const accessToken = prompt("Enter access token:", "");

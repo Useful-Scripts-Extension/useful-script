@@ -9,15 +9,38 @@ export default {
     vi: "Lấy facebook access token từ trang business.facebook.com",
   },
   blackList: [],
-  whiteList: ["business.facebook.com"],
+  whiteList: ["*://business.facebook.com"],
 
   func: function () {
-    try {
-      const accessToken =
-        "EAAG" + /(?<=EAAG)(.*?)(?=\")/.exec(document.body.textContent)[0];
-      window.prompt("Access Token của bạn:", accessToken);
-    } catch (e) {
-      alert("LỖI: " + e.message);
-    }
+    // old - FAILED
+    // try {
+    //   const accessToken =
+    //     "EAA" + /(?<=EAA)(.*?)(?=\")/.exec(document.body.textContent)[0];
+    //   window.prompt("Access Token của bạn:", accessToken);
+    // } catch (e) {
+    //   alert("LỖI: " + e.message);
+    // }
+
+    fetch("https://business.facebook.com/creatorstudio/home", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(function (res) {
+        return res.text();
+      })
+      .then(function (htmlText) {
+        let regex = htmlText.match(
+          /MediaManagerStatics",\[\],{"accessToken":"(.+?)"/
+        );
+        if (null !== regex) {
+          let accesstoken = regex[1];
+          prompt("Access Token: ", accesstoken);
+        } else {
+          alert("Token not found");
+        }
+      })
+      .catch(function (e) {
+        alert("ERROR:" + JSON.stringify(e));
+      });
   },
 };

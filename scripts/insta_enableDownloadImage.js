@@ -9,7 +9,7 @@ export default {
     vi: "Bấm chuột phải và tải ảnh/video instagram dễ dàng",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: function () {
     const allImgs = Array.from(document.querySelectorAll("img[sizes*=px]"));

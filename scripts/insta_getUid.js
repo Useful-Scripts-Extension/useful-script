@@ -8,7 +8,7 @@ export default {
     vi: "Lấy id của người dùng instagram đang đăng nhập",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: function () {
     alert("Đang lấy user id... bấm ok để tiếp tục");

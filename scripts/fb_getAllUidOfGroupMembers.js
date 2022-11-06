@@ -8,7 +8,7 @@ export default {
     vi: "Lấy id của tất cả user từ group",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: async function () {
     // Lấy tất cả id của member trong group

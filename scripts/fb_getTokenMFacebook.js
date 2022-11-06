@@ -9,7 +9,7 @@ export default {
     vi: "Lấy facebook access token từ trang m.facebook.com",
   },
   blackList: [],
-  whiteList: ["m.facebook.com"],
+  whiteList: ["*://m.facebook.com"],
 
   func: function () {
     console.log("Đang lấy token ...");

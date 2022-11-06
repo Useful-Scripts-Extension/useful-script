@@ -9,7 +9,7 @@ export default {
     vi: "Biết số lượt dislikes (không thích) video youtube",
   },
   blackList: [],
-  whiteList: ["www.youtube.com", "m.youtube.com"],
+  whiteList: ["*://*.youtube.com/*"],
 
   func: async function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi

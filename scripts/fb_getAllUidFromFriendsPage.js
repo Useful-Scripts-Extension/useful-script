@@ -8,7 +8,7 @@ export default {
     vi: "Lấy tất cả user ID từ trang danh sách bạn bè",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: async function () {
     // Lấy tất cả uid từ trang facebook search bạn bè

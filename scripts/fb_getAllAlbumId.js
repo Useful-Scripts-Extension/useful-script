@@ -8,7 +8,7 @@ export default {
     vi: "Lấy tất cả album id có trong trang web",
   },
   blackList: [],
-  whiteList: ["www.facebook.com"],
+  whiteList: ["*://www.facebook.com"],
 
   func: function () {
     // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page

@@ -8,7 +8,7 @@ export default {
     vi: "Tải tất cả video từ profile của user doutu.be bất kỳ",
   },
   blackList: [],
-  whiteList: ["doutu.be"],
+  whiteList: ["*://doutu.be"],
 
   func: async function () {
     const WAIT_FOR_FULL_VIDEO_LOADED = 5000;

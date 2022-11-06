@@ -8,7 +8,7 @@ export default {
     vi: "Lấy instagram access token",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: function () {
     try {

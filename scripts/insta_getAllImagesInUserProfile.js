@@ -8,7 +8,7 @@ export default {
     vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
   },
   blackList: [],
-  whiteList: ["www.instagram.com"],
+  whiteList: ["*://*.instagram.com"],
 
   func: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;

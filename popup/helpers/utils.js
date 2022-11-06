@@ -42,8 +42,7 @@ export const openUrlAndRunScript = async (url, func) => {
 
 export async function getCurrentURL() {
   let tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  let url = tabs[0].url;
-  return new URL(url);
+  return tabs[0].url;
 }
 
 export function viewScriptSource(script) {
