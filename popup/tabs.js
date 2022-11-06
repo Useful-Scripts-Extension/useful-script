@@ -130,7 +130,7 @@ const tabs = [
     scripts: [
       s.passwordGenerator,
       s.search_sharedAccount,
-      s.viewHiddenPassword,
+      s.passwordFieldToggle,
     ],
   },
   {

@@ -39,7 +39,7 @@ import textToQRCode from "./textToQRCode.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
 import passwordGenerator from "./passwordGenerator.js";
 import search_sharedAccount from "./search_sharedAccount.js";
-import viewHiddenPassword from "./viewHiddenPassword.js";
+import passwordFieldToggle from "./passwordFieldToggle.js";
 import checkWebDie from "./checkWebDie.js";
 import removeCookies from "./removeCookies.js";
 import enableTextSelection from "./enableTextSelection.js";
@@ -128,7 +128,7 @@ const allScripts = {
   scrollToVeryEnd,
   passwordGenerator: addBadge(passwordGenerator, BADGES.hot),
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
-  viewHiddenPassword,
+  passwordFieldToggle,
   checkWebDie,
   removeCookies,
   enableTextSelection,
