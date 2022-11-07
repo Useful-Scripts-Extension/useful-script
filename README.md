@@ -34,6 +34,8 @@ Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
 ### Bookmarks Tips
 
+[Bookmarklets hay](https://bookmarklet.vercel.app/)
+
 <https://www.thetechbasket.com/most-useful-bookmarklets/>
 <https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/>
 <https://www.wordzz.com/50-most-useful-bookmarklets/>
