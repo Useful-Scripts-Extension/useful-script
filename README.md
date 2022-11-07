@@ -2,6 +2,12 @@
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
+## Change logs
+
+Verion hiện tại: v1.2
+
+[Change logs / Lịch sử cập nhật](/md/CHANGELOGS.md)
+
 ## Overview
 
 1 extension chứa 1 đống extensions nhỏ.
@@ -20,10 +26,6 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 ## Screenshots
 
 ![screenshot](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
-
-## Change logs
-
-[View change logs](/md/CHANGELOGS.md)
 
 ## Contribute
 
