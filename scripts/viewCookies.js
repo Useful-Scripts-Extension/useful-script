@@ -10,9 +10,22 @@ export default {
   },
 
   func: function () {
-    alert(
-      "Cookies stored by this host or domain:\n\n" +
-        document.cookie.replace(/; /g, "\n")
-    );
+    var c = document.cookie.replace(/; /g, "\n");
+    if (c == "") {
+      alert("There is No cookie here");
+    } else {
+      if (
+        confirm(
+          "Cookies found:\n\n" + c + "\n\n - Do you want to open it in new tab?"
+        )
+      ) {
+        let w = window.open(
+          "",
+          "Links",
+          "scrollbars,resizable,width=400,height=600"
+        );
+        w.document.write(c);
+      }
+    }
   },
 };

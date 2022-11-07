@@ -82,6 +82,16 @@ import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
 import youtube_popupPlayer from "./youtube_popupPlayer.js";
 import googleShortcuts from "./googleShortcuts.js";
+import google_downloadDriveVideo from "./google_downloadDriveVideo.js";
+import paywallKiller from "./paywallKiller.js";
+import archiveToday from "./archiveToday.js";
+import download_video2 from "./download_video2.js";
+import whois from "./whois.js";
+import viewWebMetaInfo from "./viewWebMetaInfo.js";
+import getAllEmailsInWeb from "./getAllEmailsInWeb.js";
+import showTheImages from "./showTheImages.js";
+import showHiddenFields from "./showHiddenFields.js";
+import cssSelectorViewer from "./cssSelectorViewer.js";
 
 // inject badges
 const allScripts = {
@@ -138,7 +148,7 @@ const allScripts = {
   table_swapRowAndColumn,
   toggleEditPage: addBadge(toggleEditPage, BADGES.hot),
   whatFont: addBadge(whatFont, BADGES.hot),
-  performanceAnalyzer,
+  performanceAnalyzer: addBadge(performanceAnalyzer, BADGES.hot),
   removeColours,
   removeStylesheet,
   removeImages,
@@ -165,11 +175,21 @@ const allScripts = {
   googleCache: addBadge(googleCache, BADGES.new),
   githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
-  youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.new),
+  youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
   downDetector: addBadge(downDetector, BADGES.new),
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
-  youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.new),
+  youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.beta),
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
+  google_downloadDriveVideo: addBadge(google_downloadDriveVideo, BADGES.beta),
+  paywallKiller: addBadge(paywallKiller, BADGES.beta),
+  archiveToday: addBadge(archiveToday, BADGES.new),
+  download_video2: addBadge(download_video2, BADGES.new),
+  whois: addBadge(whois, BADGES.new),
+  viewWebMetaInfo: addBadge(viewWebMetaInfo, BADGES.new),
+  getAllEmailsInWeb: addBadge(getAllEmailsInWeb, BADGES.new),
+  showTheImages: addBadge(showTheImages, BADGES.new),
+  showHiddenFields: addBadge(showHiddenFields, BADGES.new),
+  cssSelectorViewer: addBadge(cssSelectorViewer, BADGES.new),
 };
 
 // inject id to all scripts

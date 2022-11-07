@@ -32,19 +32,28 @@ const tabs = [
       s.similarWeb,
       s.search_sharedAccount,
       s.whatWebsiteStack,
+      s.whois,
+      s.viewWebMetaInfo,
       s.search_paperWhere,
       s.checkWebDie,
       s.downDetector,
       s.openWaybackUrl,
+      s.archiveToday,
     ],
   },
   {
     ...CATEGORY.download,
-    scripts: [s.download_video, s.download_image],
+    scripts: [
+      s.download_video2,
+      s.download_video,
+      s.download_image,
+      s.showTheImages,
+    ],
   },
   {
     ...CATEGORY.google,
     scripts: [
+      // s.google_downloadDriveVideo,
       s.search_totalIndexedPages,
       s.search_googleSite,
       s.googleShortcuts,
@@ -123,7 +132,7 @@ const tabs = [
   },
   {
     ...CATEGORY.automation,
-    scripts: [s.scrollToVeryEnd],
+    scripts: [s.getAllEmailsInWeb, s.performanceAnalyzer, s.scrollToVeryEnd],
   },
   {
     ...CATEGORY.password,
@@ -136,23 +145,25 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,
       s.enableTextSelection,
       s.reEnableContextMenu,
+      s.paywallKiller,
     ],
   },
   {
     ...CATEGORY.webUI,
     scripts: [
       s.toggleEditPage,
-      s.performanceAnalyzer,
       s.scrollByDrag,
       createTitle("--- View ---", "--- Xem ---"),
       s.listAllImagesInWeb,
       s.viewAllLinks,
       s.viewScriptsUsed,
       s.viewStylesUsed,
+      s.cssSelectorViewer,
       s.viewPartialSource,
       createTitle("--- Remove ---", "--- Xoá ---"),
       s.removeColours,
