@@ -9,10 +9,6 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 - Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
 - View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
-## Contribute - Đóng góp công sức của bạn
-
-Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
-
 ## How to install
 
 - Chrome Webstore - Coming soon...
@@ -25,17 +21,32 @@ Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
 ![screenshot](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
 
-## Extension Tips
+## Change logs
 
-<https://github.com/muaz-khan/Chrome-Extensions>
-<https://developer.chrome.com/docs/extensions/reference/scripting/>
-<https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js>
-<https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script>
+[View change logs](/md/CHANGELOGS.md)
 
-### Bookmarks Tips
+## Contribute
 
-[Bookmarklets hay](https://bookmarklet.vercel.app/)
+Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
-<https://www.thetechbasket.com/most-useful-bookmarklets/>
-<https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/>
-<https://www.wordzz.com/50-most-useful-bookmarklets/>
+## Learn
+
+- Extension Tips
+
+    - [muaz-khan/Chrome-Extensions](https://github.com/muaz-khan/Chrome-Extensions)
+
+    - [scripting docs](https://developer.chrome.com/docs/extensions/reference/scripting/)
+
+    - [focus-mode example](https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js)
+
+    - [execute popup script in webpage](https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script)
+
+- Bookmarks Tips
+
+    - [Bookmarklets hay](https://bookmarklet.vercel.app/)
+
+    - [Bookmarklets hay 2](https://www.thetechbasket.com/most-useful-bookmarklets/)
+
+    - [Blog hongkiat - 100 bookmarklets](https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/)
+
+    - [50 useful bookmarklets](https://www.wordzz.com/50-most-useful-bookmarklets/)
