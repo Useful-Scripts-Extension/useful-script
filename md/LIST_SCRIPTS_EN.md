@@ -1,211 +1,229 @@
-### Search
+###  Search
 
-1. [What font](/scripts/whatFont.js)
+  1. [What font](/scripts/whatFont.js)
 
-2. [Find alternative web](/scripts/similarWeb.js)
+  2. [Find alternative web](/scripts/similarWeb.js)
 
-3. [Find shared login](/scripts/search_sharedAccount.js)
+  3. [Find shared login](/scripts/search_sharedAccount.js)
 
-4. [View website stack](/scripts/whatWebsiteStack.js)
+  4. [View website stack](/scripts/whatWebsiteStack.js)
 
-5. [Where to find papers/books/pdf/...](/scripts/search_paperWhere.js)
+  5. [Who.is](/scripts/whois.js)
 
-6. [Check total indexed pages](/scripts/search_totalIndexedPages.js)
+  6. [See web meta info (SEO)](/scripts/viewWebMetaInfo.js)
 
-7. [Dowfor - Check web die](/scripts/checkWebDie.js)
+  7. [Where to find papers/books/pdf/...](/scripts/search_paperWhere.js)
 
-8. [DownDetector - Check web die](/scripts/downDetector.js)
+  8. [Dowfor - Check web die](/scripts/checkWebDie.js)
 
-9. [Open wayback url](/scripts/openWaybackUrl.js)
+  9. [DownDetector - Check web die](/scripts/downDetector.js)
 
-### Download
+  10. [Open wayback url](/scripts/openWaybackUrl.js)
 
-10. [Download video](/scripts/download_video.js)
+  11. [Archive the current Page online](/scripts/archiveToday.js)
 
-11. [Image Downloader](/scripts/download_image.js)
+###  Download
 
-### Google
+  12. [Download video 2 - use external website](/scripts/download_video2.js)
 
-12. [Google site search](/scripts/search_googleSite.js)
+  13. [Download video](/scripts/download_video.js)
 
-13. [Google shortcuts](/scripts/googleShortcuts.js)
+  14. [Image Downloader](/scripts/download_image.js)
 
-14. [View Google cache of website](/scripts/googleCache.js)
+  15. [Show all images in new frame](/scripts/showTheImages.js)
 
-### Facebook
+###  Google
+
+  16. [Check total indexed pages](/scripts/search_totalIndexedPages.js)
+
+  17. [Google site search](/scripts/search_googleSite.js)
+
+  18. [Google shortcuts](/scripts/googleShortcuts.js)
+
+  19. [View Google cache of website](/scripts/googleCache.js)
+
+###  Facebook
 
 --- UI ---
 
-15. [Toggle light fb newfeed](/scripts/fb_toggleLight.js)
+  20. [Toggle light fb newfeed](/scripts/fb_toggleLight.js)
 
 --- Access Token ---
 
-16. [Get fb token full permission (ffb.vn)](/scripts/fb_getTokenFfb.js)
+  21. [Get fb token full permission (ffb.vn)](/scripts/fb_getTokenFfb.js)
 
-17. [Get fb Token (business.facebook.com)](/scripts/fb_getTokenBusiness.js)
+  22. [Get fb Token (business.facebook.com)](/scripts/fb_getTokenBusiness.js)
 
-18. [Get fb Token (www.facebook.com)](/scripts/fb_getTokenFacebook.js)
+  23. [Get fb Token (www.facebook.com)](/scripts/fb_getTokenFacebook.js)
 
-19. [Get fb Token (m.facebook.com)](/scripts/fb_getTokenMFacebook.js)
+  24. [Get fb Token (m.facebook.com)](/scripts/fb_getTokenMFacebook.js)
 
 --- Get ID ---
 
-20. [Get fb User ID](/scripts/fb_getUid.js)
+  25. [Get fb User ID](/scripts/fb_getUid.js)
 
-21. [Get fb Page ID](/scripts/fb_getPageId.js)
+  26. [Get fb Page ID](/scripts/fb_getPageId.js)
 
-22. [Get fb Group ID](/scripts/fb_getGroupId.js)
+  27. [Get fb Group ID](/scripts/fb_getGroupId.js)
 
-23. [Get fb Album ID](/scripts/fb_getAlbumId.js)
+  28. [Get fb Album ID](/scripts/fb_getAlbumId.js)
 
-24. [Get timeline Album ID of fb page](/scripts/fb_getTimelineAlbumId.js)
+  29. [Get timeline Album ID of fb page](/scripts/fb_getTimelineAlbumId.js)
 
-25. [Get all fb Video ID](/scripts/fb_getAllVideoId.js)
+  30. [Get all fb Video ID](/scripts/fb_getAllVideoId.js)
 
-26. [Get all fb Album ID](/scripts/fb_getAllAlbumId.js)
+  31. [Get all fb Album ID](/scripts/fb_getAllAlbumId.js)
 
-27. [Get fb User ID from url](/scripts/fb_getUidFromUrl.js)
+  32. [Get fb User ID from url](/scripts/fb_getUidFromUrl.js)
 
-28. [Get all fb User ID from search page](/scripts/fb_getAllUidFromFbSearch.js)
+  33. [Get all fb User ID from search page](/scripts/fb_getAllUidFromFbSearch.js)
 
-29. [Get all fb User ID from Friends page](/scripts/fb_getAllUidFromFriendsPage.js)
+  34. [Get all fb User ID from Friends page](/scripts/fb_getAllUidFromFriendsPage.js)
 
-30. [Get all fb User ID from group](/scripts/fb_getAllUidOfGroupMembers.js)
+  35. [Get all fb User ID from group](/scripts/fb_getAllUidOfGroupMembers.js)
 
 --- Download ---
 
-31. [Get avatar from fb user id](/scripts/fb_getAvatarFromUid.js)
+  36. [Get avatar from fb user id](/scripts/fb_getAvatarFromUid.js)
 
-32. [Get download link of current fb video](/scripts/fb_downloadCurrentVideo.js)
+  37. [Get download link of current fb video](/scripts/fb_downloadCurrentVideo.js)
 
-33. [Download fb album media links](/scripts/fb_downloadAlbumMedia.js)
+  38. [Download fb album media links](/scripts/fb_downloadAlbumMedia.js)
 
-### Instagram
+###  Instagram
 
-34. [Enable download instagram photos/videos](/scripts/insta_enableDownloadImage.js)
+  39. [Enable download instagram photos/videos](/scripts/insta_enableDownloadImage.js)
 
-35. [Get token insta](/scripts/insta_getToken.js)
+  40. [Get token insta](/scripts/insta_getToken.js)
 
-36. [Get your insta User ID](/scripts/insta_getUid.js)
+  41. [Get your insta User ID](/scripts/insta_getUid.js)
 
-37. [Get all media of insta user](/scripts/insta_getAllUserMedia.js)
+  42. [Get all media of insta user](/scripts/insta_getAllUserMedia.js)
 
-38. [Get all images in insta newfeed](/scripts/insta_getAllImagesInNewFeed.js)
+  43. [Get all images in insta newfeed](/scripts/insta_getAllImagesInNewFeed.js)
 
-39. [Get all images in insta user profile](/scripts/insta_getAllImagesInUserProfile.js)
+  44. [Get all images in insta user profile](/scripts/insta_getAllImagesInUserProfile.js)
 
-### Youtube
+###  Youtube
 
-40. [Download youtube video (bypass 18+)](/scripts/youtube_downloadVideo.js)
+  45. [Download youtube video (bypass 18+)](/scripts/youtube_downloadVideo.js)
 
-41. [Picture in Picture](/scripts/pictureInPicture.js)
+  46. [Picture in Picture](/scripts/pictureInPicture.js)
 
-42. [Youtube popup player](/scripts/youtube_popupPlayer.js)
+  47. [Youtube popup player](/scripts/youtube_popupPlayer.js)
 
-43. [Toggle light youtube](/scripts/youtube_toggleLight.js)
+  48. [Toggle light youtube](/scripts/youtube_toggleLight.js)
 
-44. [View youtube video dislikes](/scripts/youtube_viewDislikes.js)
+  49. [View youtube video dislikes](/scripts/youtube_viewDislikes.js)
 
-### Github
+###  Github
 
-45. [Go to first commit](/scripts/github_goToFirstCommit.js)
+  50. [Go to first commit](/scripts/github_goToFirstCommit.js)
 
-46. [Open repo in github.dev](/scripts/githubdev.js)
+  51. [Open repo in github.dev](/scripts/githubdev.js)
 
-47. [Open repo in github1s.com](/scripts/github1s.js)
+  52. [Open repo in github1s.com](/scripts/github1s.js)
 
 ### Doutu.be
 
-48. [Enable download all video](/scripts/doutube_enableDownloadVideo.js)
+  53. [Enable download all video](/scripts/doutube_enableDownloadVideo.js)
 
-49. [Download video doutu.be](/scripts/doutube_downloadWatchingVideo.js)
+  54. [Download video doutu.be](/scripts/doutube_downloadWatchingVideo.js)
 
-50. [Download doutu.be story](/scripts/doutube_downloadWatchingStory.js)
+  55. [Download doutu.be story](/scripts/doutube_downloadWatchingStory.js)
 
-51. [Get all video from user doutu.be profile](/scripts/doutube_getAllVideoInUserProfile.js)
+  56. [Get all video from user doutu.be profile](/scripts/doutube_getAllVideoInUserProfile.js)
 
-### PDF
+###  PDF
 
-52. [Darkmode for pdf](/scripts/darkModePDF.js)
+  57. [Darkmode for pdf](/scripts/darkModePDF.js)
 
-53. [Web to PDF](/scripts/webToPDF.js)
+  58. [Web to PDF](/scripts/webToPDF.js)
 
-### QR Code
+###  QR Code
 
-54. [Text to QR Code](/scripts/textToQRCode.js)
+  59. [Text to QR Code](/scripts/textToQRCode.js)
 
-55. [URL to QR Code](/scripts/webToQRCode.js)
+  60. [URL to QR Code](/scripts/webToQRCode.js)
 
-### Automation
+###  Automation
 
-56. [Scroll to very end](/scripts/scrollToVeryEnd.js)
+  61. [Extract all Emails from website](/scripts/getAllEmailsInWeb.js)
 
-### Password
+  62. [Performance Analyzer](/scripts/performanceAnalyzer.js)
 
-57. [Password generator](/scripts/passwordGenerator.js)
+  63. [Scroll to very end](/scripts/scrollToVeryEnd.js)
 
-58. [Find shared login](/scripts/search_sharedAccount.js)
+###  Password
 
-59. [View hidden passwords](/scripts/viewHiddenPassword.js)
+  64. [Password generator](/scripts/passwordGenerator.js)
 
-### Unlock
+  65. [Find shared login](/scripts/search_sharedAccount.js)
 
-60. [View cookies](/scripts/viewCookies.js)
+  66. [Password field toggle](/scripts/passwordFieldToggle.js)
 
-61. [Remove cookies](/scripts/removeCookies.js)
+###  Unlock
 
-62. [Re-Enable text selection](/scripts/enableTextSelection.js)
+  67. [Show hidden fields](/scripts/showHiddenFields.js)
 
-63. [Re-Enable context menu (right click)](/scripts/reEnableContextMenu.js)
+  68. [View cookies](/scripts/viewCookies.js)
 
-### Web UI
+  69. [Remove cookies](/scripts/removeCookies.js)
 
-64. [Toggle edit page](/scripts/toggleEditPage.js)
+  70. [Re-Enable text selection](/scripts/enableTextSelection.js)
 
-65. [Performance Analyzer](/scripts/performanceAnalyzer.js)
+  71. [Re-Enable context menu (right click)](/scripts/reEnableContextMenu.js)
 
-66. [Scroll by dragging](/scripts/scrollByDrag.js)
+  72. [Bypass Paywalls](/scripts/paywallKiller.js)
+
+###  Web UI
+
+  73. [Toggle edit page](/scripts/toggleEditPage.js)
+
+  74. [Scroll by dragging](/scripts/scrollByDrag.js)
 
 --- View ---
 
-67. [View all images in web](/scripts/listAllImagesInWeb.js)
+  75. [View all images in web](/scripts/listAllImagesInWeb.js)
 
-68. [View all links](/scripts/viewAllLinks.js)
+  76. [View all links](/scripts/viewAllLinks.js)
 
-69. [View scripts used](/scripts/viewScriptsUsed.js)
+  77. [View scripts used](/scripts/viewScriptsUsed.js)
 
-70. [View stylesheet used](/scripts/viewStylesUsed.js)
+  78. [View stylesheet used](/scripts/viewStylesUsed.js)
 
-71. [View source code of selected area](/scripts/viewPartialSource.js)
+  79. [CSS selector viewer](/scripts/cssSelectorViewer.js)
+
+  80. [View source code of selected area](/scripts/viewPartialSource.js)
 
 --- Remove ---
 
-72. [Remove all colors in web](/scripts/removeColours.js)
+  81. [Remove all colors in web](/scripts/removeColours.js)
 
-73. [Remove stylesheet](/scripts/removeStylesheet.js)
+  82. [Remove stylesheet](/scripts/removeStylesheet.js)
 
-74. [Remove images](/scripts/removeImages.js)
+  83. [Remove images](/scripts/removeImages.js)
 
-75. [Remove bloat (iframe, embed)](/scripts/removeBloat.js)
+  84. [Remove bloat (iframe, embed)](/scripts/removeBloat.js)
 
 --- Table ---
 
-76. [Add sort to table](/scripts/table_addSortTable.js)
+  85. [Add sort to table](/scripts/table_addSortTable.js)
 
-77. [Add number columns](/scripts/table_addNumberColumn.js)
+  86. [Add number columns](/scripts/table_addNumberColumn.js)
 
-78. [Swap rows and columns](/scripts/table_swapRowAndColumn.js)
+  87. [Swap rows and columns](/scripts/table_swapRowAndColumn.js)
 
 --- More ---
 
-79. [Highlight internal/external link](/scripts/internalOrExternalLink.js)
+  88. [Highlight internal/external link](/scripts/internalOrExternalLink.js)
 
-80. [Get window size](/scripts/getWindowSize.js)
+  89. [Get window size](/scripts/getWindowSize.js)
 
-81. [Let it snow](/scripts/letItSnow.js)
+  90. [Let it snow](/scripts/letItSnow.js)
 
-### More
+###  More
 
-82. [Shorten URL (j2team)](/scripts/shortenURL.js)
+  91. [Shorten URL (j2team)](/scripts/shortenURL.js)
 
-83. [Run Stat.js](/scripts/runStatJs.js)
+  92. [Run Stat.js](/scripts/runStatJs.js)
