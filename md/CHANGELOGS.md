@@ -3,9 +3,9 @@
 <details>
   <summary>v1.2 - 08/11/2022</summary>
 
-- 9 scripts mới: 
+- 9 scripts mới:
     1. archiveToday
-    2. cssSelectorViewer 
+    2. cssSelectorViewer
     3. download_video2
     4. getAllEmailsInWeb
     5. payWallKiller
@@ -14,12 +14,15 @@
     8. viewWebMetaInfo
     9. whois
 
-- Fix các scripts: 
+- Fix các scripts:
     1. perfomanceAnalyzer
     2. remove cookies
     3. view cookies
     4. viewPartialSource
-    5. youtube_downloadVideo 
+    5. youtube_downloadVideo
+
+- Fix extension:
+  - await in lang.js (bug crash on cent browser)
 
 </details>
 
