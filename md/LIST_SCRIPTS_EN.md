@@ -1,4 +1,4 @@
-###  Search
+### Search
 
   1. [What font](/scripts/whatFont.js)
 
@@ -22,7 +22,7 @@
 
   11. [Archive the current Page online](/scripts/archiveToday.js)
 
-###  Download
+### Download
 
   12. [Download video 2 - use external website](/scripts/download_video2.js)
 
@@ -32,7 +32,7 @@
 
   15. [Show all images in new frame](/scripts/showTheImages.js)
 
-###  Google
+### Google
 
   16. [Check total indexed pages](/scripts/search_totalIndexedPages.js)
 
@@ -42,7 +42,7 @@
 
   19. [View Google cache of website](/scripts/googleCache.js)
 
-###  Facebook
+### Facebook
 
 --- UI ---
 
@@ -90,7 +90,7 @@
 
   38. [Download fb album media links](/scripts/fb_downloadAlbumMedia.js)
 
-###  Instagram
+### Instagram
 
   39. [Enable download instagram photos/videos](/scripts/insta_enableDownloadImage.js)
 
@@ -104,126 +104,128 @@
 
   44. [Get all images in insta user profile](/scripts/insta_getAllImagesInUserProfile.js)
 
-###  Youtube
+### Youtube
 
   45. [Download youtube video (bypass 18+)](/scripts/youtube_downloadVideo.js)
 
   46. [Picture in Picture](/scripts/pictureInPicture.js)
 
-  47. [Youtube popup player](/scripts/youtube_popupPlayer.js)
+  47. [Toggle light youtube](/scripts/youtube_toggleLight.js)
 
-  48. [Toggle light youtube](/scripts/youtube_toggleLight.js)
+  48. [View youtube video dislikes](/scripts/youtube_viewDislikes.js)
 
-  49. [View youtube video dislikes](/scripts/youtube_viewDislikes.js)
+  49. [Youtube nonstop](/scripts/youtube_nonstop.js)
 
-###  Github
+  50. [Youtube popup player](/scripts/youtube_popupPlayer.js)
 
-  50. [Go to first commit](/scripts/github_goToFirstCommit.js)
+### Github
 
-  51. [Open repo in github.dev](/scripts/githubdev.js)
+  51. [Go to first commit](/scripts/github_goToFirstCommit.js)
 
-  52. [Open repo in github1s.com](/scripts/github1s.js)
+  52. [Open repo in github.dev](/scripts/githubdev.js)
+
+  53. [Open repo in github1s.com](/scripts/github1s.js)
 
 ### Doutu.be
 
-  53. [Enable download all video](/scripts/doutube_enableDownloadVideo.js)
+  54. [Enable download all video](/scripts/doutube_enableDownloadVideo.js)
 
-  54. [Download video doutu.be](/scripts/doutube_downloadWatchingVideo.js)
+  55. [Download video doutu.be](/scripts/doutube_downloadWatchingVideo.js)
 
-  55. [Download doutu.be story](/scripts/doutube_downloadWatchingStory.js)
+  56. [Download doutu.be story](/scripts/doutube_downloadWatchingStory.js)
 
-  56. [Get all video from user doutu.be profile](/scripts/doutube_getAllVideoInUserProfile.js)
+  57. [Get all video from user doutu.be profile](/scripts/doutube_getAllVideoInUserProfile.js)
 
-###  PDF
+### PDF
 
-  57. [Darkmode for pdf](/scripts/darkModePDF.js)
+  58. [Darkmode for pdf](/scripts/darkModePDF.js)
 
-  58. [Web to PDF](/scripts/webToPDF.js)
+  59. [Web to PDF](/scripts/webToPDF.js)
 
-###  QR Code
+### QR Code
 
-  59. [Text to QR Code](/scripts/textToQRCode.js)
+  60. [Text to QR Code](/scripts/textToQRCode.js)
 
-  60. [URL to QR Code](/scripts/webToQRCode.js)
+  61. [URL to QR Code](/scripts/webToQRCode.js)
 
-###  Automation
+### Automation
 
-  61. [Extract all Emails from website](/scripts/getAllEmailsInWeb.js)
+  62. [Extract all Emails from website](/scripts/getAllEmailsInWeb.js)
 
-  62. [Performance Analyzer](/scripts/performanceAnalyzer.js)
+  63. [Performance Analyzer](/scripts/performanceAnalyzer.js)
 
-  63. [Scroll to very end](/scripts/scrollToVeryEnd.js)
+  64. [Scroll to very end](/scripts/scrollToVeryEnd.js)
 
-###  Password
+### Password
 
-  64. [Password generator](/scripts/passwordGenerator.js)
+  65. [Password generator](/scripts/passwordGenerator.js)
 
-  65. [Find shared login](/scripts/search_sharedAccount.js)
+  66. [Find shared login](/scripts/search_sharedAccount.js)
 
-  66. [Password field toggle](/scripts/passwordFieldToggle.js)
+  67. [Password field toggle](/scripts/passwordFieldToggle.js)
 
-###  Unlock
+### Unlock
 
-  67. [Show hidden fields](/scripts/showHiddenFields.js)
+  68. [Show hidden fields](/scripts/showHiddenFields.js)
 
-  68. [View cookies](/scripts/viewCookies.js)
+  69. [View cookies](/scripts/viewCookies.js)
 
-  69. [Remove cookies](/scripts/removeCookies.js)
+  70. [Remove cookies](/scripts/removeCookies.js)
 
-  70. [Re-Enable text selection](/scripts/enableTextSelection.js)
+  71. [Re-Enable text selection](/scripts/enableTextSelection.js)
 
-  71. [Re-Enable context menu (right click)](/scripts/reEnableContextMenu.js)
+  72. [Re-Enable context menu (right click)](/scripts/reEnableContextMenu.js)
 
-  72. [Bypass Paywalls](/scripts/paywallKiller.js)
+  73. [Bypass Paywalls](/scripts/paywallKiller.js)
 
-###  Web UI
+### Web UI
 
-  73. [Toggle edit page](/scripts/toggleEditPage.js)
+  74. [Toggle edit page](/scripts/toggleEditPage.js)
 
-  74. [Scroll by dragging](/scripts/scrollByDrag.js)
+  75. [Scroll by dragging](/scripts/scrollByDrag.js)
 
 --- View ---
 
-  75. [View all images in web](/scripts/listAllImagesInWeb.js)
+  76. [View all images in web](/scripts/listAllImagesInWeb.js)
 
-  76. [View all links](/scripts/viewAllLinks.js)
+  77. [View all links](/scripts/viewAllLinks.js)
 
-  77. [View scripts used](/scripts/viewScriptsUsed.js)
+  78. [View scripts used](/scripts/viewScriptsUsed.js)
 
-  78. [View stylesheet used](/scripts/viewStylesUsed.js)
+  79. [View stylesheet used](/scripts/viewStylesUsed.js)
 
-  79. [CSS selector viewer](/scripts/cssSelectorViewer.js)
+  80. [CSS selector viewer](/scripts/cssSelectorViewer.js)
 
-  80. [View source code of selected area](/scripts/viewPartialSource.js)
+  81. [View source code of selected area](/scripts/viewPartialSource.js)
 
 --- Remove ---
 
-  81. [Remove all colors in web](/scripts/removeColours.js)
+  82. [Remove all colors in web](/scripts/removeColours.js)
 
-  82. [Remove stylesheet](/scripts/removeStylesheet.js)
+  83. [Remove stylesheet](/scripts/removeStylesheet.js)
 
-  83. [Remove images](/scripts/removeImages.js)
+  84. [Remove images](/scripts/removeImages.js)
 
-  84. [Remove bloat (iframe, embed)](/scripts/removeBloat.js)
+  85. [Remove bloat (iframe, embed)](/scripts/removeBloat.js)
 
 --- Table ---
 
-  85. [Add sort to table](/scripts/table_addSortTable.js)
+  86. [Add sort to table](/scripts/table_addSortTable.js)
 
-  86. [Add number columns](/scripts/table_addNumberColumn.js)
+  87. [Add number columns](/scripts/table_addNumberColumn.js)
 
-  87. [Swap rows and columns](/scripts/table_swapRowAndColumn.js)
+  88. [Swap rows and columns](/scripts/table_swapRowAndColumn.js)
 
 --- More ---
 
-  88. [Highlight internal/external link](/scripts/internalOrExternalLink.js)
+  89. [Highlight internal/external link](/scripts/internalOrExternalLink.js)
 
-  89. [Get window size](/scripts/getWindowSize.js)
+  90. [Get window size](/scripts/getWindowSize.js)
 
-  90. [Let it snow](/scripts/letItSnow.js)
+  91. [Let it snow](/scripts/letItSnow.js)
 
-###  More
+### More
 
-  91. [Shorten URL (j2team)](/scripts/shortenURL.js)
+  92. [Shorten URL (j2team)](/scripts/shortenURL.js)
 
-  92. [Run Stat.js](/scripts/runStatJs.js)
+  93. [Run Stat.js](/scripts/runStatJs.js)

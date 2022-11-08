@@ -13,6 +13,7 @@
     7. showTheImages
     8. viewWebMetaInfo
     9. whois
+    10. youtube nonstop
 
 - Fix các scripts:
     1. perfomanceAnalyzer
