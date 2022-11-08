@@ -5,7 +5,7 @@ export const LANG = {
   en: "en",
 };
 
-let currentLangKey = await langSaver.get(LANG.vi);
+let currentLangKey = null;
 
 export async function setLang(lang) {
   if (lang in LANG) {
@@ -19,16 +19,17 @@ export async function setLang(lang) {
 export async function toggleLang() {
   let newLang = currentLangKey === LANG.vi ? LANG.en : LANG.vi;
   currentLangKey = newLang;
-  await langSaver.set(newLang);
+  await setLang(newLang);
   return newLang;
 }
 
-export function getLang() {
+export async function getLang() {
+  if (!currentLangKey) currentLangKey = await langSaver.get(LANG.vi);
   return currentLangKey;
 }
 
-export function getFlag() {
-  return "./assets/flag-" + getLang() + ".png";
+export async function getFlag() {
+  return "./assets/flag-" + (await getLang()) + ".png";
 }
 
 export function t(o) {
