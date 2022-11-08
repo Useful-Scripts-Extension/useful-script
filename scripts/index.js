@@ -92,6 +92,7 @@ import getAllEmailsInWeb from "./getAllEmailsInWeb.js";
 import showTheImages from "./showTheImages.js";
 import showHiddenFields from "./showHiddenFields.js";
 import cssSelectorViewer from "./cssSelectorViewer.js";
+import youtube_nonstop from "./youtube_nonstop.js";
 
 // inject badges
 const allScripts = {
@@ -190,6 +191,7 @@ const allScripts = {
   showTheImages: addBadge(showTheImages, BADGES.new),
   showHiddenFields: addBadge(showHiddenFields, BADGES.new),
   cssSelectorViewer: addBadge(cssSelectorViewer, BADGES.new),
+  youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
 };
 
 // inject id to all scripts
