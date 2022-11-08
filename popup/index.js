@@ -23,11 +23,11 @@ const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
 
 async function initLanguage() {
-  flagImg.setAttribute("src", getFlag());
+  flagImg.setAttribute("src", await getFlag());
 
   flagImg.onclick = async () => {
     await toggleLang();
-    flagImg.setAttribute("src", getFlag());
+    flagImg.setAttribute("src", await getFlag());
 
     // reset UI
     createTabs();
