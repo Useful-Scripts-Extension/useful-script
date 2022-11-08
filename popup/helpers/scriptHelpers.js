@@ -13,6 +13,7 @@ export async function getAvailableScripts() {
   return avai;
 }
 
+export const GlobalBlackList = ["edge://*", "chrome://*"];
 export async function checkBlackWhiteList(script, url = null) {
   if (!url) {
     url = await getCurrentURL();
@@ -23,12 +24,15 @@ export async function checkBlackWhiteList(script, url = null) {
     hasWhiteList = w?.length > 0,
     hasBlackList = b?.length > 0,
     inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inGlobalBlackList =
+      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
 
   let willRun =
-    (!hasWhiteList && !hasBlackList) ||
-    (hasWhiteList && inWhiteList) ||
-    (hasBlackList && !inBlackList);
+    !inGlobalBlackList &&
+    ((!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList));
 
   return willRun;
 }
