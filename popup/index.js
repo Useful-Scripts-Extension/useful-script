@@ -244,8 +244,8 @@ async function runScript(script) {
     recentScriptsSaver.add(script);
     runScriptInCurrentTab(script.func);
   } else {
-    let w = script.whiteList?.join(", ");
-    let b = [...script.blackList, ...GlobalBlackList]?.join(", ");
+    let w = script?.whiteList?.join(", ");
+    let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");
 
     openModal(
       t({
