@@ -52,8 +52,6 @@ export default {
       0
     );
 
-    alert(choice);
-
     if (choice != null && choice >= 0 && choice < options.length) {
       options[choice]?.func?.();
     }
