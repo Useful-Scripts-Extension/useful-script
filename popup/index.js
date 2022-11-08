@@ -254,10 +254,10 @@ async function runScript(script) {
       }),
       t({
         en:
-          `${w ? `+ Only run at:  ${w}` : ""}\n` +
+          `${w ? `+ Only run at:  ${w}` : ""}<br />` +
           `${b ? `+ Not run at:  ${b}` : ""}`,
         vi:
-          `${w ? `+ Chỉ chạy tại:  ${w}` : ""}\n` +
+          `${w ? `+ Chỉ chạy tại:  ${w}` : ""}<br />` +
           `${b ? `+ Không chạy tại:  ${b}` : ""}`,
       })
     );
