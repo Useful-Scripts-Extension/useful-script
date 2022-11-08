@@ -23,6 +23,7 @@
 
 - Fix extension:
   - await in lang.js (bug crash on cent browser)
+  - add globalBlackList: không chạy code trong `edge://*` hoặc `chrome://*`
 
 </details>
 
