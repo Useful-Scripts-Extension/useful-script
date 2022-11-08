@@ -2,7 +2,10 @@ import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { viewScriptSource, runScriptInCurrentTab } from "./helpers/utils.js";
-import { checkBlackWhiteList } from "./helpers/scriptHelpers.js";
+import {
+  checkBlackWhiteList,
+  GlobalBlackList,
+} from "./helpers/scriptHelpers.js";
 import { openModal } from "./helpers/modal.js";
 import {
   activeTabIdSaver,
@@ -242,7 +245,7 @@ async function runScript(script) {
     runScriptInCurrentTab(script.func);
   } else {
     let w = script.whiteList?.join(", ");
-    let b = script.blackList?.join(", ");
+    let b = [...script.blackList, ...GlobalBlackList]?.join(", ");
 
     openModal(
       t({
