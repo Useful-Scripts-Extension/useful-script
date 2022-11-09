@@ -91,6 +91,7 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
+      // s.insta_reloaded,
       s.insta_enableDownloadImage,
       s.insta_getToken,
       s.insta_getUid,

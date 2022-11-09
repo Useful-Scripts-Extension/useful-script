@@ -93,6 +93,7 @@ import showTheImages from "./showTheImages.js";
 import showHiddenFields from "./showHiddenFields.js";
 import cssSelectorViewer from "./cssSelectorViewer.js";
 import youtube_nonstop from "./youtube_nonstop.js";
+import insta_reloaded from "./insta_reloaded.js";
 
 // inject badges
 const allScripts = {
@@ -192,6 +193,7 @@ const allScripts = {
   showHiddenFields: addBadge(showHiddenFields, BADGES.new),
   cssSelectorViewer: addBadge(cssSelectorViewer, BADGES.new),
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
+  insta_reloaded: addBadge(insta_reloaded, BADGES.hot),
 };
 
 // inject id to all scripts
