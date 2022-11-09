@@ -14,15 +14,19 @@ export default {
   func: function () {
     let options = [
       {
-        name: "10downloader",
+        name: "yt1s.com",
+        url: "https://yt1s.com/vi/youtube-to-mp4?q=",
+      },
+      {
+        name: "10downloader.com",
         url: "https://10downloader.com/download?v=",
       },
       {
-        name: "9xbuddy",
+        name: "9xbuddy.com",
         url: "https://9xbuddy.com/process?url=",
       },
       {
-        name: "ymp4",
+        name: "ymp4.com",
         url: "https://ymp4.download/en50/?url=/",
       },
     ];
