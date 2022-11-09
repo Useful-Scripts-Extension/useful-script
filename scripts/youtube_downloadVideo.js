@@ -39,7 +39,7 @@ export default {
     );
 
     if (choose != null && choose >= 0 && choose < options.length) {
-      window.open(options[choose] + location.href);
+      window.open(options[choose].url + location.href);
     }
   },
 };
