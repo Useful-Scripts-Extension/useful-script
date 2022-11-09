@@ -38,7 +38,7 @@ export default {
       0
     );
 
-    if (choice != null && choose >= 0 && choose < options.length) {
+    if (choose != null && choose >= 0 && choose < options.length) {
       window.open(options[choose] + location.href);
     }
   },
