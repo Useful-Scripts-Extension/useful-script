@@ -66,6 +66,13 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-youtube"></i> Youtube`,
     },
   },
+  zingmp3: {
+    id: "zingmp3",
+    name: {
+      en: `<i class="fa-solid fa-music"></i> Zing mp3`,
+      vi: `<i class="fa-solid fa-music"></i> Zing mp3`,
+    },
+  },
   github: {
     id: "github",
     name: {

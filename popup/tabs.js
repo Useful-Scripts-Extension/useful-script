@@ -47,9 +47,8 @@ const tabs = [
       s.download_video,
       s.download_video2,
       s.showTheImages,
-      s.download_image,
-      s.zingmp3_downloadMusic,
       s.download_audio,
+      s.download_image,
     ],
   },
   {
@@ -112,6 +111,10 @@ const tabs = [
       s.youtube_nonstop,
       s.youtube_popupPlayer,
     ],
+  },
+  {
+    ...CATEGORY.zingmp3,
+    scripts: [s.download_audio, s.zingmp3_downloadMusic],
   },
   {
     ...CATEGORY.github,
