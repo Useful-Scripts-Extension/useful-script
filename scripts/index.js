@@ -94,6 +94,8 @@ import showHiddenFields from "./showHiddenFields.js";
 import cssSelectorViewer from "./cssSelectorViewer.js";
 import youtube_nonstop from "./youtube_nonstop.js";
 import insta_reloaded from "./insta_reloaded.js";
+import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
+import download_audio from "./download_audio.js";
 
 // inject badges
 const allScripts = {
@@ -194,6 +196,8 @@ const allScripts = {
   cssSelectorViewer: addBadge(cssSelectorViewer, BADGES.new),
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
   insta_reloaded: addBadge(insta_reloaded, BADGES.hot),
+  zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
+  download_audio: addBadge(download_audio, BADGES.new),
 };
 
 // inject id to all scripts
