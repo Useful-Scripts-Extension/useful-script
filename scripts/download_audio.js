@@ -31,6 +31,7 @@ export default {
       div.style.left = 0;
       div.style.zIndex = 9999;
       div.style.backgroundColor = "#0005";
+      div.style.padding = "10px";
       document.body.appendChild(div);
 
       for (let audio of Array.from(audios)) {
@@ -50,6 +51,15 @@ export default {
           div.innerHTML += "<br/>";
         }
       }
+
+      let closeBtn = document.createElement("button");
+      closeBtn.textContent = "X";
+      closeBtn.onclick = () => div.remove();
+      closeBtn.style.position = "absolute";
+      closeBtn.style.top = "-20px";
+      closeBtn.style.right = "-20px";
+      closeBtn.style.padding = "5px 10px";
+      div.appendChild(closeBtn);
     }
   },
 };
