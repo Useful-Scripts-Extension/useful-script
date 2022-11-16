@@ -45,16 +45,38 @@ export default {
         )
           L.push(u);
       }
-      iGrabSH = B.innerHTML;
-      B.innerHTML =
-        (L.length
-          ? '<tr><th colspan="2">Found ' +
-            L.length +
-            ' Image(s):</th></tr><div style="width:100%;height:80%;background:white;margin:0;padding:20px;border:0;outline:0"><img src="' +
-            L.join('"><img src="') +
-            '" style="margin:5px"></div>'
-          : "<h1>No Image found</h1>") +
-        '<div style="position:fixed;top:5px;right:5px;width:20px;height:20px;font-size:16px;font-weight:bold;z-index:9999;padding:2px;margin:0;opacity:0.8;border-radius:6px;background:#f55;cursor:pointer;color:white;text-align:center;box-shadow:2px 2px 4px rgba(0,0,0,0.5)" onclick="document.body.innerHTML=iGrabSH">X</div>';
+
+      if (!L.length) {
+        alert("No image found");
+      } else {
+        let id = "useful-script-showTheImages";
+        let div = document.createElement("div");
+        div.id = id;
+        div.style.zIndex = 9998;
+        div.style.backgroundColor = "#000d";
+        div.style.position = "fixed";
+        div.style.top = "5px";
+        div.style.left = "5px";
+        div.style.right = "5px";
+        div.style.bottom = "5px";
+        div.style.overflow = "auto";
+
+        div.innerHTML = `<tr>
+              <th colspan="2">Found ${L.length} Image(s):</th>
+          </tr>
+          
+          <div style="padding:20px;border:0;outline:0">
+            ${L.map(
+              (img) => '<img src="' + img + '" style="margin:5px"/>'
+            ).join("")}
+          </div>
+          
+          <div style="position:fixed;top:5px;right:5px;width:20px;height:20px;font-size:16px;font-weight:bold;z-index:9999;padding:2px;margin:0;opacity:0.8;border-radius:6px;background:#f55;cursor:pointer;color:white;text-align:center;box-shadow:2px 2px 4px rgba(0,0,0,0.5)" 
+            onclick="document.querySelector('#${id}')?.remove?.()">X
+          </div>`;
+
+        B.appendChild(div);
+      }
     })();
   },
 };
