@@ -44,10 +44,12 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
-      s.download_video2,
       s.download_video,
-      s.download_image,
+      s.download_video2,
       s.showTheImages,
+      s.download_image,
+      s.zingmp3_downloadMusic,
+      s.download_audio,
     ],
   },
   {
