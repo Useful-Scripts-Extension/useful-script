@@ -13,13 +13,14 @@
     "default_popup": "./popup/popup.html",
     "default_icon": "./assets/icon32.png"
   },
-  "permissions": [
-    "tabs",
-    "scripting",
-    "storage"
-  ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
-  "options_page": "./pages/options/options.html"
+  "permissions": ["tabs", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "options_page": "./pages/options/options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-scripts/content.js"],
+      "run_at": "document_start"
+    }
+  ]
 }

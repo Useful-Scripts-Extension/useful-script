@@ -96,6 +96,7 @@ import youtube_nonstop from "./youtube_nonstop.js";
 import insta_reloaded from "./insta_reloaded.js";
 import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
 import download_audio from "./download_audio.js";
+import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
 
 // inject badges
 const allScripts = {
@@ -198,6 +199,7 @@ const allScripts = {
   insta_reloaded: addBadge(insta_reloaded, BADGES.hot),
   zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
   download_audio: addBadge(download_audio, BADGES.new),
+  nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
 };
 
 // inject id to all scripts
