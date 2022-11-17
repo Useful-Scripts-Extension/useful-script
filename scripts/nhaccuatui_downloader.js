@@ -59,22 +59,20 @@ export default {
             newtab,
           } = songInfo;
 
+          let action = `${
+            location
+              ? `<a href="${location}" target="_blank">Tải nhạc (${kbit}kbit)</a>`
+              : "_"
+          }
+          ${lyric ? `<a href="${lyric}" target="_blank">Tải lyric</a>` : "_"}`;
+
           return `<tr>
             <td><p>${index + 1}</p></td>
             <td><a href="${avatar}" target="_blank"><img src="${avatar}" style="width:60px" /></a></td>
             <td><a href="${info}" target="_blank">${title}</a></td>
             <td><a href="${newtab}" target="_blank">${creator}</a></td>
             <td>${key}</td>
-            <td>
-              ${
-                location
-                  ? `<a href="${location}" target="_blank">Tải nhạc (${kbit}kbit)</a>`
-                  : "_"
-              }
-              ${
-                lyric ? `<a href="${lyric}" target="_blank">Tải lyric</a>` : "_"
-              }
-            </td>
+            <td>${action}</td>
           </tr>`;
         })
         .join("");
@@ -98,8 +96,6 @@ export default {
 
     if (!listMp3?.length) {
       alert("Không tìm thấy bài hát nào");
-    } else if (listMp3.length === 1) {
-      window.open(listMp3[0].location);
     } else {
       let tableId = "useful-scripts-table-allsong";
       let div = document.createElement("div");
