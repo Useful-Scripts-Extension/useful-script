@@ -12,54 +12,29 @@ export default {
   whiteList: [],
 
   func: function () {
-    let id = "useful-scripts-download-audio";
+    let audios = Array.from(document.querySelectorAll("audio") || []);
+    audios = audios?.filter((_) => !!_.src);
 
-    let olddiv = document.querySelector("#" + id);
-    if (olddiv) {
-      olddiv.remove();
-    }
-
-    let audios = document.querySelectorAll("audio");
-
-    if (!audios.length) {
-      alert("Audio not found / Không tìm thấy âm thanh audio nào trong web.");
+    if (!audios?.length) {
+      alert(
+        "Audio src not found.\n\nKhông tìm thấy âm thanh audio nào có thể tải trong trang web."
+      );
     } else {
       let div = document.createElement("div");
-      div.id = id;
-      div.style.position = "fixed";
-      div.style.bottom = 0;
-      div.style.left = 0;
-      div.style.zIndex = 9999;
-      div.style.backgroundColor = "#0005";
-      div.style.padding = "10px";
+      div.innerHTML = `
+      <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#0005;padding:10px;">
+        <button onclick="this.parentElement.remove.()" style="position:absolute;top:-20px;right:-20px;padding:5px 10px;">Close</button>
+
+       ${audios
+         .map((audio) => {
+           return `<audio controls src="${audio.src}" /><br/>
+          <a href="${audio.src}" target="_blank">Open in new tab</a>`;
+         })
+         .join("<br/>")}
+
+      </div>
+      `;
       document.body.appendChild(div);
-
-      for (let audio of Array.from(audios)) {
-        let src = audio.src;
-        if (src) {
-          let audioTag = document.createElement("audio");
-          audioTag.src = src;
-          audioTag.controls = "controls";
-          div.appendChild(audioTag);
-          div.innerHTML += "<br/>";
-
-          let link = document.createElement("a");
-          link.href = src;
-          link.target = "_blank";
-          link.textContent = "Open in new tab";
-          div.appendChild(link);
-          div.innerHTML += "<br/>";
-        }
-      }
-
-      let closeBtn = document.createElement("button");
-      closeBtn.textContent = "X";
-      closeBtn.onclick = () => div.remove();
-      closeBtn.style.position = "absolute";
-      closeBtn.style.top = "-20px";
-      closeBtn.style.right = "-20px";
-      closeBtn.style.padding = "5px 10px";
-      div.appendChild(closeBtn);
     }
   },
 };
