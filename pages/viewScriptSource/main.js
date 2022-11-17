@@ -1,6 +1,4 @@
 window.onload = () => {
-  document.querySelector("#copy-btn").onclick = copy;
-
   let sharedData;
   try {
     sharedData = JSON.parse(localStorage.viewScriptSource_sharedData);
@@ -9,6 +7,8 @@ window.onload = () => {
       let title = "Useful-script / " + name + " / " + description;
       let comment = `// ${name}\n// ${description}\n\n`;
       let sourceCode = source.replace("function ", "function " + (id || "_"));
+
+      document.querySelector("#copy-btn").onclick = () => copy(sourceCode);
 
       document.title = title;
       document.querySelector("code").innerHTML = comment + sourceCode;
@@ -19,8 +19,7 @@ window.onload = () => {
   // delete localStorage.viewScriptSource_sharedData;
 };
 
-function copy() {
-  var copyText = document.querySelector("code").innerText;
-  navigator.clipboard.writeText(copyText);
+function copy(text) {
+  navigator.clipboard.writeText(text);
   alert("Copied");
 }
