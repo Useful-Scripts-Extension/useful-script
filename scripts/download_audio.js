@@ -22,15 +22,17 @@ export default {
     } else {
       let div = document.createElement("div");
       div.innerHTML = `
-      <div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#0005;padding:10px;">
-        <button onclick="this.parentElement.remove.()" style="position:absolute;top:-20px;right:-20px;padding:5px 10px;">Close</button>
+      <div style="position:fixed;bottom:0;left:0;bottom:0;background:#000d;padding:10px;z-index:999999;">
+        <button onclick="this.parentElement.remove()" style="position:absolute;top:-20px;right:-20px;padding:5px 10px;background:red;cursor:pointer">Close</button>
 
+        <div style="overflow:auto;max-height:90vh;">
        ${audios
          .map((audio) => {
-           return `<audio controls src="${audio.src}" /><br/>
+           return `<audio controls src="${audio.src}"></audio><br/>
           <a href="${audio.src}" target="_blank">Open in new tab</a>`;
          })
          .join("<br/>")}
+        </div>
 
       </div>
       `;
