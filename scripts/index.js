@@ -97,6 +97,7 @@ import insta_reloaded from "./insta_reloaded.js";
 import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
 import download_audio from "./download_audio.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
+import zingmp3_oldLayout from "./zingmp3_oldLayout.js";
 
 // inject badges
 const allScripts = {
@@ -177,29 +178,30 @@ const allScripts = {
   viewCookies,
   download_image: addBadge(download_image, BADGES.hot),
   viewAllLinks,
-  googleCache: addBadge(googleCache, BADGES.new),
+  googleCache: googleCache,
   githubdev: addBadge(githubdev, BADGES.hot),
   scrollByDrag,
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
-  downDetector: addBadge(downDetector, BADGES.new),
+  downDetector: downDetector,
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
   youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.beta),
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
   google_downloadDriveVideo: addBadge(google_downloadDriveVideo, BADGES.beta),
   paywallKiller: addBadge(paywallKiller, BADGES.beta),
-  archiveToday: addBadge(archiveToday, BADGES.new),
-  download_video2: addBadge(download_video2, BADGES.new),
-  whois: addBadge(whois, BADGES.new),
-  viewWebMetaInfo: addBadge(viewWebMetaInfo, BADGES.new),
+  archiveToday: archiveToday,
+  download_video2: addBadge(download_video2, BADGES.hot),
+  whois: whois,
+  viewWebMetaInfo: viewWebMetaInfo,
   getAllEmailsInWeb: addBadge(getAllEmailsInWeb, BADGES.new),
   showTheImages: addBadge(showTheImages, BADGES.new),
-  showHiddenFields: addBadge(showHiddenFields, BADGES.new),
-  cssSelectorViewer: addBadge(cssSelectorViewer, BADGES.new),
+  showHiddenFields: showHiddenFields,
+  cssSelectorViewer: cssSelectorViewer,
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
-  insta_reloaded: addBadge(insta_reloaded, BADGES.hot),
+  insta_reloaded: addBadge(insta_reloaded, BADGES.beta),
   zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
   download_audio: addBadge(download_audio, BADGES.new),
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
+  zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
 };
 
 // inject id to all scripts

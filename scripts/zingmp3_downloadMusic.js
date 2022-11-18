@@ -1,18 +1,65 @@
 export default {
-  icon: "",
+  icon: "https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.64/static/media/icon_zing_mp3_60.f6b51045.svg",
   name: {
-    en: "Zing mp3 music dowloader",
-    vi: "Tải nhạc zing mp3",
+    en: "Zingmp3 music dowloader",
+    vi: "Zingmp3 tải nhạc",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Download music on mp3.zing.vn and zingmp3.vn",
+    vi: "Tải nhạc trên mp3.zing.vn và zingmp3.vn",
   },
   blackList: [],
   whiteList: [],
 
   func: function () {
     // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
+
+    // https://mp3.zing.vn/xhr/media/get-url-download?type=audio&panel=.fn-tab-panel-service&type=audio&sig=7a6af5a44e7d0209a6f852c03dbcc317&code=ZHJmtLLdNSsNdssyHyDHZmyLXCJsmNuNN&aliastitle=&title=&count=&id=Z6WZD78I&group=.fn-tab-panel
+
+    const MP3 = {
+      XHR_URL: "//mp3.zing.vn/xhr",
+      IMG_URL: "https://photo-zmp3.zmdcdn.me",
+      API_VIP_URL: "//vip-api.zingmp3.vn/",
+      API_COMMENT_URL: "//comment.api.mp3.zing.vn",
+      DOWNLOAD_API: "https://download.mp3.zing.vn/api",
+    };
+
+    if (location.hostname === "mp3.zing.vn") {
+      let a = document.querySelector("#tabService");
+      let params = {};
+
+      Object.entries(a.attributes).forEach(([index, attribute]) => {
+        if (attribute?.name?.startsWith("data-")) {
+          let key = attribute.name.replace("data-", "");
+          let value = attribute.value;
+          params[key] = value;
+        }
+      });
+
+      fetch(
+        MP3.XHR_URL +
+          "/media/get-url-download?" +
+          new URLSearchParams(params).toString()
+      )
+        .then((res) => {
+          console.log(res);
+          return res.json();
+        })
+        .then((json) => {
+          if (json && !json.err && json.data) {
+            console.log(json.data);
+            let { artist, thumb, title, sources } = json.data;
+            const { 128: song128, 320: song320, lossless } = sources;
+
+            window.open("https://mp3.zing.vn" + song128.link);
+          }
+        })
+        .catch((e) => {
+          alert("Error: " + e.message);
+        });
+      // window.open(MP3.XHR_URL + window.xmlLink);
+      return;
+    }
 
     // #region helpers
     // https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd

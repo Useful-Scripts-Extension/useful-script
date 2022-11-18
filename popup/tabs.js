@@ -46,8 +46,9 @@ const tabs = [
     scripts: [
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.download_audio,
-      s.zingmp3_downloadMusic,
       s.nhaccuatui_downloader,
+      s.zingmp3_downloadMusic,
+      s.zingmp3_oldLayout,
       createTitle("--- Videos ---", "--- Video ---"),
       s.download_video,
       s.download_video2,
