@@ -25,9 +25,7 @@ export default {
       method: "GET",
       credentials: "include",
     })
-      .then(function (res) {
-        return res.text();
-      })
+      .then((res) => res.text())
       .then(function (htmlText) {
         let regex = htmlText.match(
           /MediaManagerStatics",\[\],{"accessToken":"(.+?)"/
