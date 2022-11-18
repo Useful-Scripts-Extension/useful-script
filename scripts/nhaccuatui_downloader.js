@@ -1,12 +1,12 @@
 export default {
-  icon: "",
+  icon: "https://stc-id.nixcdn.com/v11/images/header_new/logo_new.png",
   name: {
-    en: "Nhaccuatui downloader",
-    vi: "Tải nhạc nhaccuatui",
+    en: "Nhaccuatui music/lyric downloader",
+    vi: "Nhaccuatui tải nhạc/lời",
   },
   description: {
     en: "Download the song that be playing in Nhaccuatui",
-    vi: "Tải bài nhạc đang nghe trên Nhaccuatui",
+    vi: "Tải bài nhạc / lời bài hát đang nghe trên Nhaccuatui",
   },
   blackList: [],
   whiteList: ["https://www.nhaccuatui.com/*"],
