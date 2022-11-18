@@ -74,6 +74,7 @@ const tabs = [
       s.fb_toggleLight,
       createTitle("--- Access Token ---", "--- Access Token ---"),
       s.fb_getTokenFfb,
+      s.fb_getTokenEAAG,
       s.fb_getTokenBusiness,
       s.fb_getTokenFacebook,
       s.fb_getTokenMFacebook,
