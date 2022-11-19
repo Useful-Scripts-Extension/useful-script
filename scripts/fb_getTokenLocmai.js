@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: `<i class="fa-solid fa-key"></i>`,
   name: {
     en: "Get fb token (locmai)",
     vi: "Lấy fb token (locmai)",

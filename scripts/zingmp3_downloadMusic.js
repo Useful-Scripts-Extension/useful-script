@@ -8,8 +8,6 @@ export default {
     en: "Download music on mp3.zing.vn and zingmp3.vn using zingmp3 API",
     vi: "Tải nhạc trên mp3.zing.vn và zingmp3.vn thông qua zingmp3 API",
   },
-  blackList: [],
-  whiteList: [],
   runInExtensionContext: false,
 
   func: function () {
@@ -245,7 +243,7 @@ export default {
   },
 };
 
-const backup = () => {
+function backup() {
   // https://mp3.zing.vn/xhr/media/get-url-download?type=audio&panel=.fn-tab-panel-service&type=audio&sig=7a6af5a44e7d0209a6f852c03dbcc317&code=ZHJmtLLdNSsNdssyHyDHZmyLXCJsmNuNN&aliastitle=&title=&count=&id=Z6WZD78I&group=.fn-tab-panel
   const MP3 = {
     XHR_URL: "//mp3.zing.vn/xhr",
@@ -291,4 +289,4 @@ const backup = () => {
     // window.open(MP3.XHR_URL + window.xmlLink);
     return;
   }
-};
+}

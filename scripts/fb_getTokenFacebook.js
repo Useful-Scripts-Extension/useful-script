@@ -1,8 +1,8 @@
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
-    en: "Get fb Token (www.facebook.com)",
-    vi: "Lấy fb Token (www.facebook.com)",
+    en: "Get fb token EAAB (instagram)",
+    vi: "Lấy fb token EAAB (instagram)",
   },
   description: {
     en: "Get facebook access token from www.facebook.com",
