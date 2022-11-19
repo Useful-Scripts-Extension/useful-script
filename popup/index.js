@@ -242,7 +242,8 @@ async function runScript(script) {
   let willRun = await checkBlackWhiteList(script);
   if (willRun) {
     recentScriptsSaver.add(script);
-    runScriptInCurrentTab(script.func);
+    if (script.runInExtensionContext) script.func();
+    else runScriptInCurrentTab(script.func);
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");

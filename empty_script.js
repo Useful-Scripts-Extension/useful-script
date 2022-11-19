@@ -10,6 +10,7 @@ export default {
   },
   blackList: [],
   whiteList: [],
+  runInExtensionContext: false,
 
   func: function () {},
 };

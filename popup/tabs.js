@@ -44,6 +44,8 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
+      s.getLinkLuanxt,
+      s.getFavicon,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.download_audio,
       s.nhaccuatui_downloader,
@@ -160,6 +162,7 @@ const tabs = [
       s.removeCookies,
       s.enableTextSelection,
       s.reEnableContextMenu,
+      s.injectScriptToWebsite,
       s.paywallKiller,
     ],
   },
