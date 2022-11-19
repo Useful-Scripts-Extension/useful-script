@@ -99,6 +99,9 @@ import download_audio from "./download_audio.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
 import zingmp3_oldLayout from "./zingmp3_oldLayout.js";
 import fb_getTokenEAAG from "./fb_getTokenEAAG.js";
+import injectScriptToWebsite from "./injectScriptToWebsite.js";
+import getLinkLuanxt from "./getLinkLuanxt.js";
+import getFavicon from "./getFavicon.js";
 
 // inject badges
 const allScripts = {
@@ -204,6 +207,9 @@ const allScripts = {
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
   zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
   fb_getTokenEAAG: addBadge(fb_getTokenEAAG, BADGES.new),
+  injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
+  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
+  getFavicon: addBadge(getFavicon, BADGES.new),
 };
 
 // inject id to all scripts

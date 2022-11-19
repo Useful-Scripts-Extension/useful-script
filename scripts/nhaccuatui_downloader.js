@@ -1,5 +1,5 @@
 export default {
-  icon: "https://stc-id.nixcdn.com/v11/images/header_new/logo_new.png",
+  icon: "https://stc-id.nixcdn.com/v11/images/favicon_64x64.png",
   name: {
     en: "Nhaccuatui music/lyric downloader",
     vi: "Nhaccuatui tải nhạc/lời",
