@@ -286,7 +286,7 @@ export default {
         //   window.open(await ZingMp3.getStreaming(songid));
         //   window.open(await ZingMp3.search("Sơn tùng"));
         //   window.open(await ZingMp3.getDetailPlaylist(playlistId));
-        window.open(await ZingMp3.getStreaming(songid));
+        if (songid) window.open(await ZingMp3.getStreaming(songid));
       }
     })();
   },
