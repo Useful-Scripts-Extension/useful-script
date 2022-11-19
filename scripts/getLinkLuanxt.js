@@ -59,7 +59,7 @@ export default {
         .catch(errorCallback);
     };
 
-    const renderResult = (json) => {
+    const renderResult = (json, win) => {
       console.log(json);
 
       if (json?.code != 200 || json?.status != "success" || !json.data) {
@@ -71,14 +71,14 @@ export default {
 
       let listDownload = Array.isArray(downloads)
         ? //prettier-ignore
-          downloads.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("<br/>")
+          downloads.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("")
         : typeof downloads === "object" && downloads !== null
         ? Object.entries(downloads)
             .map(
               ([key, value]) =>
                 `<h3>${key}</h3>` +
                 //prettier-ignore
-                value.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("<br/>")
+                value.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("")
             )
             .join("")
         : "";
@@ -88,45 +88,79 @@ export default {
           type === "audio"
             ? `<p>${_.label}</p><audio controls src="${_.link}"></audio>`
             : type === "video"
-            ? `<p>${_.label}</p><video controls src="${_.link}" style="max-width:300px"></video>`
+            ? `<p>${_.label}</p><video controls src="${_.link}"></video>`
             : ""
         )
-        ?.join("<br/>");
+        ?.join("");
 
-      let html = `<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#ddd;z-index:9999999;text-align:center;padding:10px;overflow:auto;">
+      let html = `<div class="container">
         <h2>Useful-scripts get link: ${source}</h2>
-      
-        <img src="${image}" style="max-width:200px" /><br/>
-        <a href="${link}" target="_blank">${name}-${artist}</a><br/>
+
+        <img src="${image}" />
+        <a href="${link}" target="_blank">${name}-${artist}</a>
 
         <br/><br/><h2>Download</h2>
         ${listDownload}
 
         <br/><br/><h2>Streaming</h2>
         ${listStreaming}
+
+        <style>
+              img {
+                max-width:200px
+              }
+              video {
+                max-width:300px
+              }
+              a {
+                display: block;
+                text-decoration: none;
+                padding: 5px 10px;
+                margin: 5px;
+              }
+              a:hover {
+                text-decoration: underline;
+              }
+              .container {
+                position:fixed;
+                top:0;left:0;right:0;bottom:0;
+                background:#ddd;
+                z-index:9999999;
+                text-align:center;
+                padding:10px;
+                overflow:auto;
+              }
+        </style>
       </div>`;
 
-      var win = window.open(
-        "",
-        "",
-        "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
-          (screen.height - 400) +
-          ",left=" +
-          (screen.width - 840)
-      );
-      win.document.body.innerHTML = html;
+      if (win) win.document.body.innerHTML = html;
     };
 
     (() => {
       let url = window.prompt(
-        "Enter url / Nhập link\nzingmp3, nhaccuatui, youtube,..",
+        "Nhập link\nzingmp3 (audio/video), nhaccuatui, youtube,..",
         ""
       );
       if (url) {
-        getLink(url, renderResult, (e) => {
-          console.log(e);
-          alert("ERROR: " + e);
-        });
+        var win = window.open(
+          "",
+          "",
+          "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
+            (screen.height - 400) +
+            ",left=" +
+            (screen.width - 840)
+        );
+        win.document.body.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" style="width:100%"/>`;
+
+        getLink(
+          url,
+          (json) => renderResult(json, win),
+          (e) => {
+            console.log(e);
+            win.close();
+            alert("ERROR: " + e);
+          }
+        );
       }
     })();
   },
