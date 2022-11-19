@@ -1,24 +1,85 @@
+// https://mmazzarolo.com/blog/2022-08-25-simple-colored-logging-for-javascript-clis/
+window.console.success = (...args) => console.log("\x1b[32m✔\x1b[0m", ...args);
+window.console.failure = (...args) =>
+  console.error("\x1b[31mｘ\x1b[0m", ...args);
+
 window.UsefulScriptsUtils = {
   // Có trang web tự động xoá console để ngăn cản người dùng xem kết quả thực thi câu lệnh trong console
   // Ví dụ: https://beta.nhaccuatui.com/
   // Hàm này sẽ tắt chức năng tự động clear console đó, giúp hacker dễ hack hơn :)
-  disableAutoConsoleClear: () => {
+  disableAutoConsoleClear() {
     window.console.clear = () => null;
     console.log("Auto console.clear DISABLED!");
   },
 
   // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
-  listGlobalVariables: () => {
-    const defaultKeys = `window,self,document,name,location,customElements,history,locationbar,menubar,personalbar,scrollbars,statusbar,toolbar,status,closed,frames,length,top,opener,parent,frameElement,navigator,origin,external,screen,innerWidth,innerHeight,scrollX,pageXOffset,scrollY,pageYOffset,visualViewport,screenX,screenY,outerWidth,outerHeight,devicePixelRatio,clientInformation,screenLeft,screenTop,defaultStatus,defaultstatus,styleMedia,onsearch,isSecureContext,trustedTypes,performance,onappinstalled,onbeforeinstallprompt,crypto,indexedDB,sessionStorage,localStorage,onbeforexrselect,onabort,onbeforeinput,onblur,oncancel,oncanplay,oncanplaythrough,onchange,onclick,onclose,oncontextlost,oncontextmenu,oncontextrestored,oncuechange,ondblclick,ondrag,ondragend,ondragenter,ondragleave,ondragover,ondragstart,ondrop,ondurationchange,onemptied,onended,onerror,onfocus,onformdata,oninput,oninvalid,onkeydown,onkeypress,onkeyup,onload,onloadeddata,onloadedmetadata,onloadstart,onmousedown,onmouseenter,onmouseleave,onmousemove,onmouseout,onmouseover,onmouseup,onmousewheel,onpause,onplay,onplaying,onprogress,onratechange,onreset,onresize,onscroll,onsecuritypolicyviolation,onseeked,onseeking,onselect,onslotchange,onstalled,onsubmit,onsuspend,ontimeupdate,ontoggle,onvolumechange,onwaiting,onwebkitanimationend,onwebkitanimationiteration,onwebkitanimationstart,onwebkittransitionend,onwheel,onauxclick,ongotpointercapture,onlostpointercapture,onpointerdown,onpointermove,onpointerrawupdate,onpointerup,onpointercancel,onpointerover,onpointerout,onpointerenter,onpointerleave,onselectstart,onselectionchange,onanimationend,onanimationiteration,onanimationstart,ontransitionrun,ontransitionstart,ontransitionend,ontransitioncancel,onafterprint,onbeforeprint,onbeforeunload,onhashchange,onlanguagechange,onmessage,onmessageerror,onoffline,ononline,onpagehide,onpageshow,onpopstate,onrejectionhandled,onstorage,onunhandledrejection,onunload,crossOriginIsolated,scheduler,alert,atob,blur,btoa,cancelAnimationFrame,cancelIdleCallback,captureEvents,clearInterval,clearTimeout,close,confirm,createImageBitmap,fetch,find,focus,getComputedStyle,getSelection,matchMedia,moveBy,moveTo,open,postMessage,print,prompt,queueMicrotask,releaseEvents,reportError,requestAnimationFrame,requestIdleCallback,resizeBy,resizeTo,scroll,scrollBy,scrollTo,setInterval,setTimeout,stop,structuredClone,webkitCancelAnimationFrame,webkitRequestAnimationFrame,chrome,caches,cookieStore,ondevicemotion,ondeviceorientation,ondeviceorientationabsolute,launchQueue,onbeforematch,getScreenDetails,queryLocalFonts,showDirectoryPicker,showOpenFilePicker,showSaveFilePicker,originAgentCluster,navigation,webkitStorageInfo,speechSynthesis,openDatabase,webkitRequestFileSystem,webkitResolveLocalFileSystemURL,NONCE_ID,getCookieConsentRequired,_ssrServiceEntryUrl,_webWorkerBundle,_authCookieName,authHeaderPromiseParts,_pageTimings,webWorker,onErrorHandler,webpackChunk_msnews_msnews_experiences,_secondaryPageTimings,_webVitalsPageTimings,_getEntityMetricsCollection,_isWebWorkerPresent,MSANTracker,Gemini,telemetryEventsClear,telemetryEventsFlush,__dynProto$Gbl,_getAppPerfTrace,Base64,_wpoContext,AutoSuggest`;
-    const defaultKeysArr = defaultKeys.split(",");
+  // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
+  listGlobalVariables() {
+    let browserGlobals = [];
+    const ignoredGlobals = ["UsefulScriptsUtils"];
 
-    let all = {};
-    Object.keys(window)
-      .filter((x) => defaultKeysArr.indexOf(x) < 0)
-      .forEach((key) => {
-        all[key] = window[key];
+    function collectBrowserGlobals() {
+      const iframe = window.document.createElement("iframe");
+      iframe.src = "about:blank";
+      window.document.body.appendChild(iframe);
+      let globals = Object.keys(iframe.contentWindow);
+      window.document.body.removeChild(iframe);
+      return globals;
+    }
+
+    function getRuntimeGlobals() {
+      if (browserGlobals.length === 0) {
+        browserGlobals = collectBrowserGlobals();
+      }
+      const runtimeGlobals = Object.keys(window).filter(
+        (key) => !ignoredGlobals.includes(key) && !browserGlobals.includes(key)
+      );
+      const runtimeGlobalsObj = {};
+      runtimeGlobals.forEach((key, i) => {
+        runtimeGlobalsObj[key] = window[key];
       });
+      return runtimeGlobalsObj;
+    }
 
-    return all;
+    return getRuntimeGlobals();
+  },
+
+  // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
+  isNativeFunction(f) {
+    return f.toString().toString().includes("[native code]");
+  },
+
+  // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
+  fillLocalStorage() {
+    const key = "__filling_localstorage__";
+    let max = 1;
+    let data = "x";
+    try {
+      while (true) {
+        data = data + data;
+        localStorage.setItem(key, data);
+        max <<= 1;
+      }
+    } catch {}
+    for (let bit = max >> 1; bit > 0; bit >>= 1) {
+      try {
+        localStorage.setItem(key, data.substring(0, max | bit));
+        max |= bit;
+      } catch {
+        console.success("Storage is now completely full 🍟");
+      }
+    }
+    return function cleanup() {
+      localStorage.removeItem(key);
+      console.success("Storage is cleaned");
+    };
+  },
+
+  // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
+  globalsDebugger(varName = "") {
+    // https://stackoverflow.com/a/56933091/11898496
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("globalsToInspect", varName);
+    window.location.search = urlParams;
   },
 };
