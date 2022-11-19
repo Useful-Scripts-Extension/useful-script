@@ -1,26 +1,25 @@
 export default {
   icon: "https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.64/static/media/icon_zing_mp3_60.f6b51045.svg",
   name: {
-    en: "Zingmp3 music dowloader",
-    vi: "Zingmp3 tải nhạc",
+    en: "Zingmp3 music dowloader (API)",
+    vi: "Zingmp3 tải nhạc (API)",
   },
   description: {
-    en: "Download music on mp3.zing.vn and zingmp3.vn",
-    vi: "Tải nhạc trên mp3.zing.vn và zingmp3.vn",
+    en: "Download music on mp3.zing.vn and zingmp3.vn using zingmp3 API",
+    vi: "Tải nhạc trên mp3.zing.vn và zingmp3.vn thông qua zingmp3 API",
   },
   blackList: [],
   whiteList: [],
+  runInExtensionContext: true,
 
   func: function () {
     // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
 
-    // #region helpers
     const URL_API = "https://zingmp3.vn";
     const API_KEY = "X5BM3w8N7MKozC0B85o4KMlzLZKhV00y";
     const SECRET_KEY = "acOrvUS15XRW2o9JksiK1KgQ6Vbds8ZW";
 
     let sharedCtime = 0;
-
     const Utils = {
       // https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
       getHash256: async function (string) {
@@ -78,7 +77,6 @@ export default {
         return URL_API + path + "?" + new URLSearchParams(params).toString();
       },
     };
-    // #endregion
 
     const ZingMp3 = {
       //#region extract id
@@ -223,24 +221,24 @@ export default {
       //       qs: { id },
       //     });
       //   },
-      //   async getLastPlaying() {
-      //     return await Utils.requestZing({
-      //       path: "/api/v2/user/lasplaying/get/lasplaying",
-      //     });
-      //   },
+      // async getLastPlaying() {
+      //   return await Utils.requestZing({
+      //     path: "/api/v2/user/lasplaying/get/lasplaying",
+      //   });
+      // },
       //#endregion
     };
 
     (async function () {
+      // window.open(await ZingMp3.search('game thủ liên minh'));
+      // window.open(await ZingMp3.getLastPlaying());
+      // window.open(await ZingMp3.getHome());
+      // window.open(await ZingMp3.getChartHome());
+      // window.open(await ZingMp3.getInfoMusic('ZWFE8OUO'))
+
       let url = window.prompt("Nhap link bai hat: ", location.href);
       if (url) {
         let songid = ZingMp3.getSongIdFromURL(url);
-        //   let url_playlist = window.prompt("Nhap link album: ", location.href);
-        //   let playlistId = ZingMp3.getAlbumIdFromURL(url_playlist);
-        //   window.open(await ZingMp3.getDetailPlaylist(songid));
-        //   window.open(await ZingMp3.getStreaming(songid));
-        //   window.open(await ZingMp3.search("Sơn tùng"));
-        //   window.open(await ZingMp3.getDetailPlaylist(playlistId));
         if (songid) window.open(await ZingMp3.getStreaming(songid));
       }
     })();
