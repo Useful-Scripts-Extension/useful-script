@@ -1,7 +1,7 @@
 import { addBadge, BADGES } from "../popup/helpers/badge.js";
 
 import fb_toggleLight from "./fb_toggleLight.js";
-import fb_getTokenBusiness from "./fb_getTokenBusiness.js";
+import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
 import fb_getTokenMFacebook from "./fb_getTokenMFacebook.js";
 import fb_getUid from "./fb_getUid.js";
@@ -98,16 +98,18 @@ import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
 import download_audio from "./download_audio.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
 import zingmp3_oldLayout from "./zingmp3_oldLayout.js";
-import fb_getTokenEAAG from "./fb_getTokenEAAG.js";
+import fb_getTokenBussinessLocation from "./fb_getTokenBussinessLocation.js";
 import injectScriptToWebsite from "./injectScriptToWebsite.js";
 import getLinkLuanxt from "./getLinkLuanxt.js";
 import getFavicon from "./getFavicon.js";
 import fb_getTokenLocmai from "./fb_getTokenLocmai.js";
+import fb_checkToken from "./fb_checkToken.js";
+import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
 
 // inject badges
 const allScripts = {
   fb_toggleLight: fb_toggleLight,
-  fb_getTokenBusiness: addBadge(fb_getTokenBusiness, BADGES.hot),
+  fb_getTokenBusinessStudio: addBadge(fb_getTokenBusinessStudio, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
   fb_getTokenMFacebook,
   fb_getUid: addBadge(fb_getUid, BADGES.hot),
@@ -207,11 +209,16 @@ const allScripts = {
   download_audio: download_audio,
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
   zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
-  fb_getTokenEAAG: addBadge(fb_getTokenEAAG, BADGES.new),
+  fb_getTokenBussinessLocation: addBadge(
+    fb_getTokenBussinessLocation,
+    BADGES.new
+  ),
   injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
   getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
   getFavicon: addBadge(getFavicon, BADGES.new),
   fb_getTokenLocmai: addBadge(fb_getTokenLocmai, BADGES.beta),
+  fb_checkToken: addBadge(fb_checkToken, BADGES.new),
+  fb_getTokenCampaigns: addBadge(fb_getTokenCampaigns, BADGES.new),
 };
 
 // inject id to all scripts

@@ -8,8 +8,7 @@ export default {
     en: "Get facebook access token from m.facebook.com",
     vi: "Lấy facebook access token từ trang m.facebook.com",
   },
-  blackList: [],
-  whiteList: ["*://m.facebook.com"],
+  runInExtensionContext: true,
 
   func: function () {
     console.log("Đang lấy token ...");
@@ -20,12 +19,16 @@ export default {
           alert("Chưa đăng nhập. Bạn cần đăng nhập fb thì mới lấy được token.");
         } else {
           const data = {
-            token: /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)[0],
-            fb_dtsg: /(?<=fb_dtsg\\" value=\\")(.*?)(?=\\")/.exec(text)[0],
-            id: /(?<=USER_ID\\":\\").*?(?=\\",\\")/gm.exec(text)[0],
+            token: /(?<=accessToken\\":\\")(.*?)(?=\\")/.exec(text)?.[0],
+            fb_dtsg: /(?<=fb_dtsg\\" value=\\")(.*?)(?=\\")/.exec(text)?.[0],
+            id: /(?<=USER_ID\\":\\").*?(?=\\",\\")/gm.exec(text)?.[0],
           };
           console.log(data);
-          window.prompt("Access Token của bạn:", data.token);
+          if (data.token) {
+            window.prompt("Access Token của bạn:", data.token);
+          } else {
+            alert("Không tìm thấy access token");
+          }
         }
       })
       .catch((e) => {

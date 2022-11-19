@@ -7,8 +7,7 @@ export default {
     en: "Get avatar from list user ids",
     vi: "Tải danh sách avatar từ danh sách user id",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  runInExtensionContext: true,
 
   func: async function () {
     let accessToken = prompt("Nhập facebook access token: ");

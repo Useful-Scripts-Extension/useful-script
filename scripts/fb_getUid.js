@@ -9,7 +9,7 @@ export default {
     vi: "Lấy id của user trong trang web hiện tại",
   },
   blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com"],
 
   func: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
@@ -18,6 +18,11 @@ export default {
       r && r[0] && window.prompt(`USER ID của ${document.title}:`, r[0]);
 
     return (
+      found(
+        /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(
+          document.querySelector("html").textContent
+        )
+      ) ||
       found(/(?<=\/profile\.php\?id=)(.\d+?)($|(?=&))/.exec(location.href)) ||
       (() => {
         for (let a of Array.from(document.querySelectorAll("a"))) {

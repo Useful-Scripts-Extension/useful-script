@@ -7,8 +7,7 @@ export default {
     en: "Download photo/video links from album",
     vi: "Tải về danh sách link ảnh/video",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  runInExtensionContext: true,
 
   func: function () {
     const accessToken = prompt("Enter access token:", "");

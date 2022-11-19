@@ -1,15 +1,16 @@
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
-    en: "Get fb Token (business.facebook.com)",
-    vi: "Lấy fb token (business.facebook.com)",
+    en: "Get fb token EAAc (studio)",
+    vi: "Lấy fb token EAAc (studio)",
   },
   description: {
     en: "Get facebook access token from business.facebook.com",
     vi: "Lấy facebook access token từ trang business.facebook.com",
   },
   blackList: [],
-  whiteList: ["*://business.facebook.com"],
+  // whiteList: ["*://business.facebook.com"],
+  runInExtensionContext: true,
 
   func: function () {
     // old - FAILED
