@@ -14,53 +14,6 @@ export default {
   func: function () {
     // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
 
-    // https://mp3.zing.vn/xhr/media/get-url-download?type=audio&panel=.fn-tab-panel-service&type=audio&sig=7a6af5a44e7d0209a6f852c03dbcc317&code=ZHJmtLLdNSsNdssyHyDHZmyLXCJsmNuNN&aliastitle=&title=&count=&id=Z6WZD78I&group=.fn-tab-panel
-
-    const MP3 = {
-      XHR_URL: "//mp3.zing.vn/xhr",
-      IMG_URL: "https://photo-zmp3.zmdcdn.me",
-      API_VIP_URL: "//vip-api.zingmp3.vn/",
-      API_COMMENT_URL: "//comment.api.mp3.zing.vn",
-      DOWNLOAD_API: "https://download.mp3.zing.vn/api",
-    };
-
-    if (location.hostname === "mp3.zing.vn") {
-      let a = document.querySelector("#tabService");
-      let params = {};
-
-      Object.entries(a.attributes).forEach(([index, attribute]) => {
-        if (attribute?.name?.startsWith("data-")) {
-          let key = attribute.name.replace("data-", "");
-          let value = attribute.value;
-          params[key] = value;
-        }
-      });
-
-      fetch(
-        MP3.XHR_URL +
-          "/media/get-url-download?" +
-          new URLSearchParams(params).toString()
-      )
-        .then((res) => {
-          console.log(res);
-          return res.json();
-        })
-        .then((json) => {
-          if (json && !json.err && json.data) {
-            console.log(json.data);
-            let { artist, thumb, title, sources } = json.data;
-            const { 128: song128, 320: song320, lossless } = sources;
-
-            window.open("https://mp3.zing.vn" + song128.link);
-          }
-        })
-        .catch((e) => {
-          alert("Error: " + e.message);
-        });
-      // window.open(MP3.XHR_URL + window.xmlLink);
-      return;
-    }
-
     // #region helpers
     const URL_API = "https://zingmp3.vn";
     const API_KEY = "X5BM3w8N7MKozC0B85o4KMlzLZKhV00y";
@@ -132,7 +85,8 @@ export default {
       getSongIdFromURL(url) {
         if (
           !url?.length ||
-          url.indexOf("zingmp3.vn/bai-hat/") < 0 ||
+          (url.indexOf("zingmp3.vn/bai-hat/") < 0 &&
+            url.indexOf("mp3.zing.vn/bai-hat/") < 0) ||
           url.indexOf(".html") < 0
         ) {
           alert(
@@ -142,10 +96,11 @@ export default {
         }
         return url.split("/").at(-1).split(".html")[0];
       },
-      getAlbumIdFromURL(url) {
+      getPlaylistIdFromURL(url) {
         if (
           !url?.length ||
-          url.indexOf("zingmp3.vn/album/") < 0 ||
+          (url.indexOf("zingmp3.vn/bai-hat/") < 0 &&
+            url.indexOf("mp3.zing.vn/bai-hat/") < 0) ||
           url.indexOf(".html") < 0
         ) {
           alert(
@@ -290,4 +245,52 @@ export default {
       }
     })();
   },
+};
+
+const backup = () => {
+  // https://mp3.zing.vn/xhr/media/get-url-download?type=audio&panel=.fn-tab-panel-service&type=audio&sig=7a6af5a44e7d0209a6f852c03dbcc317&code=ZHJmtLLdNSsNdssyHyDHZmyLXCJsmNuNN&aliastitle=&title=&count=&id=Z6WZD78I&group=.fn-tab-panel
+  const MP3 = {
+    XHR_URL: "//mp3.zing.vn/xhr",
+    IMG_URL: "https://photo-zmp3.zmdcdn.me",
+    API_VIP_URL: "//vip-api.zingmp3.vn/",
+    API_COMMENT_URL: "//comment.api.mp3.zing.vn",
+    DOWNLOAD_API: "https://download.mp3.zing.vn/api",
+  };
+
+  if (location.hostname === "mp3.zing.vn") {
+    let a = document.querySelector("#tabService");
+    let params = {};
+
+    Object.entries(a.attributes).forEach(([index, attribute]) => {
+      if (attribute?.name?.startsWith("data-")) {
+        let key = attribute.name.replace("data-", "");
+        let value = attribute.value;
+        params[key] = value;
+      }
+    });
+
+    fetch(
+      MP3.XHR_URL +
+        "/media/get-url-download?" +
+        new URLSearchParams(params).toString()
+    )
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((json) => {
+        if (json && !json.err && json.data) {
+          console.log(json.data);
+          let { artist, thumb, title, sources } = json.data;
+          const { 128: song128, 320: song320, lossless } = sources;
+
+          window.open("https://mp3.zing.vn" + song128.link);
+        }
+      })
+      .catch((e) => {
+        alert("Error: " + e.message);
+      });
+    // window.open(MP3.XHR_URL + window.xmlLink);
+    return;
+  }
 };
