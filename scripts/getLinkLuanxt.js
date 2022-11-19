@@ -94,7 +94,8 @@ export default {
         ?.join("");
 
       let html = `<div class="container">
-        <h2>Useful-scripts get link: ${source}</h2>
+        <h2>Useful-scripts get link (luanxt)</h2>
+        <h2>${source}</h2>
 
         <img src="${image}" />
         <a href="${link}" target="_blank">${name}-${artist}</a>
@@ -138,7 +139,18 @@ export default {
 
     (() => {
       let url = window.prompt(
-        "Nhập link\nzingmp3 (audio/video), nhaccuatui, youtube,..",
+        "Hỗ trợ:\n+ " +
+          [
+            "Zing MP3, Zing Video Clip, Zing TV",
+            "NhacCuaTui",
+            "YouTube",
+            "SoundCloud",
+            "Nhac.vn",
+            "ChiaSeNhac.vn",
+            "Facebook Video",
+            "Keeng Audio, Keeng Video, Keeng Phim",
+          ].join("\n+ ") +
+          "\n\nNhập link",
         ""
       );
       if (url) {
@@ -150,15 +162,15 @@ export default {
             ",left=" +
             (screen.width - 840)
         );
-        win.document.body.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" style="width:100%"/>`;
+        win.document.body.innerHTML = `<h1>Đang get link...</h1><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" style="width:100%"/>`;
 
         getLink(
           url,
           (json) => renderResult(json, win),
           (e) => {
             console.log(e);
-            win.close();
             alert("ERROR: " + e);
+            win.close();
           }
         );
       }
