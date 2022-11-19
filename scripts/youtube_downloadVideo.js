@@ -9,7 +9,7 @@ export default {
     vi: "Tải cả video giới hạn độ tuổi, không cần đăng nhập",
   },
   blackList: [],
-  whiteList: ["*://*.youtube.com/*"],
+  whiteList: [],
 
   func: function () {
     let options = [
@@ -39,7 +39,8 @@ export default {
     );
 
     if (choose != null && choose >= 0 && choose < options.length) {
-      window.open(options[choose].url + location.href);
+      let url = window.prompt("Nhập link youtube:", location.href);
+      url && window.open(options[choose].url + url);
     }
   },
 };

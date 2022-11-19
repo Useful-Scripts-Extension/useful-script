@@ -105,7 +105,7 @@ import getFavicon from "./getFavicon.js";
 
 // inject badges
 const allScripts = {
-  fb_toggleLight: addBadge(fb_toggleLight, BADGES.new),
+  fb_toggleLight: fb_toggleLight,
   fb_getTokenBusiness: addBadge(fb_getTokenBusiness, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
   fb_getTokenMFacebook,
@@ -203,12 +203,12 @@ const allScripts = {
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
   insta_reloaded: addBadge(insta_reloaded, BADGES.beta),
   zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
-  download_audio: addBadge(download_audio, BADGES.new),
+  download_audio: download_audio,
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
   zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
   fb_getTokenEAAG: addBadge(fb_getTokenEAAG, BADGES.new),
   injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
-  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.hot),
+  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
   getFavicon: addBadge(getFavicon, BADGES.new),
 };
 

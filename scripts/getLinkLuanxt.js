@@ -1,12 +1,12 @@
 export default {
   icon: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/favicon.ico",
   name: {
-    en: "Get link zingmp3 nhaccuatui youtube",
-    vi: "Get link zingmp3 nhaccuatui youtube",
+    en: "Get audio/video (luanxt)",
+    vi: "Tải nhạc/video (luanxt)",
   },
   description: {
-    en: "Using API from luanxt.com",
-    vi: "Sử dụng API của luanxt.com",
+    en: "Support zingmp3 nhaccuatui youtube. Using API from luanxt.com",
+    vi: "Hỗ trợ zingmp3 nhaccuatui youtube. Sử dụng API của luanxt.com",
   },
   blackList: [],
   whiteList: [],
@@ -72,8 +72,8 @@ export default {
       let listDownload = Array.isArray(downloads)
         ? //prettier-ignore
           downloads.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("<br/>")
-        : typeof downloads === "object"
-        ? (Object.entries(downloads) && downloads !== null)
+        : typeof downloads === "object" && downloads !== null
+        ? Object.entries(downloads)
             .map(
               ([key, value]) =>
                 `<h3>${key}</h3>` +
