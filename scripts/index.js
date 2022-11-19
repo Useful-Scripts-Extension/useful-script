@@ -102,6 +102,7 @@ import fb_getTokenEAAG from "./fb_getTokenEAAG.js";
 import injectScriptToWebsite from "./injectScriptToWebsite.js";
 import getLinkLuanxt from "./getLinkLuanxt.js";
 import getFavicon from "./getFavicon.js";
+import fb_getTokenLocmai from "./fb_getTokenLocmai.js";
 
 // inject badges
 const allScripts = {
@@ -210,6 +211,7 @@ const allScripts = {
   injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
   getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
   getFavicon: addBadge(getFavicon, BADGES.new),
+  fb_getTokenLocmai: addBadge(fb_getTokenLocmai, BADGES.beta),
 };
 
 // inject id to all scripts
