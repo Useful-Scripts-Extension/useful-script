@@ -36,9 +36,12 @@ export default {
     const xtSign = (t) =>
       xtHs(t + lxtS + "function s = module.exports=s(2)").substr(1, 8);
 
-    const getLink = (link) => {
+    const getLink = (
+      link,
+      successCallback = () => {},
+      errorCallback = () => {}
+    ) => {
       let sig = xtSign(`${link}${userToken}`);
-      console.log(sig);
 
       fetch(`${apiBaseURL}api/get-link`, {
         method: "POST",
@@ -52,18 +55,79 @@ export default {
         }),
       })
         .then((res) => res.json())
-        .then((json) => console.log(json))
-        .catch((e) => {
-          console.log("ERROR ", e);
-        });
+        .then(successCallback)
+        .catch(errorCallback);
     };
 
-    let url = window.prompt(
-      "Enter url / Nhập link\n(zingmp3 / nhaccuatui / youtube):",
-      "https://zingmp3.vn/bai-hat/Think-Of-You-Huynh-Tu/ZZI087Z8.html"
-    );
-    if (url) {
-      getLink(url);
-    }
+    const renderResult = (json) => {
+      console.log(json);
+
+      if (json?.code != 200 || json?.status != "success" || !json.data) {
+        alert("Lỗi: " + (json.message || "Không tìm thấy data"));
+        return;
+      }
+      //prettier-ignore
+      let {id,link,image,name,artist,source,type,downloads,streaming} = json.data;
+
+      let listDownload = Array.isArray(downloads)
+        ? //prettier-ignore
+          downloads.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("<br/>")
+        : typeof downloads === "object"
+        ? (Object.entries(downloads) && downloads !== null)
+            .map(
+              ([key, value]) =>
+                `<h3>${key}</h3>` +
+                //prettier-ignore
+                value.map((_) =>`<a href="${_.link}" target="_blank">Download ${_.label}</a>`).join("<br/>")
+            )
+            .join("")
+        : "";
+
+      let listStreaming = streaming
+        ?.map((_) =>
+          type === "audio"
+            ? `<p>${_.label}</p><audio controls src="${_.link}"></audio>`
+            : type === "video"
+            ? `<p>${_.label}</p><video controls src="${_.link}" style="max-width:300px"></video>`
+            : ""
+        )
+        ?.join("<br/>");
+
+      let html = `<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#ddd;z-index:9999999;text-align:center;padding:10px;overflow:auto;">
+        <h2>Useful-scripts get link: ${source}</h2>
+      
+        <img src="${image}" style="max-width:200px" /><br/>
+        <a href="${link}" target="_blank">${name}-${artist}</a><br/>
+
+        <br/><br/><h2>Download</h2>
+        ${listDownload}
+
+        <br/><br/><h2>Streaming</h2>
+        ${listStreaming}
+      </div>`;
+
+      var win = window.open(
+        "",
+        "",
+        "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
+          (screen.height - 400) +
+          ",left=" +
+          (screen.width - 840)
+      );
+      win.document.body.innerHTML = html;
+    };
+
+    (() => {
+      let url = window.prompt(
+        "Enter url / Nhập link\nzingmp3, nhaccuatui, youtube,..",
+        ""
+      );
+      if (url) {
+        getLink(url, renderResult, (e) => {
+          console.log(e);
+          alert("ERROR: " + e);
+        });
+      }
+    })();
   },
 };

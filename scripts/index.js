@@ -208,7 +208,7 @@ const allScripts = {
   zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
   fb_getTokenEAAG: addBadge(fb_getTokenEAAG, BADGES.new),
   injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
-  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
+  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.hot),
   getFavicon: addBadge(getFavicon, BADGES.new),
 };
 

@@ -47,26 +47,18 @@ export default {
           "timePlayedCheck": true,
           "curPlayInde": 1
       } */
-          const {
-            title,
-            key,
-            info,
-            location,
-            kbit,
-            avatar,
-            lyric,
-            creator,
-            newtab,
-          } = songInfo;
+          //prettier-ignore
+          const {title,key,info,location,kbit,avatar,lyric,creator,newtab} = songInfo;
 
-          let action = `${
-            location
-              ? `<a href="${location}" target="_blank">Tải nhạc (${kbit}kbit)</a>`
-              : "_"
-          }
-          ${lyric ? `<a href="${lyric}" target="_blank">Tải lyric</a>` : "_"}`;
+          let action =
+            (location
+              ? /*html*/ `<a href="${location}" target="_blank">Tải nhạc (${kbit}kbit)</a>`
+              : "_") +
+            (lyric
+              ? /*html*/ `<a href="${lyric}" target="_blank">Tải lyric</a>`
+              : "_");
 
-          return `<tr>
+          return /*html*/ `<tr>
             <td><p>${index + 1}</p></td>
             <td><a href="${avatar}" target="_blank"><img src="${avatar}" style="width:60px" /></a></td>
             <td><a href="${info}" target="_blank">${title}</a></td>
@@ -77,7 +69,7 @@ export default {
         })
         .join("");
 
-      return `<table id="${tableId}">
+      return /*html */ `<table id="${tableId}">
         <tr>
           <th>#</th>
           <th>Hình</th>
@@ -99,9 +91,9 @@ export default {
     } else {
       let tableId = "useful-scripts-table-allsong";
       let div = document.createElement("div");
-      div.innerHTML = `
+      div.innerHTML = /*html*/ `
       <div id="useful-scripts-overlay">
-        <button onclick="this.parentElement.remove()" class="close-btn">Đóng</button>
+        <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Đóng</button>
 
         <div class="content-container">
           <h1>Bài hát đang phát</h1>
