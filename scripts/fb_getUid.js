@@ -14,34 +14,33 @@ export default {
   func: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 
-    const found = (r) =>
-      r && r[0] && window.prompt(`USER ID của ${document.title}:`, r[0]);
+    const find = (r) => (r ? r[0] : 0);
 
-    return (
-      found(
+    let uid =
+      find(
         /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(
           document.querySelector("html").textContent
         )
       ) ||
-      found(/(?<=\/profile\.php\?id=)(.\d+?)($|(?=&))/.exec(location.href)) ||
+      find(/(?<=\/profile\.php\?id=)(.\d+?)($|(?=&))/.exec(location.href)) ||
       (() => {
         for (let a of Array.from(document.querySelectorAll("a"))) {
-          if (
-            found(
-              /(?<=set\=(pb|picfp|ecnf|pob)\.)(.\d+?)($|(?=\.))/.exec(a.href)
-            )
-          )
-            return true;
+          let _ = find(
+            /(?<=set\=(pb|picfp|ecnf|pob)\.)(.\d+?)($|(?=\.))/.exec(a.href)
+          );
+          if (_) return _;
         }
-        return false;
+        return 0;
       })() ||
-      found(
+      find(
         /(?<=\"user\"\:\{\"id\"\:\")(.\d+?)(?=\")/.exec(document.body.innerHTML)
-      ) ||
+      );
+
+    if (uid) window.prompt(`USER ID của ${document.title}:`, uid);
+    else
       window.prompt(
         "Không tìm thấy USER ID nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
         "https://www.facebook.com/callchoulnhe"
-      )
-    );
+      );
   },
 };
