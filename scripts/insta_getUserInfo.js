@@ -11,9 +11,6 @@ export default {
   runInExtensionContext: true,
 
   func: async function () {
-    // https://stackoverflow.com/a/52808289/11898496
-    // https://www.instagram.com/web/search/topsearch/?query=samdoesarts
-
     function renderUser(user, index) {
       //prettier-ignore
       let { pk, username, full_name, is_private, is_verified, pk_id, profile_pic_url, friendship_status, social_context } = user;
@@ -54,6 +51,7 @@ export default {
     let txt = window.prompt("Nhập username của người muốn xem thông tin:");
     if (txt) {
       try {
+        // https://stackoverflow.com/a/52808289/11898496
         let res = await fetch(
           "https://www.instagram.com/web/search/topsearch/?query=" + txt
         );
@@ -125,6 +123,10 @@ export default {
 };
 
 function backup() {
+  // https://stackoverflow.com/a/38209893/11898496
+  const { fbid, id, full_name, usename, profile_pic_url, profile_pic_url_hd } =
+    window._sharedData.config.viewer;
+
   function getUidFromCookie() {
     try {
       const encoded = document.cookie
