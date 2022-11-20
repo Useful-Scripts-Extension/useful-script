@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-microchip"></i>`,
+  icon: `https://www.wappalyzer.com/favicon.ico`,
   name: {
     en: "View website stack",
     vi: "Web dùng công nghệ gì?",

@@ -45,11 +45,13 @@ window.UsefulScriptsUtils = {
   },
 
   // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
+  // Kiểm tra xem function nào đó có bị override hay chưa
   isNativeFunction(f) {
     return f.toString().toString().includes("[native code]");
   },
 
   // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
+  // Làm đầy localStorage
   fillLocalStorage() {
     const key = "__filling_localstorage__";
     let max = 1;
@@ -80,6 +82,40 @@ window.UsefulScriptsUtils = {
     // https://stackoverflow.com/a/56933091/11898496
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("globalsToInspect", varName);
-    window.location.search = urlParams;
+    window.location.search = urlParams.toString();
+  },
+
+  // Tìm chuỗi xung quanh chuỗi bất kỳ
+  // Ví dụ fullString = "abcd1234567890abcd" targetString = "6" bound = 3
+  // => Kết quả around = 3456789
+  getTextAround(fullString, targetString, bound = 10) {
+    let curIndex = 0;
+    let arounds = [];
+    let limit = 100;
+
+    while (limit) {
+      let index = fullString.indexOf(targetString, curIndex);
+      if (index === -1) break;
+
+      let around = fullString.slice(
+        Math.max(index - Math.floor(bound / 2) - 1, 0),
+        Math.min(
+          index + targetString.length + Math.floor(bound / 2),
+          fullString.length
+        )
+      );
+      arounds.push({ index, around });
+      curIndex = index + (targetString.length || 1);
+      limit--;
+    }
+    return arounds;
+  },
+
+  // https://stackoverflow.com/a/40410744/11898496
+  // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
+  decodeEscapedUnicodeString(str) {
+    return decodeURIComponent(
+      JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
+    );
   },
 };
