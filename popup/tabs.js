@@ -160,6 +160,7 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.unshorten,
       s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,

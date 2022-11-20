@@ -13,18 +13,47 @@
     "default_popup": "./popup/popup.html",
     "default_icon": "./assets/icon32.png"
   },
-  "permissions": ["tabs", "scripting", "storage", "cookies"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage",
+    "cookies",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "options_page": "./pages/options/options.html",
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content-scripts/document_start.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-scripts/document_start.js"
+      ],
       "run_at": "document_start"
     }
   ],
-  "web_accessible_resources": [{
-    "resources": ["content-scripts/*.js"],
-    "matches": ["<all_urls>"]
-  }]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content-scripts/*.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "net-request-rules/rules.json"
+      }
+    ]
+  }
 }
