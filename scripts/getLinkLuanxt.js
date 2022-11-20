@@ -12,11 +12,23 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: function () {
+  func: async function () {
     // https://luanxt.com/get-link-mp3-320-lossless-vip-zing/
 
+    async function getLuanxtUserToken() {
+      try {
+        let res = await fetch(apiBaseURL);
+        let text = await res.text();
+        return /let userToken = "(.*)";/.exec(text)?.[1];
+      } catch (e) {
+        alert("ERROR: " + e);
+        return null;
+      }
+    }
+
     const apiBaseURL = "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/";
-    const userToken = "2e8878cfbdf8cec26ac6e041c0d90979f65c01c4";
+    const userToken = await getLuanxtUserToken();
+
     // let xtSalt = "(k[1>>8]>>>k%2=0).fromCharCode";
     // xtSalt =
     //   "undefined" == typeof jQuery ||
