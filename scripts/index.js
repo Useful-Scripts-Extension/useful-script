@@ -106,6 +106,7 @@ import fb_getTokenLocmai from "./fb_getTokenLocmai.js";
 import fb_checkToken from "./fb_checkToken.js";
 import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
 import test_script from "./test_script.js";
+import unshorten from "./unshorten.js";
 
 // inject badges
 const allScripts = {
@@ -220,6 +221,7 @@ const allScripts = {
   fb_getTokenLocmai: addBadge(fb_getTokenLocmai, BADGES.beta),
   fb_checkToken: addBadge(fb_checkToken, BADGES.new),
   fb_getTokenCampaigns: addBadge(fb_getTokenCampaigns, BADGES.new),
+  unshorten: addBadge(unshorten, BADGES.hot),
   test_script: test_script,
 };
 
