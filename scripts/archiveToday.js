@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-box-archive"></i>`,
+  icon: `https://archive.ph/favicon.ico`,
   name: {
     en: "Archive the current Page online",
     vi: "Lưu trữ online trang hiện tại",
@@ -8,13 +8,19 @@ export default {
     en: "Creates an archive of the current page on archive.today.",
     vi: "Lưu trang web hiện tại lên archive.today",
   },
-  blackList: [],
-  whiteList: [],
+  runInExtensionContext: true,
 
   func: function () {
-    window.open(
-      "https://archive.today/?run=1&url=" +
-        encodeURIComponent(document.location)
-    );
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      var currentTab = tabs[0];
+      if (currentTab?.url) {
+        var a = currentTab.url.replace(/^http\:\/\/(.*)$/, "$1");
+        window.open(
+          "https://archive.today/?run=1&url=" + encodeURIComponent(a)
+        );
+      } else {
+        alert("Không tìm thấy url web hiện tại");
+      }
+    });
   },
 };

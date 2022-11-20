@@ -9,13 +9,19 @@ export default {
     en: "View blocked website",
     vi: "Phù hơp để xem các trang web bị block",
   },
-  blackList: [],
-  whiteList: [],
+  runInExtensionContext: true,
 
   func: function () {
     // https://cachedviews.com/
 
-    var a = location.href.replace(/^http\:\/\/(.*)$/, "$1");
-    window.open("http://www.google.com/search?q=cache:" + escape(a));
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      var currentTab = tabs[0];
+      if (currentTab?.url) {
+        var a = currentTab.url.replace(/^http\:\/\/(.*)$/, "$1");
+        window.open("http://www.google.com/search?q=cache:" + encodeURIComponent(a));
+      } else {
+        alert("Không tìm thấy url web hiện tại");
+      }
+    });
   },
 };

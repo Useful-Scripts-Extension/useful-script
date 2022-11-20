@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-user"></i>`,
+  icon: `http://bugmenot.com/favicon.ico`,
   name: {
     en: "Find shared login",
     vi: "Tìm tài khoản miễn phí",

@@ -107,7 +107,7 @@ const tabs = [
       // s.insta_reloaded,
       s.insta_enableDownloadImage,
       s.insta_getToken,
-      s.insta_getUid,
+      s.insta_getUserInfo,
       s.insta_getAllUserMedia,
       s.insta_getAllImagesInNewFeed,
       s.insta_getAllImagesInUserProfile,
@@ -198,7 +198,7 @@ const tabs = [
   },
   {
     ...CATEGORY.more,
-    scripts: [s.shortenURL, s.runStatJs],
+    scripts: [s.shortenURL, s.runStatJs, s.test_script],
   },
 ];
 

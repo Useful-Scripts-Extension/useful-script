@@ -1,4 +1,5 @@
 export default {
+  icon: "https://www.instagram.com/favicon.ico",
   name: {
     en: "Get token insta",
     vi: "Lấy token insta",

@@ -1,5 +1,5 @@
 export default {
-  icon: `https://favicon.io/assets/static/favicon.b9532cc.ed88c65f76fa003989a0c683d668c765.png`,
+  icon: `https://s2.googleusercontent.com/s2/favicons?domain=favicon.io`,
   name: {
     en: "Download favicon from website",
     vi: "Tải favicon của trang web",
@@ -8,9 +8,6 @@ export default {
     en: "Get favicon link of current website",
     vi: "Lấy link favicon của trang web",
   },
-  blackList: [],
-  whiteList: [],
-  runInExtensionContext: false,
 
   func: function () {
     // https://stackoverflow.com/a/15750809
@@ -23,41 +20,66 @@ export default {
     };
 
     // https://stackoverflow.com/a/10283308
-    const getFavicon = function () {
-      var favicon = undefined;
-      var nodeList = document.getElementsByTagName("link");
-      for (var i = 0; i < nodeList.length; i++) {
-        if (
-          nodeList[i].getAttribute("rel") == "icon" ||
-          nodeList[i].getAttribute("rel") == "shortcut icon"
-        ) {
-          favicon = nodeList[i].getAttribute("href");
-        }
+    const getAllFaviconsFromWeb = function () {
+      function getFaviconLink(node) {
+        var favicon = node?.getAttribute("href");
+        return favicon ? new URL(favicon, location.href).href : null;
       }
-      return favicon ? new URL(favicon, location.href).href : null;
+
+      let faviconNodes = Array.from(
+        document.querySelectorAll("link[rel*='icon']")
+      );
+
+      return faviconNodes.map((_) => getFaviconLink(_));
     };
 
-    let choice = window.prompt(
-      "Chọn favicon muốn lấy:\n\n" +
-        " 1: URL favicon từ trang web (size gốc)\n\n" +
-        " 2: Domain favicon từ googleusercontent (size nhỏ)\n\n" +
-        " 3: URL favicon từ googleusercontent (size nhỏ)\n\n",
-      1
-    );
+    const getFaviconDomain = function () {
+      return new URL("/favicon.ico", location.href).href;
+    };
 
-    switch (choice) {
-      case "1":
-        let favicon = getFavicon();
-        favicon
-          ? window.prompt("Favicon: ", favicon)
-          : alert("Không tìm thấy favicon trong web");
-        break;
-      case "2":
-        window.prompt("Favicon: ", getFaviconFromGoogle(false));
-        break;
-      case "3":
-        window.prompt("Favicon: ", getFaviconFromGoogle(true));
-        break;
-    }
+    let allFavicons = [
+      getFaviconDomain(),
+      ...getAllFaviconsFromWeb(),
+      getFaviconFromGoogle(false),
+      getFaviconFromGoogle(true),
+    ].filter(Boolean);
+
+    let allFaviconsStr = allFavicons
+      .map((_) => {
+        return `<div class="item">
+          <a href="${_}" target="_blank">
+            <img src="${_}" />
+          </a>
+          <input value="${_}" />
+        </div>`;
+      })
+      .join("");
+
+    let win = window.open(
+      "",
+      "",
+      "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=500,top=50,left=50"
+    );
+    win.document.title = location.hostname + " favicons";
+    win.document.body.innerHTML = `<div>
+      <style>
+        .container {
+          text-align: center;
+        }
+        .item {
+          margin-bottom: 10px;
+        }
+        .item a {
+          display: inline-block;
+          text-decoration: none;
+          text-align: center;
+        }
+      </style>
+
+      <div class="container">
+        ${allFaviconsStr}
+      </div>
+    </div>
+    `;
   },
 };

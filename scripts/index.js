@@ -20,7 +20,7 @@ import fb_getAvatarFromUid from "./fb_getAvatarFromUid.js";
 import fb_downloadCurrentVideo from "./fb_downloadCurrentVideo.js";
 import fb_downloadAlbumMedia from "./fb_downloadAlbumMedia.js";
 import insta_getToken from "./insta_getToken.js";
-import insta_getUid from "./insta_getUid.js";
+import insta_getUserInfo from "./insta_getUserInfo.js";
 import insta_getAllUserMedia from "./insta_getAllUserMedia.js";
 import insta_getAllImagesInNewFeed from "./insta_getAllImagesInNewFeed.js";
 import insta_getAllImagesInUserProfile from "./insta_getAllImagesInUserProfile.js";
@@ -105,6 +105,7 @@ import getFavicon from "./getFavicon.js";
 import fb_getTokenLocmai from "./fb_getTokenLocmai.js";
 import fb_checkToken from "./fb_checkToken.js";
 import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
+import test_script from "./test_script.js";
 
 // inject badges
 const allScripts = {
@@ -128,7 +129,7 @@ const allScripts = {
   fb_downloadCurrentVideo,
   fb_downloadAlbumMedia,
   insta_getToken: addBadge(insta_getToken, BADGES.hot),
-  insta_getUid,
+  insta_getUserInfo: addBadge(insta_getUserInfo, BADGES.new),
   insta_getAllUserMedia,
   insta_getAllImagesInNewFeed: addBadge(
     insta_getAllImagesInNewFeed,
@@ -219,6 +220,7 @@ const allScripts = {
   fb_getTokenLocmai: addBadge(fb_getTokenLocmai, BADGES.beta),
   fb_checkToken: addBadge(fb_checkToken, BADGES.new),
   fb_getTokenCampaigns: addBadge(fb_getTokenCampaigns, BADGES.new),
+  test_script: test_script,
 };
 
 // inject id to all scripts

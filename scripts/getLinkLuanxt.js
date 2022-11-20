@@ -177,3 +177,44 @@ export default {
     })();
   },
 };
+
+function backup() {
+  /*
+  Tổng hợp một số Host getlink VIP cho các bạn (http://vnzleech.blogspot.com/)
+
+  https://linksvip.net/
+  https://getlinkfshare.com/
+
+  http://www.4server.info/
+  http://www.ddlgen.net/
+  http://vinaget.us/rs/
+  http://getlink.benhvientinhoc.com/
+  http://vn-times.com/getlink/
+  http://getlink.s2u.vn/
+  http://vinaget.us/getmf/
+  http://vnit-club.vn/@get/ | beta
+  http://getlink.tyvn.biz/
+  http://hipget.cu.cc/
+  http://upanh.tv/
+  http://getlink.host56.com/get_fshare/
+  http://loveanh9x.forever.vn/ft/
+  http://loveanh9x.forever.vn/ft01/
+  http://loveanh9x.forever.vn/ft02/
+  http://unrestrict.li/
+  http://fsoft.vn/download-4f.php
+  http://62.210.172.96/debrideur/
+  http://rapidebrideur.com/
+  http://www.exrapidleech.info/
+  http://www.leechyear.com/
+  http://www.premiumleecher.com/
+  http://www.monsterleech.pw/
+  http://sendsupload.com/index.php
+  http://easyload50.com/mini/index.php
+  http://rapidgrab.pl/
+  http://preemlinks.com/generator.php
+  http://vnfri.tk/index.php
+  http://yoru.cu.cc/ | ForeverAlone
+  http://htlove.org/mod-320kb
+  http://mp3.lisvn.net/
+ */
+}
