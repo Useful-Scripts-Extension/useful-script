@@ -1,15 +1,22 @@
 function injectScriptFile(filePathOrUrl, isExternal = false) {
-  var s = document.createElement("script");
-  s.src = isExternal ? filePathOrUrl : chrome.runtime.getURL(filePathOrUrl);
-  s.onload = function () {
-    console.log("Useful-scripts injected " + s.src);
-    this.remove();
-  };
-  s.onerror = function () {
-    console.warn("ERROR: Useful-scripts inject script FAILED " + s.src);
-    this.remove();
-  };
-  (document.head || document.documentElement).appendChild(s);
+  try {
+    var s = document.createElement("script");
+    s.src = isExternal ? filePathOrUrl : chrome.runtime.getURL(filePathOrUrl);
+    s.onload = function () {
+      console.log("Useful-scripts injected " + s.src);
+      this.remove();
+    };
+    s.onerror = function (e) {
+      console.log("ERROR: Useful-scripts inject script FAILED " + s.src, e);
+      this.remove();
+    };
+    (document.head || document.documentElement).appendChild(s);
+  } catch (e) {
+    console.log(
+      "ERROR: Useful-scripts inject script FAILED " + filePathOrUrl,
+      e
+    );
+  }
 }
 
 injectScriptFile("/content-scripts/globals_debugger.js");
