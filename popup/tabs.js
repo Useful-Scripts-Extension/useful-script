@@ -19,6 +19,14 @@ const specialTabs = [
     scripts: [],
   },
   {
+    ...CATEGORY.hot,
+    scripts: [],
+  },
+  {
+    ...CATEGORY.new,
+    scripts: [],
+  },
+  {
     ...CATEGORY.available,
     scripts: [],
   },
@@ -138,16 +146,15 @@ const tabs = [
     ],
   },
   {
-    ...CATEGORY.pdf,
-    scripts: [s.darkModePDF, s.webToPDF],
-  },
-  {
-    ...CATEGORY.qrcode,
-    scripts: [s.textToQRCode, s.webToQRCode],
-  },
-  {
     ...CATEGORY.automation,
-    scripts: [s.getAllEmailsInWeb, s.performanceAnalyzer, s.scrollToVeryEnd],
+    scripts: [
+      s.textToQRCode,
+      s.webToQRCode,
+      s.getAllEmailsInWeb,
+      s.performanceAnalyzer,
+      s.scrollToVeryEnd,
+      s.webToPDF,
+    ],
   },
   {
     ...CATEGORY.password,
@@ -160,6 +167,7 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.shortenURL,
       s.unshorten,
       s.showHiddenFields,
       s.viewCookies,
@@ -173,8 +181,10 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
+      s.darkModePDF,
       s.toggleEditPage,
       s.scrollByDrag,
+      s.runStatJs,
       createTitle("--- View ---", "--- Xem ---"),
       s.listAllImagesInWeb,
       s.viewAllLinks,
@@ -196,10 +206,6 @@ const tabs = [
       s.getWindowSize,
       s.letItSnow,
     ],
-  },
-  {
-    ...CATEGORY.more,
-    scripts: [s.shortenURL, s.runStatJs, s.test_script],
   },
 ];
 
@@ -371,28 +377,35 @@ const recommendTab = {
   ],
 };
 
-// add recently and available to head of array
-async function getAvailableScriptsInTabs(_tabs) {
+function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   let result = [];
-  const avai = await getAvailableScripts();
 
   for (let tab of Object.values(_tabs)) {
-    let avaiScriptsInTab = [];
+    let sorted = [];
 
     for (let script of tab.scripts) {
-      let isAvai = avai.findIndex((_) => _.id === script.id) >= 0;
-      if (isAvai) {
-        avaiScriptsInTab.push(script);
+      let found = scripts.findIndex((_) => _.id === script.id) >= 0;
+      if (found) {
+        sorted.push(script);
       }
     }
 
-    if (avaiScriptsInTab.length) {
-      result.push(createTitle(tab.name.en, tab.name.vi));
-      result.push(...avaiScriptsInTab);
+    if (sorted.length) {
+      addTabTitle && result.push(createTitle(tab.name.en, tab.name.vi));
+      result.push(...sorted);
     }
   }
-
   return result;
+}
+
+async function getAvailableScriptsInTabs(_tabs) {
+  return sortScriptsByTab(await getAvailableScripts(), _tabs);
+}
+
+function getScriptsWithBadgeId(scripts, badgeId) {
+  return scripts.filter((script) =>
+    script.badges?.find((_) => _.id === badgeId)
+  );
 }
 
 async function refreshSpecialTabs() {
@@ -403,8 +416,26 @@ async function refreshSpecialTabs() {
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
   if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
 
-  let avaiab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
-  if (avaiab) avaiab.scripts = await getAvailableScriptsInTabs(tabs);
+  let avaiTab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
+  if (avaiTab) avaiTab.scripts = await getAvailableScriptsInTabs(tabs);
+
+  // ==== special badge tab ====
+  let allScriptsArr = Object.values(s);
+  console.log(allScriptsArr);
+
+  let hotTab = specialTabs.find((tab) => tab.id === CATEGORY.hot.id);
+  if (hotTab)
+    hotTab.scripts = sortScriptsByTab(
+      getScriptsWithBadgeId(allScriptsArr, BADGES.hot.id),
+      tabs
+    );
+
+  let newTab = specialTabs.find((tab) => tab.id === CATEGORY.new.id);
+  if (newTab)
+    newTab.scripts = sortScriptsByTab(
+      getScriptsWithBadgeId(allScriptsArr, BADGES.new.id),
+      tabs
+    );
 }
 
 function getAllTabs() {

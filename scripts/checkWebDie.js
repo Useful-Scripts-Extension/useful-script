@@ -1,5 +1,5 @@
 export default {
-  icon: `https://downforeveryoneorjustme.com/favicon.ico`,
+  icon: `https://s2.googleusercontent.com/s2/favicons?domain=downforeveryoneorjustme.com`,
   name: {
     en: "Dowfor - Check web die",
     vi: "Dowfor - Kiểm tra web die",

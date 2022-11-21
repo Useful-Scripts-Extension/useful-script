@@ -24,6 +24,22 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Có thể dùng`,
     },
   },
+  hot: {
+    id: "hot",
+    style: { textDecoration: "underline" },
+    name: {
+      en: `<i class="fa-brands fa-hotjar" style="color:#1F51FF"></i> Hot`,
+      vi: `<i class="fa-brands fa-hotjar" style="color:#1F51FF"></i> Nổi bật`,
+    },
+  },
+  new: {
+    id: "new",
+    style: { textDecoration: "underline" },
+    name: {
+      en: `<i class="fa-solid fa-apple-whole" style="color:#1F51FF"></i> New`,
+      vi: `<i class="fa-solid fa-apple-whole" style="color:#1F51FF"></i> Mới`,
+    },
+  },
   search: {
     id: "search",
     name: {
@@ -74,20 +90,6 @@ export const CATEGORY = {
     },
   },
   doutube: { id: "doutube", name: { en: "Doutu.be", vi: "Doutu.be" } },
-  pdf: {
-    id: "pdf",
-    name: {
-      en: `<i class="fa-solid fa-file-pdf"></i> PDF`,
-      vi: `<i class="fa-solid fa-file-pdf"></i> PDF`,
-    },
-  },
-  qrcode: {
-    id: "qrcode",
-    name: {
-      en: `<i class="fa-solid fa-qrcode"></i> QR Code`,
-      vi: `<i class="fa-solid fa-qrcode"></i> QR Code`,
-    },
-  },
   automation: {
     id: "automation",
     name: {
@@ -114,13 +116,6 @@ export const CATEGORY = {
     name: {
       en: `<i class="fa-solid fa-eye"></i> Web UI`,
       vi: `<i class="fa-solid fa-eye"></i> Giao diện`,
-    },
-  },
-  more: {
-    id: "more",
-    name: {
-      en: `<i class="fa-solid fa-ellipsis"></i> More`,
-      vi: `<i class="fa-solid fa-ellipsis"></i> Khác`,
     },
   },
   recommend: {
