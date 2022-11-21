@@ -43,4 +43,7 @@ export default {
   },
 };
 
-export function getTokenFacebook() {}
+function backup() {
+  // https://isharevn.net/chia-se-cach-get-token-facebook-update-time.html
+  // view-source:https://www.facebook.com/dialog/oauth?client_id=124024574287414&redirect_uri=https://www.instagram.com/accounts/signup/&&scope=email&response_type=token
+}
