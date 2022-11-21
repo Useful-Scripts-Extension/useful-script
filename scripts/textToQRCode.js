@@ -12,6 +12,8 @@ export default {
 
   func: function () {
     let text = window.prompt("Enter text / Nhập chữ:", "");
+    if (text === null) return;
+
     let url =
       "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" + text;
     let w = window.open(
