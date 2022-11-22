@@ -15,6 +15,7 @@ export default {
     // https://www.shorturl.at/shortener.php
     // https://tinyurl.com/app
     // https://cutt.ly/
+    // https://bom.so/
 
     // Source code extracted from https://chrome.google.com/webstore/detail/url-shortener/godoifjoiadanijplaghmhgfeffnblib/related?hl=vi
     const urlShorten = [
@@ -70,6 +71,21 @@ export default {
             "https://"
           );
           return shorturl;
+        },
+      },
+      {
+        name: "bom.so",
+        func: async function (url) {
+          let formData = new FormData();
+          formData.append("url", url);
+
+          let resp = await fetch("https://bom.so/shorten", {
+            method: "POST",
+            body: formData,
+          });
+          let json = await resp.json();
+          if (json.error) throw json.msg;
+          return json.short;
         },
       },
       {
@@ -202,3 +218,38 @@ export default {
     })();
   },
 };
+
+function backup() {
+  let div = `<div class="container">
+  <div class="inner-container">
+    <button id="close-btn">Close</button>
+
+  </div>
+</div>
+<style>
+  .container {
+    position: fixed;
+    top:0;left:0;right:0;bottom:0;
+    background: #333e;
+    display: flex;
+    justify-content: center;
+  }
+  .inner-container {
+    position: relative;
+    background: #aaa;
+  }
+  #close-btn {
+    position: absolute;
+    top: 0; right: 0;
+    padding: 5px 10px;
+  }
+</style>`;
+
+  let child = document.createElement("div");
+  child.innerHTML = div;
+  document.body.appendChild(child);
+
+  document.querySelector("#close-btn")?.addEventListener("click", function () {
+    this?.parentElement?.parentElement?.parentElement?.remove?.();
+  });
+}
