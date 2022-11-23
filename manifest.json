@@ -35,12 +35,31 @@
         "content-scripts/document_start.js"
       ],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-scripts/document_idle.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content-scripts/document_end.js"
+      ],
+      "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
     {
       "resources": [
-        "content-scripts/*.js"
+        "content-scripts/*.js",
+        "content-scripts/*.css"
       ],
       "matches": [
         "<all_urls>"

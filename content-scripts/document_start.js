@@ -1,36 +1,14 @@
-function injectScriptFile(filePathOrUrl, isExternal = false) {
-  try {
-    var s = document.createElement("script");
-    s.src = isExternal ? filePathOrUrl : chrome.runtime.getURL(filePathOrUrl);
-    s.onload = function () {
-      console.log("Useful-scripts injected " + s.src);
-      this.remove();
-    };
-    s.onerror = function (e) {
-      console.log("ERROR: Useful-scripts inject script FAILED " + s.src, e);
-      this.remove();
-    };
-    (document.head || document.documentElement).appendChild(s);
-  } catch (e) {
-    console.log(
-      "ERROR: Useful-scripts inject script FAILED " + filePathOrUrl,
-      e
-    );
-  }
-}
+(async () => {
+  // https://stackoverflow.com/a/53033388
+  const { injectScript, baseURL } = await import("./utils.js");
 
-const CONFIG = {
-  enableUsefulScriptUtils: true,
-};
+  // injectScript(baseURL + "track_settimeout.js");
+  injectScript(baseURL + "globals_debugger.js");
+  injectScript(baseURL + "useful-scripts-utils.js");
 
-if (CONFIG.enableUsefulScriptUtils) {
-  // injectScriptFile("/content-scripts/track_settimeout.js");
-  // injectScriptFile("/content-scripts/globals_debugger.js");
-  injectScriptFile("/content-scripts/useful-scripts-utils.js");
-}
+  if (location.hostname === "mp3.zing.vn")
+    injectScript(baseURL + "mp3.zing.vn.js");
 
-if (location.hostname === "mp3.zing.vn")
-  injectScriptFile("/content-scripts/mp3.zing.vn.js");
-
-// if (location.hostname === "luanxt.com")
-//   injectScriptFile("//code.jquery.com/jquery-3.6.1.min.js", true);
+  // if (location.hostname === "luanxt.com")
+  //   injectScriptFile("//code.jquery.com/jquery-3.6.1.min.js", true);
+})();
