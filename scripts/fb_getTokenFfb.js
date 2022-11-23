@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://ffb.vn/assets/img/illustrations/favicon.png",
   name: {
@@ -19,6 +21,8 @@ export default {
     }
 
     (async () => {
+      const { closeLoading, setLoadingText } =
+        showLoading("Đang lấy cookie...");
       let cookie = await getCookiesInExtensionContext("facebook.com");
       if (!cookie) {
         alert("Không thấy cookie. Hãy chắc rằng bạn đã đăng nhập facebook!");
@@ -51,6 +55,7 @@ export default {
         formData.append("cookie", cookie);
         formData.append("type", types[typeIndex]);
 
+        setLoadingText("Đang lấy accesstoken từ ffb.vn ...");
         let res = await fetch("https://ffb.vn/api/tool/cookie2token", {
           method: "POST",
           body: formData,
@@ -62,6 +67,7 @@ export default {
           prompt("Access token", json.token);
         }
       }
+      closeLoading();
     })();
   },
 };

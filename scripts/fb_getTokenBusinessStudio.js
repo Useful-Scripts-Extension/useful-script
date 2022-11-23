@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
@@ -22,6 +24,9 @@ export default {
     //   alert("LỖI: " + e.message);
     // }
 
+    const { closeLoading, setLoadingText } = showLoading(
+      "Đang tìm access token..."
+    );
     fetch("https://business.facebook.com/creatorstudio/home", {
       method: "GET",
       credentials: "include",
@@ -40,6 +45,9 @@ export default {
       })
       .catch(function (e) {
         alert("ERROR:" + JSON.stringify(e));
+      })
+      .finally(() => {
+        closeLoading();
       });
   },
 };

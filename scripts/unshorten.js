@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://lh3.googleusercontent.com/xwarvPJ490JDNBNlB4_nVOE3KEs-A6xI07luVNP--iQ7kipstjiSHf-S1rofE-ji9E0clqa_vkivURh42UOA3uXsmHw=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -50,15 +52,19 @@ export default {
       //       "&source=chromeextension"
       //   );
 
+      const { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
       try {
         let token = await getToken();
-        console.log(token);
+
+        setLoadingText("Đang giải mã link rút gọn...");
         let long_url = await getLongUrl(shortenURL, token);
 
         if (long_url) prompt("Link gốc của " + shortenURL, long_url);
         else alert("Không tìm thấy link gốc");
       } catch (e) {
         alert("Lỗi: " + e);
+      } finally {
+        closeLoading();
       }
     }
   },

@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
@@ -50,12 +52,14 @@ export default {
     }
 
     (async () => {
+      const { closeLoading } = showLoading("Đang lấy access token...");
       let token = await getToken();
       if (token) {
         window.prompt("Access token: ", token);
       } else {
         alert("Không tìm thấy access token");
       }
+      closeLoading();
     })();
   },
 };

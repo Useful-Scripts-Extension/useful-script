@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-print"></i>`,
+  icon: `https://www.web2pdfconvert.com/img/favicon/favicon.ico`,
   name: {
     en: "Web to PDF",
     vi: "In web ra PDF",
