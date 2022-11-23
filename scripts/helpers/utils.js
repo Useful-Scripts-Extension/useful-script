@@ -54,3 +54,10 @@ export function showLoading(text = "") {
     },
   };
 }
+
+export async function getCookie(domain, raw = false) {
+  let cookies = await chrome.cookies.getAll({ domain });
+  return raw
+    ? cookies
+    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
+}
