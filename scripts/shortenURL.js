@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://lh3.googleusercontent.com/jm2UEmhuC3c6L5zWae0zuefgl-Azjz541WpEwvNtXwaJl7H8I9U0zRRmDRdnbvmdZ6UYhTGQJ0QVCrZXvkGIy14HFA=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -201,8 +203,10 @@ export default {
         );
 
         if (url) {
+          const { closeLoading } = showLoading("Đang tạo link rút gọn...");
           try {
             let shortUrl = await shortener?.func?.(url);
+
             if (shortUrl)
               prompt(
                 `Shorten URL / Link rút gọn (${shortener.name}):`,
@@ -212,6 +216,8 @@ export default {
               alert("Unable to get short link / Không lấy được link rút gọn");
           } catch (e) {
             alert("ERROR " + e);
+          } finally {
+            closeLoading();
           }
         }
       }
@@ -250,6 +256,6 @@ function backup() {
   document.body.appendChild(child);
 
   document.querySelector("#close-btn")?.addEventListener("click", function () {
-    this?.parentElement?.parentElement?.parentElement?.remove?.();
+    child.remove();
   });
 }

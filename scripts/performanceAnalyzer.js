@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-gauge"></i>`,
+  icon: `https://ssl.gstatic.com/pagespeed/insights/ui/logo/favicon_48.png`,
   name: {
     en: "Performance Analyzer",
     vi: "Phân tích hiệu suất",

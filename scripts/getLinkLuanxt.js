@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/favicon.ico",
   name: {
@@ -15,19 +17,7 @@ export default {
   func: async function () {
     // https://luanxt.com/get-link-mp3-320-lossless-vip-zing/
 
-    async function getLuanxtUserToken() {
-      try {
-        let res = await fetch(apiBaseURL);
-        let text = await res.text();
-        return /let userToken = "(.*)";/.exec(text)?.[1];
-      } catch (e) {
-        alert("ERROR: " + e);
-        return null;
-      }
-    }
-
     const apiBaseURL = "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/";
-    const userToken = await getLuanxtUserToken();
 
     // let xtSalt = "(k[1>>8]>>>k%2=0).fromCharCode";
     // xtSalt =
@@ -48,14 +38,16 @@ export default {
     const xtSign = (t) =>
       xtHs(t + lxtS + "function s = module.exports=s(2)").substr(1, 8);
 
-    const getLink = (
-      link,
-      successCallback = () => {},
-      errorCallback = () => {}
-    ) => {
-      let sig = xtSign(`${link}${userToken}`);
+    async function getLuanxtUserToken() {
+      let res = await fetch(apiBaseURL);
+      let text = await res.text();
+      return /let userToken = "(.*)";/.exec(text)?.[1];
+    }
 
-      fetch(`${apiBaseURL}api/get-link`, {
+    async function getLinkLuanxt(link, token) {
+      let sig = xtSign(`${link}${token}`);
+
+      let res = await fetch(`${apiBaseURL}api/get-link`, {
         method: "POST",
         headers: {
           Accept: "application/json, text/plain, */*",
@@ -65,11 +57,9 @@ export default {
           link: link,
           sig: sig,
         }),
-      })
-        .then((res) => res.json())
-        .then(successCallback)
-        .catch(errorCallback);
-    };
+      });
+      return await res.json();
+    }
 
     const renderResult = (json, win) => {
       console.log(json);
@@ -149,7 +139,7 @@ export default {
       if (win) win.document.body.innerHTML = html;
     };
 
-    (() => {
+    (async () => {
       let url = window.prompt(
         "Hỗ trợ:\n+ " +
           [
@@ -166,25 +156,27 @@ export default {
         ""
       );
       if (url) {
-        var win = window.open(
-          "",
-          "",
-          "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
-            (screen.height - 400) +
-            ",left=" +
-            (screen.width - 840)
+        const { closeLoading, setLoadingText } = showLoading(
+          "Đang lấy token luanxt ..."
         );
-        win.document.body.innerHTML = `<h1>Đang get link...</h1><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" style="width:100%"/>`;
-
-        getLink(
-          url,
-          (json) => renderResult(json, win),
-          (e) => {
-            console.log(e);
-            alert("ERROR: " + e);
-            win.close();
-          }
-        );
+        try {
+          let userToken = await getLuanxtUserToken();
+          setLoadingText("Đang get link từ luanxt...");
+          let json = await getLinkLuanxt(url, userToken);
+          let win = window.open(
+            "",
+            "",
+            "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
+              (screen.height - 400) +
+              ",left=" +
+              (screen.width - 840)
+          );
+          renderResult(json, win);
+        } catch (e) {
+          alert("ERROR: " + e);
+        } finally {
+          closeLoading();
+        }
       }
     })();
   },

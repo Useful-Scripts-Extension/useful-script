@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
@@ -11,7 +13,7 @@ export default {
   runInExtensionContext: true,
 
   func: function () {
-    console.log("Đang lấy token ...");
+    const { closeLoading, setLoadingText } = showLoading("Đang lấy token ...");
     fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
       .then((response) => response.text())
       .then((text) => {
@@ -33,6 +35,7 @@ export default {
       })
       .catch((e) => {
         alert("ERROR: " + e.message);
-      });
+      })
+      .finally(closeLoading);
   },
 };

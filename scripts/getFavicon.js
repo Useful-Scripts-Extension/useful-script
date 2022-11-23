@@ -61,7 +61,12 @@ export default {
       "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=500,top=50,left=50"
     );
     win.document.title = location.hostname + " favicons";
-    win.document.body.innerHTML = `<div>
+
+    // https://stackoverflow.com/a/69309927/11898496
+    let escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
+      createHTML: (to_escape) => to_escape,
+    });
+    win.document.body.innerHTML = escapeHTMLPolicy.createHTML(`<div>
       <style>
         .container {
           text-align: center;
@@ -80,6 +85,6 @@ export default {
         ${allFaviconsStr}
       </div>
     </div>
-    `;
+    `);
   },
 };

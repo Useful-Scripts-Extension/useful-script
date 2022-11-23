@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://www.instagram.com/favicon.ico",
   name: {
@@ -50,6 +52,9 @@ export default {
 
     let txt = window.prompt("Nhập username của người muốn xem thông tin:");
     if (txt) {
+      const { setLoadingText, closeLoading } = showLoading(
+        "Đang lấy thông tin của " + txt
+      );
       try {
         // https://stackoverflow.com/a/52808289/11898496
         let res = await fetch(
@@ -117,6 +122,8 @@ export default {
         `;
       } catch (e) {
         alert("Lỗi " + e);
+      } finally {
+        closeLoading();
       }
     }
   },

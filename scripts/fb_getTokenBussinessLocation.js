@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: `<i class="fa-solid fa-key"></i>`,
   name: {
@@ -14,6 +16,7 @@ export default {
   func: function () {
     // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 
+    const { closeLoading } = showLoading("Đang lấy access token...");
     fetch("https://business.facebook.com/business_locations")
       .then((res) => res.text())
       .then((htmlText) => {
@@ -28,7 +31,8 @@ export default {
           );
         }
       })
-      .catch((e) => alert("Error: " + e));
+      .catch((e) => alert("Error: " + e))
+      .finally(closeLoading);
   },
 };
 
