@@ -19,8 +19,15 @@ function injectScriptFile(filePathOrUrl, isExternal = false) {
   }
 }
 
-injectScriptFile("/content-scripts/globals_debugger.js");
-injectScriptFile("/content-scripts/useful-scripts-utils.js");
+const CONFIG = {
+  enableUsefulScriptUtils: true,
+};
+
+if (CONFIG.enableUsefulScriptUtils) {
+  // injectScriptFile("/content-scripts/track_settimeout.js");
+  // injectScriptFile("/content-scripts/globals_debugger.js");
+  injectScriptFile("/content-scripts/useful-scripts-utils.js");
+}
 
 if (location.hostname === "mp3.zing.vn")
   injectScriptFile("/content-scripts/mp3.zing.vn.js");

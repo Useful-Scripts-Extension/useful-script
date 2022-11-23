@@ -14,7 +14,7 @@ export default {
     // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
 
     const list_a = document.querySelectorAll("a");
-    const list_id = [];
+    let list_id = [];
     for (let a of [location, ...Array.from(list_a)]) {
       const page_album_id = /(?<=\/photos\/a\.)(.\d+?)(?=\/)/.exec(a.href);
       if (page_album_id && page_album_id[0]) {
@@ -29,6 +29,8 @@ export default {
         list_id.push(user_album_id[0]);
       }
     }
+    // filter duplicate: https://stackoverflow.com/a/14438954
+    list_id = [...new Set(list_id)];
     if (list_id.length)
       window.prompt(
         `Tìm thấy ${list_id.length} album id trong trang web và trên url.`,
