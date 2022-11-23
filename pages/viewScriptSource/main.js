@@ -14,6 +14,7 @@ window.onload = () => {
       document.querySelector("code").innerHTML = comment + sourceCode;
 
       hljs.highlightAll();
+      hljs.initLineNumbersOnLoad();
     }
   } catch (e) {}
   // delete localStorage.viewScriptSource_sharedData;
