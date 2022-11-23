@@ -118,7 +118,7 @@ const allScripts = {
   fb_getPageId: addBadge(fb_getPageId, BADGES.hot),
   fb_getGroupId: addBadge(fb_getGroupId, BADGES.hot),
   fb_getAlbumId: addBadge(fb_getAlbumId, BADGES.hot),
-  fb_getTimelineAlbumId,
+  fb_getTimelineAlbumId: addBadge(fb_getTimelineAlbumId, BADGES.hot),
   fb_getAllVideoId,
   fb_getAllAlbumId,
   fb_getUidFromUrl: addBadge(fb_getUidFromUrl, BADGES.hot),
