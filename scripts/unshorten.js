@@ -17,50 +17,70 @@ export default {
     // Chi tiết xem trong file rules.json
 
     // https://unshorten.it/
+    const unshortenIt = {
+      async getToken() {
+        let res = await fetch("https://unshorten.it/");
+        let text = await res.text();
+        let token = /name='csrfmiddlewaretoken' value='(.*)'/.exec(text)?.[1];
+        return token;
+      },
+      async getLongUrl(shortURL) {
+        let token = await unshortenIt.getToken();
 
-    async function getToken() {
-      let res = await fetch("https://unshorten.it/");
-      let text = await res.text();
-      let token = /name='csrfmiddlewaretoken' value='(.*)'/.exec(text)?.[1];
-      return token;
-    }
+        let formData = new FormData();
+        formData.append("short-url", shortURL);
+        formData.append("csrfmiddlewaretoken", token);
 
-    async function getLongUrl(shortURL, token) {
-      let formData = new FormData();
-      formData.append("short-url", shortURL);
-      formData.append("csrfmiddlewaretoken", token);
+        let res = await fetch("https://unshorten.it/main/get_long_url", {
+          method: "POST",
+          body: formData,
+        });
+        let json = await res.json();
+        if (json?.success) {
+          return json.long_url;
+        } else {
+          alert(json.message);
+          return null;
+        }
+      },
+    };
 
-      let res = await fetch("https://unshorten.it/main/get_long_url", {
-        method: "POST",
-        body: formData,
-      });
-      let json = await res.json();
-      if (json?.success) {
-        return json.long_url;
-      } else {
-        alert(json.message);
-        return null;
-      }
-    }
+    // https://linkunshorten.com/
+    const linkunshorten = {
+      async getLongUrl(shortURL) {
+        let res = await fetch(
+          "https://linkunshorten.com/api/link?url=" + shortURL
+        );
+        let text = await res.text();
+        return JSON.parse(text || "");
+      },
+    };
 
-    let shortenURL = prompt("Nhập URL đã rút gọn: ");
-    if (shortenURL) {
+    let short_url = prompt("Nhập URL đã rút gọn: ");
+    if (short_url) {
       // faster way: open unshorten.it page
-      //   return window.open(
-      //     "http://unshorten.it/extensionloading.php?shortURL=" +
-      //       shortenURL +
-      //       "&source=chromeextension"
-      //   );
+      // return window.open(
+      //   "http://unshorten.it/extensionloading.php?shortURL=" +
+      //     shortenURL +
+      //     "&source=chromeextension"
+      // );
 
       const { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
       try {
-        let token = await getToken();
+        setLoadingText(
+          "Đang giải mã link rút gọn...<br/>Sử dụng linkunshorten.com"
+        );
+        let long_url = await linkunshorten.getLongUrl(short_url);
+        if (!long_url || long_url == short_url) {
+          setLoadingText(
+            "Đang giải mã link rút gọn...<br/>Sử dụng unshorten.it"
+          );
+          long_url = await unshortenIt.getLongUrl(short_url);
+        }
 
-        setLoadingText("Đang giải mã link rút gọn...");
-        let long_url = await getLongUrl(shortenURL, token);
-
-        if (long_url) prompt("Link gốc của " + shortenURL, long_url);
-        else alert("Không tìm thấy link gốc");
+        long_url
+          ? prompt("Link gốc của " + short_url, long_url)
+          : alert("Không tìm thấy link gốc");
       } catch (e) {
         alert("Lỗi: " + e);
       } finally {
