@@ -61,3 +61,12 @@ export async function getCookie(domain, raw = false) {
     ? cookies
     : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
 }
+
+export function getCurrentTab() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      console.log(tabs[0]);
+      resolve(tabs?.[0] || {});
+    });
+  });
+}

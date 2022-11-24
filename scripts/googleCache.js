@@ -1,3 +1,5 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
   // icon get from https://chrome.google.com/webstore/detail/google-cache-viewer/fgfklknfijhflahngajfoagmoilakebp
   icon: "https://lh3.googleusercontent.com/OoZ3sM4u01hfT9201pmeBasLOsaRlZe2CbXzcXQLBYOcgpKVDPEakpr_ZHxiXQ1IkQ5dYTvEYndU0m8RH7TOhb1H=w128-h128-e365-rj-sc0x00ffffff",
@@ -11,17 +13,16 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  func: async function () {
     // https://cachedviews.com/
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      var currentTab = tabs[0];
-      if (currentTab?.url) {
-        var a = currentTab.url.replace(/^http\:\/\/(.*)$/, "$1");
-        window.open("http://www.google.com/search?q=cache:" + encodeURIComponent(a));
-      } else {
-        alert("Không tìm thấy url web hiện tại");
-      }
-    });
+    let { url } = await getCurrentTab();
+    let url_to_check = window.prompt(
+      "Nhập URL muốn xem cache: ",
+      url.replace(/^http\:\/\/(.*)$/, "$1")
+    );
+    window.open(
+      "http://www.google.com/search?q=cache:" + encodeURIComponent(url_to_check)
+    );
   },
 };
