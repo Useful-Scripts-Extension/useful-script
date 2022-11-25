@@ -28,16 +28,16 @@ export const CATEGORY = {
     id: "hot",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-brands fa-hotjar" style="color:#1F51FF"></i> Hot`,
-      vi: `<i class="fa-brands fa-hotjar" style="color:#1F51FF"></i> Nổi bật`,
+      en: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Hot`,
+      vi: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Nổi bật`,
     },
   },
   new: {
     id: "new",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-apple-whole" style="color:#1F51FF"></i> New`,
-      vi: `<i class="fa-solid fa-apple-whole" style="color:#1F51FF"></i> Mới`,
+      en: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> New`,
+      vi: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> Mới`,
     },
   },
   search: {

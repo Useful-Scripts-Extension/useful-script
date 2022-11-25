@@ -216,7 +216,7 @@ const recommendTab = {
     { name: { en: "--- Same author ---", vi: "--- Cùng tác giả ---" } },
     addBadge(
       {
-        icon: "https://lh3.googleusercontent.com/vyTQCufFw3IW24ybIykgBxxvm8GLQ1AvD3eRDGJRsS0HuMd9DQsbHHm_iL6WlPXTCC_hwqkKeKlW63AjBS9DkVF-=w128-h128-e365-rj-sc0x00ffffff",
+        icon: "https://github.com/HoangTran0410/RevealDeletedFBMessages/raw/master/icons/icon48.png",
         name: {
           en: "Reveal Deleted FB Message",
           vi: "Xem tin nhắn FB bị gỡ",
@@ -231,7 +231,7 @@ const recommendTab = {
     ),
     addBadge(
       {
-        icon: "https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-square2-256.png",
+        icon: "https://www.facebook.com/favicon.ico",
         name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
         description: {
           en: "Tool download media from facebook automatic",

@@ -1,5 +1,5 @@
 export default {
-  icon: `https://www.google.com/s2/favicons?domain=youtube.com`,
+  icon: `https://www.youtube.com/s/desktop/ff71ea81/img/favicon_48x48.png`,
   name: {
     en: "Download youtube video (bypass 18+)",
     vi: "Tải video youtube (bypass 18+)",
