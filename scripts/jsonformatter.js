@@ -18,10 +18,18 @@ export default {
       let jsonString = prompt("Nhập object json muốn làm đẹp:", "");
       if (jsonString != null) {
         let stringify = JSON.stringify(jsonString);
-        await setLocalStorage(url, "index", stringify, true);
+        setLocalStorage(url, "index", stringify);
       }
     } catch (e) {
       alert("Lỗi: " + e);
     }
+
+    // https://stackoverflow.com/a/32357610/11898496
+    // var win = window.open("https://jsonformatter.org");
+    // win.focus();
+    // win.addEventListener("load", () => {
+    //   win.localStorage.setItem("index", "{'abc':1}");
+    //   win.alert("yep");
+    // });
   },
 };
