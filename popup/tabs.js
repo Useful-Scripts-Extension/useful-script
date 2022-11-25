@@ -149,6 +149,7 @@ const tabs = [
     ...CATEGORY.automation,
     scripts: [
       s.transfer_sh,
+      s.jsonformatter,
       s.textToQRCode,
       s.webToQRCode,
       s.getAllEmailsInWeb,

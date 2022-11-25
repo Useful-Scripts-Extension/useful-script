@@ -70,3 +70,25 @@ export function getCurrentTab() {
     });
   });
 }
+
+// https://stackoverflow.com/a/15292178/11898496
+// https://stackoverflow.com/a/40815514/11898496
+// https://stackoverflow.com/a/69507918/11898496
+export async function setLocalStorage(
+  domain,
+  key,
+  value,
+  willOpenActive = false
+) {
+  let tab = await chrome.tabs.create({ active: willOpenActive, url: domain });
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: function (_key, _value) {
+      alert(_key + " " + _value);
+      localStorage.setItem(_key, _value);
+    },
+    args: [key, value],
+  });
+
+  !willOpenActive && chrome.tabs.remove(tab.id);
+}
