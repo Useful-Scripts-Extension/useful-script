@@ -3,7 +3,7 @@
   const { injectScript, baseURL } = await import("./utils.js");
 
   // injectScript(baseURL + "track_settimeout.js");
-  injectScript(baseURL + "globals_debugger.js");
+  // injectScript(baseURL + "globals_debugger.js");
   injectScript(baseURL + "useful-scripts-utils.js");
 
   if (location.hostname === "mp3.zing.vn")
