@@ -14,7 +14,7 @@ export default {
   func: function () {
     // Mặc định thì mp3.zing.vn (giao diện cũ) sẽ tự động redirect người dùng về zingmp3.vn (giao diện mới)
 
-    // Vui lòng xem file content-script/mp3.zing.vn.js và content-script/document_start.js
+    // Vui lòng xem file content-script/scripts/mp3.zing.vn.js và content-script/document_start.js
     // Để biết cách bypass quá trình tự động này
 
     if (location.hostname === "mp3.zing.vn") location.hostname = "zingmp3.vn";
