@@ -1,3 +1,5 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
   icon: `https://s2.googleusercontent.com/s2/favicons?domain=downforeveryoneorjustme.com`,
   name: {
@@ -10,17 +12,15 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      var currentTab = tabs[0];
-      if (currentTab?.url) {
-        let url = prompt("Enter web url to check", currentTab.url);
-        if (url) {
-          window.open("https://downforeveryoneorjustme.com/" + url);
-        }
-      } else {
-        alert("Không tìm thấy url web hiện tại");
+  func: async function () {
+    let { url } = await getCurrentTab();
+    if (url) {
+      let url_to_check = prompt("Enter web url to check", url);
+      if (url_to_check) {
+        window.open("https://downforeveryoneorjustme.com/" + url_to_check);
       }
-    });
+    } else {
+      alert("Không tìm thấy url web hiện tại");
+    }
   },
 };
