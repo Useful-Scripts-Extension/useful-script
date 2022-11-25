@@ -1,3 +1,5 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
   icon: `https://archive.ph/favicon.ico`,
   name: {
@@ -10,17 +12,13 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      var currentTab = tabs[0];
-      if (currentTab?.url) {
-        var a = currentTab.url.replace(/^http\:\/\/(.*)$/, "$1");
-        window.open(
-          "https://archive.today/?run=1&url=" + encodeURIComponent(a)
-        );
-      } else {
-        alert("Không tìm thấy url web hiện tại");
-      }
-    });
+  func: async function () {
+    let { url } = await getCurrentTab();
+
+    var a = window.prompt(
+      "Nhập URL muốn xem archive: ",
+      url.replace(/^http\:\/\/(.*)$/, "$1")
+    );
+    window.open("https://archive.today/?run=1&url=" + encodeURIComponent(a));
   },
 };
