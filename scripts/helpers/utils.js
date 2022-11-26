@@ -1,4 +1,294 @@
-// Chỉ dùng được trong extension context (các scripts có thuộc tính runInExtensionContext = true)
+// LƯU Ý: Các hàm trong này chỉ dùng được trong extension context (các scripts có thuộc tính runInExtensionContext = true)
+import { allScripts } from "../index.js";
+
+const CACHED = {
+  lastWindowId: 0,
+};
+
+// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
+chrome.windows.onFocusChanged.addListener(
+  (windowId) => {
+    if (windowId !== chrome.windows.WINDOW_ID_NONE)
+      CACHED.lastWindowId = windowId;
+  },
+  { windowTypes: ["normal"] }
+);
+
+const seperated_popup_search_param = "isSeparatedPopup";
+export const isExtensionInSeperatedPopup = () => {
+  let url = new URL(location.href);
+  return url.searchParams.has(seperated_popup_search_param);
+};
+
+export const openExtensionInSeparatedPopup = () => {
+  let url = new URL(location.href);
+  url.searchParams.set(seperated_popup_search_param, 1);
+  popupCenter({ url: url.href, title: "Useful scripts", w: 400, h: 700 });
+};
+
+// https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
+export const getLastFocusedWindow = () => {
+  return !!CACHED.lastWindowId
+    ? chrome.windows.get(CACHED.lastWindowId)
+    : chrome.windows.getLastFocused({
+        // populate: true,
+        windowTypes: ["normal"],
+      });
+};
+
+export const getCurrentTab = async () => {
+  let win = await getLastFocusedWindow();
+  let tabs = await chrome.tabs.query({
+    // currentWindow: false,
+    // lastFocusedWindow: false,
+    windowId: win.id,
+    active: true,
+  });
+  return tabs[0];
+};
+
+export const runScript = async (func, tabId) => {
+  return chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    func: func,
+    world: "MAIN",
+  });
+};
+
+export const runScriptFile = (scriptFile, tabId) => {
+  return chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    files: [scriptFile],
+    world: "MAIN",
+  });
+};
+
+export const runScriptInCurrentTab = async (func) => {
+  const tabId = (await getCurrentTab()).id;
+  return await runScript(func, tabId);
+};
+
+export const runScriptFileInCurrentTab = async (scriptFile) => {
+  const tabId = (await getCurrentTab()).id;
+  return await runScriptFile(scriptFile, tabId);
+};
+
+export const openUrlInNewTab = async (url) => {
+  return chrome.tabs.create({ url });
+};
+
+export const openUrlAndRunScript = async (url, func) => {
+  let tab = await openUrlInNewTab(url);
+  return await runScript(func, tab.id);
+};
+
+export async function getCookie(domain, raw = false) {
+  let cookies = await chrome.cookies.getAll({ domain });
+  return raw
+    ? cookies
+    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
+}
+
+// https://stackoverflow.com/a/25226679/11898496
+export function focusToTab(tab) {
+  return chrome.tabs.update(tab.id, { active: true });
+}
+
+export function closeTab(tab) {
+  return chrome.tabs.remove(tab.id);
+}
+
+// https://stackoverflow.com/a/68634884/11898496
+export async function openWebAndRunScript({
+  url,
+  func,
+  args,
+  focusAfterRunScript = true,
+  closeAfterRunScript = false,
+}) {
+  let tab = await chrome.tabs.create({ active: false, url: url });
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: func,
+    args: args,
+  });
+  focusAfterRunScript && focusToTab(tab);
+  closeAfterRunScript && closeTab(tab);
+}
+
+export function attachDebugger(tab) {
+  return chrome.debugger.attach({ tabId: tab.id }, "1.2");
+}
+export function detachDebugger(tab) {
+  return chrome.debugger.detach({ tabId: tab.id });
+}
+
+// OMG: https://www.howtogeek.com/423558/how-to-take-full-page-screenshots-in-google-chrome-without-using-an-extension/
+// https://developer.chrome.com/docs/extensions/reference/debugger/#method-attach
+// https://chromedevtools.github.io/devtools-protocol/
+// https://chromedevtools.github.io/devtools-protocol/tot/Page/#event-captureScreenshot
+export async function sendDevtoolCommand(tab, commandName, commandParams) {
+  let res = await chrome.debugger.sendCommand(
+    { tabId: tab.id },
+    commandName,
+    commandParams
+  );
+  return res;
+}
+
+// https://developer.chrome.com/docs/extensions/reference/debugger/#event-onEvent
+export async function onDebuggerEvent(commandName, callback) {
+  ALL_DEBUGGER_EVENTS[commandName] = callback;
+}
+const ALL_DEBUGGER_EVENTS = {};
+chrome.debugger.onEvent.addListener((source, commandName, commandParams) => {
+  ALL_DEBUGGER_EVENTS[commandName]?.(commandParams, source);
+});
+
+// https://developer.chrome.com/docs/extensions/reference/tabs/#method-captureVisibleTab
+// https://stackoverflow.com/q/14990822/11898496
+export async function captureVisibleTab(options = {}, willDownload = true) {
+  let imgData = await chrome.tabs.captureVisibleTab(null, {
+    format: options.format || "png",
+    quality: options.quality || 100,
+  });
+  willDownload && downloadURI(imgData, "img.png");
+  return imgData;
+}
+
+// https://stackoverflow.com/a/15832662/11898496
+// TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
+export function downloadURI(uri, name) {
+  var link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Merge image uri
+// https://stackoverflow.com/a/50658710/11898496
+// https://stackoverflow.com/a/50658710/11898496
+
+export const JSONUtils = {
+  // https://stackoverflow.com/a/9804835/11898496
+  isJson(item) {
+    item = typeof item !== "string" ? JSON.stringify(item) : item;
+    try {
+      item = JSON.parse(item);
+    } catch (e) {
+      return false;
+    }
+    if (typeof item === "object" && item !== null) {
+      return true;
+    }
+    return false;
+  },
+
+  // https://stackoverflow.com/a/52799327/11898496
+  hasJsonStructure(str) {
+    if (typeof str !== "string") return false;
+    try {
+      const result = JSON.parse(str);
+      const type = Object.prototype.toString.call(result);
+      return type === "[object Object]" || type === "[object Array]";
+    } catch (err) {
+      return false;
+    }
+  },
+
+  // https://stackoverflow.com/a/52799327/11898496
+  safeJsonParse(str) {
+    try {
+      return [null, JSON.parse(str)];
+    } catch (err) {
+      return [err];
+    }
+  },
+
+  // https://stackoverflow.com/a/54174739/11898496
+  strObjToObject(strObj) {
+    try {
+      let jsonStr = strObj.replace(/(\w+:)|(\w+ :)/g, function (s) {
+        return '"' + s.substring(0, s.length - 1) + '":';
+      });
+      prompt("", jsonStr);
+      return [null, JSON.parse(jsonStr)];
+    } catch (e) {
+      return [e];
+    }
+  },
+};
+
+export async function getAvailableScripts() {
+  let url = (await getCurrentTab()).url;
+  let avai = [];
+  for (let script of Object.values(allScripts)) {
+    if (await checkBlackWhiteList(script, url)) {
+      avai.push(script);
+    }
+  }
+
+  return avai;
+}
+
+export const GlobalBlackList = ["edge://*", "chrome://*"];
+export async function checkBlackWhiteList(script, url = null) {
+  if (!url) {
+    url = (await getCurrentTab()).url;
+  }
+
+  let w = script.whiteList,
+    b = script.blackList,
+    hasWhiteList = w?.length > 0,
+    hasBlackList = b?.length > 0,
+    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inGlobalBlackList =
+      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+
+  let willRun =
+    !inGlobalBlackList &&
+    ((!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList));
+
+  return willRun;
+}
+
+export function isUrlMatchPattern(url, pattern) {
+  let curIndex = 0,
+    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+
+  for (let p of visiblePartsInPattern) {
+    let index = url.indexOf(p, curIndex);
+    if (index < 0) return false;
+    curIndex = index + p.length;
+  }
+
+  return true;
+}
+
+// https://stackoverflow.com/a/4068385/11898496
+export function popupCenter({ url, title, w, h }) {
+  var left = screen.width / 2 - w / 2;
+  var top = screen.height / 2 - h / 2;
+  const newWindow = window.open(
+    url,
+    title,
+    `
+    scrollbars=yes,
+    width=${w}, 
+    height=${h}, 
+    top=${top}, 
+    left=${left}
+    `
+  );
+  // newWindow.document.title = title;
+  setTimeout(() => (newWindow.document.title = title), 0);
+}
+
 export function showLoading(text = "") {
   let html = `
     <div class="loading-container">
@@ -43,7 +333,7 @@ export function showLoading(text = "") {
   let textP = document.querySelector(".loading-container .text");
 
   return {
-    closeLoading: () => div.remove(),
+    closeLoading: () => div?.remove(),
     setLoadingText: (textOrFunction) => {
       if (!textP) return;
       if (typeof textOrFunction === "function") {
@@ -53,44 +343,4 @@ export function showLoading(text = "") {
       }
     },
   };
-}
-
-export async function getCookie(domain, raw = false) {
-  let cookies = await chrome.cookies.getAll({ domain });
-  return raw
-    ? cookies
-    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
-}
-
-export function getCurrentTab() {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      console.log(tabs[0]);
-      resolve(tabs?.[0] || {});
-    });
-  });
-}
-
-// https://stackoverflow.com/a/15292178/11898496
-// https://stackoverflow.com/a/40815514/11898496
-// https://stackoverflow.com/a/69507918/11898496
-export function setLocalStorage(domain, key, value, willOpenActive = false) {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.create({ active: willOpenActive, url: domain }, (tab) => {
-      chrome.scripting.executeScript(
-        {
-          target: { tabId: tab.id },
-          func: function (_key, _value) {
-            alert(_key + " " + _value);
-            localStorage.setItem(_key, _value);
-          },
-          args: [key, value],
-        },
-        () => {
-          // !willOpenActive && chrome.tabs.remove(tab.id);
-          resolve();
-        }
-      );
-    });
-  });
 }

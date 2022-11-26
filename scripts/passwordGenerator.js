@@ -117,7 +117,13 @@ export default {
     }
 
     function doIt() {
-      var master = window.prompt("Enter your master password");
+      var master = window.prompt(
+        "Tạo mật khẩu cho trang web bất kỳ từ duy nhất 1 Mật_khẩu_Chính\n" +
+          " + Nhập vào Mật_khẩu_Chính, trả về cho bạn mật khẩu cho web hiện tại\n" +
+          " + Không còn phải nhớ nhiều mật khẩu\n" +
+          " + Tự động điền vào trang web khi nhập đúng Mật_khẩu_Chính\n" +
+          "\nNhập Mật_khẩu_Chính của bạn:"
+      );
       if (master != "" && master != null) {
         host = document.location.href.match(/http(s*):\/\/([^/]+)/)[2];
         if (
@@ -153,7 +159,7 @@ export default {
           }
         }
         if (!g) {
-          window.prompt("Your password for " + domain + " is", p);
+          window.prompt("Mật khẩu cho trang web " + domain + " là:", p);
         }
       }
     }

@@ -1,17 +1,20 @@
-import { allScripts } from "../scripts/index.js";
-import { checkForUpdate } from "./helpers/checkForUpdate.js";
-import { getFlag, t, toggleLang } from "./helpers/lang.js";
-import { viewScriptSource, runScriptInCurrentTab } from "./helpers/utils.js";
 import {
   checkBlackWhiteList,
   GlobalBlackList,
-} from "./helpers/scriptHelpers.js";
+  isExtensionInSeperatedPopup,
+  openExtensionInSeparatedPopup,
+  runScriptInCurrentTab,
+} from "../scripts/helpers/utils.js";
+import { allScripts } from "../scripts/index.js";
+import { checkForUpdate } from "./helpers/checkForUpdate.js";
+import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { openModal } from "./helpers/modal.js";
 import {
   activeTabIdSaver,
   favoriteScriptsSaver,
   recentScriptsSaver,
 } from "./helpers/storage.js";
+import { viewScriptSource } from "./helpers/utils.js";
 import {
   isFunc,
   isLink,
@@ -24,6 +27,7 @@ import {
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
+const openInNewTabBtn = document.querySelector("#open-in-new-tab");
 
 async function initLanguage() {
   flagImg.setAttribute("src", await getFlag());
@@ -265,7 +269,19 @@ async function runScript(script) {
   }
 }
 
+function initOpenInNewTabBtn() {
+  if (isExtensionInSeperatedPopup()) {
+    openInNewTabBtn.remove();
+  } else {
+    // openInNewTabBtn.onclick = () => {
+    openExtensionInSeparatedPopup();
+    window.close();
+    // };
+  }
+}
+
 (async function () {
+  initOpenInNewTabBtn();
   await initLanguage();
   await createTabs();
   await checkForUpdate();

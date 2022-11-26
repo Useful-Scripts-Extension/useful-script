@@ -1,8 +1,8 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
-import { getAvailableScripts } from "./helpers/scriptHelpers.js";
 import { addBadge, BADGES } from "./helpers/badge.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+import { getAvailableScripts } from "../scripts/helpers/utils.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isFunc = (script) => script.func && typeof script.func === "function";
@@ -60,6 +60,7 @@ const tabs = [
       s.zingmp3_downloadMusic,
       s.zingmp3_oldLayout,
       createTitle("--- Videos ---", "--- Video ---"),
+      s.fb_videoDownloader,
       s.download_video,
       s.download_video2,
       createTitle("--- Photos ---", "--- Ảnh ---"),
@@ -104,6 +105,7 @@ const tabs = [
       s.fb_getAllUidFromFriendsPage,
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
       s.fb_downloadCurrentVideo,
       s.fb_downloadAlbumMedia,
@@ -148,14 +150,16 @@ const tabs = [
   {
     ...CATEGORY.automation,
     scripts: [
-      s.transfer_sh,
-      s.jsonformatter,
       s.textToQRCode,
       s.webToQRCode,
       s.getAllEmailsInWeb,
+      s.screenshotFullPage,
+      s.screenshotAreaPage,
+      s.webToPDF,
+      s.transfer_sh,
+      s.jsonformatter,
       s.performanceAnalyzer,
       s.scrollToVeryEnd,
-      s.webToPDF,
     ],
   },
   {
@@ -188,6 +192,7 @@ const tabs = [
       s.scrollByDrag,
       s.runStatJs,
       createTitle("--- View ---", "--- Xem ---"),
+      s.visualEvent,
       s.listAllImagesInWeb,
       s.viewAllLinks,
       s.viewScriptsUsed,
