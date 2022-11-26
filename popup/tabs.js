@@ -107,7 +107,6 @@ const tabs = [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      s.fb_downloadCurrentVideo,
       s.fb_downloadAlbumMedia,
     ],
   },
