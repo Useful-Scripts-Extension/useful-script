@@ -18,6 +18,7 @@
     "scripting",
     "storage",
     "cookies",
+    "debugger",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"

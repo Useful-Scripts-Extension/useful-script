@@ -21,8 +21,11 @@ export default {
       "Nhập URL muốn xem cache: ",
       url.replace(/^http\:\/\/(.*)$/, "$1")
     );
-    window.open(
-      "http://www.google.com/search?q=cache:" + encodeURIComponent(url_to_check)
-    );
+    if (url_to_check != null) {
+      window.open(
+        "http://www.google.com/search?q=cache:" +
+          encodeURIComponent(url_to_check)
+      );
+    }
   },
 };

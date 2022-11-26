@@ -108,6 +108,10 @@ import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
 import unshorten from "./unshorten.js";
 import transfer_sh from "./transfer_sh.js";
 import jsonformatter from "./jsonformatter.js";
+import screenshotFullPage from "./screenshotFullPage.js";
+import screenshotAreaPage from "./screenshotAreaPage.js";
+import visualEvent from "./visualEvent.js";
+import fb_videoDownloader from "./fb_videoDownloader.js";
 
 // inject badges
 const allScripts = {
@@ -225,6 +229,10 @@ const allScripts = {
   unshorten: addBadge(unshorten, BADGES.hot),
   transfer_sh: addBadge(transfer_sh, BADGES.new),
   jsonformatter: addBadge(jsonformatter, BADGES.new),
+  screenshotFullPage: addBadge(screenshotFullPage, BADGES.new),
+  screenshotAreaPage: addBadge(screenshotAreaPage, BADGES.new),
+  visualEvent: addBadge(visualEvent, BADGES.new),
+  fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
 };
 
 // inject id to all scripts
