@@ -17,7 +17,6 @@ import fb_getAllUidFromFriendsPage from "./fb_getAllUidFromFriendsPage.js";
 import fb_getAllUidOfGroupMembers from "./fb_getAllUidOfGroupMembers.js";
 import download_video from "./download_video.js";
 import fb_getAvatarFromUid from "./fb_getAvatarFromUid.js";
-import fb_downloadCurrentVideo from "./fb_downloadCurrentVideo.js";
 import fb_downloadAlbumMedia from "./fb_downloadAlbumMedia.js";
 import insta_getToken from "./insta_getToken.js";
 import insta_getUserInfo from "./insta_getUserInfo.js";
@@ -132,7 +131,6 @@ const allScripts = {
   fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.hot),
   download_video: addBadge(download_video, BADGES.beta),
   fb_getAvatarFromUid,
-  fb_downloadCurrentVideo,
   fb_downloadAlbumMedia,
   insta_getToken: addBadge(insta_getToken, BADGES.hot),
   insta_getUserInfo: addBadge(insta_getUserInfo, BADGES.new),

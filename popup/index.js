@@ -273,10 +273,10 @@ function initOpenInNewTabBtn() {
   if (isExtensionInSeperatedPopup()) {
     openInNewTabBtn.remove();
   } else {
-    // openInNewTabBtn.onclick = () => {
-    openExtensionInSeparatedPopup();
-    window.close();
-    // };
+    openInNewTabBtn.onclick = () => {
+      openExtensionInSeparatedPopup();
+      window.close();
+    };
   }
 }
 

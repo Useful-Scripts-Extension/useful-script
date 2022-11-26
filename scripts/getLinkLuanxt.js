@@ -163,15 +163,18 @@ export default {
           let userToken = await getLuanxtUserToken();
           setLoadingText("Đang get link từ luanxt...");
           let json = await getLinkLuanxt(url, userToken);
-          let win = window.open(
-            "",
-            "",
-            "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
-              (screen.height - 400) +
-              ",left=" +
-              (screen.width - 840)
-          );
-          renderResult(json, win);
+
+          if (json) {
+            let win = window.open(
+              "",
+              "",
+              "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600,top=" +
+                (screen.height - 400) +
+                ",left=" +
+                (screen.width - 840)
+            );
+            renderResult(json, win);
+          }
         } catch (e) {
           alert("ERROR: " + e);
         } finally {
