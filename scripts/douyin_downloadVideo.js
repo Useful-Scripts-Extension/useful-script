@@ -24,11 +24,7 @@ export default {
       <div style="margin:auto;background:#eee;position:relative;padding:20px;overflow:auto;max-height:90vh;">
         ${videos
           .map((video) => {
-            return (
-              `<video controls style="max-width:50vw">` +
-              video.innerHTML +
-              `</video>`
-            );
+            return `<video controls style="max-width:50vw">${video.innerHTML}</video>`;
           })
           .join("<br/>")}
         <button 

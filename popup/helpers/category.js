@@ -96,7 +96,6 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-github"></i> Github`,
     },
   },
-  doutube: { id: "doutube", name: { en: "Doutu.be", vi: "Doutu.be" } },
   automation: {
     id: "automation",
     name: {

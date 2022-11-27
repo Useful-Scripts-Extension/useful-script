@@ -20,8 +20,16 @@ export default {
         rect.top < window.innerHeight
       );
     };
-    for (let v of Array.from(document.querySelectorAll("video")))
-      if (isElementInViewport(v) && v.src) return window.open(v.src);
+    for (let v of Array.from(document.querySelectorAll("video"))) {
+      if (isElementInViewport(v)) {
+        if (v.src) return window.open(v.src);
+
+        let sources = Array.from(v.querySelectorAll("source"));
+        for (let s of sources) {
+          if (s.src) return window.open(s.src);
+        }
+      }
+    }
     alert(
       "Không tìm thấy video nào, hãy scroll tới khi nào video tự động phát rồi ấn lại bookmark nhé."
     );

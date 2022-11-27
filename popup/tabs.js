@@ -135,20 +135,19 @@ const tabs = [
   },
   {
     ...CATEGORY.tiktok,
-    scripts: [s.tiktok_downloadVideo, s.douyin_downloadVideo],
-  },
-  {
-    ...CATEGORY.github,
-    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
-  },
-  {
-    ...CATEGORY.doutube,
     scripts: [
+      s.tiktok_downloadVideo,
+      s.douyin_downloadVideo,
+      createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
       s.doutube_enableDownloadVideo,
       s.doutube_downloadWatchingVideo,
       s.doutube_downloadWatchingStory,
       s.doutube_getAllVideoInUserProfile,
     ],
+  },
+  {
+    ...CATEGORY.github,
+    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
   },
   {
     ...CATEGORY.automation,
