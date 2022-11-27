@@ -55,7 +55,7 @@ export default {
       const { closeLoading } = showLoading("Đang lấy access token...");
       let token = await getToken();
       if (token) {
-        window.prompt("Access token: ", token);
+        prompt("Access token: ", token);
       } else {
         alert("Không tìm thấy access token");
       }

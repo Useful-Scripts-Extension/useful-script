@@ -20,7 +20,7 @@ export default {
       if (encoded) {
         const decoded = JSON.parse(atob(encoded));
         console.log(decoded);
-        window.prompt("Access token: ", decoded.oauth_token);
+        prompt("Access token: ", decoded.oauth_token);
       } else {
         alert(
           "Không tìm thấy thông tin access token trong cookie!\nBạn đã đăng nhập instagram chưa??"

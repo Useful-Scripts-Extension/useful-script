@@ -82,6 +82,13 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-youtube"></i> Youtube`,
     },
   },
+  tiktok: {
+    id: "tiktok",
+    name: {
+      en: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
+      vi: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
+    },
+  },
   github: {
     id: "github",
     name: {

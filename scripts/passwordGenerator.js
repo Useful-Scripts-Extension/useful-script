@@ -117,7 +117,7 @@ export default {
     }
 
     function doIt() {
-      var master = window.prompt(
+      var master = prompt(
         "Tạo mật khẩu cho trang web bất kỳ từ duy nhất 1 Mật_khẩu_Chính\n" +
           " + Nhập vào Mật_khẩu_Chính, trả về cho bạn mật khẩu cho web hiện tại\n" +
           " + Không còn phải nhớ nhiều mật khẩu\n" +
@@ -159,7 +159,7 @@ export default {
           }
         }
         if (!g) {
-          window.prompt("Mật khẩu cho trang web " + domain + " là:", p);
+          prompt("Mật khẩu cho trang web " + domain + " là:", p);
         }
       }
     }

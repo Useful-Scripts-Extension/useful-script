@@ -32,12 +32,12 @@ export default {
     // filter duplicate: https://stackoverflow.com/a/14438954
     list_id = [...new Set(list_id)];
     if (list_id.length)
-      window.prompt(
+      prompt(
         `Tìm thấy ${list_id.length} album id trong trang web và trên url.`,
         list_id.join(", ")
       );
     else
-      window.prompt(
+      prompt(
         "Không tìm thấy ALBUM ID nào trong trang web!\nBạn có đang ở đúng trang album chưa?\nTrang web Ví dụ:",
         "https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659"
       );

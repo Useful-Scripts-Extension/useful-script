@@ -67,7 +67,7 @@ export default {
       let html = `<div class="transfer-sh-container">
       
             <div class="inner-container">
-                <button id="close-btn">Đóng</button>
+                <button id="close-btn">X</button>
                 <h1><a href="https://transfer.sh/" target="_blank">Transfer.sh</a></h1>
 
                 <div class="loader"></div>
@@ -191,7 +191,10 @@ export default {
             <span>Download .tar.gz</span> <input value="${downloadTarGzUrl}" />
           </div>`;
         } else {
-          alert("failed");
+          alert(
+            "Lỗi\n\nBạn có thể mở trang web sau để upload file:",
+            "https://transfer.sh/"
+          );
         }
       }
     })();

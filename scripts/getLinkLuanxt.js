@@ -140,7 +140,7 @@ export default {
     };
 
     (async () => {
-      let url = window.prompt(
+      let url = prompt(
         "Hỗ trợ:\n+ " +
           [
             "Zing MP3, Zing Video Clip, Zing TV",
@@ -176,7 +176,10 @@ export default {
             renderResult(json, win);
           }
         } catch (e) {
-          alert("ERROR: " + e);
+          prompt(
+            "ERROR: " + e + "\n\nBạn có thể mở trang web bên dưới để thử lại:",
+            apiBaseURL
+          );
         } finally {
           closeLoading();
         }

@@ -48,7 +48,7 @@ export default {
       console.log(name, uid);
     }
     console.log(uids);
-    window.prompt("Tất cả UID: ", uids.join("\n"));
+    prompt("Tất cả UID: ", uids.join("\n"));
   },
 };
 

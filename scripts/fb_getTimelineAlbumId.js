@@ -18,7 +18,7 @@ export default {
     for (let a of Array.from(list_a)) {
       const posts_screen = /(?<=set\=a\.)(.\d+?)(?=\&__cft__)/.exec(a.href);
       if (posts_screen && posts_screen[0]) {
-        window.prompt(
+        prompt(
           `Timeline Album ID của ${page_name}:\n` +
             "- Bấm OK để mở album trong tab mới. Cancel để huỷ -",
           posts_screen[0]

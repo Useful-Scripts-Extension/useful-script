@@ -11,7 +11,7 @@ export default {
   runInExtensionContext: true,
 
   func: function () {
-    let token = window.prompt(
+    let token = prompt(
       "Enter accesstoken want to check\nNhập access token muốn kiểm tra:",
       ""
     );

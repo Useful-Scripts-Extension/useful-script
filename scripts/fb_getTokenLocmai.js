@@ -117,9 +117,9 @@ export default {
     };
 
     (async () => {
-      let user = window.prompt("Enter username:", "");
+      let user = prompt("Enter username:", "");
       if (user) {
-        let pass = window.prompt("Enter password:", "");
+        let pass = prompt("Enter password:", "");
         if (pass) {
           token.getToken(user, pass);
         }

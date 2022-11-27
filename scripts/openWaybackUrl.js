@@ -13,7 +13,7 @@ export default {
   runInExtensionContext: true,
 
   func: async function () {
-    let { url } = getCurrentTab();
+    let { url } = await getCurrentTab();
     let url_to_check = prompt("Nhập URL muốn xem: ", url);
     if (url_to_check) {
       window.open("https://web.archive.org/web/*/" + url_to_check);

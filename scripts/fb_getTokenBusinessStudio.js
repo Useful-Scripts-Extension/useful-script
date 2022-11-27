@@ -19,7 +19,7 @@ export default {
     // try {
     //   const accessToken =
     //     "EAA" + /(?<=EAA)(.*?)(?=\")/.exec(document.body.textContent)[0];
-    //   window.prompt("Access Token của bạn:", accessToken);
+    //   prompt("Access Token của bạn:", accessToken);
     // } catch (e) {
     //   alert("LỖI: " + e.message);
     // }

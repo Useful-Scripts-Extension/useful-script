@@ -62,7 +62,7 @@ export default {
     );
 
     if (choose != null && choose >= 0 && choose < options.length) {
-      let url = window.prompt("Nhập link youtube:", location.href);
+      let url = prompt("Nhập link youtube:", location.href);
       url && options[choose].func(url);
     }
   },

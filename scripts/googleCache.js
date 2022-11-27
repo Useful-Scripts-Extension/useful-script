@@ -17,7 +17,7 @@ export default {
     // https://cachedviews.com/
 
     let { url } = await getCurrentTab();
-    let url_to_check = window.prompt(
+    let url_to_check = prompt(
       "Nhập URL muốn xem cache: ",
       url.replace(/^http\:\/\/(.*)$/, "$1")
     );
