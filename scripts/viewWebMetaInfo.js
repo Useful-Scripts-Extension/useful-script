@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: "https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.ouiseo.com/",
   name: {
     en: "See web meta info (SEO)",
     vi: "Xem thông tin meta của web (SEO)",

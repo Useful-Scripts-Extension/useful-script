@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   name: {
     en: "Download fb album media links",
@@ -7,14 +9,14 @@ export default {
     en: "Download photo/video links from album",
     vi: "Tải về danh sách link ảnh/video",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  runInExtensionContext: true,
 
   func: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;
     const albumId = prompt("Enter album id: ", "");
     if (!albumId) return;
+
     async function fetchAlbumPhotosFromCursor({ albumId, cursor }) {
       let url = `https://graph.facebook.com/v12.0/${albumId}/photos?fields=largest_image&limit=100&access_token=${accessToken}`;
       if (cursor) url += `&after=${cursor}`;
@@ -65,7 +67,11 @@ export default {
       }
       return allImgsData;
     }
-    async function fetchAllPhotoLinksInAlbum({ albumId, fromPhotoId }) {
+    async function fetchAllPhotoLinksInAlbum({
+      albumId,
+      fromPhotoId,
+      progress,
+    }) {
       const from_text = fromPhotoId
         ? "vị trí photo_id=" + fromPhotoId
         : "đầu album";
@@ -76,6 +82,7 @@ export default {
         fromPhotoId,
         pageFetchedCallback: (pageImgsData) => {
           result.push(...pageImgsData.map((_) => _.url));
+          progress?.(result.length);
         },
       });
       return result;
@@ -97,8 +104,17 @@ export default {
         }, 0);
       }
     }
-    fetchAllPhotoLinksInAlbum({ albumId }).then((links) => {
+
+    const { closeLoading, setLoadingText } = showLoading(
+      "Đang thu thập link ảnh/video trong album..."
+    );
+    fetchAllPhotoLinksInAlbum({
+      albumId,
+      progress: (length) =>
+        setLoadingText("Đang thu thập " + length + " links..."),
+    }).then((links) => {
       download(links.join("\n"), albumId, ".txt");
+      closeLoading();
     });
   },
 };
