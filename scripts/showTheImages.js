@@ -65,7 +65,7 @@ export default {
               <th colspan="2">Found ${L.length} Image(s):</th>
           </tr>
           
-          <div style="padding:20px;border:0;outline:0">
+          <div style="padding:20px;border:0;outline:0;background:#eee">
             ${L.map(
               (img) => '<img src="' + img + '" style="margin:5px"/>'
             ).join("")}
