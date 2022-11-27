@@ -4,9 +4,7 @@ function generateMd(lang = "vi") {
   let index = 1;
   let md = tabs
     .map((tab) => {
-      let _p = document.createElement("p");
-      _p.innerHTML = tab.name[lang];
-      let title = _p.innerText;
+      let title = tab.name[lang];
 
       let scripts = tab.scripts
         ?.map((script) => {
@@ -15,7 +13,7 @@ function generateMd(lang = "vi") {
           }
           return `\n  ${index++}. [${script.name[lang]}](/scripts/${
             script.id
-          }.js)`;
+          }.js): ${script.description[lang]}`;
         })
         .join("\n");
 
