@@ -135,7 +135,7 @@ const tabs = [
   },
   {
     ...CATEGORY.tiktok,
-    scripts: [s.tiktok_downloadVideo],
+    scripts: [s.tiktok_downloadVideo, s.douyin_downloadVideo],
   },
   {
     ...CATEGORY.github,
