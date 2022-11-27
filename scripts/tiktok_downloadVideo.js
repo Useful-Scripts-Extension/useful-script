@@ -8,8 +8,8 @@ import {
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
-    en: "Download tiktok video (Snaptik)",
-    vi: "Tải video tiktok (Snaptik)",
+    en: "Tiktok - Download video (Snaptik)",
+    vi: "Tiktok - Tải video (Snaptik)",
   },
   description: {
     en: "Download tiktok video using Snaptik API",
