@@ -112,7 +112,7 @@ export default {
       win.document.body.innerHTML = html;
     }
 
-    const mode = window.prompt(
+    const mode = prompt(
       "Choose mode:\n\n- 1: Download current image (in viewport)\n- 2: Download all images",
       1
     );

@@ -50,7 +50,7 @@ export default {
       `;
     }
 
-    let txt = window.prompt("Nhập username của người muốn xem thông tin:");
+    let txt = prompt("Nhập username của người muốn xem thông tin:");
     if (txt) {
       const { setLoadingText, closeLoading } = showLoading(
         "Đang lấy thông tin của " + txt

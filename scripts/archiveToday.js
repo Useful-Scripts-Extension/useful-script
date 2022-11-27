@@ -15,10 +15,12 @@ export default {
   func: async function () {
     let { url } = await getCurrentTab();
 
-    var a = window.prompt(
-      "Nhập URL muốn xem archive: ",
+    var a = prompt(
+      "Nhập URL muốn tạo archive: ",
       url.replace(/^http\:\/\/(.*)$/, "$1")
     );
-    window.open("https://archive.today/?run=1&url=" + encodeURIComponent(a));
+    if (a != null) {
+      window.open("https://archive.today/?run=1&url=" + encodeURIComponent(a));
+    }
   },
 };

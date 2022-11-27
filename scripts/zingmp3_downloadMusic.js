@@ -234,7 +234,7 @@ export default {
       // window.open(await ZingMp3.getChartHome());
       // window.open(await ZingMp3.getInfoMusic('ZWFE8OUO'))
 
-      let url = window.prompt("Nhap link bai hat: ", location.href);
+      let url = prompt("Nhap link bai hat: ", location.href);
       if (url) {
         let songid = ZingMp3.getSongIdFromURL(url);
         if (songid) window.open(await ZingMp3.getStreaming(songid));

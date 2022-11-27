@@ -36,7 +36,7 @@ export default {
       return url.protocol === "http:" || url.protocol === "https:";
     }
 
-    let url = window.prompt(
+    let url = prompt(
       "Enter script url / Nhập link script: ",
       "//code.jquery.com/jquery-3.6.1.min.js"
     );

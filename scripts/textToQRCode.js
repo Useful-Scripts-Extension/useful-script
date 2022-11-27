@@ -11,7 +11,7 @@ export default {
   runInExtensionContext: true,
 
   func: function () {
-    let text = window.prompt("Enter text / Nhập chữ:", "");
+    let text = prompt("Enter text / Nhập chữ:", "");
     if (text === null) return;
 
     let url =

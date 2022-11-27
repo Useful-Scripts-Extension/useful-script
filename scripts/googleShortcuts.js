@@ -22,7 +22,7 @@ export default {
       ["Google Calendar", "https://calendar.new"],
     ];
 
-    let option = window.prompt(
+    let option = prompt(
       "Create new:\n\n" +
         urls.map(([name, url], index) => `- ${index}: ${name}\n`).join(""),
       0

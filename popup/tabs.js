@@ -134,6 +134,10 @@ const tabs = [
     ],
   },
   {
+    ...CATEGORY.tiktok,
+    scripts: [s.tiktok_downloadVideo],
+  },
+  {
     ...CATEGORY.github,
     scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
   },
@@ -153,7 +157,6 @@ const tabs = [
       s.webToQRCode,
       s.getAllEmailsInWeb,
       s.screenshotFullPage,
-      s.screenshotAreaPage,
       s.webToPDF,
       s.transfer_sh,
       s.jsonformatter,
@@ -174,6 +177,7 @@ const tabs = [
     scripts: [
       s.shortenURL,
       s.unshorten,
+      s.viewBrowserInfo,
       s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,

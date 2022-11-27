@@ -111,7 +111,7 @@ export default {
           return new Promise((resolve, reject) => {
             chrome.storage.sync.get(["cuttlyApiKey"], async function (res) {
               let apiKey = res.cuttlyApiKey || "";
-              apiKey = window.prompt("Enter cuttly API key:", apiKey);
+              apiKey = prompt("Enter cuttly API key:", apiKey);
 
               if (apiKey) {
                 chrome.storage.sync.set({ cuttlyApiKey: apiKey });
@@ -144,7 +144,7 @@ export default {
           return new Promise((resolve, reject) => {
             chrome.storage.sync.get(["bitlyApiKey"], async function (res) {
               let apiKey = res.bitlyApiKey || "";
-              apiKey = window.prompt("Enter bitly API key:", apiKey);
+              apiKey = prompt("Enter bitly API key:", apiKey);
 
               if (apiKey) {
                 chrome.storage.sync.set({ bitlyApiKey: apiKey });

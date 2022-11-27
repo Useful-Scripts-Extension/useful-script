@@ -36,9 +36,9 @@ export default {
         /(?<=\"user\"\:\{\"id\"\:\")(.\d+?)(?=\")/.exec(document.body.innerHTML)
       );
 
-    if (uid) window.prompt(`USER ID của ${document.title}:`, uid);
+    if (uid) prompt(`USER ID của ${document.title}:`, uid);
     else
-      window.prompt(
+      prompt(
         "Không tìm thấy USER ID nào trong trang web!\nBạn có đang ở đúng trang profile chưa?\nTrang web Ví dụ: ",
         "https://www.facebook.com/callchoulnhe"
       );

@@ -23,7 +23,7 @@ export const isExtensionInSeperatedPopup = () => {
 export const openExtensionInSeparatedPopup = () => {
   let url = new URL(location.href);
   url.searchParams.set(seperated_popup_search_param, 1);
-  popupCenter({ url: url.href, title: "Useful scripts", w: 400, h: 700 });
+  popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
 };
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
@@ -64,13 +64,15 @@ export const runScriptFile = (scriptFile, tabId) => {
 };
 
 export const runScriptInCurrentTab = async (func) => {
-  const tabId = (await getCurrentTab()).id;
-  return await runScript(func, tabId);
+  const tab = await getCurrentTab();
+  focusToTab(tab);
+  return await runScript(func, tab.id);
 };
 
 export const runScriptFileInCurrentTab = async (scriptFile) => {
-  const tabId = (await getCurrentTab()).id;
-  return await runScriptFile(scriptFile, tabId);
+  const tab = await getCurrentTab();
+  focusToTab();
+  return await runScriptFile(scriptFile, tab.id);
 };
 
 export const openUrlInNewTab = async (url) => {
@@ -127,7 +129,7 @@ export function detachDebugger(tab) {
 // https://developer.chrome.com/docs/extensions/reference/debugger/#method-attach
 // https://chromedevtools.github.io/devtools-protocol/
 // https://chromedevtools.github.io/devtools-protocol/tot/Page/#event-captureScreenshot
-export async function sendDevtoolCommand(tab, commandName, commandParams) {
+export async function sendDevtoolCommand(tab, commandName, commandParams = {}) {
   let res = await chrome.debugger.sendCommand(
     { tabId: tab.id },
     commandName,
@@ -220,6 +222,22 @@ export const JSONUtils = {
     }
   },
 };
+
+// https://stackoverflow.com/a/38552302/11898496
+export function parseJwt(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
 
 export async function getAvailableScripts() {
   let url = (await getCurrentTab()).url;
@@ -333,7 +351,7 @@ export function showLoading(text = "") {
   let textP = document.querySelector(".loading-container .text");
 
   return {
-    closeLoading: () => div?.remove(),
+    closeLoading: () => div?.remove?.(),
     setLoadingText: (textOrFunction) => {
       if (!textP) return;
       if (typeof textOrFunction === "function") {
@@ -343,4 +361,68 @@ export function showLoading(text = "") {
       }
     },
   };
+}
+
+export function showPopup(title = "", innerHTML = "") {
+  let html = `<div class="popup-container">
+    <div class="popup-inner-container">
+        <button class="close-btn">X</button>
+        ${
+          title
+            ? `<h2 style="text-align: center; margin-bottom:10px">${title}</h2>`
+            : ""
+        }
+        ${innerHTML}
+    </div>
+
+    <style>
+        .popup-container {
+            position: fixed;
+            top:0;left:0;right:0;bottom:0;
+            background:#333e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .popup-inner-container {
+          position: relative;
+          max-width: 100vw;
+          max-height: 100vh;
+          padding: 10px;
+          background: #eee;
+          overflow: auto;
+        }
+        .popup-container .close-btn {
+          position: absolute;
+          top:0px;
+          right:0px;
+          background: #e22;
+          color: white;
+          padding: 5px 10px;
+          border:none;
+          cursor: pointer;
+          max-width: 95%;
+          max-height: 95%;
+        }
+    </style>
+  </div>`;
+  let div = document.createElement("div");
+  div.innerHTML = html;
+  document.body.appendChild(div);
+
+  document
+    .querySelector(".popup-container .close-btn")
+    ?.addEventListener?.("click", () => {
+      div?.remove?.();
+    });
+
+  return {
+    closePopup: () => div?.remove?.(),
+  };
+}
+
+export function openPopupWithHtml(html) {
+  let win = window.open("", "", "scrollbars=yes");
+  win.document.write(html);
 }

@@ -6,7 +6,7 @@
             "type": "modifyHeaders",
             "requestHeaders": [
                 {
-                    "header": "Referer",
+                    "header": "referer",
                     "operation": "set",
                     "value": "https://unshorten.it/"
                 },

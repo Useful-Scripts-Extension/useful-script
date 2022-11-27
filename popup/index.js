@@ -271,6 +271,7 @@ async function runScript(script) {
 
 function initOpenInNewTabBtn() {
   if (isExtensionInSeperatedPopup()) {
+    document.title = "Useful Scripts";
     openInNewTabBtn.remove();
   } else {
     openInNewTabBtn.onclick = () => {

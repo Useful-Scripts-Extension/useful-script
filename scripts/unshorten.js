@@ -82,7 +82,10 @@ export default {
           ? prompt("Link gốc của " + short_url, long_url)
           : alert("Không tìm thấy link gốc");
       } catch (e) {
-        alert("Lỗi: " + e);
+        prompt(
+          "Lỗi: " + e + "\n\nBạn có thể mở trang web bên dưới để thử lại:",
+          "https://unshorten.it/"
+        );
       } finally {
         closeLoading();
       }

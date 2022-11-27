@@ -27,7 +27,7 @@ export default {
           };
           console.log(data);
           if (data.token) {
-            window.prompt("Access Token của bạn:", data.token);
+            prompt("Access Token của bạn:", data.token);
           } else {
             alert("Không tìm thấy access token");
           }
