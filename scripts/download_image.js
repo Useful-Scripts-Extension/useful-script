@@ -86,9 +86,10 @@ export default {
 
       let win = window.open(
         "",
-        "All images from " + url,
+        "",
         "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=500,top=50,left=50"
       );
+      win.document.title = "All images from " + url;
 
       let rows = link
         ?.map((_, i) => {
@@ -111,7 +112,7 @@ export default {
       win.document.body.innerHTML = html;
     }
 
-    const mode = window.prompt(
+    const mode = prompt(
       "Choose mode:\n\n- 1: Download current image (in viewport)\n- 2: Download all images",
       1
     );

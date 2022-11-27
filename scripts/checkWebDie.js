@@ -1,5 +1,7 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
-  icon: `<i class="fa-solid fa-skull-crossbones"></i>`,
+  icon: `https://s2.googleusercontent.com/s2/favicons?domain=downforeveryoneorjustme.com`,
   name: {
     en: "Dowfor - Check web die",
     vi: "Dowfor - Kiểm tra web die",
@@ -8,12 +10,17 @@ export default {
     en: "Check web die using downforeveryoneorjustme",
     vi: "Dùng bên thứ 3 để kiểm tra xem website có bị die thật không",
   },
+  runInExtensionContext: true,
 
-  func: function () {
-    let url = prompt("Enter web url to check", location.hostname);
-
+  func: async function () {
+    let { url } = await getCurrentTab();
     if (url) {
-      window.open("https://downforeveryoneorjustme.com/" + url);
+      let url_to_check = prompt("Enter web url to check", url);
+      if (url_to_check) {
+        window.open("https://downforeveryoneorjustme.com/" + url_to_check);
+      }
+    } else {
+      alert("Không tìm thấy url web hiện tại");
     }
   },
 };

@@ -11,6 +11,20 @@ export default {
   whiteList: ["*://doutu.be"],
 
   func: async function () {
+    // https://stackoverflow.com/a/18197341/11898496
+    function download(filename, text) {
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+      );
+      element.setAttribute("download", filename);
+      element.style.display = "none";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
     const WAIT_FOR_FULL_VIDEO_LOADED = 5000;
     const FIND_FULL_VIDEO_INTERVAL = 100;
     const sleep = (m) => new Promise((r) => setTimeout(r, m));
@@ -20,7 +34,15 @@ export default {
     const closeFullVideo = () =>
       document.querySelector("div.top-8.left-4")?.click();
 
-    alert("Getting video, open console (F12) to see result.");
+    if (
+      !confirm(
+        "Tool sẽ tự động mở từng ảnh/video để lấy link.\nVui lòng không thoát trang web.\nBấm OK để bắt đầu quá trình lấy link."
+      )
+    ) {
+      return;
+    }
+
+    let allUrls = [];
 
     const queue = getAllVideo();
     while (queue.length > 0) {
@@ -38,6 +60,7 @@ export default {
       }
 
       if (full_video) {
+        allUrls.push(full_video.src);
         console.log(full_video.src);
       } else {
         console.log("Not found full video");
@@ -46,5 +69,9 @@ export default {
       closeFullVideo();
       await sleep(500);
     }
+
+    console.log(allUrls);
+    alert("Tìm được " + allUrls.length + " videos. Bấm ok để tải xuống link.");
+    download(location.pathname + ".txt", allUrls.join("\n"));
   },
 };

@@ -1,0 +1,28 @@
+[
+    {
+        "id": 1,
+        "priority": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "referer",
+                    "operation": "set",
+                    "value": "https://unshorten.it/"
+                },
+                {
+                    "header": "origin",
+                    "operation": "set",
+                    "value": "https://unshorten.it/"
+                }
+            ]
+        },
+        "condition": {
+            "domain": "extension://*",
+            "urlFilter": "https://unshorten.it/main/get_long_url",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
+    }
+]
