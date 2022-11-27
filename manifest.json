@@ -33,7 +33,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content-scripts/document_start.js"
+        "scripts/content-scripts/document_start.js"
       ],
       "run_at": "document_start"
     },
@@ -42,7 +42,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content-scripts/document_idle.js"
+        "scripts/content-scripts/document_idle.js"
       ],
       "run_at": "document_idle"
     },
@@ -51,7 +51,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content-scripts/document_end.js"
+        "scripts/content-scripts/document_end.js"
       ],
       "run_at": "document_end"
     }
@@ -59,8 +59,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "content-scripts/*.js",
-        "content-scripts/*.css"
+        "scripts/content-scripts/*.js",
+        "scripts/content-scripts/*.css"
       ],
       "matches": [
         "<all_urls>"
@@ -72,7 +72,7 @@
       {
         "id": "ruleset_1",
         "enabled": true,
-        "path": "net-request-rules/rules.json"
+        "path": "scripts/net-request-rules/rules.json"
       }
     ]
   }

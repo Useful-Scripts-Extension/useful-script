@@ -75,7 +75,6 @@ import viewAllLinks from "./viewAllLinks.js";
 import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
 import scrollByDrag from "./scrollByDrag.js";
-import insta_enableDownloadImage from "./insta_enableDownloadImage.js";
 import youtube_viewDislikes from "./youtube_viewDislikes.js";
 import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
@@ -141,7 +140,6 @@ const allScripts = {
     insta_getAllImagesInNewFeed,
     BADGES.beta
   ),
-  insta_enableDownloadImage: addBadge(insta_enableDownloadImage, BADGES.hot),
   insta_getAllImagesInUserProfile,
   pictureInPicture: addBadge(pictureInPicture, BADGES.hot),
   youtube_toggleLight,
