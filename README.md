@@ -6,7 +6,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## Change logs - Lịch sử cập nhât
 
-Verion hiện tại: v1.2
+Verion hiện tại: <del>v1.1</del> <del>v1.2</del> **v1.3** (27/11/2022)
 
 [Change logs / Lịch sử cập nhật](/md/CHANGELOGS.md)
 
@@ -27,7 +27,7 @@ Verion hiện tại: v1.2
 
 ## Screenshots - Ảnh chụp màn hình
 
-![screenshot](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
+![screenshot](./assets/screenshots/Screen%20Shot%202022-11-27%20at%2022.05.00.png)
 
 ## Contribute - Đóng góp
 
