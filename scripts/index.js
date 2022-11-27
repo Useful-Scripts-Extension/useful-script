@@ -112,6 +112,7 @@ import fb_videoDownloader from "./fb_videoDownloader.js";
 import viewBrowserInfo from "./viewBrowserInfo.js";
 import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import douyin_downloadVideo from "./douyin_downloadVideo.js";
+import instantgram from "./instantgram.js";
 
 // inject badges
 const allScripts = {
@@ -233,6 +234,7 @@ const allScripts = {
   viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
   tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
   douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
+  instantgram: addBadge(instantgram, BADGES.new),
 };
 
 // inject id to all scripts
