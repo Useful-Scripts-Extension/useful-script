@@ -28,5 +28,7 @@ export default {
     R("mousedown");
     R("mouseup");
     R("selectstart");
+
+    alert("Đã bật lại text selection.\nText selection enabled.");
   },
 };

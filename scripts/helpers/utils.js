@@ -169,6 +169,24 @@ export function downloadURI(uri, name) {
   document.body.removeChild(link);
 }
 
+export function downloadData(data, filename, type) {
+  var file = new Blob([data], { type: type });
+  if (window.navigator.msSaveOrOpenBlob)
+    window.navigator.msSaveOrOpenBlob(file, filename);
+  else {
+    var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+}
+
 // Merge image uri
 // https://stackoverflow.com/a/50658710/11898496
 // https://stackoverflow.com/a/50658710/11898496
@@ -367,11 +385,7 @@ export function showPopup(title = "", innerHTML = "") {
   let html = `<div class="popup-container">
     <div class="popup-inner-container">
         <button class="close-btn">X</button>
-        ${
-          title
-            ? `<h2 style="text-align: center; margin-bottom:10px">${title}</h2>`
-            : ""
-        }
+        <h2 style="text-align: center; margin-bottom:10px">${title}</h2>
         ${innerHTML}
     </div>
 
