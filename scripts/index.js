@@ -93,7 +93,7 @@ import cssSelectorViewer from "./cssSelectorViewer.js";
 import youtube_nonstop from "./youtube_nonstop.js";
 import insta_reloaded from "./insta_reloaded.js";
 import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
-import download_audio from "./download_audio.js";
+import showTheAudios from "./showTheAudios.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
 import zingmp3_oldLayout from "./zingmp3_oldLayout.js";
 import fb_getTokenBussinessLocation from "./fb_getTokenBussinessLocation.js";
@@ -111,8 +111,10 @@ import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
 import viewBrowserInfo from "./viewBrowserInfo.js";
 import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
-import douyin_downloadVideo from "./douyin_downloadVideo.js";
+import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import instantgram from "./instantgram.js";
+import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
+import showTheVideos from "./showTheVideos.js";
 
 // inject badges
 const allScripts = {
@@ -212,7 +214,7 @@ const allScripts = {
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
   insta_reloaded: addBadge(insta_reloaded, BADGES.beta),
   zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
-  download_audio: download_audio,
+  showTheAudios: showTheAudios,
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
   zingmp3_oldLayout: addBadge(zingmp3_oldLayout, BADGES.new),
   fb_getTokenBussinessLocation: addBadge(
@@ -233,8 +235,16 @@ const allScripts = {
   fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
   viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
   tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
-  douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
+  douyin_downloadWachingVideo: addBadge(
+    douyin_downloadWachingVideo,
+    BADGES.new
+  ),
   instantgram: addBadge(instantgram, BADGES.new),
+  douyin_downloadAllVideoUser: addBadge(
+    douyin_downloadAllVideoUser,
+    BADGES.new
+  ),
+  showTheVideos: addBadge(showTheVideos, BADGES.new),
 };
 
 // inject id to all scripts
