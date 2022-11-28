@@ -38,7 +38,8 @@ export default {
         alert("Lỗi: Không tìm thấy url trang web.");
         return;
       }
-      var url = providers[choice].getLink(escape(tab.url));
+      let { hostname } = new URL(tab.url);
+      var url = providers[choice].getLink(hostname);
       w = open(
         url,
         "w",
