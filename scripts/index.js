@@ -115,6 +115,9 @@ import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import instantgram from "./instantgram.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
+import fb_storySaver from "./fb_storySaver.js";
+import insta_storySaver from "./insta_storySaver.js";
+import whatApp_storySaver from "./whatApp_storySaver.js";
 
 // inject badges
 const allScripts = {
@@ -245,6 +248,9 @@ const allScripts = {
     BADGES.new
   ),
   showTheVideos: addBadge(showTheVideos, BADGES.new),
+  fb_storySaver: addBadge(fb_storySaver, BADGES.new),
+  insta_storySaver: addBadge(insta_storySaver, BADGES.new),
+  whatApp_storySaver: addBadge(whatApp_storySaver, BADGES.new),
 };
 
 // inject id to all scripts
