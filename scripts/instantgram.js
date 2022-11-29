@@ -1,12 +1,12 @@
 export default {
   icon: "https://www.instagram.com/favicon.ico",
   name: {
-    en: "Instantgram - Download full-size image",
-    vi: "Instantgram - Tải ảnh chất lượng cao",
+    en: "Instantgram - Download watching photo/video/story",
+    vi: "Instantgram - Tải ảnh/video/story đang xem",
   },
   description: {
-    en: "Download full-size instagram image in 1 click",
-    vi: "Tải ảnh instagram chất lượng cao bằng 1 click",
+    en: "Download full-size instagram image/video/story in 1 click",
+    vi: "Tải ảnh/video/story instagram nhanh chóng bằng 1 click",
   },
   blackList: [],
   whiteList: [],

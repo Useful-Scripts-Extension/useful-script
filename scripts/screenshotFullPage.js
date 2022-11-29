@@ -20,8 +20,6 @@ export default {
   runInExtensionContext: true,
 
   func: async function () {
-    // let a = await captureVisibleTab();
-
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."
     );

@@ -1,12 +1,12 @@
 import {
-  openPopupWithHtml,
+  doSomething2,
   parseJwt,
   showLoading,
   showPopup,
 } from "./helpers/utils.js";
 
 export default {
-  icon: "https://www.tiktok.com/favicon.ico",
+  icon: "https://snaptik.app/pwa/img/icon_x192.png",
   name: {
     en: "Tiktok - Download video (Snaptik)",
     vi: "Tiktok - Tải video (Snaptik)",
@@ -26,11 +26,6 @@ export default {
         token: /name="token" value="(.*)" type="hidden"/.exec(text)?.[1],
       };
     }
-
-    //prettier-ignore
-    function doSomething(e,i,n){for(var r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),t=r.slice(0,i),f=r.slice(0,n),o=e.split("").reverse().reduce(function(e,n,r){if(-1!==t.indexOf(n))return e+t.indexOf(n)*Math.pow(i,r)},0),c="";o>0;)c=f[o%n]+c,o=(o-o%n)/n;return c||"0"}
-    //prettier-ignore
-    function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){for(var h="";r[t]!==e[a];)h+=r[t],t++;for(var l=0;l<e.length;l++)h=h.replace(RegExp(e[l],"g"),l);f+=String.fromCharCode(doSomething(h,a,10)-n)}return decodeURIComponent(escape(f))}
 
     function getParamsFromResponse(reponseText) {
       let i = reponseText.lastIndexOf(")}(");
@@ -144,57 +139,4 @@ function backup() {
       }
     },
   };
-  /**
-     * {
-        "id": 2,
-        "priority": 1,
-        "action": {
-            "type": "modifyHeaders",
-            "requestHeaders": [
-                {
-                    "header": "referer",
-                    "operation": "set",
-                    "value": "https://ssstik.io/vi"
-                },
-                {
-                    "header": "origin",
-                    "operation": "set",
-                    "value": "https://ssstik.io"
-                },
-                {
-                    "header": "hx-current-url",
-                    "operation": "set",
-                    "value": "https://ssstik.io/vi"
-                },
-                {
-                    "header": "hx-request",
-                    "operation": "set",
-                    "value": "true"
-                },
-                {
-                    "header": "hx-target",
-                    "operation": "set",
-                    "value": "target"
-                },
-                {
-                    "header": "hx-trigger",
-                    "operation": "set",
-                    "value": "_gcaptcha_pt"
-                },
-                {
-                    "header": "content-type",
-                    "operation": "set",
-                    "value": "application/x-www-form-urlencoded; charset=UTF-8"
-                }
-            ]
-        },
-        "condition": {
-            "domain": "extension://*",
-            "urlFilter": "https://ssstik.io/abc?url=dl",
-            "resourceTypes": [
-                "xmlhttprequest"
-            ]
-        }
-    }
-     */
 }
