@@ -44,13 +44,21 @@ export default {
         return [data, postData["max_cursor"]];
       else return [data, 0];
     }
+    function extractUid(url) {
+      return /https:\/\/www\.douyin\.com\/user\/([^?]+)/gm.exec(url)?.[1];
+    }
     async function run() {
       let { closeLoading, setLoadingText } = showLoading("Đang tìm uid...");
       try {
         let tab = await getCurrentTab();
         let uid =
-          /https:\/\/www\.douyin\.com\/user\/([^?]+)/gm.exec(tab.url)?.[1] ||
-          prompt("Nhập uid: ");
+          extractUid(tab.url) ||
+          extractUid(
+            prompt(
+              "Nhập link douyin user:\n" +
+                "Ví dụ: https://www.douyin.com/user/ABCXYZ..."
+            )
+          );
 
         if (!uid) return;
 
@@ -62,7 +70,9 @@ export default {
           let [data, cursor] = await parsePostData(postData);
           max_cursor = cursor;
           all_data.push(...data);
-          setLoadingText(`Đang thu thập douyin videos... (${all_data.length} video)`);
+          setLoadingText(
+            `Đang thu thập douyin videos... (${all_data.length} video)`
+          );
           if (!max_cursor) break;
         }
         console.log(all_data);
