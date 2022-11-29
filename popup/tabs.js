@@ -122,7 +122,6 @@ const tabs = [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.instantgram,
       s.insta_storySaver,
-      s.insta_downloader,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.insta_getAllUserMedia,
       s.insta_getAllImagesInNewFeed,
