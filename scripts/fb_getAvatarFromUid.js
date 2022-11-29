@@ -1,4 +1,4 @@
-import { showLoading } from "./helpers/utils.js";
+import { downloadData, showLoading } from "./helpers/utils.js";
 
 export default {
   name: {
@@ -37,24 +37,11 @@ export default {
 
     if (urls.length === 0) alert("Không tìm được avatar nào!");
     else if (urls.length === 1) window.open(urls[0]);
-    else download(urls.join("\n"), `uid-${new Date().toLocaleString()}.txt`);
-
-    function download(data, filename, type) {
-      var file = new Blob([data], { type: type });
-      if (window.navigator.msSaveOrOpenBlob)
-        window.navigator.msSaveOrOpenBlob(file, filename);
-      else {
-        var a = document.createElement("a"),
-          url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, 0);
-      }
+    else {
+      if (
+        confirm("Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống.")
+      )
+        downloadData(urls.join("\n"), `uid-${new Date().toLocaleString()}.txt`);
     }
   },
 };
