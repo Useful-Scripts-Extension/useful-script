@@ -118,6 +118,9 @@ import showTheVideos from "./showTheVideos.js";
 import fb_storySaver from "./fb_storySaver.js";
 import insta_storySaver from "./insta_storySaver.js";
 import whatApp_storySaver from "./whatApp_storySaver.js";
+import send_shareFiles from "./send_shareFiles.js";
+import insta_downloader from "./insta_downloader.js";
+import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 
 // inject badges
 const allScripts = {
@@ -251,6 +254,9 @@ const allScripts = {
   fb_storySaver: addBadge(fb_storySaver, BADGES.new),
   insta_storySaver: addBadge(insta_storySaver, BADGES.new),
   whatApp_storySaver: addBadge(whatApp_storySaver, BADGES.new),
+  send_shareFiles: addBadge(send_shareFiles, BADGES.new),
+  insta_downloader: addBadge(insta_downloader, BADGES.new),
+  fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.new),
 };
 
 // inject id to all scripts

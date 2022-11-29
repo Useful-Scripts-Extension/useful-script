@@ -24,7 +24,7 @@ export default {
       let imgUrl = storyUrl + "#.jpg";
       window.open(imgUrl);
     } else {
-      alert("Không tìm thấy instagram story nào trong trang web.");
+      alert("Không tìm thấy whatapp story nào trong trang web.");
     }
   },
 };

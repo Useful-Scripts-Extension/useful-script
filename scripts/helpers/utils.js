@@ -1,32 +1,10 @@
 // LƯU Ý: Các hàm trong này chỉ dùng được trong extension context (các scripts có thuộc tính runInExtensionContext = true)
 import { allScripts } from "../index.js";
 
-const CACHED = {
-  lastWindowId: 0,
-};
-
-// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
-chrome.windows.onFocusChanged.addListener(
-  (windowId) => {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE)
-      CACHED.lastWindowId = windowId;
-  },
-  { windowTypes: ["normal"] }
-);
-
-const seperated_popup_search_param = "isSeparatedPopup";
-export const isExtensionInSeperatedPopup = () => {
-  let url = new URL(location.href);
-  return url.searchParams.has(seperated_popup_search_param);
-};
-
-export const openExtensionInSeparatedPopup = () => {
-  let url = new URL(location.href);
-  url.searchParams.set(seperated_popup_search_param, 1);
-  popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
-};
+// #region Tab Utils
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
+// Lấy window trình duyệt được sử dụng gần nhất
 export const getLastFocusedWindow = () => {
   return !!CACHED.lastWindowId
     ? chrome.windows.get(CACHED.lastWindowId)
@@ -36,6 +14,7 @@ export const getLastFocusedWindow = () => {
       });
 };
 
+// Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
   let win = await getLastFocusedWindow();
   let tabs = await chrome.tabs.query({
@@ -46,6 +25,15 @@ export const getCurrentTab = async () => {
   });
   return tabs[0];
 };
+
+// https://stackoverflow.com/a/25226679/11898496
+export function focusToTab(tab) {
+  return chrome.tabs.update(tab.id, { active: true });
+}
+
+export function closeTab(tab) {
+  return chrome.tabs.remove(tab.id);
+}
 
 export const runScript = async (func, tabId) => {
   return chrome.scripting.executeScript({
@@ -75,29 +63,53 @@ export const runScriptFileInCurrentTab = async (scriptFile) => {
   return await runScriptFile(scriptFile, tab.id);
 };
 
-export const openUrlInNewTab = async (url) => {
-  return chrome.tabs.create({ url });
-};
+export async function getAvailableScripts() {
+  let url = (await getCurrentTab()).url;
+  let avai = [];
+  for (let script of Object.values(allScripts)) {
+    if (await checkBlackWhiteList(script, url)) {
+      avai.push(script);
+    }
+  }
 
-export const openUrlAndRunScript = async (url, func) => {
-  let tab = await openUrlInNewTab(url);
-  return await runScript(func, tab.id);
-};
-
-export async function getCookie(domain, raw = false) {
-  let cookies = await chrome.cookies.getAll({ domain });
-  return raw
-    ? cookies
-    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
+  return avai;
 }
 
-// https://stackoverflow.com/a/25226679/11898496
-export function focusToTab(tab) {
-  return chrome.tabs.update(tab.id, { active: true });
+export const GlobalBlackList = ["edge://*", "chrome://*"];
+export async function checkBlackWhiteList(script, url = null) {
+  if (!url) {
+    url = (await getCurrentTab()).url;
+  }
+
+  let w = script.whiteList,
+    b = script.blackList,
+    hasWhiteList = w?.length > 0,
+    hasBlackList = b?.length > 0,
+    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inGlobalBlackList =
+      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+
+  let willRun =
+    !inGlobalBlackList &&
+    ((!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList));
+
+  return willRun;
 }
 
-export function closeTab(tab) {
-  return chrome.tabs.remove(tab.id);
+export function isUrlMatchPattern(url, pattern) {
+  let curIndex = 0,
+    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+
+  for (let p of visiblePartsInPattern) {
+    let index = url.indexOf(p, curIndex);
+    if (index < 0) return false;
+    curIndex = index + p.length;
+  }
+
+  return true;
 }
 
 // https://stackoverflow.com/a/68634884/11898496
@@ -138,17 +150,11 @@ export async function sendDevtoolCommand(tab, commandName, commandParams = {}) {
   return res;
 }
 
-// https://developer.chrome.com/docs/extensions/reference/debugger/#event-onEvent
-export async function onDebuggerEvent(commandName, callback) {
-  ALL_DEBUGGER_EVENTS[commandName] = callback;
-}
-const ALL_DEBUGGER_EVENTS = {};
-chrome.debugger.onEvent.addListener((source, commandName, commandParams) => {
-  ALL_DEBUGGER_EVENTS[commandName]?.(commandParams, source);
-});
-
 // https://developer.chrome.com/docs/extensions/reference/tabs/#method-captureVisibleTab
 // https://stackoverflow.com/q/14990822/11898496
+// Merge image uri
+// https://stackoverflow.com/a/50658710/11898496
+// https://stackoverflow.com/a/50658710/11898496
 export async function captureVisibleTab(options = {}, willDownload = true) {
   let imgData = await chrome.tabs.captureVisibleTab(null, {
     format: options.format || "png",
@@ -157,6 +163,10 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
   willDownload && downloadURI(imgData, "img.png");
   return imgData;
 }
+
+// #endregion
+
+// #region Download Utils
 
 // https://stackoverflow.com/a/15832662/11898496
 // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
@@ -187,9 +197,16 @@ export function downloadData(data, filename, type) {
   }
 }
 
-// Merge image uri
-// https://stackoverflow.com/a/50658710/11898496
-// https://stackoverflow.com/a/50658710/11898496
+// #endregion
+
+// #region Security
+
+export async function getCookie(domain, raw = false) {
+  let cookies = await chrome.cookies.getAll({ domain });
+  return raw
+    ? cookies
+    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
+}
 
 export const JSONUtils = {
   // https://stackoverflow.com/a/9804835/11898496
@@ -257,54 +274,45 @@ export function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-export async function getAvailableScripts() {
-  let url = (await getCurrentTab()).url;
-  let avai = [];
-  for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, url)) {
-      avai.push(script);
-    }
-  }
+//#endregion
 
-  return avai;
-}
+// #region Snap Utils (snaptik, snapinsta)
 
-export const GlobalBlackList = ["edge://*", "chrome://*"];
-export async function checkBlackWhiteList(script, url = null) {
-  if (!url) {
-    url = (await getCurrentTab()).url;
-  }
+//prettier-ignore
+export function doSomething(e,i,n){for(var r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),t=r.slice(0,i),f=r.slice(0,n),o=e.split("").reverse().reduce(function(e,n,r){if(-1!==t.indexOf(n))return e+t.indexOf(n)*Math.pow(i,r)},0),c="";o>0;)c=f[o%n]+c,o=(o-o%n)/n;return c||"0"}
+//prettier-ignore
+export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){for(var h="";r[t]!==e[a];)h+=r[t],t++;for(var l=0;l<e.length;l++)h=h.replace(RegExp(e[l],"g"),l);f+=String.fromCharCode(doSomething(h,a,10)-n)}return decodeURIComponent(escape(f))}
 
-  let w = script.whiteList,
-    b = script.blackList,
-    hasWhiteList = w?.length > 0,
-    hasBlackList = b?.length > 0,
-    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inGlobalBlackList =
-      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+// #endregion
 
-  let willRun =
-    !inGlobalBlackList &&
-    ((!hasWhiteList && !hasBlackList) ||
-      (hasWhiteList && inWhiteList) ||
-      (hasBlackList && !inBlackList));
+// #region UI
 
-  return willRun;
-}
+const CACHED = {
+  lastWindowId: 0,
+};
 
-export function isUrlMatchPattern(url, pattern) {
-  let curIndex = 0,
-    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
+chrome.windows.onFocusChanged.addListener(
+  (windowId) => {
+    if (windowId !== chrome.windows.WINDOW_ID_NONE)
+      CACHED.lastWindowId = windowId;
+  },
+  { windowTypes: ["normal"] }
+);
 
-  for (let p of visiblePartsInPattern) {
-    let index = url.indexOf(p, curIndex);
-    if (index < 0) return false;
-    curIndex = index + p.length;
-  }
+const seperated_popup_search_param = "isSeparatedPopup";
+// Kiểm tra xem extension đang chạy trong popup rời hay không
+export const isExtensionInSeperatedPopup = () => {
+  let url = new URL(location.href);
+  return url.searchParams.has(seperated_popup_search_param);
+};
 
-  return true;
-}
+// Mở extension trong popup rời
+export const openExtensionInSeparatedPopup = () => {
+  let url = new URL(location.href);
+  url.searchParams.set(seperated_popup_search_param, 1);
+  popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
+};
 
 // https://stackoverflow.com/a/4068385/11898496
 export function popupCenter({ url, title, w, h }) {
@@ -440,3 +448,5 @@ export function openPopupWithHtml(html) {
   let win = window.open("", "", "scrollbars=yes");
   win.document.write(html);
 }
+
+// #endregion
