@@ -15,8 +15,7 @@ export default {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 
     let videos = document.querySelectorAll("video");
-    let videoUrl = null,
-      imgUrl = null;
+    let storyUrl = null;
     for (let i = videos.length - 1; i >= 0; i--) {
       if (videos[i].offsetHeight === 0) continue;
       let reactKey = "";
@@ -29,63 +28,63 @@ export default {
       }
       try {
         //prettier-ignore
-        videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[0].data.hdSrc;
+        storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[0].data.hdSrc;
       } catch (e) {}
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.hdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.hdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[0].data.sdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[0].data.sdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.sdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.sdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.hdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.hdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.sdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.sdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.hd_src;
+          storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.hd_src;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.sd_src;
+          storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.sd_src;
         } catch (e) {}
       }
-      if (videoUrl != null) break;
+      if (storyUrl != null) break;
     }
 
-    if (!videoUrl) {
+    if (!storyUrl) {
       let video = null;
       for (let i = 0; i < videos.length; i++) {
         if (videos[i].offsetHeight !== 0) video = videos[i];
       }
 
-      videoUrl = video?.children[0]?.src;
+      storyUrl = video?.children[0]?.src;
     }
 
-    if (!videoUrl) {
+    if (!storyUrl) {
       let imgs = document.querySelectorAll("img");
       for (let img of imgs) {
         if (
@@ -98,8 +97,7 @@ export default {
       }
     }
 
-    if (videoUrl) window.open(videoUrl);
-    else if (imgUrl) window.open(imgUrl);
+    if (storyUrl) window.open(storyUrl);
     else alert("Không tìm thấy instagram story nào trong trang web.");
   },
 };

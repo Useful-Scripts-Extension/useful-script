@@ -15,7 +15,8 @@ export default {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 
     let videos = document.querySelectorAll("video");
-    let videoUrl = null;
+    let listUrls = [];
+
     for (var i = videos.length - 1; i >= 0; i--) {
       if (videos[i].offsetHeight === 0) continue;
       var reactKey = "";
@@ -26,44 +27,70 @@ export default {
           break;
         }
       }
+      let storyUrl;
       try {
         //prettier-ignore
-        videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.hdSrc;
+        storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.hdSrc;
       } catch (e) {}
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.sdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.sdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.hdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.hdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.sdSrc;
+          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.sdSrc;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.hd_src;
+          storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.hd_src;
         } catch (e) {}
       }
-      if (videoUrl == null) {
+      if (storyUrl == null) {
         try {
           //prettier-ignore
-          videoUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.sd_src;
+          storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.sd_src;
         } catch (e) {}
       }
-      if (videoUrl != null) break;
+      if (storyUrl != null) {
+        listUrls.push({ url: storyUrl, type: "video" });
+      }
     }
 
-    if (!videoUrl) alert("Không tìm thấy facebook story nào trong trang web.");
-    else window.open(videoUrl);
+    let storyImgUrl = document.querySelector(
+      'div[data-id] img[draggable="false"]'
+    )?.src;
+    if (storyImgUrl) {
+      listUrls.push({ url: storyImgUrl, type: "img" });
+    }
+
+    if (!listUrls.length) {
+      alert("Không tìm thấy facebook story nào trong trang web.");
+    } else if (listUrls.length === 1) {
+      window.open(listUrls[0].url);
+    } else {
+      let w = window.open("", "", "width=500,height=700");
+      w.document.write(
+        listUrls
+          .map(({ url, type }) =>
+            type === "video"
+              ? `<video controls src="${url}" style="max-width:300px"></video>`
+              : type === "img"
+              ? `<img src="${url}" style="max-width:300px" />`
+              : ""
+          )
+          .join("<br/>")
+      );
+    }
   },
 };
