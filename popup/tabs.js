@@ -89,6 +89,7 @@ const tabs = [
       s.fb_videoDownloader,
       s.fb_downloadCommentVideo,
       s.fb_getAvatarFromUid,
+      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.fb_downloadAlbumMedia,
       createTitle("--- Access Token ---", "--- Access Token ---"),
       s.fb_checkToken,
