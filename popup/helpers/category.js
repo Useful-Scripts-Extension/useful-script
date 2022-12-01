@@ -89,6 +89,13 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
     },
   },
+  shopee: {
+    id: "shopee",
+    name: {
+      en: `<i class="fa-solid fa-cart-shopping"></i> Shopee`,
+      vi: `<i class="fa-solid fa-cart-shopping"></i> Shopee`,
+    },
+  },
   github: {
     id: "github",
     name: {

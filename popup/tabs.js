@@ -75,7 +75,9 @@ const tabs = [
   {
     ...CATEGORY.google,
     scripts: [
-      // s.google_downloadDriveVideo,
+      createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.ggdrive_downloadVideo,
+      createTitle("--- More ---", "--- Khác ---"),
       s.search_totalIndexedPages,
       s.search_googleSite,
       s.googleShortcuts,
@@ -93,6 +95,7 @@ const tabs = [
       s.fb_videoDownloader,
       s.fb_downloadCommentVideo,
       s.fb_getAvatarFromUid,
+      s.fb_storyInfo,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.fb_downloadAlbumMedia,
       createTitle("--- Access Token ---", "--- Access Token ---"),
@@ -160,6 +163,10 @@ const tabs = [
     ],
   },
   {
+    ...CATEGORY.shopee,
+    scripts: [s.shopee_topVariation],
+  },
+  {
     ...CATEGORY.github,
     scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
   },
@@ -189,9 +196,11 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.donotBlockMe,
       s.shortenURL,
       s.unshorten,
       s.viewBrowserInfo,
+      s.envato_previewBypass,
       s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,
@@ -300,6 +309,18 @@ const recommendTab = {
         vi: "Dịch nhanh, trực tiếp trong mọi website",
       },
       link: "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb",
+    },
+    {
+      icon: "https://lh3.googleusercontent.com/M_2Q8eJAj1ejsRg30LuJs_Q94Jk7d-6ZbE5cyddULweH5LrfsVJtjK8zbpSjwA3G9oHwZeyHyrYrr971kqLwtNNP=w128-h128-e365-rj-sc0x00ffffff",
+      name: {
+        en: "NSFW Filter: Hide NSFW content",
+        vi: "NSFW Filter: Ẩn nội dung 18+",
+      },
+      description: {
+        en: "Hide NSFW content from websites using this extension powered by AI",
+        vi: "Ẩn mọi nội dung 18+ trên website, sử dụng trí tuệ nhân tạo",
+      },
+      link: "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh",
     },
     {
       icon: "https://lh3.googleusercontent.com/_l4UaD5Gwub2AwFZdomRpfMD2737y0Ow6k2sfVuWdm0fQ0iGSdEfhd9X77taeQ-0VM6Wi3HnpecLWUAI9uHq11TSktw=w128-h128-e365-rj-sc0x00ffffff",

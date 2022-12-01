@@ -123,6 +123,11 @@ import send_shareFiles from "./send_shareFiles.js";
 import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
 import fb_hideNewFeed from "./fb_hideNewFeed.js";
+import fb_storyInfo from "./fb_storyInfo.js";
+import envato_previewBypass from "./envato_previewBypass.js";
+import shopee_topVariation from "./shopee_topVariation.js";
+import donotBlockMe from "./donotBlockMe.js";
+import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 
 // inject badges
 const allScripts = {
@@ -261,6 +266,11 @@ const allScripts = {
   fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.new),
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_hideNewFeed: addBadge(fb_hideNewFeed, BADGES.new),
+  fb_storyInfo: addBadge(fb_storyInfo, BADGES.new),
+  envato_previewBypass: addBadge(envato_previewBypass, BADGES.new),
+  shopee_topVariation: addBadge(shopee_topVariation, BADGES.new),
+  donotBlockMe: addBadge(donotBlockMe, BADGES.new),
+  ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
 };
 
 // inject id to all scripts

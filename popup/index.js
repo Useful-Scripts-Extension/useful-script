@@ -1,5 +1,6 @@
 import {
   checkBlackWhiteList,
+  getCurrentTab,
   GlobalBlackList,
   isExtensionInSeperatedPopup,
   openExtensionInSeparatedPopup,
@@ -243,7 +244,8 @@ function createScriptButton(script, isFavorite = false) {
 }
 
 async function runScript(script) {
-  let willRun = await checkBlackWhiteList(script);
+  let tab = await getCurrentTab();
+  let willRun = await checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
     if (script.runInExtensionContext) script.func();
@@ -254,8 +256,8 @@ async function runScript(script) {
 
     openModal(
       t({
-        en: `Script not supported in current website`,
-        vi: `Script không hỗ trợ website hiện tại`,
+        en: `Script not supported in current website (${tab.url})`,
+        vi: `Script không hỗ trợ website hiện tại (${tab.url})`,
       }),
       t({
         en:

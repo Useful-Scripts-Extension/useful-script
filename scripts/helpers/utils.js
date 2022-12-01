@@ -93,10 +93,8 @@ export async function getAvailableScripts() {
 }
 
 export const GlobalBlackList = ["edge://*", "chrome://*"];
-export async function checkBlackWhiteList(script, url = null) {
-  if (!url) {
-    url = (await getCurrentTab()).url;
-  }
+export async function checkBlackWhiteList(script, url) {
+  if (!url) return false;
 
   let w = script.whiteList,
     b = script.blackList,
