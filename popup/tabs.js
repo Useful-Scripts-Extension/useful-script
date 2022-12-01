@@ -36,6 +36,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
+      s._test,
       s.whatFont,
       s.similarWeb,
       s.search_sharedAccount,
@@ -86,6 +87,7 @@ const tabs = [
     scripts: [
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
+      s.fb_hideNewFeed,
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.fb_storySaver,
       s.fb_videoDownloader,

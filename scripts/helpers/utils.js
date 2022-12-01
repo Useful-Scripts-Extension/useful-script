@@ -35,32 +35,50 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScript = async (func, tabId) => {
-  return chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    func: func,
-    world: chrome.scripting.ExecutionWorld.MAIN,
+export const runScript = async ({ func, tabId, args = [] }) => {
+  return new Promise((resolve, reject) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        func: func,
+        args: args,
+        world: chrome.scripting.ExecutionWorld.MAIN,
+      },
+      (injectionResults) => {
+        // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
+        resolve(injectionResults.find((_) => _.result)?.result);
+      }
+    );
   });
 };
 
-export const runScriptFile = (scriptFile, tabId) => {
-  return chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    files: [scriptFile],
-    world: chrome.scripting.ExecutionWorld.MAIN,
+export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
+  return new Promise((resolve, reject) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        files: [scriptFile],
+        args: args,
+        world: chrome.scripting.ExecutionWorld.MAIN,
+      },
+      (injectionResults) => {
+        // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
+        resolve(injectionResults.find((_) => _.result)?.result);
+      }
+    );
   });
 };
 
-export const runScriptInCurrentTab = async (func) => {
+export const runScriptInCurrentTab = async (func, args) => {
   const tab = await getCurrentTab();
   focusToTab(tab);
-  return await runScript(func, tab.id);
+  return await runScript({ func, args, tabId: tab.id });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile) => {
+export const runScriptFileInCurrentTab = async (scriptFile, args) => {
   const tab = await getCurrentTab();
   focusToTab();
-  return await runScriptFile(scriptFile, tab.id);
+  return await runScriptFile({ scriptFile, args, tabId: tab.id });
 };
 
 export async function getAvailableScripts() {
@@ -71,7 +89,6 @@ export async function getAvailableScripts() {
       avai.push(script);
     }
   }
-
   return avai;
 }
 
@@ -102,13 +119,11 @@ export async function checkBlackWhiteList(script, url = null) {
 export function isUrlMatchPattern(url, pattern) {
   let curIndex = 0,
     visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
-
   for (let p of visiblePartsInPattern) {
     let index = url.indexOf(p, curIndex);
     if (index < 0) return false;
     curIndex = index + p.length;
   }
-
   return true;
 }
 
@@ -337,8 +352,8 @@ export function showLoading(text = "") {
   let html = `
     <div class="loading-container">
         <div>
-            <div class="loader"></div>
-            ${text && `<br/><p class="text">${text}</p>`}
+            <div class="loader"></div><br/>
+            <p class="text">${text}</p>
         </div>
     </div>
   `;
