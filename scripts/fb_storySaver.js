@@ -67,9 +67,9 @@ export default {
       }
     }
 
-    let storyImgUrl = document.querySelector(
-      'div[data-id] img[draggable="false"]'
-    )?.src;
+    let storyImgUrl = Array.from(
+      document.querySelectorAll('div[data-id] img[draggable="false"]')
+    ).find((_) => _.alt)?.src;
     if (storyImgUrl) {
       listUrls.push({ url: storyImgUrl, type: "img" });
     }
