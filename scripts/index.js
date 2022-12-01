@@ -1,5 +1,6 @@
 import { addBadge, BADGES } from "../popup/helpers/badge.js";
 
+import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";
 import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
@@ -121,9 +122,11 @@ import whatApp_storySaver from "./whatApp_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
 import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
+import fb_hideNewFeed from "./fb_hideNewFeed.js";
 
 // inject badges
 const allScripts = {
+  _test,
   fb_toggleLight: fb_toggleLight,
   fb_getTokenBusinessStudio: addBadge(fb_getTokenBusinessStudio, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
@@ -257,6 +260,7 @@ const allScripts = {
   send_shareFiles: addBadge(send_shareFiles, BADGES.new),
   fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.new),
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
+  fb_hideNewFeed: addBadge(fb_hideNewFeed, BADGES.new),
 };
 
 // inject id to all scripts

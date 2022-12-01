@@ -21,6 +21,7 @@ export function injectScript(filePathOrUrl, isExternal = false) {
   }
 }
 
+// TODO: https://developer.chrome.com/docs/extensions/reference/scripting/#method-insertCSS
 // https://stackoverflow.com/a/17840622
 export function injectCss(cssfileOrCode, isFile = true) {
   if (isFile) {
