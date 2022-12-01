@@ -10,6 +10,7 @@ export default {
   },
 
   func: function () {
+    // events
     function R(a) {
       ona = "on" + a;
       if (window.addEventListener)
@@ -28,6 +29,19 @@ export default {
     R("mousedown");
     R("mouseup");
     R("selectstart");
+
+    // css userSelect
+    let cssTag = document.createElement("style");
+    cssTag.innerHTML = `
+      * {
+        -webkit-touch-callout: auto !important;
+        -webkit-user-select: auto !important;
+        -moz-user-select: auto !important;
+        -ms-user-select: auto !important;
+        user-select: auto !important;
+      }
+    `;
+    document.body.appendChild(cssTag);
 
     alert("Đã bật lại text selection.\nText selection enabled.");
   },
