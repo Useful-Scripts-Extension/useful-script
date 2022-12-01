@@ -12,6 +12,9 @@
   if (location.hostname === "www.instagram.com")
     injectCss(baseURL + "instagram.css");
 
+  if (location.hostname === "www.studyphim.vn")
+    injectScript(baseURL + "studyphim.js");
+
   // if (location.hostname === "luanxt.com")
   //   injectScriptFile("//code.jquery.com/jquery-3.6.1.min.js", true);
 })();

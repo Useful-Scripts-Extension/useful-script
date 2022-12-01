@@ -67,6 +67,8 @@ const tabs = [
       s.whatApp_storySaver,
       s.showTheImages,
       s.download_image,
+      createTitle("--- Document ---", "--- Tài liệu ---"),
+      s.scribd_downloadDocuments,
     ],
   },
   {
