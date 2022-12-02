@@ -55,7 +55,8 @@ export default {
           value: withoutWaterMarkMp4 || withoutWaterMarkVideo,
         },
         { name: "MP4", value: waterMarkMp4 },
-        { name: "MP3 🎵", value: mp3 || music },
+        { name: "MP3 🎵", value: mp3 },
+        { name: "Music 🎵", value: music },
         { name: "HD Video", value: waterMarkVideo },
         { name: "Profile Picture", value: thumb },
       ]
