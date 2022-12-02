@@ -36,6 +36,10 @@ export default {
       );
     }
 
+    function downloadVideo(videoInfo) {
+      window.open(videoInfo.url + "&filename=" + videoInfo.name);
+    }
+
     async function getVideoLinkFromDocId(docid) {
       let res = await fetch(
         "https://drive.google.com/get_video_info?docid=" + docid
