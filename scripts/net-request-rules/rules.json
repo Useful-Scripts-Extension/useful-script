@@ -24,5 +24,31 @@
                 "xmlhttprequest"
             ]
         }
+    },
+    {
+        "id": 2,
+        "priority": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "referer",
+                    "operation": "set",
+                    "value": "https://www.snaptikvideo.com/"
+                },
+                {
+                    "header": "origin",
+                    "operation": "set",
+                    "value": "https://www.snaptikvideo.com"
+                }
+            ]
+        },
+        "condition": {
+            "domain": "extension://*",
+            "urlFilter": "https://api.snaptikvideo.com/st-tik/tiktok/dl",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
     }
 ]

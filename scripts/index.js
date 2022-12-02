@@ -111,7 +111,7 @@ import screenshotFullPage from "./screenshotFullPage.js";
 import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
 import viewBrowserInfo from "./viewBrowserInfo.js";
-import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
+import tiktok_snaptikApp from "./tiktok_snaptikApp.js";
 import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import instantgram from "./instantgram.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
@@ -128,6 +128,7 @@ import envato_previewBypass from "./envato_previewBypass.js";
 import shopee_topVariation from "./shopee_topVariation.js";
 import donotBlockMe from "./donotBlockMe.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
+import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
 
 // inject badges
 const allScripts = {
@@ -248,7 +249,7 @@ const allScripts = {
   visualEvent: addBadge(visualEvent, BADGES.new),
   fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
   viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
-  tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
+  tiktok_snaptikApp: addBadge(tiktok_snaptikApp, BADGES.new),
   douyin_downloadWachingVideo: addBadge(
     douyin_downloadWachingVideo,
     BADGES.new
@@ -271,6 +272,7 @@ const allScripts = {
   shopee_topVariation: addBadge(shopee_topVariation, BADGES.new),
   donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
+  tiktok_snaptikVideo: addBadge(tiktok_snaptikVideo, BADGES.new),
 };
 
 // inject id to all scripts

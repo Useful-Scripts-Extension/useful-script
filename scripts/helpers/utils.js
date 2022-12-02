@@ -397,8 +397,12 @@ export function showPopup(title = "", innerHTML = "") {
   };
 }
 
-export function openPopupWithHtml(html) {
-  let win = window.open("", "", "scrollbars=yes");
+export function openPopupWithHtml(html, width = 300, height = 300) {
+  let win = window.open(
+    "",
+    "",
+    `scrollbars=yes,width=${width},height=${height}`
+  );
   win.document.write(html);
 }
 
