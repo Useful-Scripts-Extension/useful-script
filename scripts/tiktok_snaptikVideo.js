@@ -7,8 +7,8 @@ export default {
     vi: "Tiktok - Tải video (snaptikvideo)",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Download tiktok video (mp4/mp3/no watermark) using snaptikvideo API",
+    vi: "Tải video tiktok (mp4/mp3/không watermark) dùng API snaptikvideo",
   },
   runInExtensionContext: true,
 
