@@ -77,6 +77,7 @@ const tabs = [
     scripts: [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.ggdrive_downloadVideo,
+      s.google_downloadAllYourData,
       createTitle("--- More ---", "--- Khác ---"),
       s.search_totalIndexedPages,
       s.search_googleSite,
@@ -151,6 +152,7 @@ const tabs = [
     ...CATEGORY.tiktok,
     scripts: [
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
+      s.tiktok_downloadWatchingVideo,
       s.tiktok_snaptikApp,
       s.tiktok_snaptikVideo,
       createTitle("--- Douyin ---", "--- Douyin ---"),
