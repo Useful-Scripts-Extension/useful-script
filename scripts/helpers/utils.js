@@ -134,13 +134,10 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
-  await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: func,
-    args: args,
-  });
-  focusAfterRunScript && focusToTab(tab);
+  let res = await runScript({ func, tabId: tab.id, args });
+  !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
   closeAfterRunScript && closeTab(tab);
+  return res;
 }
 
 export function attachDebugger(tab) {

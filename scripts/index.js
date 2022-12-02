@@ -129,6 +129,8 @@ import shopee_topVariation from "./shopee_topVariation.js";
 import donotBlockMe from "./donotBlockMe.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
+import google_downloadAllYourData from "./google_downloadAllYourData.js";
+import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
 
 // inject badges
 const allScripts = {
@@ -273,6 +275,11 @@ const allScripts = {
   donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
   tiktok_snaptikVideo: addBadge(tiktok_snaptikVideo, BADGES.new),
+  google_downloadAllYourData: addBadge(google_downloadAllYourData, BADGES.new),
+  tiktok_downloadWatchingVideo: addBadge(
+    tiktok_downloadWatchingVideo,
+    BADGES.new
+  ),
 };
 
 // inject id to all scripts
