@@ -1,4 +1,9 @@
-import { openWebAndRunScript, showLoading } from "./helpers/utils.js";
+import {
+  openWebAndRunScript,
+  runScriptInCurrentTab,
+  showLoading,
+} from "./helpers/utils.js";
+import * as tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -7,30 +12,60 @@ export default {
     vi: "Tiktok - Tải video đang xem",
   },
   description: {
-    en: "Download tiktok video that you are watching (include watermark)",
-    vi: "Tải video tiktok bạn đang xem (có watermark)",
+    en: "Download tiktok video you are watching (no/have watermark)",
+    vi: "Tải video tiktok bạn đang xem (không/có watermark)",
   },
-  runInExtensionContext: false,
+  runInExtensionContext: true,
 
   func: async function () {
-    let el = document.querySelector("video")?.parentElement.parentElement,
-      keyFiber = "",
-      keyProp = "";
+    async function getWatchingVideoNoWM() {
+      let videoId = await runScriptInCurrentTab(() =>
+        document
+          .querySelector("video")
+          ?.parentElement?.id?.split?.("-")
+          ?.at?.(-1)
+      );
 
-    for (let k of Object.keys(el)) {
-      if (k.indexOf("__reactFiber") === 0) {
-        keyFiber = k;
-      }
-      if (k.indexOf("__reactProps") === 0) {
-        keyProp = k;
-      }
+      return await tiktok_downloadVideoNoWM.shared.getVideoNoWaterMark(
+        videoId,
+        true
+      );
     }
 
-    let url =
-      el[keyFiber].child?.memoizedProps?.url ||
-      el[keyFiber].firstEffect?.memoizedProps?.url ||
-      el[keyProp].children?.[0]?.props?.url;
-    url ? window.open(url) : alert("Không tìm thấy link video");
+    function getWatchingVideo() {
+      let el = document.querySelector("video")?.parentElement.parentElement,
+        keyFiber = "",
+        keyProp = "";
+      for (let k of Object.keys(el)) {
+        if (k.startsWith("__reactFiber")) keyFiber = k;
+        if (k.startsWith("__reactProps")) keyProp = k;
+      }
+      return (
+        el[keyFiber].child?.memoizedProps?.url ||
+        el[keyFiber].firstEffect?.memoizedProps?.url ||
+        el[keyProp].children?.[0]?.props?.url
+      );
+    }
+
+    let choice = prompt(
+      "Chọn loại video:\n" + " 0: Có watermark\n" + " 1: Không watermark",
+      0
+    );
+    if (choice == null) return;
+
+    let { closeLoading } = showLoading("Đang get link video...");
+    try {
+      let url;
+      if (choice == 0) url = await runScriptInCurrentTab(getWatchingVideo);
+      if (choice == 1) url = await getWatchingVideoNoWM();
+
+      if (url) window.open(url);
+      else throw Error("Không tìm được video");
+    } catch (e) {
+      alert("ERROR: " + e);
+    } finally {
+      closeLoading();
+    }
   },
 };
 
@@ -62,29 +97,4 @@ async function backup() {
       closeLoading();
     }
   }
-
-  // =================== Tải về mọi video trong user tiktok ===================
-  let containers = Array.from(
-    document.querySelectorAll(".tiktok-x6y88p-DivItemContainerV2.e19c29qe7")
-  );
-  let videos = [];
-
-  for (let c of containers) {
-    // find react fiber key
-    let key = "";
-    for (let k of Object.keys(c)) {
-      if (k.indexOf("__reactFiber") === 0) {
-        key = k;
-        break;
-      }
-    }
-    let video =
-      c[key].firstEffect?.memoizedProps ||
-      c[key].lastEffect?.memoizedProps ||
-      c[key].return?.alternate?.firstEffect?.memoizedProps;
-
-    videos.push(video);
-  }
-
-  console.log(videos);
 }

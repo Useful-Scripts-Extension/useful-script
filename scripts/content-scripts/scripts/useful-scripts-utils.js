@@ -118,4 +118,22 @@ window.UsefulScriptsUtils = {
       JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
     );
   },
+
+  // https://stackoverflow.com/a/8649003
+  searchParamsToObject(search) {
+    // let d = {};
+    // decodeURI(search)
+    //   .split("&")
+    //   .map((_) => _.split("="))
+    //   .forEach((_) => (d[_[0]] = _[1]));
+    // return d;
+
+    search = search || location.search.substring(1);
+    return JSON.parse(
+      '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+      function (key, value) {
+        return key === "" ? value : decodeURIComponent(value);
+      }
+    );
+  },
 };

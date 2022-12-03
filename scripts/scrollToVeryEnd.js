@@ -10,12 +10,12 @@ export default {
   },
 
   func: function () {
-    let height = () =>
-      (document.scrollingElement || document.body).scrollHeight;
-    let down = () => window.scrollTo({ left: 0, top: height() });
-    let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(async (resolve, reject) => {
+      let height = () =>
+        (document.scrollingElement || document.body).scrollHeight;
+      let down = () => window.scrollTo({ left: 0, top: height() });
+      let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    (async () => {
       let lastScroll = {
         time: Date.now(),
         top: 0,
@@ -25,7 +25,7 @@ export default {
       let clickToCancel = () => {
         running = false;
         document.removeEventListener("click", clickToCancel);
-        alert("scroll to very end STOPPED by user click");
+        // alert("scroll to very end STOPPED by user click");
       };
       document.addEventListener("click", clickToCancel);
 
@@ -37,12 +37,12 @@ export default {
           lastScroll.time = Date.now();
         } else if (Date.now() - lastScroll.time > 5000) {
           running = false;
-          alert("scroll to very end DONE");
+          // alert("scroll to very end DONE");
         }
-
-        if (!running) break;
-        else await sleep(100);
+        await sleep(100);
       }
-    })();
+
+      resolve();
+    });
   },
 };

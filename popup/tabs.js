@@ -36,7 +36,6 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s.alert,
       s._test,
       s.whatFont,
       s.similarWeb,
@@ -152,8 +151,11 @@ const tabs = [
   {
     ...CATEGORY.tiktok,
     scripts: [
+      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      s.tiktok_downloadUserVideos,
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
       s.tiktok_downloadWatchingVideo,
+      s.tiktok_downloadVideoNoWM,
       s.tiktok_snaptikApp,
       s.tiktok_snaptikVideo,
       createTitle("--- Douyin ---", "--- Douyin ---"),

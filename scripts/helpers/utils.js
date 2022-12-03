@@ -176,7 +176,25 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // #endregion
 
+// #region String Utils
+
+export function encodeQueryString(obj) {
+  var str = [];
+  for (var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+}
+
+// #endregion
+
 // #region Download Utils
+
+// https://stackoverflow.com/a/39914235
+export function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // https://stackoverflow.com/a/15832662/11898496
 // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
