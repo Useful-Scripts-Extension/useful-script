@@ -54,60 +54,64 @@ export default {
                   "Author name": data.owner.name,
                   "Author profile picture": data.owner.profile_picture.uri,
                   "Author profile URL": data.owner.url,
-                  Objects: data.unified_stories.edges.map((_) => {
+                  Objects: data.unified_stories.edges.map((_, i) => {
+                    console.log(_);
                     return {
                       "Picture blured":
-                        _.edges[i].node.attachments[0].media.blurredImage.uri,
+                        data.unified_stories.edges[i].node.attachments[0].media
+                          .blurredImage.uri,
 
                       "Picture preview url":
-                        _.edges[i].node.attachments[0].media.previewImage.uri,
+                        data.unified_stories.edges[i].node.attachments[0].media
+                          .previewImage.uri,
 
                       "Total reaction feedback":
-                        _.edges[i].node.story_card_info.feedback_summary
-                          .total_reaction_count,
+                        data.unified_stories.edges[i].node.story_card_info
+                          .feedback_summary.total_reaction_count,
 
                       "Background CSS":
-                        _.edges[i].node.story_default_background.color,
+                        data.unified_stories.edges[i].node
+                          .story_default_background.color,
 
                       "Background CSS3":
-                        _.edges[i].node.story_default_background.gradient.css,
+                        data.unified_stories.edges[i].node
+                          .story_default_background.gradient.css,
 
-                      ..._(
-                        _.edges[i].node.attachments[0].media.__typename ==
-                          "Photo"
-                          ? {
-                              Caption:
-                                _.edges[i].node.attachments[0].media
-                                  .accessibility_caption,
+                      ...(data.unified_stories.edges[i].node.attachments[0]
+                        .media.__typename == "Photo"
+                        ? {
+                            Caption:
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.accessibility_caption,
 
-                              Image:
-                                _.edges[i].node.attachments[0].media.image.uri,
-                            }
-                          : _.edges[i].node.attachments[0].media.__typename ==
-                            "Video"
-                          ? {
-                              "Permalink video url":
-                                data.unified_stories.edges[i].node
-                                  .attachments[0].media.permalink_url,
+                            Image:
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.image.uri,
+                          }
+                        : data.unified_stories.edges[i].node.attachments[0]
+                            .media.__typename == "Video"
+                        ? {
+                            "Permalink video url":
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.permalink_url,
 
-                              "Playable_url url":
-                                data.unified_stories.edges[i].node
-                                  .attachments[0].media.playable_url,
+                            "Playable_url url":
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.playable_url,
 
-                              "playable_url_dash url":
-                                data.unified_stories.edges[0].node
-                                  .attachments[0].media.playable_url_dash,
+                            "playable_url_dash url":
+                              data.unified_stories.edges[0].node.attachments[0]
+                                .media.playable_url_dash,
 
-                              "playableUrlHdString url":
-                                data.unified_stories.edges[i].node
-                                  .attachments[0].media.playableUrlHdString,
+                            "playableUrlHdString url":
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.playableUrlHdString,
 
-                              "playable_url_quality_hd url":
-                                data.unified_stories.edges[i].node
-                                  .attachments[0].media.playable_url_quality_hd,
-                            }
-                          : null
-                      ),
+                            "playable_url_quality_hd url":
+                              data.unified_stories.edges[i].node.attachments[0]
+                                .media.playable_url_quality_hd,
+                          }
+                        : null),
                     };
                   }),
                 });
