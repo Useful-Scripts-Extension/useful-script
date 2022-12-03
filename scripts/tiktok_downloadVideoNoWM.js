@@ -37,12 +37,9 @@ export default {
 export const shared = {
   // Source code: https://github.com/karim0sec/tiktokdl
   getVideoId(url) {
-    // return urls[i].slice(-19).toString()
-    if (!url.includes("/video/")) return null;
-    let idVideo = url.substring(url.indexOf("/video/") + 7, url.length);
-    return idVideo.length > 19
-      ? idVideo.substring(0, idVideo.indexOf("?"))
-      : idVideo;
+    if (url.includes("@") && url.includes("/video/"))
+      return url.split("/video/")[1].split("?")[0];
+    throw Error("URL video tiktok không đúng địng dạng");
   },
 
   getVideoNoWaterMark: async function (video_url, isVideoId = false) {
