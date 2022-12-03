@@ -81,7 +81,6 @@ import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
 import youtube_popupPlayer from "./youtube_popupPlayer.js";
 import googleShortcuts from "./googleShortcuts.js";
-import google_downloadDriveVideo from "./google_downloadDriveVideo.js";
 import paywallKiller from "./paywallKiller.js";
 import archiveToday from "./archiveToday.js";
 import download_video2 from "./download_video2.js";
@@ -131,6 +130,7 @@ import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
+import alert from "./alert.js";
 
 // inject badges
 const allScripts = {
@@ -218,7 +218,6 @@ const allScripts = {
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
   youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.beta),
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
-  google_downloadDriveVideo: addBadge(google_downloadDriveVideo, BADGES.beta),
   paywallKiller: addBadge(paywallKiller, BADGES.beta),
   archiveToday: archiveToday,
   download_video2: addBadge(download_video2, BADGES.hot),
@@ -280,6 +279,7 @@ const allScripts = {
     tiktok_downloadWatchingVideo,
     BADGES.new
   ),
+  alert: addBadge(alert, BADGES.new),
 };
 
 // inject id to all scripts
