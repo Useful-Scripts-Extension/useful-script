@@ -21,3 +21,6 @@ export default {
 
   func: function () {},
 };
+
+// Những thuộc tính/hàm có thể chia sẻ cho cách scripts khác sử dụng sẽ được viết vào đây
+export const shared = {};

@@ -1,4 +1,5 @@
 import { runScriptInCurrentTab } from "./helpers/utils.js";
+import scrollToVeryEnd from "./scrollToVeryEnd.js";
 
 export default {
   icon: "",
@@ -13,9 +14,11 @@ export default {
   runInExtensionContext: true,
 
   func: async function () {
-    let dtsg = await runScriptInCurrentTab(() => {
-      return require("DTSGInitialData").token;
-    });
-    alert(dtsg);
+    // let dtsg = await runScriptInCurrentTab(() => {
+    //   return require("DTSGInitialData").token;
+    // });
+    // alert(dtsg);
+    await runScriptInCurrentTab(scrollToVeryEnd.func);
+    alert("xong");
   },
 };

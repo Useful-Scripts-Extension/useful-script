@@ -130,7 +130,8 @@ import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
-import alert from "./alert.js";
+import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
+import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
 
 // inject badges
 const allScripts = {
@@ -268,9 +269,9 @@ const allScripts = {
   fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.new),
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_hideNewFeed: addBadge(fb_hideNewFeed, BADGES.new),
-  fb_storyInfo: addBadge(fb_storyInfo, BADGES.new),
+  fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_previewBypass: addBadge(envato_previewBypass, BADGES.new),
-  shopee_topVariation: addBadge(shopee_topVariation, BADGES.new),
+  shopee_topVariation: addBadge(shopee_topVariation, BADGES.beta),
   donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
   tiktok_snaptikVideo: addBadge(tiktok_snaptikVideo, BADGES.new),
@@ -279,7 +280,8 @@ const allScripts = {
     tiktok_downloadWatchingVideo,
     BADGES.new
   ),
-  alert: addBadge(alert, BADGES.new),
+  tiktok_downloadUserVideos: addBadge(tiktok_downloadUserVideos, BADGES.beta),
+  tiktok_downloadVideoNoWM: addBadge(tiktok_downloadVideoNoWM, BADGES.new),
 };
 
 // inject id to all scripts
