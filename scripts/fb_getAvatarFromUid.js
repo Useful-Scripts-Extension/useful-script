@@ -1,6 +1,7 @@
 import { downloadData, showLoading } from "./helpers/utils.js";
 
 export default {
+  icon: '<i class="fa-solid fa-user"></i>',
   name: {
     en: "Get avatar from fb user id",
     vi: "Tải avatar từ fb user id",
