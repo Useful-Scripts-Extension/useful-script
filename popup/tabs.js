@@ -78,6 +78,8 @@ const tabs = [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.ggdrive_downloadVideo,
       s.google_downloadAllYourData,
+      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      s.ggDrive_downloadAllVideosInFolder,
       createTitle("--- More ---", "--- Khác ---"),
       s.search_totalIndexedPages,
       s.search_googleSite,

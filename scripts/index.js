@@ -132,6 +132,7 @@ import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
 import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
 import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
+import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 
 // inject badges
 const allScripts = {
@@ -282,6 +283,10 @@ const allScripts = {
   ),
   tiktok_downloadUserVideos: addBadge(tiktok_downloadUserVideos, BADGES.beta),
   tiktok_downloadVideoNoWM: addBadge(tiktok_downloadVideoNoWM, BADGES.new),
+  ggDrive_downloadAllVideosInFolder: addBadge(
+    ggDrive_downloadAllVideosInFolder,
+    BADGES.new
+  ),
 };
 
 // inject id to all scripts
