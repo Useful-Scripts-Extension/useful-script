@@ -5,12 +5,12 @@ import { shared as fb_videoDownloader } from "./fb_videoDownloader.js";
 export default {
   icon: "https://www.facebook.com/favicon.ico",
   name: {
-    en: "Download watching facebook video",
-    vi: "Tải video facebook đang xem",
+    en: "Download watching fb video",
+    vi: "Tải video fb đang xem",
   },
   description: {
-    en: "Download facebook video that you are watching",
-    vi: "Tải video facebook bạn đang xem",
+    en: "Download fb video that you are watching (watch/story/comment)",
+    vi: "Tải video fb bạn đang xem (watch/story/comment)",
   },
   blackList: [],
   whiteList: ["https://www.facebook.com/*"],

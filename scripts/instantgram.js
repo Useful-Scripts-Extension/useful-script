@@ -1,8 +1,8 @@
 export default {
   icon: "https://www.instagram.com/favicon.ico",
   name: {
-    en: "Instantgram - Download watching photo/video/story",
-    vi: "Instantgram - Tải ảnh/video/story đang xem",
+    en: "Download watching insta photo/video/story",
+    vi: "Tải ảnh/video/story insta đang xem",
   },
   description: {
     en: "Download full-size instagram image/video/story in 1 click",
