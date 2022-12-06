@@ -7,8 +7,8 @@ import {
 export default {
   icon: '<i class="fa-solid fa-video"></i>',
   name: {
-    en: "Download facebook video/reel/watch",
-    vi: "Tải video/reel/watch facebook",
+    en: "Download fb video/reel/watch from url",
+    vi: "Tải video/reel/watch fb từ url",
   },
   description: {
     en: "Download facebook video/reel/watch",
