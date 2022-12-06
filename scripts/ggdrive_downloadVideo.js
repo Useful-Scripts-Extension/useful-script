@@ -119,3 +119,5 @@ export default {
     }
   },
 };
+
+export const shared = {};
