@@ -51,7 +51,14 @@ export default {
       });
 
       console.log(urls);
-      alert("Tìm thấy " + urls.length + " video. Bấm ok để tiếp tục.");
+      if (
+        !confirm(
+          "Tìm thấy " +
+            urls.length +
+            " video.\nBấm OK để tiếp tục tải.\nBâm Cancel để huỷ tải."
+        )
+      )
+        return;
 
       let videoUrls = [];
       let errorCount = 0;
@@ -82,7 +89,7 @@ export default {
       console.log(videoUrls);
       if (videoUrls.length)
         downloadData(videoUrls.join("\n"), "tiktok-user-videos", ".txt");
-      else alert("Không tìm được video nào");
+      else throw "Không tìm được video nào";
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
@@ -92,6 +99,8 @@ export default {
 };
 
 async function backup() {
+  // MUST READ: https://github.com/davidteather/TikTok-Api
+
   // =================== Tải về mọi video trong user tiktok (có watermark) ===================
   let containers = Array.from(
     document.querySelectorAll(".tiktok-x6y88p-DivItemContainerV2.e19c29qe7")

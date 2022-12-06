@@ -17,8 +17,8 @@ export default {
       "Nhập link tiktok video: ",
       await runScriptInCurrentTab(() => location.href)
     );
-
     if (url == null) return;
+
     let { closeLoading } = showLoading(
       "Đang lấy link video không watermark..."
     );
