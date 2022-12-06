@@ -133,6 +133,7 @@ import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
 import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
 import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
+import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 
 // inject badges
 const allScripts = {
@@ -287,6 +288,7 @@ const allScripts = {
     ggDrive_downloadAllVideosInFolder,
     BADGES.new
   ),
+  fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.new),
 };
 
 // inject id to all scripts

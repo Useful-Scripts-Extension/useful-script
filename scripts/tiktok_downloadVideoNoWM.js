@@ -36,7 +36,7 @@ export default {
 
 export const shared = {
   // Source code: https://github.com/karim0sec/tiktokdl
-  getVideoId(url) {
+  getVideoId: function (url) {
     if (url.includes("@") && url.includes("/video/"))
       return url.split("/video/")[1].split("?")[0];
     throw Error("URL video tiktok không đúng địng dạng");

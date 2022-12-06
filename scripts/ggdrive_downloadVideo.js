@@ -61,18 +61,18 @@ export default {
 
 export const shared = {
   // https://stackoverflow.com/a/16840612
-  getDocIdFromUrl(url) {
+  getDocIdFromUrl: function (url) {
     return url.match(/[-\w]{25,}(?!.*[-\w]{25,})/);
   },
 
-  async getDocIdFromWebsite() {
+  getDocIdFromWebsite: async function () {
     return await runScriptInCurrentTab(() => {
       return window?.viewerData?.config?.id;
     });
   },
 
   // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
-  async getLinkVideoGDriveFromDocId(docid) {
+  getLinkVideoGDriveFromDocId: async function (docid) {
     function parse(e) {
       var result = {};
       return (
