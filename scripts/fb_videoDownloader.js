@@ -5,10 +5,10 @@ import {
 } from "./helpers/utils.js";
 
 export default {
-  icon: "https://www.facebook.com/favicon.ico",
+  icon: '<i class="fa-solid fa-video"></i>',
   name: {
-    en: "Facebook - Download video/reel/watch",
-    vi: "Facebook - Tải video/reel/watch",
+    en: "Download facebook video/reel/watch",
+    vi: "Tải video/reel/watch facebook",
   },
   description: {
     en: "Download facebook video/reel/watch",
