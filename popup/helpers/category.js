@@ -15,6 +15,14 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Gần đây`,
     },
   },
+  all: {
+    id: "all",
+    style: { textDecoration: "underline" },
+    name: {
+      en: `<i class="fa-solid fa-earth-americas" style="color:#1F51FF"></i> All`,
+      vi: `<i class="fa-solid fa-earth-americas" style="color:#1F51FF"></i> Tất cả`,
+    },
+  },
   available: {
     id: "available",
     showCount: true,

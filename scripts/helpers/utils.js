@@ -178,6 +178,25 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // #region String Utils
 
+// https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
+export function removeAccents(str) {
+  var from =
+      "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+    to =
+      "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+  for (var i = 0, l = from.length; i < l; i++) {
+    str = str.replace(RegExp(from[i], "gi"), to[i]);
+  }
+
+  str = str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\-]/g, "-")
+    .replace(/-+/g, "-");
+
+  return str;
+}
+
 export function encodeQueryString(obj) {
   var str = [];
   for (var p in obj)

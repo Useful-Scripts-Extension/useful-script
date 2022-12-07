@@ -120,6 +120,25 @@ a:hover {
     background-color: #a8a8a8;
 }
 
+/* ---------- Search --------- */
+.search {
+    text-align: center;
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background-color: inherit;
+}
+
+.search input[type='text'] {
+    border: none;
+    padding: 5px 10px;
+    width: 50%;
+    text-align: center;
+    background-color: #f5f5f5;
+    width: 100%;
+}
+
 /* ---------- Content & content button ---------- */
 .tabcontent {
     padding: 6px;
@@ -134,7 +153,7 @@ a:hover {
 .section-title {
     padding: 10px 0 5px;
     position: sticky;
-    top: 0;
+    top: 30px;
     background-color: #e6e6e6;
     z-index: 1;
     margin-top: 15px;
