@@ -28,17 +28,13 @@ export function injectCss(cssfileOrCode, isFile = true) {
     var css = document.createElement("link");
     css.rel = "stylesheet";
     css.href = chrome.runtime.getURL(cssfileOrCode);
-    window.onload = () => {
-      document.body.appendChild(css);
-      console.log("Useful-scripts injected " + css.href);
-    };
+    document.head.appendChild(css);
+    console.log("Useful-scripts injected " + css.href);
   } else {
     var css = document.createElement("style");
     if ("textContent" in css) css.textContent = cssText;
     else css.innerText = cssText;
-    window.onload = () => {
-      document.body.appendChild(css);
-      console.log("Useful-scripts injected " + css);
-    };
+    document.head.appendChild(css);
+    console.log("Useful-scripts injected " + css);
   }
 }

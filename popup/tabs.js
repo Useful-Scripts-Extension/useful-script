@@ -70,6 +70,7 @@ const tabs = [
       s.download_image,
       createTitle("--- Document ---", "--- Tài liệu ---"),
       s.scribd_downloadDocuments,
+      s.studocu_downloader,
     ],
   },
   {
@@ -128,10 +129,10 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
-      // s.insta_reloaded,
       s.insta_getToken,
       s.insta_getUserInfo,
       createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.insta_reloaded,
       s.instantgram,
       s.insta_storySaver,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),

@@ -31,3 +31,13 @@ export default {
     }
   },
 };
+
+function backup() {
+  // https://greasyfork.org/en/scripts/14755-instagram-reloaded
+  function get_csrf_token() {
+    return document.body.innerHTML
+      .match(/\"csrf_token\":(?:"[^"]*"|^[^"]*$)/)[0]
+      .replace(/\"/g, "")
+      .split(":")[1];
+  }
+}

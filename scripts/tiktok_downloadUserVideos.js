@@ -108,14 +108,7 @@ async function backup() {
   let videos = [];
 
   for (let c of containers) {
-    // find react fiber key
-    let key = "";
-    for (let k of Object.keys(c)) {
-      if (k.indexOf("__reactFiber") === 0) {
-        key = k;
-        break;
-      }
-    }
+    let key = Object.keys(c).find((k) => k.startsWith("__reactFiber"));
     let video =
       c[key].firstEffect?.memoizedProps ||
       c[key].lastEffect?.memoizedProps ||
