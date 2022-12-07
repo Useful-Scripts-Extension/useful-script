@@ -19,8 +19,8 @@ export const CATEGORY = {
     id: "all",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-earth-americas" style="color:#1F51FF"></i> All`,
-      vi: `<i class="fa-solid fa-earth-americas" style="color:#1F51FF"></i> Tất cả`,
+      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
+      vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
     },
   },
   // available: {
