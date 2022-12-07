@@ -293,6 +293,8 @@ const allScripts = {
   search_userscript: addBadge(search_userscript, BADGES.new),
 };
 
+// alert(Object.keys(allScripts).length);
+
 // inject id to all scripts
 Object.entries(allScripts).forEach(([variableName, script]) => {
   script.id = variableName;
