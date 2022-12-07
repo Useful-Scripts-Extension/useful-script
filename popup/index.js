@@ -107,7 +107,7 @@ async function createTabContent(tab) {
   searchInput.value = "";
   searchInput.placeholder = t({
     vi: "Tìm trong " + scriptsCount + " chức năng...",
-    en: "Search in " + scriptsCount + " functions",
+    en: "Search in " + scriptsCount + " scripts...",
   });
 
   // create tab content
@@ -298,25 +298,30 @@ function initSearch() {
   searchInput.addEventListener("input", (event) => {
     let keyword = event.target.value;
     let found = 0;
-    let btns = contentDiv.querySelectorAll("button.tooltip");
-    btns.forEach((button) => {
+    let childrens = document
+      .querySelector(".tabcontent")
+      .querySelectorAll("button");
+
+    childrens.forEach((child) => {
       let willShow = true;
-      let btnText = removeAccents(button.innerText.toLowerCase());
+      let text = removeAccents(child.innerText.toLowerCase());
       let searchStr = removeAccents(keyword.toLowerCase())
         .split(" ")
         .filter((_) => _);
 
       for (let s of searchStr) {
-        if (!btnText.includes(s)) {
+        if (!text.includes(s)) {
           willShow = false;
           break;
         }
       }
       // button.style.opacity = willShow ? 1 : 0.1;
-      button.style.display = willShow ? "block" : "none";
+      child.style.display = willShow ? "block" : "none";
       if (willShow) found++;
     });
-    searchFound.innerText = keyword ? `${found}/${btns.length} scripts` : "";
+    searchFound.innerText = keyword
+      ? `${found}/${childrens.length} scripts`
+      : "";
   });
 }
 
