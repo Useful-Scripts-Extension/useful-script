@@ -23,31 +23,31 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-earth-americas" style="color:#1F51FF"></i> Tất cả`,
     },
   },
-  available: {
-    id: "available",
-    showCount: true,
-    style: { textDecoration: "underline" },
-    name: {
-      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Available`,
-      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Có thể dùng`,
-    },
-  },
-  hot: {
-    id: "hot",
-    style: { textDecoration: "underline" },
-    name: {
-      en: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Hot`,
-      vi: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Nổi bật`,
-    },
-  },
-  new: {
-    id: "new",
-    style: { textDecoration: "underline" },
-    name: {
-      en: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> New`,
-      vi: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> Mới`,
-    },
-  },
+  // available: {
+  //   id: "available",
+  //   showCount: true,
+  //   style: { textDecoration: "underline" },
+  //   name: {
+  //     en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Available`,
+  //     vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Có thể dùng`,
+  //   },
+  // },
+  // hot: {
+  //   id: "hot",
+  //   style: { textDecoration: "underline" },
+  //   name: {
+  //     en: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Hot`,
+  //     vi: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Nổi bật`,
+  //   },
+  // },
+  // new: {
+  //   id: "new",
+  //   style: { textDecoration: "underline" },
+  //   name: {
+  //     en: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> New`,
+  //     vi: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> Mới`,
+  //   },
+  // },
   search: {
     id: "search",
     name: {
