@@ -189,11 +189,7 @@ const tabs = [
   },
   {
     ...CATEGORY.password,
-    scripts: [
-      s.passwordGenerator,
-      s.search_sharedAccount,
-      s.passwordFieldToggle,
-    ],
+    scripts: [s.passwordGenerator, s.passwordFieldToggle],
   },
   {
     ...CATEGORY.unlock,
