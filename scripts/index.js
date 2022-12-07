@@ -91,7 +91,6 @@ import showTheImages from "./showTheImages.js";
 import showHiddenFields from "./showHiddenFields.js";
 import cssSelectorViewer from "./cssSelectorViewer.js";
 import youtube_nonstop from "./youtube_nonstop.js";
-import insta_reloaded from "./insta_reloaded.js";
 import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
 import showTheAudios from "./showTheAudios.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
@@ -135,6 +134,7 @@ import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downloader from "./studocu_downloader.js";
+import search_userscript from "./search_userscript.js";
 
 // inject badges
 const allScripts = {
@@ -232,7 +232,6 @@ const allScripts = {
   showHiddenFields: showHiddenFields,
   cssSelectorViewer: cssSelectorViewer,
   youtube_nonstop: addBadge(youtube_nonstop, BADGES.new),
-  insta_reloaded: addBadge(insta_reloaded, BADGES.beta),
   zingmp3_downloadMusic: addBadge(zingmp3_downloadMusic, BADGES.new),
   showTheAudios: showTheAudios,
   nhaccuatui_downloader: addBadge(nhaccuatui_downloader, BADGES.new),
@@ -291,6 +290,7 @@ const allScripts = {
   ),
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.new),
   studocu_downloader: addBadge(studocu_downloader, BADGES.new),
+  search_userscript: addBadge(search_userscript, BADGES.new),
 };
 
 // inject id to all scripts

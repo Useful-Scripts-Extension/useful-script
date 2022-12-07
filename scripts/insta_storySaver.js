@@ -101,3 +101,29 @@ export default {
     else alert("Không tìm thấy instagram story nào trong trang web.");
   },
 };
+
+function backup() {
+  // https://greasyfork.org/en/scripts/404535-ig-helper/code
+  async function getStories(userId) {
+    let url = `https://www.instagram.com/graphql/query/?query_hash=15463e8449a83d3d60b06be7e90627c7&variables=%7B%22reel_ids%22:%5B%22${userId}%22%5D,%22precomposed_overlay%22:false%7D`;
+    let res = await fetch(url);
+    let json = await res.json();
+    return json;
+  }
+
+  async function getUserId(username) {
+    let url = `https://www.instagram.com/web/search/topsearch/?query=${username}`;
+    let res = await feetch(url);
+    let json = await res.json();
+    return json.users[0];
+  }
+
+  // postPath example: /p/CixHwr6AxZ9/
+  async function getBlobMedia(postPath) {
+    let postShortCode = postPath.substring(3, postPath.length - 1);
+    let url = `https://www.instagram.com/graphql/query/?query_hash=2c4c2e343a8f64c625ba02b2aa12c7f8&variables=%7B%22shortcode%22:%22${postShortCode}%22}`;
+    let res = await fetch(url);
+    let json = await res.json();
+    return json.data;
+  }
+}

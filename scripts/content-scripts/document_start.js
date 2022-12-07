@@ -6,13 +6,15 @@
   // injectScript(baseURL + "globals_debugger.js");
   injectScript(baseURL + "useful-scripts-utils.js");
 
-  injectScript(baseURL + "bypass_all_shortlink.js");
+  // injectScript(baseURL + "bypass_all_shortlink.js");
 
   if (location.hostname === "mp3.zing.vn")
     injectScript(baseURL + "mp3.zing.vn.js");
 
-  if (location.hostname === "www.instagram.com")
+  if (location.hostname === "www.instagram.com") {
     injectCss(baseURL + "instagram.css");
+    injectScript(baseURL + "instagram_downloadBtn.js");
+  }
 
   if (location.hostname === "www.studyphim.vn")
     injectScript(baseURL + "studyphim.js");
