@@ -37,6 +37,7 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       s._test,
+      s.search_userscript,
       s.whatFont,
       s.similarWeb,
       s.search_sharedAccount,
@@ -132,7 +133,6 @@ const tabs = [
       s.insta_getToken,
       s.insta_getUserInfo,
       createTitle("--- Download ---", "--- Tải xuống ---"),
-      s.insta_reloaded,
       s.instantgram,
       s.insta_storySaver,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
