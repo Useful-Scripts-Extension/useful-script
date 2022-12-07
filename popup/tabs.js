@@ -19,15 +19,7 @@ const specialTabs = [
     scripts: [],
   },
   {
-    ...CATEGORY.hot,
-    scripts: [],
-  },
-  {
-    ...CATEGORY.new,
-    scripts: [],
-  },
-  {
-    ...CATEGORY.available,
+    ...CATEGORY.all,
     scripts: [],
   },
 ];
@@ -476,21 +468,25 @@ async function refreshSpecialTabs() {
 
   // ==== special badge tab ====
   let allScriptsArr = Object.values(s);
-  console.log(allScriptsArr);
 
-  let hotTab = specialTabs.find((tab) => tab.id === CATEGORY.hot.id);
-  if (hotTab)
-    hotTab.scripts = sortScriptsByTab(
-      getScriptsWithBadgeId(allScriptsArr, BADGES.hot.id),
-      tabs
-    );
+  let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
+  if (allTab) {
+    allTab.scripts = sortScriptsByTab(allScriptsArr, tabs);
+  }
 
-  let newTab = specialTabs.find((tab) => tab.id === CATEGORY.new.id);
-  if (newTab)
-    newTab.scripts = sortScriptsByTab(
-      getScriptsWithBadgeId(allScriptsArr, BADGES.new.id),
-      tabs
-    );
+  // let hotTab = specialTabs.find((tab) => tab.id === CATEGORY.hot.id);
+  // if (hotTab)
+  //   hotTab.scripts = sortScriptsByTab(
+  //     getScriptsWithBadgeId(allScriptsArr, BADGES.hot.id),
+  //     tabs
+  //   );
+
+  // let newTab = specialTabs.find((tab) => tab.id === CATEGORY.new.id);
+  // if (newTab)
+  //   newTab.scripts = sortScriptsByTab(
+  //     getScriptsWithBadgeId(allScriptsArr, BADGES.new.id),
+  //     tabs
+  //   );
 }
 
 function getAllTabs() {

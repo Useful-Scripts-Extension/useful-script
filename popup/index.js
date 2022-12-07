@@ -4,6 +4,7 @@ import {
   GlobalBlackList,
   isExtensionInSeperatedPopup,
   openExtensionInSeparatedPopup,
+  removeAccents,
   runScriptInCurrentTab,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
@@ -29,6 +30,7 @@ const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
 const openInNewTabBtn = document.querySelector("#open-in-new-tab");
+const searchInput = document.querySelector(".search input");
 
 async function initLanguage() {
   flagImg.setAttribute("src", await getFlag());
@@ -84,9 +86,16 @@ async function createTabs() {
   // open tab
   let activeTabId = await activeTabIdSaver.get();
   activeTabId && openTab(allTabs.find((tab) => tab.id === activeTabId));
+
+  // change lang search
+  searchInput.placeholder = t({
+    vi: "Tìm chức năng (tên, loại, mô tả...)",
+    en: "Search for function (name, desc, badge...)",
+  });
 }
 
 async function openTab(tab) {
+  searchInput.value = "";
   activeTabIdSaver.set(tab.id);
   createTabContent(tab);
 
@@ -283,8 +292,35 @@ function initOpenInNewTabBtn() {
   }
 }
 
+function doSearch(keyword) {
+  contentDiv.querySelectorAll("button.tooltip").forEach((button) => {
+    let willShow = true;
+    let btnText = removeAccents(button.innerText.toLowerCase());
+    let searchStr = removeAccents(keyword.toLowerCase())
+      .split(" ")
+      .filter((_) => _);
+
+    for (let s of searchStr) {
+      if (!btnText.includes(s)) {
+        willShow = false;
+        break;
+      }
+    }
+    // button.style.opacity = willShow ? 1 : 0.1;
+    button.style.display = willShow ? "block" : "none";
+  });
+}
+
+function initSearch() {
+  searchInput.addEventListener("input", (event) => {
+    let search = event.target.value;
+    doSearch(search);
+  });
+}
+
 (async function () {
   initOpenInNewTabBtn();
+  initSearch();
   await initLanguage();
   await createTabs();
   await checkForUpdate();

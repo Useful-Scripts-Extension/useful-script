@@ -23,36 +23,22 @@
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "host_permissions": ["<all_urls>"],
   "options_page": "./pages/options/options.html",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_start.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_start.js"],
       "run_at": "document_start"
     },
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_idle.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_idle.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_end.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_end.js"],
       "run_at": "document_end"
     }
   ],
@@ -62,9 +48,7 @@
         "scripts/content-scripts/*.js",
         "scripts/content-scripts/*.css"
       ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "matches": ["<all_urls>"]
     }
   ],
   "declarative_net_request": {
