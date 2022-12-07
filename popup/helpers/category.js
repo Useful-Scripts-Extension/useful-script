@@ -1,4 +1,11 @@
 export const CATEGORY = {
+  contentScript: {
+    id: "contentScript",
+    name: {
+      en: "Content scripts",
+      vi: "Content scripts",
+    },
+  },
   favorite: {
     id: "favorite",
     style: { textDecoration: "underline" },
