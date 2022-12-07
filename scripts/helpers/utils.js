@@ -114,7 +114,10 @@ export async function checkBlackWhiteList(script, url) {
   return willRun;
 }
 
+// https://stackoverflow.com/a/874722
 export function isUrlMatchPattern(url, pattern) {
+  // let reg = new RegExp(pattern.replaceAll("/", "\\/"));
+  // return url.match(reg);
   let curIndex = 0,
     visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
   for (let p of visiblePartsInPattern) {

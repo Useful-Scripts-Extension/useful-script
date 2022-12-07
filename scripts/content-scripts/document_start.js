@@ -6,6 +6,8 @@
   // injectScript(baseURL + "globals_debugger.js");
   injectScript(baseURL + "useful-scripts-utils.js");
 
+  injectScript(baseURL + "bypass_all_shortlink.js");
+
   if (location.hostname === "mp3.zing.vn")
     injectScript(baseURL + "mp3.zing.vn.js");
 
@@ -14,6 +16,9 @@
 
   if (location.hostname === "www.studyphim.vn")
     injectScript(baseURL + "studyphim.js");
+
+  if (location.hostname === "www.studocu.com")
+    injectCss(baseURL + "studocu.css");
 
   // if (location.hostname === "luanxt.com")
   //   injectScriptFile("//code.jquery.com/jquery-3.6.1.min.js", true);

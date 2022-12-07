@@ -134,6 +134,7 @@ import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
 import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
+import studocu_downloader from "./studocu_downloader.js";
 
 // inject badges
 const allScripts = {
@@ -289,6 +290,7 @@ const allScripts = {
     BADGES.new
   ),
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.new),
+  studocu_downloader: addBadge(studocu_downloader, BADGES.new),
 };
 
 // inject id to all scripts
