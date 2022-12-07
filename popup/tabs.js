@@ -463,8 +463,8 @@ async function refreshSpecialTabs() {
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
   if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
 
-  let avaiTab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
-  if (avaiTab) avaiTab.scripts = await getAvailableScriptsInTabs(tabs);
+  // let avaiTab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
+  // if (avaiTab) avaiTab.scripts = await getAvailableScriptsInTabs(tabs);
 
   // ==== special badge tab ====
   let allScriptsArr = Object.values(s);

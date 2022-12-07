@@ -122,7 +122,6 @@ a:hover {
 
 /* ---------- Search --------- */
 .search {
-    text-align: center;
     padding: 5px;
     position: sticky;
     top: 0;
@@ -137,6 +136,17 @@ a:hover {
     text-align: center;
     background-color: #f5f5f5;
     width: 100%;
+}
+
+.search .searchFound {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    text-align: right;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #dddd;
 }
 
 /* ---------- Content & content button ---------- */
