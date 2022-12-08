@@ -1,12 +1,12 @@
 export default {
   icon: "https://www.google.com/s2/favicons?domain=instagram.com",
   name: {
-    en: "Instagram photos/videos downloader",
-    vi: "Instagram - tải video / hình ảnh",
+    en: "Instagram reloaded - Download video/image",
+    vi: "Instagram reloaded - Tải video/ảnh",
   },
   description: {
-    en: "Download ",
-    vi: "",
+    en: "View or download the full-size Instagram image/video",
+    vi: "Xem và tải ảnh/video instagram chất lượng cao",
   },
   blackList: [],
   whiteList: ["*://*.instagram.com/*"],

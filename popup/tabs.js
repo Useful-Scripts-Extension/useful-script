@@ -1,8 +1,8 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
-import { getAvailableScripts } from "./helpers/scriptHelpers.js";
 import { addBadge, BADGES } from "./helpers/badge.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+import { getAvailableScripts } from "../scripts/helpers/utils.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isFunc = (script) => script.func && typeof script.func === "function";
@@ -16,6 +16,14 @@ const specialTabs = [
   },
   {
     ...CATEGORY.favorite,
+    scripts: [],
+  },
+  {
+    ...CATEGORY.hot,
+    scripts: [],
+  },
+  {
+    ...CATEGORY.new,
     scripts: [],
   },
   {
@@ -44,10 +52,19 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
-      s.download_video2,
+      s.getLinkLuanxt,
+      s.getFavicon,
+      createTitle("--- Music ---", "--- Nhạc ---"),
+      s.download_audio,
+      s.nhaccuatui_downloader,
+      s.zingmp3_downloadMusic,
+      s.zingmp3_oldLayout,
+      createTitle("--- Videos ---", "--- Video ---"),
       s.download_video,
-      s.download_image,
+      s.download_video2,
+      createTitle("--- Photos ---", "--- Ảnh ---"),
       s.showTheImages,
+      s.download_image,
     ],
   },
   {
@@ -66,11 +83,15 @@ const tabs = [
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       createTitle("--- Access Token ---", "--- Access Token ---"),
+      s.fb_checkToken,
       s.fb_getTokenFfb,
-      s.fb_getTokenBusiness,
+      s.fb_getTokenBussinessLocation,
+      s.fb_getTokenBusinessStudio,
+      s.fb_getTokenCampaigns,
       s.fb_getTokenFacebook,
       s.fb_getTokenMbasicFB,
       s.fb_getTokenMFacebook,
+      s.fb_getTokenLocmai,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
       s.fb_getUid,
       s.fb_getPageId,
@@ -84,8 +105,8 @@ const tabs = [
       s.fb_getAllUidFromFriendsPage,
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      s.fb_downloadCurrentVideo,
       s.fb_downloadAlbumMedia,
     ],
   },
@@ -93,9 +114,10 @@ const tabs = [
     ...CATEGORY.instagram,
     scripts: [
       // s.insta_reloaded,
-      s.insta_enableDownloadImage,
       s.insta_getToken,
-      s.insta_getUid,
+      s.insta_getUserInfo,
+      createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.instantgram,
       s.insta_getAllUserMedia,
       s.insta_getAllImagesInNewFeed,
       s.insta_getAllImagesInUserProfile,
@@ -113,12 +135,11 @@ const tabs = [
     ],
   },
   {
-    ...CATEGORY.github,
-    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
-  },
-  {
-    ...CATEGORY.doutube,
+    ...CATEGORY.tiktok,
     scripts: [
+      s.tiktok_downloadVideo,
+      s.douyin_downloadVideo,
+      createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
       s.doutube_enableDownloadVideo,
       s.doutube_downloadWatchingVideo,
       s.doutube_downloadWatchingStory,
@@ -126,16 +147,22 @@ const tabs = [
     ],
   },
   {
-    ...CATEGORY.pdf,
-    scripts: [s.darkModePDF, s.webToPDF],
-  },
-  {
-    ...CATEGORY.qrcode,
-    scripts: [s.textToQRCode, s.webToQRCode],
+    ...CATEGORY.github,
+    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
   },
   {
     ...CATEGORY.automation,
-    scripts: [s.getAllEmailsInWeb, s.performanceAnalyzer, s.scrollToVeryEnd],
+    scripts: [
+      s.textToQRCode,
+      s.webToQRCode,
+      s.getAllEmailsInWeb,
+      s.screenshotFullPage,
+      s.webToPDF,
+      s.transfer_sh,
+      s.jsonformatter,
+      s.performanceAnalyzer,
+      s.scrollToVeryEnd,
+    ],
   },
   {
     ...CATEGORY.password,
@@ -148,20 +175,27 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.shortenURL,
+      s.unshorten,
+      s.viewBrowserInfo,
       s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,
       s.enableTextSelection,
       s.reEnableContextMenu,
+      s.injectScriptToWebsite,
       s.paywallKiller,
     ],
   },
   {
     ...CATEGORY.webUI,
     scripts: [
+      s.darkModePDF,
       s.toggleEditPage,
       s.scrollByDrag,
+      s.runStatJs,
       createTitle("--- View ---", "--- Xem ---"),
+      s.visualEvent,
       s.listAllImagesInWeb,
       s.viewAllLinks,
       s.viewScriptsUsed,
@@ -183,10 +217,6 @@ const tabs = [
       s.letItSnow,
     ],
   },
-  {
-    ...CATEGORY.more,
-    scripts: [s.shortenURL, s.runStatJs],
-  },
 ];
 
 const recommendTab = {
@@ -195,7 +225,7 @@ const recommendTab = {
     { name: { en: "--- Same author ---", vi: "--- Cùng tác giả ---" } },
     addBadge(
       {
-        icon: "https://lh3.googleusercontent.com/vyTQCufFw3IW24ybIykgBxxvm8GLQ1AvD3eRDGJRsS0HuMd9DQsbHHm_iL6WlPXTCC_hwqkKeKlW63AjBS9DkVF-=w128-h128-e365-rj-sc0x00ffffff",
+        icon: "https://github.com/HoangTran0410/RevealDeletedFBMessages/raw/master/icons/icon48.png",
         name: {
           en: "Reveal Deleted FB Message",
           vi: "Xem tin nhắn FB bị gỡ",
@@ -210,7 +240,7 @@ const recommendTab = {
     ),
     addBadge(
       {
-        icon: "https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-facebook-square2-256.png",
+        icon: "https://www.facebook.com/favicon.ico",
         name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
         description: {
           en: "Tool download media from facebook automatic",
@@ -357,28 +387,35 @@ const recommendTab = {
   ],
 };
 
-// add recently and available to head of array
-async function getAvailableScriptsInTabs(_tabs) {
+function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   let result = [];
-  const avai = await getAvailableScripts();
 
   for (let tab of Object.values(_tabs)) {
-    let avaiScriptsInTab = [];
+    let sorted = [];
 
     for (let script of tab.scripts) {
-      let isAvai = avai.findIndex((_) => _.id === script.id) >= 0;
-      if (isAvai) {
-        avaiScriptsInTab.push(script);
+      let found = scripts.findIndex((_) => _.id === script.id) >= 0;
+      if (found) {
+        sorted.push(script);
       }
     }
 
-    if (avaiScriptsInTab.length) {
-      result.push(createTitle(tab.name.en, tab.name.vi));
-      result.push(...avaiScriptsInTab);
+    if (sorted.length) {
+      addTabTitle && result.push(createTitle(tab.name.en, tab.name.vi));
+      result.push(...sorted);
     }
   }
-
   return result;
+}
+
+async function getAvailableScriptsInTabs(_tabs) {
+  return sortScriptsByTab(await getAvailableScripts(), _tabs);
+}
+
+function getScriptsWithBadgeId(scripts, badgeId) {
+  return scripts.filter((script) =>
+    script.badges?.find((_) => _.id === badgeId)
+  );
 }
 
 async function refreshSpecialTabs() {
@@ -389,8 +426,26 @@ async function refreshSpecialTabs() {
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
   if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
 
-  let avaiab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
-  if (avaiab) avaiab.scripts = await getAvailableScriptsInTabs(tabs);
+  let avaiTab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
+  if (avaiTab) avaiTab.scripts = await getAvailableScriptsInTabs(tabs);
+
+  // ==== special badge tab ====
+  let allScriptsArr = Object.values(s);
+  console.log(allScriptsArr);
+
+  let hotTab = specialTabs.find((tab) => tab.id === CATEGORY.hot.id);
+  if (hotTab)
+    hotTab.scripts = sortScriptsByTab(
+      getScriptsWithBadgeId(allScriptsArr, BADGES.hot.id),
+      tabs
+    );
+
+  let newTab = specialTabs.find((tab) => tab.id === CATEGORY.new.id);
+  if (newTab)
+    newTab.scripts = sortScriptsByTab(
+      getScriptsWithBadgeId(allScriptsArr, BADGES.new.id),
+      tabs
+    );
 }
 
 function getAllTabs() {

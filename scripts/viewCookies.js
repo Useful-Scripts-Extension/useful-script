@@ -14,18 +14,7 @@ export default {
     if (c == "") {
       alert("There is No cookie here");
     } else {
-      if (
-        confirm(
-          "Cookies found:\n\n" + c + "\n\n - Do you want to open it in new tab?"
-        )
-      ) {
-        let w = window.open(
-          "",
-          "Links",
-          "scrollbars,resizable,width=400,height=600"
-        );
-        w.document.write(c);
-      }
+      prompt("Cookies found:", decodeURI(c));
     }
   },
 };

@@ -16,7 +16,7 @@ export default {
     const page_name = document.title;
     const found = (check) => {
       if (check && check[0]) {
-        window.prompt(`PAGE ID của ${page_name}:`, check[0]);
+        prompt(`PAGE ID của ${page_name}:`, check[0]);
         return true;
       }
       return false;
@@ -25,7 +25,7 @@ export default {
       return;
     if (found(/(?<=facebook\.com\/)(.*?)($|(?=\/)|(?=&))/.exec(location.href)))
       return;
-    window.prompt(
+    prompt(
       "Không tìm thấy PAGE ID nào trong url!\nBạn có đang ở đúng trang page fb chưa?\nTrang web Ví dụ:",
       "https://www.facebook.com/ColourfulSpace"
     );

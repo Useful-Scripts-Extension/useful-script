@@ -1,5 +1,7 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
-  icon: `<i class="fa-solid fa-box-archive"></i>`,
+  icon: `https://archive.ph/favicon.ico`,
   name: {
     en: "Archive the current Page online",
     vi: "Lưu trữ online trang hiện tại",
@@ -8,13 +10,17 @@ export default {
     en: "Creates an archive of the current page on archive.today.",
     vi: "Lưu trang web hiện tại lên archive.today",
   },
-  blackList: [],
-  whiteList: [],
+  runInExtensionContext: true,
 
-  func: function () {
-    window.open(
-      "https://archive.today/?run=1&url=" +
-        encodeURIComponent(document.location)
+  func: async function () {
+    let { url } = await getCurrentTab();
+
+    var a = prompt(
+      "Nhập URL muốn tạo archive: ",
+      url.replace(/^http\:\/\/(.*)$/, "$1")
     );
+    if (a != null) {
+      window.open("https://archive.today/?run=1&url=" + encodeURIComponent(a));
+    }
   },
 };

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-font"></i>`,
+  icon: `https://www.typewolf.com/favicon.ico`,
   name: {
     en: "What font",
     vi: "Kiểm tra font chữ",
