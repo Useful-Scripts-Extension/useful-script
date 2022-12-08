@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     // Lấy album id - khi đang xem 1 album, ví dụ https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659
 
     const list_a = document.querySelectorAll("a");

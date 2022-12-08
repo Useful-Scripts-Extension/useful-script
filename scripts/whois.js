@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     window.open("http://who.is/whois/" + document.domain);
   },
 };

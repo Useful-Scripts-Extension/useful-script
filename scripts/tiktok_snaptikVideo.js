@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     async function fetchSnaptikVideo(url) {
       let res = await fetch(
         "https://api.snaptikvideo.com/st-tik/tiktok/dl?url=" + url,

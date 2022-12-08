@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://github.com/*"],
 
-  func: function () {
+  onClick: function () {
     window.open("https://github.dev" + location.pathname);
   },
 };

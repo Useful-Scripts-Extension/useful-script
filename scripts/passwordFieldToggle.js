@@ -9,7 +9,7 @@ export default {
     vi: "Bạn sẽ xem được mật khẩu bị ẩn trong khung đăng nhập",
   },
 
-  func: function () {
+  onClick: function () {
     // Show password in alert
     // var s, F, j, f, i;
     // s = "";

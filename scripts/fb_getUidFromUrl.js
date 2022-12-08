@@ -11,7 +11,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
 
     const _getUidFromUrl = async (url) => {

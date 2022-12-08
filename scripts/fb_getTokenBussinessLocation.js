@@ -13,7 +13,7 @@ export default {
   blackList: [],
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 
     const { closeLoading } = showLoading("Đang lấy access token...");

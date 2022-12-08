@@ -10,7 +10,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     let token = prompt(
       "Enter accesstoken want to check\nNhập access token muốn kiểm tra:",
       ""

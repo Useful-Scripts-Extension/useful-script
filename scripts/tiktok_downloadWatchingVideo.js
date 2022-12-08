@@ -17,7 +17,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     async function getWatchingVideoNoWM() {
       let videoId = await runScriptInCurrentTab(() =>
         document

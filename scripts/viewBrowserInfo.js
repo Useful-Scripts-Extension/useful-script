@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/11219680/11898496
     function get_browser_2() {
       var nVer = navigator.appVersion;

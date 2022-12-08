@@ -240,7 +240,6 @@ function createScriptButton(script, isFavorite = false) {
       e.preventDefault();
 
       viewScriptSource(script);
-      // openModal(t(script.name), `<pre>${script.func?.toString()}</pre>`);
     };
     button.appendChild(viewSourceBtn);
   }
@@ -259,8 +258,8 @@ async function runScript(script) {
   let willRun = await checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
-    if (script.runInExtensionContext) script.func();
-    else runScriptInCurrentTab(script.func);
+    if (script.runInExtensionContext) script.onClick();
+    else runScriptInCurrentTab(script.onClick);
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");

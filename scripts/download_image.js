@@ -9,7 +9,7 @@ export default {
     vi: "Tải tất cả hình ảnh đang thấy trong trang web",
   },
 
-  func: function () {
+  onClick: function () {
     // images downloader: https://chrome.google.com/webstore/detail/image-downloader/cnpniohnfphhjihaiiggeabnkjhpaldj
     const imageUrlRegex =
       /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|ico|jfif|jpe?g|png|svg|tiff?|webp))(?:\?([^#]*))?(?:#(.*))?/i;

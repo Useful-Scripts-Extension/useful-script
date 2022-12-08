@@ -11,7 +11,7 @@ export default {
   blackList: ["*://*.youtube.com"],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil
 
     function scanPage() {

@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["https://zingmp3.vn/*", "https://mp3.zing.vn/*"],
 
-  func: function () {
+  onClick: function () {
     // Mặc định thì mp3.zing.vn (giao diện cũ) sẽ tự động redirect người dùng về zingmp3.vn (giao diện mới)
 
     // Vui lòng xem file content-script/scripts/mp3.zing.vn.js và content-script/document_start.js

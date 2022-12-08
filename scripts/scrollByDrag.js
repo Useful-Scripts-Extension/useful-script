@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: async function () {
+  onClick: async function () {
     let X, Y;
 
     if (document.onmousedown && document.onmouseup && document.onmousemove) {

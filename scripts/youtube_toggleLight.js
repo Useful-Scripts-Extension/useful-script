@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.youtube.com/*"],
 
-  func: function () {
+  onClick: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {
       let doms = document.querySelectorAll(_);
       Array.from(doms).forEach((dom) => {

@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/26573284
     function injectScriptAndUse(src) {
       var script = document.createElement("script");

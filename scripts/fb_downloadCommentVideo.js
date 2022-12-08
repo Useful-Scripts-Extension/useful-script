@@ -13,7 +13,7 @@ export default {
   whiteList: [],
   runInExtensionContext: false,
 
-  func: fb_storySaver.func,
+  onClick: fb_storySaver.onClick,
 };
 
 async function backup() {

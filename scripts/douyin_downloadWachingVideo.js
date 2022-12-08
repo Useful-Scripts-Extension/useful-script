@@ -13,5 +13,5 @@ export default {
   blackList: [],
   whiteList: ["https://www.douyin.com/*"],
 
-  func: showTheVideos.func,
+  onClick: showTheVideos.onClick,
 };

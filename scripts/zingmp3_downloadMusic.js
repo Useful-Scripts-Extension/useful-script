@@ -10,7 +10,7 @@ export default {
   },
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
 
     const URL_API = "https://zingmp3.vn";

@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // Post: https://www.facebook.com/groups/j2team.community/posts/1772972649701514/
 
     let tab = await getCurrentTab();

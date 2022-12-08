@@ -5,7 +5,7 @@ export function viewScriptSource(script) {
     name: t(script.name),
     id: script.id,
     description: t(script.description),
-    source: script.func?.toString(),
+    source: script.onClick?.toString(),
   });
 
   chrome.windows.create({

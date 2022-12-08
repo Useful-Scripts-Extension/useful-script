@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],

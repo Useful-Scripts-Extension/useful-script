@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     // source code from: https://bookmarklet.vercel.app/
 
     var i,

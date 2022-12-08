@@ -9,7 +9,7 @@ export default {
     vi: "Xem những công nghệ/thư viện trang web đang dùng",
   },
 
-  func: function () {
+  onClick: function () {
     var d = document,
       e = d.getElementById("wappalyzer-container");
     if (e !== null) {

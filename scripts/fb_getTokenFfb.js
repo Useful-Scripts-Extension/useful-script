@@ -14,7 +14,7 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy cookie...");
     let cookie = await getCookie("facebook.com");
     if (!cookie) {

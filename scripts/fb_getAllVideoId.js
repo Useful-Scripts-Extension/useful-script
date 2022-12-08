@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     const list_a = document.querySelectorAll("a");
     const list_id = [];
     for (let a of Array.from(list_a)) {
@@ -20,10 +20,7 @@ export default {
       }
     }
     if (list_id.length)
-      prompt(
-        `Tìm thấy ${list_id.length} video id: `,
-        list_id.join(", ")
-      );
+      prompt(`Tìm thấy ${list_id.length} video id: `, list_id.join(", "));
     else
       prompt(
         "Không tìm thấy video id nào trong trang web!\nBạn có ở đúng trang video chưa?\nTrang web ví dụ:",

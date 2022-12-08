@@ -10,7 +10,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     let text = prompt("Enter text / Nhập chữ:", "");
     if (text === null) return;
 

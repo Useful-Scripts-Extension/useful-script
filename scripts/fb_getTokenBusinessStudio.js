@@ -14,7 +14,7 @@ export default {
   // whiteList: ["*://business.facebook.com"],
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // old - FAILED
     // try {
     //   const accessToken =

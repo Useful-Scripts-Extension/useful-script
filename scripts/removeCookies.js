@@ -9,7 +9,7 @@ export default {
     vi: "Xoá cookies trang hiện tại",
   },
 
-  func: function () {
+  onClick: function () {
     let clearCookies = () => {
       let C = document.cookie.split("; ");
       for (d = "." + location.host; d; d = ("" + d).substr(1).match(/\..*$/))

@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["https://www.nhaccuatui.com/*"],
 
-  func: function () {
+  onClick: function () {
     const renderSongInfo = (songInfos, tableId = "") => {
       if (!songInfos?.length) return `<p>Không có gì hết.</p>`;
 

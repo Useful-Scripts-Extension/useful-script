@@ -19,7 +19,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     const { setLoadingText, closeLoading } = showLoading("Đang tạo PDF...");
     let tab = await getCurrentTab();
     try {

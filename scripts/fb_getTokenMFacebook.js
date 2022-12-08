@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy token ...");
     fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
       .then((response) => response.text())

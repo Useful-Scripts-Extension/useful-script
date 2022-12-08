@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let url = prompt(
       "Nhập link tiktok video: ",
       await runScriptInCurrentTab(() => location.href)

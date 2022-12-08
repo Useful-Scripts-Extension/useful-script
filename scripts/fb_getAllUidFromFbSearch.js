@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     const getUid = async (url) => {
       var response = await fetch(url);
       if (response.status == 200) {

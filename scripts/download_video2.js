@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     // code from https://bookmarklet.vercel.app/
 
     let href = window.location.href;

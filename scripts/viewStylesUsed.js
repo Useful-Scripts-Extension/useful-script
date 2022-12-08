@@ -9,7 +9,7 @@ export default {
     vi: "Mở danh sách css được dùng bởi website trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     s = document.getElementsByTagName("STYLE");
     ex = document.getElementsByTagName("LINK");
     d = window.open().document; /*set base href*/

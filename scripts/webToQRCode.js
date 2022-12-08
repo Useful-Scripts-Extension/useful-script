@@ -9,7 +9,7 @@ export default {
     vi: "Chuyển URL của trang web sang QR Code",
   },
 
-  func: function () {
+  onClick: function () {
     var url =
       "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" +
       encodeURIComponent(location.href);

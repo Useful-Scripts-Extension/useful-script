@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     function getParameterByName(e, t) {
       e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       var n = new RegExp("[\\?&]" + e + "=([^&#]*)"),

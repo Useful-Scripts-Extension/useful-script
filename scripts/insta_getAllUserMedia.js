@@ -11,7 +11,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;
     function getBiggestMediaFromNode(node) {

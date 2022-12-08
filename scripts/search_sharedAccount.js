@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     const providers = [
       {
         name: "bugmenot.com",
