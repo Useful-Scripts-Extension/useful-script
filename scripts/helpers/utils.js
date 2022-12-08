@@ -393,11 +393,10 @@ export function showLoading(text = "") {
   div.innerHTML = html;
   document.body.appendChild(div);
 
-  let textP = document.querySelector(".loading-container .text");
-
   return {
     closeLoading: () => div?.remove?.(),
     setLoadingText: (textOrFunction) => {
+      let textP = document.querySelector(".loading-container .text");
       if (!textP) return;
       if (typeof textOrFunction === "function") {
         textP.innerHTML = textOrFunction(textP.innerHTML);
