@@ -24,15 +24,9 @@ export default {
   onClick: async function () {
     // Source code: https://github.com/karim0sec/tiktokdl
 
-    const generateProfileUrl = (username) => {
-      return "https://www.tiktok.com/@" + username.replace("@", "");
-    };
-
-    let { closeLoading, setLoadingText } = showLoading(
-      "Đang scroll trang web xuống cuối..."
-    );
+    let { closeLoading, setLoadingText } = showLoading();
     try {
-      await runScriptInCurrentTab(scrollToVeryEnd.onClick);
+      await scrollToVeryEnd.onClick();
 
       setLoadingText("Đang lấy danh sách video...");
       let urls = await runScriptInCurrentTab(() => {
@@ -51,6 +45,7 @@ export default {
       });
 
       console.log(urls);
+      if (!urls?.length) throw Error("Không tìm thấy video nào");
       if (
         !confirm(
           "Tìm thấy " +
@@ -100,6 +95,10 @@ export default {
 
 async function backup() {
   // MUST READ: https://github.com/davidteather/TikTok-Api
+
+  const generateProfileUrl = (username) => {
+    return "https://www.tiktok.com/@" + username.replace("@", "");
+  };
 
   // =================== Tải về mọi video trong user tiktok (có watermark) ===================
   let containers = Array.from(
