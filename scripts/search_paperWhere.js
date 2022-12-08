@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-book"></i>`,
+  icon: `https://airtable.com/favicon.ico`,
   name: {
     en: "Where to find papers/books/pdf/...",
     vi: "Tìm bài báo/sách/pdf/...ở đâu?",

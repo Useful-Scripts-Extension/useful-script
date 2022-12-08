@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   name: {
     en: "Get fb User ID from url",
@@ -7,8 +9,7 @@ export default {
     en: "Get id of user from entered url",
     vi: "Lấy id của user từ URL truyền vào",
   },
-  blackList: [],
-  whiteList: ["*://.facebook.com"],
+  runInExtensionContext: true,
 
   func: function () {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
@@ -24,13 +25,16 @@ export default {
       }
       return null;
     };
-    const url = window.prompt("Nhập url của user fb:", "");
-    if (url)
+    const url = prompt("Nhập url của user fb:", "");
+    if (url) {
+      const { closeLoading } = showLoading("Đang lấy UID của " + url);
       _getUidFromUrl(url)
         .then((uid) => {
-          if (uid) window.prompt(`UID của user ${url}:`, uid);
+          if (uid) prompt(`UID của user ${url}:`, uid);
           else alert("Không tìm thấy uid của user!");
         })
-        .catch((err) => alert("Lỗi: " + err.message));
+        .catch((err) => alert("Lỗi: " + err.message))
+        .finally(closeLoading);
+    }
   },
 };

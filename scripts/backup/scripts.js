@@ -399,3 +399,95 @@ javascript: if (window.location.hostname.includes("reddit")) {
   );
   window.open("http://old.reddit.com", "_self");
 }
+
+// tủn back fb old layout: https://github.com/jayremnt/facebook-scripts-dom-manipulation/blob/master/turn-back-old-layout/old-layout.js
+javascript: (() => {
+  let e =
+      require("DTSGInitialData").token ||
+      document.querySelector('[name="fb_dtsg"]').value,
+    t =
+      require("CurrentUserInitialData").USER_ID ||
+      document.cookie.match(/c_user=([0-9]+)/)[1];
+  fetch("https://www.facebook.com/api/graphql/", {
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    referrer: "https://www.facebook.com/",
+    body: `av=${t}&__user=${t}&__a=1&dpr=1&fb_dtsg=${e}&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=CometTrialParticipationChangeMutation&variables={"input":{"change_type":"OPT_OUT","source":"FORCED_GROUP_ADMIN_OPT_OUT","actor_id":"${t}","client_mutation_id":"3"}}&server_timestamps=true&doc_id=2317726921658975`,
+    method: "POST",
+    mode: "cors",
+    credentials: "include",
+  }).then((e) => {
+    console.log("Done"), location.reload();
+  });
+})();
+
+function getLinkFCode() {
+  function getDataDownload(linkcode, retry = 1) {
+    let info = {
+      linkcode: [linkcode],
+      withFcode5: 0,
+      fcode: "",
+    };
+    let Authorization = "Bearer " + $("input#acstk").attr("data-value");
+    if (retry < 5) {
+      $.ajax({
+        url: "/api/v3/downloads/download-side-by-side",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(info),
+        dataType: "json",
+        headers: { Authorization: Authorization },
+        success: function (xhr, status, error) {
+          // ctrl.StatusDownload = true;
+          // ctrl.showModelDowload(true);
+          //   ctrl.downloadMulti = xhr;
+          //   ctrl.StatusDownload = true;
+          //   ctrl.selectedFileDownload[id]["donwloaded"] = true;
+          // donwloaded
+          //   ctrl.startDownload1by1_1(ctrl.downloadMulti, id);
+
+          console.log(xhr, status, error);
+        },
+        error: function (error, textStatus) {
+          if (textStatus === "timeout") {
+            console.log("Retrying ...", retry);
+            getDataDownload(linkcode, ++retry);
+            return false;
+          } else if (error.status == 401) {
+            return alert("You need a VIP account to do this.");
+          }
+          alert(error.responseJSON.errors);
+        },
+        timeout: 1000,
+      });
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "/api/v3/downloads/download-side-by-side",
+        contentType: "application/json",
+        data: JSON.stringify(info),
+        dataType: "json",
+        beforeSend: function (request) {
+          request.setRequestHeader("Authorization", Authorization);
+        },
+        success: function (xhr, status, error) {
+          // ctrl.StatusDownload = true;
+          // ctrl.showModelDowload(true);
+          // ctrl.downloadMulti = xhr;
+          // ctrl.StatusDownload = true;
+          // ctrl.selectedFileDownload[id]['donwloaded'] = true;
+          // donwloaded
+          // ctrl.startDownload1by1_1(ctrl.downloadMulti,id);
+          console.log(xhr, status, error);
+        },
+        error: function (error) {
+          if (error.status == 401) {
+            return alert("You need a VIP account to do this.");
+          }
+          alert(error.responseJSON.errors);
+        },
+      });
+    }
+  }
+
+  getDataDownload($("#linkcode").attr("value"));
+}

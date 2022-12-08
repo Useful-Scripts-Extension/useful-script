@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: "https://who.is/favicon.ico",
   name: {
     en: "Who.is",
     vi: "Who.is",
