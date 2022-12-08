@@ -21,36 +21,37 @@ export default {
     let { closeLoading, setLoadingText } = showLoading(
       "Đang tìm tất cả video trong folder..."
     );
-    let allDocIds = await runScriptInCurrentTab(() =>
-      Array.from(document.querySelectorAll(".iZmuQc .WYuW0e")).map(
-        (_) => _.dataset.id
-      )
+    let allDocs = await runScriptInCurrentTab(() =>
+      Array.from(document.querySelectorAll(".iZmuQc .WYuW0e")).map((_) => ({
+        id: _.dataset.id,
+        name: _.innerText,
+      }))
     );
-    if (!allDocIds?.length) {
+    if (!allDocs?.length) {
       alert("Không tìm được video nào.");
       return;
     }
 
     let errors = [];
     let result = [];
-    for (let i = 0; i < allDocIds.length; i++) {
-      let docId = allDocIds[i];
+    for (let i = 0; i < allDocs.length; i++) {
+      let { id, name } = allDocs[i];
       setLoadingText(
-        `Tìm thấy ${allDocIds.length} videos.<br/>` +
-          `Đang tìm link video ${i + 1}...<br/>${docId}<br/><br/>` +
-          `Lỗi: ${errors.length} video<br/>` +
-          errors.map(({ id, e }) => id).join("<br/>")
+        `Tìm thấy ${allDocs.length} videos.<br/>
+          Đang tìm link video ${i + 1}...<br/><br/>
+          <p style="max-width:200px">${name}</p><br/><br/>
+          Lỗi: ${errors.length} video<br/>
+          ${errors.map(({ id, name, e }) => name).join("<br/>")}`
       );
       try {
-        let videoInfo = await ggdrive_downloadVideo.getLinkVideoGDriveFromDocId(
-          docId
-        );
+        // prettier-ignore
+        let videoInfo = await ggdrive_downloadVideo.getLinkVideoGDriveFromDocId(id);
         result.push(videoInfo);
       } catch (e) {
-        errors.push({ id: docId, e });
+        errors.push({ id, name, e });
       }
     }
-    closeLoading();
+    // closeLoading();
 
     let html = `
         <table>
