@@ -8,7 +8,7 @@ export default {
     vi: "Xem trang web sẽ ra sao khi không có css",
   },
 
-  func: function () {
+  onClick: function () {
     var i, x;
     for (i = 0; (x = document.styleSheets[i]); ++i) x.disabled = true;
   },

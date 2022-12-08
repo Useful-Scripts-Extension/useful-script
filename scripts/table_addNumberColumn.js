@@ -9,7 +9,7 @@ export default {
     vi: "Thêm cột STT vào bên trái bảng",
   },
 
-  func: function () {
+  onClick: function () {
     function has(par, ctag) {
       for (var k = 0; k < par.childNodes.length; ++k)
         if (par.childNodes[k].tagName == ctag) return true;

@@ -9,7 +9,7 @@ export default {
     vi: "Thêm nút chức năng sắp xếp cho từng cột trong table",
   },
 
-  func: function () {
+  onClick: function () {
     function toArray(c) {
       var a, k;
       a = new Array();

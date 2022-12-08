@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     const isElementInViewport = (el) => {
       const rect = el.getBoundingClientRect();
       return (

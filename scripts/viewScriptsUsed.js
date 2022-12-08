@@ -9,7 +9,7 @@ export default {
     vi: "Mở danh sách scripts đươc dùng bởi trang web trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     s = document.getElementsByTagName("SCRIPT");
     d = window.open().document;
     d.open();

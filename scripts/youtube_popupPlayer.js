@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://*.youtube.com/*"],
 
-  func: function () {
+  onClick: function () {
     const urlObject = new URL(location.href);
     const key = urlObject.searchParams.get("v");
     const list = urlObject.searchParams.get("list");

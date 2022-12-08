@@ -1,15 +1,15 @@
 export default {
   icon: `https://www.youtube.com/s/desktop/ff71ea81/img/favicon_48x48.png`,
   name: {
-    en: "Download youtube video (bypass 18+)",
-    vi: "Tải video youtube (bypass 18+)",
+    en: "Download youtube video",
+    vi: "Tải video youtube",
   },
   description: {
     en: "Bypass age restriction, without login",
     vi: "Tải cả video giới hạn độ tuổi, không cần đăng nhập",
   },
 
-  func: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/8260383/11898496
     function getIdFromYoutubeURL(url) {
       var regExp =

@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // Để script này hoạt động được, cần thêm rule modify header referer
     // Chi tiết xem trong file rules.json
 

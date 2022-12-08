@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: async function () {
+  onClick: async function () {
     // Lấy tất cả id của member trong group
     // source: https://gist.github.com/thinhbuzz/d8ba04c66f69dc78265b9a9ce5a118c0?fbclid=IwAR37QPDL1zlGWIv_pPq4UydYbFcQKlw7Dio-dP-jtztSJODGPD1RoIGFzZU#file-group-uuid-js-L1
 

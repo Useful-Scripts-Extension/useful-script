@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let { url } = await getCurrentTab();
 
     var a = prompt(

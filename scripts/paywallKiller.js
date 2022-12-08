@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     // source code lấy từ: https://bookmarklet.vercel.app/
     // extension chức năng tương tự: https://github.com/iamadamdev/bypass-paywalls-chrome
 

@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     let audios = Array.from(document.querySelectorAll("audio") || []);
     audios = audios?.filter((_) => !!_.src);
 

@@ -8,7 +8,7 @@ export default {
     vi: "Chỉ để lại văn bản, giúp tập trung hơn",
   },
 
-  func: function () {
+  onClick: function () {
     function toArray(c) {
       var a, k;
       a = new Array();

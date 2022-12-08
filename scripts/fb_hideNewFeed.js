@@ -11,7 +11,7 @@ export default {
   whiteList: ["https://www.facebook.com*"],
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     let div = document.querySelector("#ssrb_feed_end")?.parentElement;
 
     if (!div) alert("Không tìm thấy NewFeed.");

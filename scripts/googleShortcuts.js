@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     let urls = [
       ["Google Doc", "https://doc.new"],
       ["Google Sheet", "https://sheet.new"],

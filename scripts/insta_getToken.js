@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://*.instagram.com"],
 
-  func: function () {
+  onClick: function () {
     try {
       const encoded = document.cookie
         .split("; ")

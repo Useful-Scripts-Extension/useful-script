@@ -11,7 +11,7 @@ export default {
 
   // Chọn 1 trong 2 cách, xoá cách không dùng:
 
-  // Cách 1: Mở link web trong tab mới, không cần dùng func
+  // Cách 1: Mở link web trong tab mới, không cần dùng onClick
   link: "",
 
   // Cách 2: Chạy script
@@ -19,7 +19,7 @@ export default {
   whiteList: [],
   runInExtensionContext: false,
 
-  func: function () {},
+  onClick: function () {},
 };
 
 // Những thuộc tính/hàm có thể chia sẻ cho cách scripts khác sử dụng sẽ được viết vào đây

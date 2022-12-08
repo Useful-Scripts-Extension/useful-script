@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let accessToken = prompt("Nhập facebook access token: ");
     if (!accessToken) return;
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");

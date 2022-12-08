@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     popupCenter({
       url: "https://send.zcyph.cc/",
       title: "Send",

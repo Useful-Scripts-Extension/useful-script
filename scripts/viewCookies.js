@@ -9,7 +9,7 @@ export default {
     vi: "Xem cookies được lưu trong website hiện tại",
   },
 
-  func: function () {
+  onClick: function () {
     var c = document.cookie.replace(/; /g, "\n");
     if (c == "") {
       alert("There is No cookie here");

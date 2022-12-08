@@ -13,7 +13,7 @@ export default {
   },
   runInExtensionContext: false,
 
-  func: async function () {
+  onClick: async function () {
     function getOverlapScore(el) {
       var rect = el.getBoundingClientRect();
       return (

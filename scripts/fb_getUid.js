@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["https://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 
     const find = (r) => (r ? r[0] : 0);

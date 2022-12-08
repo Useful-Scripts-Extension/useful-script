@@ -9,7 +9,7 @@ export default {
     vi: "Sử dụng google site search",
   },
 
-  func: function () {
+  onClick: function () {
     let q =
       "" +
       (window.getSelection?.() ||

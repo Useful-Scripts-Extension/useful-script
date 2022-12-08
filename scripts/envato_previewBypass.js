@@ -12,7 +12,7 @@ export default {
   whiteList: [],
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     // Source code: https://gist.github.com/J2TEAM/f79f950c31cc9fe4ed705515385ed75f
 
     let url = document.querySelector(".full-screen-preview__frame")?.src;

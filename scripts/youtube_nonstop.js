@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://music.youtube.com", "*://www.youtube.com"],
 
-  func: function () {
+  onClick: function () {
     // source code from: https://chrome.google.com/webstore/detail/youtube-nonstop/nlkaejimjacpillmajjnopmpbkbnocid
 
     try {

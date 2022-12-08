@@ -19,7 +19,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."
     );

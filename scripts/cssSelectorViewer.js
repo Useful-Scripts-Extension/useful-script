@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClick: function () {
     var s = document.createElement("div");
     s.innerHTML = "Loading...";
     s.style.color = "black";

@@ -12,7 +12,7 @@ export default {
   whiteList: ["https://www.studocu.com/*"],
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     let url = new URL(location.href);
     url.hostname = "www.downstudocu.com";
     window.open(url);

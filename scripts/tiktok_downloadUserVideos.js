@@ -21,7 +21,7 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // Source code: https://github.com/karim0sec/tiktokdl
 
     const generateProfileUrl = (username) => {
@@ -32,7 +32,7 @@ export default {
       "Đang scroll trang web xuống cuối..."
     );
     try {
-      await runScriptInCurrentTab(scrollToVeryEnd.func);
+      await runScriptInCurrentTab(scrollToVeryEnd.onClick);
 
       setLoadingText("Đang lấy danh sách video...");
       let urls = await runScriptInCurrentTab(() => {

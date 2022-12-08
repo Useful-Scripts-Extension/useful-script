@@ -18,7 +18,7 @@ export default {
   whiteList: ["https://www.facebook.com/*"],
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let tab = await getCurrentTab();
     let url = prompt("Nhập link video/reel/watch:", tab.url);
     let videoId = shared.extractFbVideoIdFromUrl(url);

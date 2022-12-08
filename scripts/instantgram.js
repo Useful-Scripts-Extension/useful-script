@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: [],
 
-  func: function () {
+  onClickick: function () {
     // Source code from: https://theus.github.io/instantgram/
     // Minify source code: https://www.toptal.com/developers/javascript-minifier
 

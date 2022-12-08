@@ -13,7 +13,7 @@ export default {
   whiteList: [],
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     let videos = Array.from(document.querySelectorAll("video"));
 
     if (!videos.length) {

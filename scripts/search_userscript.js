@@ -10,7 +10,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     let search = prompt("Search for Userscripts:", "");
     if (search != null) {
       window.open("https://www.userscript.zone/search?q=" + search);

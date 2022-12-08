@@ -13,7 +13,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // https://cachedviews.com/
 
     let { url } = await getCurrentTab();

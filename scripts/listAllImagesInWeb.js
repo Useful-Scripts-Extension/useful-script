@@ -9,7 +9,7 @@ export default {
     vi: "Xem danh sách hình ảnh trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     var A = {},
       B = [],
       D = document,

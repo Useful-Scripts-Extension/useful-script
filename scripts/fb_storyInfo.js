@@ -18,7 +18,7 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // Source: https://pastebin.com/CNvUxpfc
 
     let tab = await getCurrentTab();

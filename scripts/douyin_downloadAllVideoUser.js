@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // Original source code from: https://github.com/N-X-T/Download-All-Video-User-Douyin/blob/main/DownloadAllVideoDouyin.js?fbclid=IwAR3ne_fDNpRpduM23kLJxOpDaQjI2-V3CA3iZ0BA0gvCgGdnMCfemyoMyO8
     // Modified by Hoang Tran
 

@@ -135,6 +135,7 @@ import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFold
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downloader from "./studocu_downloader.js";
 import search_userscript from "./search_userscript.js";
+import search_musicTreding from "./search_musicTreding.js";
 
 // inject badges
 const allScripts = {
@@ -291,6 +292,7 @@ const allScripts = {
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.new),
   studocu_downloader: addBadge(studocu_downloader, BADGES.new),
   search_userscript: addBadge(search_userscript, BADGES.new),
+  search_musicTreding: addBadge(search_musicTreding, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

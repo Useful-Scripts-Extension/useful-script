@@ -11,7 +11,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;
     const albumId = prompt("Enter album id: ", "");

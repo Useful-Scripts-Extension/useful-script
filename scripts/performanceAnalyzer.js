@@ -9,7 +9,7 @@ export default {
     vi: "Phân tích hiệu suất website không cần biết code",
   },
 
-  func: function () {
+  onClick: function () {
     let options = [
       {
         name: "Sử dụng PageSpeed Insights",

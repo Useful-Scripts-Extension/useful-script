@@ -20,7 +20,7 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
 
     let { closeLoading, setLoadingText } = showLoading(

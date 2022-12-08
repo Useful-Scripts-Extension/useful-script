@@ -9,7 +9,7 @@ export default {
     vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi. Click chuột để huỷ.",
   },
 
-  func: function () {
+  onClick: function () {
     return new Promise(async (resolve, reject) => {
       let height = () =>
         (document.scrollingElement || document.body).scrollHeight;

@@ -17,7 +17,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     async function getTokenSnapTik() {
       let res = await fetch("https://snaptik.app/vn");
       let text = await res.text();
@@ -91,7 +91,7 @@ function backup() {
 
   let a = {
     web: "https://ssstik.io/",
-    func: async function (url) {
+    onClick: async function (url) {
       async function getTokenSsstik() {
         let res = await fetch("https://ssstik.io/vi");
         let text = await res.text();

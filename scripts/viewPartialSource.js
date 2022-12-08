@@ -9,7 +9,7 @@ export default {
     vi: "Mở mã nguồn của phần được bôi đen trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     const options = [
       {
         name: "HTML",

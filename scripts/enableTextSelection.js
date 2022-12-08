@@ -9,7 +9,7 @@ export default {
     vi: "Dùng cho web nào không cho phép bôi đen văn bản",
   },
 
-  func: function () {
+  onClick: function () {
     // events
     function R(a) {
       ona = "on" + a;

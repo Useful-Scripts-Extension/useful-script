@@ -12,7 +12,7 @@ export default {
   whiteList: [],
   runInExtensionContext: false,
 
-  func: function () {
+  onClick: function () {
     // Source: https://gist.github.com/J2TEAM/bc5d9a1f3e648d6a3d679edf8689e5de
     // Post: https://www.facebook.com/groups/j2team.community/posts/1730753827256730/
 

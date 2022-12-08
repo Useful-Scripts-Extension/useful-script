@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://doutu.be"],
 
-  func: async function () {
+  onClick: async function () {
     // https://stackoverflow.com/a/18197341/11898496
     function download(filename, text) {
       var element = document.createElement("a");

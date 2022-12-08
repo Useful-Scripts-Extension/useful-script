@@ -9,7 +9,7 @@ export default {
     vi: "Hàng thành cột và cột thành hàng",
   },
 
-  func: function () {
+  onClick: function () {
     var d = document,
       q = "table",
       i,

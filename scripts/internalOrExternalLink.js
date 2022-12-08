@@ -9,7 +9,7 @@ export default {
     vi: "+Đỏ: cùng domain\n+Cam: hiện tại\n+Xanh: khác domain",
   },
 
-  func: function () {
+  onClick: function () {
     var i, x;
     for (i = 0; (x = document.links[i]); ++i)
       x.style.color = ["blue", "red", "orange"][sim(x, location)];

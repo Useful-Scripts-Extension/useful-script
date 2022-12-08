@@ -10,7 +10,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // https://transfer.sh
 
     // x-url-delete: https://transfer.sh/xtRy1u/Screenshot%20%281%29.png/Fpg96TDmuH5x

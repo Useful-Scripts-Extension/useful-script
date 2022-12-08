@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://*.instagram.com"],
 
-  func: async function () {
+  onClick: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;
     const getOriginalVideoFromBlob = (videoEl) => {

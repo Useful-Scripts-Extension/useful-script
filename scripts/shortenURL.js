@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // https://hyperhost.ua/tools/en/surli
     // https://www.shorturl.at/shortener.php
     // https://tinyurl.com/app

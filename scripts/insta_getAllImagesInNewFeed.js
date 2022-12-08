@@ -10,7 +10,7 @@ export default {
   blackList: [],
   whiteList: ["*://*.instagram.com"],
 
-  func: async function () {
+  onClick: async function () {
     const getAllImgTag = () =>
       Array.from(document.querySelectorAll("img[sizes*=px]")) || [];
     const sleep = (milliseconds) =>

@@ -8,7 +8,7 @@ export default {
     vi: "Xoá mọi thứ gây xao nhãng (quảng cáo, web nhúng, ..)",
   },
 
-  func: function () {
+  onClick: function () {
     function R(w) {
       try {
         var d = w.document,

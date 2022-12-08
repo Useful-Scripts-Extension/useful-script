@@ -9,7 +9,7 @@ export default {
     vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
   },
 
-  func: function () {
+  onClick: function () {
     /*
   It’s a good practice to always use unique passwords while creating accounts on websites, So if one website’s password gets compromised your other accounts are safe.
   If you are not using any password manager like LastPass, Bitwarden or 1Password then it’s really hard to keep track of all the passwords.

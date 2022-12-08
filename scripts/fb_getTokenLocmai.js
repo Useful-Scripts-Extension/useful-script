@@ -12,7 +12,7 @@ export default {
   whiteList: [],
   runInExtensionContext: true,
 
-  func: function () {
+  onClick: function () {
     // https://github.com/locmai0808/Facebook-Access-Token
 
     const utils = {

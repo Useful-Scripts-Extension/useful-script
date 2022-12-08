@@ -5,7 +5,8 @@ import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 import { getAvailableScripts } from "../scripts/helpers/utils.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
-const isFunc = (script) => script.func && typeof script.func === "function";
+const isFunc = (script) =>
+  script.onClick && typeof script.onClick === "function";
 const isLink = (script) => script.link && typeof script.link === "string";
 const isTitle = (script) => !isFunc(script) && !isLink(script);
 
@@ -36,6 +37,7 @@ const tabs = [
       s.whatWebsiteStack,
       s.whois,
       s.viewWebMetaInfo,
+      s.search_musicTreding,
       s.search_paperWhere,
       s.checkWebDie,
       s.downDetector,

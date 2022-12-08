@@ -12,7 +12,7 @@ export default {
   },
   runInExtensionContext: true,
 
-  func: async function () {
+  onClick: async function () {
     let { url } = await getCurrentTab();
     if (url) {
       let url_to_check = prompt("Enter web url to check", url);

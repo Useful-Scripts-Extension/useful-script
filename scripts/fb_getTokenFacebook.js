@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://www.facebook.com"],
 
-  func: function () {
+  onClick: function () {
     try {
       let uid = /(?<=c_user=)(\d+)/.exec(document.cookie)?.[0];
       if (!uid) {

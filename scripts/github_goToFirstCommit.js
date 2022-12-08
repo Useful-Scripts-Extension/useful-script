@@ -12,7 +12,7 @@ export default {
   blackList: [],
   whiteList: ["*://github.com"],
 
-  func: function () {
+  onClick: function () {
     // Source: https://github.com/FarhadG/init
 
     let args = window.location.pathname.match(

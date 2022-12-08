@@ -9,7 +9,7 @@ export default {
     vi: "Thêm hiệu ứng tuyết rơi vào trang web",
   },
 
-  func: function () {
+  onClick: function () {
     function i() {
       this.D = function () {
         const t = h.atan(this.i / this.d);

@@ -9,7 +9,7 @@ export default {
     vi: "Visual Event - Hiển thị tất cả javascript events xuất hiện trong trang web",
   },
 
-  func: function () {
+  onClick: function () {
     // http://www.sprymedia.co.uk/article/Visual+Event+2
 
     var protocol = window.location.protocol === "file:" ? "http:" : "";

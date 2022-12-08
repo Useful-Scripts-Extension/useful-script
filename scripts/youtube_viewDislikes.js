@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["*://*.youtube.com/*"],
 
-  func: async function () {
+  onClick: async function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
 
     function getVideoId(url) {
