@@ -69,6 +69,7 @@ const tabs = [
       s.fb_getTokenFfb,
       s.fb_getTokenBusiness,
       s.fb_getTokenFacebook,
+      s.fb_getTokenMbasicFB,
       s.fb_getTokenMFacebook,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
       s.fb_getUid,
