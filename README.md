@@ -29,6 +29,12 @@ Verion hiện tại: v1.2
 
 ![screenshot](./assets/screenshots/Screen%20Shot%202022-11-05%20at%2012.10.00.png)
 
+## Tutorial (Demo) 
+
+[Watch on Youtube](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
+
+[![Video Tutorial (Demo)](./assets/screenshots/Screenshot_3.png)](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
+
 ## Contribute - Đóng góp
 
 Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
