@@ -105,7 +105,6 @@ const tabs = [
       s.fb_getTokenBusinessStudio,
       s.fb_getTokenCampaigns,
       s.fb_getTokenFacebook,
-      s.fb_getTokenMbasicFB,
       s.fb_getTokenMFacebook,
       s.fb_getTokenLocmai,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
