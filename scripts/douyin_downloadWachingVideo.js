@@ -1,7 +1,7 @@
 import showTheVideos from "./showTheVideos.js";
 
 export default {
-  icon: "https://www.tiktok.com/favicon.ico",
+  icon: "https://www.douyin.com/favicon.ico",
   name: {
     en: "Douyin - Download watching video",
     vi: "Douyin - Tải video đang xem",
