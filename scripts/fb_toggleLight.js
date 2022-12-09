@@ -5,8 +5,8 @@ export default {
     vi: "Bật/tắt đèn fb newfeed",
   },
   description: {
-    en: "Hide Navigator bar and complementary bar",
-    vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed",
+    en: "Hide Navigator bar and complementary bar in facebook",
+    vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed facebook",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

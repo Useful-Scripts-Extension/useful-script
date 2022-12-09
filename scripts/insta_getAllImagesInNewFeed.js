@@ -4,8 +4,8 @@ export default {
     vi: "Tải về tất cả ảnh insta newfeed",
   },
   description: {
-    en: "Get all images in newfeed",
-    vi: "Tải về tất cả ảnh đang có trên newfeed",
+    en: "Get all images in newfeed instagram",
+    vi: "Tải về tất cả ảnh đang có trên newfeed instagram",
   },
   blackList: [],
   whiteList: ["*://*.instagram.com"],

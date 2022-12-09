@@ -4,8 +4,8 @@ export default {
     vi: "Tải tất cả ảnh insta user profile",
   },
   description: {
-    en: "Get all images in user profile",
-    vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
+    en: "Get all images in instagram user profile",
+    vi: "Tải tất cả ảnh có trong profile của user instagram bất kỳ",
   },
   blackList: [],
   whiteList: ["*://*.instagram.com"],

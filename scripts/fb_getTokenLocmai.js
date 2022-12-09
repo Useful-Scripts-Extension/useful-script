@@ -5,8 +5,8 @@ export default {
     vi: "Lấy fb token (locmai)",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Get facebook token using username/password",
+    vi: "Lấy facebook token sử dụng username/password",
   },
   blackList: [],
   whiteList: [],

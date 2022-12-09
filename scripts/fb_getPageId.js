@@ -4,8 +4,8 @@ export default {
     vi: "Lấy fb Page ID",
   },
   description: {
-    en: "Get id of page in current website",
-    vi: "Lấy id của page trong trang web hiện tại",
+    en: "Get id of page in facebook website",
+    vi: "Lấy id của page trong trang facebook hiện tại",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

@@ -4,8 +4,8 @@ export default {
     vi: "Lấy tất cả fb user id từ danh sách bạn bè",
   },
   description: {
-    en: "Get id of all user from friends page",
-    vi: "Lấy tất cả user ID từ trang danh sách bạn bè",
+    en: "Get id of all user from friends facebook page",
+    vi: "Lấy tất cả user ID từ trang danh sách bạn bè facebook",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

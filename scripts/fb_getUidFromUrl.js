@@ -6,8 +6,8 @@ export default {
     vi: "Lấy fb User ID từ URL",
   },
   description: {
-    en: "Get id of user from entered url",
-    vi: "Lấy id của user từ URL truyền vào",
+    en: "Get id of facebook user from entered url",
+    vi: "Lấy id của facebook user từ URL truyền vào",
   },
   runInExtensionContext: true,
 

@@ -4,8 +4,8 @@ export default {
     vi: "Tìm tất cả fb video id",
   },
   description: {
-    en: "Get id of all video in current website",
-    vi: "Tìm tất cả video id trong trang web",
+    en: "Get id of all video in facebook website",
+    vi: "Tìm tất cả video id trong trang facebook",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

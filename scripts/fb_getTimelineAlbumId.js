@@ -4,8 +4,8 @@ export default {
     vi: "Tìm id của album fb chứa mọi ảnh tải lên",
   },
   description: {
-    en: "Get timeline album id of page/user in current website",
-    vi: "Tìm album chứa tất cả ảnh trên dòng thời gian của page/user hiện tại",
+    en: "Get timeline album id of page/user in facebook website",
+    vi: "Tìm album chứa tất cả ảnh trên dòng thời gian của page/user facebook hiện tại",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

@@ -7,8 +7,8 @@ export default {
     vi: "Lấy fb token EAAG (business_locations)",
   },
   description: {
-    en: "Get fb token EAAG from business.facebook.com",
-    vi: "Lấy fb token EAAG từ business.facebook.com",
+    en: "Get facebook token EAAG from business.facebook.com",
+    vi: "Lấy facebook token EAAG từ business.facebook.com",
   },
   blackList: [],
   runInExtensionContext: true,

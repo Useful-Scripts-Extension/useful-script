@@ -6,8 +6,8 @@ export default {
     vi: "Tải link ảnh/video từ album fb",
   },
   description: {
-    en: "Download photo/video links from album",
-    vi: "Tải về danh sách link ảnh/video",
+    en: "Download photo/video links from facebook album",
+    vi: "Tải về danh sách link ảnh/video từ album facebook",
   },
   runInExtensionContext: true,
 

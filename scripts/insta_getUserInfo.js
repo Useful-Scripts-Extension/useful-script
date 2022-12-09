@@ -7,8 +7,8 @@ export default {
     vi: "Lấy insta thông tin user (uid, avatar, ...)",
   },
   description: {
-    en: "Get uid, avatar, name, ...",
-    vi: "Lấy uid, avatar, tên, ...",
+    en: "Get instagram uid, avatar, name, ...",
+    vi: "Lấy instagram uid, avatar, tên, ...",
   },
   runInExtensionContext: true,
 

@@ -5,8 +5,8 @@ export default {
     vi: "Lấy fb User ID",
   },
   description: {
-    en: "Get id of user in current website",
-    vi: "Lấy id của user trong trang web hiện tại",
+    en: "Get id of user in facebook website",
+    vi: "Lấy id của user trong trang facebook hiện tại",
   },
   blackList: [],
   whiteList: ["https://www.facebook.com"],

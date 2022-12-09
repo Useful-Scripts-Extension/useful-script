@@ -1,4 +1,4 @@
-import { getCurrentTab, showLoading } from "./helpers/utils";
+import { getCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: `https://savevideo.me/favicon.ico`,
@@ -63,8 +63,6 @@ export default {
       document.body.appendChild(form);
       form.submit();
     }
-
-    main();
 
     let { closeLoading } = showLoading("Đang get link video...");
     try {
