@@ -80,7 +80,6 @@ import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
 import youtube_popupPlayer from "./youtube_popupPlayer.js";
 import googleShortcuts from "./googleShortcuts.js";
-import paywallKiller from "./paywallKiller.js";
 import archiveToday from "./archiveToday.js";
 import whois from "./whois.js";
 import viewWebMetaInfo from "./viewWebMetaInfo.js";
@@ -222,7 +221,6 @@ const allScripts = {
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
   youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.beta),
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
-  paywallKiller: addBadge(paywallKiller, BADGES.beta),
   archiveToday: archiveToday,
   whois: whois,
   viewWebMetaInfo: viewWebMetaInfo,

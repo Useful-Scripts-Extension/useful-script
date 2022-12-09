@@ -8,7 +8,7 @@ export default {
   },
   description: {
     en: "Download video in facebook comment that you are watching",
-    vi: "Tải video trong bình luận bạn đang xem",
+    vi: "Tải video trong bình luận facebook bạn đang xem",
   },
   whiteList: [],
   runInExtensionContext: false,

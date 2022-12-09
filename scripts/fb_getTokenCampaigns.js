@@ -7,8 +7,8 @@ export default {
     vi: "Lấy fb token EAAB (campaigns)",
   },
   description: {
-    en: "Get fb token EAAG from www.facebook.com campaigns",
-    vi: "Lấy fb token EAAG từ www.facebook.com campaigns",
+    en: "Get facebook token EAAG from www.facebook.com campaigns",
+    vi: "Lấy facebook token EAAG từ www.facebook.com campaigns",
   },
   runInExtensionContext: true,
 

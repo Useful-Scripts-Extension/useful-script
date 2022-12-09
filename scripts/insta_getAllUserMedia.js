@@ -7,7 +7,7 @@ export default {
   },
   description: {
     en: "Get all media of instagram user",
-    vi: "Tải về tất cả ảnh/video của người dùng insta",
+    vi: "Tải về tất cả ảnh/video của người dùng instagram",
   },
   runInExtensionContext: true,
 

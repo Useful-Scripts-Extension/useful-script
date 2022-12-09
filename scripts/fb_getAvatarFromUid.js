@@ -7,8 +7,8 @@ export default {
     vi: "Tải avatar từ fb user id",
   },
   description: {
-    en: "Get avatar from list user ids",
-    vi: "Tải danh sách avatar từ danh sách user id",
+    en: "Get avatar from list facebook user ids",
+    vi: "Tải danh sách avatar từ danh sách user id facebook",
   },
   runInExtensionContext: true,
 

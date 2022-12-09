@@ -5,8 +5,8 @@ export default {
     vi: "Lấy fb Album ID",
   },
   description: {
-    en: "Get id of album in current website",
-    vi: "Lấy id của album trong trang web hiện tại",
+    en: "Get id of facebook album in current website",
+    vi: "Lấy id của facebook album trong trang web hiện tại",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

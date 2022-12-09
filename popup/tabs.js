@@ -207,7 +207,6 @@ const tabs = [
       s.enableTextSelection,
       s.reEnableContextMenu,
       s.injectScriptToWebsite,
-      s.paywallKiller,
     ],
   },
   {

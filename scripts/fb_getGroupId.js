@@ -4,8 +4,8 @@ export default {
     vi: "Lấy fb Group ID",
   },
   description: {
-    en: "Get id of group in current website",
-    vi: "Lấy id của group trong trang web hiện tại",
+    en: "Get id of group in facebook website",
+    vi: "Lấy id của group trong trang facebook hiện tại",
   },
   blackList: [],
   whiteList: ["*://www.facebook.com"],

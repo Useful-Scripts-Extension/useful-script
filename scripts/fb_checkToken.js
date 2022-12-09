@@ -5,8 +5,8 @@ export default {
     vi: "Kiểm tra fb access token",
   },
   description: {
-    en: "Check type, permissions, created date, expired date, ...",
-    vi: "Kiểm tra loại, quyền, ngày tạo, ngày hết hạn, ...",
+    en: "Check type, permissions, created date, expired date, ... of faceboook access token",
+    vi: "Kiểm tra loại, quyền, ngày tạo, ngày hết hạn, ... của facebook access token",
   },
   runInExtensionContext: true,
 
