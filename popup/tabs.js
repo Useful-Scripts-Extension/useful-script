@@ -39,6 +39,7 @@ const tabs = [
       s.viewWebMetaInfo,
       s.search_musicTreding,
       s.search_paperWhere,
+      s.search_hopamchuan,
       s.checkWebDie,
       s.downDetector,
       s.openWaybackUrl,
@@ -50,6 +51,7 @@ const tabs = [
     scripts: [
       s.getLinkLuanxt,
       s.getFavicon,
+      // s.bookmark_exporter,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.showTheAudios,
       s.nhaccuatui_downloader,
@@ -72,6 +74,7 @@ const tabs = [
     ...CATEGORY.google,
     scripts: [
       createTitle("--- Download ---", "--- Tải xuống ---"),
+      s.ggdrive_generateDirectLink,
       s.ggdrive_downloadVideo,
       s.google_downloadAllYourData,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),

@@ -135,6 +135,9 @@ import search_userscript from "./search_userscript.js";
 import search_musicTreding from "./search_musicTreding.js";
 import vimeo_downloader from "./vimeo_downloader.js";
 import savevideo_me from "./savevideo_me.js";
+import bookmark_exporter from "./bookmark_exporter.js";
+import search_hopamchuan from "./search_hopamchuan.js";
+import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 
 // inject badges
 const allScripts = {
@@ -291,6 +294,9 @@ const allScripts = {
   search_musicTreding: addBadge(search_musicTreding, BADGES.new),
   vimeo_downloader: addBadge(vimeo_downloader, BADGES.new),
   savevideo_me: addBadge(savevideo_me, BADGES.new),
+  bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
+  search_hopamchuan: addBadge(search_hopamchuan, BADGES.new),
+  ggdrive_generateDirectLink: addBadge(ggdrive_generateDirectLink, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
