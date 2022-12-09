@@ -188,11 +188,9 @@ export function removeAccents(str) {
     str = str.replace(RegExp(from[i], "gi"), to[i]);
   }
 
-  str = str
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\-]/g, "-")
-    .replace(/-+/g, "-");
+  str = str.toLowerCase().trim();
+  // .replace(/[^a-z0-9\-]/g, "-")
+  // .replace(/-+/g, "-");
 
   return str;
 }
