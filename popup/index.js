@@ -303,13 +303,15 @@ function initSearch() {
 
     childrens.forEach((child) => {
       let willShow = true;
-      let text = removeAccents(child.innerText.toLowerCase());
-      let searchStr = removeAccents(keyword.toLowerCase())
+      let text = removeAccents(child.textContent).toLowerCase();
+      let searchStr = removeAccents(keyword)
+        .toLowerCase()
         .split(" ")
         .filter((_) => _);
 
       for (let s of searchStr) {
-        if (!text.includes(s)) {
+        if (text.indexOf(s) == -1) {
+          console.log(s, text);
           willShow = false;
           break;
         }

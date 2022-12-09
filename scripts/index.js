@@ -16,7 +16,6 @@ import fb_getUidFromUrl from "./fb_getUidFromUrl.js";
 import fb_getAllUidFromFbSearch from "./fb_getAllUidFromFbSearch.js";
 import fb_getAllUidFromFriendsPage from "./fb_getAllUidFromFriendsPage.js";
 import fb_getAllUidOfGroupMembers from "./fb_getAllUidOfGroupMembers.js";
-import download_video from "./download_video.js";
 import fb_getAvatarFromUid from "./fb_getAvatarFromUid.js";
 import fb_downloadAlbumMedia from "./fb_downloadAlbumMedia.js";
 import insta_getToken from "./insta_getToken.js";
@@ -83,7 +82,6 @@ import youtube_popupPlayer from "./youtube_popupPlayer.js";
 import googleShortcuts from "./googleShortcuts.js";
 import paywallKiller from "./paywallKiller.js";
 import archiveToday from "./archiveToday.js";
-import download_video2 from "./download_video2.js";
 import whois from "./whois.js";
 import viewWebMetaInfo from "./viewWebMetaInfo.js";
 import getAllEmailsInWeb from "./getAllEmailsInWeb.js";
@@ -136,6 +134,8 @@ import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downloader from "./studocu_downloader.js";
 import search_userscript from "./search_userscript.js";
 import search_musicTreding from "./search_musicTreding.js";
+import vimeo_downloader from "./vimeo_downloader.js";
+import savevideo_me from "./savevideo_me.js";
 
 // inject badges
 const allScripts = {
@@ -155,7 +155,6 @@ const allScripts = {
   fb_getAllUidFromFbSearch,
   fb_getAllUidFromFriendsPage,
   fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.hot),
-  download_video: addBadge(download_video, BADGES.beta),
   fb_getAvatarFromUid,
   fb_downloadAlbumMedia,
   insta_getToken: addBadge(insta_getToken, BADGES.hot),
@@ -225,7 +224,6 @@ const allScripts = {
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
   paywallKiller: addBadge(paywallKiller, BADGES.beta),
   archiveToday: archiveToday,
-  download_video2: addBadge(download_video2, BADGES.hot),
   whois: whois,
   viewWebMetaInfo: viewWebMetaInfo,
   getAllEmailsInWeb: addBadge(getAllEmailsInWeb, BADGES.new),
@@ -293,6 +291,8 @@ const allScripts = {
   studocu_downloader: addBadge(studocu_downloader, BADGES.new),
   search_userscript: addBadge(search_userscript, BADGES.new),
   search_musicTreding: addBadge(search_musicTreding, BADGES.new),
+  vimeo_downloader: addBadge(vimeo_downloader, BADGES.new),
+  savevideo_me: addBadge(savevideo_me, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
