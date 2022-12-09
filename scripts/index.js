@@ -138,6 +138,7 @@ import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
+import douyin_downloadVideo from "./douyin_downloadVideo.js";
 
 // inject badges
 const allScripts = {
@@ -297,6 +298,7 @@ const allScripts = {
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: addBadge(search_hopamchuan, BADGES.new),
   ggdrive_generateDirectLink: addBadge(ggdrive_generateDirectLink, BADGES.new),
+  douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

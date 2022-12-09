@@ -154,6 +154,7 @@ const tabs = [
     scripts: [
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.tiktok_downloadUserVideos,
+      s.douyin_downloadAllVideoUser,
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
       s.tiktok_downloadWatchingVideo,
       s.tiktok_downloadVideo,
@@ -161,7 +162,7 @@ const tabs = [
       s.tiktok_snaptikVideo,
       createTitle("--- Douyin ---", "--- Douyin ---"),
       s.douyin_downloadWachingVideo,
-      s.douyin_downloadAllVideoUser,
+      s.douyin_downloadVideo,
       createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
       s.doutube_enableDownloadVideo,
       s.doutube_downloadWatchingVideo,
