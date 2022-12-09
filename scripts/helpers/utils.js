@@ -178,6 +178,16 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // #region String Utils
 
+// https://stackoverflow.com/a/9310752
+export function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
+// https://stackoverflow.com/q/38849009
+export function unescapeRegExp(text) {
+  return text.replace(/\\(.)/g, "$1");
+}
+
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
   var from =

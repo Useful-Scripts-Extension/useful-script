@@ -139,6 +139,8 @@ import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 import douyin_downloadVideo from "./douyin_downloadVideo.js";
+import freesound_downloadAudio from "./freesound_downloadAudio.js";
+import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 
 // inject badges
 const allScripts = {
@@ -299,6 +301,8 @@ const allScripts = {
   search_hopamchuan: addBadge(search_hopamchuan, BADGES.new),
   ggdrive_generateDirectLink: addBadge(ggdrive_generateDirectLink, BADGES.new),
   douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
+  freesound_downloadAudio: addBadge(freesound_downloadAudio, BADGES.new),
+  soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
