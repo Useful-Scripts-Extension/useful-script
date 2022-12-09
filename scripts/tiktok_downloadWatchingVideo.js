@@ -1,9 +1,5 @@
-import {
-  openWebAndRunScript,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
-import * as tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import { shared as tiktok_downloadVideoNoWM } from "./tiktok_downloadVideo.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -18,49 +14,37 @@ export default {
   runInExtensionContext: true,
 
   onClick: async function () {
-    async function getWatchingVideoNoWM() {
-      let videoId = await runScriptInCurrentTab(() =>
-        document
-          .querySelector("video")
-          ?.parentElement?.id?.split?.("-")
-          ?.at?.(-1)
-      );
-
-      return await tiktok_downloadVideoNoWM.shared.getVideoNoWaterMark(
-        videoId,
-        true
-      );
-    }
-
-    function getWatchingVideo() {
-      let el = document.querySelector("video")?.parentElement.parentElement,
-        keyFiber = "",
-        keyProp = "";
-      for (let k of Object.keys(el)) {
-        if (k.startsWith("__reactFiber")) keyFiber = k;
-        if (k.startsWith("__reactProps")) keyProp = k;
-      }
-      return (
-        el[keyFiber].child?.memoizedProps?.url ||
-        el[keyFiber].firstEffect?.memoizedProps?.url ||
-        el[keyProp].children?.[0]?.props?.url
-      );
-    }
-
     let choice = prompt(
-      "Chọn loại video:\n" + " 0: Có watermark\n" + " 1: Không watermark",
+      "Chọn loại video:\n" + " 0: Không watermark\n" + " 1: Có watermark",
       0
     );
     if (choice == null) return;
 
-    let { closeLoading } = showLoading("Đang get link video...");
+    let { closeLoading, setLoadingText } = showLoading("Đang tìm video...");
     try {
-      let url;
-      if (choice == 0) url = await runScriptInCurrentTab(getWatchingVideo);
-      if (choice == 1) url = await getWatchingVideoNoWM();
+      let title = "";
+      try {
+        title = await runScriptInCurrentTab(shared.getWatchingVideoTitle);
+      } catch (e) {}
 
-      if (url) window.open(url);
-      else throw Error("Không tìm được video");
+      setLoadingText(
+        `Đang get link video...` + title
+          ? `<br/><br/><p style="max-width:200px;text-overflow:ellipsis;">${title}}</p>`
+          : ""
+      );
+
+      let url;
+      if (choice == 0) {
+        let videoId = await runScriptInCurrentTab(shared.getWatchingVideoId);
+        url = await tiktok_downloadVideoNoWM.getVideoNoWaterMark(videoId, true);
+
+        if (url) window.open(url);
+        else throw Error("Không tìm được video");
+      }
+      if (choice == 1) {
+        url = await runScriptInCurrentTab(shared.getLinkWatchingVideoFromWeb);
+        await shared.renderVideoInWeb(url);
+      }
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
@@ -69,32 +53,73 @@ export default {
   },
 };
 
-async function backup() {
-  // =================== Tải video (watermark) từ link video ===================
-  let url = prompt("Nhập link tiktok video: ");
-  if (url != null) {
-    const { closeLoading } = showLoading("Đang get link video...");
-    try {
-      let res = await openWebAndRunScript({
-        url,
-        closeAfterRunScript: true,
-        focusAfterRunScript: false,
-        func: () => {
-          return window.SIGI_STATE;
-        },
-      });
-      if (!res) {
-        alert("Không lấy được dữ liệu.");
-        return;
-      }
-      let videoKey = Object.keys(res.ItemModule)?.[0];
-      let videoData = res.ItemModule[videoKey];
-      console.log(videoData);
-      window.open(videoData?.video?.downloadAddr || videoData?.video?.playAddr);
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
+export const shared = {
+  getWatchingVideoTitle: function () {
+    return document.querySelector("video").parentElement.parentElement
+      .previousElementSibling.alt;
+  },
+  getWatchingVideoId: function () {
+    return document.querySelector("video").parentElement.id.split("-").at(-1);
+  },
+  getLinkWatchingVideoFromWeb: function () {
+    let el = document.querySelector("video")?.parentElement.parentElement,
+      keyFiber = "",
+      keyProp = "";
+    for (let k of Object.keys(el)) {
+      if (k.startsWith("__reactFiber")) keyFiber = k;
+      if (k.startsWith("__reactProps")) keyProp = k;
     }
-  }
-}
+    return (
+      el[keyFiber].firstEffect?.memoizedProps?.url ||
+      el[keyProp].children?.[0]?.props?.url ||
+      el[keyFiber].child?.memoizedProps?.url
+    );
+  },
+  renderVideoInWeb: async function (url) {
+    await runScriptInCurrentTab(
+      (url) => {
+        let div = document.createElement("div");
+        div.innerHTML = `<div class="ufs-overlay">
+          <div class="ufs-modal">
+            <video src="${url}" controls></video>
+            <button class="ufs-close-btn"  onclick="this.parentElement.parentElement.parentElement.remove()">X</button>
+          </div>
+        </div>
+        
+        <style>
+          .ufs-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #000000ab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999999;
+          }
+          .ufs-modal {
+            background: white;
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+          }
+          .ufs-modal video {
+            max-width: 300px;
+          }
+          .ufs-close-btn {
+            color: white;
+            background: red;
+            padding: 5px 10px;
+            position: absolute;
+            top: 0;
+            right: -30px;
+            cursor: pointer;
+            border: none;
+          }
+        </style>
+        `;
+        document.body.appendChild(div);
+      },
+      [url]
+    );
+  },
+};

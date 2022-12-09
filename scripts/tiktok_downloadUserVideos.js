@@ -5,7 +5,7 @@ import {
   sleep,
 } from "./helpers/utils.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
-import * as tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
+import * as tiktok_downloadVideoNoWM from "./tiktok_downloadVideo.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
