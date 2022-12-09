@@ -156,7 +156,7 @@ const tabs = [
       s.tiktok_downloadUserVideos,
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
       s.tiktok_downloadWatchingVideo,
-      s.tiktok_downloadVideoNoWM,
+      s.tiktok_downloadVideo,
       s.tiktok_snaptikApp,
       s.tiktok_snaptikVideo,
       createTitle("--- Douyin ---", "--- Douyin ---"),

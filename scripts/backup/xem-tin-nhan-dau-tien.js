@@ -36,6 +36,8 @@ While 1
 			_main()
 	EndSwitch
 WEnd
+
+
 Func _main()
    if GUICtrlRead($Input1) = '' Then
 	  MsgBox(0,0,'Chưa Nhập Tài Khoản')
@@ -53,6 +55,8 @@ $mk =  GUICtrlRead($Input2)
 $id =  GUICtrlRead($Input3)
 _main1($tk,$mk,$id)
 Endfunc
+
+
 Func _main1($tk,$mk,$id)
 $idd = $id
 $a = fblogin($tk,$mk)
@@ -66,26 +70,31 @@ if @error Then
 Endif
 $post = '__user='&$idpr[0]&'&__a=1&__dyn=7AgNeS-aF398jgDxyIGzGomzEdpbGAdy8VdLFwgoqwWhE98nwgUaqG2yaBxebkwy6UnGi7VXDG4XzErDAxaFQ3ucDBxe6ohyUCqu58nUszaxbxm1tyrhVo9ohxGbwYUmC-UjDQ6ErKu7EgwLxqawDDgswVwjpUhCK6pESfyaBy8OcxO12zVolyoK7UyUhUKcyU4eQEx1DzXG&__af=jw&__req=u&__be=-1&__pc=EXP3%3Aholdout_pkg&__rev=3211951&fb_dtsg='&$fb[0]&'&jazoest=265817089856881797477105114586581701188790886782485370&queries=%7B%22o0%22%3A%7B%22doc_id%22%3A%221927845863895817%22%2C%22query_params%22%3A%7B%22id%22%3A%22'&$idd&'%22%2C%22message_limit%22%3A'&$i&'%2C%22load_messages%22%3A1%2C%22load_read_receipts%22%3Atrue%2C%22before%22%3A'&_TimeStampUNIX_ms()&'%7D%7D%7D'
 $cc = _HttpRequest(2, 'https://www.facebook.com/api/graphqlbatch/', $post, $a, '', 'Connection: keep-alive')
+
 if StringInStr($cc,'"successful_results": 0') then
    MsgBox(0,0,'Error')
    Exit
 Endif
+
 if Not StringInStr($cc,'messages_count') Then
    MsgBox(0,0,'Error')
    Exit
 Endif
+
 $mess = _StringBetween($cc,'"messages_count":',',',3)
+
 if $mess[0] < 20 Then
    MsgBox(0,0,'Chưa Nhắn Tới 20 Tin Nữa Check Làm Cm Gì 3')
 Return
 Endif
+
 $post1 = '__user='&$idpr[0]&'&__a=1&__dyn=7AgNeS-aF398jgDxyIGzGomzEdpbGAdy8VdLFwgoqwWhE98nwgUaqG2yaBxebkwy6UnGi7VXDG4XzErDAxaFQ3ucDBxe6ohyUCqu58nUszaxbxm1tyrhVo9ohxGbwYUmC-UjDQ6ErKu7EgwLxqawDDgswVwjpUhCK6pESfyaBy8OcxO12zVolyoK7UyUhUKcyU4eQEx1DzXG&__af=jw&__req=u&__be=-1&__pc=EXP3%3Aholdout_pkg&__rev=3211951&fb_dtsg='&$fb[0]&'&jazoest=265817089856881797477105114586581701188790886782485370&queries=%7B%22o0%22%3A%7B%22doc_id%22%3A%221927845863895817%22%2C%22query_params%22%3A%7B%22id%22%3A%22'&$idd&'%22%2C%22message_limit%22%3A'&$mess[0]&'%2C%22load_messages%22%3A1%2C%22load_read_receipts%22%3Atrue%2C%22before%22%3A'&_TimeStampUNIX_ms()&'%7D%7D%7D'
 $cc1 = _HttpRequest(2, 'https://www.facebook.com/api/graphqlbatch/', $post1, $a, '', 'Connection: keep-alive')
 $c1 = _StringBetween($cc1,'{"id":"','ge",',3)
  
 $path = @ScriptDir & '\'&$idd&'.html'
+
 For $a = 1 to 20
- 
 $id = _StringBetween($c1[$a],'','",',3)
 $tin1 = StringRegExp($c1[$a],'"snippet":"(.*?)"',3)
 if IsArray($id) And IsArray($tin1) Then
@@ -96,6 +105,8 @@ MsgBox(0,0,'OK')
 ShellExecute(@ScriptDir & '\'&$idd&'.html')
 Exit
 ENdfunc
+
+
 Func _TimeStampUNIX_ms($iYear = @YEAR, $iMonth = @MON, $iDay = @MDAY, $iHour = @HOUR, $iMin = @MIN, $iSec = @SEC)
     Local $stSystemTime = DllStructCreate('ushort;ushort;ushort;ushort;ushort;ushort;ushort;ushort')
     DllCall('kernel32.dll', 'none', 'GetSystemTime', 'ptr', DllStructGetPtr($stSystemTime))
@@ -103,8 +114,9 @@ Func _TimeStampUNIX_ms($iYear = @YEAR, $iMonth = @MON, $iDay = @MDAY, $iHour = @
     Local $nYear = $iYear - ($iMonth < 3 ? 1 : 0)
     Return ((Int(Int($nYear / 100) / 4) - Int($nYear / 100) + $iDay + Int(365.25 * ($nYear + 4716)) + Int(30.6 * (($iMonth < 3 ? $iMonth + 12 : $iMonth) + 1)) - 2442110) * 86400 + ($iHour * 3600 + $iMin * 60 + $iSec)) * ($iMSec ? 1000 : 1) + $iMSec
  EndFunc
+
+
 Func fblogin($tk,$mk)
- 
 $kq1 = _HttpRequest(2, 'https://m.facebook.com/login.php?refsrc=https%3A%2F%2Fm.facebook.com%2F&lwv=101&login_try_number=1&ref=dbl', "", '', '', 'Connection: keep-alive')
 $lsd = StringRegExp($kq1,'name="lsd" value="(.*?)"',3)
 $mts = StringRegExp($kq1,'name="m_ts" value="(.*?)"',3)

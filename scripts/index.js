@@ -127,7 +127,7 @@ import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
 import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
-import tiktok_downloadVideoNoWM from "./tiktok_downloadVideoNoWM.js";
+import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downloader from "./studocu_downloader.js";
@@ -283,7 +283,7 @@ const allScripts = {
     BADGES.new
   ),
   tiktok_downloadUserVideos: addBadge(tiktok_downloadUserVideos, BADGES.beta),
-  tiktok_downloadVideoNoWM: addBadge(tiktok_downloadVideoNoWM, BADGES.new),
+  tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
   ggDrive_downloadAllVideosInFolder: addBadge(
     ggDrive_downloadAllVideosInFolder,
     BADGES.new
