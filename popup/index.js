@@ -311,7 +311,6 @@ function initSearch() {
 
       for (let s of searchStr) {
         if (text.indexOf(s) == -1) {
-          console.log(s, text);
           willShow = false;
           break;
         }
