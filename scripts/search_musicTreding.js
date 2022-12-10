@@ -1,5 +1,5 @@
 export default {
-  icon: "",
+  icon: "https://kworb.net/favicon.ico",
   name: {
     en: "Top global treding music?",
     vi: "Bài nhạc top treding toàn cầu?",

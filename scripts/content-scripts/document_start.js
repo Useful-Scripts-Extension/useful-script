@@ -22,6 +22,5 @@
   if (location.hostname === "www.studocu.com")
     injectCss(baseURL + "studocu.css");
 
-  // if (location.hostname === "luanxt.com")
-  //   injectScriptFile("//code.jquery.com/jquery-3.6.1.min.js", true);
+  if (location.hostname === "123docz.net") injectScript(baseURL + "123doc.js");
 })();

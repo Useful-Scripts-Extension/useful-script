@@ -41,7 +41,7 @@ import search_sharedAccount from "./search_sharedAccount.js";
 import passwordFieldToggle from "./passwordFieldToggle.js";
 import checkWebDie from "./checkWebDie.js";
 import removeCookies from "./removeCookies.js";
-import enableTextSelection from "./enableTextSelection.js";
+import simpleAllowCopy from "./simpleAllowCopy.js";
 import reEnableContextMenu from "./reEnableContextMenu.js";
 import table_addSortTable from "./table_addSortTable.js";
 import table_addNumberColumn from "./table_addNumberColumn.js";
@@ -141,6 +141,8 @@ import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 import douyin_downloadVideo from "./douyin_downloadVideo.js";
 import freesound_downloadAudio from "./freesound_downloadAudio.js";
 import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
+import fastDoc from "./fastDoc.js";
+import smartPDF from "./smartPDF.js";
 
 // inject badges
 const allScripts = {
@@ -188,7 +190,7 @@ const allScripts = {
   passwordFieldToggle,
   checkWebDie,
   removeCookies,
-  enableTextSelection,
+  simpleAllowCopy: addBadge(simpleAllowCopy, BADGES.hot),
   reEnableContextMenu,
   table_addSortTable,
   table_addNumberColumn,
@@ -303,6 +305,8 @@ const allScripts = {
   douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
   freesound_downloadAudio: addBadge(freesound_downloadAudio, BADGES.new),
   soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
+  fastDoc: addBadge(fastDoc, BADGES.new),
+  smartPDF: addBadge(smartPDF, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
