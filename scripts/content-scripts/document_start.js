@@ -21,6 +21,4 @@
 
   if (location.hostname === "www.studocu.com")
     injectCss(baseURL + "studocu.css");
-
-  if (location.hostname === "123docz.net") injectScript(baseURL + "123doc.js");
 })();

@@ -130,7 +130,7 @@ import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
 import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
-import studocu_downloader from "./studocu_downloader.js";
+import studocu_downs from "./studocu_downs.js";
 import search_userscript from "./search_userscript.js";
 import search_musicTreding from "./search_musicTreding.js";
 import vimeo_downloader from "./vimeo_downloader.js";
@@ -143,6 +143,8 @@ import freesound_downloadAudio from "./freesound_downloadAudio.js";
 import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
+import studocu_dl from "./studocu_dl.js";
+import pdfstuffs from "./pdfstuffs.js";
 
 // inject badges
 const allScripts = {
@@ -294,7 +296,7 @@ const allScripts = {
     BADGES.new
   ),
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.new),
-  studocu_downloader: addBadge(studocu_downloader, BADGES.new),
+  studocu_downs: addBadge(studocu_downs, BADGES.new),
   search_userscript: addBadge(search_userscript, BADGES.new),
   search_musicTreding: addBadge(search_musicTreding, BADGES.new),
   vimeo_downloader: addBadge(vimeo_downloader, BADGES.new),
@@ -307,6 +309,8 @@ const allScripts = {
   soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: addBadge(fastDoc, BADGES.new),
   smartPDF: addBadge(smartPDF, BADGES.new),
+  studocu_dl: addBadge(studocu_dl, BADGES.new),
+  pdfstuffs: addBadge(pdfstuffs, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
