@@ -94,17 +94,17 @@ export const runScriptFileInCurrentTab = async (scriptFile, args) => {
 };
 
 export const GlobalBlackList = ["edge://*", "chrome://*"];
-export async function checkBlackWhiteList(script, url) {
+export function checkBlackWhiteList(script, url) {
   if (!url) return false;
 
   let w = script.whiteList,
     b = script.blackList,
     hasWhiteList = w?.length > 0,
     hasBlackList = b?.length > 0,
-    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
+    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? true,
+    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? false,
     inGlobalBlackList =
-      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? true;
 
   let willRun =
     !inGlobalBlackList &&
