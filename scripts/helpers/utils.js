@@ -46,7 +46,7 @@ export const runScript = async ({ func, tabId, args = [] }) => {
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults.find((_) => _.result)?.result);
+        resolve(injectionResults?.find((_) => _.result)?.result);
       }
     );
   });
@@ -347,13 +347,13 @@ const CACHED = {
 };
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
-chrome.windows.onFocusChanged.addListener(
-  (windowId) => {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE)
-      CACHED.lastWindowId = windowId;
-  },
-  { windowTypes: ["normal"] }
-);
+// chrome.windows.onFocusChanged.addListener(
+//   (windowId) => {
+//     if (windowId !== chrome.windows.WINDOW_ID_NONE)
+//       CACHED.lastWindowId = windowId;
+//   },
+//   { windowTypes: ["normal"] }
+// );
 
 const seperated_popup_search_param = "isSeparatedPopup";
 // Kiểm tra xem extension đang chạy trong popup rời hay không

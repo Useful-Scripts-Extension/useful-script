@@ -1,5 +1,4 @@
 import { runScriptInCurrentTab } from "./helpers/utils.js";
-import scrollToVeryEnd from "./scrollToVeryEnd.js";
 
 export default {
   icon: "",
@@ -11,33 +10,26 @@ export default {
     en: "",
     vi: "",
   },
-  runInExtensionContext: false,
 
+  onDocumentStart: function () {
+    runScriptInCurrentTab(() => {
+      // alert("start");
+    });
+    console.log("start");
+  },
+  onDocumentEnd: function () {},
+  onDocumentIdle: function () {
+    console.log("idle");
+  },
   onClick: async function () {
-    function getOverlapScore(el) {
-      var rect = el.getBoundingClientRect();
-      return (
-        Math.min(
-          rect.bottom,
-          window.innerHeight || document.documentElement.clientHeight
-        ) - Math.max(0, rect.top)
-      );
-    }
+    requireLazy(["MWChatTypingIndicator.bs"], (MWChatTypingIndicator) => {
+      console.log(MWChatTypingIndicator);
 
-    let videos = document.querySelectorAll("video");
-    let urls = [];
-    for (let video of videos) {
-      let key = "";
-      for (let k in video) {
-        if (k.startsWith("__reactProps$")) {
-          key = k;
-          break;
-        }
-      }
-
-      urls.push(video[key].src);
-    }
-
-    console.log(urls);
+      const MWChatTypingIndicatorOrig = MWChatTypingIndicator.make;
+      MWChatTypingIndicator.make = function (...a) {
+        console.log(a);
+        return MWChatTypingIndicatorOrig.apply(this, arguments);
+      };
+    });
   },
 };

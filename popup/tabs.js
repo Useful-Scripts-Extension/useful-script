@@ -1,6 +1,5 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
-import { addBadge, BADGES } from "./helpers/badge.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 import { getAvailableScripts } from "../scripts/helpers/utils.js";
 
@@ -266,33 +265,27 @@ const recommendTab = {
   ...CATEGORY.recommend,
   scripts: [
     { name: { en: "--- Same author ---", vi: "--- Cùng tác giả ---" } },
-    addBadge(
-      {
-        icon: "https://github.com/HoangTran0410/RevealDeletedFBMessages/raw/master/icons/icon48.png",
-        name: {
-          en: "Reveal Deleted FB Message",
-          vi: "Xem tin nhắn FB bị gỡ",
-        },
-        description: {
-          en: "Know what your friends have sent you",
-          vi: "Xem bạn bè đã gửi gì cho bạn",
-        },
-        link: "https://github.com/HoangTran0410/RevealDeletedFBMessages",
+    {
+      icon: "https://github.com/HoangTran0410/RevealDeletedFBMessages/raw/master/icons/icon48.png",
+      name: {
+        en: "Reveal Deleted FB Message",
+        vi: "Xem tin nhắn FB bị gỡ",
       },
-      BADGES.hot
-    ),
-    addBadge(
-      {
-        icon: "https://www.facebook.com/favicon.ico",
-        name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
-        description: {
-          en: "Tool download media from facebook automatic",
-          vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
-        },
-        link: "https://github.com/HoangTran0410/FBMediaDownloader",
+      description: {
+        en: "Know what your friends have sent you",
+        vi: "Xem bạn bè đã gửi gì cho bạn",
       },
-      BADGES.hot
-    ),
+      link: "https://github.com/HoangTran0410/RevealDeletedFBMessages",
+    },
+    {
+      icon: "https://www.facebook.com/favicon.ico",
+      name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
+      description: {
+        en: "Tool download media from facebook automatic",
+        vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
+      },
+      link: "https://github.com/HoangTran0410/FBMediaDownloader",
+    },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
       icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
