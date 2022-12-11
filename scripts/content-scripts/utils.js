@@ -23,17 +23,18 @@ export function injectScript(filePathOrUrl, isExternal = false) {
 
 // TODO: https://developer.chrome.com/docs/extensions/reference/scripting/#method-insertCSS
 // https://stackoverflow.com/a/17840622
-export function injectCss(cssfileOrCode, isFile = true) {
-  if (isFile) {
+export function injectCss(url_file_code, type = "file") {
+  if (type === "file" || type === "url") {
     var css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = chrome.runtime.getURL(cssfileOrCode);
+    css.href =
+      type === "file" ? chrome.runtime.getURL(url_file_code) : url_file_code;
     document.head.appendChild(css);
     console.log("Useful-scripts injected " + css.href);
-  } else {
+  } else if (type === "code") {
     var css = document.createElement("style");
-    if ("textContent" in css) css.textContent = cssText;
-    else css.innerText = cssText;
+    if ("textContent" in css) css.textContent = url_file_code;
+    else css.innerText = url_file_code;
     document.head.appendChild(css);
     console.log("Useful-scripts injected " + css);
   }

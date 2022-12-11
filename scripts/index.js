@@ -1,4 +1,4 @@
-import { addBadge, BADGES } from "../popup/helpers/badge.js";
+import { addBadge, BADGES } from "./helpers/badge.js";
 
 import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";

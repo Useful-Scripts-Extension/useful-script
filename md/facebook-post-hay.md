@@ -40,6 +40,9 @@
 
 [10/2021: Kỹ thuật mod tính năng fb](https://www.facebook.com/groups/j2team.community/permalink/1693746070957506)
 
+- [Xem tin nhắn bị gỡ](https://github.com/thunguyen2905/Unsend-Recall-For-Messenger)
+- [Hack yoose camera](https://thao.pw/hacking-yoosee-camera/)
+
 [01/2019: Bão like fb](https://www.facebook.com/groups/j2team.community/permalink/885702488428539)
 
 [09/2020: Script hủy theo dõi ng lạ (link code die)](https://www.facebook.com/groups/j2team.community/permalink/1391638654501584/) ([link code mới](https://gist.github.com/jayremnt/8698ba9214806d44a2d8029eb989ba78)) [toàn bộ script](https://github.com/jayremnt/facebook-scripts-dom-manipulation)

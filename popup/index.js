@@ -325,7 +325,7 @@ function initSearch() {
 }
 
 (async function () {
-  initOpenInNewTabBtn();
+  // initOpenInNewTabBtn();
   initSearch();
   await initLanguage();
   await createTabs();
