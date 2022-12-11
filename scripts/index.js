@@ -117,7 +117,7 @@ import whatApp_storySaver from "./whatApp_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
 import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
-import fb_hideNewFeed from "./fb_hideNewFeed.js";
+import fb_toggleNewFeed from "./fb_toggleNewFeed.js";
 import fb_storyInfo from "./fb_storyInfo.js";
 import envato_previewBypass from "./envato_previewBypass.js";
 import shopee_topVariation from "./shopee_topVariation.js";
@@ -283,7 +283,7 @@ const allScripts = {
   send_shareFiles: addBadge(send_shareFiles, BADGES.new),
   fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.new),
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
-  fb_hideNewFeed: addBadge(fb_hideNewFeed, BADGES.new),
+  fb_toggleNewFeed: addBadge(fb_toggleNewFeed, BADGES.new),
   fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_previewBypass: addBadge(envato_previewBypass, BADGES.new),
   shopee_topVariation: addBadge(shopee_topVariation, BADGES.beta),

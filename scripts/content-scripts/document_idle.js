@@ -5,6 +5,7 @@
 // })();
 
 (async () => {
+  console.log("Useful-scripts: sending document_idle to background...");
   const response = await chrome.runtime.sendMessage({ type: "document_idle" });
-  console.log("sent document_idle to background", response);
+  console.log("> Useful-scripts: document_idle sent successfully", response);
 })();

@@ -24,6 +24,7 @@
 // })();
 
 (async () => {
+  console.log("Useful-scripts: sending document_start to background...");
   const response = await chrome.runtime.sendMessage({ type: "document_start" });
-  console.log("sent document_start to background", response);
+  console.log("> Useful-scripts: document_start sent successfully", response);
 })();

@@ -171,7 +171,9 @@ a:hover {
 }
 
 .content button {
-    display: block;
+    position: relative;
+    display: flex;
+    align-items: center;
     border: none;
     margin: 0.25em;
     padding: 0.75em 1em;
@@ -230,6 +232,29 @@ a:hover {
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
+}
+
+.content button .checkmark {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    background-color: #ddd;
+}
+
+.content button .checkmark.active:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 17px;
+    top: 5px;
+    width: 5px;
+    height: 15px;
+    border: solid #00c200;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .content button .badgeContainer {

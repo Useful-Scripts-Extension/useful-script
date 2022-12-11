@@ -5,8 +5,7 @@ import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isFunc = (script) =>
   script.onClick && typeof script.onClick === "function";
-const isLink = (script) => script.link && typeof script.link === "string";
-const isTitle = (script) => !isFunc(script) && !isLink(script);
+const isTitle = (script) => !isFunc(script);
 
 const specialTabs = [
   {
@@ -93,7 +92,7 @@ const tabs = [
     scripts: [
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
-      s.fb_hideNewFeed,
+      s.fb_toggleNewFeed,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
       s.fb_openSaved,
       s.fb_openMemories,
@@ -474,7 +473,6 @@ function getAllTabs() {
 export {
   isTitle,
   isFunc,
-  isLink,
   refreshSpecialTabs,
   tabs,
   specialTabs,
