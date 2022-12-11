@@ -9,6 +9,7 @@
 // })();
 
 (async () => {
+  console.log("Useful-scripts: sending document_end to background...");
   const response = await chrome.runtime.sendMessage({ type: "document_end" });
-  console.log("sent document_end to background", response);
+  console.log("> Useful-scripts: document_end sent successfully", response);
 })();

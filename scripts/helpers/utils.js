@@ -1,3 +1,18 @@
+// #region Storage Utils
+
+// https://developer.chrome.com/docs/extensions/reference/storage/
+export const localStorage = {
+  set: async (key, value) => {
+    return chrome.storage.sync.set({ [key]: value });
+  },
+  get: async (key, defaultValue = "") => {
+    let result = await chrome.storage.sync.get([key]);
+    return result[key] || defaultValue;
+  },
+};
+
+// #endregion
+
 // #region Tab Utils
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
@@ -43,7 +58,7 @@ export const runScript = async ({ func, tabId, args = [] }) => {
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults?.find((_) => _.result)?.result);
+        resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });
@@ -60,7 +75,7 @@ export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults.find((_) => _.result)?.result);
+        resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });

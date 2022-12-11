@@ -1,15 +1,5 @@
 import { allScripts } from "../../scripts/index.js";
-
-// https://developer.chrome.com/docs/extensions/reference/storage/
-export const localStorage = {
-  set: async (key, value) => {
-    return chrome.storage.sync.set({ [key]: value });
-  },
-  get: async (key, defaultValue = "") => {
-    let result = await chrome.storage.sync.get([key]);
-    return result[key] || defaultValue;
-  },
-};
+import { localStorage } from "../../scripts/helpers/utils.js";
 
 const createVariableSaver = (key, defaultValue = null) => ({
   set: async (data) => {

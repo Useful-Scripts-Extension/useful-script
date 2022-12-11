@@ -11,12 +11,7 @@ export default {
     vi: "",
   },
 
-  onDocumentStart: function () {
-    runScriptInCurrentTab(() => {
-      // alert("start");
-    });
-    console.log("start");
-  },
+  onDocumentStart: function () {},
   onDocumentEnd: function () {},
   onDocumentIdle: function () {
     console.log("idle");

@@ -5,7 +5,6 @@ import {
   isExtensionInSeperatedPopup,
   openExtensionInSeparatedPopup,
   removeAccents,
-  runScriptInCurrentTab,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
@@ -17,13 +16,7 @@ import {
   recentScriptsSaver,
 } from "./helpers/storage.js";
 import { viewScriptSource } from "./helpers/utils.js";
-import {
-  isFunc,
-  isLink,
-  isTitle,
-  refreshSpecialTabs,
-  getAllTabs,
-} from "./tabs.js";
+import { isFunc, isTitle, refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
@@ -153,9 +146,7 @@ function createScriptButton(script, isFavorite = false) {
   button.className = "tooltip";
 
   if (isFunc(script)) {
-    button.onclick = () => runScript(script);
-  } else if (isLink(script)) {
-    button.onclick = () => window.open(script.link);
+    button.onclick = () => runScript(script, button);
   } else {
     button.onclick = () => alert("empty script");
   }
@@ -177,6 +168,15 @@ function createScriptButton(script, isFavorite = false) {
     });
 
     button.appendChild(badgeContainer);
+  }
+
+  // button checker
+  if (script.checked) {
+    const checkmark = document.createElement("div");
+    checkmark.className = "checkmark";
+    button.appendChild(checkmark);
+
+    updateButtonChecker(script, button);
   }
 
   // button icon
@@ -252,13 +252,23 @@ function createScriptButton(script, isFavorite = false) {
   return button;
 }
 
-async function runScript(script) {
+async function updateButtonChecker(script, button) {
+  if (!script.checked) return;
+
+  let checkmark = button.querySelector(".checkmark");
+  if (!checkmark) return;
+  if (await script.checked?.()) checkmark.classList.add("active");
+  else checkmark.classList.remove("active");
+}
+
+async function runScript(script, button) {
   let tab = await getCurrentTab();
   let willRun = await checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
-    if (script.runInExtensionContext) script.onClick();
-    else runScriptInCurrentTab(script.onClick);
+    if (script.runInExtensionContext) await script.onClick();
+    else await runScriptInCurrentTab(script.onClick);
+    updateButtonChecker(script, button);
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");
