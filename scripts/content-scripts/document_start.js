@@ -22,3 +22,8 @@
 //   const contentMain = await import(src);
 //   contentMain.main();
 // })();
+
+(async () => {
+  const response = await chrome.runtime.sendMessage({ type: "document_start" });
+  console.log("sent document_start to background", response);
+})();

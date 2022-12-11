@@ -1,7 +1,6 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
-import { getAvailableScripts } from "../scripts/helpers/utils.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 const isFunc = (script) =>
@@ -456,16 +455,6 @@ function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   return result;
 }
 
-async function getAvailableScriptsInTabs(_tabs) {
-  return sortScriptsByTab(await getAvailableScripts(), _tabs);
-}
-
-function getScriptsWithBadgeId(scripts, badgeId) {
-  return scripts.filter((script) =>
-    script.badges?.find((_) => _.id === badgeId)
-  );
-}
-
 async function refreshSpecialTabs() {
   // add data to special tabs
   let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
@@ -474,30 +463,8 @@ async function refreshSpecialTabs() {
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
   if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
 
-  // let avaiTab = specialTabs.find((tab) => tab.id === CATEGORY.available.id);
-  // if (avaiTab) avaiTab.scripts = await getAvailableScriptsInTabs(tabs);
-
-  // ==== special badge tab ====
-  let allScriptsArr = Object.values(s);
-
   let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
-  if (allTab) {
-    allTab.scripts = sortScriptsByTab(allScriptsArr, tabs);
-  }
-
-  // let hotTab = specialTabs.find((tab) => tab.id === CATEGORY.hot.id);
-  // if (hotTab)
-  //   hotTab.scripts = sortScriptsByTab(
-  //     getScriptsWithBadgeId(allScriptsArr, BADGES.hot.id),
-  //     tabs
-  //   );
-
-  // let newTab = specialTabs.find((tab) => tab.id === CATEGORY.new.id);
-  // if (newTab)
-  //   newTab.scripts = sortScriptsByTab(
-  //     getScriptsWithBadgeId(allScriptsArr, BADGES.new.id),
-  //     tabs
-  //   );
+  if (allTab) allTab.scripts = sortScriptsByTab(Object.values(s), tabs);
 }
 
 function getAllTabs() {

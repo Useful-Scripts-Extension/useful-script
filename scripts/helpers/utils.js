@@ -1,6 +1,3 @@
-// LƯU Ý: Các hàm trong này chỉ dùng được trong extension context (các scripts có thuộc tính runInExtensionContext = true)
-import { allScripts } from "../index.js";
-
 // #region Tab Utils
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
@@ -80,17 +77,6 @@ export const runScriptFileInCurrentTab = async (scriptFile, args) => {
   focusToTab();
   return await runScriptFile({ scriptFile, args, tabId: tab.id });
 };
-
-export async function getAvailableScripts() {
-  let url = (await getCurrentTab()).url;
-  let avai = [];
-  for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, url)) {
-      avai.push(script);
-    }
-  }
-  return avai;
-}
 
 export const GlobalBlackList = ["edge://*", "chrome://*"];
 export async function checkBlackWhiteList(script, url) {
