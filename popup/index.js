@@ -5,6 +5,7 @@ import {
   isExtensionInSeperatedPopup,
   openExtensionInSeparatedPopup,
   removeAccents,
+  runScriptInCurrentTab,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
