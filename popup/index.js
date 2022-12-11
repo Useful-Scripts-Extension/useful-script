@@ -207,43 +207,41 @@ function createScriptButton(script, isFavorite = false) {
   title.innerHTML = t(script.name);
   button.appendChild(title);
 
-  if (isFunc(script)) {
-    // add to favorite button
-    const addFavoriteBtn = document.createElement("i");
-    addFavoriteBtn.className = isFavorite
-      ? "fa-solid fa-star star active"
-      : "fa-regular fa-star star";
-    addFavoriteBtn.title = isFavorite
-      ? t({
-          en: "Remove from favorite",
-          vi: "Xoá khỏi yêu thích",
-        })
-      : t({
-          en: "Add to farovite",
-          vi: "Thêm vào yêu thích",
-        });
-    addFavoriteBtn.onclick = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      favoriteScriptsSaver.toggle(script).then(createTabs);
-    };
-    button.appendChild(addFavoriteBtn);
+  // add to favorite button
+  const addFavoriteBtn = document.createElement("i");
+  addFavoriteBtn.className = isFavorite
+    ? "fa-solid fa-star star active"
+    : "fa-regular fa-star star";
+  addFavoriteBtn.title = isFavorite
+    ? t({
+        en: "Remove from favorite",
+        vi: "Xoá khỏi yêu thích",
+      })
+    : t({
+        en: "Add to farovite",
+        vi: "Thêm vào yêu thích",
+      });
+  addFavoriteBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    favoriteScriptsSaver.toggle(script).then(createTabs);
+  };
+  button.appendChild(addFavoriteBtn);
 
-    // view source button
-    const viewSourceBtn = document.createElement("i");
-    viewSourceBtn.title = t({
-      en: "View script source",
-      vi: "Xem mã nguồn",
-    });
-    viewSourceBtn.className = "fa-solid fa-code view-source";
-    viewSourceBtn.onclick = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+  // view source button
+  const viewSourceBtn = document.createElement("i");
+  viewSourceBtn.title = t({
+    en: "View script source",
+    vi: "Xem mã nguồn",
+  });
+  viewSourceBtn.className = "fa-solid fa-code view-source";
+  viewSourceBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-      viewScriptSource(script);
-    };
-    button.appendChild(viewSourceBtn);
-  }
+    viewScriptSource(script);
+  };
+  button.appendChild(viewSourceBtn);
 
   // tooltip
   const tooltip = document.createElement("span");
