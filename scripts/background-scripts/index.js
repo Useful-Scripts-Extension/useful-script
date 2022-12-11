@@ -10,7 +10,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   ) {
     let tab = sender.tab;
     Object.values(allScripts).forEach((script) => {
-      if (!checkBlackWhiteList(script, tab?.url)) return;
+      let willRun = checkBlackWhiteList(script, tab?.url);
+      if (!willRun) return;
       try {
         if (request.type == "document_start") script.onDocumentStart?.(tab);
         if (request.type == "document_end") script.onDocumentEnd?.(tab);
