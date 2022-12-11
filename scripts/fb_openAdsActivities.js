@@ -1,0 +1,12 @@
+export default {
+  icon: '<i class="fa-brands fa-adversal"></i>',
+  name: {
+    en: "View your ads activities",
+    vi: "Xem các quảng cáo fb bạn đã xem",
+  },
+  description: {
+    en: "View ads you have seen on facebook",
+    vi: "Xem các quảng cáo bạn đã xem trên facebook",
+  },
+  link: "https://www.facebook.com/ads/activity",
+};

@@ -145,6 +145,12 @@ import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
 import studocu_dl from "./studocu_dl.js";
 import pdfstuffs from "./pdfstuffs.js";
+import dino_hack from "./dino_hack.js";
+import google_mirror from "./google_mirror.js";
+import fb_openSaved from "./fb_openSaved.js";
+import fb_openMemories from "./fb_openMemories.js";
+import fb_openAdsActivities from "./fb_openAdsActivities.js";
+import fb_exportSaved from "./fb_exportSaved.js";
 
 // inject badges
 const allScripts = {
@@ -311,6 +317,12 @@ const allScripts = {
   smartPDF: addBadge(smartPDF, BADGES.new),
   studocu_dl: addBadge(studocu_dl, BADGES.new),
   pdfstuffs: addBadge(pdfstuffs, BADGES.new),
+  dino_hack: addBadge(dino_hack, BADGES.new),
+  google_mirror: addBadge(google_mirror, BADGES.new),
+  fb_openSaved: addBadge(fb_openSaved, BADGES.new),
+  fb_openMemories: addBadge(fb_openMemories, BADGES.new),
+  fb_openAdsActivities: addBadge(fb_openAdsActivities, BADGES.new),
+  fb_exportSaved: addBadge(fb_exportSaved, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

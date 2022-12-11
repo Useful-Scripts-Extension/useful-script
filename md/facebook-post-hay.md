@@ -41,3 +41,29 @@
 [10/2021: Kỹ thuật mod tính năng fb](https://www.facebook.com/groups/j2team.community/permalink/1693746070957506)
 
 [01/2019: Bão like fb](https://www.facebook.com/groups/j2team.community/permalink/885702488428539)
+
+[09/2020: Script hủy theo dõi ng lạ (link code die)](https://www.facebook.com/groups/j2team.community/permalink/1391638654501584/) ([link code mới](https://gist.github.com/jayremnt/8698ba9214806d44a2d8029eb989ba78)) [toàn bộ script](https://github.com/jayremnt/facebook-scripts-dom-manipulation)
+
+[08/2021: Xóa bạn inactive](https://www.facebook.com/groups/j2team.community/permalink/1632566443742136/)
+
+[07/2021: Tin nhắn tàng hình](https://www.facebook.com/groups/j2team.community/permalink/1607769529555161/)
+
+[08/2017: Autoit xem tin nhắn đầu tiên](https://www.facebook.com/groups/j2team.community/permalink/548712322127559/)
+
+[04/2017: Tool đăng bài, get id, get info, ...](https://www.facebook.com/groups/j2team.community/permalink/477195639279228/)
+
+[08/2021: Extension facebook lite](https://www.facebook.com/groups/j2team.community/permalink/1647394652259315/)
+
+[09/2017: Extension Studyphim VIP](https://www.facebook.com/groups/j2team.community/permalink/565933393738785/)
+
+[08/2021: Extension Tải Scribd](https://www.facebook.com/groups/j2team.community/permalink/1642123806119733/)
+
+[10/2019: List Extension tải file nhiều trang web](https://www.facebook.com/groups/j2team.community/permalink/1074924172839702/)
+
+[10/2020 Extension JUNO_OKYO](https://www.facebook.com/groups/j2team.community/permalink/1402355036763279/)
+
+[12/2021: Shopee loại hàng mua nhiều nhất](https://www.facebook.com/groups/j2team.community/permalink/1730753827256730/)
+
+[01/2020: Đếm tổng tiền cống cho shopee,tiki](https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/)
+
+[09/2019: Hack game dino](https://www.facebook.com/groups/j2team.community/permalink/1036677113331075/)

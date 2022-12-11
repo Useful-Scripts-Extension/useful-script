@@ -1,9 +1,10 @@
 import { downloadData, showLoading } from "./helpers/utils.js";
 
 export default {
+  icon: '<i class="fa-regular fa-images"></i>',
   name: {
-    en: "Download fb album media links",
-    vi: "Tải link ảnh/video từ album fb",
+    en: "Download album facebook",
+    vi: "Tải album facebook",
   },
   description: {
     en: "Download photo/video links from facebook album",
