@@ -13,9 +13,7 @@ export default {
 
   onDocumentStart: function (tab) {},
   onDocumentEnd: function (tab) {},
-  onDocumentIdle: function (tab) {
-    console.log("idle");
-  },
+  onDocumentIdle: function (tab) {},
   onClick: async function () {
     requireLazy(["MWChatTypingIndicator.bs"], (MWChatTypingIndicator) => {
       console.log(MWChatTypingIndicator);

@@ -191,6 +191,21 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // #endregion
 
+// #region Function Utils
+
+// https://stackoverflow.com/a/7960435
+export const isEmptyFunction = (func) => {
+  try {
+    var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
+    return !m.replace(/^\s*\/\/.*$/gm, "");
+  } catch (e) {
+    console.log("Error isEmptyFunction", e);
+    return false;
+  }
+};
+
+// #endregion
+
 // #region String Utils
 
 // https://stackoverflow.com/a/9310752
