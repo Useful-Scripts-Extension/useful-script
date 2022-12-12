@@ -1,9 +1,9 @@
-import { checkBlackWhiteList } from "../helpers/utils.js";
+import { checkBlackWhiteList, isEmptyFunction } from "../helpers/utils.js";
 import { allScripts } from "../index.js";
 
 const CACHED = {
   scriptRunInTabCounter: {},
-  fucusingTab: null,
+  focusingTabId: null,
 };
 
 const eventsMap = {
@@ -13,7 +13,7 @@ const eventsMap = {
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("Received message:", request, sender);
+  console.log("> Received message:", request, sender?.tab?.id);
 
   if (request.type in eventsMap) {
     let tab = sender.tab;
@@ -35,8 +35,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         Object.entries(eventsMap).forEach(([eventKey, funcName], index) => {
           if (
             request.type === eventKey &&
-            typeof script[funcName] === "function"
+            typeof script[funcName] === "function" &&
+            !isEmptyFunction(script[funcName])
           ) {
+            console.log("> Run " + script.id + " in tab " + tab.id);
             script[funcName](tab);
             CACHED.scriptRunInTabCounter[tab.id]++;
           }
@@ -47,16 +49,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     });
 
     // update badge
+    updateBadge(tab.id, CACHED.scriptRunInTabCounter[tab.id]);
   }
 });
 
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-  let { tabId } = activeInfo;
-  console.log(activeInfo, CACHED.scriptRunInTabCounter[tabId]?.toString());
-
-  updateBadge(CACHED.scriptRunInTabCounter[tabId]?.toString() || "");
-});
-
-function updateBadge(text) {
-  chrome.action.setBadgeText({ text });
+function updateBadge(tabId, text = "", bgColor = "#666") {
+  text = text.toString();
+  chrome.action.setBadgeText({ tabId, text: text == "0" ? "" : text });
+  chrome.action.setBadgeBackgroundColor({ color: bgColor });
 }
