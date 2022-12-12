@@ -8,5 +8,5 @@ export default {
     en: "Download all your data on Google",
     vi: "Tải xuống thông tin của bạn trên Google",
   },
-  link: "https://takeout.google.com/settings/takeout",
+  onClick: () => window.open("https://takeout.google.com/settings/takeout"),
 };

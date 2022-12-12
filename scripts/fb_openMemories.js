@@ -8,5 +8,5 @@ export default {
     en: "View your memories on facebook",
     vi: "Xem kỷ niệm (memories) của bạn trên facebook",
   },
-  link: "https://www.facebook.com/memories/",
+  onClick: () => window.open("https://www.facebook.com/memories/"),
 };
