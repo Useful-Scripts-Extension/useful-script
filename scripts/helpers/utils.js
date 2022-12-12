@@ -17,25 +17,39 @@ export const localStorage = {
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
 // Lấy window trình duyệt được sử dụng gần nhất
-export const getLastFocusedWindow = () => {
-  return !!CACHED.lastWindowId
-    ? chrome.windows.get(CACHED.lastWindowId)
-    : chrome.windows.getLastFocused({
-        // populate: true,
-        windowTypes: ["normal"],
-      });
-};
+// export const getLastFocusedWindow = () => {
+//   return !!CACHED.lastWindowId
+//     ? chrome.windows.get(CACHED.lastWindowId)
+//     : chrome.windows.getLastFocused({
+//         // populate: true,
+//         windowTypes: ["normal"],
+//       });
+// };
+
+// const CACHED = {
+//   lastWindowId: 0,
+// };
+
+// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
+// chrome.windows.onFocusChanged.addListener(
+//   (windowId) => {
+//     if (windowId !== chrome.windows.WINDOW_ID_NONE)
+//       CACHED.lastWindowId = windowId;
+//   },
+//   { windowTypes: ["normal"] }
+// );
 
 // Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
-  let win = await getLastFocusedWindow();
   let tabs = await chrome.tabs.query({
-    // currentWindow: false,
-    // lastFocusedWindow: false,
-    windowId: win.id,
+    currentWindow: true,
     active: true,
   });
   return tabs[0];
+};
+
+export const getCurrentTabId = async () => {
+  return (await getCurrentTab())?.id;
 };
 
 // https://stackoverflow.com/a/25226679/11898496
@@ -47,7 +61,7 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScript = async ({ func, tabId, args = [] }) => {
+export const runScriptInTab = async ({ func, tabId, args = [] }) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
@@ -84,7 +98,7 @@ export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
 export const runScriptInCurrentTab = async (func, args) => {
   const tab = await getCurrentTab();
   focusToTab(tab);
-  return await runScript({ func, args, tabId: tab.id });
+  return await runScriptInTab({ func, args, tabId: tab.id });
 };
 
 export const runScriptFileInCurrentTab = async (scriptFile, args) => {
@@ -135,7 +149,7 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
-  let res = await runScript({ func, tabId: tab.id, args });
+  let res = await runScriptInTab({ func, tabId: tab.id, args });
   !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
   closeAfterRunScript && closeTab(tab);
   return res;
@@ -342,19 +356,6 @@ export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){f
 // #endregion
 
 // #region UI
-
-const CACHED = {
-  lastWindowId: 0,
-};
-
-// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
-// chrome.windows.onFocusChanged.addListener(
-//   (windowId) => {
-//     if (windowId !== chrome.windows.WINDOW_ID_NONE)
-//       CACHED.lastWindowId = windowId;
-//   },
-//   { windowTypes: ["normal"] }
-// );
 
 const seperated_popup_search_param = "isSeparatedPopup";
 // Kiểm tra xem extension đang chạy trong popup rời hay không

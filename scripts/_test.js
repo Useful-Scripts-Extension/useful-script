@@ -11,9 +11,9 @@ export default {
     vi: "",
   },
 
-  onDocumentStart: function () {},
-  onDocumentEnd: function () {},
-  onDocumentIdle: function () {
+  onDocumentStart: function (tab) {},
+  onDocumentEnd: function (tab) {},
+  onDocumentIdle: function (tab) {
     console.log("idle");
   },
   onClick: async function () {

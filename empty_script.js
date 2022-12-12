@@ -1,4 +1,4 @@
-import { runScriptInCurrentTab } from "./helpers/utils.js";
+import { runScript } from "./helpers/utils.js";
 
 export default {
   icon: "",
@@ -17,9 +17,9 @@ export default {
   checked: function () {},
 
   // run in background script context
-  onDocumentStart: function () {},
-  onDocumentEnd: function () {},
-  onDocumentIdle: function () {},
+  onDocumentStart: function (tab) {},
+  onDocumentEnd: function (tab) {},
+  onDocumentIdle: function (tab) {},
 
   // run in extension popup page context
   onClick: function () {},

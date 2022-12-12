@@ -1,4 +1,8 @@
-import { localStorage, runScriptInCurrentTab } from "./helpers/utils.js";
+import {
+  getCurrentTab,
+  localStorage,
+  runScriptInTab,
+} from "./helpers/utils.js";
 
 const key = "ufs-fb-toggle-light";
 
@@ -16,9 +20,9 @@ export default {
   runInExtensionContext: true,
 
   checked: async () => await shared.get(),
-  onDocumentEnd: async function () {
+  onDocumentEnd: async function (tab) {
     let isOn = await shared.get();
-    if (isOn) shared.toggleLight(false);
+    if (isOn) shared.toggleLight(false, tab.id);
   },
   onClick: async function () {
     let current = await shared.get();
@@ -31,9 +35,11 @@ export default {
 export const shared = {
   get: async () => await localStorage.get(key),
   set: async (value) => await localStorage.set(key, value),
-  toggleLight: function (willShow) {
-    runScriptInCurrentTab(
-      (value) => {
+  toggleLight: async function (willShow, tabId) {
+    runScriptInTab({
+      tabId: tabId || (await getCurrentTab()).id,
+      args: [willShow],
+      func: (value) => {
         [
           document.querySelectorAll('[role="navigation"]')?.[2],
           document.querySelectorAll('[role="complementary"]')?.[0],
@@ -44,7 +50,6 @@ export const shared = {
           else alert("ERROR: Cannot find element");
         });
       },
-      [willShow]
-    );
+    });
   },
 };
