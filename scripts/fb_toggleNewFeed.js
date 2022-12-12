@@ -1,4 +1,8 @@
-import { localStorage, runScriptInCurrentTab } from "./helpers/utils.js";
+import {
+  getCurrentTab,
+  localStorage,
+  runScriptInTab,
+} from "./helpers/utils.js";
 
 const key = "ufs-fb-toggle-newfeed";
 
@@ -16,9 +20,9 @@ export default {
   runInExtensionContext: true,
 
   checked: async () => await shared.get(),
-  onDocumentEnd: async function () {
+  onDocumentEnd: async function (tab) {
     let isOn = await shared.get();
-    if (isOn) shared.toggleNewFeed(false);
+    if (isOn) shared.toggleNewFeed(false, tab.id);
   },
   onClick: async function () {
     let current = await shared.get();
@@ -31,9 +35,11 @@ export default {
 export const shared = {
   get: async () => localStorage.get(key),
   set: async (value) => localStorage.set(key, value),
-  toggleNewFeed: function (willShow) {
-    runScriptInCurrentTab(
-      (value) => {
+  toggleNewFeed: async function (willShow, tabId) {
+    runScriptInTab({
+      tabId: tabId || (await getCurrentTab()).id,
+      args: [willShow],
+      func: (value) => {
         let div = document.querySelector("#ssrb_feed_end")?.parentElement;
         if (!div) alert("Không tìm thấy NewFeed.");
         else {
@@ -41,7 +47,6 @@ export const shared = {
             value ?? div.style.display === "none" ? "block" : "none";
         }
       },
-      [willShow]
-    );
+    });
   },
 };
