@@ -273,7 +273,8 @@ const recommendTab = {
         en: "Know what your friends have sent you",
         vi: "Xem bạn bè đã gửi gì cho bạn",
       },
-      link: "https://github.com/HoangTran0410/RevealDeletedFBMessages",
+      onClick: () =>
+        window.open("https://github.com/HoangTran0410/RevealDeletedFBMessages"),
     },
     {
       icon: "https://www.facebook.com/favicon.ico",
@@ -282,7 +283,8 @@ const recommendTab = {
         en: "Tool download media from facebook automatic",
         vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
       },
-      link: "https://github.com/HoangTran0410/FBMediaDownloader",
+      onClick: () =>
+        window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
@@ -292,7 +294,10 @@ const recommendTab = {
         en: "Use fb better with more security and tools",
         vi: "Dùng fb sướng hơn bao giờ hết",
       },
-      link: "https://chrome.google.com/webstore/detail/j2team-security/hmlcjjclebjnfohgmgikjfnbmfkigocc",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/j2team-security/hmlcjjclebjnfohgmgikjfnbmfkigocc"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/fD5QA80tZj1up43xmnxnxiqKNEq7515-HNtLfjoZlz_I626zxXmjlhKaQPUme_evpCEnN5-U7VnG3VfOcnTPzv_i=w128-h128-e365-rj-sc0x00ffffff",
@@ -301,7 +306,10 @@ const recommendTab = {
         en: "View/Download source code of any extension",
         vi: "Xem/Tải source code của mọi extension",
       },
-      link: "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/nnMASpwJY4U5ukhKl4PfIdaOpuKXNrVvfIc9n8-NJOJIY7m3RLgsazN6ATmDkXyaMll8zADOXuBR574MwC7T71kJcQ=w128-h128-e365-rj-sc0x00ffffff",
@@ -310,7 +318,10 @@ const recommendTab = {
         en: "Block advertisements for all website",
         vi: "Chặn quảng cáo cho mọi website",
       },
-      link: "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/3ZU5aHnsnQUl9ySPrGBqe5LXz_z9DK05DEfk10tpKHv5cvG19elbOr0BdW_k8GjLMFDexT2QHlDwAmW62iLVdek--Q=w128-h128-e365-rj-sc0x00ffffff",
@@ -319,7 +330,10 @@ const recommendTab = {
         en: "Instant translation for all website",
         vi: "Dịch nhanh, trực tiếp trong mọi website",
       },
-      link: "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/M_2Q8eJAj1ejsRg30LuJs_Q94Jk7d-6ZbE5cyddULweH5LrfsVJtjK8zbpSjwA3G9oHwZeyHyrYrr971kqLwtNNP=w128-h128-e365-rj-sc0x00ffffff",
@@ -331,31 +345,10 @@ const recommendTab = {
         en: "Hide NSFW content from websites using this extension powered by AI",
         vi: "Ẩn mọi nội dung 18+ trên website, sử dụng trí tuệ nhân tạo",
       },
-      link: "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh",
-    },
-    {
-      icon: "https://lh3.googleusercontent.com/_l4UaD5Gwub2AwFZdomRpfMD2737y0Ow6k2sfVuWdm0fQ0iGSdEfhd9X77taeQ-0VM6Wi3HnpecLWUAI9uHq11TSktw=w128-h128-e365-rj-sc0x00ffffff",
-      name: {
-        en: "Read Aloud: Text to speech voice reader",
-        vi: "Read Aloud: Đọc cho tôi nghe",
-      },
-      description: {
-        en: "Read aloud website content, multilanguage",
-        vi: "Đọc nội dung trang web, đa ngôn ngữ",
-      },
-      link: "https://chrome.google.com/webstore/detail/read-aloud-a-text-to-spee/hdhinadidafjejdhmfkjgnolgimiaplp",
-    },
-    {
-      icon: "https://lh3.googleusercontent.com/s-86QIqiZeS3NSGiw95oJAm9ExGyUat2oF3hqOu4xVypfn18HX6LYNwJUtKoSYFRtf4-qBSvBYr41ZZWPqbh5Hh-xrQ=w128-h128-e365-rj-sc0x00ffffff",
-      name: {
-        en: "Video Downloader professional",
-        vi: "Video Downloader professional",
-      },
-      description: {
-        en: "Download video from almost any websites",
-        vi: "Tải video từ hầu như mọi website",
-      },
-      link: "https://chrome.google.com/webstore/detail/video-downloader-professi/elicpjhcidhpjomhibiffojpinpmmpil",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/tGvFFAf_mkjk-mfiRipdYU_WTMCZSReAy4opGxvWJppyHzHTKy6f1NO1tSpV998-ZcKJjPOWpWbtEFLEMr0Y_SyBKA=w128-h128-e365-rj-sc0x00ffffff",
@@ -367,7 +360,10 @@ const recommendTab = {
         en: "Video, Story, download with one click",
         vi: "Tải video, story facebook với 1 nút nhấn",
       },
-      link: "https://chrome.google.com/webstore/detail/dyl-download-facebook-vid/honmapcmnfgjmahijdniaaollhhfpcnj?hl=vi",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/dyl-download-facebook-vid/honmapcmnfgjmahijdniaaollhhfpcnj?hl=vi"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
@@ -376,7 +372,10 @@ const recommendTab = {
         en: "Darkmode for every website",
         vi: "Chế độ tối cho mọi trang web",
       },
-      link: "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh",
+      onClick: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+        ),
     },
     {
       icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
@@ -385,17 +384,7 @@ const recommendTab = {
         en: "Check deals/prices in ecommerce websites",
         vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
       },
-      link: "https://beecost.vn/",
-    },
-
-    {
-      icon: "https://lh3.googleusercontent.com/ZzWGiT5YRGYjeltQ5vkZmsLAQ7Qj4eQnltDmE34KyUnGKNofHRqPF_cy19i2rc58sajKbamz-9rX2BZ2zXgPUm0e2g=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Web Developer", vi: "Web Developer" },
-      description: {
-        en: "Adds a toolbar button with various web developer tools.",
-        vi: "Các công cụ hay cho web developer",
-      },
-      link: "https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm",
+      onClick: () => window.open("https://beecost.vn/"),
     },
     {
       icon: "https://lh3.googleusercontent.com/wafm5uFaPRSo1RHMbhcdEghFzTPUfYo5GosPmBhkdNuYlGz8WigoAQM-8lulzuhWQBGTbbUyRvfoyIMDypJzuAVZ=w128-h128-e365-rj-sc0x00ffffff",
@@ -404,31 +393,7 @@ const recommendTab = {
         en: "Filetree for github",
         vi: "Cây thư mục cho github",
       },
-      link: "https://www.octotree.io/",
-    },
-    {
-      icon: "https://lh3.googleusercontent.com/J7n7qDIrekKpjDDP-oLo03rvP2drIRqOqTDdSK5MyUBhE2UCkYx1LXurAVNA_4lgHCkdZUtnVaEt0SvGed9gaSKhAA=w128-h128-e365-rj-sc0x00ffffff",
-      name: {
-        en: "Omni - Bookmark, History & Tab Manager",
-        vi: "Omni - Bookmark, History & Tab Manager",
-      },
-      description: {
-        en: "Supercharge Chrome with commands, shortcuts, and more",
-        vi: "Dùng trình duyệt nhanh hơn với commands và phím tắt",
-      },
-      link: "https://chrome.google.com/webstore/detail/omni-bookmark-history-tab/mapjgeachilmcbbokkgcbgpbakaaeehi",
-    },
-    {
-      icon: "https://lh3.googleusercontent.com/3hxmIF_t-oFuV8LAApMFpHs3Rexrox5ftHat7uwJuhV8ORGlyDRadqZG0HiY-q56HA70HT6C-8c1Z9BgbcjSJMaa8w=w128-h128-e365-rj-sc0x00ffffff",
-      name: {
-        en: "ColorZilla",
-        vi: "ColorZilla",
-      },
-      description: {
-        en: "Advanced Eyedropper, Color Picker, Gradient Generator and other colorful goodies",
-        vi: "Trích xuất màu từ trang web",
-      },
-      link: "https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp",
+      onClick: () => window.open("https://www.octotree.io/"),
     },
   ],
 };

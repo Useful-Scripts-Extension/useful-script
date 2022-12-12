@@ -8,5 +8,5 @@ export default {
     en: "View ads you have seen on facebook",
     vi: "Xem các quảng cáo bạn đã xem trên facebook",
   },
-  link: "https://www.facebook.com/ads/activity",
+  onClick: () => window.open("https://www.facebook.com/ads/activity"),
 };

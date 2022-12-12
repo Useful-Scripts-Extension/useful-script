@@ -14,7 +14,7 @@ export default {
     en: "",
     vi: "",
   },
-  // link: "https://dlstudocu.com/",
+  // onClick: () => window.open("https://dlstudocu.com/"),
   runInExtensionContext: true,
 
   onClick: async function () {

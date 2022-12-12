@@ -8,5 +8,5 @@ export default {
     en: "View saved contents on Facebook",
     vi: "Xem nội dung tôi đã lưu trên Facebook",
   },
-  link: "https://www.facebook.com/saved",
+  onClick: () => window.open("https://www.facebook.com/saved"),
 };

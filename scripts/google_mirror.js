@@ -8,5 +8,5 @@ export default {
     en: "Google games. We create, restore, and discover interactive Google Easter Eggs. Just click and play them online for free.",
     vi: "Chơi các trò chơi (minigame) từng có trên google tìm kiếm",
   },
-  link: "https://elgoog.im/",
+  onClick: () => window.open("https://elgoog.im/"),
 };

@@ -1,3 +1,5 @@
+import { runScript } from "./helpers/utils.js";
+
 export default {
   icon: "",
   name: {
@@ -8,19 +10,20 @@ export default {
     en: "",
     vi: "",
   },
-
-  // Chọn 1 trong 2 cách, xoá cách không dùng:
-
-  // Cách 1: Mở link web trong tab mới, không cần dùng onClick
-  link: "",
-
-  // Cách 2: Chạy script
   blackList: [],
   whiteList: [],
-  runInExtensionContext: false,
 
+  // Check if this script is on (show checkmark on UI)
+  checked: function () {},
+
+  // run in background script context
+  onDocumentStart: function (tab) {},
+  onDocumentEnd: function (tab) {},
+  onDocumentIdle: function (tab) {},
+
+  // run in extension popup page context
   onClick: function () {},
 };
 
-// Những thuộc tính/hàm có thể chia sẻ cho cách scripts khác sử dụng sẽ được viết vào đây
+// functions/attributes that other scripts can import and use
 export const shared = {};
