@@ -239,7 +239,7 @@ a:hover {
     width: 15px;
     height: 15px;
     margin-right: 5px;
-    background-color: #ddd;
+    background-color: #e6e6e6;
 }
 
 .content button .checkmark.active:after {
@@ -250,7 +250,7 @@ a:hover {
     top: 5px;
     width: 5px;
     height: 15px;
-    border: solid #00c200;
+    border: solid #20ba56;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
