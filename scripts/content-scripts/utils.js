@@ -1,4 +1,6 @@
-export const baseURL = "/scripts/content-scripts/scripts/";
+export function getURL(url) {
+  return chrome.runtime.getURL(url);
+}
 
 export function injectScript(filePathOrUrl, isExternal = false) {
   try {

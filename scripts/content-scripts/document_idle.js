@@ -1,8 +1,8 @@
-// (async () => {
-// const { injectScript, injectCss, baseURL } = await import("./utils.js");
-// if (location.hostname === "movies.hdviet.com")
-//   injectScript(baseURL + "movie_hd_viet.js");
-// })();
+(async () => {
+  const { getURL, injectScript, injectCss } = await import("./utils.js");
+  if (location.hostname === "movies.hdviet.com")
+    injectScript(getURL("./scripts/movie_hd_viet.js"));
+})();
 
 (async () => {
   console.log("Useful-scripts: sending document_idle to background...");

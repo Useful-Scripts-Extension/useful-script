@@ -16,12 +16,12 @@ export default {
   // Check if this script is on (show checkmark on UI)
   checked: function () {},
 
-  // run in background script context
+  // run in content-script context
   onDocumentStart: function (tab) {},
   onDocumentEnd: function (tab) {},
   onDocumentIdle: function (tab) {},
 
-  // run in extension popup page context
+  // run in extension-popup-page context
   onClick: function () {},
 };
 
