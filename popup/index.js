@@ -1,10 +1,8 @@
+import { GlobalBlackList } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
   getCurrentTab,
-  GlobalBlackList,
-  isExtensionInSeperatedPopup,
   isFunction,
-  openExtensionInSeparatedPopup,
   removeAccents,
   runScriptInCurrentTab,
 } from "../scripts/helpers/utils.js";
@@ -289,18 +287,6 @@ async function runScript(script, button) {
           `${b ? `+ Không chạy tại:  ${b}` : ""}`,
       })
     );
-  }
-}
-
-function initOpenInNewTabBtn() {
-  if (isExtensionInSeperatedPopup()) {
-    document.title = "Useful Scripts";
-    openInNewTabBtn.remove();
-  } else {
-    openInNewTabBtn.onclick = () => {
-      openExtensionInSeparatedPopup();
-      window.close();
-    };
   }
 }
 
