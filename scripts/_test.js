@@ -11,18 +11,24 @@ export default {
     vi: "",
   },
 
-  onDocumentStart: function (tab) {},
-  onDocumentEnd: function (tab) {},
-  onDocumentIdle: function (tab) {},
-  onClick: async function () {
-    requireLazy(["MWChatTypingIndicator.bs"], (MWChatTypingIndicator) => {
-      console.log(MWChatTypingIndicator);
+  checked: () => true,
+  onDocumentStart: function () {},
+  onDocumentEnd: function () {},
+  onDocumentIdle: function () {},
 
-      const MWChatTypingIndicatorOrig = MWChatTypingIndicator.make;
-      MWChatTypingIndicator.make = function (...a) {
-        console.log(a);
-        return MWChatTypingIndicatorOrig.apply(this, arguments);
-      };
+  runInExtensionContext: true,
+  onClick: async function () {
+    chrome.runtime.getPackageDirectoryEntry(function (root) {
+      console.log(root);
     });
+    // requireLazy(["MWChatTypingIndicator.bs"], (MWChatTypingIndicator) => {
+    //   console.log(MWChatTypingIndicator);
+
+    //   const MWChatTypingIndicatorOrig = MWChatTypingIndicator.make;
+    //   MWChatTypingIndicator.make = function (...a) {
+    //     console.log(a);
+    //     return MWChatTypingIndicatorOrig.apply(this, arguments);
+    //   };
+    // });
   },
 };

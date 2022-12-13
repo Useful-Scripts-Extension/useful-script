@@ -172,7 +172,7 @@ function createScriptButton(script, isFavorite = false) {
   }
 
   // button checker
-  if (script.checked) {
+  if (typeof script.isActive === "function") {
     const checkmark = document.createElement("div");
     checkmark.className = "checkmark";
     button.appendChild(checkmark);
@@ -254,22 +254,22 @@ function createScriptButton(script, isFavorite = false) {
 }
 
 async function updateButtonChecker(script, button) {
-  if (!script.checked) return;
+  if (!script.isActive || typeof script.isActive !== "function") return;
 
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (await script.checked?.()) checkmark.classList.add("active");
+  if (await script.isActive?.()) checkmark.classList.add("active");
   else checkmark.classList.remove("active");
 }
 
 async function runScript(script, button) {
   let tab = await getCurrentTab();
-  let willRun = await checkBlackWhiteList(script, tab.url);
+  let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
     if (script.runInExtensionContext) await script.onClick();
     else await runScriptInCurrentTab(script.onClick);
-    updateButtonChecker(script, button);
+    await updateButtonChecker(script, button);
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");

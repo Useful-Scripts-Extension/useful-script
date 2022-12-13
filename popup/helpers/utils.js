@@ -1,12 +1,13 @@
 import { t } from "./lang.js";
 
-export function viewScriptSource(script) {
-  localStorage.viewScriptSource_sharedData = JSON.stringify({
-    name: t(script.name),
-    id: script.id,
-    description: t(script.description),
-    source: script.onClick?.toString() || "window.open('" + script.link + "')",
-  });
+export async function viewScriptSource(script) {
+  localStorage.viewScriptSource_sharedData = script.id;
+  //  JSON.stringify({
+  //   id: script.id,
+  //   name: t(script.name),
+  //   description: t(script.description),
+  //   source: await getScriptSource(script),
+  // });
 
   chrome.windows.create({
     url: chrome.runtime.getURL("pages/viewScriptSource/index.html"),

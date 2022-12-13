@@ -14,15 +14,24 @@ export default {
   whiteList: [],
 
   // Check if this script is on (show checkmark on UI)
-  checked: function () {},
+  isActive: () => {},
 
-  // run in content-script context
-  onDocumentStart: function (tab) {},
-  onDocumentEnd: function (tab) {},
-  onDocumentIdle: function (tab) {},
+  // run in background context
+  backgroundScript: {
+    onDocumentStart: () => {},
+    onDocumentEnd: () => {},
+    onDocumentIdle: () => {},
+  },
+
+  // run in web page context
+  contentScript: {
+    onDocumentStart: () => {},
+    onDocumentEnd: () => {},
+    onDocumentIdle: () => {},
+  },
 
   // run in extension-popup-page context
-  onClick: function () {},
+  onClick: () => {},
 };
 
 // functions/attributes that other scripts can import and use

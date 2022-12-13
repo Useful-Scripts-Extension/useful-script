@@ -3,7 +3,6 @@ import { allScripts } from "../index.js";
 
 const CACHED = {
   scriptRunInTabCounter: {},
-  focusingTabId: null,
 };
 
 const eventsMap = {
@@ -32,17 +31,15 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (!willRun) return;
 
       try {
-        Object.entries(eventsMap).forEach(([eventKey, funcName], index) => {
-          if (
-            request.type === eventKey &&
-            typeof script[funcName] === "function" &&
-            !isEmptyFunction(script[funcName])
-          ) {
-            console.log("> Run " + script.id + " in tab " + tab.id);
-            script[funcName](tab);
-            CACHED.scriptRunInTabCounter[tab.id]++;
-          }
-        });
+        let funcName = eventsMap[request.type];
+        let func = script.backgroundScript?.[funcName];
+        let isActive = script.isActive?.();
+
+        if (isActive && typeof func === "function" && !isEmptyFunction(func)) {
+          console.log("> Run " + script.id + " in tab " + tab.id);
+          func(tab);
+          CACHED.scriptRunInTabCounter[tab.id]++;
+        }
       } catch (e) {
         console.log("ERROR", e);
       }
