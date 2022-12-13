@@ -1,4 +1,26 @@
-import { GlobalBlackList } from "./constants.js";
+import { allScripts } from "../index.js";
+import { EventMap, Events, GlobalBlackList } from "./constants.js";
+
+export async function runAllScriptWithEventType(eventType, scriptType, url) {
+  let event = Events[eventType];
+  let funcName = EventMap[event];
+
+  Object.values(allScripts).map((script) => {
+    if (!checkBlackWhiteList(script, url)) return;
+
+    let func = script?.[scriptType]?.[funcName];
+    if (isFunction(func) && !isEmptyFunction(func)) {
+      func();
+      console.log(`> Run ${script.id} ${scriptType} ${funcName}`);
+    }
+  });
+}
+
+export async function sendEventToBackground(event) {
+  console.log("... Sending " + event + " to background...");
+  const response = await chrome.runtime.sendMessage({ event });
+  console.log("> " + event + " sent successfully", response);
+}
 
 // #region Storage Utils
 

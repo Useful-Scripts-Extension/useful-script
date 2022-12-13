@@ -9,14 +9,15 @@
 // })();
 
 (async () => {
-  const { allScripts } = await import("../index.js");
-  Object.values(allScripts).map((script) => {
-    script.contentScript?.onDocumentEnd?.();
-  });
-})();
+  const { Events, ScriptType } = await import("../helpers/constants.js");
+  const { runAllScriptWithEventType, sendEventToBackground } = await import(
+    "../helpers/utils.js"
+  );
 
-(async () => {
-  console.log("Useful-scripts: sending document_end to background...");
-  const response = await chrome.runtime.sendMessage({ type: "document_end" });
-  console.log("> Useful-scripts: document_end sent successfully", response);
+  runAllScriptWithEventType(
+    Events.document_end,
+    ScriptType.contentScript,
+    location.href
+  );
+  sendEventToBackground(Events.document_end);
 })();
