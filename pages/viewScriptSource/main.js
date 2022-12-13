@@ -1,19 +1,11 @@
-window.onload = () => {
-  let sharedData;
+window.onload = async () => {
   try {
-    sharedData = JSON.parse(localStorage.viewScriptSource_sharedData);
-    const { name, source, description, id } = sharedData;
-    if (name && source) {
-      let title = "Useful-script / " + name + " / " + description;
-      let comment = `// ${name}\n// ${description}\n\n`;
-      let sourceCode = source.replace("function ", "function " + (id || "_"));
+    let scriptId = localStorage.viewScriptSource_sharedData;
+    let source = await getScriptSource(scriptId);
 
-      document.querySelector("#copy-btn").onclick = () => copy(sourceCode);
-
-      document.title = title;
-      document.querySelector("code").innerHTML = escapeHTML(
-        comment + sourceCode
-      );
+    if (source) {
+      document.querySelector("#copy-btn").onclick = () => copy(source);
+      document.querySelector("code").innerHTML = escapeHTML(source);
 
       hljs.highlightAll();
       hljs.initLineNumbersOnLoad();
@@ -25,6 +17,15 @@ window.onload = () => {
 function copy(text) {
   navigator.clipboard.writeText(text);
   alert("Copied");
+}
+
+// https://stackoverflow.com/a/26276924/11898496
+async function getScriptSource(scriptId) {
+  let fileName = scriptId + ".js";
+  let path = "/scripts/" + fileName;
+  let res = await fetch(path);
+  let source = await res.text();
+  return source;
 }
 
 // https://stackoverflow.com/a/6234804/11898496
