@@ -5,14 +5,15 @@
 })();
 
 (async () => {
-  const { allScripts } = await import("../index.js");
-  Object.values(allScripts).map((script) => {
-    script.contentScript?.onDocumentIdle?.();
-  });
-})();
+  const { Events, ScriptType } = await import("../helpers/constants.js");
+  const { runAllScriptWithEventType, sendEventToBackground } = await import(
+    "../helpers/utils.js"
+  );
 
-(async () => {
-  console.log("Useful-scripts: sending document_idle to background...");
-  const response = await chrome.runtime.sendMessage({ type: "document_idle" });
-  console.log("> Useful-scripts: document_idle sent successfully", response);
+  runAllScriptWithEventType(
+    Events.document_idle,
+    ScriptType.contentScript,
+    location.href
+  );
+  sendEventToBackground(Events.document_idle);
 })();

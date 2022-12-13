@@ -1,3 +1,8 @@
+export const ScriptType = {
+  contentScript: "contentScript",
+  backgroundScript: "backgroundScript",
+};
+
 export const Events = {
   document_start: "document_start",
   document_idle: "document_idle",

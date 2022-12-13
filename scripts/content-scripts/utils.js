@@ -1,5 +1,5 @@
-export function getURL(url) {
-  return chrome.runtime.getURL(url);
+export function getURL(fileName) {
+  return "/scripts/content-scripts/scripts/" + fileName;
 }
 
 export function injectScript(filePathOrUrl, isExternal = false) {
