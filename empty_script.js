@@ -18,9 +18,9 @@ export default {
 
   // run in background context
   backgroundScript: {
-    onDocumentStart: () => {},
-    onDocumentEnd: () => {},
-    onDocumentIdle: () => {},
+    onDocumentStart: (tab) => {},
+    onDocumentEnd: (tab) => {},
+    onDocumentIdle: (tab) => {},
   },
 
   // run in web page context
@@ -31,6 +31,9 @@ export default {
   },
 
   // run in extension-popup-page context
+  onClickExtension: () => {},
+
+  // run in web page context
   onClick: () => {},
 };
 

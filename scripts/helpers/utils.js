@@ -1,3 +1,5 @@
+import { GlobalBlackList } from "./constants";
+
 // #region Storage Utils
 
 // https://developer.chrome.com/docs/extensions/reference/storage/
@@ -107,7 +109,6 @@ export const runScriptFileInCurrentTab = async (scriptFile, args) => {
   return await runScriptFile({ scriptFile, args, tabId: tab.id });
 };
 
-export const GlobalBlackList = ["edge://*", "chrome://*"];
 export function checkBlackWhiteList(script, url) {
   if (!url) return false;
 
@@ -192,6 +193,8 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 // #endregion
 
 // #region Function Utils
+
+export const isFunction = (o) => typeof o === "function";
 
 // https://stackoverflow.com/a/7960435
 export const isEmptyFunction = (func) => {
@@ -372,19 +375,20 @@ export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){f
 
 // #region UI
 
-const seperated_popup_search_param = "isSeparatedPopup";
+// const seperated_popup_search_param = "isSeparatedPopup";
+
 // Kiểm tra xem extension đang chạy trong popup rời hay không
-export const isExtensionInSeperatedPopup = () => {
-  let url = new URL(location.href);
-  return url.searchParams.has(seperated_popup_search_param);
-};
+// export const isExtensionInSeperatedPopup = () => {
+//   let url = new URL(location.href);
+//   return url.searchParams.has(seperated_popup_search_param);
+// };
 
 // Mở extension trong popup rời
-export const openExtensionInSeparatedPopup = () => {
-  let url = new URL(location.href);
-  url.searchParams.set(seperated_popup_search_param, 1);
-  popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
-};
+// export const openExtensionInSeparatedPopup = () => {
+//   let url = new URL(location.href);
+//   url.searchParams.set(seperated_popup_search_param, 1);
+//   popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
+// };
 
 // https://stackoverflow.com/a/4068385/11898496
 export function popupCenter({ url, title, w, h }) {

@@ -19,12 +19,21 @@ export default {
   whiteList: ["https://www.facebook.com"],
   runInExtensionContext: true,
 
-  checked: async () => await shared.get(),
-  onDocumentEnd: async function (tab) {
-    let isOn = await shared.get();
-    if (isOn) shared.toggleLight(false, tab.id);
+  isActive: async () => await shared.get(),
+
+  backgroundScript: {
+    onDocumentEnd: async function () {
+      console.log("fb_toggle light");
+    },
   },
-  onClick: async function () {
+  contentScript: {
+    onDocumentStart: async () => {
+      let isOn = await shared.get();
+      if (isOn) shared.toggleLight(false, tab.id);
+    },
+  },
+
+  onClickExtension: async function () {
     let current = await shared.get();
     let newVal = !current;
     shared.toggleLight(!newVal);
