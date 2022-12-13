@@ -19,12 +19,12 @@ export default {
   whiteList: ["https://www.facebook.com"],
   runInExtensionContext: true,
 
-  checked: async () => await shared.get(),
+  isActive: async () => await shared.get(),
   onDocumentEnd: async function (tab) {
     let isOn = await shared.get();
     if (isOn) shared.toggleNewFeed(false, tab.id);
   },
-  onClick: async function () {
+  onClickExtension: async function () {
     let current = await shared.get();
     let newVal = !current;
     shared.toggleNewFeed(!newVal);

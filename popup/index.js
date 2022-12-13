@@ -3,6 +3,7 @@ import {
   getCurrentTab,
   GlobalBlackList,
   isExtensionInSeperatedPopup,
+  isFunction,
   openExtensionInSeparatedPopup,
   removeAccents,
   runScriptInCurrentTab,
@@ -17,7 +18,7 @@ import {
   recentScriptsSaver,
 } from "./helpers/storage.js";
 import { viewScriptSource } from "./helpers/utils.js";
-import { isFunc, isTitle, refreshSpecialTabs, getAllTabs } from "./tabs.js";
+import { canClick, isTitle, refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
@@ -146,7 +147,7 @@ function createScriptButton(script, isFavorite = false) {
   const button = document.createElement("button");
   button.className = "tooltip";
 
-  if (isFunc(script)) {
+  if (canClick(script)) {
     button.onclick = () => runScript(script, button);
   } else {
     button.onclick = () => alert("empty script");
@@ -172,7 +173,7 @@ function createScriptButton(script, isFavorite = false) {
   }
 
   // button checker
-  if (typeof script.isActive === "function") {
+  if (isFunction(script.isActive)) {
     const checkmark = document.createElement("div");
     checkmark.className = "checkmark";
     button.appendChild(checkmark);
@@ -254,7 +255,7 @@ function createScriptButton(script, isFavorite = false) {
 }
 
 async function updateButtonChecker(script, button) {
-  if (!script.isActive || typeof script.isActive !== "function") return;
+  if (!isFunction(script.isActive)) return;
 
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
@@ -267,8 +268,8 @@ async function runScript(script, button) {
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
-    if (script.runInExtensionContext) await script.onClick();
-    else await runScriptInCurrentTab(script.onClick);
+    if (isFunction(script.onClickExtension)) await script.onClickExtension();
+    if (isFunction(script.onClick)) await runScriptInCurrentTab(script.onClick);
     await updateButtonChecker(script, button);
   } else {
     let w = script?.whiteList?.join(", ");

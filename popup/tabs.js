@@ -1,11 +1,12 @@
+import { isFunction } from "../scripts/helpers/utils.js";
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
-const isFunc = (script) =>
-  script.onClick && typeof script.onClick === "function";
-const isTitle = (script) => !isFunc(script);
+const canClick = (script) =>
+  isFunction(script.onClick) || isFunction(script.onClickExtension);
+const isTitle = (script) => !canClick(script);
 
 const specialTabs = [
   {
@@ -437,7 +438,7 @@ function getAllTabs() {
 
 export {
   isTitle,
-  isFunc,
+  canClick,
   refreshSpecialTabs,
   tabs,
   specialTabs,

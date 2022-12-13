@@ -1,27 +1,28 @@
-import { checkBlackWhiteList, isEmptyFunction } from "../helpers/utils.js";
 import { allScripts } from "../index.js";
+import { EventMap, Events } from "../helpers/constants.js";
+import {
+  checkBlackWhiteList,
+  isEmptyFunction,
+  isFunction,
+} from "../helpers/utils.js";
 
 const CACHED = {
   scriptRunInTabCounter: {},
 };
 
-const eventsMap = {
-  document_start: "onDocumentStart",
-  document_end: "onDocumentEnd",
-  document_idle: "onDocumentIdle",
-};
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log("> Received message:", request, sender?.tab?.id);
 
-  if (request.type in eventsMap) {
+  let event = request.event;
+  let funcName = EventMap[event];
+  if (funcName) {
     let tab = sender.tab;
 
     if (
       // init value
       !(tab.id in CACHED.scriptRunInTabCounter) ||
       // OR reset script count on document_start
-      request.type === "document_start"
+      event === Events.document_start
     )
       CACHED.scriptRunInTabCounter[tab.id] = 0;
 
@@ -31,11 +32,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (!willRun) return;
 
       try {
-        let funcName = eventsMap[request.type];
         let func = script.backgroundScript?.[funcName];
         let isActive = script.isActive?.();
 
-        if (isActive && typeof func === "function" && !isEmptyFunction(func)) {
+        if (isActive && isFunction(func) && !isEmptyFunction(func)) {
           console.log("> Run " + script.id + " in tab " + tab.id);
           func(tab);
           CACHED.scriptRunInTabCounter[tab.id]++;
