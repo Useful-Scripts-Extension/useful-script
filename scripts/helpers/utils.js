@@ -1,4 +1,4 @@
-import { GlobalBlackList } from "./constants";
+import { GlobalBlackList } from "./constants.js";
 
 // #region Storage Utils
 
