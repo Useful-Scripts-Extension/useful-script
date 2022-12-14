@@ -1,4 +1,4 @@
-import { runScript } from "./helpers/utils.js";
+import { runScript, runScriptInCurrentTab } from "./helpers/utils.js";
 
 export default {
   icon: "",
@@ -14,7 +14,8 @@ export default {
   whiteList: [],
 
   // Check if this script is on (show checkmark on UI)
-  isActive: () => {},
+  getActive: () => {},
+  setActive: () => {},
 
   // run in background context
   backgroundScript: {

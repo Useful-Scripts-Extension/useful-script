@@ -11,7 +11,10 @@ export async function runAllScriptWithEventType(eventType, scriptType, url) {
     let func = script?.[scriptType]?.[funcName];
     if (isFunction(func) && !isEmptyFunction(func)) {
       func();
-      console.log(`> Run ${script.id} ${scriptType} ${funcName}`);
+      console.log(
+        `%c > Run ${script.id} ${scriptType} ${funcName}`,
+        "background: #222; color: #bada55"
+      );
     }
   });
 }

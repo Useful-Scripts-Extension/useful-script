@@ -2,7 +2,7 @@ import { ScriptType } from "../helpers/constants.js";
 import { runAllScriptWithEventType } from "../helpers/utils.js";
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("> Received message:", request, sender?.tab?.id);
+  console.log("> Received message:", request, sender?.tab?.url);
 
   runAllScriptWithEventType(
     request.event,
