@@ -5,12 +5,13 @@ export async function runAllScriptWithEventType(eventType, scriptType, url) {
   let event = Events[eventType];
   let funcName = EventMap[event];
 
-  Object.values(allScripts).map((script) => {
+  Object.values(allScripts).map(async (script) => {
     if (!checkBlackWhiteList(script, url)) return;
 
     let func = script?.[scriptType]?.[funcName];
     if (isFunction(func) && !isEmptyFunction(func)) {
-      func();
+      let isActive = (await script.getActive?.()) ?? true;
+      isActive && func();
       console.log(
         `%c > Run ${script.id} ${scriptType} ${funcName}`,
         "background: #222; color: #bada55"
