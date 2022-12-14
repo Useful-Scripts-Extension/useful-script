@@ -1,5 +1,4 @@
 import {
-  Events,
   GlobalBlackList,
   MsgType,
   ScriptType,
@@ -10,6 +9,7 @@ import {
   getCurrentTab,
   isFunction,
   removeAccents,
+  runScriptInCurrentTab,
   sendEventToTab,
   toggleActiveScript,
 } from "../scripts/helpers/utils.js";
@@ -22,8 +22,13 @@ import {
   favoriteScriptsSaver,
   recentScriptsSaver,
 } from "./helpers/storage.js";
-import { viewScriptSource } from "./helpers/utils.js";
-import { canClick, isTitle, refreshSpecialTabs, getAllTabs } from "./tabs.js";
+import {
+  canAutoRun,
+  canClick,
+  isTitle,
+  viewScriptSource,
+} from "./helpers/utils.js";
+import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
@@ -171,9 +176,17 @@ function createScriptButton(script, isFavorite = false) {
   const button = document.createElement("button");
   button.className = "tooltip";
   if (canClick(script)) {
-    button.onclick = () => runScript(script, button);
+    button.onclick = () => runScript(script);
+  } else if (canAutoRun(script)) {
+    button.onclick = () =>
+      alert(
+        t({
+          vi: "Chức năng này tự động chạy\nTắt/Mở tự chạy bằng nút bên trái",
+          en: "This function is Autorun\nTurn on/off autorun by click the left checkmark",
+        })
+      );
   } else {
-    button.onclick = () => alert("empty script");
+    alert(t({ vi: "Chức năng chưa hoàn thành", en: "Coming soon" }));
   }
 
   // script badges
@@ -287,13 +300,14 @@ async function updateButtonChecker(script, button, val) {
   }
 }
 
-async function runScript(script, button) {
+async function runScript(script) {
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
     recentScriptsSaver.add(script);
     if (isFunction(script.onClickExtension)) await script.onClickExtension();
-    if (isFunction(script.onClick))
+    if (isFunction(script.onClick)) await runScriptInCurrentTab(script.onClick);
+    if (isFunction(script.onClickContentScript))
       await sendEventToTab(tab.id, {
         type: MsgType.runScript,
         scriptId: script.id,
@@ -325,7 +339,7 @@ function initSearch() {
     let found = 0;
     let childrens = document
       .querySelector(".tabcontent")
-      .querySelectorAll("button");
+      .querySelectorAll(".buttonContainer");
 
     childrens.forEach((child) => {
       let willShow = true;
@@ -341,7 +355,6 @@ function initSearch() {
           break;
         }
       }
-      // button.style.opacity = willShow ? 1 : 0.1;
       child.style.display = willShow ? "block" : "none";
       if (willShow) found++;
     });

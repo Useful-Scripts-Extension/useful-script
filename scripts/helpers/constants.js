@@ -7,6 +7,12 @@ export const ScriptType = {
   backgroundScript: "backgroundScript",
 };
 
+export const OnClickType = {
+  onClick: "onClick",
+  onClickExtension: "onClickExtension",
+  onClickContentScript: "onClickContentScript",
+};
+
 export const Events = {
   document_start: "document_start",
   document_idle: "document_idle",

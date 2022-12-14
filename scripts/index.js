@@ -151,6 +151,7 @@ import fb_openSaved from "./fb_openSaved.js";
 import fb_openMemories from "./fb_openMemories.js";
 import fb_openAdsActivities from "./fb_openAdsActivities.js";
 import fb_exportSaved from "./fb_exportSaved.js";
+import studyphim_unlimited from "./studyphim_unlimited.js";
 
 // inject badges
 const allScripts = {
@@ -323,6 +324,7 @@ const allScripts = {
   fb_openMemories: addBadge(fb_openMemories, BADGES.new),
   fb_openAdsActivities: addBadge(fb_openAdsActivities, BADGES.new),
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.new),
+  studyphim_unlimited: addBadge(studyphim_unlimited, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

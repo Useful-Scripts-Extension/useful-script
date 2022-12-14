@@ -16,7 +16,7 @@ export default {
     },
   },
 
-  onClick: async function () {
+  onClickContentScript: async function () {
     shared.toggleNewFeed();
   },
 };

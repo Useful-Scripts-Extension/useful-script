@@ -16,7 +16,7 @@ export default {
     },
   },
 
-  onClick: function () {
+  onClickContentScript: function () {
     shared.toggleLight();
   },
 };

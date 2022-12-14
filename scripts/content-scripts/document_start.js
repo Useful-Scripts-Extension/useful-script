@@ -20,7 +20,7 @@
 
 (async () => {
   const { allScripts } = await import("../index.js");
-  const { MsgType, Events, ScriptType } = await import(
+  const { MsgType, Events, ScriptType, OnClickType } = await import(
     "../helpers/constants.js"
   );
   const { runAllScriptWithEventType, sendEventToBackground, isFunction } =
@@ -49,9 +49,9 @@
         let scriptId = message.scriptId;
         if (
           scriptId in allScripts &&
-          isFunction(allScripts[scriptId].onClick)
+          isFunction(allScripts[scriptId][OnClickType.onClickContentScript])
         ) {
-          allScripts[scriptId].onClick();
+          allScripts[scriptId][OnClickType.onClickContentScript]();
           console.log("> Run script " + scriptId);
         }
         break;
