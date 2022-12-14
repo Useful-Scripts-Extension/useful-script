@@ -162,15 +162,21 @@ export function checkBlackWhiteList(script, url) {
   return willRun;
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API
 export function isUrlMatchPattern(url, pattern) {
-  let curIndex = 0,
-    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
-  for (let p of visiblePartsInPattern) {
-    let index = url.indexOf(p, curIndex);
-    if (index < 0) return false;
-    curIndex = index + p.length;
-  }
-  return true;
+  return new URLPattern(pattern).test(url);
+
+  // if (pattern.indexOf("*") < 0)
+  //   return new URL(url).toString() == new URL(pattern).toString();
+
+  // let curIndex = 0,
+  //   visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+  // for (let p of visiblePartsInPattern) {
+  //   let index = url.indexOf(p, curIndex);
+  //   if (index < 0) return false;
+  //   curIndex = index + p.length;
+  // }
+  // return true;
 }
 
 // https://stackoverflow.com/a/68634884/11898496
