@@ -12,78 +12,82 @@ export default {
   },
 
   onClickExtension: async () => {
-    // Order List  : https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=5&offset=0
+    // Order&Checkout List: https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=5&offset=0
     // Order Detail: https://shopee.vn/api/v4/order/get_order_detail?order_id=124388457229298
+    // Order List: https://shopee.vn/api/v4/order/get_order_list?limit=5&list_type=4&offset=0
+    // get refund (POST): https://shopee.vn/api/v4/return/return_data/get_return_refund_list
     // Image: https://cf.shopee.vn/file/ecd20c9d39e0c865d53e3f47e6e2e3a7
-    // POST: https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
+    // FB POST: https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
-    let Statistics = {
-      bougth: {
-        totalOrders: 0,
-        totalItems: 0,
-        totalSpent: 0,
-        totalDiscount: 0,
-        totalShip: 0,
-      },
-      canceled: {
-        totalOrders: 0,
-        totalItems: 0,
-        totalSpent: 0,
-        totalDiscount: 0,
-        totalShip: 0,
-      },
-    };
-    let Type = {
-      bougth: "bougth",
-      canceled: "canceled",
+    let OrderType = {
+      completed: 3,
+      canceled: 4,
+      ship: 7,
+      shipping: 8,
+      //   waitPay: 9,
+      //   refunded: 12,
     };
 
-    let pulling = true;
-    let offset = 0;
-    let limit = 20;
+    let OrderTypeName = {
+      [OrderType.completed]: "Hoàn thành",
+      [OrderType.canceled]: "Đã  hủy",
+      [OrderType.ship]: "Vận chuyển",
+      [OrderType.shipping]: "Đang giao",
+      //   [OrderType.waitPay]: "Chờ thanh toán",
+      //   [OrderType.refunded]: "Trả hàng/Hoàn tiền",
+    };
 
-    async function getStatistics() {
+    async function getStatistics(orderType) {
+      let pulling = true;
+      let offset = 0;
+      let limit = 10;
+
+      let totalDiscount = 0;
+      let totalShip = 0;
+      let totalSpent = 0;
+      let totalItems = 0;
+      let totalOrders = 0;
+
       while (pulling) {
         setLoadingText("Đang tải đơn hàng thứ " + (offset + 1) + "...");
         let res = await fetch(
-          "https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=" +
-            limit +
-            "&offset=" +
-            offset
+          `https://shopee.vn/api/v4/order/get_order_list?limit=${limit}&list_type=${orderType}&offset=${offset}`
         );
         let json = await res.json();
         if (json?.error) throw Error("Error: " + json.error);
 
-        let orders = json.data.order_data.details_list;
+        let orders = json.data.details_list;
         for (let i = 0; i < orders.length; i++) {
           setLoadingText("Đang tải đơn hàng thứ " + (offset + i + 1) + "...");
 
           let order = orders[i];
-          let wasCanceled = order.list_type == 4;
-          let type = wasCanceled ? Type.canceled : Type.bougth;
 
           order.info_card.order_list_cards.forEach((card) => {
             card.items.forEach((item) => {
-              Statistics[type].totalDiscount +=
+              totalDiscount +=
                 (item.price_before_discount - item.item_price) / 100000;
-
-              Statistics[type].totalSpent += item.item_price / 100000;
-              Statistics[type].totalItems += item.amount;
+              totalSpent += item.item_price / 100000;
+              totalItems += item.amount;
             });
           });
 
-          if (!wasCanceled) {
-            let orderId = order.info_card.order_id;
-            let tpsa = await getShippingSpent(orderId);
-            Statistics[type].totalShip += tpsa / 100000;
-          }
-
-          Statistics[type].totalOrders++;
+          let orderId = order.info_card.order_id;
+          let tpsa = await getShippingSpent(orderId);
+          totalShip += tpsa / 100000;
+          totalOrders++;
         }
 
         pulling = orders.length >= limit;
         offset += limit;
       }
+
+      return {
+        totalDiscount,
+        totalShip,
+        totalSpent,
+        totalItems,
+        totalOrders,
+      };
     }
 
     async function getShippingSpent(orderId) {
@@ -117,26 +121,35 @@ export default {
 
     let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");
     try {
-      await getStatistics();
+      let options = Object.entries(OrderTypeName);
+      let optionsTxt = options
+        .map(([key, value], index) => `   ${index}: ${value}`)
+        .join("\n");
+
+      let choice = prompt(
+        "Chọn loại đơn hàng muốn thống kê:\n" + optionsTxt,
+        0
+      );
+
+      if (choice == null) return;
+      let orderType = options[Number(choice)][0];
+      let orderTypeName = OrderTypeName[orderType];
+
+      let { totalDiscount, totalShip, totalSpent, totalItems, totalOrders } =
+        await getStatistics(orderType);
+
       let stats = {
-        "ĐÃ MUA:": "------",
-        "+ Tổng đơn hàng đã giao:": Statistics.bougth.totalOrders,
-        "+ Tổng sản phẩm đã đặt": Statistics.bougth.totalItems,
-        "+ Tổng chi tiêu": moneyFormat(Statistics.bougth.totalSpent),
-        "+ Tổng giảm giá": moneyFormat(Statistics.bougth.totalDiscount),
-        "+ Tổng tiền ship": moneyFormat(Statistics.bougth.totalShip),
-        "ĐÃ HỦY:": "------",
-        "+ Tổng đơn hàng đã hủy:": Statistics.bougth.totalOrders,
-        "+ Tổng sản phẩm đã hủy": Statistics.bougth.totalItems,
-        "+ Tổng chi tiêu đã hủy": moneyFormat(Statistics.bougth.totalSpent),
-        "+ Tổng giảm giá đã hủy": moneyFormat(Statistics.bougth.totalDiscount),
-        "+ Tổng tiền ship đã hủy": moneyFormat(Statistics.bougth.totalShip),
+        "THỐNG KÊ Shopee: ": orderTypeName,
+        "+ Tổng đơn hàng: ": totalOrders,
+        "+ Tổng sản phẩm: ": totalItems,
+        "+ Tổng chi tiêu: ": moneyFormat(totalSpent),
+        "+ Tổng giảm giá: ": moneyFormat(totalDiscount),
+        "+ Tổng tiền ship: ": moneyFormat(totalShip),
       };
       alert(
-        `THỐNG KÊ:\n` +
-          Object.entries(stats)
-            .map(([key, value]) => `${key} ${value}`)
-            .join("\n")
+        Object.entries(stats)
+          .map(([key, value]) => `${key} ${value}`)
+          .join("\n")
       );
       console.table(stats);
     } catch (e) {
