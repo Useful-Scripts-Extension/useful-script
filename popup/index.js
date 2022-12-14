@@ -1,10 +1,11 @@
-import { GlobalBlackList } from "../scripts/helpers/constants.js";
+import { GlobalBlackList, MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
   getCurrentTab,
   isFunction,
   removeAccents,
   runScriptInCurrentTab,
+  sendEventToTab,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
@@ -284,8 +285,11 @@ async function runScript(script, button) {
   if (willRun) {
     recentScriptsSaver.add(script);
     if (isFunction(script.onClickExtension)) await script.onClickExtension();
-    if (isFunction(script.onClick)) await runScriptInCurrentTab(script.onClick);
-    await updateButtonChecker(script, button);
+    if (isFunction(script.onClick))
+      await sendEventToTab(tab.id, {
+        type: MsgType.runScript,
+        scriptId: script.id,
+      });
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");

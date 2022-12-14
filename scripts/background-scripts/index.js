@@ -1,14 +1,18 @@
-import { ScriptType } from "../helpers/constants.js";
+import { MsgType, ScriptType } from "../helpers/constants.js";
 import { runAllScriptWithEventType } from "../helpers/utils.js";
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("> Received message:", request, sender?.tab?.url);
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+  console.log("> Received message:", message, sender?.tab?.url);
 
-  runAllScriptWithEventType(
-    request.event,
-    ScriptType.backgroundScript,
-    sender.tab?.url
-  );
+  switch (message.type) {
+    case MsgType.runScript:
+      runAllScriptWithEventType(
+        message.event,
+        ScriptType.backgroundScript,
+        sender.tab?.url
+      );
+      break;
+  }
 });
 
 function updateBadge(tabId, text = "", bgColor = "#666") {
