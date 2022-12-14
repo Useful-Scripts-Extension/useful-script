@@ -5,7 +5,9 @@
 })();
 
 (async () => {
-  const { Events, ScriptType } = await import("../helpers/constants.js");
+  const { MsgType, Events, ScriptType } = await import(
+    "../helpers/constants.js"
+  );
   const { runAllScriptWithEventType, sendEventToBackground } = await import(
     "../helpers/utils.js"
   );
@@ -15,5 +17,8 @@
     ScriptType.contentScript,
     location.href
   );
-  sendEventToBackground(Events.document_idle);
+  sendEventToBackground({
+    type: MsgType.runScript,
+    event: Events.document_idle,
+  });
 })();

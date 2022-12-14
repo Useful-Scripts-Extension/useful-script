@@ -20,10 +20,16 @@ export async function runAllScriptWithEventType(eventType, scriptType, url) {
   });
 }
 
-export async function sendEventToBackground(event) {
-  console.log("... Sending " + event + " to background...");
-  const response = await chrome.runtime.sendMessage({ event });
-  console.log("> " + event + " sent successfully", response);
+export async function sendEventToBackground(data) {
+  console.log("... Sending ", data, " to background...");
+  const response = await chrome.runtime.sendMessage(data);
+  console.log("> ", data, " sent to background successfully", response);
+}
+
+export async function sendEventToTab(tabId, data) {
+  console.log("... Sending ", data, " to tab...");
+  const response = await chrome.tabs.sendMessage(tabId, data);
+  console.log("> ", data, " sent to tab successfully", response);
 }
 
 // #region Storage Utils

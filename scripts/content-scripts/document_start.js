@@ -19,15 +19,41 @@
 })();
 
 (async () => {
-  const { Events, ScriptType } = await import("../helpers/constants.js");
-  const { runAllScriptWithEventType, sendEventToBackground } = await import(
-    "../helpers/utils.js"
+  const { allScripts } = await import("../index.js");
+  const { MsgType, Events, ScriptType } = await import(
+    "../helpers/constants.js"
   );
+  const { runAllScriptWithEventType, sendEventToBackground, isFunction } =
+    await import("../helpers/utils.js");
 
   runAllScriptWithEventType(
     Events.document_start,
     ScriptType.contentScript,
     location.href
   );
-  sendEventToBackground(Events.document_start);
+  sendEventToBackground({
+    type: MsgType.runScript,
+    event: Events.document_start,
+  });
+
+  // run script on receive event from popup
+  chrome.runtime.onMessage.addListener(function (
+    message,
+    sender,
+    sendResponse
+  ) {
+    console.log("> Received message:", message);
+    switch (message.type) {
+      case MsgType.runScript:
+        let scriptId = message.scriptId;
+        if (
+          scriptId in allScripts &&
+          isFunction(allScripts[scriptId].onClick)
+        ) {
+          allScripts[scriptId].onClick();
+          console.log("> Run script " + scriptId);
+        }
+        break;
+    }
+  });
 })();

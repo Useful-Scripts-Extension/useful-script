@@ -1,3 +1,7 @@
+export const MsgType = {
+  runScript: "runScript",
+};
+
 export const ScriptType = {
   contentScript: "contentScript",
   backgroundScript: "backgroundScript",
