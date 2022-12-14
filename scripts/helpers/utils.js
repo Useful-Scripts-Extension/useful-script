@@ -10,7 +10,7 @@ export async function runAllScriptWithEventType(eventType, scriptType, url) {
 
     let func = script?.[scriptType]?.[funcName];
     if (isFunction(func) && !isEmptyFunction(func)) {
-      let isActive = (await script.getActive?.()) ?? true;
+      let isActive = (await getActiveScript(script.id)) ?? true;
       isActive && func();
       console.log(
         `%c > Run ${script.id} ${scriptType} ${funcName}`,
@@ -37,13 +37,26 @@ export async function sendEventToTab(tabId, data) {
 // https://developer.chrome.com/docs/extensions/reference/storage/
 export const localStorage = {
   set: async (key, value) => {
-    return chrome.storage.sync.set({ [key]: value });
+    await chrome.storage.sync.set({ [key]: value });
+    return value;
   },
   get: async (key, defaultValue = "") => {
     let result = await chrome.storage.sync.get([key]);
     return result[key] || defaultValue;
   },
 };
+
+export async function setActiveScript(scriptId, isActive = true) {
+  return await localStorage.set("isactive" + scriptId, isActive);
+}
+
+export async function getActiveScript(scriptId) {
+  return await localStorage.get("isactive" + scriptId, false);
+}
+
+export async function toggleActiveScript(scriptId) {
+  return await setActiveScript(scriptId, !(await getActiveScript(scriptId)));
+}
 
 // #endregion
 
