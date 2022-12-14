@@ -1,11 +1,17 @@
-import { GlobalBlackList, MsgType } from "../scripts/helpers/constants.js";
+import {
+  Events,
+  GlobalBlackList,
+  MsgType,
+  ScriptType,
+} from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
+  getActiveScript,
   getCurrentTab,
   isFunction,
   removeAccents,
-  runScriptInCurrentTab,
   sendEventToTab,
+  toggleActiveScript,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
@@ -146,12 +152,14 @@ function createScriptButton(script, isFavorite = false) {
   buttonContainer.className = "buttonContainer";
 
   // button checker
-  if (isFunction(script.getActive)) {
+  if (
+    ScriptType.contentScript in script ||
+    ScriptType.backgroundScript in script
+  ) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      let newValue = !(await script.getActive());
-      await script.setActive(newValue);
+      let newValue = await toggleActiveScript(script.id);
       updateButtonChecker(script, buttonContainer, newValue);
     };
 
@@ -264,7 +272,7 @@ function createScriptButton(script, isFavorite = false) {
 async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (val ?? (await script.getActive?.())) {
+  if (val ?? (await getActiveScript(script.id))) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",

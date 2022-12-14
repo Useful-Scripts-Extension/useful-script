@@ -31,6 +31,7 @@
     ScriptType.contentScript,
     location.href
   );
+
   sendEventToBackground({
     type: MsgType.runScript,
     event: Events.document_start,

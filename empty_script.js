@@ -1,5 +1,3 @@
-import { runScript, runScriptInCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "",
   name: {
@@ -12,10 +10,6 @@ export default {
   },
   blackList: [],
   whiteList: [],
-
-  // Check if this script is on (show checkmark on UI)
-  getActive: () => {},
-  setActive: () => {},
 
   // run (if active) in background context
   backgroundScript: {

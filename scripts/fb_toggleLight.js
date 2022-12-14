@@ -1,12 +1,3 @@
-import {
-  getCurrentTab,
-  localStorage,
-  runScriptInCurrentTab,
-  runScriptInTab,
-} from "./helpers/utils.js";
-
-const key = "ufs-fb-toggle-light";
-
 export default {
   icon: `<i class="fa-solid fa-lightbulb"></i>`,
   name: {
@@ -18,9 +9,6 @@ export default {
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed facebook",
   },
   whiteList: ["https://www.facebook.com"],
-
-  getActive: async () => await await localStorage.get(key),
-  setActive: async (v) => await await localStorage.set(key, v),
 
   contentScript: {
     onDocumentIdle: () => {
