@@ -1,11 +1,3 @@
-import {
-  getCurrentTab,
-  localStorage,
-  runScriptInTab,
-} from "./helpers/utils.js";
-
-const key = "ufs-fb-toggle-newfeed";
-
 export default {
   icon: '<i class="fa-solid fa-eye-slash"></i>',
   name: {
@@ -16,10 +8,7 @@ export default {
     en: "Hide Newfeed facebook for better focus to work",
     vi: "Ẩn Newfeed facebook để tập trung làm việc",
   },
-  whiteList: ["https://www.facebook.com"],
-
-  getActive: async () => await localStorage.get(key),
-  setActive: async (v) => await localStorage.set(key, v),
+  whiteList: ["https://www.facebook.com/*"],
 
   contentScript: {
     onDocumentIdle: function () {
@@ -34,12 +23,19 @@ export default {
 
 export const shared = {
   toggleNewFeed: async function (willShow) {
-    let div = document.querySelector("#ssrb_feed_end")?.parentElement;
-    if (!div) alert("Không tìm thấy NewFeed.");
-    else if (willShow != null) {
-      div.style.display = willShow ? "block" : "none";
-    } else {
-      div.style.display = div.style.display === "none" ? "block" : "none";
-    }
+    [
+      ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
+      document.querySelector("#watch_feed"),
+      document.querySelector("#ssrb_stories_start")?.parentElement,
+      document.querySelector("#ssrb_feed_start")?.parentElement,
+    ].forEach((el) => {
+      if (el) {
+        if (willShow != null) {
+          el.style.display = willShow ? "block" : "none";
+        } else {
+          el.style.display = el.style.display === "none" ? "block" : "none";
+        }
+      } else console.log("ERROR: Cannot find element");
+    });
   },
 };
