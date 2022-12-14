@@ -104,11 +104,11 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
     },
   },
-  shopee: {
-    id: "shopee",
+  shopping: {
+    id: "shopping",
     name: {
-      en: `<i class="fa-solid fa-cart-shopping"></i> Shopee`,
-      vi: `<i class="fa-solid fa-cart-shopping"></i> Shopee`,
+      en: `<i class="fa-solid fa-cart-shopping"></i> Shopping`,
+      vi: `<i class="fa-solid fa-cart-shopping"></i> Mua sắm`,
     },
   },
   github: {

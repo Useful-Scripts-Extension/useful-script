@@ -1,16 +1,8 @@
-import { ScriptType } from "../scripts/helpers/constants.js";
-import { isFunction } from "../scripts/helpers/utils.js";
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
-const canClick = (script) =>
-  isFunction(script.onClick) || isFunction(script.onClickExtension);
-const isTitle = (script) =>
-  !canClick(script) &&
-  !(ScriptType.contentScript in script) &&
-  !(ScriptType.backgroundScript in script);
 
 const specialTabs = [
   {
@@ -182,7 +174,7 @@ const tabs = [
     ],
   },
   {
-    ...CATEGORY.shopee,
+    ...CATEGORY.shopping,
     scripts: [s.shopee_topVariation],
   },
   {
@@ -225,6 +217,7 @@ const tabs = [
       s.simpleAllowCopy,
       s.reEnableContextMenu,
       s.showHiddenFields,
+      s.studyphim_unlimited,
       s.envato_previewBypass,
       s.viewCookies,
       s.removeCookies,
@@ -440,12 +433,4 @@ function getAllTabs() {
   return [...specialTabs, ...tabs, recommendTab];
 }
 
-export {
-  isTitle,
-  canClick,
-  refreshSpecialTabs,
-  tabs,
-  specialTabs,
-  recommendTab,
-  getAllTabs,
-};
+export { refreshSpecialTabs, tabs, specialTabs, recommendTab, getAllTabs };
