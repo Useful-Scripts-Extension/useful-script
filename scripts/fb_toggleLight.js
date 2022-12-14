@@ -41,10 +41,13 @@ export const shared = {
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],
     ].forEach((el) => {
-      if (el)
-        el.style.display =
-          willShow ?? el.style.display === "block" ? "none" : "block";
-      else alert("ERROR: Cannot find element");
+      if (el) {
+        if (willShow != null) {
+          el.style.display = willShow ? "" : "none";
+        } else {
+          el.style.display = el.style.display != "none" ? "none" : "";
+        }
+      } else alert("ERROR: Cannot find element");
     });
   },
 };
