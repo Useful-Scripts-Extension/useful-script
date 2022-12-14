@@ -152,6 +152,7 @@ import fb_openMemories from "./fb_openMemories.js";
 import fb_openAdsActivities from "./fb_openAdsActivities.js";
 import fb_exportSaved from "./fb_exportSaved.js";
 import studyphim_unlimited from "./studyphim_unlimited.js";
+import shopee_totalSpendMoney from "./shopee_totalSpendMoney.js";
 
 // inject badges
 const allScripts = {
@@ -287,7 +288,7 @@ const allScripts = {
   fb_toggleNewFeed: addBadge(fb_toggleNewFeed, BADGES.new),
   fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_previewBypass: addBadge(envato_previewBypass, BADGES.new),
-  shopee_topVariation: addBadge(shopee_topVariation, BADGES.beta),
+  shopee_topVariation: addBadge(shopee_topVariation, BADGES.hot),
   donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
   tiktok_snaptikVideo: addBadge(tiktok_snaptikVideo, BADGES.new),
@@ -325,6 +326,7 @@ const allScripts = {
   fb_openAdsActivities: addBadge(fb_openAdsActivities, BADGES.new),
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.new),
   studyphim_unlimited: addBadge(studyphim_unlimited, BADGES.new),
+  shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

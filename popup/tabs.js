@@ -175,7 +175,7 @@ const tabs = [
   },
   {
     ...CATEGORY.shopping,
-    scripts: [s.shopee_topVariation],
+    scripts: [s.shopee_topVariation, s.shopee_totalSpendMoney],
   },
   {
     ...CATEGORY.github,
