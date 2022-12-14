@@ -14,10 +14,9 @@ export default {
     en: "",
     vi: "",
   },
-  // onClick: () => window.open("https://dlstudocu.com/"),
-  runInExtensionContext: true,
+  // onClickExtension: () => window.open("https://dlstudocu.com/"),
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { setLoadingText, closeLoading } = showLoading("Đang chờ nhập link...");
     try {
       let tab = await getCurrentTab();

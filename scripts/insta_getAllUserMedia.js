@@ -9,9 +9,8 @@ export default {
     en: "Get all media of instagram user",
     vi: "Tải về tất cả ảnh/video của người dùng instagram",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;
     function getBiggestMediaFromNode(node) {

@@ -11,14 +11,14 @@ export default {
   blackList: [],
   whiteList: [],
 
-  // run (if active) in background context
+  // run (if autorun) in background context
   backgroundScript: {
     onDocumentStart: (tab) => {},
     onDocumentEnd: (tab) => {},
     onDocumentIdle: (tab) => {},
   },
 
-  // run (if active) in web page context
+  // run (if autorun) in web page context
   contentScript: {
     onDocumentStart: () => {},
     onDocumentEnd: () => {},

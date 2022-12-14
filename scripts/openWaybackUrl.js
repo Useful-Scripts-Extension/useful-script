@@ -10,9 +10,8 @@ export default {
     en: "Open wayback url for website",
     vi: "Giúp xem nội dung website trong quá khứ",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { url } = await getCurrentTab();
     let url_to_check = prompt("Nhập URL muốn xem: ", url);
     if (url_to_check) {

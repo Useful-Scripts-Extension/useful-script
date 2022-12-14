@@ -10,9 +10,8 @@ export default {
     en: "Get facebook access token from m.facebook.com",
     vi: "Lấy facebook access token từ trang m.facebook.com",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy token ...");
     fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
       .then((response) => response.text())

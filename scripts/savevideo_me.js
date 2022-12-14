@@ -16,9 +16,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // https://savevideo.me/en/
 
     let { closeLoading } = showLoading("Đang get link video...");

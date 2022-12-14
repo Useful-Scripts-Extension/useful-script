@@ -8,9 +8,8 @@ export default {
     en: "Download music on mp3.zing.vn and zingmp3.vn using zingmp3 API",
     vi: "Tải nhạc trên mp3.zing.vn và zingmp3.vn thông qua zingmp3 API",
   },
-  runInExtensionContext: false,
 
-  onClick: function () {
+  onClickExtension: function () {
     // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
 
     const URL_API = "https://zingmp3.vn";

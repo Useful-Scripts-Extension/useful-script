@@ -11,9 +11,8 @@ export default {
     en: "Generate a direct download link to files stored in Google Drive. A direct link will immediately start downloading the file.",
     vi: "Tạo đường link direct cho file trên google drive. Bấm vào đường link sẽ tải file trực tiếp thay vì mở trang xem trước file.",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     try {
       let tab = await getCurrentTab();
       let url = prompt("Nhập link google drive: ", tab.url);

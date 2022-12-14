@@ -8,7 +8,6 @@ export default {
     en: "A bot that plays the Google Chrome T-Rex game for you",
     vi: "Tự động chơi game Google Chrome T-Rex",
   },
-  runInExtensionContext: false,
 
   onClick: function () {
     // https://github.com/danpush/t-rex-game-bot

@@ -8,13 +8,10 @@ export default {
     en: "",
     vi: "",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     chrome.bookmarks.getTree((tree) => {
       console.log(tree);
     });
   },
 };
-
-export const shared = {};

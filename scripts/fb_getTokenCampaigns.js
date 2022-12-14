@@ -10,9 +10,8 @@ export default {
     en: "Get facebook token EAAG from www.facebook.com campaigns",
     vi: "Lấy facebook token EAAG từ www.facebook.com campaigns",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/get-token-cookie/naciaagbkifhpnoodlkhbejjldaiffcm/related
 
     async function getToken() {

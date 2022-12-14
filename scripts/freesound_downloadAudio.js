@@ -10,9 +10,8 @@ export default {
     en: "Download audio on freesound.org",
     vi: "Tải âm thanh trên freesound.org",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // https://github.com/soimort/you-get/blob/develop/src/you_get/extractors/freesound.py
 
     let tab = await getCurrentTab();

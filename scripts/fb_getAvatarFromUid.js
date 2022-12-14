@@ -10,9 +10,8 @@ export default {
     en: "Get avatar from list facebook user ids",
     vi: "Tải danh sách avatar từ danh sách user id facebook",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let accessToken = prompt("Nhập facebook access token: ");
     if (!accessToken) return;
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");

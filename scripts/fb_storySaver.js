@@ -9,7 +9,6 @@ export default {
     vi: "Tải facebook story bạn đang xem",
   },
   whiteList: [],
-  runInExtensionContext: false,
 
   onClick: function () {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk

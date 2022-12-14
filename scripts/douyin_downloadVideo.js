@@ -10,9 +10,8 @@ export default {
     en: "Download video from douyin using API",
     vi: "Tải video douyin sử dụng API",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { closeLoading, setLoadingText } = showLoading();
     try {
       let tab = await getCurrentTab();

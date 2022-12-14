@@ -17,9 +17,8 @@ export default {
     en: "Taking a screenshot of an entire webpage",
     vi: "Tạo ảnh chụp màn hình toàn bộ website",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."
     );

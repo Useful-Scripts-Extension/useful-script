@@ -10,9 +10,8 @@ export default {
     en: "Download tiktok video (mp4/mp3/no watermark) using snaptikvideo API",
     vi: "Tải video tiktok (mp4/mp3/không watermark) dùng API snaptikvideo",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     async function fetchSnaptikVideo(url) {
       let res = await fetch(
         "https://api.snaptikvideo.com/st-tik/tiktok/dl?url=" + url,

@@ -11,7 +11,6 @@ export default {
     vi: "Tải video trong bình luận facebook bạn đang xem",
   },
   whiteList: [],
-  runInExtensionContext: false,
 
   onClick: fb_storySaver.onClick,
 };

@@ -10,9 +10,8 @@ export default {
     en: "Download video from vimeo",
     vi: "Tải video trên vimeo",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let tab = await getCurrentTab();
     let url = prompt("Enter vimeo video url: ", tab.url);
     if (url == null) return;

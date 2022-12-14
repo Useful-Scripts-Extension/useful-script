@@ -10,7 +10,6 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: false,
 
   onClick: function () {
     // Source code: https://gist.github.com/J2TEAM/f79f950c31cc9fe4ed705515385ed75f

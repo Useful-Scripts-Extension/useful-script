@@ -10,9 +10,8 @@ export default {
     en: "Open send.zcyph.cc - share large file up to 20Gb",
     vi: "Mở send.zcyph.cc - chia sẻ file lớn lên tới 20Gb",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     popupCenter({
       url: "https://send.zcyph.cc/",
       title: "Send",

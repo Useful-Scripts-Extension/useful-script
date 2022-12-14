@@ -11,9 +11,8 @@ export default {
     en: "Download tiktok video from url (no/have watermark)",
     vi: "Tải video tiktok từ link (không/có watermark)",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let url = prompt(
       "Nhập link tiktok video: ",
       await runScriptInCurrentTab(() => location.href)

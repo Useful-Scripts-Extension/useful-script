@@ -8,9 +8,8 @@ export default {
     en: "Check type, permissions, created date, expired date, ... of faceboook access token",
     vi: "Kiểm tra loại, quyền, ngày tạo, ngày hết hạn, ... của facebook access token",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     let token = prompt(
       "Enter accesstoken want to check\nNhập access token muốn kiểm tra:",
       ""

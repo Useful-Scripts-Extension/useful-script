@@ -17,9 +17,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { closeLoading } = showLoading("Đang tìm link video...");
     try {
       let docid = await shared.getDocIdFromWebsite();
