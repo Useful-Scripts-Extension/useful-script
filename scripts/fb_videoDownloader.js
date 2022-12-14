@@ -16,9 +16,8 @@ export default {
   },
   blackList: [],
   whiteList: ["https://www.facebook.com/*"],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let tab = await getCurrentTab();
     let url = prompt("Nhập link video/reel/watch:", tab.url);
     let videoId = shared.extractFbVideoIdFromUrl(url);

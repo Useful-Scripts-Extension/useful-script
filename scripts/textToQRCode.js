@@ -8,9 +8,8 @@ export default {
     en: "Convert text to QR Code",
     vi: "Nhập vào chữ và nhận về QRCode tương ứng",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     let text = prompt("Enter text / Nhập chữ:", "");
     if (text === null) return;
 

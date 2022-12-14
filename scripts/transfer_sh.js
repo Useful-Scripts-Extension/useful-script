@@ -8,9 +8,8 @@ export default {
     en: "Upload file and get URL to share",
     vi: "Tải file lên và nhận về link để chia sẻ",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     // https://transfer.sh
 
     // x-url-delete: https://transfer.sh/xtRy1u/Screenshot%20%281%29.png/Fpg96TDmuH5x

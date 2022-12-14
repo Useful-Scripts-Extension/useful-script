@@ -10,9 +10,8 @@ export default {
     en: "Download all videos in douyin user profile.",
     vi: "Tải tất cả video trong trang cá nhân của người dùng douyin.",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { closeLoading, setLoadingText } = showLoading("Đang tìm uid...");
     try {
       let tab = await getCurrentTab();

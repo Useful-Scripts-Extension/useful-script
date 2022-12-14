@@ -15,9 +15,8 @@ export default {
     en: "Download tiktok video using Snaptik API",
     vi: "Tải tiktok video sử dụng Snaptik API",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     async function getTokenSnapTik() {
       let res = await fetch("https://snaptik.app/vn");
       let text = await res.text();

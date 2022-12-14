@@ -9,9 +9,8 @@ export default {
     en: "Get id of facebook user from entered url",
     vi: "Lấy id của facebook user từ URL truyền vào",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
 
     const _getUidFromUrl = async (url) => {

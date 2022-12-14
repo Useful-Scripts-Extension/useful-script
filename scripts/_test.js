@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "",
   name: {
@@ -11,13 +9,7 @@ export default {
     vi: "",
   },
 
-  checked: () => true,
-  onDocumentStart: function () {},
-  onDocumentEnd: function () {},
-  onDocumentIdle: function () {},
-
-  runInExtensionContext: true,
-  onClick: async function () {
+  onClickExtension: async function () {
     chrome.runtime.getPackageDirectoryEntry(function (root) {
       console.log(root);
     });

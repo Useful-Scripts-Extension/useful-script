@@ -19,9 +19,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // Source code: https://github.com/karim0sec/tiktokdl
 
     let { closeLoading, setLoadingText } = showLoading();

@@ -10,9 +10,8 @@ export default {
     en: "Download photo/video links from facebook album",
     vi: "Tải về danh sách link ảnh/video từ album facebook",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     const accessToken = prompt("Enter access token:", "");
     if (!accessToken) return;
     const albumId = prompt("Enter album id: ", "");

@@ -12,9 +12,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // https://luanxt.com/get-link-mp3-320-lossless-vip-zing/
 
     const apiBaseURL = "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/";

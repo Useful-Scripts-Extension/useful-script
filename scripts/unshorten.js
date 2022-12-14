@@ -10,9 +10,8 @@ export default {
     en: "Get origin URL of shortened url",
     vi: "Lấy link gốc của link rút gọn",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // Để script này hoạt động được, cần thêm rule modify header referer
     // Chi tiết xem trong file rules.json
 

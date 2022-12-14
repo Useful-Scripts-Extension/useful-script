@@ -16,9 +16,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     // Source: https://pastebin.com/CNvUxpfc
 
     let tab = await getCurrentTab();

@@ -11,9 +11,8 @@ export default {
     en: "Download tiktok video you are watching (no/have watermark)",
     vi: "Tải video tiktok bạn đang xem (không/có watermark)",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let choice = prompt(
       "Chọn loại video:\n" + " 0: Không watermark\n" + " 1: Có watermark",
       0

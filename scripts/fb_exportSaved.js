@@ -10,9 +10,8 @@ export default {
     en: "Export all your saved items on facebook",
     vi: "Xuất ra file các mục đã lưu của bạn trên facebook",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     const encodeHTML = (e) =>
       e.replace(/([\u00A0-\u9999<>&])(.|$)/g, function (e, a, t) {
         return "&" !== a || "#" !== t

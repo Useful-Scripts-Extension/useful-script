@@ -10,9 +10,8 @@ export default {
     en: "Support tinyurl, tnyim, cuttly, bitly, j2team, ...",
     vi: "Hỗ trợ tinyurl, tnyim, cuttly, bitly, j2team, ...",
   },
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     // https://hyperhost.ua/tools/en/surli
     // https://www.shorturl.at/shortener.php
     // https://tinyurl.com/app

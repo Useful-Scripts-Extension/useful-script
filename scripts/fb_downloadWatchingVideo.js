@@ -14,9 +14,8 @@ export default {
   },
   blackList: [],
   whiteList: ["https://www.facebook.com/*"],
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let { closeLoading, setLoadingText } = showLoading(
       "Đang lấy videoId từ trang web..."
     );

@@ -11,9 +11,8 @@ export default {
 
   blackList: [],
   whiteList: [],
-  runInExtensionContext: false,
 
-  onClick: function () {
+  onClickExtension: function () {
     let videos = Array.from(document.querySelectorAll("video"));
 
     if (!videos.length) {

@@ -10,9 +10,8 @@ export default {
     en: "Download document pdf on Studocu.com for free",
     vi: "Tải PDF document trên Studocu.com miễn phí",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     let tab = await getCurrentTab();
     let url = prompt("Nhập link studocu document:", tab.url);
     if (url == null) return;

@@ -10,9 +10,8 @@ export default {
     en: "Get free shared account on internet",
     vi: "Tìm tài khoản được chia sẻ trên mạng cho trang web hiện tại",
   },
-  runInExtensionContext: true,
 
-  onClick: async function () {
+  onClickExtension: async function () {
     const providers = [
       {
         name: "bugmenot.com",

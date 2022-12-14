@@ -10,9 +10,8 @@ export default {
   },
   blackList: [],
   whiteList: [],
-  runInExtensionContext: true,
 
-  onClick: function () {
+  onClickExtension: function () {
     // https://github.com/locmai0808/Facebook-Access-Token
 
     const utils = {
