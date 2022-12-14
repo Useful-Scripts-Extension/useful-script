@@ -16,6 +16,7 @@ export default {
     // Order Detail: https://shopee.vn/api/v4/order/get_order_detail?order_id=124388457229298
     // Order List: https://shopee.vn/api/v4/order/get_order_list?limit=5&list_type=4&offset=0
     // get refund (POST): https://shopee.vn/api/v4/return/return_data/get_return_refund_list
+    // get account info: https://shopee.vn/api/v4/account/basic/get_account_info
     // Image: https://cf.shopee.vn/file/ecd20c9d39e0c865d53e3f47e6e2e3a7
     // FB POST: https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
