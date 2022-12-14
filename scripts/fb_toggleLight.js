@@ -33,7 +33,7 @@ export const shared = {
         } else {
           el.style.display = el.style.display != "none" ? "none" : "";
         }
-      } else alert("ERROR: Cannot find element");
+      } else console.log("ERROR: Cannot find element");
     });
   },
 };
