@@ -153,6 +153,7 @@ import fb_openAdsActivities from "./fb_openAdsActivities.js";
 import fb_exportSaved from "./fb_exportSaved.js";
 import studyphim_unlimited from "./studyphim_unlimited.js";
 import shopee_totalSpendMoney from "./shopee_totalSpendMoney.js";
+import tiki_totalSpendMoney from "./tiki_totalSpendMoney.js";
 
 // inject badges
 const allScripts = {
@@ -327,6 +328,7 @@ const allScripts = {
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.new),
   studyphim_unlimited: addBadge(studyphim_unlimited, BADGES.new),
   shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.new),
+  tiki_totalSpendMoney: addBadge(tiki_totalSpendMoney, BADGES.beta),
 };
 
 // alert(Object.keys(allScripts).length);
