@@ -22,37 +22,28 @@ export default {
   getActive: async () => await shared.get(),
   setActive: async (v) => await shared.set(v),
 
-  backgroundScript: {
-    onDocumentEnd: async function () {
-      console.log("fb_toggle light");
-    },
-  },
   contentScript: {
-    onDocumentIdle: async () => {
-      let isOn = await shared.get();
-      if (isOn) shared.toggleLight(false);
+    onDocumentIdle: () => {
+      shared.toggleLight(false);
     },
   },
 
-  onClickExtension: async function () {
-    let current = await shared.get();
-    let newVal = !current;
-    runScriptInCurrentTab(shared.toggleLight, [!newVal]);
-    await shared.set(newVal);
+  onClick: function () {
+    shared.toggleLight();
   },
 };
 
 export const shared = {
   get: async () => await localStorage.get(key),
   set: async (value) => await localStorage.set(key, value),
-  toggleLight: async function (willShow) {
+  toggleLight: function (willShow) {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],
     ].forEach((el) => {
       if (el)
         el.style.display =
-          willShow ?? el.style.display === "none" ? "block" : "none";
+          willShow ?? el.style.display === "block" ? "none" : "block";
       else alert("ERROR: Cannot find element");
     });
   },

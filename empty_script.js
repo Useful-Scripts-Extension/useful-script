@@ -17,24 +17,24 @@ export default {
   getActive: () => {},
   setActive: () => {},
 
-  // run in background context
+  // run (if active) in background context
   backgroundScript: {
     onDocumentStart: (tab) => {},
     onDocumentEnd: (tab) => {},
     onDocumentIdle: (tab) => {},
   },
 
-  // run in web page context
+  // run (if active) in web page context
   contentScript: {
     onDocumentStart: () => {},
     onDocumentEnd: () => {},
     onDocumentIdle: () => {},
   },
 
-  // run in extension-popup-page context
+  // run onclick in extension-popup-page context
   onClickExtension: () => {},
 
-  // run in web page context
+  // run onclick in web page context
   onClick: () => {},
 };
 

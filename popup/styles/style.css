@@ -170,10 +170,13 @@ a:hover {
     margin-bottom: 10px;
 }
 
-.content button {
-    position: relative;
+.content .buttonContainer {
     display: flex;
     align-items: center;
+}
+
+.content button {
+    position: relative;
     border: none;
     margin: 0.25em;
     padding: 0.75em 1em;
@@ -236,29 +239,35 @@ a:hover {
 
 .content .checkmark {
     display: inline-block;
-    width: 15px;
-    height: 15px;
-    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0px;
+    border: 1px solid #999;
     background-color: #e6e6e6;
+}
+
+.content .checkmark:hover {
+    background-color: #ccc;
+}
+
+.content .checkmark.active {
+    background-color: #04AA6D;
 }
 
 .content .checkmark.active:after {
     content: "";
     position: absolute;
     display: block;
-    left: 10px;
-    top: 0px;
+    left: 8px;
+    top: 4px;
     width: 5px;
-    height: 15px;
-    border: solid #20ba56;
+    height: 10px;
+    border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
-
-.content .checkmark:hover {
-    background-color: #4bf253;
 }
 
 .content button .badgeContainer {

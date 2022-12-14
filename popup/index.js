@@ -131,14 +131,6 @@ async function createTabContent(tab) {
 }
 
 function createScriptButton(script, isFavorite = false) {
-  // let a = document.createElement("div");
-  // a.innerHTML = `<div>
-  //   <button>Click</button>
-  // </div>`;
-  // let btn = a.querySelector("button");
-  // btn.onclick = () => alert("abc");
-  // return a;
-
   // Section title
   if (isTitle(script)) {
     const title = document.createElement("h3");
@@ -150,18 +142,16 @@ function createScriptButton(script, isFavorite = false) {
 
   // Button Container
   const buttonContainer = document.createElement("div");
-  buttonContainer.className = "tooltip";
+  buttonContainer.className = "buttonContainer";
 
   // button checker
   if (isFunction(script.getActive)) {
     const checkmark = document.createElement("button");
-    checkmark.className = "checkmark";
-    // checkmark.onclick = async () =>
-    //   await script.setActive(!(await script.getActive()));
-
+    checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      e.preventDefault();
-      await script.setActive(!(await script.getActive()));
+      let newValue = !(await script.getActive());
+      await script.setActive(newValue);
+      updateButtonChecker(script, buttonContainer, newValue);
     };
 
     buttonContainer.appendChild(checkmark);
@@ -170,6 +160,7 @@ function createScriptButton(script, isFavorite = false) {
 
   // button
   const button = document.createElement("button");
+  button.className = "tooltip";
   if (canClick(script)) {
     button.onclick = () => runScript(script, button);
   } else {
@@ -269,10 +260,10 @@ function createScriptButton(script, isFavorite = false) {
   return buttonContainer;
 }
 
-async function updateButtonChecker(script, button) {
+async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (await script.getActive?.()) {
+  if (val ?? (await script.getActive?.())) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",
