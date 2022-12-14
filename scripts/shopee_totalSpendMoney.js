@@ -66,7 +66,8 @@ export default {
           order.info_card.order_list_cards.forEach((card) => {
             card.items.forEach((item) => {
               totalDiscount +=
-                (item.price_before_discount - item.item_price) / 100000;
+                (item.price_before_discount - item.item_price) / 100000 || 0;
+              console.log(totalDiscount);
               totalSpent += item.item_price / 100000;
               totalItems += item.amount;
             });
