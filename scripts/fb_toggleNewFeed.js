@@ -33,18 +33,13 @@ export default {
 };
 
 export const shared = {
-  toggleNewFeed: async function (willShow, tabId) {
-    runScriptInTab({
-      tabId: tabId || (await getCurrentTab()).id,
-      args: [willShow],
-      func: (value) => {
-        let div = document.querySelector("#ssrb_feed_end")?.parentElement;
-        if (!div) alert("Không tìm thấy NewFeed.");
-        else {
-          div.style.display =
-            value ?? div.style.display === "none" ? "block" : "none";
-        }
-      },
-    });
+  toggleNewFeed: async function (willShow) {
+    let div = document.querySelector("#ssrb_feed_end")?.parentElement;
+    if (!div) alert("Không tìm thấy NewFeed.");
+    else if (willShow != null) {
+      div.style.display = willShow ? "block" : "none";
+    } else {
+      div.style.display = div.style.display === "none" ? "block" : "none";
+    }
   },
 };
