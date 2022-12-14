@@ -234,7 +234,7 @@ a:hover {
     margin-right: 5px;
 }
 
-.content button .checkmark {
+.content .checkmark {
     display: inline-block;
     width: 15px;
     height: 15px;
@@ -242,12 +242,12 @@ a:hover {
     background-color: #e6e6e6;
 }
 
-.content button .checkmark.active:after {
+.content .checkmark.active:after {
     content: "";
     position: absolute;
     display: block;
-    left: 17px;
-    top: 5px;
+    left: 10px;
+    top: 0px;
     width: 5px;
     height: 15px;
     border: solid #20ba56;
@@ -255,6 +255,10 @@ a:hover {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.content .checkmark:hover {
+    background-color: #4bf253;
 }
 
 .content button .badgeContainer {

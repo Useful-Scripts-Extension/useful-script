@@ -22,7 +22,6 @@ import { canClick, isTitle, refreshSpecialTabs, getAllTabs } from "./tabs.js";
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
-const openInNewTabBtn = document.querySelector("#open-in-new-tab");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 
@@ -132,6 +131,14 @@ async function createTabContent(tab) {
 }
 
 function createScriptButton(script, isFavorite = false) {
+  // let a = document.createElement("div");
+  // a.innerHTML = `<div>
+  //   <button>Click</button>
+  // </div>`;
+  // let btn = a.querySelector("button");
+  // btn.onclick = () => alert("abc");
+  // return a;
+
   // Section title
   if (isTitle(script)) {
     const title = document.createElement("h3");
@@ -141,10 +148,28 @@ function createScriptButton(script, isFavorite = false) {
     return title;
   }
 
-  // Button
-  const button = document.createElement("button");
-  button.className = "tooltip";
+  // Button Container
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "tooltip";
 
+  // button checker
+  if (isFunction(script.getActive)) {
+    const checkmark = document.createElement("button");
+    checkmark.className = "checkmark";
+    // checkmark.onclick = async () =>
+    //   await script.setActive(!(await script.getActive()));
+
+    checkmark.onclick = async (e) => {
+      e.preventDefault();
+      await script.setActive(!(await script.getActive()));
+    };
+
+    buttonContainer.appendChild(checkmark);
+    updateButtonChecker(script, buttonContainer);
+  }
+
+  // button
+  const button = document.createElement("button");
   if (canClick(script)) {
     button.onclick = () => runScript(script, button);
   } else {
@@ -168,15 +193,6 @@ function createScriptButton(script, isFavorite = false) {
     });
 
     button.appendChild(badgeContainer);
-  }
-
-  // button checker
-  if (isFunction(script.isActive)) {
-    const checkmark = document.createElement("div");
-    checkmark.className = "checkmark";
-    button.appendChild(checkmark);
-
-    updateButtonChecker(script, button);
   }
 
   // button icon
@@ -249,16 +265,26 @@ function createScriptButton(script, isFavorite = false) {
   tooltip.innerText = t(script.description);
   button.appendChild(tooltip);
 
-  return button;
+  buttonContainer.appendChild(button);
+  return buttonContainer;
 }
 
 async function updateButtonChecker(script, button) {
-  if (!isFunction(script.isActive)) return;
-
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (await script.isActive?.()) checkmark.classList.add("active");
-  else checkmark.classList.remove("active");
+  if (await script.getActive?.()) {
+    checkmark.classList.add("active");
+    checkmark.title = t({
+      vi: "Tắt tự động chạy",
+      en: "Turn off Autorun",
+    });
+  } else {
+    checkmark.classList.remove("active");
+    checkmark.title = t({
+      vi: "Bật tự động chạy",
+      en: "Turn on Autorun",
+    });
+  }
 }
 
 async function runScript(script, button) {

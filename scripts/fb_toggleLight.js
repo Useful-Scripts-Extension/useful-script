@@ -1,6 +1,7 @@
 import {
   getCurrentTab,
   localStorage,
+  runScriptInCurrentTab,
   runScriptInTab,
 } from "./helpers/utils.js";
 
@@ -17,9 +18,9 @@ export default {
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed facebook",
   },
   whiteList: ["https://www.facebook.com"],
-  runInExtensionContext: true,
 
-  isActive: async () => await shared.get(),
+  getActive: async () => await shared.get(),
+  setActive: async (v) => await shared.set(v),
 
   backgroundScript: {
     onDocumentEnd: async function () {
@@ -27,16 +28,16 @@ export default {
     },
   },
   contentScript: {
-    onDocumentStart: async () => {
+    onDocumentIdle: async () => {
       let isOn = await shared.get();
-      if (isOn) shared.toggleLight(false, tab.id);
+      if (isOn) shared.toggleLight(false);
     },
   },
 
   onClickExtension: async function () {
     let current = await shared.get();
     let newVal = !current;
-    shared.toggleLight(!newVal);
+    runScriptInCurrentTab(shared.toggleLight, [!newVal]);
     await shared.set(newVal);
   },
 };
@@ -44,21 +45,15 @@ export default {
 export const shared = {
   get: async () => await localStorage.get(key),
   set: async (value) => await localStorage.set(key, value),
-  toggleLight: async function (willShow, tabId) {
-    runScriptInTab({
-      tabId: tabId || (await getCurrentTab()).id,
-      args: [willShow],
-      func: (value) => {
-        [
-          document.querySelectorAll('[role="navigation"]')?.[2],
-          document.querySelectorAll('[role="complementary"]')?.[0],
-        ].forEach((el) => {
-          if (el)
-            el.style.display =
-              value ?? el.style.display === "none" ? "block" : "none";
-          else alert("ERROR: Cannot find element");
-        });
-      },
+  toggleLight: async function (willShow) {
+    [
+      document.querySelectorAll('[role="navigation"]')?.[2],
+      document.querySelectorAll('[role="complementary"]')?.[0],
+    ].forEach((el) => {
+      if (el)
+        el.style.display =
+          willShow ?? el.style.display === "none" ? "block" : "none";
+      else alert("ERROR: Cannot find element");
     });
   },
 };
