@@ -19,8 +19,8 @@ export default {
   },
   whiteList: ["https://www.facebook.com"],
 
-  getActive: async () => await shared.get(),
-  setActive: async (v) => await shared.set(v),
+  getActive: async () => await await localStorage.get(key),
+  setActive: async (v) => await await localStorage.set(key, v),
 
   contentScript: {
     onDocumentIdle: () => {
@@ -34,8 +34,6 @@ export default {
 };
 
 export const shared = {
-  get: async () => await localStorage.get(key),
-  set: async (value) => await localStorage.set(key, value),
   toggleLight: function (willShow) {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],

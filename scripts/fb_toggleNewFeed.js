@@ -17,24 +17,22 @@ export default {
     vi: "Ẩn Newfeed facebook để tập trung làm việc",
   },
   whiteList: ["https://www.facebook.com"],
-  runInExtensionContext: true,
 
-  isActive: async () => await shared.get(),
-  onDocumentEnd: async function (tab) {
-    let isOn = await shared.get();
-    if (isOn) shared.toggleNewFeed(false, tab.id);
+  getActive: async () => await localStorage.get(key),
+  setActive: async (v) => await localStorage.set(key, v),
+
+  contentScript: {
+    onDocumentIdle: function () {
+      shared.toggleNewFeed(false);
+    },
   },
-  onClickExtension: async function () {
-    let current = await shared.get();
-    let newVal = !current;
-    shared.toggleNewFeed(!newVal);
-    await shared.set(newVal);
+
+  onClick: async function () {
+    shared.toggleNewFeed();
   },
 };
 
 export const shared = {
-  get: async () => localStorage.get(key),
-  set: async (value) => localStorage.set(key, value),
   toggleNewFeed: async function (willShow, tabId) {
     runScriptInTab({
       tabId: tabId || (await getCurrentTab()).id,
