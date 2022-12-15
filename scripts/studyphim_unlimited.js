@@ -54,5 +54,3 @@ export default {
   },
 };
 
-// functions/attributes that other scripts can import and use
-export const shared = {};

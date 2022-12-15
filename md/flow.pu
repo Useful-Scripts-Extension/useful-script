@@ -1,0 +1,89 @@
+' https://plantuml.com/guide
+
+
+@startuml Useful-scripts
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: Another authentication Response
+@enduml
+
+@startuml ABC
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: Another authentication Response
+@enduml
+
+@startuml DEF
+participant participant as Foo
+actor actor as Foo1
+boundary boundary as Foo2
+control control as Foo3
+entity entity as Foo4
+database database as Foo5
+collections collections as Foo6
+queue queue as Foo7
+Foo -> Foo1 : To actor
+Foo -> Foo2 : To boundary
+Foo -> Foo3 : To control
+Foo -> Foo4 : To entity
+Foo -> Foo5 : To database
+Foo -> Foo6 : To collections
+Foo -> Foo7: To queue
+@endum
+
+@startuml
+actor Bob #red
+' The only difference between actor and participant is the drawing
+participant Alice
+participant "I have a really\nlong name" as L #99FF99
+/' You can also declare:
+participant L as "I have a really\nlong name" #99FF99
+'/
+Alice->Bob: Authentication Request
+Bob->Alice: Authentication Response
+Bob->L: Log transaction
+@enduml
+
+@startuml
+scale 600 width
+[*] -> State1
+State1 --> State2 : Succeeded
+State1 --> [*] : Aborted
+State2 --> State3 : Succeeded
+State2 --> [*] : Aborted
+state State3 {
+state "Accumulate Enough Data\nLong State Name" as long1
+long1 : Just a test
+[*] --> long1
+long1 --> long1 : New Data
+long1 --> ProcessData : Enough Data
+}
+State3 --> State3 : Failed
+State3 --> [*] : Succeeded / Save Result
+State3 --> [*] : Aborted
+@enduml
+
+@startuml
+!include <cloudogu/common.puml>
+!include <cloudogu/dogus/jenkins.puml>
+!include <cloudogu/dogus/cloudogu.puml>
+!include <cloudogu/dogus/scm.puml>
+!include <cloudogu/dogus/smeagol.puml>
+!include <cloudogu/dogus/nexus.puml>
+!include <cloudogu/tools/k8s.puml>
+node "Cloudogu Ecosystem" <<$cloudogu>> {
+DOGU_JENKINS(jenkins, Jenkins) #ffffff
+DOGU_SCM(scm, SCM-Manager) #ffffff
+DOGU_SMEAGOL(smeagol, Smeagol) #ffffff
+DOGU_NEXUS(nexus,Nexus) #ffffff
+}
+TOOL_K8S(k8s, Kubernetes) #ffffff
+actor developer
+developer --> smeagol : "Edit Slides"
+smeagol -> scm : Push
+scm -> jenkins : Trigger
+jenkins -> nexus : Deploy
+jenkins --> k8s : Deploy
+@enduml

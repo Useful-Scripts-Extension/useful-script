@@ -155,7 +155,7 @@ export default {
           const publishOrig = protocolClient.prototype.publish;
           protocolClient.prototype.publish = function () {
             let b = arguments[1];
-            console.log(arguments);
+            // console.log(arguments);
             if (b && b.includes('\\\\\\"text\\\\\\":')) {
               (function () {
                 b = JSON.parse(b);

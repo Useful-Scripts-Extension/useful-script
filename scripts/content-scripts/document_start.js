@@ -1,6 +1,6 @@
 (async () => {
   try {
-    const { MsgType, Events, ClickType: OnClickType } = await import(
+    const { MsgType, Events, ClickType } = await import(
       "../helpers/constants.js"
     );
     const { sendEventToBackground, isFunction } = await import(
@@ -12,8 +12,7 @@
       event: Events.onDocumentStart,
     });
 
-    const { allScripts } = await import("../index.js");
-    chrome.runtime.onMessage.addListener(function (
+    chrome.runtime.onMessage.addListener(async function (
       message,
       sender,
       sendResponse
@@ -21,14 +20,12 @@
       console.log("> Received message:", message);
 
       switch (message.type) {
-        // run script on receive event from popup
         case MsgType.runScript:
           let scriptId = message.scriptId;
-          if (
-            scriptId in allScripts &&
-            isFunction(allScripts[scriptId][OnClickType.onClickContentScript])
-          ) {
-            allScripts[scriptId][OnClickType.onClickContentScript]();
+          const script = (await import("../" + scriptId + ".js"))?.default;
+
+          if (script && isFunction(script[ClickType.onClickContentScript])) {
+            script[ClickType.onClickContentScript]();
             console.log("> Run script " + scriptId);
           }
           break;

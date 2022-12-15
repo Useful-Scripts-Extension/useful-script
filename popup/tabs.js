@@ -131,6 +131,7 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
+      s.insta_injectDownloadBtn,
       s.insta_getToken,
       s.insta_getUserInfo,
       createTitle("--- Download ---", "--- Tải xuống ---"),
