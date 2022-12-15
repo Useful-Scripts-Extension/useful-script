@@ -155,7 +155,7 @@ export default {
       title =
         "Bắt đầu phân tích với " +
         `<br/>Shop ID: ${shopId}` +
-        `<br/>Mã sản phẩm ${itemId}` +
+        `<br/>Mã sản phẩm: ${itemId}` +
         "...";
 
       await run();

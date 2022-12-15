@@ -1,13 +1,17 @@
-import { OnClickType, ScriptType } from "../../scripts/helpers/constants.js";
+import { ClickType, Events } from "../../scripts/helpers/constants.js";
 import { isFunction } from "../../scripts/helpers/utils.js";
 
 export const canClick = (script) =>
-  isFunction(script[OnClickType.onClick]) ||
-  isFunction(script[OnClickType.onClickExtension]) ||
-  isFunction(script[OnClickType.onClickContentScript]);
+  isFunction(script[ClickType.onClick]) ||
+  isFunction(script[ClickType.onClickExtension]) ||
+  isFunction(script[ClickType.onClickContentScript]);
+
 export const canAutoRun = (script) =>
-  ScriptType.contentScript in script || ScriptType.backgroundScript in script;
-export const isTitle = (script) => !(canClick(script) || canAutoRun(script));
+  Events.onDocumentStart in script ||
+  Events.onDocumentIdle in script ||
+  Events.onDocumentEnd in script;
+
+export const isTitle = (script) => !(canAutoRun(script) || canClick(script));
 
 export async function viewScriptSource(script) {
   localStorage.viewScriptSource_sharedData = script.id;

@@ -10,29 +10,24 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  contentScript: {
-    onDocumentIdle: () => {
-      shared.toggleLight(false);
-    },
-  },
-
-  onClickContentScript: function () {
-    shared.toggleLight();
-  },
-};
-
-export const shared = {
-  toggleLight: function (willShow) {
+  onDocumentIdle: () => {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],
     ].forEach((el) => {
       if (el) {
-        if (willShow != null) {
-          el.style.display = willShow ? "" : "none";
-        } else {
-          el.style.display = el.style.display != "none" ? "none" : "";
-        }
+        el.style.display = "none";
+      } else console.log("ERROR: Cannot find element");
+    });
+  },
+
+  onClickContentScript: function () {
+    [
+      document.querySelectorAll('[role="navigation"]')?.[2],
+      document.querySelectorAll('[role="complementary"]')?.[0],
+    ].forEach((el) => {
+      if (el) {
+        el.style.display = el.style.display != "none" ? "none" : "";
       } else console.log("ERROR: Cannot find element");
     });
   },

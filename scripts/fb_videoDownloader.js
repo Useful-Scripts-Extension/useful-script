@@ -32,9 +32,7 @@ export default {
     try {
       let dtsg = await shared.getDtsg();
       setLoadingText("Đang get link video...");
-      let link =
-        (await shared.getLinkFbVideo2(videoId, dtsg)) ||
-        (await shared.getLinkFbVideo(videoId, dtsg));
+      let link = await shared.getLinkFbVideo(videoId, dtsg);
       if (link) window.open(link);
       else throw Error("Không tìm thấy link");
     } catch (e) {
@@ -56,8 +54,6 @@ export const shared = {
     });
   },
 
-  // Original source code: https://gist.github.com/monokaijs/270e29620c46cabec1caca8c3746729d
-  // Cần thêm rule trong rule.jsons để hàm này có thể chạy trong extension context
   stringifyVariables: function (d, e) {
     let f = [],
       a;
@@ -73,7 +69,19 @@ export const shared = {
       }
     return f.join("&");
   },
+
   getLinkFbVideo: async function (videoId, dtsg) {
+    try {
+      return await shared.getLinkFbVideo2(videoId, dtsg);
+    } catch (e) {
+      return await shared.getLinkFbVideo1(videoId, dtsg);
+    }
+  },
+
+  // Original source code: https://gist.github.com/monokaijs/270e29620c46cabec1caca8c3746729d
+  // POST FB: https://www.facebook.com/groups/j2team.community/posts/1880294815635963/
+  // Cần thêm rule trong rule.jsons để hàm này có thể chạy trong extension context
+  getLinkFbVideo1: async function (videoId, dtsg) {
     function fetchGraphQl(doc_id, variables) {
       return fetch("https://www.facebook.com/api/graphql/", {
         method: "POST",

@@ -1,8 +1,4 @@
-import {
-  GlobalBlackList,
-  MsgType,
-  ScriptType,
-} from "../scripts/helpers/constants.js";
+import { GlobalBlackList, MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
   getActiveScript,
@@ -157,10 +153,7 @@ function createScriptButton(script, isFavorite = false) {
   buttonContainer.className = "buttonContainer";
 
   // button checker
-  if (
-    ScriptType.contentScript in script ||
-    ScriptType.backgroundScript in script
-  ) {
+  if (canAutoRun(script)) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {

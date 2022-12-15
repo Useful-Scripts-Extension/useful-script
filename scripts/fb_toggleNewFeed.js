@@ -10,19 +10,7 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  contentScript: {
-    onDocumentIdle: function () {
-      shared.toggleNewFeed(false);
-    },
-  },
-
-  onClickContentScript: async function () {
-    shared.toggleNewFeed();
-  },
-};
-
-export const shared = {
-  toggleNewFeed: async function (willShow) {
+  onDocumentIdle: function () {
     [
       ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
       document.querySelector("#watch_feed"),
@@ -30,11 +18,20 @@ export const shared = {
       document.querySelector("#ssrb_feed_start")?.parentElement,
     ].forEach((el) => {
       if (el) {
-        if (willShow != null) {
-          el.style.display = willShow ? "block" : "none";
-        } else {
-          el.style.display = el.style.display === "none" ? "block" : "none";
-        }
+        el.style.display = "none";
+      } else console.log("ERROR: Cannot find element");
+    });
+  },
+
+  onClickContentScript: async function () {
+    [
+      ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
+      document.querySelector("#watch_feed"),
+      document.querySelector("#ssrb_stories_start")?.parentElement,
+      document.querySelector("#ssrb_feed_start")?.parentElement,
+    ].forEach((el) => {
+      if (el) {
+        el.style.display = el.style.display === "none" ? "block" : "none";
       } else console.log("ERROR: Cannot find element");
     });
   },
