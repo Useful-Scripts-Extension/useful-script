@@ -1,10 +1,15 @@
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+import { canAutoRun } from "./helpers/utils.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 
 const specialTabs = [
+  {
+    ...CATEGORY.all,
+    scripts: [],
+  },
   {
     ...CATEGORY.recently,
     scripts: [],
@@ -14,7 +19,7 @@ const specialTabs = [
     scripts: [],
   },
   {
-    ...CATEGORY.all,
+    ...CATEGORY.autorun,
     scripts: [],
   },
 ];
@@ -224,7 +229,8 @@ const tabs = [
       s.reEnableContextMenu,
       s.showHiddenFields,
       s.studyphim_unlimited,
-      s.envato_previewBypass,
+      s.envato_bypassPreview,
+      s.studocu_bypassPreview,
       s.viewCookies,
       s.removeCookies,
       s.viewBrowserInfo,
@@ -433,6 +439,13 @@ async function refreshSpecialTabs() {
 
   let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
   if (allTab) allTab.scripts = sortScriptsByTab(Object.values(s), tabs);
+
+  let autoTab = specialTabs.find((tab) => tab.id === CATEGORY.autorun.id);
+  if (autoTab)
+    autoTab.scripts = sortScriptsByTab(
+      Object.values(s).filter((_) => canAutoRun(_)),
+      tabs
+    );
 }
 
 function getAllTabs() {

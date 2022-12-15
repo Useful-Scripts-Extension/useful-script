@@ -11,12 +11,29 @@ export default {
   blackList: [],
   whiteList: ["https://zingmp3.vn/*", "https://mp3.zing.vn/*"],
 
+  onDocumentStart: () => {
+    // prevent auto redirect from https://mp3.zing.vn/ to https://zingmp3.vn/
+    window.MP3_MEDIA_USER_UPLOAD = 1;
+
+    // mp3 VIP (test)
+    window.onload = () => {
+      if (window.MP3) {
+        window.MP3.ACCOUNT_ID = new Date().getTime();
+        window.MP3.ACCOUNT_NAME = "VIP - Useful scripts";
+        window.MP3.VIP = 1;
+        window.MP3.IS_IP_VN = true;
+      }
+
+      window.checkLogin = () => true;
+
+      if (window.ZVip) {
+        window.ZVip.isVip = 1;
+        window.ZVip.vip = 1;
+      }
+    };
+  },
+
   onClick: function () {
-    // Mặc định thì mp3.zing.vn (giao diện cũ) sẽ tự động redirect người dùng về zingmp3.vn (giao diện mới)
-
-    // Vui lòng xem file content-script/scripts/mp3.zing.vn.js và content-script/document_start.js
-    // Để biết cách bypass quá trình tự động này
-
     if (location.hostname === "mp3.zing.vn") location.hostname = "zingmp3.vn";
     else location.hostname = "mp3.zing.vn";
   },
