@@ -154,6 +154,7 @@ import fb_exportSaved from "./fb_exportSaved.js";
 import studyphim_unlimited from "./studyphim_unlimited.js";
 import shopee_totalSpendMoney from "./shopee_totalSpendMoney.js";
 import tiki_totalSpendMoney from "./tiki_totalSpendMoney.js";
+import fb_invisible_message from "./fb_invisible_message.js";
 
 // inject badges
 const allScripts = {
@@ -329,6 +330,7 @@ const allScripts = {
   studyphim_unlimited: addBadge(studyphim_unlimited, BADGES.new),
   shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.new),
   tiki_totalSpendMoney: addBadge(tiki_totalSpendMoney, BADGES.beta),
+  fb_invisible_message: addBadge(fb_invisible_message, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

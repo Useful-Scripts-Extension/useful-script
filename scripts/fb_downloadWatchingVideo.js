@@ -28,7 +28,7 @@ export default {
       let dtsg = await fb_videoDownloader.getDtsg();
 
       setLoadingText("Đang tìm video url...");
-      let videoUrl = await fb_videoDownloader.getLinkFbVideo2(
+      let videoUrl = await fb_videoDownloader.getLinkFbVideo(
         watchingVideoId,
         dtsg
       );

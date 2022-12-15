@@ -31,7 +31,7 @@ export default {
 
     let OrderTypeName = {
       [OrderType.completed]: "Hoàn thành",
-      [OrderType.canceled]: "Đã  hủy",
+      [OrderType.canceled]: "Đã hủy",
       [OrderType.ship]: "Vận chuyển",
       [OrderType.shipping]: "Đang giao",
       //   [OrderType.waitPay]: "Chờ thanh toán",
@@ -141,7 +141,7 @@ export default {
         await getStatistics(orderType);
 
       let stats = {
-        "THỐNG KÊ Shopee: ": orderTypeName,
+        "THỐNG KÊ Shopee: Đơn hàng ": orderTypeName,
         "+ Tổng đơn hàng: ": totalOrders,
         "+ Tổng sản phẩm: ": totalItems,
         "+ Tổng chi tiêu: ": moneyFormat(totalSpent),

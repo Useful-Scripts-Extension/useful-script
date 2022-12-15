@@ -1,17 +1,49 @@
-import { MsgType, ScriptType } from "../helpers/constants.js";
-import { runAllScriptWithEventType } from "../helpers/utils.js";
+import { allScripts } from "../index.js";
+import { Events } from "../helpers/constants.js";
+import { MsgType } from "../helpers/constants.js";
+import {
+  checkBlackWhiteList,
+  getActiveScript,
+  isEmptyFunction,
+  isFunction,
+  runScriptInTab,
+} from "../helpers/utils.js";
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log("> Received message:", message, sender?.tab?.url);
 
-  switch (message.type) {
-    case MsgType.runScript:
-      runAllScriptWithEventType(
-        message.event,
-        ScriptType.backgroundScript,
-        sender.tab?.url
-      );
-      break;
+  try {
+    switch (message.type) {
+      case MsgType.runScript:
+        let funcName = Events[message.event];
+        if (!funcName) break;
+
+        let count = 0,
+          tabId = sender.tab.id,
+          url = sender.tab.url;
+
+        Object.values(allScripts).map(async (script) => {
+          if (!checkBlackWhiteList(script, url)) return;
+
+          let func = script[funcName];
+          if (isFunction(func) && !isEmptyFunction(func)) {
+            let isActive = (await getActiveScript(script.id)) ?? true;
+            if (isActive) {
+              runScriptInTab({ func, tabId });
+              console.log(
+                `%c > Run ${script.id} ${funcName} in ${url}`,
+                "background: #222; color: #bada55"
+              );
+              count++;
+            }
+          }
+        });
+
+        updateBadge(tabId, count);
+        break;
+    }
+  } catch (e) {
+    console.log("ERROR: ", e);
   }
 });
 

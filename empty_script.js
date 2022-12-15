@@ -11,19 +11,10 @@ export default {
   blackList: [],
   whiteList: [],
 
-  // run (if autorun) in background context
-  backgroundScript: {
-    onDocumentStart: (tab) => {},
-    onDocumentEnd: (tab) => {},
-    onDocumentIdle: (tab) => {},
-  },
-
-  // run (if autorun) in web page context
-  contentScript: {
-    onDocumentStart: () => {},
-    onDocumentEnd: () => {},
-    onDocumentIdle: () => {},
-  },
+  // run (if enable autorun) in web page context
+  onDocumentStart: () => {},
+  onDocumentEnd: () => {},
+  onDocumentIdle: () => {},
 
   // run onclick in extension-popup-page context
   onClickExtension: () => {},

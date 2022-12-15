@@ -1,28 +1,18 @@
 export const MsgType = {
   runScript: "runScript",
+  getTabId: "getTabId",
 };
 
-export const ScriptType = {
-  contentScript: "contentScript",
-  backgroundScript: "backgroundScript",
-};
-
-export const OnClickType = {
+export const ClickType = {
   onClick: "onClick",
   onClickExtension: "onClickExtension",
   onClickContentScript: "onClickContentScript",
 };
 
 export const Events = {
-  document_start: "document_start",
-  document_idle: "document_idle",
-  document_end: "document_end",
-};
-
-export const EventMap = {
-  [Events.document_start]: "onDocumentStart",
-  [Events.document_idle]: "onDocumentIdle",
-  [Events.document_end]: "onDocumentEnd",
+  onDocumentStart: "onDocumentStart",
+  onDocumentIdle: "onDocumentIdle",
+  onDocumentEnd: "onDocumentEnd",
 };
 
 export const GlobalBlackList = ["edge://*", "chrome://*"];

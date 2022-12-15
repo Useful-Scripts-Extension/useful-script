@@ -1,35 +1,17 @@
-import { allScripts } from "../index.js";
-import { EventMap, Events, GlobalBlackList } from "./constants.js";
-
-export async function runAllScriptWithEventType(eventType, scriptType, url) {
-  let event = Events[eventType];
-  let funcName = EventMap[event];
-
-  Object.values(allScripts).map(async (script) => {
-    if (!checkBlackWhiteList(script, url)) return;
-
-    let func = script?.[scriptType]?.[funcName];
-    if (isFunction(func) && !isEmptyFunction(func)) {
-      let isActive = (await getActiveScript(script.id)) ?? true;
-      isActive && func();
-      console.log(
-        `%c > Run ${script.id} ${scriptType} ${funcName}`,
-        "background: #222; color: #bada55"
-      );
-    }
-  });
-}
+import { GlobalBlackList } from "./constants.js";
 
 export async function sendEventToBackground(data) {
-  console.log("... Sending ", data, " to background...");
+  // console.log("... Sending ", data, " to background...");
   const response = await chrome.runtime.sendMessage(data);
-  console.log("> ", data, " sent to background successfully", response);
+  // console.log("> ", data, " sent to background successfully", response);
+  return response;
 }
 
 export async function sendEventToTab(tabId, data) {
   console.log("... Sending ", data, " to tab...");
   const response = await chrome.tabs.sendMessage(tabId, data);
   console.log("> ", data, " sent to tab successfully", response);
+  return response;
 }
 
 // #region Storage Utils
