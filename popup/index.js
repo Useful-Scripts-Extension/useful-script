@@ -304,14 +304,19 @@ async function runScript(script) {
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
-    recentScriptsSaver.add(script);
-    if (isFunction(script.onClickExtension)) await script.onClickExtension();
-    if (isFunction(script.onClick)) await runScriptInCurrentTab(script.onClick);
-    if (isFunction(script.onClickContentScript))
-      await sendEventToTab(tab.id, {
-        type: MsgType.runScript,
-        scriptId: script.id,
-      });
+    try {
+      recentScriptsSaver.add(script);
+      if (isFunction(script.onClickExtension)) await script.onClickExtension();
+      if (isFunction(script.onClick))
+        await runScriptInCurrentTab(script.onClick);
+      if (isFunction(script.onClickContentScript))
+        await sendEventToTab(tab.id, {
+          type: MsgType.runScript,
+          scriptId: script.id,
+        });
+    } catch (e) {
+      console.log("ERROR: run script", e);
+    }
   } else {
     let w = script?.whiteList?.join(", ");
     let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");
