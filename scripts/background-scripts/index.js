@@ -9,6 +9,10 @@ import {
   runScriptInTab,
 } from "../helpers/utils.js";
 
+const CACHED = {
+  runCount: {},
+};
+
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log("> Received message:", message, sender?.tab?.url);
 
@@ -25,6 +29,9 @@ async function runScript(event, tab) {
     tabId = tab.id,
     url = tab.url;
 
+  if (!(tabId in CACHED.runCount) || event === Events.onDocumentStart)
+    CACHED.runCount[tabId] = 0;
+
   for (let script of Object.values(allScripts)) {
     try {
       if (!checkBlackWhiteList(script, url)) continue;
@@ -38,7 +45,7 @@ async function runScript(event, tab) {
             `%c > Run ${script.id} ${funcName} in ${url}`,
             "background: #222; color: #bada55"
           );
-          count++;
+          CACHED.runCount[tabId]++;
         }
       }
     } catch (e) {
@@ -46,8 +53,7 @@ async function runScript(event, tab) {
     }
   }
 
-  updateBadge(tabId, count);
-  console.log(count);
+  updateBadge(tabId, CACHED.runCount[tabId]);
 }
 
 function updateBadge(tabId, text = "", bgColor = "#666") {
