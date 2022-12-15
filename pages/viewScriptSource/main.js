@@ -6,6 +6,7 @@ window.onload = async () => {
     if (source) {
       document.querySelector("#copy-btn").onclick = () => copy(source);
       document.querySelector("code").innerHTML = escapeHTML(source);
+      document.title = scriptId + ".js";
 
       hljs.highlightAll();
       hljs.initLineNumbersOnLoad();

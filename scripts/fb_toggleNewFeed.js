@@ -31,7 +31,7 @@ export default {
       document.querySelector("#ssrb_feed_start")?.parentElement,
     ].forEach((el) => {
       if (el) {
-        el.style.display = el.style.display === "none" ? "block" : "none";
+        el.style.display = el.style.display === "none" ? "" : "none";
       } else console.log("ERROR: Cannot find element");
     });
   },

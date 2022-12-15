@@ -12,40 +12,43 @@ import {
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   console.log("> Received message:", message, sender?.tab?.url);
 
-  try {
-    switch (message.type) {
-      case MsgType.runScript:
-        let funcName = Events[message.event];
-        if (!funcName) break;
-
-        let count = 0,
-          tabId = sender.tab.id,
-          url = sender.tab.url;
-
-        Object.values(allScripts).map(async (script) => {
-          if (!checkBlackWhiteList(script, url)) return;
-
-          let func = script[funcName];
-          if (isFunction(func) && !isEmptyFunction(func)) {
-            let isActive = (await getActiveScript(script.id)) ?? true;
-            if (isActive) {
-              runScriptInTab({ func, tabId });
-              console.log(
-                `%c > Run ${script.id} ${funcName} in ${url}`,
-                "background: #222; color: #bada55"
-              );
-              count++;
-            }
-          }
-        });
-
-        updateBadge(tabId, count);
-        break;
-    }
-  } catch (e) {
-    console.log("ERROR: ", e);
+  switch (message.type) {
+    case MsgType.runScript:
+      runScript(message.event, sender.tab);
+      break;
   }
 });
+
+async function runScript(event, tab) {
+  let funcName = event,
+    count = 0,
+    tabId = tab.id,
+    url = tab.url;
+
+  for (let script of Object.values(allScripts)) {
+    try {
+      if (!checkBlackWhiteList(script, url)) continue;
+
+      let func = script[funcName];
+      if (isFunction(func) && !isEmptyFunction(func)) {
+        let isActive = (await getActiveScript(script.id)) ?? true;
+        if (isActive) {
+          runScriptInTab({ func, tabId });
+          console.log(
+            `%c > Run ${script.id} ${funcName} in ${url}`,
+            "background: #222; color: #bada55"
+          );
+          count++;
+        }
+      }
+    } catch (e) {
+      console.log("ERROR at script " + script?.id, e);
+    }
+  }
+
+  updateBadge(tabId, count);
+  console.log(count);
+}
 
 function updateBadge(tabId, text = "", bgColor = "#666") {
   text = text.toString();
