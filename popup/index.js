@@ -1,7 +1,7 @@
 import { GlobalBlackList, MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
-  getActiveScript,
+  isActiveScript,
   getCurrentTab,
   isFunction,
   removeAccents,
@@ -174,8 +174,8 @@ function createScriptButton(script, isFavorite = false) {
     button.onclick = () =>
       alert(
         t({
-          vi: "Chức năng này tự động chạy\nTắt/Mở tự chạy bằng nút bên trái",
-          en: "This function is Autorun\nTurn on/off autorun by click the left checkmark",
+          vi: "Chức năng này tự động chạy.\nTắt/Mở tự chạy bằng nút bên trái.\nSau đó tải lại trang web.",
+          en: "This function is Autorun.\nTurn on/off autorun by click the left checkmark.\nThen reload the webpage.",
         })
       );
   } else {
@@ -278,7 +278,7 @@ function createScriptButton(script, isFavorite = false) {
 async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (val ?? (await getActiveScript(script.id))) {
+  if (val ?? (await isActiveScript(script.id))) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",

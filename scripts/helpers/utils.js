@@ -28,16 +28,32 @@ export const localStorage = {
   },
 };
 
+const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {
-  return await localStorage.set("isactive" + scriptId, isActive);
+  let list = await getAllActiveScriptId();
+  if (isActive) {
+    list.push(scriptId);
+  } else {
+    list = list.filter((_) => _ != scriptId);
+  }
+  await localStorage.set(listActiveScriptsKey, list.join(","));
+  return list;
 }
 
-export async function getActiveScript(scriptId) {
-  return await localStorage.get("isactive" + scriptId, false);
+export async function isActiveScript(scriptId) {
+  let currentList = await getAllActiveScriptId();
+  return currentList.find((_) => _ == scriptId) != null;
+}
+
+export async function getAllActiveScriptId() {
+  return (await localStorage.get(listActiveScriptsKey, "")).split(",");
 }
 
 export async function toggleActiveScript(scriptId) {
-  return await setActiveScript(scriptId, !(await getActiveScript(scriptId)));
+  let current = await isActiveScript(scriptId);
+  let newVal = !current;
+  await setActiveScript(scriptId, newVal);
+  return newVal;
 }
 
 // #endregion
@@ -98,6 +114,7 @@ export const runScriptInTab = async ({ func, tabId, args = [] }) => {
         func: func,
         args: args,
         world: chrome.scripting.ExecutionWorld.MAIN,
+        injectImmediately: true,
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
@@ -115,6 +132,7 @@ export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
         files: [scriptFile],
         args: args,
         world: chrome.scripting.ExecutionWorld.MAIN,
+        injectImmediately: true,
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
