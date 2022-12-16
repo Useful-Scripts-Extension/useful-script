@@ -1,5 +1,4 @@
 import { GlobalBlackList } from "./constants.js";
-import { patternToRegex } from "./webext-patterns.js";
 
 export async function sendEventToBackground(data) {
   // console.log("... Sending ", data, " to background...");
