@@ -19,51 +19,50 @@
   }).toString();
 
   injectScript(
-    chrome.runtime.getURL("/scripts/content-scripts/load_scripts.js") +
+    chrome.runtime.getURL("/scripts/content-scripts/run_scripts.js") +
       "?" +
       search
   );
 })();
 
-// (async () => {
-//   try {
-//     const { MsgType, Events, ClickType } = await import(
-//       "../helpers/constants.js"
-//     );
-//     const { sendEventToBackground, isFunction } = await import(
-//       "../helpers/utils.js"
-//     );
+(async () => {
+  try {
+    const { MsgType, Events, ClickType } = await import(
+      "../helpers/constants.js"
+    );
+    const { sendEventToBackground, isFunction } = await import(
+      "../helpers/utils.js"
+    );
 
-//     sendEventToBackground({
-//       type: MsgType.runScript,
-//       event: Events.onDocumentStart,
-//     });
+    // sendEventToBackground({
+    //   type: MsgType.runScript,
+    //   event: Events.onDocumentStart,
+    // });
 
-//     chrome.runtime.onMessage.addListener(async function (
-//       message,
-//       sender,
-//       sendResponse
-//     ) {
-//       console.log("> Received message:", message);
+    chrome.runtime.onMessage.addListener(async function (
+      message,
+      sender,
+      sendResponse
+    ) {
+      console.log("> Received message:", message);
 
-//       switch (message.type) {
-//         case MsgType.runScript:
-//           let scriptId = message.scriptId;
-//           const script = (await import("../" + scriptId + ".js"))?.default;
+      switch (message.type) {
+        case MsgType.runScript:
+          let scriptId = message.scriptId;
+          const script = (await import("../" + scriptId + ".js"))?.default;
 
-//           if (script && isFunction(script[ClickType.onClickContentScript])) {
-//             script[ClickType.onClickContentScript]();
-//             console.log("> Run script " + scriptId);
-//           }
-//           break;
-//       }
-//     });
+          if (script && isFunction(script[ClickType.onClickContentScript])) {
+            script[ClickType.onClickContentScript]();
+            console.log("> Run script " + scriptId);
+          }
+          break;
+      }
+    });
 
-//     // https://stackoverflow.com/a/53033388
-//     const { getURL, injectScript, injectCss } = await import("./utils.js");
-//     injectScript(getURL("content-scripts/scripts/useful-scripts-utils.js"));
-//     // injectScript(getURL("content-scripts/load_script.js"), "module");
-//   } catch (e) {
-//     console.log("ERROR: ", e);
-//   }
-// })();
+    // https://stackoverflow.com/a/53033388
+    const { getURL, injectScript, injectCss } = await import("./utils.js");
+    injectScript(getURL("content-scripts/scripts/useful-scripts-utils.js"));
+  } catch (e) {
+    console.log("ERROR: ", e);
+  }
+})();
