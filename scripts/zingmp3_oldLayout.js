@@ -11,7 +11,7 @@ export default {
   blackList: [],
   whiteList: ["https://zingmp3.vn/*", "https://mp3.zing.vn/*"],
 
-  onDocumentStart: () => {
+  onDocumentStart : () => {
     // prevent auto redirect from https://mp3.zing.vn/ to https://zingmp3.vn/
     window.MP3_MEDIA_USER_UPLOAD = 1;
 
