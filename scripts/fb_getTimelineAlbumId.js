@@ -7,8 +7,7 @@ export default {
     en: "Get timeline album id of page/user in facebook website",
     vi: "Tìm album chứa tất cả ảnh trên dòng thời gian của page/user facebook hiện tại",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     // Lấy timeline album id của page - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/profile.php?id=100057998562930

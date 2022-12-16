@@ -8,8 +8,7 @@ export default {
     en: "Open current youtube video in new popup player",
     vi: "Xem video youtube hiện tại trong cửa sổ popup mới",
   },
-  blackList: [],
-  whiteList: ["*://*.youtube.com/*"],
+    whiteList: ["*://*.youtube.com/*"],
 
   onClick: function () {
     const urlObject = new URL(location.href);

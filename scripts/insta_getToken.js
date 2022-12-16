@@ -8,10 +8,7 @@ export default {
     en: "Get instagram access token",
     vi: "Lấy instagram access token",
   },
-  blackList: [],
-  whiteList: ["*://*.instagram.com"],
-
-  onClick: function () {
+    onClick: function () {
     try {
       const encoded = document.cookie
         .split("; ")

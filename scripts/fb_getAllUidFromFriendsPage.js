@@ -7,8 +7,7 @@ export default {
     en: "Get id of all user from friends facebook page",
     vi: "Lấy tất cả user ID từ trang danh sách bạn bè facebook",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["htpps://www.facebook.com/*"],
 
   onClick: async function () {
     // Lấy tất cả uid từ trang facebook search bạn bè

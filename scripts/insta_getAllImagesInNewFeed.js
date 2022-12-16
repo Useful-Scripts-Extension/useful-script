@@ -7,15 +7,7 @@ export default {
     en: "Get all images in newfeed instagram",
     vi: "Tải về tất cả ảnh đang có trên newfeed instagram",
   },
-  blackList: [],
-  whiteList: ["*://*.instagram.com"],
-
-  onClick: async function () {
-    const getAllImgTag = () =>
-      Array.from(document.querySelectorAll("img[sizes*=px]")) || [];
-    const sleep = (milliseconds) =>
-      new Promise((resolve) => setTimeout(resolve, milliseconds));
-
+  
     // https://greasyfork.org/en/scripts/14755-instagram-reloaded
     function getBestImage(imgEl) {
       try {

@@ -8,10 +8,7 @@ export default {
     en: "",
     vi: "",
   },
-  blackList: [],
-  whiteList: [],
-
-  onClick: function () {
+    onClick: function () {
     // https://stackoverflow.com/a/26573284
     function injectScriptAndUse(src) {
       var script = document.createElement("script");

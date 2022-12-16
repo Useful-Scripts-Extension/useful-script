@@ -7,8 +7,6 @@ export default {
     en: "Download story that you are watching",
     vi: "Tải story bạn đang xem",
   },
-  blackList: [],
-  whiteList: [],
 
   onClick: function () {
     const src = document.querySelector("video")?.src;

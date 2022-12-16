@@ -10,8 +10,6 @@ export default {
     en: "Get facebook access token from business.facebook.com",
     vi: "Lấy facebook access token từ trang business.facebook.com",
   },
-  blackList: [],
-  // whiteList: ["*://business.facebook.com"],
 
   onClickExtension: function () {
     // old - FAILED

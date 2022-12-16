@@ -7,9 +7,7 @@ export default {
     en: "Get all images in instagram user profile",
     vi: "Tải tất cả ảnh có trong profile của user instagram bất kỳ",
   },
-  blackList: [],
-  whiteList: ["*://*.instagram.com"],
-
+  
   onClick: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;

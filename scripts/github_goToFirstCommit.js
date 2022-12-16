@@ -9,8 +9,7 @@ export default {
     vi: "Đi tới commit đầu tiên của repo github",
   },
 
-  blackList: [],
-  whiteList: ["*://github.com"],
+    whiteList: ["https://github.com/*"],
 
   onClick: function () {
     // Source: https://github.com/FarhadG/init

@@ -14,5 +14,3 @@ export const Events = {
   onDocumentIdle: "onDocumentIdle",
   onDocumentEnd: "onDocumentEnd",
 };
-
-export const GlobalBlackList = ["edge://*", "chrome://*"];

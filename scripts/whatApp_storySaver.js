@@ -8,8 +8,7 @@ export default {
     en: "Download whatapp story that you are watching",
     vi: "Tải whatapp story bạn đang xem",
   },
-  whiteList: [],
-
+  
   onClickExtension: function () {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 

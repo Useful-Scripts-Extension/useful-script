@@ -15,9 +15,7 @@ export default {
     en: "Download google drive video that dont have download button",
     vi: "Tải video không có nút download trên google drive",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClickExtension: async function () {
     let { closeLoading } = showLoading("Đang tìm link video...");
     try {

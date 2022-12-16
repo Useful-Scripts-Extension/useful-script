@@ -8,8 +8,7 @@ export default {
     en: "Download facebook story that you are watching",
     vi: "Tải facebook story bạn đang xem",
   },
-  whiteList: [],
-
+  
   onClick: function () {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 

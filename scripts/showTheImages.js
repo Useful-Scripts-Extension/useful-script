@@ -8,11 +8,7 @@ export default {
     en: "Will even show hidden images as well as pulling them out of a slider/rotator.",
     vi: "Sẽ thấy đươc ảnh bị ẩn, dễ dàng chuột phải để tải về",
   },
-  blackList: [],
-  whiteList: [],
-
-  onClick: function () {
-    // source code from https://bookmarklet.vercel.app/
+      // source code from https://bookmarklet.vercel.app/
 
     var iGrabSH = "";
     (function () {

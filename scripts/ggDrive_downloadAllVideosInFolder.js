@@ -16,9 +16,7 @@ export default {
     en: "Download all videos in folder of google drive (bypass download permission)",
     vi: "Tải tất cả video trong thư mục google drive (tải được video không cho phép tải)",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClickExtension: async function () {
     // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
 

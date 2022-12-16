@@ -10,8 +10,7 @@ export default {
     en: "Download video in facebook comment that you are watching",
     vi: "Tải video trong bình luận facebook bạn đang xem",
   },
-  whiteList: [],
-
+  
   onClick: fb_storySaver.onClick,
 };
 

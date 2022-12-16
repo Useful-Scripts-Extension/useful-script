@@ -9,10 +9,7 @@ export default {
     vi: "Tải video dễ dàng hơn",
   },
 
-  blackList: [],
-  whiteList: [],
-
-  onClickExtension: function () {
+    onClickExtension: function () {
     let videos = Array.from(document.querySelectorAll("video"));
 
     if (!videos.length) {

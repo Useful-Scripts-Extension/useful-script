@@ -1,5 +1,3 @@
-import { GlobalBlackList } from "./constants.js";
-
 export async function sendEventToBackground(data) {
   // console.log("... Sending ", data, " to background...");
   const response = await chrome.runtime.sendMessage(data);
@@ -160,14 +158,12 @@ export function checkBlackWhiteList(script, url) {
     hasWhiteList = w?.length > 0,
     hasBlackList = b?.length > 0,
     inWhiteList = matchPatterns(url, w) ?? true,
-    inBlackList = matchPatterns(url, b) ?? false,
-    inGlobalBlackList = matchPatterns(url, GlobalBlackList);
+    inBlackList = matchPatterns(url, b) ?? false;
 
   let willRun =
-    !inGlobalBlackList &&
-    ((!hasWhiteList && !hasBlackList) ||
-      (hasWhiteList && inWhiteList) ||
-      (hasBlackList && !inBlackList));
+    (!hasWhiteList && !hasBlackList) ||
+    (hasWhiteList && inWhiteList) ||
+    (hasBlackList && !inBlackList);
 
   return willRun;
 }
@@ -215,7 +211,12 @@ function matchPatterns(url, patterns) {
     );
   }
 
-  return patternToRegex(patterns).test(url);
+  try {
+    return patternToRegex(patterns).test(url);
+  } catch (e) {
+    console.log("ERROR matchPatterns", e);
+    return false;
+  }
 }
 
 // https://stackoverflow.com/a/68634884/11898496

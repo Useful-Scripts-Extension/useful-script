@@ -17,10 +17,7 @@ export default {
     en: "Download all videos in tiktok user profile.",
     vi: "Tải tất cả video trong trang cá nhân của người dùng tiktok.",
   },
-  blackList: [],
-  whiteList: [],
-
-  onClickExtension: async function () {
+    onClickExtension: async function () {
     // Source code: https://github.com/karim0sec/tiktokdl
 
     let { closeLoading, setLoadingText } = showLoading();

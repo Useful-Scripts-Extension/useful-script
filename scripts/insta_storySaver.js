@@ -8,8 +8,7 @@ export default {
     en: "Download instagram story that you are watching",
     vi: "Tải instagram story bạn đang xem",
   },
-  whiteList: [],
-
+  
   onClickExtension: function () {
     // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 

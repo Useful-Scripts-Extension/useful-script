@@ -8,9 +8,7 @@ export default {
     en: "Extracts all emails and displays them in a popup iFrame (enable popups!)",
     vi: "Trích xuất tất cả emails trong web và hiện trong popup mới",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClick: function () {
     // source code from: https://bookmarklet.vercel.app/
 

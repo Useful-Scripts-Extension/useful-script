@@ -8,8 +8,7 @@ export default {
     en: "Toggle UI zingmp3 old/new",
     vi: "Bật/tắt giao diện zingmp3 mới/cũ",
   },
-  blackList: [],
-  whiteList: ["https://zingmp3.vn/*", "https://mp3.zing.vn/*"],
+    whiteList: ["https://zingmp3.vn/*", "https://mp3.zing.vn/*"],
 
   onDocumentStart : () => {
     // prevent auto redirect from https://mp3.zing.vn/ to https://zingmp3.vn/

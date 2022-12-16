@@ -12,7 +12,6 @@ export default {
     en: "Download facebook video that you are watching (watch/story/comment)",
     vi: "Tải video facebook bạn đang xem (watch/story/comment)",
   },
-  blackList: [],
   whiteList: ["https://www.facebook.com/*"],
 
   onClickExtension: async function () {

@@ -8,8 +8,7 @@ export default {
     en: "Get id of user in facebook website",
     vi: "Lấy id của user trong trang facebook hiện tại",
   },
-  blackList: [],
-  whiteList: ["https://www.facebook.com"],
+    whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
