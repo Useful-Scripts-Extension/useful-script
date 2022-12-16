@@ -68,7 +68,6 @@ export default {
       closeFullVideo();
       await sleep(500);
     }
-
     console.log(allUrls);
     alert("Tìm được " + allUrls.length + " videos. Bấm ok để tải xuống link.");
     download(location.pathname + ".txt", allUrls.join("\n"));
