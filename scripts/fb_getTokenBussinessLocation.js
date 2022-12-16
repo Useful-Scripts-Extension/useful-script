@@ -10,8 +10,7 @@ export default {
     en: "Get facebook token EAAG from business.facebook.com",
     vi: "Lấy facebook token EAAG từ business.facebook.com",
   },
-  blackList: [],
-
+  
   onClickExtension: function () {
     // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 

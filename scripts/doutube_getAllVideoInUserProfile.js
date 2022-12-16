@@ -7,8 +7,7 @@ export default {
     en: "Get all video in doutu.be user profile",
     vi: "Tải tất cả video từ profile của user doutu.be bất kỳ",
   },
-  blackList: [],
-  whiteList: ["*://doutu.be"],
+  whiteList: ["https://doutu.be/*"],
 
   onClick: async function () {
     // https://stackoverflow.com/a/18197341/11898496

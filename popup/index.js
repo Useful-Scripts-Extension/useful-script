@@ -1,4 +1,4 @@
-import { GlobalBlackList, MsgType } from "../scripts/helpers/constants.js";
+import { MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
   isActiveScript,
@@ -312,7 +312,7 @@ async function runScript(script) {
     }
   } else {
     let w = script?.whiteList?.join(", ");
-    let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");
+    let b = script?.blackList?.join(", ");
 
     openModal(
       t({

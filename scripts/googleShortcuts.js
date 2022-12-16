@@ -8,9 +8,7 @@ export default {
     en: "Create new google doc/sheet/slide/form/site/keep/calendar",
     vi: "Tạo mới google doc/sheet/slide/form/site/keep/calendar",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClick: function () {
     let urls = [
       ["Google Doc", "https://doc.new"],

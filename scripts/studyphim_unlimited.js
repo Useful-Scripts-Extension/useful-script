@@ -8,10 +8,7 @@ export default {
     en: "Watch movies on Studyphim for free without login",
     vi: "Xem phim miễn phí trên Studyphim không cần đăng nhập",
   },
-  blackList: [],
-  whiteList: ["https://www.studyphim.vn/*"],
-
-  onDocumentStart: () => {
+    onDocumentStart: () => {
     // Source: https://github.com/gys-dev/Unlimited-Stdphim
 
     deleteElements(

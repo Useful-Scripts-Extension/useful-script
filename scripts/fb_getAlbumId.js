@@ -8,8 +8,7 @@ export default {
     en: "Get id of facebook album in current website",
     vi: "Lấy id của facebook album trong trang web hiện tại",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     // Lấy album id - khi đang xem 1 album, ví dụ https://www.facebook.com/media/set/?vanity=ColourfulSpace&set=a.945632905514659

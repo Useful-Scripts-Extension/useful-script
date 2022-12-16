@@ -8,8 +8,7 @@ export default {
     en: "Toggle light on/off to focus to youtube video",
     vi: "Tắt/Mở đèn để tập trung xem video youtube",
   },
-  blackList: [],
-  whiteList: ["*://www.youtube.com/*"],
+    whiteList: ["*://www.youtube.com/*"],
 
   onClick: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {

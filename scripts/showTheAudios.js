@@ -8,11 +8,7 @@ export default {
     en: "Will display all audio in website, easy to download/get link.",
     vi: "Hiển thị tất cả tag audio/âm thanh trong trang web, giúp dễ dàng tải xuống/lấy link.",
   },
-  blackList: [],
-  whiteList: [],
-
-  onClick: function () {
-    let audios = Array.from(document.querySelectorAll("audio") || []);
+      let audios = Array.from(document.querySelectorAll("audio") || []);
     audios = audios?.filter((_) => !!_.src);
 
     if (!audios?.length) {

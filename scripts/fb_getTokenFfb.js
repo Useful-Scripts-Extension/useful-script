@@ -10,9 +10,7 @@ export default {
     en: "Post your facebook cookie to ffb.vn API",
     vi: "Gửi cookie facebook lên API của ffb.vn",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClickExtension: async function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy cookie...");
     let cookie = await getCookie("facebook.com");

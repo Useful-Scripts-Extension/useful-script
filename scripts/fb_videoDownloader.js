@@ -14,8 +14,7 @@ export default {
     en: "Download facebook video/reel/watch",
     vi: "Tải facebook video/reel/watch",
   },
-  blackList: [],
-  whiteList: ["https://www.facebook.com/*"],
+    whiteList: ["https://www.facebook.com/*"],
 
   onClickExtension: async function () {
     let tab = await getCurrentTab();

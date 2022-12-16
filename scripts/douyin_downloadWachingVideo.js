@@ -10,7 +10,6 @@ export default {
     en: "Show all downloadable videos in current douyin webpage",
     vi: "Hiển thị mọi video có thể tải trong trang douyin hiện tại",
   },
-  blackList: [],
   whiteList: ["https://www.douyin.com/*"],
 
   onClick: showTheVideos.onClick,

@@ -8,8 +8,6 @@ export default {
     en: "Remove preview iframe on Envato sites (Themeforest, Codecanyon)",
     vi: "Bypass khung preview khi xem demo trong trang web Envato (Themeforest, Codecanyon)",
   },
-  blackList: [],
-  whiteList: [],
 
   onClick: function () {
     // Source code: https://gist.github.com/J2TEAM/f79f950c31cc9fe4ed705515385ed75f

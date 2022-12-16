@@ -8,8 +8,7 @@ export default {
     en: "Open current repo in github1s.com",
     vi: "Mở repo hiện tại trong trang github1s.com để xem code",
   },
-  blackList: [],
-  whiteList: ["*://github.com"],
+    whiteList: ["https://github.com/*"],
 
   onClick: function () {
     window.open("https://www.github1s.com" + location.pathname);

@@ -7,8 +7,7 @@ export default {
     en: "Get id of all user from facebook search page",
     vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng facebook",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     const getUid = async (url) => {

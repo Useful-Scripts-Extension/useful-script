@@ -14,9 +14,7 @@ export default {
     en: "",
     vi: "",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClickExtension: async function () {
     // Source: https://pastebin.com/CNvUxpfc
 

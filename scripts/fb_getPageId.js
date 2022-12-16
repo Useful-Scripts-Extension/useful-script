@@ -7,8 +7,7 @@ export default {
     en: "Get id of page in facebook website",
     vi: "Lấy id của page trong trang facebook hiện tại",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace

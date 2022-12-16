@@ -8,12 +8,7 @@ export default {
     en: "Reveals hidden fields on a webpage. Find things like tokens, etc",
     vi: "Web thường ẩn mốt số thành phần như token, id, form, ...",
   },
-  blackList: [],
-  whiteList: [],
-
-  onClick: function () {
-    // source code from: https://bookmarklet.vercel.app/
-
+  
     var i,
       f,
       j,

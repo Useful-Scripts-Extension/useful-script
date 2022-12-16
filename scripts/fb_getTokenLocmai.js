@@ -8,9 +8,7 @@ export default {
     en: "Get facebook token using username/password",
     vi: "Lấy facebook token sử dụng username/password",
   },
-  blackList: [],
-  whiteList: [],
-
+    
   onClickExtension: function () {
     // https://github.com/locmai0808/Facebook-Access-Token
 

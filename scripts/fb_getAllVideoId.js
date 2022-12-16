@@ -7,8 +7,7 @@ export default {
     en: "Get id of all video in facebook website",
     vi: "Tìm tất cả video id trong trang facebook",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     const list_a = document.querySelectorAll("a");

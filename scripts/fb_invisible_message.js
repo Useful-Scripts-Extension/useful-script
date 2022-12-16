@@ -8,8 +8,7 @@ export default {
     en: "Add character > before message to send invisible message",
     vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình",
   },
-  blackList: [],
-  whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
+    whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentIdle: () => {
     // ==UserScript==

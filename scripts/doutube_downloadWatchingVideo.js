@@ -7,8 +7,6 @@ export default {
     en: "Download video doutu.be that you are watching",
     vi: "Tải video doutu.be bạn đang xem",
   },
-  blackList: [],
-  whiteList: [],
 
   onClick: function () {
     const isElementInViewport = (el) => {
