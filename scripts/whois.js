@@ -9,3 +9,7 @@ export default {
     vi: "Muốn biết ai đang giữ domain này? Click ngay!",
   },
   
+  onClick: function () {
+    window.open("http://who.is/whois/" + document.domain);
+  },
+};

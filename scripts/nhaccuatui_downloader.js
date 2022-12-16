@@ -8,7 +8,9 @@ export default {
     en: "Download the song that be playing in Nhaccuatui",
     vi: "Tải bài nhạc / lời bài hát đang nghe trên Nhaccuatui",
   },
-      const renderSongInfo = (songInfos, tableId = "") => {
+  
+  onClick: function () {
+    const renderSongInfo = (songInfos, tableId = "") => {
       if (!songInfos?.length) return `<p>Không có gì hết.</p>`;
 
       let tableBody = songInfos

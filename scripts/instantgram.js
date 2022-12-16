@@ -8,7 +8,9 @@ export default {
     en: "Download full-size instagram image/story in 1 click",
     vi: "Tải ảnh/story instagram nhanh chóng bằng 1 click",
   },
-      // Source code from: https://theus.github.io/instantgram/
+  
+  onClick: function () {
+    // Source code from: https://theus.github.io/instantgram/
     // Minify source code: https://www.toptal.com/developers/javascript-minifier
 
     // prettier-ignore

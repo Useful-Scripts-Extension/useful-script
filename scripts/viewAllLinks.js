@@ -8,7 +8,10 @@ export default {
     en: "Show all links and anchor text of current page.",
     vi: "Liệt kê tất cả đường link có trong website",
   },
-        e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  
+  onClick: function () {
+    function getParameterByName(e, t) {
+      e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       var n = new RegExp("[\\?&]" + e + "=([^&#]*)"),
         r = n.exec(
           t == true ? location.hash.replace("#", "?") : location.search
