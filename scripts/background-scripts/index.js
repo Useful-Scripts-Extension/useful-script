@@ -3,7 +3,7 @@ import { Events } from "../helpers/constants.js";
 import { MsgType } from "../helpers/constants.js";
 import {
   checkBlackWhiteList,
-  getActiveScript,
+  isActiveScript,
   isEmptyFunction,
   isFunction,
   runScriptInTab,
@@ -25,7 +25,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 async function runScript(event, tab) {
   let funcName = event,
-    count = 0,
     tabId = tab.id,
     url = tab.url;
 
@@ -38,7 +37,7 @@ async function runScript(event, tab) {
 
       let func = script[funcName];
       if (isFunction(func) && !isEmptyFunction(func)) {
-        let isActive = (await getActiveScript(script.id)) ?? true;
+        let isActive = (await isActiveScript(script.id)) ?? true;
         if (isActive) {
           runScriptInTab({ func, tabId });
           console.log(

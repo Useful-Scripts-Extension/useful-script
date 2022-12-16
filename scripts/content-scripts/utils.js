@@ -1,11 +1,16 @@
 export function getURL(fileName) {
-  return "/scripts/content-scripts/scripts/" + fileName;
+  return "/scripts/" + fileName;
 }
 
-export function injectScript(filePathOrUrl, isExternal = false) {
+export function injectScript(
+  filePathOrUrl,
+  type = "application/javascript",
+  isExternal = false
+) {
   try {
     var s = document.createElement("script");
     s.src = isExternal ? filePathOrUrl : chrome.runtime.getURL(filePathOrUrl);
+    s.type = type;
     s.onload = function () {
       console.log("Useful-scripts injected " + s.src);
       this.remove();
