@@ -36,36 +36,61 @@
   }
 })();
 
-function matchPattern(url, pattern) {
-  if (pattern.indexOf("*") < 0)
-    return new URL(url).toString() == new URL(pattern).toString();
-
-  let curIndex = 0,
-    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
-  for (let p of visiblePartsInPattern) {
-    let index = url.indexOf(p, curIndex);
-    if (index < 0) return false;
-    curIndex = index + p.length;
-  }
-  return true;
-}
-function matchPatterns(url, patterns) {
-  for (let p of patterns) {
-    if (!matchPattern(url, p)) {
-      return false;
-    }
-  }
-  return true;
-}
 function checkWillRun(script) {
   let url = location.href;
   let hasWhiteList = script.whiteList?.length > 0;
   let hasBlackList = script.blackList?.length > 0;
-  let inWhiteList = matchPatterns(url, script.whiteList ?? []);
-  let inBlackList = matchPatterns(url, script.blackList ?? []);
+  let inWhiteList = matchPatterns(url, script.whiteList || []);
+  let inBlackList = matchPatterns(url, script.blackList || []);
   return (
     (!hasWhiteList && !hasBlackList) ||
     (hasWhiteList && inWhiteList) ||
     (hasBlackList && !inBlackList)
   );
+}
+
+// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
+function matchPatterns(url, patterns) {
+  const patternValidationRegex =
+    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
+  const isFirefox =
+    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
+  const allStarsRegex = isFirefox
+    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
+    : /^https?:[/][/][^/]+([/].*)?$/;
+  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
+
+  function getRawPatternRegex(pattern) {
+    if (!patternValidationRegex.test(pattern))
+      throw new Error(
+        pattern +
+          " is an invalid pattern, it must match " +
+          String(patternValidationRegex)
+      );
+    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
+    protocol = protocol
+      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
+      .replace(/[/]/g, "[/]");
+    host = (host ?? "")
+      .replace(/^[*][.]/, "([^/]+.)*")
+      .replace(/^[*]$/, "[^/]+")
+      .replace(/[.]/g, "[.]")
+      .replace(/[*]$/g, "[^.]+");
+    pathname = pathname
+      .replace(/[/]/g, "[/]")
+      .replace(/[.]/g, "[.]")
+      .replace(/[*]/g, ".*");
+    return "^" + protocol + host + "(" + pathname + ")?$";
+  }
+
+  function patternToRegex(matchPatterns) {
+    if (matchPatterns.length === 0) return /$./;
+    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
+    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
+    return new RegExp(
+      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
+    );
+  }
+
+  return patternToRegex(patterns).test(url);
 }
