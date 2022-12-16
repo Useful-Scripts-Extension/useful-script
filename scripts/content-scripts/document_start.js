@@ -12,11 +12,16 @@
 
   let key = "activeScripts";
   let ids = (await chrome.storage.sync.get([key]))?.[key];
+  let search = new URLSearchParams({
+    ids: ids,
+    path: chrome.runtime.getURL("/scripts/"),
+    event: "onDocumentStart",
+  }).toString();
 
   injectScript(
     chrome.runtime.getURL("/scripts/content-scripts/load_scripts.js") +
-      "?ids=" +
-      ids
+      "?" +
+      search
   );
 })();
 
