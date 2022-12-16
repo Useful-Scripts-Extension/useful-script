@@ -31,11 +31,9 @@ export const localStorage = {
 const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {
   let list = await getAllActiveScriptId();
-  if (isActive) {
-    list.push(scriptId);
-  } else {
-    list = list.filter((_) => _ != scriptId);
-  }
+  if (isActive) list.push(scriptId);
+  else list = list.filter((_) => _ != scriptId);
+  list = list.filter((_) => _);
   await localStorage.set(listActiveScriptsKey, list.join(","));
   return list;
 }
