@@ -24,9 +24,7 @@
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "host_permissions": ["<all_urls>"],
   "options_page": "./pages/options/options.html",
   "background": {
     "service_worker": "scripts/background-scripts/index.js",
@@ -34,42 +32,25 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_start.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_start.js"],
       "run_at": "document_start"
     },
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_idle.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_idle.js"],
       "run_at": "document_idle"
     },
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/content-scripts/document_end.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content-scripts/document_end.js"],
       "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": [
-        "scripts/*.js",
-        "scripts/*.css"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "resources": ["scripts/*.js", "scripts/*.css"],
+      "matches": ["<all_urls>"]
     }
   ],
   "declarative_net_request": {

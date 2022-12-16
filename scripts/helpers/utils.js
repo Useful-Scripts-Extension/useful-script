@@ -1,4 +1,5 @@
 import { GlobalBlackList } from "./constants.js";
+import { patternToRegex } from "./webext-patterns.js";
 
 export async function sendEventToBackground(data) {
   // console.log("... Sending ", data, " to background...");
@@ -159,8 +160,10 @@ export function checkBlackWhiteList(script, url) {
     b = script.blackList,
     hasWhiteList = w?.length > 0,
     hasBlackList = b?.length > 0,
-    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? true,
-    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? false,
+    // inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? true,
+    // inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? false,
+    inWhiteList = isUrlMatchPattern(url, w) ?? true,
+    inBlackList = isUrlMatchPattern(url, b) ?? false,
     inGlobalBlackList =
       GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0 ?? true;
 
@@ -177,17 +180,19 @@ export function isUrlMatchPattern(url, pattern) {
   // https://developer.mozilla.org/en-US/docs/Web/API/URL_Pattern_API
   // return new URLPattern(pattern).test(url);
 
-  if (pattern.indexOf("*") < 0)
-    return new URL(url).toString() == new URL(pattern).toString();
+  // if (pattern.indexOf("*") < 0)
+  //   return new URL(url).toString() == new URL(pattern).toString();
 
-  let curIndex = 0,
-    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
-  for (let p of visiblePartsInPattern) {
-    let index = url.indexOf(p, curIndex);
-    if (index < 0) return false;
-    curIndex = index + p.length;
-  }
-  return true;
+  // let curIndex = 0,
+  //   visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+  // for (let p of visiblePartsInPattern) {
+  //   let index = url.indexOf(p, curIndex);
+  //   if (index < 0) return false;
+  //   curIndex = index + p.length;
+  // }
+  // return true;
+
+  return patternToRegex(pattern).test(url);
 }
 
 // https://stackoverflow.com/a/68634884/11898496
