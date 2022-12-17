@@ -1,10 +1,3 @@
-export async function sendEventToBackground(data) {
-  // console.log("... Sending ", data, " to background...");
-  const response = await chrome.runtime.sendMessage(data);
-  // console.log("> ", data, " sent to background successfully", response);
-  return response;
-}
-
 export async function sendEventToTab(tabId, data) {
   console.log("... Sending ", data, " to tab...");
   const response = await chrome.tabs.sendMessage(tabId, data);

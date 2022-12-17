@@ -5,36 +5,54 @@
 
 // Do đó các hàm cần thiết nên ghi hết vào trong file này
 // Kể cả việc nó đã được viết ở file khác (utils, helper, ...)
-// Qúa trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
+// Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
 
-(async () => {
+console.log(window.__d);
+
+(() => {
   const params = new URLSearchParams(
     document.currentScript.src.split("?")?.[1]
   );
 
-  let ids = params.get("ids");
   let path = params.get("path");
-  let event = params.get("event");
 
-  if (ids) {
-    let scriptIds = ids.split(",");
+  // run script on receive event
+  window.addEventListener("ufs-run-page-scripts", ({ detail }) => {
+    const { event, ids } = detail;
+    runScripts(ids, event, path);
+  });
 
-    for (let id of scriptIds) {
-      // import and run script with event name
-      import(`${path}/${id}.js`).then((module) => {
-        try {
-          let script = module.default;
-          if (typeof script[event] === "function" && checkWillRun(script)) {
-            console.log("> Useful-script: Run script " + id, script);
-            script[event]();
-          }
-        } catch (e) {
-          console.log("ERROR run script " + id, e);
-        }
-      });
+  // auto run onDocumentStart
+  (() => {
+    let ids = params.get("ids");
+    let event = params.get("event");
+    if (ids) {
+      let scriptIds = ids.split(",");
+      runScripts(scriptIds, event, path);
     }
-  }
+  })();
 })();
+
+function runScripts(scriptIds, event, path) {
+  for (let id of scriptIds) {
+    // import and run script with event name
+    let scriptPath = `${path}/${id}.js`;
+    import(scriptPath).then(({ default: script }) => {
+      try {
+        if (
+          event in script &&
+          typeof script[event] === "function" &&
+          checkWillRun(script)
+        ) {
+          console.log("> Useful-script: Run script " + id + " " + event);
+          script[event]();
+        }
+      } catch (e) {
+        console.log("ERROR run script " + id + " " + event, e);
+      }
+    });
+  }
+}
 
 function checkWillRun(script) {
   let url = location.href;

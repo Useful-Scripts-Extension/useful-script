@@ -11,20 +11,20 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
-    // const WebSocketOrig = window.WebSocket;
+    const WebSocketOrig = window.WebSocket;
 
-    // window.WebSocket = function fakeConstructor(dt, config) {
-    //   const websocket_instant = new WebSocketOrig(dt, config);
-    //   websocket_instant.addEventListener("message", async function (achunk) {
-    //     // const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
-    //     // Do something here
-    //     // console.log(utf8_str);
-    //   });
-    //   return websocket_instant;
-    // };
+    window.WebSocket = function fakeConstructor(dt, config) {
+      const websocket_instant = new WebSocketOrig(dt, config);
+      websocket_instant.addEventListener("message", async function (achunk) {
+        // const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
+        // Do something here
+        // console.log(utf8_str);
+      });
+      return websocket_instant;
+    };
 
-    // window.WebSocket.prototype = WebSocketOrig.prototype;
-    // window.WebSocket.prototype.constructor = window.WebSocket;
+    window.WebSocket.prototype = WebSocketOrig.prototype;
+    window.WebSocket.prototype.constructor = window.WebSocket;
 
     // window.addEventListener(
     //   "message",
@@ -34,19 +34,21 @@ export default {
     //   !1
     // );
 
-    let emptyFunc = void 0;
-    Object.defineProperty(window, "__d", {
-      get: () => emptyFunc,
-      set: (i) => {
-        const c = new Proxy(i, {
-          apply: async function (moduleName, dependencies, args) {
-            console.log(arguments);
-            return moduleName(...args);
-          },
-        });
-        emptyFunc = c;
-      },
-    });
+    console.log(window.__d);
+    // let emptyFunc = void 0;
+    // Object.defineProperty(window, "__d", {
+    //   get: () => emptyFunc,
+    //   set: (i) => {
+    //     const c = new Proxy(i, {
+    //       apply: async function (moduleName, dependencies, args) {
+    //         console.log(arguments);
+    //         // return moduleName(...args);
+    //         return i.apply(this, arguments);
+    //       },
+    //     });
+    //     emptyFunc = c;
+    //   },
+    // });
   },
 
   onDocumentIdle: () => {
