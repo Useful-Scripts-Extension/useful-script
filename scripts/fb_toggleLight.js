@@ -10,11 +10,7 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  onDocumentStart: () => {
-    
-  },
-
-  onDocumentEnd: () => {
+  onDocumentIdle: () => {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],
