@@ -109,13 +109,6 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-robot"></i> Tự động hoá`,
     },
   },
-  password: {
-    id: "password",
-    name: {
-      en: `<i class="fa-solid fa-key"></i> Password`,
-      vi: `<i class="fa-solid fa-key"></i> Mật khẩu`,
-    },
-  },
   unlock: {
     id: "unlock",
     name: {

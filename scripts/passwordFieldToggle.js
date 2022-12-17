@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-eye-low-vision"></i>`,
+  icon: `<i class="fa-solid fa-unlock"></i>`,
   name: {
     en: "Password field toggle",
     vi: "Tắt/mở xem mật khẩu bị ẩn",

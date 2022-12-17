@@ -324,7 +324,7 @@ a:hover {
     visibility: visible;
     top: 105%;
     opacity: 1;
-    transition: all .3s linear .7s;
+    transition: all .3s linear .3s;
 }
 
 .tooltip .tooltiptext::after {
