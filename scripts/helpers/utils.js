@@ -153,10 +153,10 @@ export const runScriptFileInCurrentTab = async (scriptFile, args) => {
 export function checkBlackWhiteList(script, url) {
   if (!url) return false;
 
-  let w = script.whiteList,
-    b = script.blackList,
-    hasWhiteList = w?.length > 0,
-    hasBlackList = b?.length > 0,
+  let w = script.whiteList || [],
+    b = script.blackList || [],
+    hasWhiteList = w.length > 0,
+    hasBlackList = b.length > 0,
     inWhiteList = matchPatterns(url, w) ?? true,
     inBlackList = matchPatterns(url, b) ?? false;
 
@@ -288,6 +288,18 @@ export const isEmptyFunction = (func) => {
 // #endregion
 
 // #region String Utils
+
+export function moneyFormat(number, fixed = 0) {
+  if (isNaN(number)) return 0;
+  number = number.toFixed(fixed);
+  let delimeter = ",";
+  number += "";
+  let rgx = /(\d+)(\d{3})/;
+  while (rgx.test(number)) {
+    number = number.replace(rgx, "$1" + delimeter + "$2");
+  }
+  return number;
+}
 
 // https://stackoverflow.com/a/9310752
 export function escapeRegExp(text) {

@@ -1,4 +1,4 @@
-import { showLoading } from "./helpers/utils.js";
+import { moneyFormat, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://shopee.vn/favicon.ico",
@@ -20,7 +20,7 @@ export default {
     // Image: https://cf.shopee.vn/file/ecd20c9d39e0c865d53e3f47e6e2e3a7
     // FB POST: https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
-    let OrderType = {
+    const OrderType = {
       completed: 3,
       canceled: 4,
       ship: 7,
@@ -29,7 +29,7 @@ export default {
       //   refunded: 12,
     };
 
-    let OrderTypeName = {
+    const OrderTypeName = {
       [OrderType.completed]: "Hoàn thành",
       [OrderType.canceled]: "Đã hủy",
       [OrderType.ship]: "Vận chuyển",
@@ -107,18 +107,6 @@ export default {
         });
       });
       return shippingSpent;
-    }
-
-    function moneyFormat(number, fixed = 0) {
-      if (isNaN(number)) return 0;
-      number = number.toFixed(fixed);
-      let delimeter = ",";
-      number += "";
-      let rgx = /(\d+)(\d{3})/;
-      while (rgx.test(number)) {
-        number = number.replace(rgx, "$1" + delimeter + "$2");
-      }
-      return number;
     }
 
     let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");

@@ -10,6 +10,12 @@
     s.remove();
   }
 
+  injectScript(
+    chrome.runtime.getURL(
+      "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
+    )
+  );
+
   let key = "activeScripts";
   let ids = (await chrome.storage.sync.get([key]))?.[key];
   let search = new URLSearchParams({

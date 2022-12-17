@@ -1,4 +1,4 @@
-import { showLoading } from "./helpers/utils.js";
+import { moneyFormat, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://tiki.vn/favicon.ico",
@@ -11,67 +11,122 @@ export default {
     vi: "Xem bạn đã mua hết bao nhiêu tiền trên Tiki",
   },
 
-  onClick: async () => {
-    // https://tiki.vn/api/v2/orders?page=0&limit=10
+  onClickExtension: async () => {
     // https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
-    var totalOrders = 0;
-    var totalSpent = 0;
-    var pulling = true;
-    var page = 1;
+    const OrderType = {
+      all: "",
+      awaiting_payment: "awaiting_payment",
+      processing: "processing",
+      shipping: "shipping",
+      completed: "completed",
+      canceled: "canceled",
+    };
 
-    function getStatistics() {
-      var orders = [];
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          orders = JSON.parse(this.responseText)["data"];
-          pulling = orders.length >= 10;
-          orders = orders.filter((order) => order["status"] == "hoan_thanh");
-          totalOrders += orders.length;
-          orders.forEach((order) => {
-            let tpa = order["grand_total"];
-            totalSpent += tpa;
-          });
-          page += 1;
-          console.log("Đã lấy được: " + totalOrders + " đơn hàng");
-          if (pulling) {
-            console.log("Đang kéo thêm...");
-            getStatistics();
-          } else {
-            console.log(
-              "%cTổng đơn hàng đã giao: " + "%c" + moneyFormat(totalOrders),
-              "font-size: 30px;",
-              "font-size: 30px; color:red"
-            );
-            console.log(
-              "%cTổng chi tiêu: " + "%c" + moneyFormat(totalSpent) + "đ",
-              "font-size: 30px;",
-              "font-size: 30px; color:red"
-            );
-          }
+    const OrderTypeName = {
+      [OrderType.completed]: "Đã giao",
+      [OrderType.canceled]: "Đã hủy",
+      [OrderType.shipping]: "Đang vận chuyển",
+      [OrderType.processing]: "Đang xử lý",
+      [OrderType.awaiting_payment]: "Chờ thanh toán",
+      [OrderType.all]: "Tất cả",
+    };
+
+    // https://tiki.vn/api/v2/orders?page=0&limit=10&status=canceled
+    async function getStatistics(orderType) {
+      let pulling = true;
+      let page = 0;
+      let limit = 10;
+
+      let totalDiscount = 0;
+      let totalShip = 0;
+      let totalSpent = 0;
+      let totalItems = 0;
+      let totalOrders = 0;
+
+      while (pulling) {
+        setLoadingText("Đang tải trang thứ " + (page + 1) + "...");
+        let res = await fetch(
+          `https://tiki.vn/api/v2/orders?page=${page}&limit=${limit}${
+            orderType ? "&status=" + orderType : ""
+          }`
+        );
+        let json = await res.json();
+        if (json?.error) throw Error("Error: " + json.error);
+
+        let orders = json.data;
+        totalOrders += orders.length;
+        for (let i = 0; i < orders.length; i++) {
+          setLoadingText(
+            "Đang tải đơn hàng thứ " + (page * limit + i + 1) + "..."
+          );
+
+          let order = orders[i];
+          let detail = await getOrderDetail(order.id);
+
+          totalSpent += order.grand_total;
+          totalItems += detail.items.reduce((total, cur) => total + cur.qty, 0);
+          totalDiscount += detail.discount_amount;
+          totalShip += detail.shipping_amount;
         }
-      };
-      xhttp.open(
-        "GET",
-        "https://tiki.vn/api/v2/me/orders?page=" + page + "&limit=10",
-        true
-      );
-      xhttp.send();
-    }
 
-    function moneyFormat(number, fixed = 0) {
-      if (isNaN(number)) return 0;
-      number = number.toFixed(fixed);
-      let delimeter = ",";
-      number += "";
-      let rgx = /(\d+)(\d{3})/;
-      while (rgx.test(number)) {
-        number = number.replace(rgx, "$1" + delimeter + "$2");
+        pulling = orders.length >= limit;
+        page++;
       }
-      return number;
+
+      return {
+        totalDiscount,
+        totalShip,
+        totalSpent,
+        totalItems,
+        totalOrders,
+      };
     }
 
-    getStatistics();
+    async function getOrderDetail(orderId) {
+      let res = await fetch(
+        `https://tiki.vn/api/v2/me/orders/${orderId}?include=items`
+      );
+      return await res.json();
+    }
+
+    let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");
+    try {
+      let options = Object.entries(OrderTypeName);
+      let optionsTxt = options
+        .map(([key, value], index) => `   ${index}: ${value}`)
+        .join("\n");
+
+      let choice = prompt(
+        "Chọn loại đơn hàng muốn thống kê:\n" + optionsTxt,
+        0
+      );
+
+      if (choice == null) return;
+      let orderType = options[Number(choice)][0];
+      let orderTypeName = OrderTypeName[orderType];
+
+      let { totalDiscount, totalShip, totalSpent, totalItems, totalOrders } =
+        await getStatistics(orderType);
+
+      let stats = {
+        "THỐNG KÊ Tiki: Đơn hàng ": orderTypeName,
+        "+ Tổng đơn hàng: ": totalOrders,
+        "+ Tổng sản phẩm: ": totalItems,
+        "+ Tổng chi tiêu: ": moneyFormat(totalSpent),
+        "+ Tổng giảm giá: ": moneyFormat(totalDiscount),
+        "+ Tổng tiền ship: ": moneyFormat(totalShip),
+      };
+      alert(
+        Object.entries(stats)
+          .map(([key, value]) => `${key} ${value}`)
+          .join("\n")
+      );
+      console.table(stats);
+    } catch (e) {
+      alert("ERROR: " + e);
+    } finally {
+      closeLoading();
+    }
   },
 };
