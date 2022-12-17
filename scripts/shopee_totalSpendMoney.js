@@ -62,12 +62,10 @@ export default {
           setLoadingText("Đang tải đơn hàng thứ " + (offset + i + 1) + "...");
 
           let order = orders[i];
-
           order.info_card.order_list_cards.forEach((card) => {
             card.items.forEach((item) => {
               totalDiscount +=
                 (item.price_before_discount - item.item_price) / 100000 || 0;
-              console.log(totalDiscount);
               totalSpent += item.item_price / 100000;
               totalItems += item.amount;
             });

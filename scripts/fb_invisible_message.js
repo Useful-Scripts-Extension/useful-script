@@ -8,7 +8,7 @@ export default {
     en: "Add character > before message to send invisible message",
     vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình",
   },
-    whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
+  whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentIdle: () => {
     // ==UserScript==
@@ -140,11 +140,11 @@ export default {
       requireLazy(
         ["MWV2ChatText.bs", "MqttProtocolClient"],
         (MWV2ChatText, protocolClient) => {
-          console.log({ MWV2ChatText, protocolClient });
           const MWV2ChatTextMakeOrig = MWV2ChatText.make;
           MWV2ChatText.make = function (a) {
             let text = a?.message?.text;
-            //console.log(a);
+            console.log(a);
+            if (a.message.text.includes("thu hồi")) console.log("here");
             if (checkEncode(text))
               a.message.text = `[Encrypted]: ${decode(text)}`;
             return MWV2ChatTextMakeOrig.apply(this, arguments);
@@ -154,7 +154,6 @@ export default {
           const publishOrig = protocolClient.prototype.publish;
           protocolClient.prototype.publish = function () {
             let b = arguments[1];
-            // console.log(arguments);
             if (b && b.includes('\\\\\\"text\\\\\\":')) {
               (function () {
                 b = JSON.parse(b);
@@ -164,6 +163,7 @@ export default {
 
                 payload.tasks = payload.tasks.map((task) => {
                   let payload = JSON.parse(task.payload);
+                  console.log(payload);
                   if (!payload || !payload.text) return task;
                   if (payload.text.length > 1 && payload.text[0] === ">") {
                     payload.text = encode(payload.text.substr(1));

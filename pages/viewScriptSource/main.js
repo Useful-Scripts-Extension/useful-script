@@ -1,11 +1,11 @@
 window.onload = async () => {
   try {
-    let scriptId = localStorage.viewScriptSource_sharedData;
-    let source = await getScriptSource(scriptId);
+    let id = localStorage.viewScriptSource_sharedData;
+    let source = await getScriptSource(id);
 
     if (source) {
-      let fileName = scriptId + ".js";
-      let comment = "// " + fileName;
+      let fileName = id + ".js";
+      let comment = "// File: " + fileName;
 
       document.querySelector("#copy-btn").onclick = () => copy(source);
       document.querySelector("code").innerHTML =
@@ -26,11 +26,15 @@ function copy(text) {
 
 // https://stackoverflow.com/a/26276924/11898496
 async function getScriptSource(scriptId) {
-  let fileName = scriptId + ".js";
-  let path = "/scripts/" + fileName;
-  let res = await fetch(path);
-  let source = await res.text();
-  return source;
+  try {
+    let fileName = scriptId + ".js";
+    let path = "/scripts/" + fileName;
+    let res = await fetch(path);
+    let source = await res.text();
+    return source;
+  } catch (e) {
+    return "// Không lấy được source code\n// Cannot load source code";
+  }
 }
 
 // https://stackoverflow.com/a/6234804/11898496
