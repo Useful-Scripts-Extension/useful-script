@@ -11,7 +11,7 @@
     s.defer = false;
     s.addEventListener("load", () => {
       console.log("Useful-scripts injected " + src);
-      // s.remove();
+      s.remove();
     });
     s.src = src;
     let head =
@@ -21,17 +21,6 @@
     head.insertBefore(s, head.firstChild);
     // (document.head || document.documentElement).prepend(s);
   }
-
-  console.log(window.__d);
-
-  // function injectScript(url) {
-  //   var s = document.createElement("script");
-  //   s.src = url;
-  //   s.async = !1;
-  //   (document.head || document.documentElement).appendChild(s);
-  //   console.log("Useful-scripts injected " + url);
-  //   s.remove();
-  // }
 
   let key = "activeScripts";
   let ids = (await chrome.storage.sync.get([key]))?.[key];
