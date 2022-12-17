@@ -157,6 +157,7 @@ import tiki_totalSpendMoney from "./tiki_totalSpendMoney.js";
 import fb_invisible_message from "./fb_invisible_message.js";
 import insta_injectDownloadBtn from "./insta_injectDownloadBtn.js";
 import studocu_bypassPreview from "./studocu_bypassPreview.js";
+import fb_revealDeletedMessages from "./fb_revealDeletedMessages.js";
 
 // inject badges
 const allScripts = {
@@ -335,6 +336,7 @@ const allScripts = {
   fb_invisible_message: addBadge(fb_invisible_message, BADGES.new),
   insta_injectDownloadBtn: addBadge(insta_injectDownloadBtn, BADGES.new),
   studocu_bypassPreview: addBadge(studocu_bypassPreview, BADGES.new),
+  fb_revealDeletedMessages: addBadge(fb_revealDeletedMessages, BADGES.hot),
 };
 
 // alert(Object.keys(allScripts).length);
