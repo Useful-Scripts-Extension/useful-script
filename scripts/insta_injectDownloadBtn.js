@@ -8,7 +8,8 @@ export default {
     en: "Add a download button to all photo/video/post/story on Instagram",
     vi: "Thêm nút để tải (ảnh/video/story/post) trên Instagram",
   },
-  
+  whiteList: ["https://www.instagram.com/*"],
+
   onDocumentIdle: () => {
     // ==UserScript==
     // @name                Instagram Download Button

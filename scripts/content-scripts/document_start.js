@@ -64,10 +64,6 @@
           break;
       }
     });
-
-    // https://stackoverflow.com/a/53033388
-    const { getURL, injectScript, injectCss } = await import("./utils.js");
-    injectScript(getURL("content-scripts/scripts/useful-scripts-utils.js"));
   } catch (e) {
     console.log("ERROR: ", e);
   }
