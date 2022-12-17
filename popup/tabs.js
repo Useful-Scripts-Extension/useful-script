@@ -92,6 +92,7 @@ const tabs = [
   {
     ...CATEGORY.facebook,
     scripts: [
+      s.fb_revealDeletedMessages,
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
