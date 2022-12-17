@@ -11,7 +11,7 @@ export default {
   whiteList: ["https://www.facebook.com/*"],
 
   onDocumentStart: function () {
-    UsefulScriptGlobalWebpageContext.onElementsVisible(
+    UsefulScriptGlobalWebpageContext.DOM.onElementsVisible(
       "[role='feed'], [role='main']",
       (nodes) =>
         Array.from(nodes).forEach((node) => (node.style.display = "none")),

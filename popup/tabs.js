@@ -297,6 +297,16 @@ const recommendTab = {
       onClick: () =>
         window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
     },
+    { name: { en: "--- Web ---", vi: "--- Web hay ---" } },
+    {
+      icon: "https://you.com/favicon/apple-touch-icon-72x72.png",
+      name: { en: "You.com", vi: "You.com" },
+      description: {
+        en: "The AI Search Engine You Control",
+        vi: "Trình tìm kiếm sử dụng trí tuệ nhân tạo",
+      },
+      onClick: () => window.open("https://you.com/"),
+    },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
       icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
