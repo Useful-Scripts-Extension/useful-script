@@ -8,7 +8,7 @@ export default {
     en: "",
     vi: "",
   },
-    onClick: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/26573284
     function injectScriptAndUse(src) {
       var script = document.createElement("script");
@@ -46,3 +46,8 @@ export default {
     }
   },
 };
+
+function backup() {
+  // https://stackoverflow.com/a/38840724/11898496
+  // Script loader: https://plnkr.co/edit/b9O19f?p=preview&preview
+}

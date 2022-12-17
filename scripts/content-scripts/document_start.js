@@ -1,20 +1,37 @@
 // https://stackoverflow.com/a/70949953
 // https://stackoverflow.com/a/9517879
+// https://stackoverflow.com/a/2920207/11898496
 
 (async () => {
-  function injectScript(url) {
-    var s = document.createElement("script");
-    s.src = url;
-    (document.head || document.documentElement).appendChild(s);
-    console.log("Useful-scripts injected " + url);
-    s.remove();
+  // https://stackoverflow.com/a/8578840/11898496
+  function injectScript(src) {
+    let s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = false;
+    s.defer = false;
+    s.addEventListener("load", () => {
+      console.log("Useful-scripts injected " + src);
+      // s.remove();
+    });
+    s.src = src;
+    let head =
+      document.head ||
+      document.getElementsByTagName("head")[0] ||
+      document.documentElement;
+    head.insertBefore(s, head.firstChild);
+    // (document.head || document.documentElement).prepend(s);
   }
 
-  injectScript(
-    chrome.runtime.getURL(
-      "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
-    )
-  );
+  console.log(window.__d);
+
+  // function injectScript(url) {
+  //   var s = document.createElement("script");
+  //   s.src = url;
+  //   s.async = !1;
+  //   (document.head || document.documentElement).appendChild(s);
+  //   console.log("Useful-scripts injected " + url);
+  //   s.remove();
+  // }
 
   let key = "activeScripts";
   let ids = (await chrome.storage.sync.get([key]))?.[key];
@@ -29,21 +46,18 @@
       "?" +
       search
   );
+
+  injectScript(
+    chrome.runtime.getURL(
+      "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
+    )
+  );
 })();
 
 (async () => {
   try {
-    const { MsgType, Events, ClickType } = await import(
-      "../helpers/constants.js"
-    );
-    const { sendEventToBackground, isFunction } = await import(
-      "../helpers/utils.js"
-    );
-
-    // sendEventToBackground({
-    //   type: MsgType.runScript,
-    //   event: Events.onDocumentStart,
-    // });
+    const { MsgType, ClickType } = await import("../helpers/constants.js");
+    const { isFunction } = await import("../helpers/utils.js");
 
     chrome.runtime.onMessage.addListener(async function (
       message,
