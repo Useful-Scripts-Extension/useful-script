@@ -4,9 +4,13 @@ window.onload = async () => {
     let source = await getScriptSource(scriptId);
 
     if (source) {
+      let fileName = scriptId + ".js";
+      let comment = "// " + fileName;
+
       document.querySelector("#copy-btn").onclick = () => copy(source);
-      document.querySelector("code").innerHTML = escapeHTML(source);
-      document.title = scriptId + ".js";
+      document.querySelector("code").innerHTML =
+        comment + "\n\n" + escapeHTML(source);
+      document.title = fileName;
 
       hljs.highlightAll();
       hljs.initLineNumbersOnLoad();

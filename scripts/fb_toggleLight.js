@@ -10,7 +10,11 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  onDocumentIdle: () => {
+  onDocumentStart: () => {
+    
+  },
+
+  onDocumentEnd: () => {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],
@@ -21,7 +25,7 @@ export default {
     });
   },
 
-  onClickContentScript: function () {
+  onClick: function () {
     [
       document.querySelectorAll('[role="navigation"]')?.[2],
       document.querySelectorAll('[role="complementary"]')?.[0],

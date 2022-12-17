@@ -10,25 +10,34 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  onDocumentIdle: function () {
-    [
-      ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
-      document.querySelector("#watch_feed"),
-      document.querySelector("#ssrb_stories_start")?.parentElement,
-      document.querySelector("#ssrb_feed_start")?.parentElement,
-    ].forEach((el) => {
-      if (el) {
-        el.style.display = "none";
-      } else console.log("ERROR: Cannot find element");
-    });
+  onDocumentStart: function () {
+    UsefulScriptGlobalWebpageContext.onElementsVisible(
+      "[role='feed'], [role='main']",
+      (nodes) =>
+        Array.from(nodes).forEach((node) => (node.style.display = "none")),
+      true
+    );
   },
 
-  onClickContentScript: async function () {
+  // onDocumentEnd: function () {
+  //   [
+  //     ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
+  //     document.querySelector("#watch_feed"),
+  //     document.querySelector("#ssrb_stories_start")?.parentElement,
+  //     document.querySelector("#ssrb_feed_start")?.parentElement,
+  //   ].forEach((el) => {
+  //     if (el) {
+  //       el.style.display = "none";
+  //     } else console.log("ERROR: Cannot find element");
+  //   });
+  // },
+
+  onClick: async function () {
     [
       ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
-      document.querySelector("#watch_feed"),
-      document.querySelector("#ssrb_stories_start")?.parentElement,
-      document.querySelector("#ssrb_feed_start")?.parentElement,
+      // document.querySelector("#watch_feed"),
+      // document.querySelector("#ssrb_stories_start")?.parentElement,
+      // document.querySelector("#ssrb_feed_start")?.parentElement,
     ].forEach((el) => {
       if (el) {
         el.style.display = el.style.display === "none" ? "" : "none";
