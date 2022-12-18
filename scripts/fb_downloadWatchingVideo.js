@@ -9,8 +9,8 @@ export default {
     vi: "Tải video fb đang xem",
   },
   description: {
-    en: "Download facebook video that you are watching (watch/story/comment)",
-    vi: "Tải video facebook bạn đang xem (watch/story/comment)",
+    en: "Download any facebook video that you are watching (watch/story/comment/reel/chat)",
+    vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch/story/comment/reel/chat/bình luận/tin nhắn)",
   },
   whiteList: ["https://www.facebook.com/*"],
 
