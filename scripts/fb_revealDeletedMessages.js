@@ -17,7 +17,10 @@ export default {
       websocket_instant.addEventListener("message", async function (achunk) {
         const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
         // Do something here
-        console.log(utf8_str);
+
+        if (utf8_str.includes("updateTypingIndicator")) {
+          // console.log(utf8_str);
+        }
       });
       return websocket_instant;
     };
@@ -130,13 +133,13 @@ export default {
     // MWChatTypingIndicator.bs
     // MWPTypingIndicators.bs
     requireLazy(["LSUpdateTypingIndicator"], (LSUpdateTypingIndicator) => {
-      alert("abc");
-      // const LSUpdateTypingIndicatorOrig = LSUpdateTypingIndicator;
+      // alert("abc");
+      const LSUpdateTypingIndicatorOrig = LSUpdateTypingIndicator;
 
-      // LSUpdateTypingIndicator = function () {
-      //   console.log(arguments);
-      //   return LSUpdateTypingIndicatorOrig.apply(this, arguments);
-      // };
+      LSUpdateTypingIndicator = function () {
+        console.log(arguments);
+        return LSUpdateTypingIndicatorOrig.apply(this, arguments);
+      };
     });
   },
 };

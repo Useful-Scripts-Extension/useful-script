@@ -93,6 +93,7 @@ const tabs = [
     ...CATEGORY.facebook,
     scripts: [
       s.fb_revealDeletedMessages,
+      s.fb_whoIsTyping,
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
@@ -440,13 +441,13 @@ function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   return result;
 }
 
-async function refreshSpecialTabs() {
+function refreshSpecialTabs() {
   // add data to special tabs
   let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
-  if (recentTab) recentTab.scripts = await recentScriptsSaver.get();
+  if (recentTab) recentTab.scripts = recentScriptsSaver.get();
 
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
-  if (favoriteTab) favoriteTab.scripts = await favoriteScriptsSaver.get();
+  if (favoriteTab) favoriteTab.scripts = favoriteScriptsSaver.get();
 
   let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
   if (allTab) allTab.scripts = sortScriptsByTab(Object.values(s), tabs);
