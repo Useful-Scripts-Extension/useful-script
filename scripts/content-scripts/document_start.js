@@ -34,18 +34,22 @@
       "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
     )
   );
-  let ids = localStorage.getItem("activeScripts") || "";
+
+  let key = "activeScripts";
+  let ids = (await chrome.storage.sync.get([key]))?.[key] || "";
   let path = chrome.runtime.getURL("/scripts/");
-  let search = new URLSearchParams({
-    ids: ids,
-    path: path,
-    event: "onDocumentStart",
-  }).toString();
+
+  localStorage.setItem(
+    "ufs-auto-run-scripts",
+    JSON.stringify({
+      ids: ids,
+      path: path,
+      event: "onDocumentStart",
+    })
+  );
 
   injectScript(
-    chrome.runtime.getURL("/scripts/content-scripts/run_scripts.js") +
-      "?" +
-      search
+    chrome.runtime.getURL("/scripts/content-scripts/run_scripts.js")
   );
 })();
 
