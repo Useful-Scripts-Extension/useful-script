@@ -10,7 +10,7 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  onDocumentStart: function () {
+  onDocumentStart: () => {
     UsefulScriptGlobalWebpageContext.DOM.onElementsVisible(
       "[role='feed'], [role='main']",
       (nodes) =>
@@ -18,19 +18,6 @@ export default {
       true
     );
   },
-
-  // onDocumentEnd: function () {
-  //   [
-  //     ...Array.from(document.querySelectorAll("[role='feed'], [role='main']")),
-  //     document.querySelector("#watch_feed"),
-  //     document.querySelector("#ssrb_stories_start")?.parentElement,
-  //     document.querySelector("#ssrb_feed_start")?.parentElement,
-  //   ].forEach((el) => {
-  //     if (el) {
-  //       el.style.display = "none";
-  //     } else console.log("ERROR: Cannot find element");
-  //   });
-  // },
 
   onClick: async function () {
     [

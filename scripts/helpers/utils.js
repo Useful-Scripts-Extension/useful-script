@@ -8,40 +8,40 @@ export async function sendEventToTab(tabId, data) {
 // #region Storage Utils
 
 // https://developer.chrome.com/docs/extensions/reference/storage/
-export const localStorage = {
-  set: async (key, value) => {
-    await chrome.storage.sync.set({ [key]: value });
-    return value;
-  },
-  get: async (key, defaultValue = "") => {
-    let result = await chrome.storage.sync.get([key]);
-    return result[key] || defaultValue;
-  },
-};
+// export const localStorage = {
+//   set: async (key, value) => {
+//     await chrome.storage.sync.set({ [key]: value });
+//     return value;
+//   },
+//   get: async (key, defaultValue = "") => {
+//     let result = await chrome.storage.sync.get([key]);
+//     return result[key] || defaultValue;
+//   },
+// };
 
 const listActiveScriptsKey = "activeScripts";
-export async function setActiveScript(scriptId, isActive = true) {
-  let list = await getAllActiveScriptId();
+export function setActiveScript(scriptId, isActive = true) {
+  let list = getAllActiveScriptId();
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
-  await localStorage.set(listActiveScriptsKey, list.join(","));
+  localStorage.setItem(listActiveScriptsKey, list.join(","));
   return list;
 }
 
-export async function isActiveScript(scriptId) {
-  let currentList = await getAllActiveScriptId();
+export function isActiveScript(scriptId) {
+  let currentList = getAllActiveScriptId();
   return currentList.find((_) => _ == scriptId) != null;
 }
 
-export async function getAllActiveScriptId() {
-  return (await localStorage.get(listActiveScriptsKey, "")).split(",");
+export function getAllActiveScriptId() {
+  return (localStorage.getItem(listActiveScriptsKey) || "").split(",");
 }
 
-export async function toggleActiveScript(scriptId) {
-  let current = await isActiveScript(scriptId);
+export function toggleActiveScript(scriptId) {
+  let current = isActiveScript(scriptId);
   let newVal = !current;
-  await setActiveScript(scriptId, newVal);
+  setActiveScript(scriptId, newVal);
   return newVal;
 }
 
