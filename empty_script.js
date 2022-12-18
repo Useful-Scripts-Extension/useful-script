@@ -11,10 +11,10 @@ export default {
   blackList: [],
   whiteList: [],
 
-  // path to script file that run (if enable autorun) in web page context
-  onDocumentStart: "",
-  onDocumentEnd: "",
-  onDocumentIdle: "",
+  // run (if enable autorun) in web page context
+  onDocumentStart: () => {},
+  onDocumentEnd: () => {},
+  onDocumentIdle: () => {},
 
   // run onclick in extension-popup-page context
   onClickExtension: () => {},

@@ -33,10 +33,10 @@ const flagImg = document.querySelector("img#flag");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 
-async function initLanguage() {
+function initLanguage() {
   flagImg.setAttribute("src", getFlag());
 
-  flagImg.onclick = async () => {
+  flagImg.onclick = () => {
     toggleLang();
     flagImg.setAttribute("src", getFlag());
 
@@ -46,9 +46,9 @@ async function initLanguage() {
   };
 }
 
-async function createTabs() {
+function createTabs() {
   // prepare tabs
-  await refreshSpecialTabs();
+  refreshSpecialTabs();
 
   // clear UI
   tabDiv.innerHTML = "";
@@ -85,7 +85,7 @@ async function createTabs() {
   }
 
   // open tab
-  let activeTabId = await activeTabIdSaver.get();
+  let activeTabId = activeTabIdSaver.get();
   activeTabId && openTab(allTabs.find((tab) => tab.id === activeTabId));
 }
 
@@ -126,7 +126,7 @@ async function createTabContent(tab) {
     });
     contentContainer.appendChild(emptyText);
   } else {
-    const favoriteScriptIds = await favoriteScriptsSaver.getIds();
+    const favoriteScriptIds = favoriteScriptsSaver.getIds();
     tab.scripts.forEach((script) => {
       let isFavorite = favoriteScriptIds.find((id) => script.id === id);
       contentContainer.appendChild(createScriptButton(script, isFavorite));
@@ -157,7 +157,7 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      let newValue = await toggleActiveScript(script.id);
+      let newValue = toggleActiveScript(script.id);
       updateButtonChecker(script, buttonContainer, newValue);
     };
 
@@ -279,7 +279,7 @@ function createScriptButton(script, isFavorite = false) {
 async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (val ?? (await isActiveScript(script.id))) {
+  if (val ?? isActiveScript(script.id)) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",
@@ -366,7 +366,7 @@ function initSearch() {
 (async function () {
   // initOpenInNewTabBtn();
   initSearch();
-  await initLanguage();
-  await createTabs();
+  initLanguage();
+  createTabs();
   await checkForUpdate();
 })();
