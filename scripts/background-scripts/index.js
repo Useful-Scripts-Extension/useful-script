@@ -1,58 +1,60 @@
 // import { allScripts } from "../index.js";
-// import { Events } from "../helpers/constants.js";
-// import { MsgType } from "../helpers/constants.js";
-// import {
-//   checkBlackWhiteList,
-//   isActiveScript,
-//   isEmptyFunction,
-//   isFunction,
-//   runScriptInTab,
-// } from "../helpers/utils.js";
+// import { Events, EventMap } from "../helpers/constants.js";
 
-// const CACHED = {
-//   runCount: {},
-// };
-
-// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-//   console.log("> Received message:", message, sender?.tab?.url);
-
-//   switch (message.type) {
-//     case MsgType.runScript:
-//       runScript(message.event, sender.tab);
-//       break;
+// chrome.scripting.registerContentScripts(
+//   [
+//     {
+//       id: "ufs_global_webpage_context",
+//       allFrames: true,
+//       matches: ["<all_urls>"],
+//       js: ["scripts/content-scripts/scripts/ufs_global_webpage_context.js"],
+//       runAt: "document_start",
+//       world: chrome.scripting.ExecutionWorld.MAIN,
+//     },
+//   ],
+//   () => {
+//     console.log("Register content script DONE.");
 //   }
-// });
+// );
 
-// async function runScript(event, tab) {
-//   let funcName = event,
-//     tabId = tab.id,
-//     url = tab.url;
+// (() => {
+//   let scripts = Object.values(allScripts)
+//     .map((s) =>
+//       Object.values(Events).map((e) => {
+//         if (!e in s) return null;
+//         let isString = typeof s[e] === "string";
+//         let isArray = Array.isArray(s[e]);
+//         if (!(isString || isArray)) return null;
 
-//   if (!(tabId in CACHED.runCount) || event === Events.onDocumentStart)
-//     CACHED.runCount[tabId] = 0;
+//         let js = isString ? [getscriptURL(s[e])] : s[e].map(getscriptURL);
 
-//   for (let script of Object.values(allScripts)) {
-//     try {
-//       if (!checkBlackWhiteList(script, url)) continue;
+//         // add global helper to head of array
+//         js.unshift(
+//           getscriptURL("content-scripts/scripts/ufs_global_webpage_context.js")
+//         );
+//         return {
+//           id: s.id + "-" + e,
+//           allFrames: true,
+//           matches: s.whiteList || ["<all_urls>"],
+//           excludeMatches: s.blackList || [],
+//           js: js,
+//           runAt: EventMap[e],
+//           world: chrome.scripting.ExecutionWorld.MAIN,
+//         };
+//       })
+//     )
+//     .flat()
+//     .filter((_) => _);
 
-//       let func = script[funcName];
-//       if (isFunction(func) && !isEmptyFunction(func)) {
-//         let isActive = (await isActiveScript(script.id)) ?? true;
-//         if (isActive) {
-//           runScriptInTab({ func, tabId });
-//           console.log(
-//             `%c > Run ${script.id} ${funcName} in ${url}`,
-//             "background: #222; color: #bada55"
-//           );
-//           CACHED.runCount[tabId]++;
-//         }
-//       }
-//     } catch (e) {
-//       console.log("ERROR at script " + script?.id, e);
-//     }
-//   }
+//   console.log(scripts);
 
-//   updateBadge(tabId, CACHED.runCount[tabId]);
+//   chrome.scripting.registerContentScripts(scripts, () => {
+//     console.log("Register content script DONE.");
+//   });
+// })();
+
+// function getscriptURL(fileName) {
+//   return "scripts/" + fileName;
 // }
 
 // function updateBadge(tabId, text = "", bgColor = "#666") {

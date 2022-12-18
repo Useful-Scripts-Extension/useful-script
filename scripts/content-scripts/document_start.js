@@ -34,13 +34,12 @@
       "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
     )
   );
-
-  let key = "activeScripts";
-  let ids = (await chrome.storage.sync.get([key]))?.[key] || "";
+  let ids = localStorage.getItem("activeScripts") || "";
+  let path = chrome.runtime.getURL("/scripts/");
   let search = new URLSearchParams({
     ids: ids,
+    path: path,
     event: "onDocumentStart",
-    path: chrome.runtime.getURL("/scripts/"),
   }).toString();
 
   injectScript(

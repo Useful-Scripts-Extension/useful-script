@@ -11,18 +11,18 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
-    // const WebSocketOrig = window.WebSocket;
-    // window.WebSocket = function fakeConstructor(dt, config) {
-    //   const websocket_instant = new WebSocketOrig(dt, config);
-    //   websocket_instant.addEventListener("message", async function (achunk) {
-    //     const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
-    //     // Do something here
-    //     console.log(utf8_str);
-    //   });
-    //   return websocket_instant;
-    // };
-    // window.WebSocket.prototype = WebSocketOrig.prototype;
-    // window.WebSocket.prototype.constructor = window.WebSocket;
+    const WebSocketOrig = window.WebSocket;
+    window.WebSocket = function fakeConstructor(dt, config) {
+      const websocket_instant = new WebSocketOrig(dt, config);
+      websocket_instant.addEventListener("message", async function (achunk) {
+        const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
+        // Do something here
+        console.log(utf8_str);
+      });
+      return websocket_instant;
+    };
+    window.WebSocket.prototype = WebSocketOrig.prototype;
+    window.WebSocket.prototype.constructor = window.WebSocket;
     // window.addEventListener(
     //   "message",
     //   function (t) {
@@ -30,22 +30,20 @@ export default {
     //   },
     //   !1
     // );
-
-    let emptyFunc = void 0;
-    Object.defineProperty(window, "__d", {
-      get: () => emptyFunc,
-      set: (i) => {
-        const c = new Proxy(i, {
-          apply: function (target, thisArg, arg) {
-            console.log(thisArg);
-            return target(...arg);
-          },
-        });
-        emptyFunc = c;
-      },
-    });
+    // let emptyFunc = void 0;
+    // Object.defineProperty(window, "__d", {
+    //   get: () => emptyFunc,
+    //   set: (i) => {
+    //     const c = new Proxy(i, {
+    //       apply: function (target, thisArg, arg) {
+    //         console.log(thisArg);
+    //         return target(...arg);
+    //       },
+    //     });
+    //     emptyFunc = c;
+    //   },
+    // });
   },
-
   onDocumentIdle: () => {
     // tất cả loại tin nhắn đều được bao bọc bởi:
     // MWPBaseMessage.bs
@@ -139,20 +137,6 @@ export default {
       //   console.log(arguments);
       //   return LSUpdateTypingIndicatorOrig.apply(this, arguments);
       // };
-    });
-
-    let emptyFunc = void 0;
-    Object.defineProperty(window, "__d", {
-      get: () => emptyFunc,
-      set: (i) => {
-        const c = new Proxy(i, {
-          apply: function (target, thisArg, arg) {
-            console.log(thisArg);
-            return target(...arg);
-          },
-        });
-        emptyFunc = c;
-      },
     });
   },
 };

@@ -34,11 +34,11 @@ const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 
 async function initLanguage() {
-  flagImg.setAttribute("src", await getFlag());
+  flagImg.setAttribute("src", getFlag());
 
   flagImg.onclick = async () => {
-    await toggleLang();
-    flagImg.setAttribute("src", await getFlag());
+    toggleLang();
+    flagImg.setAttribute("src", getFlag());
 
     // reset UI
     createTabs();
@@ -246,7 +246,8 @@ function createScriptButton(script, isFavorite = false) {
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    favoriteScriptsSaver.toggle(script).then(createTabs);
+    favoriteScriptsSaver.toggle(script);
+    createTabs();
   };
   button.appendChild(addFavoriteBtn);
 

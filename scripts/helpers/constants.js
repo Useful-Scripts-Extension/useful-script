@@ -14,3 +14,9 @@ export const Events = {
   onDocumentIdle: "onDocumentIdle",
   onDocumentEnd: "onDocumentEnd",
 };
+
+export const EventMap = {
+  [Events.onDocumentStart]: "document_start",
+  [Events.onDocumentIdle]: "document_idle",
+  [Events.onDocumentEnd]: "document_end",
+};
