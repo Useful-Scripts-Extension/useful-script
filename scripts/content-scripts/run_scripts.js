@@ -8,8 +8,12 @@
 // Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
 
 (() => {
-  let search = new URLSearchParams(getCurrentScriptSrc().split("?")?.[1]);
-  let path = search.get("path");
+  // let search = new URLSearchParams(getCurrentScriptSrc().split("?")?.[1]);
+  // let path = search.get("path");
+
+  let { path, ids, event } = JSON.parse(
+    localStorage.getItem("ufs-auto-run-scripts") ?? "{}"
+  );
 
   // run script on receive event
   window.addEventListener("ufs-run-page-scripts", ({ detail }) => {
@@ -18,14 +22,10 @@
   });
 
   // auto run initial event defined in URL search params
-  (() => {
-    let ids = search.get("ids");
-    let event = search.get("event");
-    if (ids && event) {
-      let scriptIds = ids.split(",");
-      runScripts(scriptIds, event, path);
-    }
-  })();
+  if (ids && event) {
+    let scriptIds = ids.split(",");
+    runScripts(scriptIds, event, path);
+  }
 })();
 
 function getCurrentScriptSrc() {
@@ -39,7 +39,7 @@ function getCurrentScriptSrc() {
 }
 
 function runScripts(scriptIds, event, path) {
-  for (let id of scriptIds) {
+  for (let id of scriptIds.filter((_) => _)) {
     let scriptPath = `${path}/${id}.js`;
     import(scriptPath).then(({ default: script }) => {
       try {
