@@ -64,6 +64,13 @@ const UsefulScriptGlobalWebpageContext = {
       // return disconnect function
       return () => observer.disconnect();
     },
+
+    injectCssCode(code) {
+      var css = document.createElement("style");
+      if ("textContent" in css) css.textContent = code;
+      else css.innerText = code;
+      document.head.appendChild(css);
+    },
   },
   Facebook: {
     decodeArrId(arrId) {

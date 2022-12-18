@@ -159,6 +159,7 @@ import insta_injectDownloadBtn from "./insta_injectDownloadBtn.js";
 import studocu_bypassPreview from "./studocu_bypassPreview.js";
 import fb_revealDeletedMessages from "./fb_revealDeletedMessages.js";
 import fb_whoIsTyping from "./fb_whoIsTyping.js";
+import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
 
 // inject badges
 const allScripts = {
@@ -339,6 +340,7 @@ const allScripts = {
   studocu_bypassPreview: addBadge(studocu_bypassPreview, BADGES.new),
   fb_revealDeletedMessages: addBadge(fb_revealDeletedMessages, BADGES.hot),
   fb_whoIsTyping: addBadge(fb_whoIsTyping, BADGES.new),
+  detect_zeroWidthCharacters: addBadge(detect_zeroWidthCharacters, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

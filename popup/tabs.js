@@ -229,6 +229,7 @@ const tabs = [
       s.studyphim_unlimited,
       s.studocu_bypassPreview,
       createTitle("--- Unlock function ---", "--- Mở khoá chức năng ---"),
+      s.detect_zeroWidthCharacters,
       s.simpleAllowCopy,
       s.reEnableContextMenu,
       s.showHiddenFields,
