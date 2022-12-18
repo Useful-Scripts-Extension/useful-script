@@ -1,4 +1,5 @@
 import { downloadData, showLoading } from "./helpers/utils.js";
+import { AccessToken } from "./helpers/constants.js";
 
 export default {
   icon: '<i class="fa-solid fa-user"></i>',
@@ -12,8 +13,6 @@ export default {
   },
 
   onClickExtension: async function () {
-    let accessToken = prompt("Nhập facebook access token: ");
-    if (!accessToken) return;
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
     if (!uids) return;
 
@@ -23,25 +22,35 @@ export default {
       let urls = [];
       for (let uid of uids) {
         setLoadingText("Đang lấy avatar của " + uid + "...");
-        let url = `https://graph.facebook.com/${uid}/picture?type=large&access_token=${accessToken}`;
-        let data = await fetch(url);
-        if (data?.url) {
-          urls.push(data?.url);
+        let url = await shared.getAvatarFromUid(uid);
+        if (url) {
+          urls.push(url);
         }
+      }
+
+      if (urls.length === 0) alert("Không tìm được avatar nào!");
+      else if (urls.length === 1) window.open(urls[0]);
+      else {
+        if (
+          confirm("Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống.")
+        )
+          downloadData(
+            urls.join("\n"),
+            `uid-${new Date().toLocaleString()}.txt`
+          );
       }
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
       closeLoading();
     }
+  },
+};
 
-    if (urls.length === 0) alert("Không tìm được avatar nào!");
-    else if (urls.length === 1) window.open(urls[0]);
-    else {
-      if (
-        confirm("Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống.")
-      )
-        downloadData(urls.join("\n"), `uid-${new Date().toLocaleString()}.txt`);
-    }
+export const shared = {
+  getAvatarFromUid: async (uid) => {
+    let url = `https://graph.facebook.com/${uid}/picture?height=500&access_token=${AccessToken.FacebookIphone}`;
+    let data = await fetch(url);
+    return data.url;
   },
 };
