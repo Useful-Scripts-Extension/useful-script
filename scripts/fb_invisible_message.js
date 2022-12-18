@@ -5,8 +5,8 @@ export default {
     vi: "Tin nhắn tàng hình facebook",
   },
   description: {
-    en: "Add character > before message to send invisible message",
-    vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình",
+    en: "Add the > character before writing a message to send hidden messages.\n\nYour friends needs to install this extension and enable it to view hidden messages.",
+    vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình.\n\nChỉ xem được tin nhắn tàng hình khi cài extension và bật chức năng này.",
   },
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
@@ -130,7 +130,6 @@ export default {
       };
 
       const checkEncode = (s) => {
-        //console.log(s);
         if (s?.[0] != PADDING) return false;
         s = s.substr(1);
         for (let c of s) if (CHARS_MAP[c] === undefined) return false;
@@ -143,8 +142,6 @@ export default {
           const MWV2ChatTextMakeOrig = MWV2ChatText.make;
           MWV2ChatText.make = function (a) {
             let text = a?.message?.text;
-            console.log(a);
-            if (a.message.text.includes("thu hồi")) console.log("here");
             if (checkEncode(text))
               a.message.text = `[Encrypted]: ${decode(text)}`;
             return MWV2ChatTextMakeOrig.apply(this, arguments);
@@ -163,7 +160,6 @@ export default {
 
                 payload.tasks = payload.tasks.map((task) => {
                   let payload = JSON.parse(task.payload);
-                  console.log(payload);
                   if (!payload || !payload.text) return task;
                   if (payload.text.length > 1 && payload.text[0] === ">") {
                     payload.text = encode(payload.text.substr(1));

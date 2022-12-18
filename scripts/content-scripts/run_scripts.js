@@ -7,14 +7,9 @@
 // Kể cả việc nó đã được viết ở file khác (utils, helper, ...)
 // Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
 
-console.log(window.__d);
-
 (() => {
-  const params = new URLSearchParams(
-    document.currentScript.src.split("?")?.[1]
-  );
-
-  let path = params.get("path");
+  let search = new URLSearchParams(getCurrentScriptSrc().split("?")?.[1]);
+  let path = search.get("path");
 
   // run script on receive event
   window.addEventListener("ufs-run-page-scripts", ({ detail }) => {
@@ -22,20 +17,29 @@ console.log(window.__d);
     runScripts(ids, event, path);
   });
 
-  // auto run onDocumentStart
+  // auto run initial event defined in URL search params
   (() => {
-    let ids = params.get("ids");
-    let event = params.get("event");
-    if (ids) {
+    let ids = search.get("ids");
+    let event = search.get("event");
+    if (ids && event) {
       let scriptIds = ids.split(",");
       runScripts(scriptIds, event, path);
     }
   })();
 })();
 
+function getCurrentScriptSrc() {
+  try {
+    // cannot get currentScript if script type is module: https://stackoverflow.com/a/45845801/11898496
+    // return import.meta.url;
+    throw false;
+  } catch (e) {
+    return document.currentScript.src;
+  }
+}
+
 function runScripts(scriptIds, event, path) {
   for (let id of scriptIds) {
-    // import and run script with event name
     let scriptPath = `${path}/${id}.js`;
     import(scriptPath).then(({ default: script }) => {
       try {
