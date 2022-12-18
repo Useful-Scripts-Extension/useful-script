@@ -73,6 +73,13 @@ const UsefulScriptGlobalWebpageContext = {
     },
   },
   Facebook: {
+    getUserAvatarFromUid(uid) {
+      return (
+        "https://graph.facebook.com/" +
+        uid +
+        "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
+      );
+    },
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
     },
