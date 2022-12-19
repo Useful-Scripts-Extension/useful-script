@@ -1,3 +1,23 @@
+// communication between page-script and content-script
+(() => {
+  function sendToPageScript(event, data) {
+    window.dispatchEvent(
+      new CustomEvent("ufs-contentscript-sendto-pagescript", {
+        detail: { event, data },
+      })
+    );
+  }
+  window.addEventListener("ufs-pagescript-sendto-contentscript", (e) => {
+    let { event, data } = e.detail;
+    switch (event) {
+      case "getURL":
+        sendToPageScript(event, chrome.runtime.getURL(data));
+        break;
+    }
+  });
+})();
+
+// run all scripts that has onDocumentStart event
 (async () => {
   injectScript(
     chrome.runtime.getURL(
@@ -23,6 +43,7 @@
   );
 })();
 
+// Run script on user click (if clicked script has onClickContentScript event)
 (async () => {
   try {
     const { MsgType, ClickType } = await import("../helpers/constants.js");

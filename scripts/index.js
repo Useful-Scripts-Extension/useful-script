@@ -160,6 +160,7 @@ import studocu_bypassPreview from "./studocu_bypassPreview.js";
 import fb_revealDeletedMessages from "./fb_revealDeletedMessages.js";
 import fb_whoIsTyping from "./fb_whoIsTyping.js";
 import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
+import fb_moreReactionStory from "./fb_moreReactionStory.js";
 
 // inject badges
 const allScripts = {
@@ -341,6 +342,7 @@ const allScripts = {
   fb_revealDeletedMessages: addBadge(fb_revealDeletedMessages, BADGES.hot),
   fb_whoIsTyping: addBadge(fb_whoIsTyping, BADGES.new),
   detect_zeroWidthCharacters: addBadge(detect_zeroWidthCharacters, BADGES.new),
+  fb_moreReactionStory: addBadge(fb_moreReactionStory, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

@@ -79,11 +79,11 @@ export default {
 
             if (isUnsent) {
               threadKey =
-                UsefulScriptGlobalWebpageContext.Facebook.decodeArrId(
+                UsefulScriptGlobalPageContext.Facebook.decodeArrId(
                   threadKey
                 );
               senderId =
-                UsefulScriptGlobalWebpageContext.Facebook.decodeArrId(senderId);
+                UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
 
               a.message.isUnsent = false;
               a.message.text = "[Hacked]: thu hồi nè";

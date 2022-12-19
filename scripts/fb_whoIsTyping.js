@@ -36,7 +36,7 @@ export default {
           let isStopTyping = utf8_str.includes(",false)");
 
           let arr = utf8_str.match(/(\[)(.*?)(\])/g);
-          let uid = UsefulScriptGlobalWebpageContext.Facebook.decodeArrId(
+          let uid = UsefulScriptGlobalPageContext.Facebook.decodeArrId(
             JSON.parse(arr[arr.length - 2])
           );
 

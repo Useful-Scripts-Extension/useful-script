@@ -12,7 +12,7 @@ export default {
 
   onDocumentStart: () => {
     // Source: https://github.com/gys-dev/Unlimited-Stdphim
-    UsefulScriptGlobalWebpageContext.DOM.deleteElements(
+    UsefulScriptGlobalPageContext.DOM.deleteElements(
       ".overlay.playable.hide, .overlay.playable, #topchapter, #wrapper_header",
       true
     );

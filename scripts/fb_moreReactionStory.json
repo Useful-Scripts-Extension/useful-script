@@ -1,0 +1,747 @@
+[
+  {
+    "url": "https://emojipedia.org/grinning-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-face_1f600.png",
+    "value": "😀"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-face-with-big-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-face-with-big-eyes_1f603.png",
+    "value": "😃"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-face-with-smiling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-face-with-smiling-eyes_1f604.png",
+    "value": "😄"
+  },
+  {
+    "url": "https://emojipedia.org/beaming-face-with-smiling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/beaming-face-with-smiling-eyes_1f601.png",
+    "value": "😁"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-squinting-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-squinting-face_1f606.png",
+    "value": "😆"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-face-with-sweat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-face-with-sweat_1f605.png",
+    "value": "😅"
+  },
+  {
+    "url": "https://emojipedia.org/rolling-on-the-floor-laughing/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/rolling-on-the-floor-laughing_1f923.png",
+    "value": "🤣"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-tears-of-joy/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-tears-of-joy_1f602.png",
+    "value": "😂"
+  },
+  {
+    "url": "https://emojipedia.org/slightly-smiling-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/slightly-smiling-face_1f642.png",
+    "value": "🙂"
+  },
+  {
+    "url": "https://emojipedia.org/upside-down-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/upside-down-face_1f643.png",
+    "value": "🙃"
+  },
+  {
+    "url": "https://emojipedia.org/winking-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/winking-face_1f609.png",
+    "value": "😉"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-smiling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-smiling-eyes_1f60a.png",
+    "value": "😊"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-halo/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-halo_1f607.png",
+    "value": "😇"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-hearts/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-hearts_1f970.png",
+    "value": "🥰"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-heart-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-heart-eyes_1f60d.png",
+    "value": "😍"
+  },
+  {
+    "url": "https://emojipedia.org/star-struck/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/star-struck_1f929.png",
+    "value": "🤩"
+  },
+  {
+    "url": "https://emojipedia.org/face-blowing-a-kiss/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-blowing-a-kiss_1f618.png",
+    "value": "😘"
+  },
+  {
+    "url": "https://emojipedia.org/kissing-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/kissing-face_1f617.png",
+    "value": "😗"
+  },
+  {
+    "url": "https://emojipedia.org/kissing-face-with-closed-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/kissing-face-with-closed-eyes_1f61a.png",
+    "value": "😚"
+  },
+  {
+    "url": "https://emojipedia.org/kissing-face-with-smiling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/kissing-face-with-smiling-eyes_1f619.png",
+    "value": "😙"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-tear/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-tear_1f972.png",
+    "value": "🥲"
+  },
+  {
+    "url": "https://emojipedia.org/face-savoring-food/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-savoring-food_1f60b.png",
+    "value": "😋"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-tongue/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-tongue_1f61b.png",
+    "value": "😛"
+  },
+  {
+    "url": "https://emojipedia.org/winking-face-with-tongue/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/winking-face-with-tongue_1f61c.png",
+    "value": "😜"
+  },
+  {
+    "url": "https://emojipedia.org/zany-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/zany-face_1f92a.png",
+    "value": "🤪"
+  },
+  {
+    "url": "https://emojipedia.org/squinting-face-with-tongue/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/squinting-face-with-tongue_1f61d.png",
+    "value": "😝"
+  },
+  {
+    "url": "https://emojipedia.org/money-mouth-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/money-mouth-face_1f911.png",
+    "value": "🤑"
+  },
+  {
+    "url": "https://emojipedia.org/hugging-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hugging-face_1f917.png",
+    "value": "🤗"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-hand-over-mouth/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-hand-over-mouth_1f92d.png",
+    "value": "🤭"
+  },
+  {
+    "url": "https://emojipedia.org/shushing-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/shushing-face_1f92b.png",
+    "value": "🤫"
+  },
+  {
+    "url": "https://emojipedia.org/thinking-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/thinking-face_1f914.png",
+    "value": "🤔"
+  },
+  {
+    "url": "https://emojipedia.org/zipper-mouth-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/zipper-mouth-face_1f910.png",
+    "value": "🤐"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-raised-eyebrow/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-raised-eyebrow_1f928.png",
+    "value": "🤨"
+  },
+  {
+    "url": "https://emojipedia.org/neutral-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/neutral-face_1f610.png",
+    "value": "😐"
+  },
+  {
+    "url": "https://emojipedia.org/expressionless-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/expressionless-face_1f611.png",
+    "value": "😑"
+  },
+  {
+    "url": "https://emojipedia.org/face-without-mouth/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-without-mouth_1f636.png",
+    "value": "😶"
+  },
+  {
+    "url": "https://emojipedia.org/face-in-clouds/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-in-clouds_1f636-200d-1f32b-fe0f.png",
+    "value": "😶‍🌫️"
+  },
+  {
+    "url": "https://emojipedia.org/smirking-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smirking-face_1f60f.png",
+    "value": "😏"
+  },
+  {
+    "url": "https://emojipedia.org/unamused-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/unamused-face_1f612.png",
+    "value": "😒"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-rolling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-rolling-eyes_1f644.png",
+    "value": "🙄"
+  },
+  {
+    "url": "https://emojipedia.org/grimacing-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grimacing-face_1f62c.png",
+    "value": "😬"
+  },
+  {
+    "url": "https://emojipedia.org/face-exhaling/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-exhaling_1f62e-200d-1f4a8.png",
+    "value": "😮‍💨"
+  },
+  {
+    "url": "https://emojipedia.org/lying-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/lying-face_1f925.png",
+    "value": "🤥"
+  },
+  {
+    "url": "https://emojipedia.org/relieved-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/relieved-face_1f60c.png",
+    "value": "😌"
+  },
+  {
+    "url": "https://emojipedia.org/pensive-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/pensive-face_1f614.png",
+    "value": "😔"
+  },
+  {
+    "url": "https://emojipedia.org/sleepy-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sleepy-face_1f62a.png",
+    "value": "😪"
+  },
+  {
+    "url": "https://emojipedia.org/drooling-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/drooling-face_1f924.png",
+    "value": "🤤"
+  },
+  {
+    "url": "https://emojipedia.org/sleeping-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sleeping-face_1f634.png",
+    "value": "😴"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-medical-mask/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-medical-mask_1f637.png",
+    "value": "😷"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-thermometer/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-thermometer_1f912.png",
+    "value": "🤒"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-head-bandage/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-head-bandage_1f915.png",
+    "value": "🤕"
+  },
+  {
+    "url": "https://emojipedia.org/nauseated-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/nauseated-face_1f922.png",
+    "value": "🤢"
+  },
+  {
+    "url": "https://emojipedia.org/face-vomiting/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-vomiting_1f92e.png",
+    "value": "🤮"
+  },
+  {
+    "url": "https://emojipedia.org/sneezing-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sneezing-face_1f927.png",
+    "value": "🤧"
+  },
+  {
+    "url": "https://emojipedia.org/hot-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hot-face_1f975.png",
+    "value": "🥵"
+  },
+  {
+    "url": "https://emojipedia.org/cold-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/cold-face_1f976.png",
+    "value": "🥶"
+  },
+  {
+    "url": "https://emojipedia.org/woozy-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/woozy-face_1f974.png",
+    "value": "🥴"
+  },
+  {
+    "url": "https://emojipedia.org/dizzy-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/dizzy-face_1f635.png",
+    "value": "😵"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-spiral-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-spiral-eyes_1f635-200d-1f4ab.png",
+    "value": "😵‍💫"
+  },
+  {
+    "url": "https://emojipedia.org/exploding-head/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/exploding-head_1f92f.png",
+    "value": "🤯"
+  },
+  {
+    "url": "https://emojipedia.org/cowboy-hat-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/cowboy-hat-face_1f920.png",
+    "value": "🤠"
+  },
+  {
+    "url": "https://emojipedia.org/partying-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/partying-face_1f973.png",
+    "value": "🥳"
+  },
+  {
+    "url": "https://emojipedia.org/disguised-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/disguised-face_1f978.png",
+    "value": "🥸"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-sunglasses/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-sunglasses_1f60e.png",
+    "value": "😎"
+  },
+  {
+    "url": "https://emojipedia.org/nerd-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/nerd-face_1f913.png",
+    "value": "🤓"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-monocle/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-monocle_1f9d0.png",
+    "value": "🧐"
+  },
+  {
+    "url": "https://emojipedia.org/confused-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/confused-face_1f615.png",
+    "value": "😕"
+  },
+  {
+    "url": "https://emojipedia.org/worried-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/worried-face_1f61f.png",
+    "value": "😟"
+  },
+  {
+    "url": "https://emojipedia.org/slightly-frowning-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/slightly-frowning-face_1f641.png",
+    "value": "🙁"
+  },
+  {
+    "url": "https://emojipedia.org/frowning-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/frowning-face_2639-fe0f.png",
+    "value": "☹️"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-open-mouth/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-open-mouth_1f62e.png",
+    "value": "😮"
+  },
+  {
+    "url": "https://emojipedia.org/hushed-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hushed-face_1f62f.png",
+    "value": "😯"
+  },
+  {
+    "url": "https://emojipedia.org/astonished-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/astonished-face_1f632.png",
+    "value": "😲"
+  },
+  {
+    "url": "https://emojipedia.org/flushed-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/flushed-face_1f633.png",
+    "value": "😳"
+  },
+  {
+    "url": "https://emojipedia.org/pleading-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/pleading-face_1f97a.png",
+    "value": "🥺"
+  },
+  {
+    "url": "https://emojipedia.org/frowning-face-with-open-mouth/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/frowning-face-with-open-mouth_1f626.png",
+    "value": "😦"
+  },
+  {
+    "url": "https://emojipedia.org/anguished-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/anguished-face_1f627.png",
+    "value": "😧"
+  },
+  {
+    "url": "https://emojipedia.org/fearful-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/fearful-face_1f628.png",
+    "value": "😨"
+  },
+  {
+    "url": "https://emojipedia.org/anxious-face-with-sweat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/anxious-face-with-sweat_1f630.png",
+    "value": "😰"
+  },
+  {
+    "url": "https://emojipedia.org/sad-but-relieved-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sad-but-relieved-face_1f625.png",
+    "value": "😥"
+  },
+  {
+    "url": "https://emojipedia.org/crying-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/crying-face_1f622.png",
+    "value": "😢"
+  },
+  {
+    "url": "https://emojipedia.org/loudly-crying-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/loudly-crying-face_1f62d.png",
+    "value": "😭"
+  },
+  {
+    "url": "https://emojipedia.org/face-screaming-in-fear/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-screaming-in-fear_1f631.png",
+    "value": "😱"
+  },
+  {
+    "url": "https://emojipedia.org/confounded-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/confounded-face_1f616.png",
+    "value": "😖"
+  },
+  {
+    "url": "https://emojipedia.org/persevering-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/persevering-face_1f623.png",
+    "value": "😣"
+  },
+  {
+    "url": "https://emojipedia.org/disappointed-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/disappointed-face_1f61e.png",
+    "value": "😞"
+  },
+  {
+    "url": "https://emojipedia.org/downcast-face-with-sweat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/downcast-face-with-sweat_1f613.png",
+    "value": "😓"
+  },
+  {
+    "url": "https://emojipedia.org/weary-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/weary-face_1f629.png",
+    "value": "😩"
+  },
+  {
+    "url": "https://emojipedia.org/tired-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/tired-face_1f62b.png",
+    "value": "😫"
+  },
+  {
+    "url": "https://emojipedia.org/yawning-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/yawning-face_1f971.png",
+    "value": "🥱"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-steam-from-nose/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-steam-from-nose_1f624.png",
+    "value": "😤"
+  },
+  {
+    "url": "https://emojipedia.org/pouting-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/pouting-face_1f621.png",
+    "value": "😡"
+  },
+  {
+    "url": "https://emojipedia.org/angry-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/angry-face_1f620.png",
+    "value": "😠"
+  },
+  {
+    "url": "https://emojipedia.org/face-with-symbols-on-mouth/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/face-with-symbols-on-mouth_1f92c.png",
+    "value": "🤬"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-face-with-horns/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-face-with-horns_1f608.png",
+    "value": "😈"
+  },
+  {
+    "url": "https://emojipedia.org/angry-face-with-horns/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/angry-face-with-horns_1f47f.png",
+    "value": "👿"
+  },
+  {
+    "url": "https://emojipedia.org/skull/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/skull_1f480.png",
+    "value": "💀"
+  },
+  {
+    "url": "https://emojipedia.org/skull-and-crossbones/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/skull-and-crossbones_2620-fe0f.png",
+    "value": "☠️"
+  },
+  {
+    "url": "https://emojipedia.org/pile-of-poo/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/pile-of-poo_1f4a9.png",
+    "value": "💩"
+  },
+  {
+    "url": "https://emojipedia.org/clown-face/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/clown-face_1f921.png",
+    "value": "🤡"
+  },
+  {
+    "url": "https://emojipedia.org/ogre/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/ogre_1f479.png",
+    "value": "👹"
+  },
+  {
+    "url": "https://emojipedia.org/goblin/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/goblin_1f47a.png",
+    "value": "👺"
+  },
+  {
+    "url": "https://emojipedia.org/ghost/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/ghost_1f47b.png",
+    "value": "👻"
+  },
+  {
+    "url": "https://emojipedia.org/alien/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/alien_1f47d.png",
+    "value": "👽"
+  },
+  {
+    "url": "https://emojipedia.org/alien-monster/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/alien-monster_1f47e.png",
+    "value": "👾"
+  },
+  {
+    "url": "https://emojipedia.org/robot/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/robot_1f916.png",
+    "value": "🤖"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-cat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-cat_1f63a.png",
+    "value": "😺"
+  },
+  {
+    "url": "https://emojipedia.org/grinning-cat-with-smiling-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/grinning-cat-with-smiling-eyes_1f638.png",
+    "value": "😸"
+  },
+  {
+    "url": "https://emojipedia.org/cat-with-tears-of-joy/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/cat-with-tears-of-joy_1f639.png",
+    "value": "😹"
+  },
+  {
+    "url": "https://emojipedia.org/smiling-cat-with-heart-eyes/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/smiling-cat-with-heart-eyes_1f63b.png",
+    "value": "😻"
+  },
+  {
+    "url": "https://emojipedia.org/cat-with-wry-smile/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/cat-with-wry-smile_1f63c.png",
+    "value": "😼"
+  },
+  {
+    "url": "https://emojipedia.org/kissing-cat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/kissing-cat_1f63d.png",
+    "value": "😽"
+  },
+  {
+    "url": "https://emojipedia.org/weary-cat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/weary-cat_1f640.png",
+    "value": "🙀"
+  },
+  {
+    "url": "https://emojipedia.org/crying-cat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/crying-cat_1f63f.png",
+    "value": "😿"
+  },
+  {
+    "url": "https://emojipedia.org/pouting-cat/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/pouting-cat_1f63e.png",
+    "value": "😾"
+  },
+  {
+    "url": "https://emojipedia.org/see-no-evil-monkey/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/see-no-evil-monkey_1f648.png",
+    "value": "🙈"
+  },
+  {
+    "url": "https://emojipedia.org/hear-no-evil-monkey/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hear-no-evil-monkey_1f649.png",
+    "value": "🙉"
+  },
+  {
+    "url": "https://emojipedia.org/speak-no-evil-monkey/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/speak-no-evil-monkey_1f64a.png",
+    "value": "🙊"
+  },
+  {
+    "url": "https://emojipedia.org/kiss-mark/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/kiss-mark_1f48b.png",
+    "value": "💋"
+  },
+  {
+    "url": "https://emojipedia.org/love-letter/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/love-letter_1f48c.png",
+    "value": "💌"
+  },
+  {
+    "url": "https://emojipedia.org/heart-with-arrow/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/heart-with-arrow_1f498.png",
+    "value": "💘"
+  },
+  {
+    "url": "https://emojipedia.org/heart-with-ribbon/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/heart-with-ribbon_1f49d.png",
+    "value": "💝"
+  },
+  {
+    "url": "https://emojipedia.org/sparkling-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sparkling-heart_1f496.png",
+    "value": "💖"
+  },
+  {
+    "url": "https://emojipedia.org/growing-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/growing-heart_1f497.png",
+    "value": "💗"
+  },
+  {
+    "url": "https://emojipedia.org/beating-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/beating-heart_1f493.png",
+    "value": "💓"
+  },
+  {
+    "url": "https://emojipedia.org/revolving-hearts/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/revolving-hearts_1f49e.png",
+    "value": "💞"
+  },
+  {
+    "url": "https://emojipedia.org/two-hearts/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/two-hearts_1f495.png",
+    "value": "💕"
+  },
+  {
+    "url": "https://emojipedia.org/heart-decoration/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/heart-decoration_1f49f.png",
+    "value": "💟"
+  },
+  {
+    "url": "https://emojipedia.org/heart-exclamation/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/heart-exclamation_2763-fe0f.png",
+    "value": "❣️"
+  },
+  {
+    "url": "https://emojipedia.org/broken-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/broken-heart_1f494.png",
+    "value": "💔"
+  },
+  {
+    "url": "https://emojipedia.org/heart-on-fire/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/heart-on-fire_2764-fe0f-200d-1f525.png",
+    "value": "❤️‍🔥"
+  },
+  {
+    "url": "https://emojipedia.org/mending-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/mending-heart_2764-fe0f-200d-1fa79.png",
+    "value": "❤️‍🩹"
+  },
+  {
+    "url": "https://emojipedia.org/red-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/red-heart_2764-fe0f.png",
+    "value": "❤️"
+  },
+  {
+    "url": "https://emojipedia.org/orange-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/orange-heart_1f9e1.png",
+    "value": "🧡"
+  },
+  {
+    "url": "https://emojipedia.org/yellow-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/yellow-heart_1f49b.png",
+    "value": "💛"
+  },
+  {
+    "url": "https://emojipedia.org/green-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/green-heart_1f49a.png",
+    "value": "💚"
+  },
+  {
+    "url": "https://emojipedia.org/blue-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/blue-heart_1f499.png",
+    "value": "💙"
+  },
+  {
+    "url": "https://emojipedia.org/purple-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/purple-heart_1f49c.png",
+    "value": "💜"
+  },
+  {
+    "url": "https://emojipedia.org/brown-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/brown-heart_1f90e.png",
+    "value": "🤎"
+  },
+  {
+    "url": "https://emojipedia.org/black-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/black-heart_1f5a4.png",
+    "value": "🖤"
+  },
+  {
+    "url": "https://emojipedia.org/white-heart/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/white-heart_1f90d.png",
+    "value": "🤍"
+  },
+  {
+    "url": "https://emojipedia.org/hundred-points/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hundred-points_1f4af.png",
+    "value": "💯"
+  },
+  {
+    "url": "https://emojipedia.org/anger-symbol/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/anger-symbol_1f4a2.png",
+    "value": "💢"
+  },
+  {
+    "url": "https://emojipedia.org/collision/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/collision_1f4a5.png",
+    "value": "💥"
+  },
+  {
+    "url": "https://emojipedia.org/dizzy/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/dizzy_1f4ab.png",
+    "value": "💫"
+  },
+  {
+    "url": "https://emojipedia.org/sweat-droplets/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/sweat-droplets_1f4a6.png",
+    "value": "💦"
+  },
+  {
+    "url": "https://emojipedia.org/dashing-away/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/dashing-away_1f4a8.png",
+    "value": "💨"
+  },
+  {
+    "url": "https://emojipedia.org/hole/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/hole_1f573-fe0f.png",
+    "value": "🕳️"
+  },
+  {
+    "url": "https://emojipedia.org/bomb/",
+    "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/72/apple/285/bomb_1f4a3.png",
+    "value": "💣"
+  }
+]
