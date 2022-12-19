@@ -37,7 +37,8 @@ export default {
       const user_id = getUserId();
 
       const timeoutCheckStoriesFooter = setInterval(() => {
-        if (!window.location.href.includes("facebook.com/stories/")) return;
+        console.log('check')
+        if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
         /* HTML template
