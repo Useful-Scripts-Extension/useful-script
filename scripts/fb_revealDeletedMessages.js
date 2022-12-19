@@ -79,9 +79,7 @@ export default {
 
             if (isUnsent) {
               threadKey =
-                UsefulScriptGlobalPageContext.Facebook.decodeArrId(
-                  threadKey
-                );
+                UsefulScriptGlobalPageContext.Facebook.decodeArrId(threadKey);
               senderId =
                 UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
 
@@ -142,4 +140,9 @@ export default {
       };
     });
   },
+
+  onClickExtension: () =>
+    window.open(
+      "https://www.facebook.com/groups/j2team.community/posts/1651683238497123/"
+    ),
 };

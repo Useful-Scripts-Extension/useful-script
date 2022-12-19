@@ -17,4 +17,9 @@ export default {
       true
     );
   },
+
+  onClickExtension: () =>
+    window.open(
+      "https://www.facebook.com/groups/j2team.community/posts/565933393738785/"
+    ),
 };
