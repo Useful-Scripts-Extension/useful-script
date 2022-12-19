@@ -8,5 +8,5 @@ export default {
     en: "Convert Photos & PDF to Excel, Word, Searchable PDF for free",
     vi: "Chuyển đổi hình ảnh và pdf sang Excel, Word, Searchable PDF miễn phí",
   },
-  onClick: () => window.open("https://fastdoc.vn/"),
+  onClickExtension: () => window.open("https://fastdoc.vn/"),
 };

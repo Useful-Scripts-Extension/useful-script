@@ -286,7 +286,7 @@ const recommendTab = {
         en: "Know what your friends have sent you",
         vi: "Xem bạn bè đã gửi gì cho bạn",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open("https://github.com/HoangTran0410/RevealDeletedFBMessages"),
     },
     {
@@ -296,7 +296,7 @@ const recommendTab = {
         en: "Tool download media from facebook automatic",
         vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
     },
     { name: { en: "--- Web ---", vi: "--- Web hay ---" } },
@@ -307,7 +307,7 @@ const recommendTab = {
         en: "The AI Search Engine You Control",
         vi: "Trình tìm kiếm sử dụng trí tuệ nhân tạo",
       },
-      onClick: () => window.open("https://you.com/"),
+      onClickExtension: () => window.open("https://you.com/"),
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
@@ -317,7 +317,7 @@ const recommendTab = {
         en: "Use fb better with more security and tools",
         vi: "Dùng fb sướng hơn bao giờ hết",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/j2team-security/hmlcjjclebjnfohgmgikjfnbmfkigocc"
         ),
@@ -329,7 +329,7 @@ const recommendTab = {
         en: "View/Download source code of any extension",
         vi: "Xem/Tải source code của mọi extension",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin"
         ),
@@ -341,7 +341,7 @@ const recommendTab = {
         en: "Block advertisements for all website",
         vi: "Chặn quảng cáo cho mọi website",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb"
         ),
@@ -353,7 +353,7 @@ const recommendTab = {
         en: "Instant translation for all website",
         vi: "Dịch nhanh, trực tiếp trong mọi website",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb"
         ),
@@ -368,7 +368,7 @@ const recommendTab = {
         en: "Hide NSFW content from websites using this extension powered by AI",
         vi: "Ẩn mọi nội dung 18+ trên website, sử dụng trí tuệ nhân tạo",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh"
         ),
@@ -383,7 +383,7 @@ const recommendTab = {
         en: "Video, Story, download with one click",
         vi: "Tải video, story facebook với 1 nút nhấn",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/dyl-download-facebook-vid/honmapcmnfgjmahijdniaaollhhfpcnj?hl=vi"
         ),
@@ -395,7 +395,7 @@ const recommendTab = {
         en: "Darkmode for every website",
         vi: "Chế độ tối cho mọi trang web",
       },
-      onClick: () =>
+      onClickExtension: () =>
         window.open(
           "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
         ),
@@ -407,7 +407,7 @@ const recommendTab = {
         en: "Check deals/prices in ecommerce websites",
         vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
       },
-      onClick: () => window.open("https://beecost.vn/"),
+      onClickExtension: () => window.open("https://beecost.vn/"),
     },
     {
       icon: "https://lh3.googleusercontent.com/wafm5uFaPRSo1RHMbhcdEghFzTPUfYo5GosPmBhkdNuYlGz8WigoAQM-8lulzuhWQBGTbbUyRvfoyIMDypJzuAVZ=w128-h128-e365-rj-sc0x00ffffff",
@@ -416,7 +416,7 @@ const recommendTab = {
         en: "Filetree for github",
         vi: "Cây thư mục cho github",
       },
-      onClick: () => window.open("https://www.octotree.io/"),
+      onClickExtension: () => window.open("https://www.octotree.io/"),
     },
   ],
 };
