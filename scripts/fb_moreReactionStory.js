@@ -1,8 +1,8 @@
 export default {
   icon: "😍",
   name: {
-    en: "Facebook Story - send more emoji reactions",
-    vi: "Facebook Story - thêm nhiều loại emoji",
+    en: "Facebook Story - Add more emoji reactions",
+    vi: "Facebook Story - Thêm nhiều loại emoji",
   },
   description: {
     en: "React story Facebook with more emojis",
@@ -37,7 +37,6 @@ export default {
       const user_id = getUserId();
 
       const timeoutCheckStoriesFooter = setInterval(() => {
-        console.log('check')
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
@@ -93,10 +92,11 @@ export default {
                 try {
                   emojiLi.classList.add("loading");
                   await reactStory(user_id, fb_dtsg, storyId, emoji);
-                  emojiLi.classList.remove("loading");
                   addFloatingEmoji(emoji, emojiLi);
                 } catch (e) {
                   console.error(e);
+                } finally {
+                  emojiLi.classList.remove("loading");
                 }
               };
 
