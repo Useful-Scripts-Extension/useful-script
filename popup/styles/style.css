@@ -37,9 +37,11 @@ div {
 
 html,
 body {
-    min-width: 350px;
     background-color: #e6e6e6;
+    min-width: 370px;
+    min-height: 600px;
 }
+
 
 h1,
 h3 {
@@ -97,7 +99,6 @@ a:hover {
 
 /* ---------- Tab button ---------- */
 .tab {
-    overflow: hidden;
     background-color: #cccccc;
     overflow: auto;
 }
@@ -473,8 +474,8 @@ a:hover {
 /* --------- scrollbar --------- */
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 7px;
+    height: 7px;
 }
 
 /* Track */
