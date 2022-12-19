@@ -74,7 +74,7 @@ export default {
       }, 10);
     })();
 
-    UsefulScriptGlobalWebpageContext.DOM.injectCssCode(`
+    UsefulScriptGlobalPageContext.DOM.injectCssCode(`
         .zero-width-characters {
             background-color: rgba(255, 0, 0, 0.2) !important;
             position: relative;

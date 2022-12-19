@@ -1,10 +1,35 @@
 // Tất cả các hàm/biến toàn cục được nhúng vào trang web at document_start
 // Có thể truy cập từ các script chạy trong webpage context (có hàm onClick)
 
-const UsefulScriptGlobalWebpageContext = {
+const UsefulScriptGlobalPageContext = {
+  Extension: {
+    sendToContentScript: function (event, data) {
+      return new Promise((resolve, reject) => {
+        let listenerKey = "ufs-contentscript-sendto-pagescript";
+        let listener = (evt) => {
+          if (evt.detail.event === event) {
+            resolve(evt.detail.data);
+            window.removeEventListener(listenerKey, listener);
+          }
+        };
+        window.addEventListener(listenerKey, listener);
+        window.dispatchEvent(
+          new CustomEvent("ufs-pagescript-sendto-contentscript", {
+            detail: { event, data },
+          })
+        );
+      });
+    },
+    getURL: async function (filePath) {
+      return await UsefulScriptGlobalPageContext.Extension.sendToContentScript(
+        "getURL",
+        filePath
+      );
+    },
+  },
   DOM: {
     deleteElements(selector, willReRun) {
-      UsefulScriptGlobalWebpageContext.onElementsVisible(
+      UsefulScriptGlobalPageContext.onElementsVisible(
         selector,
         (nodes) => {
           [].forEach.call(nodes, function (node) {
@@ -18,7 +43,7 @@ const UsefulScriptGlobalWebpageContext = {
 
     waitForElements(selector) {
       return new Promise((resolve, reject) => {
-        UsefulScriptGlobalWebpageContext.onElementsVisible(
+        UsefulScriptGlobalPageContext.onElementsVisible(
           selector,
           resolve,
           false
@@ -71,6 +96,14 @@ const UsefulScriptGlobalWebpageContext = {
       else css.innerText = code;
       document.head.appendChild(css);
     },
+
+    injectCssFile(filePath) {
+      var css = document.createElement("link");
+      css.setAttribute("rel", "stylesheet");
+      css.setAttribute("type", "text/css");
+      css.setAttribute("href", filePath);
+      document.head.appendChild(css);
+    },
   },
   Facebook: {
     getUserAvatarFromUid(uid) {
@@ -85,7 +118,7 @@ const UsefulScriptGlobalWebpageContext = {
     },
   },
 };
-window.UsefulScriptGlobalWebpageContext = UsefulScriptGlobalWebpageContext;
+window.UsefulScriptGlobalPageContext = UsefulScriptGlobalPageContext;
 
 // Chứa các hàm hỗ trợ việc hack web :))
 const UsefulScriptsUtils = {

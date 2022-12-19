@@ -98,6 +98,7 @@ const tabs = [
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
       s.fb_invisible_message,
+      s.fb_moreReactionStory,
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.fb_downloadWatchingVideo,
       s.fb_storySaver,
