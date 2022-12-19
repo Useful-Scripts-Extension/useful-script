@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-computer-mouse"></i>`,
+  icon: `<i class="fa-solid fa-computer-mouse fa-lg"></i>`,
   name: {
     en: "Re-Enable context menu (right click)",
     vi: "Bật lại menu chuột phải",

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-laptop-code"></i>`,
+  icon: `<i class="fa-solid fa-laptop-code fa-lg"></i>`,
   name: {
     en: "View source code of selected area",
     vi: "Xem mã nguồn của phần bôi đen",

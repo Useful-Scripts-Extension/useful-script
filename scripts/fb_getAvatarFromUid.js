@@ -2,7 +2,7 @@ import { downloadData, showLoading } from "./helpers/utils.js";
 import { AccessToken } from "./helpers/constants.js";
 
 export default {
-  icon: '<i class="fa-solid fa-user"></i>',
+  icon: '<i class="fa-solid fa-user fa-lg"></i>',
   name: {
     en: "Get avatar from fb user id",
     vi: "Tải avatar từ fb user id",

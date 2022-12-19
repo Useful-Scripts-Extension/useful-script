@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAG (business_locations)",
     vi: "Lấy fb token EAAG (business_locations)",
@@ -10,7 +10,7 @@ export default {
     en: "Get facebook token EAAG from business.facebook.com",
     vi: "Lấy facebook token EAAG từ business.facebook.com",
   },
-  
+
   onClickExtension: function () {
     // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 

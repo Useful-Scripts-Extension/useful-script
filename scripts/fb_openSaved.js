@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-bookmark"></i>',
+  icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
   name: {
     en: "Open my facebook saved",
     vi: "Mở trang facebook saved",

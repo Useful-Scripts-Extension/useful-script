@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-cookie-bite"></i>`,
+  icon: `<i class="fa-solid fa-cookie-bite fa-lg"></i>`,
   name: {
     en: "Remove cookies",
     vi: "Xoá Cookies",

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAB (instagram)",
     vi: "Lấy fb token EAAB (instagram)",
@@ -8,7 +8,7 @@ export default {
     en: "Get facebook access token from www.facebook.com",
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
-    whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     try {

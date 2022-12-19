@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-comment-slash"></i>',
+  icon: '<i class="fa-solid fa-comment-slash fa-lg"></i>',
   name: {
     en: "Invisible facebook  message",
     vi: "Tin nhắn tàng hình facebook",

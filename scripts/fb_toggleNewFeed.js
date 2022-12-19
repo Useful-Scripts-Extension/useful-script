@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-eye-slash"></i>',
+  icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
   name: {
     en: "Hide Newfeed facebook",
     vi: "Ẩn Newfeed facebook",

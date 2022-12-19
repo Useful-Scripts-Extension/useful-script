@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAB (campaigns)",
     vi: "Lấy fb token EAAB (campaigns)",

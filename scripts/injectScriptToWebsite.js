@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-virus"></i>',
+  icon: '<i class="fa-solid fa-virus fa-lg"></i>',
   name: {
     en: "Inject script to website",
     vi: "Nhúng script vào trang web",

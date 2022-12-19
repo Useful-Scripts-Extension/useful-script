@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-css3"></i>`,
+  icon: `<i class="fa-brands fa-css3 fa-lg"></i>`,
   name: {
     en: "CSS selector viewer",
     vi: "Trình kiểm tra css cục bộ",

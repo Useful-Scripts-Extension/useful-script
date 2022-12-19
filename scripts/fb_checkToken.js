@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-regular fa-square-check"></i>`,
+  icon: `<i class="fa-regular fa-square-check fa-lg"></i>`,
   name: {
     en: "Check fb access token",
     vi: "Kiểm tra fb access token",

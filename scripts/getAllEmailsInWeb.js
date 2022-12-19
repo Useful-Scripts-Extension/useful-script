@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-at"></i>`,
+  icon: `<i class="fa-solid fa-at fa-lg"></i>`,
   name: {
     en: "Extract all Emails from website",
     vi: "Trích xuất mọi emails từ trang web",
@@ -8,7 +8,7 @@ export default {
     en: "Extracts all emails and displays them in a popup iFrame (enable popups!)",
     vi: "Trích xuất tất cả emails trong web và hiện trong popup mới",
   },
-    
+
   onClick: function () {
     // source code from: https://bookmarklet.vercel.app/
 

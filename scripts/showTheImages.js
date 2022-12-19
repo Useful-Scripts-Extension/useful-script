@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-regular fa-image"></i>`,
+  icon: `<i class="fa-regular fa-image fa-lg"></i>`,
   name: {
     en: "Show all images in new frame",
     vi: "Hiển thị mọi hình ảnh trong khung mới",
@@ -8,7 +8,7 @@ export default {
     en: "Will even show hidden images as well as pulling them out of a slider/rotator.",
     vi: "Sẽ thấy đươc ảnh bị ẩn, dễ dàng chuột phải để tải về",
   },
-  
+
   onClick: function () {
     // source code from https://bookmarklet.vercel.app/
 

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token (locmai)",
     vi: "Lấy fb token (locmai)",
@@ -8,7 +8,7 @@ export default {
     en: "Get facebook token using username/password",
     vi: "Lấy facebook token sử dụng username/password",
   },
-    
+
   onClickExtension: function () {
     // https://github.com/locmai0808/Facebook-Access-Token
 

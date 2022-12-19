@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-css3-alt"></i>`,
+  icon: `<i class="fa-brands fa-css3-alt fa-lg"></i>`,
   name: {
     en: "View stylesheet used",
     vi: "Xem tất cả stylesheet",

@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-film"></i>',
+  icon: '<i class="fa-solid fa-film fa-lg"></i>',
   name: {
     en: "Show all videos in website",
     vi: "Hiển thị mọi video có trong web",

@@ -1,7 +1,7 @@
 import fb_storySaver from "./fb_storySaver.js";
 
 export default {
-  icon: '<i class="fa-regular fa-message"></i>',
+  icon: '<i class="fa-regular fa-message fa-lg"></i>',
   name: {
     en: "Download facebook comment video",
     vi: "Tải video trong comment facebook",
@@ -10,7 +10,7 @@ export default {
     en: "Download video in facebook comment that you are watching",
     vi: "Tải video trong bình luận facebook bạn đang xem",
   },
-  
+
   onClick: fb_storySaver.onClick,
 };
 

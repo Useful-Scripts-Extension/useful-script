@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-bookmark"></i>',
+  icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
   name: {
     en: "Export bookmarks to file",
     vi: "Xuất bookmarks ra file",

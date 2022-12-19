@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-maximize"></i>`,
+  icon: `<i class="fa-solid fa-maximize fa-lg"></i>`,
   name: {
     en: "Get window size",
     vi: "Lấy kích thước trang web",

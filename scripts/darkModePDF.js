@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-circle-half-stroke"></i>`,
+  icon: `<i class="fa-solid fa-circle-half-stroke fa-lg"></i>`,
   name: {
     en: "Darkmode for pdf",
     vi: "Chế độ tối cho PDF",

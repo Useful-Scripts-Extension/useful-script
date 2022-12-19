@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-barcode"></i>`,
+  icon: `<i class="fa-solid fa-barcode fa-lg"></i>`,
   name: {
     en: "URL to QR Code",
     vi: "Lấy QRCode cho web hiện tại",

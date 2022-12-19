@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-regular fa-id-card"></i>`,
+  icon: `<i class="fa-regular fa-id-card fa-lg"></i>`,
   name: {
     en: "Get fb User ID",
     vi: "Lấy fb User ID",
@@ -8,7 +8,7 @@ export default {
     en: "Get id of user in facebook website",
     vi: "Lấy id của user trong trang facebook hiện tại",
   },
-    whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClick: function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-cookie"></i>`,
+  icon: `<i class="fa-solid fa-cookie fa-lg"></i>`,
   name: {
     en: "View cookies",
     vi: "Xem cookies",

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-image"></i>`,
+  icon: `<i class="fa-solid fa-image fa-lg"></i>`,
   name: {
     en: "View all images in web",
     vi: "Xem mọi hình ảnh có trong website",

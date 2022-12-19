@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-regular fa-square-plus"></i>',
+  icon: '<i class="fa-regular fa-square-plus fa-lg"></i>',
   name: {
     en: "Google shortcuts",
     vi: "Google phím tắt",
@@ -8,7 +8,7 @@ export default {
     en: "Create new google doc/sheet/slide/form/site/keep/calendar",
     vi: "Tạo mới google doc/sheet/slide/form/site/keep/calendar",
   },
-    
+
   onClick: function () {
     let urls = [
       ["Google Doc", "https://doc.new"],
