@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-images"></i>`,
+  icon: `<i class="fa-solid fa-images fa-lg"></i>`,
   name: {
     en: "Get fb Album ID",
     vi: "Lấy fb Album ID",

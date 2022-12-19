@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-regular fa-copy"></i>`,
+  icon: `<i class="fa-regular fa-copy fa-lg"></i>`,
   name: {
     en: "Enable/Disable allow copy",
     vi: "Bật/Tắt cho phép sao chép",

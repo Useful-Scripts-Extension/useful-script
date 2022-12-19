@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-backward-fast"></i>`,
+  icon: `<i class="fa-solid fa-backward-fast fa-lg"></i>`,
   name: {
     en: "Go to first commit",
     vi: "Đi tới commit đầu tiên",
@@ -9,7 +9,7 @@ export default {
     vi: "Đi tới commit đầu tiên của repo github",
   },
 
-    whiteList: ["https://github.com/*"],
+  whiteList: ["https://github.com/*"],
 
   onClick: function () {
     // Source: https://github.com/FarhadG/init

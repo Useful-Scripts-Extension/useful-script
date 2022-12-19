@@ -1,7 +1,7 @@
 import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-solid fa-file-export"></i>',
+  icon: '<i class="fa-solid fa-file-export fa-lg"></i>',
   name: {
     en: "Export saved items from facebook",
     vi: "Xuất mục đã lưu trên facebook",

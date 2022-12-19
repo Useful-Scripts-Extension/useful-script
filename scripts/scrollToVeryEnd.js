@@ -1,7 +1,7 @@
 import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-angles-down"></i>`,
+  icon: `<i class="fa-solid fa-angles-down fa-lg"></i>`,
   name: {
     en: "Scroll to very end",
     vi: "Cuộn trang xuống cuối cùng",

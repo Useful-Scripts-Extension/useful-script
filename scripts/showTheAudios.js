@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-music"></i>`,
+  icon: `<i class="fa-solid fa-music fa-lg"></i>`,
   name: {
     en: "Show all audio in website",
     vi: "Hiển thị mọi audio trong trang web",
@@ -8,7 +8,7 @@ export default {
     en: "Will display all audio in website, easy to download/get link.",
     vi: "Hiển thị tất cả tag audio/âm thanh trong trang web, giúp dễ dàng tải xuống/lấy link.",
   },
-  
+
   onClick: function () {
     let audios = Array.from(document.querySelectorAll("audio") || []);
     audios = audios?.filter((_) => !!_.src);

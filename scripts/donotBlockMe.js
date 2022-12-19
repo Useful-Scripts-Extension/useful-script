@@ -1,7 +1,7 @@
 import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-solid fa-shield-halved"></i>',
+  icon: '<i class="fa-solid fa-shield-halved fa-lg"></i>',
   name: {
     en: "View blocked websites",
     vi: "Truy cập các trang web bị chặn",

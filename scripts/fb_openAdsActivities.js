@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-brands fa-adversal"></i>',
+  icon: '<i class="fa-brands fa-adversal fa-lg"></i>',
   name: {
     en: "View your ads activities",
     vi: "Xem các quảng cáo fb bạn đã xem",

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-brush"></i>`,
+  icon: `<i class="fa-solid fa-brush fa-lg"></i>`,
   name: {
     en: "Highlight internal/external link",
     vi: "Tô màu cho link",

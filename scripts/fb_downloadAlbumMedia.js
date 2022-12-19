@@ -1,7 +1,7 @@
 import { downloadData, showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-regular fa-images"></i>',
+  icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
     en: "Download album facebook",
     vi: "Tải album facebook",

@@ -5,7 +5,7 @@ import {
 } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-solid fa-video"></i>',
+  icon: '<i class="fa-solid fa-video fa-lg"></i>',
   name: {
     en: "Download fb video/reel/watch from url",
     vi: "Tải video/reel/watch fb từ url",
@@ -14,7 +14,7 @@ export default {
     en: "Download facebook video/reel/watch",
     vi: "Tải facebook video/reel/watch",
   },
-    whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://www.facebook.com/*"],
 
   onClickExtension: async function () {
     let tab = await getCurrentTab();

@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-clock-rotate-left"></i>',
+  icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',
   name: {
     en: "View your memories on facebook",
     vi: "Xem kỷ niệm của bạn trên facebook",

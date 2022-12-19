@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-regular fa-comment-dots"></i>',
+  icon: '<i class="fa-regular fa-comment-dots fa-xl fa-lg"></i>',
   name: {
     en: "Facebook - Who is typing to you?",
     vi: "Facebook - Ai đang nhắn cho bạn?",
@@ -12,7 +12,7 @@ export default {
 
   onDocumentStart: () => {
     function notifyTypingEvent() {
-        
+      // TODO add notification UI
     }
     function saveTyingEvent(uid, typing) {
       let key = "ufs-fb_whoIsTyping";

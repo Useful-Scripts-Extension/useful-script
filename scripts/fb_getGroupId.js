@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-people-group"></i>',
+  icon: '<i class="fa-solid fa-people-group fa-lg"></i>',
   name: {
     en: "Get fb Group ID",
     vi: "Lấy fb Group ID",

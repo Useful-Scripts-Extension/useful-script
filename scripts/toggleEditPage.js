@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-pen-nib"></i>`,
+  icon: `<i class="fa-solid fa-pen-nib fa-lg"></i>`,
   name: {
     en: "Toggle edit page",
     vi: "Bật/tắt chế độ chỉnh sửa website",

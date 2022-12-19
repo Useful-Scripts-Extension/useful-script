@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-arrow-down-z-a"></i>`,
+  icon: `<i class="fa-solid fa-arrow-down-z-a fa-lg"></i>`,
   name: {
     en: "Add sort to table",
     vi: "Thêm sắp xếp cho bảng",
