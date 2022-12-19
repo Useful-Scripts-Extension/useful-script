@@ -10,6 +10,7 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
+  // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
   // Source https://github.com/whoant/react-story-facebook
   onDocumentStart: async () => {
     // const ID_USER = require('RelayAPIConfigDefaults').actorID;
@@ -208,4 +209,9 @@ export default {
     );
     UsefulScriptGlobalPageContext.DOM.injectCssFile(cssFile);
   },
+
+  onClickExtension: () =>
+    window.open(
+      "https://www.facebook.com/groups/j2team.community/posts/1769666783365434"
+    ),
 };

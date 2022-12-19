@@ -179,4 +179,9 @@ export default {
       );
     })();
   },
+
+  onClickExtension: () =>
+    window.open(
+      "https://www.facebook.com/groups/j2team.community/posts/1607769529555161/"
+    ),
 };

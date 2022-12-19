@@ -8,17 +8,11 @@ export default {
     en: "View VIP document on Studocu.com, bypass preview popup / reveal blurred content.",
     vi: "Xem tài liệu VIP trên Studocu.com, loại bỏ popup chặn xem trước, loại bỏ hiệu ứng làm mờ.",
   },
-    onDocumentIdle: () => {
-    let style = document.createElement("style");
-    style.textContent = `
-    .page-content {
-        filter: none !important;
-    }
-    ._de9e5fdb76af,
-    ._869f7c361ca9,
-    span.l {
-        display: none !important;
-    }`;
-    document.body.appendChild(style);
+  onDocumentIdle: () => {
+    UsefulScriptGlobalPageContext.DOM.injectCssFile(
+      UsefulScriptGlobalPageContext.Extension.getURL(
+        "scripts/studocu_bypassPreview.css"
+      )
+    );
   },
 };

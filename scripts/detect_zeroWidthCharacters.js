@@ -74,35 +74,15 @@ export default {
       }, 10);
     })();
 
-    UsefulScriptGlobalPageContext.DOM.injectCssCode(`
-        .zero-width-characters {
-            background-color: rgba(255, 0, 0, 0.2) !important;
-            position: relative;
-        }
-        .zero-width-characters:after {
-            background: #ffb2b2;
-            bottom: -14px;
-            color: #000;
-            content: 'Warning: Contains zero-width characters.';
-            float: right;
-            font-family: monospace;
-            font-size: 10px;
-            font-weight: bold;
-            line-height: 1;
-            padding: 2px 4px;
-            position: absolute;
-            right: 0;
-        }
-        .zero-width-character:after {
-            color: red;
-            content: '\u25CF';
-        }`);
-  },
-
-  onClick: () => {
-    prompt(
-      "Đọc bài viết bên dưới để hiểu rõ hơn chức năng này",
-      "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM"
+    UsefulScriptGlobalPageContext.DOM.injectCssFile(
+      UsefulScriptGlobalPageContext.Extension.getURL(
+        "scripts/detect_zeroWidthCharacters.css"
+      )
     );
   },
+
+  onClickExtension: () =>
+    window.open(
+      "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM"
+    ),
 };
