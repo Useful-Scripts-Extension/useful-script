@@ -17,11 +17,14 @@ export default {
 
     (async () => {
       try {
+        // crawl emoji from https://emojipedia.org
+        // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
         let url = await UsefulScriptGlobalPageContext.Extension.getURL(
           "scripts/fb_moreReactionStory.json"
         );
         const emojiJson = await fetch(url);
         const EMOJI_LIST = await emojiJson.json();
+
         loadModal(EMOJI_LIST);
       } catch (e) {
         console.error(e);
@@ -34,57 +37,96 @@ export default {
 
       const timeoutCheckStoriesFooter = setInterval(() => {
         if (!window.location.href.includes("facebook.com/stories/")) return;
-        if (!!document.querySelector(".btn-react")) return;
+        if (!!document.querySelector(".ufs-more-react-story")) return;
+
+        /* HTML template
+        <div class="ufs-more-react-story">
+            <button class="btn-react">More</button>
+            <div class="emoji-container">
+                <div class="emoji-tab-container">
+                    <div class="emoji-tab">😀</div>
+                    ...
+                </div>
+                <ul class="emoji-list-container">
+                    <li class="emoji">😀</li>
+                    ...
+                </ul>
+            </div>
+        </div>
+        */
+
+        const container = document.createElement("div");
+        container.className = "ufs-more-react-story";
 
         const btnReact = document.createElement("div");
         btnReact.textContent = "MORE";
-        btnReact.setAttribute("class", "btn-react");
+        btnReact.className = "btn-react";
+        const emojiContainer = document.createElement("div");
+        emojiContainer.className = "emoji-container";
+        const emojiTabContener = document.createElement("div");
+        emojiTabContener.className = "emoji-tab-container";
+        const emojiListContainer = document.createElement("div");
+        emojiListContainer.className = "emoji-list-container";
 
-        const emojiGroup = document.createElement("ul");
-        emojiGroup.setAttribute("class", "emoji-group");
+        let allTabs = [];
+        Object.keys(EMOJI_LIST).map((key) => {
+          const emojiTab = document.createElement("div");
+          emojiTab.className = "emoji-tab";
+          emojiTab.textContent = key;
+          allTabs.push(emojiTab);
 
-        btnReact.onclick = function () {
-          emojiGroup.classList.toggle("emoji-group--show");
-        };
+          emojiTab.onclick = () => {
+            allTabs.forEach((tab) => tab.classList.remove("active"));
+            emojiTab.classList.add("active");
+            emojiListContainer.innerHTML = "";
 
-        EMOJI_LIST.forEach((emoji) => {
-          const emojiLi = document.createElement("li");
-          emojiLi.setAttribute("class", "emoji");
-          emojiLi.setAttribute("value", emoji.value);
-          emojiLi.textContent = emoji.value;
-          emojiLi.onclick = async function () {
-            const storyId = getStoryId();
-            try {
-              emojiLi.classList.add("loading");
-              await reactStory(user_id, fb_dtsg, storyId, emoji.value);
-              emojiLi.classList.remove("loading");
-              addFloatingEmoji(emoji, emojiLi);
-            } catch (e) {
-              console.error(e);
-            }
+            const emojiList = EMOJI_LIST[key].split(",");
+            emojiList.forEach((emoji) => {
+              const emojiLi = document.createElement("li");
+              emojiLi.className = "emoji";
+              emojiLi.textContent = emoji;
+              emojiLi.setAttribute("value", emoji);
+              emojiLi.onclick = async function () {
+                const storyId = getStoryId();
+                try {
+                  emojiLi.classList.add("loading");
+                  await reactStory(user_id, fb_dtsg, storyId, emoji);
+                  emojiLi.classList.remove("loading");
+                  addFloatingEmoji(emoji, emojiLi);
+                } catch (e) {
+                  console.error(e);
+                }
+              };
+
+              emojiListContainer.appendChild(emojiLi);
+            });
           };
 
-          emojiGroup.appendChild(emojiLi);
+          emojiTabContener.appendChild(emojiTab);
         });
 
-        const reactContainer = document.createElement("div");
-        reactContainer.setAttribute("class", "react-container");
-        reactContainer.appendChild(btnReact);
-        reactContainer.appendChild(emojiGroup);
+        btnReact.onclick = function () {
+          emojiContainer.classList.toggle("show");
+        };
+
+        emojiContainer.appendChild(emojiTabContener);
+        emojiContainer.appendChild(emojiListContainer);
+        container.appendChild(btnReact);
+        container.appendChild(emojiContainer);
 
         const storiesFooter = document.getElementsByClassName(
           "x11lhmoz x78zum5 x1q0g3np xsdox4t x10l6tqk xtzzx4i xwa60dl xl56j7k xtuxyv6"
         );
         if (storiesFooter.length > 0) {
           //   clearInterval(timeoutCheckStoriesFooter);
-          storiesFooter[storiesFooter.length - 1].appendChild(reactContainer);
+          storiesFooter[storiesFooter.length - 1].appendChild(container);
         }
       }, 1e3);
     }
     function addFloatingEmoji(emoji, ele) {
       let floatingEmoji = document.createElement("div");
       floatingEmoji.setAttribute("class", "floating-emoji");
-      floatingEmoji.textContent = emoji.value;
+      floatingEmoji.textContent = emoji;
 
       let { top, left } = ele.getBoundingClientRect();
       floatingEmoji.style.position = "fixed";

@@ -1,27 +1,18 @@
-::-webkit-scrollbar {
-  width: 10px;
+body {
+  background-color: #333;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.react-container {
+.ufs-more-react-story {
   position: relative;
   user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-react {
-  height: 45px;
-  width: 45px;
+  height: 40px;
+  width: 40px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -29,33 +20,72 @@
   border-radius: 50%;
   font-weight: bold;
   cursor: pointer;
+  transition: .2s all;
 }
 
-.emoji-group {
+.btn-react:hover {
+  transform: scale(1.3);
+}
+
+.emoji-container {
   position: absolute;
-  bottom: 60px;
-  height: 200px;
+  bottom: -600px;
+  height: 300px;
   right: 0;
-  width: 250px;
-  padding: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.emoji-container.show {
+  bottom: 60px;
+}
+
+.emoji-tab-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 50px;
+  white-space: nowrap;
+  /* border-bottom: 1px dashed #999; */
+}
+
+.emoji-tab {
+  font-size: 30px;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.1s;
+}
+
+.emoji-tab:hover {
+  background-color: cadetblue;
+}
+
+.emoji-tab.active {
+  background-color: cadetblue;
+}
+
+.emoji-list-container {
+  max-height: calc(100% - 50px);
+  width: 100%;
   list-style: none;
   margin: 0;
-  display: none;
+  padding: 0;
+  display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   overflow-y: scroll;
-  background-color: #fff;
-  border-radius: 10px;
+  overflow-x: hidden;
 }
 
-
-.emoji-group--show {
-  display: flex;
+.emoji-list-container--show {
+  bottom: 60px;
+  opacity: 1;
 }
 
 .emoji {
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,18 +109,47 @@
 .floating-emoji {
   animation: bubble 2s ease-out;
   pointer-events: none;
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
   font-size: 30px;
   transition: all 0.3s;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes bubble {
-  0% { transform: translateY(0px); opacity: 1; }
-  100% { transform: translateY(-200px); opacity: 0.1; }
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-200px);
+    opacity: 0.1;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aeaeae;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #939393;
 }
