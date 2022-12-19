@@ -1,34 +1,4 @@
-// https://stackoverflow.com/a/70949953
-// https://stackoverflow.com/a/9517879
-// https://stackoverflow.com/a/2920207/11898496
-
 (async () => {
-  // https://stackoverflow.com/a/8578840/11898496
-  function injectScript(
-    src,
-    onload,
-    type = "text/javascript",
-    async = false,
-    defer = false
-  ) {
-    let s = document.createElement("script");
-    s.type = type;
-    s.async = async;
-    s.defer = defer;
-    s.addEventListener("load", () => {
-      console.log("Useful-scripts injected " + src);
-      onload?.();
-      s.remove();
-    });
-    s.src = src;
-    let head =
-      document.head ||
-      document.getElementsByTagName("head")[0] ||
-      document.documentElement;
-    head.insertBefore(s, head.firstChild);
-    // (document.head || document.documentElement).prepend(s);
-  }
-
   injectScript(
     chrome.runtime.getURL(
       "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
@@ -81,3 +51,33 @@
     console.log("ERROR: ", e);
   }
 })();
+
+// https://stackoverflow.com/a/70949953
+// https://stackoverflow.com/a/9517879
+// https://stackoverflow.com/a/2920207/11898496
+
+// https://stackoverflow.com/a/8578840/11898496
+function injectScript(
+  src,
+  onload,
+  type = "text/javascript",
+  async = false,
+  defer = false
+) {
+  let s = document.createElement("script");
+  s.type = type;
+  s.async = async;
+  s.defer = defer;
+  s.addEventListener("load", () => {
+    console.log("Useful-scripts injected " + src);
+    onload?.();
+    s.remove();
+  });
+  s.src = src;
+  let head =
+    document.head ||
+    document.getElementsByTagName("head")[0] ||
+    document.documentElement;
+  head.insertBefore(s, head.firstChild);
+  // (document.head || document.documentElement).prepend(s);
+}
