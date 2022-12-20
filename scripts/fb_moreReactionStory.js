@@ -127,7 +127,7 @@ export default {
     }
     function addFloatingEmoji(emoji, ele) {
       let floatingEmoji = document.createElement("div");
-      floatingEmoji.setAttribute("class", "floating-emoji");
+      floatingEmoji.className = "floating-emoji always-enable-animations";
       floatingEmoji.textContent = emoji;
 
       let { top, left } = ele.getBoundingClientRect();

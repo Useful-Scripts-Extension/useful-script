@@ -107,7 +107,7 @@ body {
 }
 
 .floating-emoji {
-  animation: bubble 2s ease-out;
+  animation: bubble 2s ease-out !important;
   pointer-events: none;
   height: 70px;
   width: 70px;
