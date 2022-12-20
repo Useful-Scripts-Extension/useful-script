@@ -11,74 +11,71 @@ export default {
 
   // Code extracted from https://chrome.google.com/webstore/detail/detect-zero-width-charact/icibkhaehdofmcbfjfpppogioidkilib
   onDocumentIdle: () => {
-    (function () {
-      var unicodeCode;
-      const zeroWidthCharacterCodes = [8203, 8204, 8205, 8288];
+    var unicodeCode;
+    const zeroWidthCharacterCodes = [8203, 8204, 8205, 8288];
 
-      let elementsWithZWCC = [];
-      const highlightCharacters = function (element) {
-        const zeroWidthCharacters = String.fromCodePoint(
-          ...zeroWidthCharacterCodes
-        );
-        const regExp = new RegExp(`([${zeroWidthCharacters}])`, "g");
-        element.innerHTML = element.innerHTML.replace(
-          regExp,
-          '$1<span class="zero-width-character"></span>'
-        );
-      };
-      // From: https://jsfiddle.net/tim333/np874wae/13/
-      const checkElement = function (element) {
-        const text = textWithoutChildren(element);
-        [...text].forEach(function (character) {
-          unicodeCode = character.codePointAt(0);
-          if (
-            zeroWidthCharacterCodes.includes(unicodeCode) &&
-            !elementsWithZWCC.includes(element)
-          ) {
-            elementsWithZWCC.push(element);
-          }
-        });
-      };
-      // From: https://stackoverflow.com/a/9340862/535363
-      const textWithoutChildren = function (element) {
-        let child = element.firstChild,
-          texts = [];
-        while (child) {
-          if (child.nodeType == 3) {
-            texts.push(child.data);
-          }
-          child = child.nextSibling;
+    let elementsWithZWCC = [];
+    const highlightCharacters = function (element) {
+      const zeroWidthCharacters = String.fromCodePoint(
+        ...zeroWidthCharacterCodes
+      );
+      const regExp = new RegExp(`([${zeroWidthCharacters}])`, "g");
+      element.innerHTML = element.innerHTML.replace(
+        regExp,
+        '$1<span class="zero-width-character"></span>'
+      );
+    };
+    // From: https://jsfiddle.net/tim333/np874wae/13/
+    const checkElement = function (element) {
+      const text = textWithoutChildren(element);
+      [...text].forEach(function (character) {
+        unicodeCode = character.codePointAt(0);
+        if (
+          zeroWidthCharacterCodes.includes(unicodeCode) &&
+          !elementsWithZWCC.includes(element)
+        ) {
+          elementsWithZWCC.push(element);
         }
-        return texts.join("");
-      };
-      const checkPage = function () {
-        const allElements = document.getElementsByTagName("*");
-        [...allElements].forEach(checkElement);
-        elementsWithZWCC.forEach(function (element) {
-          element.classList.add("zero-width-characters");
-          highlightCharacters(element);
-        });
-      };
+      });
+    };
+    // From: https://stackoverflow.com/a/9340862/535363
+    const textWithoutChildren = function (element) {
+      let child = element.firstChild,
+        texts = [];
+      while (child) {
+        if (child.nodeType == 3) {
+          texts.push(child.data);
+        }
+        child = child.nextSibling;
+      }
+      return texts.join("");
+    };
+    const checkPage = function () {
+      const allElements = document.getElementsByTagName("*");
+      [...allElements].forEach(checkElement);
+      console.log(elementsWithZWCC);
+      elementsWithZWCC.forEach(function (element) {
+        element.classList.add("zero-width-characters");
+        highlightCharacters(element);
+      });
+    };
 
-      var readyStateCheckInterval = setInterval(function () {
-        if (document.readyState === "complete") {
-          clearInterval(readyStateCheckInterval);
-          // Check Page
-          checkPage();
-          // Check page again when any input field is changed
-          const inputs = document.querySelectorAll("input");
-          [...inputs].forEach(function (input) {
-            input.addEventListener("change", checkPage);
-          });
-        }
-      }, 10);
+    (async () => {
+      // inject css
+      UsefulScriptGlobalPageContext.DOM.injectCssFile(
+        await UsefulScriptGlobalPageContext.Extension.getURL(
+          "scripts/detect_zeroWidthCharacters.css"
+        )
+      );
+
+      // Check Page
+      checkPage();
+      // Check page again when any input field is changed
+      const inputs = document.querySelectorAll("input");
+      [...inputs].forEach(function (input) {
+        input.addEventListener("change", checkPage);
+      });
     })();
-
-    UsefulScriptGlobalPageContext.DOM.injectCssFile(
-      UsefulScriptGlobalPageContext.Extension.getURL(
-        "scripts/detect_zeroWidthCharacters.css"
-      )
-    );
   },
 
   onClickExtension: () =>

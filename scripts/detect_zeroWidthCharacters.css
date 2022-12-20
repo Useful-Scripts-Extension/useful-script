@@ -20,5 +20,5 @@
 
 .zero-width-character:after {
     color: red;
-    content: '\u25CF';
+    content: '\25CF';
 }
