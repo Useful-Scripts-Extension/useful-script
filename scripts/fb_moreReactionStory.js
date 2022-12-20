@@ -81,7 +81,7 @@ export default {
             const emojiList = EMOJI_LIST[key].split(" ");
             emojiList.forEach((emoji) => {
               const emojiLi = document.createElement("li");
-              emojiLi.className = "emoji";
+              emojiLi.className = "emoji always-enable-animations";
               emojiLi.textContent = emoji;
               emojiLi.setAttribute("value", emoji);
               emojiLi.onclick = async function () {
