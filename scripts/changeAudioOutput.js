@@ -1,105 +1,110 @@
 export default {
-  icon: "",
+  icon: '<i class="fa-solid fa-headphones fa-lg"></i>',
   name: {
-    en: "",
-    vi: "",
+    en: "Audio output switcher",
+    vi: "Thay đổi đầu ra âm thanh",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Pick a default audio output device, customizable for each browser tab.",
+    vi: "Thay đổi đầu ra âm thanh của trang web đang mở.\nMỗi tab có thể chọn đầu ra khác nhau (tai nghe/loa).",
   },
 
   // Fb Post: https://www.facebook.com/groups/j2team.community/posts/1362716140727169
   // Source: https://gist.github.com/monokaijs/44ef4bd0770f83272b83c038a2769c90
   onClick: async () => {
-    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    let key = "ufs-audio-output-switcher";
+    let exist = document.querySelector("#" + key);
+    if (exist) {
+      exist.style.display = "";
+      return;
+    }
+
+    if (
+      !confirm(
+        "Vui lòng cho phép truy cập audio/video để chức năng có thể chạy."
+      )
+    )
+      return;
+
+    function disableBtn(btn, disable = true) {
+      if (disable) {
+        btn.classList.add("disabled");
+        btn.disabled = true;
+      } else {
+        btn.classList.remove("disabled");
+        btn.disabled = false;
+      }
+    }
+
     let popupParent = document.createElement("div");
-    /* positioning for the dialog */
-    popupParent.style.width = "320px";
-    popupParent.style.height = "120px";
-    popupParent.style.position = "fixed";
-    popupParent.style.left = "50%";
-    popupParent.style.top = "50%";
-    popupParent.style.marginLeft = "-160px";
-    popupParent.style.marginTop = "-60px";
-    /* stylizing the dialog */
-    popupParent.style.backgroundColor = "#fff";
-    popupParent.style.border = "1px solid rgba(0, 0, 0, .08)";
-    popupParent.style.zIndex = "999999";
+    popupParent.id = key;
+    popupParent.className = "ufs-change-audio-output";
 
     /* navigation bar */
     let navbar = document.createElement("div");
-    navbar.style.width = "100%";
-    navbar.style.height = "28px";
-    navbar.style.backgroundColor = "rgba(0, 0, 0, .05)";
+    navbar.className = "navbar";
 
     let closeButton = document.createElement("button");
+    closeButton.className = "close-btn";
     closeButton.innerText = "Close";
-    closeButton.style.padding = "6px 8px";
-    closeButton.style.backgroundColor = "transparent";
-    closeButton.style.color = "black";
-    closeButton.style.position = "absolute";
-    closeButton.style.right = "0";
-    closeButton.style.top = "0";
-    closeButton.style.border = "none";
-
-    navbar.appendChild(closeButton);
-
     closeButton.onclick = function (e) {
-      popupParent.parentNode.removeChild(popupParent);
+      popupParent.style.display = "none";
     };
-    closeButton.onmouseover = function (e) {
-      e.target.style.backgroundColor = "#e74c3c";
-      e.target.style.color = "white";
-    };
-    closeButton.onmouseleave = function (e) {
-      e.target.style.backgroundColor = "transparent";
-      e.target.style.color = "black";
-    };
+    navbar.appendChild(closeButton);
 
     /* PLEASE DO NOT REMOVE CREDIT LINE */
     let popupTitle = document.createElement("div");
+    popupTitle.className = "title";
     popupTitle.innerHTML =
       "SoundSwitcher - by <a href='https://north.studio' target='_blank'>NorthStudio</a>";
-    popupTitle.style.fontSize = "12px";
-    popupTitle.style.position = "absolute";
-    popupTitle.style.left = "6px";
-    popupTitle.style.top = "8px";
     navbar.appendChild(popupTitle);
 
     let titleLink = popupTitle.querySelector("a");
-    titleLink.style.fontWeight = "500";
-    titleLink.style.textDecoration = "none";
+    titleLink.className = "title-link";
 
     let popupContent = document.createElement("div");
-    popupContent.style.height = "92px";
-    popupContent.style.display = "relative";
-    popupContent.style.width = "100%";
+    popupContent.className = "popup-content";
 
     let bottomArea = document.createElement("div");
-    bottomArea.style.position = "absolute";
-    bottomArea.style.left = "10px";
-    bottomArea.style.right = "10px";
-    bottomArea.style.bottom = "10px";
+    bottomArea.className = "bottom-area";
 
     let submitButton = document.createElement("button");
-    submitButton.style.backgroundColor = "#3498db";
-    submitButton.style.color = "#FFF";
-    submitButton.style.width = "100%";
-    submitButton.style.padding = "6px";
-    submitButton.style.border = "none";
-    submitButton.style.borderRadius = "3px";
-    submitButton.innerText = "Set Device";
+    submitButton.className = "submit-btn";
+    submitButton.innerText = "Waiting for permission...";
+    disableBtn(submitButton);
 
-    submitButton.onclick = function (e) {
-      document.querySelectorAll("audio,video").forEach((el) => {
-        el.setSinkId(deviceSelector.value);
-      });
+    submitButton.onclick = async function (e) {
+      if (submitButton.disabled) return;
+
+      submitButton.innerText = "Setting...";
+      disableBtn(submitButton);
+      for (let el of Array.from(document.querySelectorAll("audio,video"))) {
+        await el.setSinkId(deviceSelector.value);
+      }
+      submitButton.innerText = "Set Device";
+      disableBtn(submitButton, false);
     };
 
     bottomArea.appendChild(submitButton);
 
     let deviceSelector = document.createElement("select");
+    deviceSelector.className = "device-selector";
+
+    popupContent.appendChild(bottomArea);
+    popupParent.appendChild(navbar);
+    popupParent.appendChild(popupContent);
+    document.body.appendChild(popupParent);
+    UsefulScriptGlobalPageContext.DOM.injectCssFile(
+      await UsefulScriptGlobalPageContext.Extension.getURL(
+        "scripts/changeAudioOutput.css"
+      )
+    );
+
+    // ====================== Main ======================
+    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    submitButton.innerText = "Set Device";
+    disableBtn(submitButton, false);
+
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       devices = devices.filter((x) => x.kind === "audiooutput");
       devices.forEach((device) => {
@@ -110,15 +115,5 @@ export default {
       });
       popupContent.appendChild(deviceSelector);
     });
-
-    deviceSelector.style.margin = "10px";
-    deviceSelector.style.padding = "5px";
-    deviceSelector.style.width = "calc(100% - 20px)";
-
-    popupContent.appendChild(bottomArea);
-
-    popupParent.appendChild(navbar);
-    popupParent.appendChild(popupContent);
-    document.body.appendChild(popupParent);
   },
 };
