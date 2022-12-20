@@ -1,7 +1,3 @@
-body {
-  background-color: #333;
-}
-
 .ufs-more-react-story {
   position: relative;
   user-select: none;
@@ -36,6 +32,10 @@ body {
   border-radius: 10px;
   transition: all 0.3s;
   overflow: hidden;
+
+  font-family: "Roboto", sans-serif !important;
+  font-size: 2.5em !important;
+  max-width: 400px;
 }
 
 .emoji-container.show {
@@ -51,10 +51,10 @@ body {
 }
 
 .emoji-tab {
-  font-size: 30px;
   cursor: pointer;
   display: inline-block;
   transition: all 0.1s;
+  padding: 5px;
 }
 
 .emoji-tab:hover {
@@ -84,14 +84,12 @@ body {
 }
 
 .emoji {
-  height: 45px;
-  width: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
   cursor: pointer;
   transition: all 0.15s;
+  padding: 3px;
 }
 
 .emoji.loading {
@@ -127,12 +125,12 @@ body {
 
 @keyframes bubble {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(2);
     opacity: 1;
   }
 
   100% {
-    transform: translateY(-200px);
+    transform: translateY(-200px) scale(1);
     opacity: 0.1;
   }
 }
