@@ -8,14 +8,11 @@ export default {
     en: "Detects zero-width characters, highlights the characters and containing DOM element.\n\nClick for more detail.",
     vi: "Phát hiện ký tự ẩn (zero-width) trong văn bản cho trình duyệt, e-mail client, trình soạn thảo văn bản,...\n\nBấm để xem thêm chi tiết.",
   },
+  infoLink:
+    "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM",
 
   onDocumentIdle: detectZeroWidthCharacters,
   onClick: detectZeroWidthCharacters,
-
-  // onClickExtension: () =>
-  //   window.open(
-  //     "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM"
-  //   ),
 };
 
 // Code extracted from https://chrome.google.com/webstore/detail/detect-zero-width-charact/icibkhaehdofmcbfjfpppogioidkilib

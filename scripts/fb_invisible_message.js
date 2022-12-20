@@ -8,6 +8,8 @@ export default {
     en: "Add the > character before writing a message to send hidden messages.\n\nYour friends needs to install this extension and enable it to view hidden messages.",
     vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình.\n\nChỉ xem được tin nhắn tàng hình khi cài extension và bật chức năng này.",
   },
+  infoLink: "https://www.facebook.com/groups/j2team.community/posts/1607769529555161/",
+
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentIdle: () => {
@@ -179,9 +181,4 @@ export default {
       );
     })();
   },
-
-  onClickExtension: () =>
-    window.open(
-      "https://www.facebook.com/groups/j2team.community/posts/1607769529555161/"
-    ),
 };

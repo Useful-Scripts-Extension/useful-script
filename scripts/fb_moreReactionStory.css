@@ -7,8 +7,9 @@
 }
 
 .btn-react {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
+  padding: 4px;
   background-color: #fff;
   display: flex;
   justify-content: center;
@@ -54,7 +55,6 @@
   cursor: pointer;
   display: inline-block;
   transition: all 0.1s;
-  padding: 5px;
 }
 
 .emoji-tab:hover {
@@ -89,7 +89,6 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.15s;
-  padding: 3px;
 }
 
 .emoji.loading {

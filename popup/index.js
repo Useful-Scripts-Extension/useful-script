@@ -229,6 +229,22 @@ function createScriptButton(script, isFavorite = false) {
   title.innerHTML = t(script.name);
   button.appendChild(title);
 
+  // what this? button
+  if (typeof script.infoLink === "string") {
+    const infoBtn = document.createElement("i");
+    infoBtn.className = "fa-regular fa-circle-question";
+    infoBtn.title = t({
+      en: "View info/demo",
+      vi: "Xem giới thiệu/demo",
+    });
+    infoBtn.onclick = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      window.open(script.infoLink);
+    };
+    button.appendChild(infoBtn);
+  }
+
   // add to favorite button
   const addFavoriteBtn = document.createElement("i");
   addFavoriteBtn.className = isFavorite
