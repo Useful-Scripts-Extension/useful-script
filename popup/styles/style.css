@@ -471,6 +471,37 @@ a:hover {
     max-height: 95%;
 }
 
+/* --------- border fancy --------- */
+.border-fancy:after {
+    content: "";
+    background: linear-gradient(45deg, red, #ff9a00 10%, #d0de21 20%, #4fdc4a 30%, #3fdad8 40%, #2fc9e2 50%, #1c7fee 60%, #5f15f2 70%, #ba0cf8 80%, #fb07d9 90%, red) repeat 0% 0%/300% 100%;
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+    -webkit-transform: translateZ(-1px);
+    transform: translateZ(-1px);
+    -webkit-animation: border-fancy 6s linear infinite;
+    animation: border-fancy 6s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes border-fancy {
+    0% {
+        background-position: 0 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    to {
+        background-position: 0 50%
+    }
+}
+
 /* --------- scrollbar --------- */
 /* width */
 ::-webkit-scrollbar {
