@@ -1,9 +1,9 @@
-.zero-width-characters {
+.ufs-zero-width-characters-container {
     background-color: rgba(255, 0, 0, 0.2) !important;
     position: relative;
 }
 
-.zero-width-characters:after {
+.ufs-zero-width-characters-container:after {
     background: #ffb2b2;
     bottom: -14px;
     color: #000;
@@ -18,7 +18,7 @@
     right: 0;
 }
 
-.zero-width-character:after {
+.ufs-zero-width-character:after {
     color: red;
     content: '\25CF';
 }
