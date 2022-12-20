@@ -8,6 +8,8 @@ export default {
     en: "",
     vi: "",
   },
+  infoLink: "",
+
   blackList: [],
   whiteList: [],
 

@@ -8,6 +8,9 @@ export default {
     en: "Watch movies on Studyphim for free without login",
     vi: "Xem phim miễn phí trên Studyphim không cần đăng nhập",
   },
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/565933393738785/",
+
   whiteList: ["https://www.studyphim.vn/*"],
 
   onDocumentStart: () => {
@@ -17,9 +20,4 @@ export default {
       true
     );
   },
-
-  onClickExtension: () =>
-    window.open(
-      "https://www.facebook.com/groups/j2team.community/posts/565933393738785/"
-    ),
 };

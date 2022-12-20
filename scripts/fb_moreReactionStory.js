@@ -8,6 +8,9 @@ export default {
     en: "React story Facebook with more emojis",
     vi: "React story Facebook với nhiều loại emoji khác nhau",
   },
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/1769666783365434",
+
   whiteList: ["https://www.facebook.com/*"],
 
   // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
@@ -84,16 +87,20 @@ export default {
               emojiLi.className = "emoji always-enable-animations";
               emojiLi.textContent = emoji;
               emojiLi.setAttribute("value", emoji);
+
+              let loading = 0;
               emojiLi.onclick = async function () {
                 const storyId = getStoryId();
                 try {
-                  emojiLi.classList.add("loading");
+                  if (!loading) emojiLi.classList.add("loading");
+                  loading++;
                   await reactStory(user_id, fb_dtsg, storyId, emoji);
+                  loading--;
                   addFloatingEmoji(emoji, emojiLi);
                 } catch (e) {
                   console.error(e);
                 } finally {
-                  emojiLi.classList.remove("loading");
+                  if (!loading) emojiLi.classList.remove("loading");
                 }
               };
 
@@ -215,9 +222,4 @@ export default {
     );
     UsefulScriptGlobalPageContext.DOM.injectCssFile(cssFile);
   },
-
-  onClickExtension: () =>
-    window.open(
-      "https://www.facebook.com/groups/j2team.community/posts/1769666783365434"
-    ),
 };
