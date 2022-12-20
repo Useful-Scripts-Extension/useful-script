@@ -25,7 +25,7 @@ export default {
 
         loadModal(EMOJI_LIST);
       } catch (e) {
-        console.error(e);
+        alert("ERROR: " + e);
       }
     })();
 
