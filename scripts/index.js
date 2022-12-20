@@ -161,6 +161,7 @@ import fb_revealDeletedMessages from "./fb_revealDeletedMessages.js";
 import fb_whoIsTyping from "./fb_whoIsTyping.js";
 import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
 import fb_moreReactionStory from "./fb_moreReactionStory.js";
+import changeAudioOutput from "./changeAudioOutput.js";
 
 // inject badges
 const allScripts = {
@@ -343,6 +344,7 @@ const allScripts = {
   fb_whoIsTyping: addBadge(fb_whoIsTyping, BADGES.new),
   detect_zeroWidthCharacters: addBadge(detect_zeroWidthCharacters, BADGES.new),
   fb_moreReactionStory: addBadge(fb_moreReactionStory, BADGES.new),
+  changeAudioOutput: addBadge(changeAudioOutput, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

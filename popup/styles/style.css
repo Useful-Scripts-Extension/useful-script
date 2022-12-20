@@ -351,6 +351,8 @@ a:hover {
     height: 100vh;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
 }
 
 .modal-content {
@@ -396,6 +398,8 @@ a:hover {
     right: 0;
     bottom: 0;
     background: #e8e8e8db;
+    -webkit-backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
 }
 
 .loading-container {

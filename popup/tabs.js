@@ -200,6 +200,7 @@ const tabs = [
     scripts: [
       s.shortenURL,
       s.unshorten,
+      s.changeAudioOutput,
       createTitle("--- QRCode ---", "--- QRCode ---"),
       s.textToQRCode,
       s.webToQRCode,
