@@ -18,8 +18,7 @@ export default {
         // crawl emoji from https://emojipedia.org https://getemoji.com/
         // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
         let url = await UsefulScriptGlobalPageContext.Extension.getURL(
-          // "scripts/fb_moreReactionStory.json"
-          "scripts/fb_moreReactionStory2.json"
+          "scripts/fb_moreReactionStory.json"
         );
         const emojiJson = await fetch(url);
         const EMOJI_LIST = await emojiJson.json();
