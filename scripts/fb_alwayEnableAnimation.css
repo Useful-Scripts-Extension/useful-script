@@ -1,0 +1,8 @@
+@media (prefers-reduced-motion: reduce) {
+    ._6s5d :not(.always-enable-animations) {
+        animation-duration: 0 !important;
+        animation-name: none !important;
+        transition-duration: 0 !important;
+        transition-property: none !important;
+    }
+}
