@@ -22,7 +22,8 @@ export default {
       const regExp = new RegExp(`([${zeroWidthCharacters}])`, "g");
       element.innerHTML = element.innerHTML.replace(
         regExp,
-        '$1<span class="zero-width-character"></span>'
+        // '$1<span class="zero-width-character"></span>'
+        '<span class="zero-width-character"></span>'
       );
     };
     // From: https://jsfiddle.net/tim333/np874wae/13/
@@ -53,7 +54,6 @@ export default {
     const checkPage = function () {
       const allElements = document.getElementsByTagName("*");
       [...allElements].forEach(checkElement);
-      console.log(elementsWithZWCC);
       elementsWithZWCC.forEach(function (element) {
         element.classList.add("zero-width-characters");
         highlightCharacters(element);
@@ -70,6 +70,8 @@ export default {
 
       // Check Page
       checkPage();
+      setTimeout(checkPage, 5000);
+
       // Check page again when any input field is changed
       const inputs = document.querySelectorAll("input");
       [...inputs].forEach(function (input) {
