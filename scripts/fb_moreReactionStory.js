@@ -13,15 +13,13 @@ export default {
   // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
   // Source https://github.com/whoant/react-story-facebook
   onDocumentStart: async () => {
-    // const ID_USER = require('RelayAPIConfigDefaults').actorID;
-    // const FB_DTSG = require('DTSGInitData').token;
-
     (async () => {
       try {
-        // crawl emoji from https://emojipedia.org
+        // crawl emoji from https://emojipedia.org https://getemoji.com/
         // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
         let url = await UsefulScriptGlobalPageContext.Extension.getURL(
-          "scripts/fb_moreReactionStory.json"
+          // "scripts/fb_moreReactionStory.json"
+          "scripts/fb_moreReactionStory2.json"
         );
         const emojiJson = await fetch(url);
         const EMOJI_LIST = await emojiJson.json();
@@ -81,7 +79,7 @@ export default {
             emojiTab.classList.add("active");
             emojiListContainer.innerHTML = "";
 
-            const emojiList = EMOJI_LIST[key].split(",");
+            const emojiList = EMOJI_LIST[key].split(" ");
             emojiList.forEach((emoji) => {
               const emojiLi = document.createElement("li");
               emojiLi.className = "emoji";
@@ -148,14 +146,22 @@ export default {
       return htmlStory[htmlStory.length - 1].getAttribute("data-id");
     }
     function getFbdtsg() {
-      const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
-      const resp = regex.exec(document.documentElement.innerHTML);
-      return resp[1];
+      try {
+        const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
+        const resp = regex.exec(document.documentElement.innerHTML);
+        return resp[1];
+      } catch (e) {
+        return require("DTSGInitData").token;
+      }
     }
     function getUserId() {
-      const regex = /c_user=(\d+);/gm;
-      const resp = regex.exec(document.cookie);
-      return resp[1];
+      try {
+        const regex = /c_user=(\d+);/gm;
+        const resp = regex.exec(document.cookie);
+        return resp[1];
+      } catch (e) {
+        return require("RelayAPIConfigDefaults").actorID;
+      }
     }
     function reactStory(user_id, fb_dtsg, story_id, message) {
       return new Promise(async (resolve, reject) => {
