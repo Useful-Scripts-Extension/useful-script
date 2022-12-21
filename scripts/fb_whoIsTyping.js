@@ -31,7 +31,10 @@ export default {
       websocket_instant.addEventListener("message", async function (achunk) {
         let utf8_str = new TextDecoder("utf-8").decode(achunk.data);
 
-        if (utf8_str.includes("updateTypingIndicator")) {
+        if (
+          utf8_str.includes("updateTypingIndicator") ||
+          utf8_str.includes("mid.$")
+        ) {
           let isStartTyping = utf8_str.includes(",true)");
           let isStopTyping = utf8_str.includes(",false)");
 
@@ -40,7 +43,7 @@ export default {
             JSON.parse(arr[arr.length - 2])
           );
 
-          console.log(uid, isStartTyping);
+          console.log(uid, isStartTyping, utf8_str);
           saveTyingEvent(uid, isStartTyping);
         }
       });
