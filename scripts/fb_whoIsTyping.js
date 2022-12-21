@@ -40,7 +40,7 @@ export default {
             JSON.parse(arr[arr.length - 2])
           );
 
-          console.log(uid);
+          console.log(uid, isStartTyping);
           saveTyingEvent(uid, isStartTyping);
         }
       });
@@ -48,5 +48,27 @@ export default {
     };
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
+
+    requireLazy(
+      [
+        "LSUpdateTypingIndicator",
+        "LSTypingUpdateTypingIndicatorStoredProcedure_Optimized",
+      ],
+      (L1, L2) => {
+        const L1Orig = L1.prototype.constructor;
+        L1.prototype.constructor = function () {
+          console.log(arguments);
+          return L1Orig.apply(this, arguments);
+        };
+
+        const L2Orig = L2.prototype.constructor;
+        L2.prototype.constructor = function () {
+          console.log("L2", arguments);
+          return L2Orig.apply(this, arguments);
+        };
+      }
+    );
   },
+
+  onDocumentIdle: () => {},
 };
