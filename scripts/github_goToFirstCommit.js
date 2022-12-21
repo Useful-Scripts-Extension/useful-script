@@ -11,8 +11,9 @@ export default {
 
   whiteList: ["https://github.com/*"],
 
-  onClick: function () {
+  onClick: async function () {
     // Source: https://github.com/FarhadG/init
+    // Modified by HoangTran
 
     let args = window.location.pathname.match(
       /\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/
@@ -25,39 +26,74 @@ export default {
       return;
     }
 
-    fetch(
-      "https://api.github.com/repos/" +
-        args[1] +
-        "/commits?sha=" +
-        (args[2] || "")
-    )
+    try {
+      let res = await fetch(
+        "https://api.github.com/repos/" +
+          args[1] +
+          "/commits?sha=" +
+          (args[2] || "")
+      );
       // the link header has additional urls for paging
       // parse the original JSON for the case where no other pages exist
-      .then((res) => Promise.all([res.headers.get("link"), res.json()]))
+      let results = await Promise.all([res.headers.get("link"), res.json()]);
+      // results[0] is the link
+      // results[1] is the first page of commits
 
-      // get last page of commits
-      .then((results) => {
-        // results[0] is the link
-        // results[1] is the first page of commits
+      let commits;
+      if (results[0]) {
+        // the link contains two urls in the form
+        // <https://github.com/...>; rel=blah, <https://github.com/...>; rel=thelastpage
+        // split the url out of the string
+        let pageurl = results[0].split(",")[1].split(";")[0].slice(2, -1);
+        let pageurlWithoutPage = pageurl.split("&page=")[0];
+        let count = pageurl.match(/page=(.*?)$/)[1];
 
-        if (results[0]) {
-          // the link contains two urls in the form
-          // <https://github.com/...>; rel=blah, <https://github.com/...>; rel=thelastpage
-          // split the url out of the string
-          var pageurl = results[0].split(",")[1].split(";")[0].slice(2, -1);
-          // fetch the last page
-          return fetch(pageurl).then((res) => res.json());
+        let pageNumber;
+        while (true) {
+          pageNumber = window.prompt(
+            `Tìm thấy ${count} trang commits.\n` +
+              `Mỗi trang 30 commits => ~${30 * count} commits.\n\n` +
+              `Nhập số thứ tự trang muốn xem (1-${count}):\n` +
+              `(Nhập ${count} để xem commit đầu tiên)`,
+            1
+          );
+          if (pageNumber == null) return;
+
+          pageNumber = Number(pageNumber);
+          if (pageNumber >= 1 && pageNumber <= count) break;
+          else alert(`Lựa chọn không hợp lệ (1-${count}). Vui lòng chọn lại.`);
         }
 
+        // fetch the selected page
+        res = await fetch(pageurlWithoutPage + "&page=" + (pageNumber || "1"));
+        commits = await res.json();
+      } else {
         // if no link, we know we're on the only page
-        return results[1];
-      })
+        commits = results[1];
+      }
 
       // get the last commit and extract the url
-      .then((commits) => commits.pop().html_url)
+      while (true) {
+        let commitIndex = prompt(
+          `Tìm thấy ${commits.length} commits trong trang này.\n` +
+            `Chọn vị trí commit muốn xem (1-${commits.length}):\n`,
+          1
+        );
+        if (commitIndex == null) return;
 
-      // navigate there
-      .then((url) => (window.location = url));
+        let index = Number(commitIndex);
+        if (index >= 1 && index <= commits.length) {
+          window.open(commits[commits.length - index - 1].html_url);
+          break;
+        } else {
+          alert(
+            `Lựa chọn không hợp lệ (1-${commits.length}). Vui lòng chọn lại.`
+          );
+        }
+      }
+    } catch (e) {
+      alert("ERROR: " + e);
+    }
   },
 };
 
