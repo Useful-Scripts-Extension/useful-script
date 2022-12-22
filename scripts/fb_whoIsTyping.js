@@ -20,7 +20,6 @@ export default {
         let utf8_str = new TextDecoder("utf-8").decode(achunk.data);
 
         if (utf8_str.includes("updateTypingIndicator")) {
-          console.log("abc");
           try {
             let isStartTyping = utf8_str.includes(",true)");
             let isStopTyping = utf8_str.includes(",false)");
@@ -36,8 +35,6 @@ export default {
                   uid
                 );
               window.ufs_whoIsTyping_Cached[uid] = userData;
-
-              console.log(userData);
             }
 
             let { name, profiePicLarge } = window.ufs_whoIsTyping_Cached[uid];
