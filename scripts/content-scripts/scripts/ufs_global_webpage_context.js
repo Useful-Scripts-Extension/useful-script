@@ -113,6 +113,40 @@ const UsefulScriptGlobalPageContext = {
         "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
       );
     },
+    getUserProfileDataFromUid: async (uid) => {
+      const variables = {
+        userID: uid,
+        shouldDeferProfilePic: false,
+        useVNextHeader: false,
+        scale: 1.5,
+      };
+      let f = new URLSearchParams();
+      f.append("fb_dtsg", require("DTSGInitialData").token);
+      f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
+      f.append("variables", JSON.stringify(variables));
+      f.append("doc_id", "4159355184147969");
+
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+        body: f,
+      });
+
+      let text = await res.text();
+      return {
+        name: UsefulScriptsUtils.decodeEscapedUnicodeString(
+          /"name":"(.*?)"/.exec(text)?.[1]
+        ),
+        profiePicLarge: UsefulScriptsUtils.decodeEscapedUnicodeString(
+          /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1]
+        ),
+        //  profiePicMedium: /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1],
+        //  profiePicSmall: /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1],
+        //  profilePic160: /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1],
+        gender: /"gender":"(.*?)"/.exec(text)?.[1],
+        alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
+      };
+    },
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
     },
@@ -232,6 +266,7 @@ const UsefulScriptsUtils = {
   // https://stackoverflow.com/a/40410744/11898496
   // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
   decodeEscapedUnicodeString(str) {
+    if (!str) return "";
     return decodeURIComponent(
       JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
     );

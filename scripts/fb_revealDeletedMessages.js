@@ -8,6 +8,9 @@ export default {
     en: "View deleted messages (since function was turned on) on facebook messenger.",
     vi: "Xem lại những tin nhắn đã bị đối phương xóa (kể từ khi bật chức năng) trong facebook messenger.",
   },
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/1651683238497123/",
+
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
@@ -140,9 +143,4 @@ export default {
       };
     });
   },
-
-  onClickExtension: () =>
-    window.open(
-      "https://www.facebook.com/groups/j2team.community/posts/1651683238497123/"
-    ),
 };
