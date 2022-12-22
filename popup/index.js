@@ -159,7 +159,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
       let newValue = toggleActiveScript(script.id);
-      newValue && updateScriptClickCount(script.id).then(console.log);
+      newValue && updateScriptClickCount(script.id);
       updateButtonChecker(script, buttonContainer, newValue);
     };
 
@@ -318,7 +318,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
-      updateScriptClickCount(script.id).then(console.log);
+      updateScriptClickCount(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);

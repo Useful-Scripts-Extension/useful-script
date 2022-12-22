@@ -25,10 +25,19 @@ export async function viewScriptSource(script) {
 }
 
 export async function updateScriptClickCount(scriptId) {
-  let res = await fetch("https://useful-script-statistic.onrender.com/count", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ script: scriptId }),
-  });
-  return await res.text();
+  // return; // TODO remove this before commit
+  try {
+    let res = await fetch(
+      "https://useful-script-statistic.onrender.com/count",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ script: scriptId }),
+      }
+    );
+    return await res.text();
+  } catch (e) {
+    console.log("ERROR update script click count: ", e);
+    return null;
+  }
 }

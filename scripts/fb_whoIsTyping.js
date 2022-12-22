@@ -11,19 +11,7 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
-    function notifyTypingEvent() {
-      // TODO add notification UI
-    }
-    function saveTyingEvent(uid, typing) {
-      let key = "ufs-fb_whoIsTyping";
-      let old = JSON.parse(localStorage.getItem(key) ?? "[]");
-      old.push({
-        time: new Date().getTime(),
-        uid: uid,
-        typing: typing,
-      });
-      localStorage.setItem(key, JSON.stringify(old));
-    }
+    window.ufs_whoIsTyping_Cached = {};
 
     const WebSocketOrig = window.WebSocket;
     window.WebSocket = function fakeConstructor(dt, config) {
@@ -31,20 +19,32 @@ export default {
       websocket_instant.addEventListener("message", async function (achunk) {
         let utf8_str = new TextDecoder("utf-8").decode(achunk.data);
 
-        if (
-          utf8_str.includes("updateTypingIndicator") ||
-          utf8_str.includes("mid.$")
-        ) {
-          let isStartTyping = utf8_str.includes(",true)");
-          let isStopTyping = utf8_str.includes(",false)");
+        if (utf8_str.includes("updateTypingIndicator")) {
+          console.log("abc");
+          try {
+            let isStartTyping = utf8_str.includes(",true)");
+            let isStopTyping = utf8_str.includes(",false)");
 
-          let arr = utf8_str.match(/(\[)(.*?)(\])/g);
-          let uid = UsefulScriptGlobalPageContext.Facebook.decodeArrId(
-            JSON.parse(arr[arr.length - 2])
-          );
+            let arr = utf8_str.match(/(\[)(.*?)(\])/g);
+            let uid = UsefulScriptGlobalPageContext.Facebook.decodeArrId(
+              JSON.parse(arr[arr.length - 2])
+            );
 
-          console.log(uid, isStartTyping, utf8_str);
-          saveTyingEvent(uid, isStartTyping);
+            if (!(uid in window.ufs_whoIsTyping_Cached)) {
+              let userData =
+                await UsefulScriptGlobalPageContext.Facebook.getUserProfileDataFromUid(
+                  uid
+                );
+              window.ufs_whoIsTyping_Cached[uid] = userData;
+
+              console.log(userData);
+            }
+
+            let { name, profiePicLarge } = window.ufs_whoIsTyping_Cached[uid];
+            notifyTypingEvent(uid, name, profiePicLarge, isStartTyping);
+          } catch (e) {
+            console.log("ERROR: ", e);
+          }
         }
       });
       return websocket_instant;
@@ -52,26 +52,46 @@ export default {
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
 
-    requireLazy(
-      [
-        "LSUpdateTypingIndicator",
-        "LSTypingUpdateTypingIndicatorStoredProcedure_Optimized",
-      ],
-      (L1, L2) => {
-        const L1Orig = L1.prototype.constructor;
-        L1.prototype.constructor = function () {
-          console.log(arguments);
-          return L1Orig.apply(this, arguments);
+    function notifyTypingEvent(uid, name, avatar, isTyping) {
+      let divId = "ufs-who-is-typing";
+      let exist = document.querySelector("#" + divId);
+      if (!exist) {
+        exist = document.createElement("div");
+        exist.id = divId;
+        exist.innerHTML = `<div class="ufs-header clearfix">
+          <button>+</button>
+        </div>`;
+        exist.querySelector(".ufs-header button").onclick = (e) => {
+          exist.classList.toggle("collapsed");
         };
 
-        const L2Orig = L2.prototype.constructor;
-        L2.prototype.constructor = function () {
-          console.log("L2", arguments);
-          return L2Orig.apply(this, arguments);
-        };
+        document.body.appendChild(exist);
+
+        UsefulScriptGlobalPageContext.Extension.getURL(
+          "scripts/fb_whoIsTyping.css"
+        ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
       }
-    );
-  },
 
-  onDocumentIdle: () => {},
+      let time = new Date().toLocaleTimeString();
+      let text =
+        `<b><a target="_blank" href="https://fb.com/${uid}">${name}</a></b>` +
+        ` ${isTyping ? "đang" : "ngưng"} nhắn cho bạn.`;
+
+      let newNoti = document.createElement("div");
+      newNoti.className = "ufs-noti-item clearfix";
+      newNoti.innerHTML = `
+        <button class="ufs-close-btn">X</button>
+        <img src="${avatar}" class="ufs-avatar" />
+        <div class="ufs-content">
+          <p class="ufs-time">${time}</p>
+          <p class="ufs-text">${text}</p>
+        </div>
+      `;
+      newNoti.querySelector(".ufs-close-btn").onclick = () => {
+        newNoti.remove();
+        if (!exist.querySelector("ufs-noti-item")) exist.remove();
+      };
+      exist.appendChild(newNoti);
+    }
+  },
 };
