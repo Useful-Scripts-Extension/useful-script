@@ -22,6 +22,7 @@ import {
   canAutoRun,
   canClick,
   isTitle,
+  updateScriptClickCount,
   viewScriptSource,
 } from "./helpers/utils.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
@@ -158,6 +159,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
       let newValue = toggleActiveScript(script.id);
+      newValue && updateScriptClickCount(script.id).then(console.log);
       updateButtonChecker(script, buttonContainer, newValue);
     };
 
@@ -292,7 +294,7 @@ function createScriptButton(script, isFavorite = false) {
   return buttonContainer;
 }
 
-async function updateButtonChecker(script, button, val) {
+function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
   if (val ?? isActiveScript(script.id)) {
@@ -316,6 +318,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
+      updateScriptClickCount(script.id).then(console.log);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);
