@@ -25,7 +25,7 @@ import insta_getAllImagesInNewFeed from "./insta_getAllImagesInNewFeed.js";
 import insta_getAllImagesInUserProfile from "./insta_getAllImagesInUserProfile.js";
 import pictureInPicture from "./pictureInPicture.js";
 import youtube_toggleLight from "./youtube_toggleLight.js";
-import github_goToFirstCommit from "./github_goToFirstCommit.js";
+import github_goToAnyCommit from "./github_goToAnyCommit.js";
 import github1s from "./github1s.js";
 import doutube_enableDownloadVideo from "./doutube_enableDownloadVideo.js";
 import doutube_downloadWatchingVideo from "./doutube_downloadWatchingVideo.js";
@@ -193,7 +193,7 @@ const allScripts = {
   insta_getAllImagesInUserProfile,
   pictureInPicture: addBadge(pictureInPicture, BADGES.hot),
   youtube_toggleLight,
-  github_goToFirstCommit: addBadge(github_goToFirstCommit, BADGES.hot),
+  github_goToAnyCommit: addBadge(github_goToAnyCommit, BADGES.hot),
   github1s,
   doutube_enableDownloadVideo,
   doutube_downloadWatchingVideo,

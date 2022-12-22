@@ -193,7 +193,7 @@ const tabs = [
   },
   {
     ...CATEGORY.github,
-    scripts: [s.github_goToFirstCommit, s.githubdev, s.github1s],
+    scripts: [s.github_goToAnyCommit, s.githubdev, s.github1s],
   },
   {
     ...CATEGORY.automation,
