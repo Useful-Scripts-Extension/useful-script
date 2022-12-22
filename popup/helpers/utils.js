@@ -23,3 +23,12 @@ export async function viewScriptSource(script) {
     width: 700,
   });
 }
+
+export async function updateScriptClickCount(scriptId) {
+  let res = await fetch("https://useful-script-statistic.onrender.com/count", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ script: scriptId }),
+  });
+  return await res.text();
+}
