@@ -28,6 +28,32 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   DOM: {
+    // https://stackoverflow.com/a/3381522
+    createFlashTitle(newMsg, howManyTimes) {
+      var original = document.title;
+      var timeout;
+
+      function step() {
+        document.title = document.title == original ? newMsg : original;
+        if (--howManyTimes > 0) {
+          timeout = setTimeout(step, 1000);
+        }
+      }
+      howManyTimes = parseInt(howManyTimes);
+      if (isNaN(howManyTimes)) {
+        howManyTimes = 5;
+      }
+      clearTimeout(timeout);
+      step();
+
+      function cancel() {
+        clearTimeout(timeout);
+        document.title = original;
+      }
+
+      return cancel;
+    },
+
     deleteElements(selector, willReRun) {
       UsefulScriptGlobalPageContext.onElementsVisible(
         selector,
