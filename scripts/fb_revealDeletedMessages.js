@@ -14,6 +14,32 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
+    window.ufs_rvdfm_all_msgs = JSON.parse(
+      localStorage.ufs_rvdfm_all_msgs || "[]"
+    );
+    window.addEventListener("beforeunload", () => {
+      localStorage.ufs_rvdfm_all_msgs = JSON.stringify(
+        window.ufs_rvdfm_all_msgs
+      );
+    });
+    window.UfsChatType = {
+      text: "chữ",
+      image: "ảnh",
+      video: "video",
+      GIF: "gif",
+      audio: "âm thanh",
+      attachment: "đính kèm",
+      sticker: "sticker",
+      sound: "sound",
+      add_reaction: "react",
+      remove_reaction: "gỡ react",
+      share_location: "vị trí",
+      realtime_location: "vị trí thực",
+      pending: "pending",
+      user_data: "user_data",
+      delete_msg: "delete_msg",
+    };
+
     const WebSocketOrig = window.WebSocket;
     window.WebSocket = function fakeConstructor(dt, config) {
       // hàm hỗ trợ
@@ -35,23 +61,7 @@ export default {
         return ret;
       };
 
-      const ChatType = {
-        text: "text",
-        image: "image",
-        video: "video",
-        GIF: "gif",
-        audio: "audio",
-        attachment: "attachment",
-        sticker: "sticker",
-        add_reaction: "add_reaction",
-        remove_reaction: "remove_reaction",
-        share_location: "share_location",
-        pending: "pending",
-        user_data: "user_data",
-        delete_msg: "delete_msg",
-      };
-
-      function findAllChatData(all_strings) {
+      const findAllChatData = (all_strings) => {
         let chats = [];
         for (let i = 0; i < all_strings.length; i++) {
           const str_i = all_strings[i];
@@ -61,7 +71,7 @@ export default {
             const content = all_strings[i + 1];
             if (content) {
               chats.push({
-                type: ChatType.text,
+                type: window.UfsChatType.text,
                 content: content,
                 id: all_strings[i + 2],
               });
@@ -76,14 +86,14 @@ export default {
             const isVideo = a1?.startsWith("video-");
             const isAudio = a1?.startsWith("audioclip-");
             const type = isImg
-              ? ChatType.image
+              ? window.UfsChatType.image
               : isGif
-              ? ChatType.GIF
+              ? window.UfsChatType.GIF
               : isVideo
-              ? ChatType.video
+              ? window.UfsChatType.video
               : isAudio
-              ? ChatType.audio
-              : ChatType.attachment;
+              ? window.UfsChatType.audio
+              : window.UfsChatType.attachment;
 
             for (let j = i; j < all_strings.length - 1; j++) {
               if (isMsgIdStr(all_strings[j])) {
@@ -101,50 +111,78 @@ export default {
           if (
             str_i === "insertMessage" &&
             isMsgIdStr(all_strings[i + 1]) &&
-            isLink(all_strings[i + 6])
+            (all_strings[i - 1].includes("nhãn dán") ||
+              all_strings[i - 1].includes("sticker"))
           ) {
             chats.push({
-              type: ChatType.sticker,
-              content: all_strings[i + 6],
+              type: window.UfsChatType.sticker,
+              content: parse(
+                all_strings[i + 6].match(/"playableUrl":"(.*?)"/)?.[1] ||
+                  all_strings[i + 9].match(/"previewUrl":"(.*?)"/)?.[1] ||
+                  ""
+              ),
               id: all_strings[i + 1],
+            });
+          }
+
+          // Tin nhắn sound
+          if (
+            str_i === "insertMessage" &&
+            isMsgIdStr(all_strings[i + 5]) &&
+            all_strings[i - 1].includes("sound")
+          ) {
+            chats.push({
+              type: window.UfsChatType.sound,
+              content: parse(
+                all_strings[i + 1] || ""
+                // all_strings[i + 7].match(/"playableUrl":"(.*?)"/)?.[1] || ""
+              ),
+              id: all_strings[i + 5],
             });
           }
 
           // Thả react
-          if (str_i === "upsertReaction" && isMsgIdStr(all_strings[i + 1])) {
-            chats.push({
-              type: ChatType.add_reaction,
-              content: all_strings[i + 2],
-              id: all_strings[i + 1],
-            });
-          }
+          // if (str_i === "upsertReaction" && isMsgIdStr(all_strings[i + 1])) {
+          //   chats.push({
+          //     type: ChatType.add_reaction,
+          //     content: all_strings[i + 2],
+          //     id: all_strings[i + 1],
+          //   });
+          // }
 
           // Gỡ react
-          if (str_i === "deleteReaction" && isMsgIdStr(all_strings[i + 1])) {
-            const id = all_strings[i + 1];
-            const content =
-              rvdfm_all_msgs.find((c) => c.id === id)?.content || "";
+          // if (str_i === "deleteReaction" && isMsgIdStr(all_strings[i + 1])) {
+          //   const id = all_strings[i + 1];
+          //   const content =
+          //     rvdfm_all_msgs.find((c) => c.id === id)?.content || "";
 
-            chats.push({
-              type: ChatType.remove_reaction,
-              content: content,
-              id: id,
-            });
-          }
+          //   chats.push({
+          //     type: ChatType.remove_reaction,
+          //     content: content,
+          //     id: id,
+          //   });
+          // }
 
           // Tin nhắn chia sẻ vị trí / vị trí trực tiếp
-          if (
-            str_i === "xma_live_location_sharing" &&
-            isMsgIdStr(all_strings[i - 2]) &&
-            isLink(all_strings[i + 1])
-          ) {
-            const link = all_strings[i + 1];
-
-            chats.push({
-              type: ChatType.share_location,
-              content: link,
-              id: all_strings[i - 2],
-            });
+          if (str_i.includes("xma_live_location_sharing")) {
+            if (isMsgIdStr(all_strings[i + 8])) {
+              chats.push({
+                type: window.UfsChatType.share_location,
+                content: parse(
+                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/) || ""
+                ),
+                id: all_strings[i + 8],
+              });
+            }
+            if (isMsgIdStr(all_strings[i - 10])) {
+              chats.push({
+                type: window.UfsChatType.realtime_location,
+                content: parse(
+                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/) || ""
+                ),
+                id: all_strings[i - 10],
+              });
+            }
           }
 
           // Thông tin user
@@ -169,47 +207,68 @@ export default {
           // }
 
           // Thu hồi tin nhắn
-          if (
-            str_i === "deleteThenInsertMessage" &&
-            isMsgIdStr(all_strings[i + 2])
-          ) {
-            const id = all_strings[i + 2];
-            const msgs =
-              rvdfm_all_msgs.filter(
-                (c) => c.id === id && c.type !== "Thu hồi"
-              ) || [];
+          // if (
+          //   str_i === "deleteThenInsertMessage" &&
+          //   isMsgIdStr(all_strings[i + 2])
+          // ) {
+          //   const id = all_strings[i + 2];
+          //   const msgs =
+          //     rvdfm_all_msgs.filter(
+          //       (c) => c.id === id && c.type !== "Thu hồi"
+          //     ) || [];
 
-            chats.push({
-              type: ChatType.delete_msg,
-              msgs: msgs,
-              id: id,
-            });
-          }
+          //   chats.push({
+          //     type: ChatType.delete_msg,
+          //     msgs: msgs,
+          //     id: id,
+          //   });
+          // }
         }
 
         // Chèn thời gian hiện tại vào
-        chats = chats.map((_) => ({ ..._, time: Date.now() }));
+        chats = chats.map((_) => ({ ..._, saved_time: Date.now() }));
+        return chats;
+      };
 
-        console.log("Thông tin lọc được:", chats);
-      }
+      const saveChatData = (chats) => {
+        let oldData = window.ufs_rvdfm_all_msgs || [];
+        let newData = [];
+        for (let c of chats) {
+          let isDuplicated =
+            oldData.find((m) => JSON.stringify(c) === JSON.stringify(m)) !=
+            null;
+
+          if (!isDuplicated) newData.push(c);
+        }
+        window.ufs_rvdfm_all_msgs = oldData.concat(newData);
+      };
 
       // ====== Start hacking ======
+      let textDecoder = new TextDecoder("utf-8");
       const websocket_instant = new WebSocketOrig(dt, config);
       websocket_instant.addEventListener("message", async function (achunk) {
-        const utf8_str = new TextDecoder("utf-8").decode(achunk.data);
+        try {
+          const utf8_str = textDecoder.decode(achunk.data);
 
-        if (utf8_str[0] === "1" || utf8_str[0] === "2" || utf8_str[0] === "3") {
-          const have_msg_id = /(?=mid\.\$)(.*?)(?=\\")/.exec(utf8_str);
-          if (have_msg_id) {
-            // Lấy ra tất cả các thông tin dùng được trong dữ liệu (những chuỗi nằm giữa 2 dấu nháy kép "")
-            const all_strings_regex = /(\\\")(.*?)(\\\")(?=[,)])/g;
-            let all_strings = utf8_str.match(all_strings_regex) || [];
-            all_strings = all_strings.map((str) => parse(str));
+          if (
+            utf8_str[0] === "1" ||
+            utf8_str[0] === "2" ||
+            utf8_str[0] === "3"
+          ) {
+            const have_msg_id = /(?=mid\.\$)(.*?)(?=\\")/.exec(utf8_str);
+            if (have_msg_id) {
+              let all_strings = (
+                utf8_str.match(/(\\\")(.*?)(\\\")(?=[,)])/g) || []
+              ).map((str) => parse(str));
 
-            if (all_strings.length) {
-              findAllChatData(all_strings);
+              if (all_strings.length && all_strings.length < 200) {
+                let chats = findAllChatData(all_strings);
+                chats.length && saveChatData(chats);
+              }
             }
           }
+        } catch (e) {
+          console.log("ERROR: ", e);
         }
       });
 
@@ -218,23 +277,17 @@ export default {
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
   },
+
   onDocumentIdle: () => {
     // tất cả loại tin nhắn đều được bao bọc bởi:
     // MWPBaseMessage.bs
     // MWMessageListAttachment.bs
     // MWMessageListAttachmentContainer.bs
 
-    let key = "ufs_reveal_deleted_fb_messages";
-    let savedMessages = JSON.parse(localStorage.getItem(key) ?? "[]");
-
-    console.log(
-      "Load " + savedMessages.length + " messages from localStorage."
-    );
-
+    // TODO hiển thị đúng component react cho từng loại tin nhắn
     requireLazy(
-      ["MWV2ChatUnsentMessage.bs", "MWPBaseMessage.bs"],
-      (MWV2ChatUnsentMessage, MWPBaseMessage) => {
-        // Override unsent message component
+      ["MWV2ChatUnsentMessage.bs", "MWPBaseMessage.bs", "MWV2ChatImage.bs"],
+      (MWV2ChatUnsentMessage, MWPBaseMessage, MWV2ChatImage) => {
         const MWV2ChatUnsentMessageOrig = MWV2ChatUnsentMessage.make;
         MWV2ChatUnsentMessage.make = function (a) {
           if (a) {
@@ -254,18 +307,46 @@ export default {
               senderId =
                 UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
 
-              a.message.isUnsent = false;
-              a.message.text = "[Hacked]: thu hồi nè";
-
-              console.log(
-                "Tin nhắn thu hồi từ " + senderId + " trong " + threadKey,
-                a
+              let savedMsg = window.ufs_rvdfm_all_msgs.find(
+                (_) => _.id === messageId
               );
+
+              a.message.isUnsent = false;
+              if (savedMsg) {
+                let time = new Date(savedMsg.saved_time).toLocaleString();
+                let title = `[Tin thu hồi - ${savedMsg.type}]:\n`;
+                let text = `${savedMsg?.content}`;
+                a.message.text = title + text;
+              } else {
+                a.message.text = "[Tin thu hồi]: -Không có dữ liệu-";
+              }
             }
           }
           return MWV2ChatUnsentMessageOrig.apply(this, arguments);
         };
       }
     );
+  },
+
+  onClick: () => {
+    let len = window.ufs_rvdfm_all_msgs.length;
+    if (!len)
+      alert(
+        "Chức năng chưa lưu được tin nhắn nào.\n" +
+          "Hãy mở khung chat bất kỳ để chức năng tự động lưu tin nhắn giúp bạn.\n" +
+          "Sau khi lưu, nếu có người thu hồi tin nhắn, chức năng sẽ lấy tin đã lưu hiển thị cho bạn xem."
+      );
+    else if (
+      confirm(
+        `Bạn có chắc muốn xóa tất cả ${len} tin nhắn` +
+          ` đã được lưu bởi chức năng này?\n\n` +
+          `+ Chỉ nên xóa khi thấy đã lưu quá nhiều tin nhắn.\n` +
+          `+ Sau khi xóa, nếu có người thu hồi tin nhắn, mà tin đó chưa được lưu\n` +
+          `   thì bạn sẽ ko biết được nội dung tin nhắn.`
+      )
+    ) {
+      window.ufs_rvdfm_all_msgs = [];
+      alert("Đã xóa " + len + " tin nhắn khỏi bộ nhớ.");
+    }
   },
 };

@@ -13,13 +13,18 @@ export default {
   onDocumentStart: () => {
     window.ufs_whoIsTyping_Cached = {};
 
+    let textDecoder = new TextDecoder("utf-8");
     const WebSocketOrig = window.WebSocket;
     window.WebSocket = function fakeConstructor(dt, config) {
       const websocket_instant = new WebSocketOrig(dt, config);
       websocket_instant.addEventListener("message", async function (achunk) {
-        let utf8_str = new TextDecoder("utf-8").decode(achunk.data);
+        let utf8_str = textDecoder.decode(achunk.data);
 
-        if (utf8_str.includes("updateTypingIndicator")) {
+        if (
+          utf8_str.startsWith("1") &&
+          utf8_str.includes("updateTypingIndicator")
+        ) {
+          console.log(utf8_str);
           try {
             let isStartTyping = utf8_str.includes(",true)");
             let isStopTyping = utf8_str.includes(",false)");
