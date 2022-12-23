@@ -86,7 +86,7 @@ export default {
       `;
       newNoti.querySelector(".ufs-close-btn").onclick = () => {
         newNoti.remove();
-        if (!exist.querySelector("ufs-noti-item")) exist.remove();
+        if (!exist.querySelector(".ufs-noti-item")) exist.remove();
       };
       exist.appendChild(newNoti);
     }
