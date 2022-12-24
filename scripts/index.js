@@ -161,6 +161,8 @@ import fb_whoIsTyping from "./fb_whoIsTyping.js";
 import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
 import fb_moreReactionStory from "./fb_moreReactionStory.js";
 import changeAudioOutput from "./changeAudioOutput.js";
+import docDownloader from "./docDownloader.js";
+import scribd_bypassPreview from "./scribd_bypassPreview.js";
 
 // inject badges
 const allScripts = {
@@ -343,6 +345,8 @@ const allScripts = {
   detect_zeroWidthCharacters: addBadge(detect_zeroWidthCharacters, BADGES.new),
   fb_moreReactionStory: addBadge(fb_moreReactionStory, BADGES.new),
   changeAudioOutput: addBadge(changeAudioOutput, BADGES.new),
+  docDownloader: addBadge(docDownloader, BADGES.new),
+  scribd_bypassPreview: addBadge(scribd_bypassPreview, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

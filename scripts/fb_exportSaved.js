@@ -20,7 +20,7 @@ export default {
           : e;
       });
 
-    const checkExit = (e) => {
+    const c = (e) => {
       try {
         return e();
       } catch (e) {
@@ -28,16 +28,11 @@ export default {
       }
     };
 
-    const get_posts = async (uid, fb_dtsg, cursor) => {
-      console.log("Đang lấy dữ liệu! Vui lòng chờ trong giây lát...");
+    const getSaved = async (uid, fb_dtsg, cursor = "") => {
       if (cursor) cursor = `"cursor":"${cursor}",`;
-
-      uid = encodeURIComponent(uid);
-      fb_dtsg = encodeURIComponent(fb_dtsg);
       cursor = encodeURIComponent(
         `{"content_filter":null,"count":10,${cursor}"scale":1}`
       );
-
       const res = await fetch("https://www.facebook.com/api/graphql/", {
         body: `av: 100000034778747&__user=${uid}&__dyn=&fb_dtsg=${fb_dtsg}&fb_api_req_friendly_name=CometSaveDashboardAllItemsPaginationQuery&variables=${cursor}&server_timestamps=true&doc_id=3196659713724388`,
         method: "POST",
@@ -45,54 +40,59 @@ export default {
         credentials: "include",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      let json = await res.json();
-      console.log(json);
-      json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
-        data.push({
-          title: encodeHTML(checkExit(() => e.node.savable.savable_title.text)),
-          type: checkExit(() => e.node.savable.__typename),
-          image: checkExit(() => e.node.savable.savable_image.uri),
-          url: checkExit(() => e.node.savable.url),
-          urlPost: checkExit(() => e.node.container_savable.savable_permalink),
-          sourceType: checkExit(
-            () => e.node.container_savable.savable_actors[0].__typename
-          ),
-          sourceName: checkExit(
-            () => e.node.container_savable.savable_actors[0].name
-          ),
-          sourceID: checkExit(
-            () => e.node.container_savable.savable_actors[0].id
-          ),
-          sourceImage: checkExit(
-            () => e.node.container_savable.savable_actors[0].profile_picture.uri
-          ),
+      return await res.json();
+    };
+
+    const getAllSaved = async (uid, fb_dtsg, cursor) => {
+      uid = encodeURIComponent(uid);
+      fb_dtsg = encodeURIComponent(fb_dtsg);
+
+      let data = [];
+      let page = 1;
+      while (true) {
+        setLoadingText("Đang tải trang " + page + "...");
+        let json = await getSaved(uid, fb_dtsg, cursor);
+        console.log(json);
+        json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
+          data.push({
+            title: encodeHTML(c(() => e.node.savable.savable_title.text)),
+            type: c(() => e.node.savable.__typename),
+            image: c(() => e.node.savable.savable_image.uri),
+            url: c(() => e.node.savable.url),
+            urlPost: c(() => e.node.container_savable.savable_permalink),
+            sourceType: c(
+              () => e.node.container_savable.savable_actors[0].__typename
+            ),
+            sourceName: c(
+              () => e.node.container_savable.savable_actors[0].name
+            ),
+            sourceID: c(() => e.node.container_savable.savable_actors[0].id),
+            sourceImage: c(
+              () =>
+                e.node.container_savable.savable_actors[0].profile_picture.uri
+            ),
+          });
         });
-      });
-      let s = !1;
-      if (
-        (checkExit(
-          () => json.data.viewer.saver_info.all_saves.page_info.has_next_page
-        ) &&
-          (s = json.data.viewer.saver_info.all_saves.page_info.has_next_page),
-        !0 === s)
-      )
-        await get_posts(
-          json.data.viewer.saver_info.all_saves.page_info.end_cursor
+        let nextCursor = c(
+          () => json.data.viewer.saver_info.all_saves.page_info.end_cursor
         );
-      else {
-        // let e = window.btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-        // template(e);
-        console.log("Done! Đang xuất dữ liệu...");
+        if (nextCursor) cursor = nextCursor;
+        else break;
+        page++;
       }
+      return data;
     };
 
     let { setLoadingText, closeLoading } = showLoading("Đang lấy token...");
     try {
+      setLoadingText("Đang chuẩn bị...");
       let [fb_dtsg, uid] = await runScriptInCurrentTab(() => [
         require("DTSGInitialData").token,
         require("CurrentUserInitialData").USER_ID,
       ]);
-      get_posts(uid, fb_dtsg);
+      setLoadingText("Đang lấy dữ liệu...");
+      let saved = await getAllSaved(uid, fb_dtsg);
+      console.log(saved);
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
