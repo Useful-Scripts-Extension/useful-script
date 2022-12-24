@@ -118,7 +118,6 @@ const tabs = [
       s.fb_getTokenCampaigns,
       s.fb_getTokenFacebook,
       s.fb_getTokenMFacebook,
-      s.fb_getTokenLocmai,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
       s.fb_getUid,
       s.fb_getPageId,

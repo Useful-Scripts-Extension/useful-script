@@ -95,7 +95,6 @@ import fb_getTokenBussinessLocation from "./fb_getTokenBussinessLocation.js";
 import injectScriptToWebsite from "./injectScriptToWebsite.js";
 import getLinkLuanxt from "./getLinkLuanxt.js";
 import getFavicon from "./getFavicon.js";
-import fb_getTokenLocmai from "./fb_getTokenLocmai.js";
 import fb_checkToken from "./fb_checkToken.js";
 import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
 import unshorten from "./unshorten.js";
@@ -267,7 +266,6 @@ const allScripts = {
   injectScriptToWebsite: addBadge(injectScriptToWebsite, BADGES.new),
   getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.new),
   getFavicon: addBadge(getFavicon, BADGES.new),
-  fb_getTokenLocmai: addBadge(fb_getTokenLocmai, BADGES.beta),
   fb_checkToken: addBadge(fb_checkToken, BADGES.new),
   fb_getTokenCampaigns: addBadge(fb_getTokenCampaigns, BADGES.new),
   unshorten: addBadge(unshorten, BADGES.hot),
