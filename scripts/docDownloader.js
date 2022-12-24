@@ -7,8 +7,8 @@ export default {
     vi: "DocDownloader - Tải document",
   },
   description: {
-    en: "Download document on Scribd ,Issuu ,Slideshare ,Academia",
-    vi: "Tải document từ Scribd ,Issuu ,Slideshare ,Academia",
+    en: "Download document on Scribd, Issuu, Slideshare, Academia",
+    vi: "Tải document từ Scribd, Issuu, Slideshare, Academia",
   },
   onClickExtension: async () => {
     let tab = await getCurrentTab();

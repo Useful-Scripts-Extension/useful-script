@@ -1,25 +1,21 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import {
+  downloadData,
+  runScriptInCurrentTab,
+  showLoading,
+} from "./helpers/utils.js";
 
 export default {
   icon: '<i class="fa-solid fa-file-export fa-lg"></i>',
   name: {
-    en: "Export saved items from facebook",
+    en: "Export saved facebook items",
     vi: "Xuất mục đã lưu trên facebook",
   },
   description: {
-    en: "Export all your saved items on facebook",
-    vi: "Xuất ra file các mục đã lưu của bạn trên facebook",
+    en: "Export all your saved items on facebook to json file",
+    vi: "Xuất ra file các mục đã lưu của bạn trên facebook ra file json",
   },
 
   onClickExtension: async function () {
-    const encodeHTML = (e) =>
-      e?.replace(/([\u00A0-\u9999<>&])(.|$)/g, function (e, a, t) {
-        return "&" !== a || "#" !== t
-          ? (/[\u00A0-\u9999<>&]/.test(t) && (t = "&#" + t.charCodeAt(0) + ";"),
-            "&#" + a.charCodeAt(0) + ";" + t)
-          : e;
-      });
-
     const c = (e) => {
       try {
         return e();
@@ -50,27 +46,30 @@ export default {
       let data = [];
       let page = 1;
       while (true) {
-        setLoadingText("Đang tải trang " + page + "...");
+        setLoadingText(
+          `Đang tải trang ${page}...<br/>Tải được ${data.length} mục`
+        );
         let json = await getSaved(uid, fb_dtsg, cursor);
         console.log(json);
         json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
           data.push({
-            title: encodeHTML(c(() => e.node.savable.savable_title.text)),
+            title: c(() => e.node.savable.savable_title.text),
             type: c(() => e.node.savable.__typename),
             image: c(() => e.node.savable.savable_image.uri),
             url: c(() => e.node.savable.url),
             urlPost: c(() => e.node.container_savable.savable_permalink),
-            sourceType: c(
-              () => e.node.container_savable.savable_actors[0].__typename
-            ),
-            sourceName: c(
-              () => e.node.container_savable.savable_actors[0].name
-            ),
-            sourceID: c(() => e.node.container_savable.savable_actors[0].id),
-            sourceImage: c(
-              () =>
-                e.node.container_savable.savable_actors[0].profile_picture.uri
-            ),
+            source: {
+              type: c(
+                () => e.node.container_savable.savable_actors[0].__typename
+              ),
+              name: c(() => e.node.container_savable.savable_actors[0].name),
+              id: c(() => e.node.container_savable.savable_actors[0].id),
+              avatar: c(
+                () =>
+                  e.node.container_savable.savable_actors[0].profile_picture.uri
+              ),
+            },
+            containingLists: c(() => e.node.containing_lists.nodes),
           });
         });
         let nextCursor = c(
@@ -92,7 +91,10 @@ export default {
       ]);
       setLoadingText("Đang lấy dữ liệu...");
       let saved = await getAllSaved(uid, fb_dtsg);
-      console.log(saved);
+
+      if (saved.length)
+        downloadData(JSON.stringify(saved, null, 4), "saved_facebook", "json");
+      else alert("Bạn không có mục nào trong saved facebook.");
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
