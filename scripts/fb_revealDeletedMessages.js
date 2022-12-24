@@ -118,6 +118,7 @@ export default {
               type: window.UfsChatType.sticker,
               content: parse(
                 all_strings[i + 6].match(/"playableUrl":"(.*?)"/)?.[1] ||
+                  all_strings[i + 6].match(/"previewUrl":"(.*?)"/)?.[1] ||
                   all_strings[i + 9].match(/"previewUrl":"(.*?)"/)?.[1] ||
                   ""
               ),
@@ -169,7 +170,7 @@ export default {
               chats.push({
                 type: window.UfsChatType.share_location,
                 content: parse(
-                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/) || ""
+                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/)?.[1] || ""
                 ),
                 id: all_strings[i + 8],
               });
@@ -178,7 +179,7 @@ export default {
               chats.push({
                 type: window.UfsChatType.realtime_location,
                 content: parse(
-                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/) || ""
+                  all_strings[i + 1].match(/"actionUrl":"(.*?)"/)?.[1] || ""
                 ),
                 id: all_strings[i - 10],
               });
