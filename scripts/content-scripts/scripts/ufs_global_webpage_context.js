@@ -132,6 +132,22 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Facebook: {
+    async fetchGraphQl(str, token) {
+      var fb_dtsg = "fb_dtsg=" + encodeURIComponent(token);
+      fb_dtsg += str.includes("variables")
+        ? "&" + str
+        : "&q=" + encodeURIComponent(str);
+
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        body: fb_dtsg,
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        credentials: "include",
+      });
+
+      let json = await res.json();
+      return json;
+    },
     getUserAvatarFromUid(uid) {
       return (
         "https://graph.facebook.com/" +
@@ -139,7 +155,7 @@ const UsefulScriptGlobalPageContext = {
         "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
       );
     },
-    getUserProfileDataFromUid: async (uid) => {
+    async getUserInfoFromUid(uid) {
       const variables = {
         userID: uid,
         shouldDeferProfilePic: false,
@@ -173,10 +189,19 @@ const UsefulScriptGlobalPageContext = {
         alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
       };
     },
+    async getUserInfo(uid, access_token) {
+      var n =
+        "https://graph.facebook.com/" +
+        encodeURIComponent(uid) +
+        "/?fields=name,picture&access_token=" +
+        access_token;
+      const e = await fetch(n);
+      return await e.json();
+    },
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
     },
-    getUidFromUrl: async (url) => {
+    async getUidFromUrl(url) {
       let methods = [
         () => require("CometRouteStore").getRoute(url).rootView.props.userID,
         async () => {
@@ -245,9 +270,8 @@ const UsefulScriptGlobalPageContext = {
       }
       return null;
     },
-
     // Source: https://pastebin.com/CNvUxpfc
-    getStoryInfo: async (bucketID, fb_dtsg) => {
+    async getStoryInfo(bucketID, fb_dtsg) {
       let body = new URLSearchParams();
       body.append("__a", 1);
       body.append("fb_dtsg", fb_dtsg);
@@ -359,6 +383,62 @@ const UsefulScriptGlobalPageContext = {
       // xhr.open("POST", "https://www.facebook.com/api/graphql/");
       // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       // xhr.send(body);
+    },
+    async unlikePage(pageId, user, fb_dtsg) {
+      var f = new FormData();
+      f.append("fbpage_id", pageId),
+        f.append("add", false),
+        f.append("reload", false),
+        f.append("fan_origin", "page_timeline"),
+        f.append("__user", user),
+        f.append("__a", 1),
+        f.append("fb_dtsg", fb_dtsg);
+      await fetch("https://www.facebook.com/ajax/pages/fan_status.php?dpr=1", {
+        method: "POST",
+        credentials: "include",
+        body: f,
+      });
+    },
+    async leaveGroup(groupId, user, fb_dtsg) {
+      var f = new FormData();
+      f.append("fb_dtsg", fb_dtsg),
+        f.append("confirmed", 1),
+        f.append("__user", user),
+        f.append("__a", 1);
+      await fetch(
+        "https://www.facebook.com/ajax/groups/membership/leave.php?group_id=" +
+          groupId +
+          "&dpr=1",
+        {
+          method: "POST",
+          credentials: "include",
+          body: f,
+        }
+      );
+    },
+    async removeFriendConfirm(friend_uid, user, fb_dtsg) {
+      var f = new FormData();
+      f.append("uid", friend_uid),
+        f.append("unref", "bd_friends_tab"),
+        f.append("floc", "friends_tab"),
+        f.append("__user", user),
+        f.append("__a", 1),
+        f.append("fb_dtsg", fb_dtsg);
+      await fetch(
+        "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
+        {
+          method: "POST",
+          credentials: "include",
+          body: f,
+        }
+      );
+    },
+    async messagesCount(token) {
+      let res = await UsefulScriptGlobalPageContext.Facebook.fetchGraphQl(
+        "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
+        token
+      );
+      return await res.json();
     },
   },
 };

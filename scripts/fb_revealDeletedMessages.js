@@ -117,10 +117,8 @@ export default {
             chats.push({
               type: window.UfsChatType.sticker,
               content: parse(
-                all_strings[i + 6].match(/"playableUrl":"(.*?)"/)?.[1] ||
-                  all_strings[i + 6].match(/"previewUrl":"(.*?)"/)?.[1] ||
-                  all_strings[i + 9].match(/"previewUrl":"(.*?)"/)?.[1] ||
-                  ""
+                all_strings.join("").match(/"playableUrl":"(.*?)"/)?.[1] ||
+                  "-no data-"
               ),
               id: all_strings[i + 1],
             });
@@ -284,6 +282,7 @@ export default {
     // MWPBaseMessage.bs
     // MWMessageListAttachment.bs
     // MWMessageListAttachmentContainer.bs
+    // LSDeleteThenInsertThread
 
     // TODO hiển thị đúng component react cho từng loại tin nhắn
     requireLazy(["MWV2ChatUnsentMessage.bs"], (MWV2ChatUnsentMessage) => {
@@ -327,12 +326,7 @@ export default {
 
   onClick: () => {
     let len = window.ufs_rvdfm_all_msgs.length;
-    if (!len)
-      alert(
-        "Chức năng chưa lưu được tin nhắn nào.\n" +
-          "Hãy mở khung chat bất kỳ để chức năng tự động lưu tin nhắn giúp bạn.\n" +
-          "Sau khi lưu, nếu có người thu hồi tin nhắn, chức năng sẽ lấy tin đã lưu hiển thị cho bạn xem."
-      );
+    if (!len) alert("Chức năng chưa lưu được tin nhắn nào.");
     else if (
       confirm(
         `Bạn có chắc muốn xóa tất cả ${len} tin nhắn` +

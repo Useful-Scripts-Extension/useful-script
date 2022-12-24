@@ -62,7 +62,7 @@ export const shared = {
           b = d[a];
         f.push(
           null !== b && "object" == typeof b
-            ? stringifyVariables(b, g)
+            ? shared.stringifyVariables(b, g)
             : encodeURIComponent(g) + "=" + encodeURIComponent(b)
         );
       }
