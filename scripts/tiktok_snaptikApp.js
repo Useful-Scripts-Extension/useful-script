@@ -6,7 +6,7 @@ import {
 } from "./helpers/utils.js";
 
 export default {
-  icon: "https://snaptik.app/pwa/img/icon_x192.png",
+  icon: "https://snaptik.app/favicon.ico",
   name: {
     en: "Tiktok - Download video (Snaptik)",
     vi: "Tiktok - Tải video (Snaptik)",
