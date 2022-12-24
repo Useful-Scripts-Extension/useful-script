@@ -37,8 +37,8 @@ export default {
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
-        const fb_dtsg = getFbdtsg();
-        const user_id = getUserId();
+        const fb_dtsg = UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
+        const user_id = UsefulScriptGlobalPageContext.Facebook.getUserId();
 
         /* HTML template
         <div class="ufs-more-react-story">
@@ -90,7 +90,8 @@ export default {
 
               let loading = 0;
               emojiLi.onclick = async function () {
-                const storyId = getStoryId();
+                const storyId =
+                  UsefulScriptGlobalPageContext.Facebook.getStoryId();
                 try {
                   if (!loading) emojiLi.classList.add("loading");
                   loading++;
@@ -144,30 +145,6 @@ export default {
       setTimeout(() => {
         floatingEmoji.remove();
       }, 2e3);
-    }
-    function getStoryId() {
-      const htmlStory = document.getElementsByClassName(
-        "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
-      );
-      return htmlStory[htmlStory.length - 1].getAttribute("data-id");
-    }
-    function getFbdtsg() {
-      try {
-        const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
-        const resp = regex.exec(document.documentElement.innerHTML);
-        return resp[1];
-      } catch (e) {
-        return require("DTSGInitData").token;
-      }
-    }
-    function getUserId() {
-      try {
-        const regex = /c_user=(\d+);/gm;
-        const resp = regex.exec(document.cookie);
-        return resp[1];
-      } catch (e) {
-        return require("RelayAPIConfigDefaults").actorID;
-      }
     }
     function reactStory(user_id, fb_dtsg, story_id, message) {
       return new Promise(async (resolve, reject) => {

@@ -176,6 +176,165 @@ const UsefulScriptGlobalPageContext = {
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
     },
+    getStoryBucketIdFromURL(url) {
+      return url.match(/stories\/(\d+)\//)?.[1];
+    },
+    getStoryId() {
+      const htmlStory = document.getElementsByClassName(
+        "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
+      );
+      return htmlStory[htmlStory.length - 1].getAttribute("data-id");
+    },
+    getFbdtsg() {
+      let methods = [
+        () => require("DTSGInitData").token,
+        () => {
+          const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
+          const resp = regex.exec(document.documentElement.innerHTML);
+          return resp[1];
+        },
+        () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
+      ];
+      for (let m of methods) {
+        try {
+          return m();
+        } catch (e) {}
+      }
+      alert("Cannot get your Fb_dtsg");
+    },
+    getUserId() {
+      let methods = [
+        () => require("CurrentUserInitialData").USER_ID,
+        () => require("RelayAPIConfigDefaults").actorID,
+        () => document.cookie.match(/c_user=(\d+)/)[1],
+        () => {
+          const regex = /c_user=(\d+);/gm;
+          const resp = regex.exec(document.cookie);
+          return resp[1];
+        },
+      ];
+      for (let m of methods) {
+        try {
+          return m();
+        } catch (e) {}
+      }
+      alert("Cannot get your UID");
+    },
+
+    // Source: https://pastebin.com/CNvUxpfc
+    getStoryInfo: async (bucketID, fb_dtsg) => {
+      let body = new URLSearchParams();
+      body.append("__a", 1);
+      body.append("fb_dtsg", fb_dtsg);
+      body.append(
+        "variables",
+        JSON.stringify({
+          bucketID: bucketID,
+          initialLoad: false,
+          scale: 1,
+        })
+      );
+      body.append("doc_id", 2586853698032602);
+
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body,
+        credentials: "include",
+      });
+
+      let json = await res.json();
+      console.log(json);
+      let data = json?.data?.bucket;
+
+      if (!data) throw new Error("Không lấy được data");
+      return {
+        storyId: data.id,
+        author: {
+          id: data.owner.id,
+          name: data.owner.name,
+          avatar: data.owner.profile_picture.uri,
+          avatarURL: data.owner.url,
+        },
+        Objects: data.unified_stories.edges.map((_, i) => {
+          return {
+            pictureBlurred:
+              data.unified_stories.edges[i].node.attachments[0].media
+                .blurredImage.uri,
+
+            picturePreview:
+              data.unified_stories.edges[i].node.attachments[0].media
+                .previewImage.uri,
+
+            totalReaction:
+              data.unified_stories.edges[i].node.story_card_info
+                .feedback_summary.total_reaction_count,
+
+            backgroundCss:
+              data.unified_stories.edges[i].node.story_default_background.color,
+
+            backgroundCss3:
+              data.unified_stories.edges[i].node.story_default_background
+                .gradient.css,
+
+            ...(data.unified_stories.edges[i].node.attachments[0].media
+              .__typename == "Photo"
+              ? {
+                  caption:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .accessibility_caption,
+
+                  image:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .image.uri,
+                }
+              : data.unified_stories.edges[i].node.attachments[0].media
+                  .__typename == "Video"
+              ? {
+                  permanlinkUrl:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .permalink_url,
+
+                  playableVideo:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playable_url,
+
+                  playableUrlDash:
+                    data.unified_stories.edges[0].node.attachments[0].media
+                      .playable_url_dash,
+
+                  playableUrlHDString:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playableUrlHdString,
+
+                  playableUrlHD:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playable_url_quality_hd,
+                }
+              : null),
+          };
+        }),
+      };
+
+      // let data =
+      //   "__a=1&fb_dtsg=" +
+      //   dtsg +
+      //   "&variables=%7B%22bucketID%22%3A%22" +
+      //   bucketID +
+      //   "%22%2C%22initialLoad%22%3Afalse%2C%22scale%22%3A1%7D&doc_id=2586853698032602";
+
+      // let xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
+      // xhr.addEventListener("readystatechange", function () {
+      //   if (this.readyState === 4) {
+
+      //   }
+      // });
+
+      // xhr.open("POST", "https://www.facebook.com/api/graphql/");
+      // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      // xhr.send(body);
+    },
   },
 };
 window.UsefulScriptGlobalPageContext = UsefulScriptGlobalPageContext;
