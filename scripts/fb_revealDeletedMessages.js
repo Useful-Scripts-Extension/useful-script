@@ -262,7 +262,7 @@ export default {
                 utf8_str.match(/(\\\")(.*?)(\\\")(?=[,)])/g) || []
               ).map((str) => parse(str));
 
-              if (all_strings.length && all_strings.length < 200) {
+              if (all_strings.length) {
                 let chats = findAllChatData(all_strings);
                 chats.length && saveChatData(chats);
               }
@@ -286,47 +286,43 @@ export default {
     // MWMessageListAttachmentContainer.bs
 
     // TODO hiển thị đúng component react cho từng loại tin nhắn
-    requireLazy(
-      ["MWV2ChatUnsentMessage.bs", "MWPBaseMessage.bs", "MWV2ChatImage.bs"],
-      (MWV2ChatUnsentMessage, MWPBaseMessage, MWV2ChatImage) => {
-        const MWV2ChatUnsentMessageOrig = MWV2ChatUnsentMessage.make;
-        MWV2ChatUnsentMessage.make = function (a) {
-          if (a) {
-            let outgoing = a.outgoing;
-            let {
-              isUnsent,
-              messageId,
-              threadKey,
-              offlineThreadingId,
-              displayedContentTypes,
-              senderId,
-            } = a.message;
+    requireLazy(["MWV2ChatUnsentMessage.bs"], (MWV2ChatUnsentMessage) => {
+      const MWV2ChatUnsentMessageOrig = MWV2ChatUnsentMessage.make;
+      MWV2ChatUnsentMessage.make = function (a) {
+        if (a) {
+          let outgoing = a.outgoing;
+          let {
+            isUnsent,
+            messageId,
+            threadKey,
+            offlineThreadingId,
+            displayedContentTypes,
+            senderId,
+          } = a.message;
 
-            if (isUnsent) {
-              threadKey =
-                UsefulScriptGlobalPageContext.Facebook.decodeArrId(threadKey);
-              senderId =
-                UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
+          if (isUnsent) {
+            threadKey =
+              UsefulScriptGlobalPageContext.Facebook.decodeArrId(threadKey);
+            senderId =
+              UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
 
-              let savedMsg = window.ufs_rvdfm_all_msgs.find(
-                (_) => _.id === messageId
-              );
+            let savedMsg = window.ufs_rvdfm_all_msgs.find(
+              (_) => _.id === messageId
+            );
 
-              a.message.isUnsent = false;
-              if (savedMsg) {
-                let time = new Date(savedMsg.saved_time).toLocaleString();
-                let title = `[Tin thu hồi - ${savedMsg.type}]:\n`;
-                let text = `${savedMsg?.content}`;
-                a.message.text = title + text;
-              } else {
-                a.message.text = "[Tin thu hồi]: -Không có dữ liệu-";
-              }
+            a.message.isUnsent = false;
+            if (savedMsg) {
+              let title = `[Tin thu hồi - ${savedMsg.type}]:\n`;
+              let text = `${savedMsg?.content}`;
+              a.message.text = title + text;
+            } else {
+              a.message.text = "[Tin thu hồi]: -Không có dữ liệu-";
             }
           }
-          return MWV2ChatUnsentMessageOrig.apply(this, arguments);
-        };
-      }
-    );
+        }
+        return MWV2ChatUnsentMessageOrig.apply(this, arguments);
+      };
+    });
   },
 
   onClick: () => {
