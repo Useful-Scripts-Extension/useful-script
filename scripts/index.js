@@ -78,7 +78,6 @@ import scrollByDrag from "./scrollByDrag.js";
 import youtube_viewDislikes from "./youtube_viewDislikes.js";
 import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
-import youtube_popupPlayer from "./youtube_popupPlayer.js";
 import googleShortcuts from "./googleShortcuts.js";
 import archiveToday from "./archiveToday.js";
 import whois from "./whois.js";
@@ -246,7 +245,6 @@ const allScripts = {
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
   downDetector: downDetector,
   fb_getTokenFfb: addBadge(fb_getTokenFfb, BADGES.new),
-  youtube_popupPlayer: addBadge(youtube_popupPlayer, BADGES.beta),
   googleShortcuts: addBadge(googleShortcuts, BADGES.new),
   archiveToday: archiveToday,
   whois: whois,
