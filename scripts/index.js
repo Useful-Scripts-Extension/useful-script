@@ -160,6 +160,10 @@ import fb_moreReactionStory from "./fb_moreReactionStory.js";
 import changeAudioOutput from "./changeAudioOutput.js";
 import docDownloader from "./docDownloader.js";
 import scribd_bypassPreview from "./scribd_bypassPreview.js";
+import anti_clickjacking from "./anti_clickjacking.js";
+import fb_antiPhishing from "./fb_antiPhishing.js";
+import fb_removeFbclid from "./fb_removeFbclid.js";
+import fb_messengerHistory from "./fb_messengerHistory.js";
 
 // inject badges
 const allScripts = {
@@ -341,6 +345,10 @@ const allScripts = {
   changeAudioOutput: addBadge(changeAudioOutput, BADGES.new),
   docDownloader: addBadge(docDownloader, BADGES.new),
   scribd_bypassPreview: addBadge(scribd_bypassPreview, BADGES.new),
+  anti_clickjacking: addBadge(anti_clickjacking, BADGES.new),
+  fb_antiPhishing: addBadge(fb_antiPhishing, BADGES.new),
+  fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
+  fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

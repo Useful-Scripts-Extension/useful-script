@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-regular fa-comment-dots fa-xl fa-lg"></i>',
+  icon: '<i class="fa-regular fa-comment-dots fa-lg"></i>',
   name: {
     en: "Facebook - Who is typing to you?",
     vi: "Facebook - Ai đang nhắn cho bạn?",
@@ -36,7 +36,7 @@ export default {
 
             if (!(uid in window.ufs_whoIsTyping_Cached)) {
               let userData =
-                await UsefulScriptGlobalPageContext.Facebook.getUserProfileDataFromUid(
+                await UsefulScriptGlobalPageContext.Facebook.getUserInfoFromUid(
                   uid
                 );
               window.ufs_whoIsTyping_Cached[uid] = userData;
