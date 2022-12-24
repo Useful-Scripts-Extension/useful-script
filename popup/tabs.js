@@ -123,8 +123,6 @@ const tabs = [
       s.fb_getPageId,
       s.fb_getGroupId,
       s.fb_getAlbumId,
-      s.fb_getTimelineAlbumId,
-      s.fb_getAllVideoId,
       s.fb_getAllAlbumId,
       s.fb_getUidFromUrl,
       s.fb_getAllUidFromFbSearch,

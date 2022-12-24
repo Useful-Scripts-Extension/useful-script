@@ -24,7 +24,7 @@ export default {
           utf8_str.startsWith("1") &&
           utf8_str.includes("updateTypingIndicator")
         ) {
-          console.log(utf8_str);
+          // console.log(utf8_str);
           try {
             let isStartTyping = utf8_str.includes(",true)");
             let isStopTyping = utf8_str.includes(",false)");

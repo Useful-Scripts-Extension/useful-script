@@ -38,7 +38,7 @@ export default {
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
         const fb_dtsg = UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-        const user_id = UsefulScriptGlobalPageContext.Facebook.getUserId();
+        const user_id = UsefulScriptGlobalPageContext.Facebook.getYourUserId();
 
         /* HTML template
         <div class="ufs-more-react-story">
