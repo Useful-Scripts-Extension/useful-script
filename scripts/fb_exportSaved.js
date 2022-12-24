@@ -13,7 +13,7 @@ export default {
 
   onClickExtension: async function () {
     const encodeHTML = (e) =>
-      e.replace(/([\u00A0-\u9999<>&])(.|$)/g, function (e, a, t) {
+      e?.replace(/([\u00A0-\u9999<>&])(.|$)/g, function (e, a, t) {
         return "&" !== a || "#" !== t
           ? (/[\u00A0-\u9999<>&]/.test(t) && (t = "&#" + t.charCodeAt(0) + ";"),
             "&#" + a.charCodeAt(0) + ";" + t)
@@ -47,65 +47,43 @@ export default {
       });
       let json = await res.json();
       console.log(json);
-      // json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
-      //   let a = "",
-      //     t = "",
-      //     s = "",
-      //     i = "",
-      //     n = "",
-      //     l = "",
-      //     o = "",
-      //     c = "",
-      //     d = "";
-      //   checkExit(() => e.node.savable.savable_title.text) &&
-      //     (a = encodeHTML(e.node.savable.savable_title.text)),
-      //     checkExit(() => e.node.savable.__typename) &&
-      //       (t = e.node.savable.__typename),
-      //     checkExit(() => e.node.savable.savable_image.uri) &&
-      //       (s = e.node.savable.savable_image.uri),
-      //     checkExit(() => e.node.savable.url) && (i = e.node.savable.url),
-      //     checkExit(() => e.node.container_savable.savable_permalink) &&
-      //       (n = e.node.container_savable.savable_permalink),
-      //     checkExit(
-      //       () => e.node.container_savable.savable_actors[0].__typename
-      //     ) && (l = e.node.container_savable.savable_actors[0].__typename),
-      //     checkExit(() => e.node.container_savable.savable_actors[0].name) &&
-      //       (o = e.node.container_savable.savable_actors[0].name),
-      //     checkExit(() => e.node.container_savable.savable_actors[0].id) &&
-      //       (c = e.node.container_savable.savable_actors[0].id),
-      //     checkExit(
-      //       () => e.node.container_savable.savable_actors[0].profile_picture.uri
-      //     ) &&
-      //       (d =
-      //         e.node.container_savable.savable_actors[0].profile_picture.uri),
-      //     data.push({
-      //       title: a,
-      //       type: t,
-      //       image: s,
-      //       url: i,
-      //       urlPost: n,
-      //       sourceType: l,
-      //       sourceName: o,
-      //       sourceID: c,
-      //       sourceImage: d,
-      //     });
-      // });
-      // let s = !1;
-      // if (
-      //   (checkExit(
-      //     () => json.data.viewer.saver_info.all_saves.page_info.has_next_page
-      //   ) &&
-      //     (s = json.data.viewer.saver_info.all_saves.page_info.has_next_page),
-      //   !0 === s)
-      // )
-      //   await get_posts(
-      //     json.data.viewer.saver_info.all_saves.page_info.end_cursor
-      //   );
-      // else {
-      //   // let e = window.btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-      //   // template(e);
-      //   console.log("Done! Đang xuất dữ liệu...");
-      // }
+      json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
+        data.push({
+          title: encodeHTML(checkExit(() => e.node.savable.savable_title.text)),
+          type: checkExit(() => e.node.savable.__typename),
+          image: checkExit(() => e.node.savable.savable_image.uri),
+          url: checkExit(() => e.node.savable.url),
+          urlPost: checkExit(() => e.node.container_savable.savable_permalink),
+          sourceType: checkExit(
+            () => e.node.container_savable.savable_actors[0].__typename
+          ),
+          sourceName: checkExit(
+            () => e.node.container_savable.savable_actors[0].name
+          ),
+          sourceID: checkExit(
+            () => e.node.container_savable.savable_actors[0].id
+          ),
+          sourceImage: checkExit(
+            () => e.node.container_savable.savable_actors[0].profile_picture.uri
+          ),
+        });
+      });
+      let s = !1;
+      if (
+        (checkExit(
+          () => json.data.viewer.saver_info.all_saves.page_info.has_next_page
+        ) &&
+          (s = json.data.viewer.saver_info.all_saves.page_info.has_next_page),
+        !0 === s)
+      )
+        await get_posts(
+          json.data.viewer.saver_info.all_saves.page_info.end_cursor
+        );
+      else {
+        // let e = window.btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+        // template(e);
+        console.log("Done! Đang xuất dữ liệu...");
+      }
     };
 
     let { setLoadingText, closeLoading } = showLoading("Đang lấy token...");
