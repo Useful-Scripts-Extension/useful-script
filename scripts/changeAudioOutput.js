@@ -75,10 +75,14 @@ export default {
 
     submitButton.onclick = async function (e) {
       if (submitButton.disabled) return;
+      let audio_video = Array.from(document.querySelectorAll("audio,video"));
+
+      if (!audio_video.length)
+        return alert("Không tìm thấy âm thanh/video nào trong trang web");
 
       submitButton.innerText = "Setting...";
       disableBtn(submitButton);
-      for (let el of Array.from(document.querySelectorAll("audio,video"))) {
+      for (let el of audio_video) {
         await el.setSinkId(deviceSelector.value);
       }
       submitButton.innerText = "Set Device";
