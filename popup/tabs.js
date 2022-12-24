@@ -106,7 +106,7 @@ const tabs = [
       s.fb_downloadCommentVideo,
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      s.fb_storyInfo,
+      // s.fb_storyInfo,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.fb_downloadAlbumMedia,
       s.fb_exportSaved,

@@ -5,8 +5,8 @@ export default {
     vi: "Xem thông tin của Facebook Story",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Get facebook story info",
+    vi: "Xem thông tin story",
   },
 
   onClick: async function () {
