@@ -10,12 +10,16 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  onClick: function () {
+  onClick: async function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 
-    const find = (r) => (r ? r[0] : 0);
+    let uid = await UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(
+      location.href
+    );
+    if (uid) return prompt(`USER ID của ${document.title}:`, uid);
 
-    let uid =
+    const find = (r) => (r ? r[0] : 0);
+    uid =
       find(
         /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(
           document.querySelector("html").textContent

@@ -9,8 +9,6 @@ import fb_getUid from "./fb_getUid.js";
 import fb_getPageId from "./fb_getPageId.js";
 import fb_getGroupId from "./fb_getGroupId.js";
 import fb_getAlbumId from "./fb_getAlbumId.js";
-import fb_getTimelineAlbumId from "./fb_getTimelineAlbumId.js";
-import fb_getAllVideoId from "./fb_getAllVideoId.js";
 import fb_getAllAlbumId from "./fb_getAllAlbumId.js";
 import fb_getUidFromUrl from "./fb_getUidFromUrl.js";
 import fb_getAllUidFromFbSearch from "./fb_getAllUidFromFbSearch.js";
@@ -174,8 +172,6 @@ const allScripts = {
   fb_getPageId: addBadge(fb_getPageId, BADGES.hot),
   fb_getGroupId: addBadge(fb_getGroupId, BADGES.hot),
   fb_getAlbumId: addBadge(fb_getAlbumId, BADGES.hot),
-  fb_getTimelineAlbumId: addBadge(fb_getTimelineAlbumId, BADGES.hot),
-  fb_getAllVideoId,
   fb_getAllAlbumId,
   fb_getUidFromUrl: addBadge(fb_getUidFromUrl, BADGES.hot),
   fb_getAllUidFromFbSearch,

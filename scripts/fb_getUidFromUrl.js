@@ -10,30 +10,16 @@ export default {
     vi: "Lấy id của facebook user từ URL truyền vào",
   },
 
-  onClickExtension: function () {
+  onClick: function () {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
-
-    const _getUidFromUrl = async (url) => {
-      var response = await fetch(url);
-      if (response.status == 200) {
-        var text = await response.text();
-        let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
-        if (uid?.length) {
-          return uid[0];
-        }
-      }
-      return null;
-    };
     const url = prompt("Nhập url của user fb:", "");
     if (url) {
-      const { closeLoading } = showLoading("Đang lấy UID của " + url);
-      _getUidFromUrl(url)
+      UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(url)
         .then((uid) => {
           if (uid) prompt(`UID của user ${url}:`, uid);
           else alert("Không tìm thấy uid của user!");
         })
-        .catch((err) => alert("Lỗi: " + err.message))
-        .finally(closeLoading);
+        .catch((err) => alert("Lỗi: " + err.message));
     }
   },
 };

@@ -176,6 +176,30 @@ const UsefulScriptGlobalPageContext = {
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
     },
+    getUidFromUrl: async (url) => {
+      let methods = [
+        () => require("CometRouteStore").getRoute(url).rootView.props.userID,
+        async () => {
+          var response = await fetch(url);
+          if (response.status == 200) {
+            var text = await response.text();
+            let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
+            if (uid?.length) {
+              return uid[0];
+            }
+          }
+          return null;
+        },
+      ];
+
+      for (let m of methods) {
+        try {
+          let uid = await m();
+          if (uid) return uid;
+        } catch (e) {}
+      }
+      return null;
+    },
     getStoryBucketIdFromURL(url) {
       return url.match(/stories\/(\d+)\//)?.[1];
     },
@@ -188,6 +212,7 @@ const UsefulScriptGlobalPageContext = {
     getFbdtsg() {
       let methods = [
         () => require("DTSGInitData").token,
+        () => require("DTSG").getToken(),
         () => {
           const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
           const resp = regex.exec(document.documentElement.innerHTML);
@@ -200,9 +225,9 @@ const UsefulScriptGlobalPageContext = {
           return m();
         } catch (e) {}
       }
-      alert("Cannot get your Fb_dtsg");
+      return null;
     },
-    getUserId() {
+    getYourUserId() {
       let methods = [
         () => require("CurrentUserInitialData").USER_ID,
         () => require("RelayAPIConfigDefaults").actorID,
@@ -218,7 +243,7 @@ const UsefulScriptGlobalPageContext = {
           return m();
         } catch (e) {}
       }
-      alert("Cannot get your UID");
+      return null;
     },
 
     // Source: https://pastebin.com/CNvUxpfc
