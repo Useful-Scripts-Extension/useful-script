@@ -12,9 +12,9 @@ export default {
   },
 
   onClickExtension: function () {
-    const accessToken = prompt("Enter access token:", "");
+    const accessToken = prompt("Nhập access token:", "");
     if (!accessToken) return;
-    const albumId = prompt("Enter album id: ", "");
+    const albumId = prompt("Nhập album id: ", "");
     if (!albumId) return;
 
     async function fetchAlbumPhotosFromCursor({ albumId, cursor }) {
@@ -95,14 +95,22 @@ export default {
       albumId,
       progress: (length) =>
         setLoadingText("Đang thu thập " + length + " links..."),
-    }).then((links) => {
-      if (
-        confirm(
-          "Tìm được " + links.length + " links ảnh/video.\nBấm OK để tải xuống."
+    })
+      .then((links) => {
+        if (
+          confirm(
+            "Tìm được " +
+              links.length +
+              " links ảnh/video.\nBấm OK để tải xuống."
+          )
         )
-      )
-        downloadData(links.join("\n"), albumId, ".txt");
-      closeLoading();
-    });
+          downloadData(links.join("\n"), albumId, ".txt");
+      })
+      .catch((e) => {
+        alert("ERROR: " + e);
+      })
+      .finally(() => {
+        closeLoading();
+      });
   },
 };
