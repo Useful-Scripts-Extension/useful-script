@@ -99,6 +99,7 @@ const tabs = [
       s.fb_moreReactionStory,
       s.fb_whoIsTyping,
       s.fb_messengerHistory,
+      s.fb_messengerCount,
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       s.fb_toggleNewFeed,

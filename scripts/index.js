@@ -164,6 +164,7 @@ import anti_clickjacking from "./anti_clickjacking.js";
 import fb_antiPhishing from "./fb_antiPhishing.js";
 import fb_removeFbclid from "./fb_removeFbclid.js";
 import fb_messengerHistory from "./fb_messengerHistory.js";
+import fb_messengerCount from "./fb_messengerCount.js";
 
 // inject badges
 const allScripts = {
@@ -349,6 +350,7 @@ const allScripts = {
   fb_antiPhishing: addBadge(fb_antiPhishing, BADGES.new),
   fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
   fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
+  fb_messengerCount: addBadge(fb_messengerCount, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

@@ -33,12 +33,12 @@ export default {
     })();
 
     function loadModal(EMOJI_LIST) {
-      const timeoutCheckStoriesFooter = setInterval(() => {
+      const timeoutCheckStoriesFooter = setInterval(async () => {
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
-        const fb_dtsg = UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-        const user_id = UsefulScriptGlobalPageContext.Facebook.getYourUserId();
+        const fb_dtsg = await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
+        const user_id = await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
 
         /* HTML template
         <div class="ufs-more-react-story">

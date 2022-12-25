@@ -18,7 +18,7 @@ export default {
         );
       if (!storyBucketId) throw new Error("Không tìm thấy story nào.");
 
-      let fb_dtsg = UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
+      let fb_dtsg = await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
       let storyInfo = await UsefulScriptGlobalPageContext.Facebook.getStoryInfo(
         storyBucketId,
         fb_dtsg
