@@ -494,3 +494,7 @@ function getLinkFCode() {
 
 // easy downloader
 // https://github.com/nguy3n47/easy-download-extension/blob/master/index.js
+
+chrome.runtime.getPackageDirectoryEntry(function (root) {
+  console.log(root);
+});

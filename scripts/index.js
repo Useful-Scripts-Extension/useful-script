@@ -1,6 +1,5 @@
 import { addBadge, BADGES } from "./helpers/badge.js";
 
-import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";
 import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
@@ -136,7 +135,7 @@ import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 import douyin_downloadVideo from "./douyin_downloadVideo.js";
 import freesound_downloadAudio from "./freesound_downloadAudio.js";
-import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
+// import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
 import studocu_dl from "./studocu_dl.js";
@@ -163,12 +162,11 @@ import scribd_bypassPreview from "./scribd_bypassPreview.js";
 import anti_clickjacking from "./anti_clickjacking.js";
 import fb_antiPhishing from "./fb_antiPhishing.js";
 import fb_removeFbclid from "./fb_removeFbclid.js";
-import fb_messengerHistory from "./fb_messengerHistory.js";
+// import fb_messengerHistory from "./fb_messengerHistory.js";
 import fb_messengerCount from "./fb_messengerCount.js";
 
 // inject badges
 const allScripts = {
-  _test,
   fb_toggleLight: fb_toggleLight,
   fb_getTokenBusinessStudio: addBadge(fb_getTokenBusinessStudio, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
@@ -322,7 +320,7 @@ const allScripts = {
   ggdrive_generateDirectLink: addBadge(ggdrive_generateDirectLink, BADGES.new),
   douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
   freesound_downloadAudio: addBadge(freesound_downloadAudio, BADGES.new),
-  soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
+  // soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: addBadge(fastDoc, BADGES.new),
   smartPDF: addBadge(smartPDF, BADGES.new),
   studocu_dl: addBadge(studocu_dl, BADGES.new),
@@ -349,7 +347,7 @@ const allScripts = {
   anti_clickjacking: addBadge(anti_clickjacking, BADGES.new),
   fb_antiPhishing: addBadge(fb_antiPhishing, BADGES.new),
   fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
-  fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
+  // fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
   fb_messengerCount: addBadge(fb_messengerCount, BADGES.new),
 };
 
