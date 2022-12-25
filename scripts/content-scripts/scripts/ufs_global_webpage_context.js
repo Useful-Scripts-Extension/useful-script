@@ -21,10 +21,14 @@ const UsefulScriptGlobalPageContext = {
       });
     },
     getURL: async function (filePath) {
-      return await UsefulScriptGlobalPageContext.Extension.sendToContentScript(
-        "getURL",
-        filePath
-      );
+      if (typeof chrome?.runtime?.getURL === "function") {
+        return await chrome.runtime.getURL(filePath);
+      } else {
+        return await UsefulScriptGlobalPageContext.Extension.sendToContentScript(
+          "getURL",
+          filePath
+        );
+      }
     },
   },
   DOM: {
@@ -132,8 +136,8 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Facebook: {
-    async fetchGraphQl(str, token) {
-      var fb_dtsg = "fb_dtsg=" + encodeURIComponent(token);
+    async fetchGraphQl(str, fb_dtsg) {
+      var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
       fb_dtsg += str.includes("variables")
         ? "&" + str
         : "&q=" + encodeURIComponent(str);
@@ -163,7 +167,10 @@ const UsefulScriptGlobalPageContext = {
         scale: 1.5,
       };
       let f = new URLSearchParams();
-      f.append("fb_dtsg", require("DTSGInitialData").token);
+      f.append(
+        "fb_dtsg",
+        await UsefulScriptGlobalPageContext.Facebook.getFbdtsg()
+      );
       f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
       f.append("variables", JSON.stringify(variables));
       f.append("doc_id", "4159355184147969");
@@ -234,38 +241,47 @@ const UsefulScriptGlobalPageContext = {
       );
       return htmlStory[htmlStory.length - 1].getAttribute("data-id");
     },
-    getFbdtsg() {
+    async getFbdtsg() {
       let methods = [
         () => require("DTSGInitData").token,
         () => require("DTSG").getToken(),
         () => {
-          const regex = /"DTSGInitialData",\[],{"token":"(.+?)"/gm;
-          const resp = regex.exec(document.documentElement.innerHTML);
-          return resp[1];
+          return document.documentElement.innerHTML.match(
+            /"DTSGInitialData",\[],{"token":"(.+?)"/gm
+          )[1];
+        },
+        async () => {
+          let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+          let text = await res.text();
+          return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
         },
         () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
       ];
       for (let m of methods) {
         try {
-          return m();
+          let d = await m();
+          if (d) return d;
         } catch (e) {}
       }
       return null;
     },
-    getYourUserId() {
+    async getYourUserId() {
       let methods = [
         () => require("CurrentUserInitialData").USER_ID,
         () => require("RelayAPIConfigDefaults").actorID,
         () => document.cookie.match(/c_user=(\d+)/)[1],
-        () => {
-          const regex = /c_user=(\d+);/gm;
-          const resp = regex.exec(document.cookie);
-          return resp[1];
-        },
+        async () =>
+          (
+            await chrome.cookies.get({
+              url: "https://www.facebook.com",
+              name: "c_user",
+            })
+          ).value,
       ];
       for (let m of methods) {
         try {
-          return m();
+          let d = await m();
+          if (d) return d;
         } catch (e) {}
       }
       return null;
@@ -433,12 +449,11 @@ const UsefulScriptGlobalPageContext = {
         }
       );
     },
-    async messagesCount(token) {
-      let res = await UsefulScriptGlobalPageContext.Facebook.fetchGraphQl(
+    async messagesCount(fb_dtsg) {
+      return await UsefulScriptGlobalPageContext.Facebook.fetchGraphQl(
         "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
-        token
+        fb_dtsg
       );
-      return await res.json();
     },
   },
 };

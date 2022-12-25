@@ -8,8 +8,8 @@ export default {
     en: "Pick a default audio output device, customizable for each browser tab.",
     vi: "Thay đổi đầu ra âm thanh của trang web đang mở.\nMỗi tab có thể chọn đầu ra khác nhau (tai nghe/loa).",
   },
+  infoLink: "https://www.facebook.com/groups/j2team.community/posts/1362716140727169/",
 
-  // Fb Post: https://www.facebook.com/groups/j2team.community/posts/1362716140727169
   // Source: https://gist.github.com/monokaijs/44ef4bd0770f83272b83c038a2769c90
   onClick: async () => {
     let key = "ufs-audio-output-switcher";
