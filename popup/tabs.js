@@ -28,7 +28,6 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,
@@ -53,7 +52,7 @@ const tabs = [
       // s.bookmark_exporter,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.showTheAudios,
-      s.soundcloud_downloadMusic,
+      // s.soundcloud_downloadMusic,
       s.nhaccuatui_downloader,
       s.zingmp3_downloadMusic,
       s.zingmp3_oldLayout,
@@ -98,7 +97,7 @@ const tabs = [
       s.fb_invisible_message,
       s.fb_moreReactionStory,
       s.fb_whoIsTyping,
-      s.fb_messengerHistory,
+      // s.fb_messengerHistory,
       s.fb_messengerCount,
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
