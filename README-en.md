@@ -2,29 +2,29 @@
 
 # Useful scripts - Chrome extension
 
-[English](./README-en.md)
+[Tiếng Việt](./README.md)
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
-## Lịch sử cập nhật
+## Change logs 
 
-Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (25/12/2022)
+Verion: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (25/12/2022)
 
-[Lịch sử cập nhật](/md/CHANGELOGS.md)
+[Change logs](/md/CHANGELOGS.md)
 
-## Giới thiệu
+## Overview
 
-1 extension chứa 1 đống extensions nhỏ.
+an extension includes a lot of small extensions.
 
-- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
-## Cài đặt
+## Install
 
-- Cài đặt thủ công - [Xem hướng dẫn (youtube)](https://www.youtube.com/watch?v=2wFTbDK80g0)
+- Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
-## Ảnh chụp màn hình
+## Screenshots
 
 ![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
@@ -38,7 +38,7 @@ Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (2
 
 Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
-## Kiến thức hay
+## Learn
 
 - Extension Tips
 
