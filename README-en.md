@@ -18,6 +18,8 @@ an extension includes a lot of small extensions.
 
 - View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
+- [Group facebook](https://www.facebook.com/groups/1154059318582088) of this extension
+
 ## Install
 
 - Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)

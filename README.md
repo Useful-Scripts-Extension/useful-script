@@ -18,6 +18,8 @@ Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (2
 
 - Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
 
+- [Nhóm facebook](https://www.facebook.com/groups/1154059318582088) của extension
+
 ## Cài đặt
 
 - Cài đặt thủ công - [Xem hướng dẫn (youtube)](https://www.youtube.com/watch?v=2wFTbDK80g0)
