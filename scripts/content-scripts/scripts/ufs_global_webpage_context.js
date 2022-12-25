@@ -183,15 +183,16 @@ const UsefulScriptGlobalPageContext = {
 
       let text = await res.text();
       return {
+        uid: uid,
         name: UsefulScriptsUtils.decodeEscapedUnicodeString(
           /"name":"(.*?)"/.exec(text)?.[1]
         ),
-        profiePicLarge: UsefulScriptsUtils.decodeEscapedUnicodeString(
-          /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1]
+        avatar: UsefulScriptsUtils.decodeEscapedUnicodeString(
+          /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1]
         ),
-        //  profiePicMedium: /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1],
-        //  profiePicSmall: /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1],
-        //  profilePic160: /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1],
         gender: /"gender":"(.*?)"/.exec(text)?.[1],
         alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
       };
@@ -203,7 +204,13 @@ const UsefulScriptGlobalPageContext = {
         "/?fields=name,picture&access_token=" +
         access_token;
       const e = await fetch(n);
-      return await e.json();
+      let json = await e.json();
+
+      return {
+        uid: uid,
+        name: json?.name,
+        avatar: json?.picture?.data?.url,
+      };
     },
     decodeArrId(arrId) {
       return arrId[0] * 4294967296 + arrId[1];
