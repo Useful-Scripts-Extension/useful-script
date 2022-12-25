@@ -42,8 +42,8 @@ export default {
               window.ufs_whoIsTyping_Cached[uid] = userData;
             }
 
-            let { name, profiePicLarge } = window.ufs_whoIsTyping_Cached[uid];
-            notifyTypingEvent(uid, name, profiePicLarge, isStartTyping);
+            let { name, avatar } = window.ufs_whoIsTyping_Cached[uid];
+            notifyTypingEvent(uid, name, avatar, isStartTyping);
           } catch (e) {
             console.log("ERROR: ", e);
           }
@@ -77,7 +77,7 @@ export default {
       let time = new Date().toLocaleTimeString();
       let text =
         `<b><a target="_blank" href="https://fb.com/${uid}">${name}</a></b>` +
-        ` ${isTyping ? "đang" : "ngưng"} nhắn cho bạn.`;
+        ` ${isTyping ? "đang gõ tin" : "ngưng gõ tin"} nhắn cho bạn.`;
 
       let newNoti = document.createElement("div");
       newNoti.className = "ufs-noti-item clearfix";

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Useful script - Facebook messenger history</title>
+
+  <script src="./content-scripts/scripts/ufs_global_webpage_context.js"></script>
+  <link rel="stylesheet" href="./fb_messengerHistory.css">
+</head>
+
+<body>
+  <h1>Useful script</h1>
+  <h1>Facebook messenger - Xem tin nhắn đầu tiên</h1>
+
+  <table>
+    <tr>
+      <td><label>Link profile bạn bè:</label></td>
+      <td><input id="inp-friend-url" type="text" placeholder="Nhập link profile bạn bè..."></td>
+      <td rowspan="2"><button id="btn-scan">Bắt đầu Scan</button></td>
+    </tr>
+    <tr>
+      <td><label>Access token của bạn:</label></td>
+      <td><input id="inp-access-token" type="text" placeholder="Nhập access token..."></td>
+    </tr>
+  </table>
+
+  <div class="overlay">
+    <div class="loader"></div>
+    <p id="loading-text"></p>
+  </div>
+
+  <script src="./fb_messengerHistory_main.js"></script>
+</body>
+
+</html>
