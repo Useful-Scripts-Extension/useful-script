@@ -66,7 +66,7 @@
 
 - Fix/Update các scripts:
 
-  1: douyin_downloadVideo
+  1. douyin_downloadVideo
   2. fb_getAllUidFromFriendsPage
   3. fb_getAvatarFromUid
   4. fb_getTimelineAlbumId
@@ -83,7 +83,7 @@
 
 - Xóa các scripts:
 
-  1: download_video
+  1. download_video
   2. download_video2
   3. enableTextSelection
   4. fb_getAllVideoId
@@ -109,7 +109,7 @@
 
 - 28 scripts mới:
 
-  1: getLinkLuanxt
+  1. getLinkLuanxt
   2. getFavicon
   3. download_audio
   4. nhaccuatui_downloader
@@ -140,7 +140,7 @@
 
 - Fix/Update các scripts:
 
-  1: archiveToday
+  1. archiveToday
   2. checkWebDie
   3. darkModePDF
   4. doutube_downloadWatchingVideo
@@ -175,7 +175,7 @@
 
 - 9 scripts mới:
 
-  1: archiveToday
+  1. archiveToday
   2. cssSelectorViewer
   3. download_video2
   4. getAllEmailsInWeb
@@ -188,7 +188,7 @@
 
 - Fix các scripts:
 
-  1: perfomanceAnalyzer
+  1. perfomanceAnalyzer
   2. remove cookies
   3. view cookies
   4. viewPartialSource
