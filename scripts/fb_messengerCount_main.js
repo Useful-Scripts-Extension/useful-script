@@ -54,7 +54,9 @@ function main() {
 }
 
 function search(text) {
-  [...tableDiv.querySelectorAll("tr")].forEach((tr) => {
+  [...tableDiv.querySelectorAll("tr")].forEach((tr, index) => {
+    if (index == 0) return; // ignore table header
+
     let html = tr.innerHTML;
     if (!html.toLowerCase().includes(text.toLowerCase())) {
       tr.classList.add("hidden");
