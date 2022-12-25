@@ -1,16 +1,16 @@
 export default {
+  icon: '<i class="fa-solid fa-people-group fa-lg"></i>',
   name: {
     en: "Get fb Group ID",
     vi: "Lấy fb Group ID",
   },
   description: {
-    en: "Get id of group in current website",
-    vi: "Lấy id của group trong trang web hiện tại",
+    en: "Get id of group in facebook website",
+    vi: "Lấy id của group trong trang facebook hiện tại",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
-  func: async function () {
+  onClick: async function () {
     // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls
 
     const group_name = document.title;

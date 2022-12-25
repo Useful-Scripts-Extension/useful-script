@@ -9,7 +9,7 @@ export default {
     vi: "SimilarWeb - Phân tích chi tiết cho mọi trang web trực tuyến",
   },
 
-  func: function () {
+  onClick: function () {
     window.open(
       `https://www.similarweb.com/website/` +
         location.hostname +

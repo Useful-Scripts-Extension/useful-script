@@ -17,11 +17,8 @@ export default {
     en: "Taking a screenshot of an entire webpage",
     vi: "Tạo ảnh chụp màn hình toàn bộ website",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
-    // let a = await captureVisibleTab();
-
+  onClickExtension: async function () {
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."
     );

@@ -4,13 +4,12 @@ export default {
     vi: "Lấy tất cả fb user ID từ trang tìm kiếm",
   },
   description: {
-    en: "Get id of all user from fb search page",
-    vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng",
+    en: "Get id of all user from facebook search page",
+    vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng facebook",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
-  func: function () {
+  onClick: function () {
     const getUid = async (url) => {
       var response = await fetch(url);
       if (response.status == 200) {

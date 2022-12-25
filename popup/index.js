@@ -1,9 +1,13 @@
+import { MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
-  GlobalBlackList,
-  isExtensionInSeperatedPopup,
-  openExtensionInSeparatedPopup,
+  isActiveScript,
+  getCurrentTab,
+  isFunction,
+  removeAccents,
   runScriptInCurrentTab,
+  sendEventToTab,
+  toggleActiveScript,
 } from "../scripts/helpers/utils.js";
 import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
@@ -14,27 +18,28 @@ import {
   favoriteScriptsSaver,
   recentScriptsSaver,
 } from "./helpers/storage.js";
-import { viewScriptSource } from "./helpers/utils.js";
 import {
-  isFunc,
-  isLink,
+  canAutoRun,
+  canClick,
   isTitle,
-  refreshSpecialTabs,
-  getAllTabs,
-} from "./tabs.js";
-// import _ from "../md/exportScriptsToMd.js";
+  updateScriptClickCount,
+  viewScriptSource,
+} from "./helpers/utils.js";
+import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
+import _ from "../md/exportScriptsToMd.js";
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
-const openInNewTabBtn = document.querySelector("#open-in-new-tab");
+const searchInput = document.querySelector(".search input");
+const searchFound = document.querySelector(".search .searchFound");
 
-async function initLanguage() {
-  flagImg.setAttribute("src", await getFlag());
+function initLanguage() {
+  flagImg.setAttribute("src", getFlag());
 
-  flagImg.onclick = async () => {
-    await toggleLang();
-    flagImg.setAttribute("src", await getFlag());
+  flagImg.onclick = () => {
+    toggleLang();
+    flagImg.setAttribute("src", getFlag());
 
     // reset UI
     createTabs();
@@ -42,9 +47,9 @@ async function initLanguage() {
   };
 }
 
-async function createTabs() {
+function createTabs() {
   // prepare tabs
-  await refreshSpecialTabs();
+  refreshSpecialTabs();
 
   // clear UI
   tabDiv.innerHTML = "";
@@ -81,7 +86,7 @@ async function createTabs() {
   }
 
   // open tab
-  let activeTabId = await activeTabIdSaver.get();
+  let activeTabId = activeTabIdSaver.get();
   activeTabId && openTab(allTabs.find((tab) => tab.id === activeTabId));
 }
 
@@ -98,6 +103,15 @@ async function openTab(tab) {
 }
 
 async function createTabContent(tab) {
+  // search bar
+  let scriptsCount = tab.scripts.filter((_) => !isTitle(_)).length;
+  searchInput.value = "";
+  searchInput.placeholder = t({
+    vi: "Tìm trong " + scriptsCount + " chức năng...",
+    en: "Search in " + scriptsCount + " scripts...",
+  });
+  searchInput.focus?.();
+
   // create tab content
   const contentContainer = document.createElement("div");
   contentContainer.className = "tabcontent";
@@ -113,7 +127,7 @@ async function createTabContent(tab) {
     });
     contentContainer.appendChild(emptyText);
   } else {
-    const favoriteScriptIds = await favoriteScriptsSaver.getIds();
+    const favoriteScriptIds = favoriteScriptsSaver.getIds();
     tab.scripts.forEach((script) => {
       let isFavorite = favoriteScriptIds.find((id) => script.id === id);
       contentContainer.appendChild(createScriptButton(script, isFavorite));
@@ -135,16 +149,39 @@ function createScriptButton(script, isFavorite = false) {
     return title;
   }
 
-  // Button
+  // Button Container
+  const buttonContainer = document.createElement("div");
+  buttonContainer.className = "buttonContainer";
+
+  // button checker
+  if (canAutoRun(script)) {
+    const checkmark = document.createElement("button");
+    checkmark.className = "checkmark tooltip";
+    checkmark.onclick = async (e) => {
+      let newValue = toggleActiveScript(script.id);
+      newValue && updateScriptClickCount(script.id);
+      updateButtonChecker(script, buttonContainer, newValue);
+    };
+
+    buttonContainer.appendChild(checkmark);
+    updateButtonChecker(script, buttonContainer);
+  }
+
+  // button
   const button = document.createElement("button");
   button.className = "tooltip";
-
-  if (isFunc(script)) {
+  if (canClick(script)) {
     button.onclick = () => runScript(script);
-  } else if (isLink(script)) {
-    button.onclick = () => window.open(script.link);
+  } else if (canAutoRun(script)) {
+    button.onclick = () =>
+      alert(
+        t({
+          vi: "Chức năng này tự động chạy.\nTắt/Mở tự chạy bằng nút bên trái.\nSau đó tải lại trang web.",
+          en: "This function is Autorun.\nTurn on/off autorun by click the left checkmark.\nThen reload the webpage.",
+        })
+      );
   } else {
-    button.onclick = () => alert("empty script");
+    alert(t({ vi: "Chức năng chưa hoàn thành", en: "Coming soon" }));
   }
 
   // script badges
@@ -194,44 +231,58 @@ function createScriptButton(script, isFavorite = false) {
   title.innerHTML = t(script.name);
   button.appendChild(title);
 
-  if (isFunc(script)) {
-    // add to favorite button
-    const addFavoriteBtn = document.createElement("i");
-    addFavoriteBtn.className = isFavorite
-      ? "fa-solid fa-star star active"
-      : "fa-regular fa-star star";
-    addFavoriteBtn.title = isFavorite
-      ? t({
-          en: "Remove from favorite",
-          vi: "Xoá khỏi yêu thích",
-        })
-      : t({
-          en: "Add to farovite",
-          vi: "Thêm vào yêu thích",
-        });
-    addFavoriteBtn.onclick = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      favoriteScriptsSaver.toggle(script).then(createTabs);
-    };
-    button.appendChild(addFavoriteBtn);
-
-    // view source button
-    const viewSourceBtn = document.createElement("i");
-    viewSourceBtn.title = t({
-      en: "View script source",
-      vi: "Xem mã nguồn",
+  // what this? button
+  if (typeof script.infoLink === "string") {
+    const infoBtn = document.createElement("i");
+    infoBtn.className = "fa-regular fa-circle-question";
+    infoBtn.title = t({
+      en: "View info/demo",
+      vi: "Xem giới thiệu/demo",
     });
-    viewSourceBtn.className = "fa-solid fa-code view-source";
-    viewSourceBtn.onclick = (e) => {
+    infoBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-
-      viewScriptSource(script);
-      // openModal(t(script.name), `<pre>${script.func?.toString()}</pre>`);
+      window.open(script.infoLink);
     };
-    button.appendChild(viewSourceBtn);
+    button.appendChild(infoBtn);
   }
+
+  // add to favorite button
+  const addFavoriteBtn = document.createElement("i");
+  addFavoriteBtn.className = isFavorite
+    ? "fa-solid fa-star star active"
+    : "fa-regular fa-star star";
+  addFavoriteBtn.title = isFavorite
+    ? t({
+        en: "Remove from favorite",
+        vi: "Xoá khỏi yêu thích",
+      })
+    : t({
+        en: "Add to farovite",
+        vi: "Thêm vào yêu thích",
+      });
+  addFavoriteBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    favoriteScriptsSaver.toggle(script);
+    createTabs();
+  };
+  button.appendChild(addFavoriteBtn);
+
+  // view source button
+  const viewSourceBtn = document.createElement("i");
+  viewSourceBtn.title = t({
+    en: "View script source",
+    vi: "Xem mã nguồn",
+  });
+  viewSourceBtn.className = "fa-solid fa-code view-source";
+  viewSourceBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    viewScriptSource(script);
+  };
+  button.appendChild(viewSourceBtn);
 
   // tooltip
   const tooltip = document.createElement("span");
@@ -239,23 +290,54 @@ function createScriptButton(script, isFavorite = false) {
   tooltip.innerText = t(script.description);
   button.appendChild(tooltip);
 
-  return button;
+  buttonContainer.appendChild(button);
+  return buttonContainer;
+}
+
+function updateButtonChecker(script, button, val) {
+  let checkmark = button.querySelector(".checkmark");
+  if (!checkmark) return;
+  if (val ?? isActiveScript(script.id)) {
+    checkmark.classList.add("active");
+    checkmark.title = t({
+      vi: "Tắt tự động chạy",
+      en: "Turn off Autorun",
+    });
+  } else {
+    checkmark.classList.remove("active");
+    checkmark.title = t({
+      vi: "Bật tự động chạy",
+      en: "Turn on Autorun",
+    });
+  }
 }
 
 async function runScript(script) {
-  let willRun = await checkBlackWhiteList(script);
+  let tab = await getCurrentTab();
+  let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
-    recentScriptsSaver.add(script);
-    if (script.runInExtensionContext) script.func();
-    else runScriptInCurrentTab(script.func);
+    try {
+      recentScriptsSaver.add(script);
+      updateScriptClickCount(script.id);
+      if (isFunction(script.onClickExtension)) await script.onClickExtension();
+      if (isFunction(script.onClick))
+        await runScriptInCurrentTab(script.onClick);
+      if (isFunction(script.onClickContentScript))
+        await sendEventToTab(tab.id, {
+          type: MsgType.runScript,
+          scriptId: script.id,
+        });
+    } catch (e) {
+      console.log("ERROR: run script", e);
+    }
   } else {
     let w = script?.whiteList?.join(", ");
-    let b = [...(script?.blackList || []), ...GlobalBlackList]?.join(", ");
+    let b = script?.blackList?.join(", ");
 
     openModal(
       t({
-        en: `Script not supported in current website`,
-        vi: `Script không hỗ trợ website hiện tại`,
+        en: `Script not supported in current website (${tab.url})`,
+        vi: `Script không hỗ trợ website hiện tại (${tab.url})`,
       }),
       t({
         en:
@@ -269,21 +351,41 @@ async function runScript(script) {
   }
 }
 
-function initOpenInNewTabBtn() {
-  if (isExtensionInSeperatedPopup()) {
-    document.title = "Useful Scripts";
-    openInNewTabBtn.remove();
-  } else {
-    openInNewTabBtn.onclick = () => {
-      openExtensionInSeparatedPopup();
-      window.close();
-    };
-  }
+function initSearch() {
+  searchInput.addEventListener("input", (event) => {
+    let keyword = event.target.value;
+    let found = 0;
+    let childrens = document
+      .querySelector(".tabcontent")
+      .querySelectorAll(".buttonContainer");
+
+    childrens.forEach((child) => {
+      let willShow = true;
+      let text = removeAccents(child.textContent).toLowerCase();
+      let searchStr = removeAccents(keyword)
+        .toLowerCase()
+        .split(" ")
+        .filter((_) => _);
+
+      for (let s of searchStr) {
+        if (text.indexOf(s) == -1) {
+          willShow = false;
+          break;
+        }
+      }
+      child.style.display = willShow ? "block" : "none";
+      if (willShow) found++;
+    });
+    searchFound.innerText = keyword
+      ? `${found}/${childrens.length} scripts`
+      : "";
+  });
 }
 
 (async function () {
-  initOpenInNewTabBtn();
-  await initLanguage();
-  await createTabs();
+  // initOpenInNewTabBtn();
+  initSearch();
+  initLanguage();
+  createTabs();
   await checkForUpdate();
 })();

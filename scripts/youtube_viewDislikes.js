@@ -8,10 +8,9 @@ export default {
     en: "Know how many dislike does youtube video have",
     vi: "Biết số lượt dislikes (không thích) video youtube",
   },
-  blackList: [],
-  whiteList: ["*://*.youtube.com/*"],
+    whiteList: ["*://*.youtube.com/*"],
 
-  func: async function () {
+  onClick: async function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
 
     function getVideoId(url) {

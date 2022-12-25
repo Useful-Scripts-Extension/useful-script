@@ -4,13 +4,11 @@ export default {
     vi: "Tải tất cả ảnh insta user profile",
   },
   description: {
-    en: "Get all images in user profile",
-    vi: "Tải tất cả ảnh có trong profile của user bất kỳ",
+    en: "Get all images in instagram user profile",
+    vi: "Tải tất cả ảnh có trong profile của user instagram bất kỳ",
   },
-  blackList: [],
-  whiteList: ["*://*.instagram.com"],
-
-  func: async function () {
+  
+  onClick: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;
     const getOriginalVideoFromBlob = (videoEl) => {

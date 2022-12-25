@@ -7,12 +7,11 @@ export default {
     vi: "Lấy insta thông tin user (uid, avatar, ...)",
   },
   description: {
-    en: "Get uid, avatar, name, ...",
-    vi: "Lấy uid, avatar, tên, ...",
+    en: "Get instagram uid, avatar, name, ...",
+    vi: "Lấy instagram uid, avatar, tên, ...",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     function renderUser(user, index) {
       //prettier-ignore
       let { pk, username, full_name, is_private, is_verified, pk_id, profile_pic_url, friendship_status, social_context } = user;

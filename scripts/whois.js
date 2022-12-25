@@ -8,10 +8,8 @@ export default {
     en: "Want to find out who owns a domain? Click on this!",
     vi: "Muốn biết ai đang giữ domain này? Click ngay!",
   },
-  blackList: [],
-  whiteList: [],
-
-  func: function () {
+  
+  onClick: function () {
     window.open("http://who.is/whois/" + document.domain);
   },
 };

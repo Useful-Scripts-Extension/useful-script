@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAB (instagram)",
     vi: "Lấy fb token EAAB (instagram)",
@@ -8,10 +8,9 @@ export default {
     en: "Get facebook access token from www.facebook.com",
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
-  func: function () {
+  onClick: function () {
     try {
       let uid = /(?<=c_user=)(\d+)/.exec(document.cookie)?.[0];
       if (!uid) {

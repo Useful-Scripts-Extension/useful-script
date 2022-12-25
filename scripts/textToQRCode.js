@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-qrcode"></i>`,
+  icon: `<i class="fa-solid fa-qrcode fa-lg"></i>`,
   name: {
     en: "Text to QR Code",
     vi: "Chuyển chữ thành QRCode",
@@ -8,9 +8,8 @@ export default {
     en: "Convert text to QR Code",
     vi: "Nhập vào chữ và nhận về QRCode tương ứng",
   },
-  runInExtensionContext: true,
 
-  func: function () {
+  onClickExtension: function () {
     let text = prompt("Enter text / Nhập chữ:", "");
     if (text === null) return;
 

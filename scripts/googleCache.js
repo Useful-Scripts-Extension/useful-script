@@ -11,9 +11,8 @@ export default {
     en: "View blocked website",
     vi: "Phù hơp để xem các trang web bị block",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     // https://cachedviews.com/
 
     let { url } = await getCurrentTab();

@@ -1,20 +1,20 @@
-import { showLoading } from "./helpers/utils.js";
+import { downloadData, showLoading } from "./helpers/utils.js";
 
 export default {
+  icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
-    en: "Download fb album media links",
-    vi: "Tải link ảnh/video từ album fb",
+    en: "Download album facebook",
+    vi: "Tải album facebook",
   },
   description: {
-    en: "Download photo/video links from album",
-    vi: "Tải về danh sách link ảnh/video",
+    en: "Download photo/video links from facebook album",
+    vi: "Tải về danh sách link ảnh/video từ album facebook",
   },
-  runInExtensionContext: true,
 
-  func: function () {
-    const accessToken = prompt("Enter access token:", "");
+  onClickExtension: function () {
+    const accessToken = prompt("Nhập access token:", "");
     if (!accessToken) return;
-    const albumId = prompt("Enter album id: ", "");
+    const albumId = prompt("Nhập album id: ", "");
     if (!albumId) return;
 
     async function fetchAlbumPhotosFromCursor({ albumId, cursor }) {
@@ -87,23 +87,6 @@ export default {
       });
       return result;
     }
-    function download(data, filename, type) {
-      var file = new Blob([data], { type: type });
-      if (window.navigator.msSaveOrOpenBlob)
-        window.navigator.msSaveOrOpenBlob(file, filename);
-      else {
-        var a = document.createElement("a"),
-          url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () {
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, 0);
-      }
-    }
 
     const { closeLoading, setLoadingText } = showLoading(
       "Đang thu thập link ảnh/video trong album..."
@@ -112,9 +95,22 @@ export default {
       albumId,
       progress: (length) =>
         setLoadingText("Đang thu thập " + length + " links..."),
-    }).then((links) => {
-      download(links.join("\n"), albumId, ".txt");
-      closeLoading();
-    });
+    })
+      .then((links) => {
+        if (
+          confirm(
+            "Tìm được " +
+              links.length +
+              " links ảnh/video.\nBấm OK để tải xuống."
+          )
+        )
+          downloadData(links.join("\n"), albumId, ".txt");
+      })
+      .catch((e) => {
+        alert("ERROR: " + e);
+      })
+      .finally(() => {
+        closeLoading();
+      });
   },
 };

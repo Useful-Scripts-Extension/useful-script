@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-barcode"></i>`,
+  icon: `<i class="fa-solid fa-barcode fa-lg"></i>`,
   name: {
     en: "URL to QR Code",
     vi: "Lấy QRCode cho web hiện tại",
@@ -9,7 +9,7 @@ export default {
     vi: "Chuyển URL của trang web sang QR Code",
   },
 
-  func: function () {
+  onClick: function () {
     var url =
       "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" +
       encodeURIComponent(location.href);

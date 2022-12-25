@@ -1,200 +1,101 @@
-import {
-  openPopupWithHtml,
-  parseJwt,
-  showLoading,
-  showPopup,
-} from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import { shared as tiktok_downloadWatchingVideo } from "./tiktok_downloadWatchingVideo.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
-    en: "Tiktok - Download video (Snaptik)",
-    vi: "Tiktok - Tải video (Snaptik)",
+    en: "Tiktok - Download video (API)",
+    vi: "Tiktok - Tải video (API)",
   },
   description: {
-    en: "Download tiktok video using Snaptik API",
-    vi: "Tải tiktok video sử dụng Snaptik API",
+    en: "Download tiktok video from url (no/have watermark)",
+    vi: "Tải video tiktok từ link (không/có watermark)",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
-    async function getTokenSnapTik() {
-      let res = await fetch("https://snaptik.app/vn");
-      let text = await res.text();
-      return {
-        lang: "vn",
-        token: /name="token" value="(.*)" type="hidden"/.exec(text)?.[1],
-      };
-    }
+  onClickExtension: async function () {
+    let url = prompt(
+      "Nhập link tiktok video: ",
+      await runScriptInCurrentTab(() => location.href)
+    );
+    if (url == null) return;
 
-    //prettier-ignore
-    function doSomething(e,i,n){for(var r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),t=r.slice(0,i),f=r.slice(0,n),o=e.split("").reverse().reduce(function(e,n,r){if(-1!==t.indexOf(n))return e+t.indexOf(n)*Math.pow(i,r)},0),c="";o>0;)c=f[o%n]+c,o=(o-o%n)/n;return c||"0"}
-    //prettier-ignore
-    function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){for(var h="";r[t]!==e[a];)h+=r[t],t++;for(var l=0;l<e.length;l++)h=h.replace(RegExp(e[l],"g"),l);f+=String.fromCharCode(doSomething(h,a,10)-n)}return decodeURIComponent(escape(f))}
+    let watermark = prompt("Lấy video watermark?\n 0: Không\n 1: Có", 0);
 
-    function getParamsFromResponse(reponseText) {
-      let i = reponseText.lastIndexOf(")}(");
-      let allParamsStr = reponseText.slice(i + 3, reponseText.length - 2);
-      return allParamsStr.split(",").map((_) => {
-        let number = Number(_);
-        return !isNaN(number) ? number : JSON.parse(_);
-      });
-    }
-
-    function getLinkFromSomethingResult(somethingResult) {
-      let jwttoken = /token=(.*)&/.exec(somethingResult)?.[1];
-      let data = parseJwt(jwttoken);
-      return data?.url;
-    }
-
-    async function getLinkSnapTik(tiktokURL, token, lang) {
-      let formData = new FormData();
-      formData.append("lang", lang);
-      formData.append("token", token);
-      formData.append("url", tiktokURL);
-
-      let res = await fetch("https://snaptik.app/abc2.php", {
-        method: "POST",
-        body: formData,
-      });
-
-      let text = await res.text();
-      let params = getParamsFromResponse(text);
-      let somethingResult = doSomething2(...params);
-      let link = getLinkFromSomethingResult(somethingResult);
-      return link;
-    }
-
-    let tiktokUrl = prompt("Nhập link tiktok video:", "");
-    if (tiktokUrl != null) {
-      let { closeLoading, setLoadingText } = showLoading(
-        "Đang lấy token SnapTik..."
-      );
-      try {
-        let { lang, token } = await getTokenSnapTik();
-        if (!token) throw Error("Không lấy đƯợc token SnapTik");
-
-        setLoadingText("Đang get link tiktok bằng SnapTik...");
-        let link = await getLinkSnapTik(tiktokUrl, token, lang);
-        if (!link) throw Error("Không tìm thấy link");
-
-        window.open(link);
-      } catch (e) {
-        prompt(
-          "Lỗi: " + e + "\n\nBạn có thể mở trang web sau để thử lại:",
-          "https://snaptik.app"
-        );
-      } finally {
-        closeLoading();
+    let { closeLoading } = showLoading(
+      "Đang lấy link video không watermark..."
+    );
+    try {
+      let link = "";
+      if (watermark == "0") {
+        link = await shared.getVideoNoWaterMark(url);
+        if (link) window.open(link);
+        else throw Error("Không tìm được video không watermark");
+      } else {
+        link = await shared.getVideoWaterMark(url);
+        if (link) await tiktok_downloadWatchingVideo.renderVideoInWeb(link);
+        else throw Error("Không tìm được video không watermark");
       }
+    } catch (e) {
+      alert("ERROR: " + e);
+    } finally {
+      closeLoading();
     }
   },
 };
 
-function backup() {
-  // https://www.tiktok.com/oembed?url=https://www.tiktok.com/@tiktok/video/7166186013432253722
+export const shared = {
+  // Source code: https://github.com/karim0sec/tiktokdl
+  getVideoId: function (url) {
+    if (url.includes("@") && url.includes("/video/"))
+      return url.split("/video/")[1].split("?")[0];
+    throw Error("URL video tiktok không đúng địng dạng");
+  },
 
-  let a = {
-    web: "https://ssstik.io/",
-    func: async function (url) {
-      async function getTokenSsstik() {
-        let res = await fetch("https://ssstik.io/vi");
-        let text = await res.text();
-        return {
-          lang: "vi",
-          token: /"tt:'(.*)'/.exec(text)?.[1],
-        };
-      }
+  getVideoNoWaterMark: async function (video_url, isVideoId = false) {
+    let videoId = isVideoId ? video_url : shared.getVideoId(video_url);
+    if (!videoId) throw Error("Video URL không đúng định dạng");
 
-      async function getLinkSsstik(tiktokURL, token, lang) {
-        let formData = new FormData();
-        formData.append("locale", lang);
-        formData.append("tt", token);
-        formData.append("id", tiktokURL);
+    let API_URL = `https://api19-core-useast5.us.tiktokv.com/aweme/v1/feed/?aweme_id=${videoId}&version_code=262&app_name=musical_ly&channel=App&device_id=null&os_version=14.4.2&device_platform=iphone&device_type=iPhone9`;
+    let request = await fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent":
+          "TikTok 26.2.0 rv:262018 (iPhone; iOS 14.4.2; en_US) Cronet",
+      },
+    });
+    let res = await request.json();
+    console.log(res);
+    let url = res.aweme_list[0].video.play_addr.url_list[0];
+    return url;
+  },
 
-        let res = await fetch("https://ssstik.io/abc?url=dl", {
-          method: "POST",
-          body: formData,
-        });
+  // https://github.com/soimort/you-get/blob/develop/src/you_get/extractors/tiktok.py
+  getVideoWaterMark: async function (video_url) {
+    // let res = await openWebAndRunScript({
+    //   video_url,
+    //   closeAfterRunScript: true,
+    //   focusAfterRunScript: false,
+    //   func: () => {
+    //     return window.SIGI_STATE;
+    //   },
+    // });
 
-        return await res.text();
-      }
+    let res = await fetch(video_url);
+    let html = await res.text();
 
-      let { closeLoading, setLoadingText } = showLoading(
-        "Đang lấy token ssstik..."
-      );
-      try {
-        let { lang, token } = await getTokenSsstik();
-        if (!token) throw Error("Không lấy được token ssstik");
-        alert(token);
+    // prettier-ignore
+    let data = new RegExp('window\[\'SIGI_STATE\'\]=(.*?);window\[\'SIGI_RETRY\'\]').exec(html)?.[1] ||
+              new RegExp('<script id="SIGI_STATE" type="application/json">(.*?)</script>').exec(html)?.[1];
+    let json = JSON.parse(data);
+    let vid = Object.keys(json.ItemModule)?.[0];
+    let vdata = json.ItemModule[vid];
 
-        setLoadingText("Đang get link tiktok bằng ssstik...");
-        let text = await getLinkSsstik(url, token, lang);
-        showPopup("Ssstik", text);
+    let url = vdata?.video?.downloadAddr || vdata?.video?.playAddr;
+    let author = vdata?.author;
+    let nickname = json?.UserModule?.users?.author?.nickname;
 
-        return true;
-      } catch (e) {
-        prompt(
-          "Lỗi: " + e + "\n\nBạn có thể mở link sau để get video tiktok:",
-          "https://snaptik.app"
-        );
-        return false;
-      } finally {
-        closeLoading();
-      }
-    },
-  };
-  /**
-     * {
-        "id": 2,
-        "priority": 1,
-        "action": {
-            "type": "modifyHeaders",
-            "requestHeaders": [
-                {
-                    "header": "referer",
-                    "operation": "set",
-                    "value": "https://ssstik.io/vi"
-                },
-                {
-                    "header": "origin",
-                    "operation": "set",
-                    "value": "https://ssstik.io"
-                },
-                {
-                    "header": "hx-current-url",
-                    "operation": "set",
-                    "value": "https://ssstik.io/vi"
-                },
-                {
-                    "header": "hx-request",
-                    "operation": "set",
-                    "value": "true"
-                },
-                {
-                    "header": "hx-target",
-                    "operation": "set",
-                    "value": "target"
-                },
-                {
-                    "header": "hx-trigger",
-                    "operation": "set",
-                    "value": "_gcaptcha_pt"
-                },
-                {
-                    "header": "content-type",
-                    "operation": "set",
-                    "value": "application/x-www-form-urlencoded; charset=UTF-8"
-                }
-            ]
-        },
-        "condition": {
-            "domain": "extension://*",
-            "urlFilter": "https://ssstik.io/abc?url=dl",
-            "resourceTypes": [
-                "xmlhttprequest"
-            ]
-        }
-    }
-     */
-}
+    // return { url, author, nickname };
+    return url;
+  },
+};

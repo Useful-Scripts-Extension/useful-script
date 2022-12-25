@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-virus"></i>',
+  icon: '<i class="fa-solid fa-virus fa-lg"></i>',
   name: {
     en: "Inject script to website",
     vi: "Nhúng script vào trang web",
@@ -8,10 +8,7 @@ export default {
     en: "",
     vi: "",
   },
-  blackList: [],
-  whiteList: [],
-
-  func: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/26573284
     function injectScriptAndUse(src) {
       var script = document.createElement("script");
@@ -49,3 +46,8 @@ export default {
     }
   },
 };
+
+function backup() {
+  // https://stackoverflow.com/a/38840724/11898496
+  // Script loader: https://plnkr.co/edit/b9O19f?p=preview&preview
+}

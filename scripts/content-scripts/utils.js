@@ -1,9 +1,16 @@
-export const baseURL = "/scripts/content-scripts/scripts/";
+export function getURL(fileName) {
+  return "/scripts/" + fileName;
+}
 
-export function injectScript(filePathOrUrl, isExternal = false) {
+export function injectScript(
+  filePathOrUrl,
+  type = "application/javascript",
+  isExternal = false
+) {
   try {
     var s = document.createElement("script");
     s.src = isExternal ? filePathOrUrl : chrome.runtime.getURL(filePathOrUrl);
+    s.type = type;
     s.onload = function () {
       console.log("Useful-scripts injected " + s.src);
       this.remove();
@@ -21,23 +28,21 @@ export function injectScript(filePathOrUrl, isExternal = false) {
   }
 }
 
+// TODO: https://developer.chrome.com/docs/extensions/reference/scripting/#method-insertCSS
 // https://stackoverflow.com/a/17840622
-export function injectCss(cssfileOrCode, isFile = true) {
-  if (isFile) {
+export function injectCss(url_file_code, type = "file") {
+  if (type === "file" || type === "url") {
     var css = document.createElement("link");
     css.rel = "stylesheet";
-    css.href = chrome.runtime.getURL(cssfileOrCode);
-    window.onload = () => {
-      document.body.appendChild(css);
-      console.log("Useful-scripts injected " + css.href);
-    };
-  } else {
+    css.href =
+      type === "file" ? chrome.runtime.getURL(url_file_code) : url_file_code;
+    document.head.appendChild(css);
+    console.log("Useful-scripts injected " + css.href);
+  } else if (type === "code") {
     var css = document.createElement("style");
-    if ("textContent" in css) css.textContent = cssText;
-    else css.innerText = cssText;
-    window.onload = () => {
-      document.body.appendChild(css);
-      console.log("Useful-scripts injected " + css);
-    };
+    if ("textContent" in css) css.textContent = url_file_code;
+    else css.innerText = url_file_code;
+    document.head.appendChild(css);
+    console.log("Useful-scripts injected " + css);
   }
 }

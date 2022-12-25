@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAc (studio)",
     vi: "Lấy fb token EAAc (studio)",
@@ -10,11 +10,8 @@ export default {
     en: "Get facebook access token from business.facebook.com",
     vi: "Lấy facebook access token từ trang business.facebook.com",
   },
-  blackList: [],
-  // whiteList: ["*://business.facebook.com"],
-  runInExtensionContext: true,
 
-  func: function () {
+  onClickExtension: function () {
     // old - FAILED
     // try {
     //   const accessToken =

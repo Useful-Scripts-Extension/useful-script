@@ -10,9 +10,8 @@ export default {
     en: "OS name, browser name, version, userAgent, ...",
     vi: "Hệ điều hành, tên trình duyệt, version, userAgent, ...",
   },
-  runInExtensionContext: true,
 
-  func: function () {
+  onClickExtension: function () {
     // https://stackoverflow.com/a/11219680/11898496
     function get_browser_2() {
       var nVer = navigator.appVersion;

@@ -1,22 +1,25 @@
 export default {
-  icon: `<i class="fa-regular fa-id-card"></i>`,
+  icon: `<i class="fa-regular fa-id-card fa-lg"></i>`,
   name: {
     en: "Get fb User ID",
     vi: "Lấy fb User ID",
   },
   description: {
-    en: "Get id of user in current website",
-    vi: "Lấy id của user trong trang web hiện tại",
+    en: "Get id of user in facebook website",
+    vi: "Lấy id của user trong trang facebook hiện tại",
   },
-  blackList: [],
-  whiteList: ["https://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
-  func: function () {
+  onClick: async function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 
-    const find = (r) => (r ? r[0] : 0);
+    let uid = await UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(
+      location.href
+    );
+    if (uid) return prompt(`USER ID của ${document.title}:`, uid);
 
-    let uid =
+    const find = (r) => (r ? r[0] : 0);
+    uid =
       find(
         /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(
           document.querySelector("html").textContent

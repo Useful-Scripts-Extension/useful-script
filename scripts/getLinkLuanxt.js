@@ -7,14 +7,11 @@ export default {
     vi: "Tải nhạc/video (luanxt)",
   },
   description: {
-    en: "Support zingmp3 nhaccuatui youtube. Using API from luanxt.com",
-    vi: "Hỗ trợ zingmp3 nhaccuatui youtube. Sử dụng API của luanxt.com",
+    en: "Using API from luanxt.com. Download Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
+    vi: "Sử dụng API của luanxt.com. Tải Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
   },
-  blackList: [],
-  whiteList: [],
-  runInExtensionContext: true,
-
-  func: async function () {
+    
+  onClickExtension: async function () {
     // https://luanxt.com/get-link-mp3-320-lossless-vip-zing/
 
     const apiBaseURL = "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/";

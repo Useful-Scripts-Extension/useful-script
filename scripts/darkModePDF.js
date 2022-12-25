@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-circle-half-stroke"></i>`,
+  icon: `<i class="fa-solid fa-circle-half-stroke fa-lg"></i>`,
   name: {
     en: "Darkmode for pdf",
     vi: "Chế độ tối cho PDF",
@@ -9,7 +9,7 @@ export default {
     vi: "Bật/Tắt chế độ tối cho PDF bạn đang xem",
   },
 
-  func: function () {
+  onClick: function () {
     let id = "useful-scripts-darkModePDF";
 
     let old = document.querySelector("#" + id);

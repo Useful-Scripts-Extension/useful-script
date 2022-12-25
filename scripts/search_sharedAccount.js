@@ -10,9 +10,8 @@ export default {
     en: "Get free shared account on internet",
     vi: "Tìm tài khoản được chia sẻ trên mạng cho trang web hiện tại",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     const providers = [
       {
         name: "bugmenot.com",
@@ -38,7 +37,8 @@ export default {
         alert("Lỗi: Không tìm thấy url trang web.");
         return;
       }
-      var url = providers[choice].getLink(escape(tab.url));
+      let { hostname } = new URL(tab.url);
+      var url = providers[choice].getLink(hostname);
       w = open(
         url,
         "w",

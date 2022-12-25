@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-link"></i>`,
+  icon: `<i class="fa-solid fa-link fa-lg"></i>`,
   name: {
     en: "View all links",
     vi: "Xem tất cả link",
@@ -8,10 +8,8 @@ export default {
     en: "Show all links and anchor text of current page.",
     vi: "Liệt kê tất cả đường link có trong website",
   },
-  blackList: [],
-  whiteList: [],
 
-  func: function () {
+  onClick: function () {
     function getParameterByName(e, t) {
       e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       var n = new RegExp("[\\?&]" + e + "=([^&#]*)"),

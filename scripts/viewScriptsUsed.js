@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-square-js"></i>`,
+  icon: `<i class="fa-brands fa-square-js fa-lg"></i>`,
   name: {
     en: "View scripts used",
     vi: "Xem tất cả scripts",
@@ -9,7 +9,7 @@ export default {
     vi: "Mở danh sách scripts đươc dùng bởi trang web trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     s = document.getElementsByTagName("SCRIPT");
     d = window.open().document;
     d.open();

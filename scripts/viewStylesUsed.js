@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-css3-alt"></i>`,
+  icon: `<i class="fa-brands fa-css3-alt fa-lg"></i>`,
   name: {
     en: "View stylesheet used",
     vi: "Xem tất cả stylesheet",
@@ -9,7 +9,7 @@ export default {
     vi: "Mở danh sách css được dùng bởi website trong tab mới",
   },
 
-  func: function () {
+  onClick: function () {
     s = document.getElementsByTagName("STYLE");
     ex = document.getElementsByTagName("LINK");
     d = window.open().document; /*set base href*/

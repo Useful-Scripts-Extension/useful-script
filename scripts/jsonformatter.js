@@ -8,7 +8,7 @@ export default {
     en: "Open web tool for beautify JSON in new tab",
     vi: "Mở công cụ làm đẹp JSON trong tab mới",
   },
-  link: "https://jsonformatter.org/",
+  onClickExtension: () => window.open("https://jsonformatter.org/"),
 };
 
 async function backup() {

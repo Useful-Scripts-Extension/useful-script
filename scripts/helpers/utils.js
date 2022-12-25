@@ -1,95 +1,92 @@
-// LƯU Ý: Các hàm trong này chỉ dùng được trong extension context (các scripts có thuộc tính runInExtensionContext = true)
-import { allScripts } from "../index.js";
+export async function sendEventToTab(tabId, data) {
+  console.log("... Sending ", data, " to tab...");
+  const response = await chrome.tabs.sendMessage(tabId, data);
+  console.log("> ", data, " sent to tab successfully", response);
+  return response;
+}
 
-const CACHED = {
-  lastWindowId: 0,
-};
+// #region Storage Utils
 
-// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
-chrome.windows.onFocusChanged.addListener(
-  (windowId) => {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE)
-      CACHED.lastWindowId = windowId;
-  },
-  { windowTypes: ["normal"] }
-);
+// https://developer.chrome.com/docs/extensions/reference/storage/
+// export const localStorage = {
+//   set: async (key, value) => {
+//     await chrome.storage.sync.set({ [key]: value });
+//     return value;
+//   },
+//   get: async (key, defaultValue = "") => {
+//     let result = await chrome.storage.sync.get([key]);
+//     return result[key] || defaultValue;
+//   },
+// };
 
-const seperated_popup_search_param = "isSeparatedPopup";
-export const isExtensionInSeperatedPopup = () => {
-  let url = new URL(location.href);
-  return url.searchParams.has(seperated_popup_search_param);
-};
+const listActiveScriptsKey = "activeScripts";
+export function setActiveScript(scriptId, isActive = true) {
+  let list = getAllActiveScriptId();
+  if (isActive) list.push(scriptId);
+  else list = list.filter((_) => _ != scriptId);
+  list = list.filter((_) => _);
+  let valToSave = list.join(",");
+  localStorage.setItem(listActiveScriptsKey, valToSave);
+  chrome.storage.sync.set({ [listActiveScriptsKey]: valToSave }); // save to storage => content script can access
+  return list;
+}
 
-export const openExtensionInSeparatedPopup = () => {
-  let url = new URL(location.href);
-  url.searchParams.set(seperated_popup_search_param, 1);
-  popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
-};
+export function isActiveScript(scriptId) {
+  let currentList = getAllActiveScriptId();
+  return currentList.find((_) => _ == scriptId) != null;
+}
+
+export function getAllActiveScriptId() {
+  return (localStorage.getItem(listActiveScriptsKey) || "").split(",");
+}
+
+export function toggleActiveScript(scriptId) {
+  let current = isActiveScript(scriptId);
+  let newVal = !current;
+  setActiveScript(scriptId, newVal);
+  return newVal;
+}
+
+// #endregion
+
+// #region Tab Utils
 
 // https://developer.chrome.com/docs/extensions/reference/windows/#method-getLastFocused
-export const getLastFocusedWindow = () => {
-  return !!CACHED.lastWindowId
-    ? chrome.windows.get(CACHED.lastWindowId)
-    : chrome.windows.getLastFocused({
-        // populate: true,
-        windowTypes: ["normal"],
-      });
-};
+// Lấy window trình duyệt được sử dụng gần nhất
+// export const getLastFocusedWindow = () => {
+//   return !!CACHED.lastWindowId
+//     ? chrome.windows.get(CACHED.lastWindowId)
+//     : chrome.windows.getLastFocused({
+//         // populate: true,
+//         windowTypes: ["normal"],
+//       });
+// };
 
+// const CACHED = {
+//   lastWindowId: 0,
+// };
+
+// https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
+// chrome.windows.onFocusChanged.addListener(
+//   (windowId) => {
+//     if (windowId !== chrome.windows.WINDOW_ID_NONE)
+//       CACHED.lastWindowId = windowId;
+//   },
+//   { windowTypes: ["normal"] }
+// );
+
+// Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
-  let win = await getLastFocusedWindow();
   let tabs = await chrome.tabs.query({
-    // currentWindow: false,
-    // lastFocusedWindow: false,
-    windowId: win.id,
+    currentWindow: true,
     active: true,
   });
   return tabs[0];
 };
 
-export const runScript = async (func, tabId) => {
-  return chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    func: func,
-    world: "MAIN",
-  });
+export const getCurrentTabId = async () => {
+  return (await getCurrentTab())?.id;
 };
-
-export const runScriptFile = (scriptFile, tabId) => {
-  return chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    files: [scriptFile],
-    world: "MAIN",
-  });
-};
-
-export const runScriptInCurrentTab = async (func) => {
-  const tab = await getCurrentTab();
-  focusToTab(tab);
-  return await runScript(func, tab.id);
-};
-
-export const runScriptFileInCurrentTab = async (scriptFile) => {
-  const tab = await getCurrentTab();
-  focusToTab();
-  return await runScriptFile(scriptFile, tab.id);
-};
-
-export const openUrlInNewTab = async (url) => {
-  return chrome.tabs.create({ url });
-};
-
-export const openUrlAndRunScript = async (url, func) => {
-  let tab = await openUrlInNewTab(url);
-  return await runScript(func, tab.id);
-};
-
-export async function getCookie(domain, raw = false) {
-  let cookies = await chrome.cookies.getAll({ domain });
-  return raw
-    ? cookies
-    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
-}
 
 // https://stackoverflow.com/a/25226679/11898496
 export function focusToTab(tab) {
@@ -98,6 +95,123 @@ export function focusToTab(tab) {
 
 export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
+}
+
+export const runScriptInTab = async ({ func, tabId, args = [] }) => {
+  return new Promise((resolve, reject) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        func: func,
+        args: args,
+        world: chrome.scripting.ExecutionWorld.MAIN,
+        injectImmediately: true,
+      },
+      (injectionResults) => {
+        // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
+        resolve(injectionResults?.find?.((_) => _.result)?.result);
+      }
+    );
+  });
+};
+
+export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
+  return new Promise((resolve, reject) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId: tabId },
+        files: [scriptFile],
+        args: args,
+        world: chrome.scripting.ExecutionWorld.MAIN,
+        injectImmediately: true,
+      },
+      (injectionResults) => {
+        // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
+        resolve(injectionResults?.find?.((_) => _.result)?.result);
+      }
+    );
+  });
+};
+
+export const runScriptInCurrentTab = async (func, args) => {
+  const tab = await getCurrentTab();
+  focusToTab(tab);
+  return await runScriptInTab({ func, args, tabId: tab.id });
+};
+
+export const runScriptFileInCurrentTab = async (scriptFile, args) => {
+  const tab = await getCurrentTab();
+  focusToTab();
+  return await runScriptFile({ scriptFile, args, tabId: tab.id });
+};
+
+export function checkBlackWhiteList(script, url) {
+  if (!url) return false;
+
+  let w = script.whiteList || [],
+    b = script.blackList || [],
+    hasWhiteList = w.length > 0,
+    hasBlackList = b.length > 0,
+    inWhiteList = matchPatterns(url, w) ?? true,
+    inBlackList = matchPatterns(url, b) ?? false;
+
+  let willRun =
+    (!hasWhiteList && !hasBlackList) ||
+    (hasWhiteList && inWhiteList) ||
+    (hasBlackList && !inBlackList);
+
+  return willRun;
+}
+
+// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
+function matchPatterns(url, patterns) {
+  const patternValidationRegex =
+    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
+  const isFirefox =
+    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
+  const allStarsRegex = isFirefox
+    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
+    : /^https?:[/][/][^/]+([/].*)?$/;
+  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
+
+  function getRawPatternRegex(pattern) {
+    if (!patternValidationRegex.test(pattern))
+      throw new Error(
+        pattern +
+          " is an invalid pattern, it must match " +
+          String(patternValidationRegex)
+      );
+    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
+    protocol = protocol
+      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
+      .replace(/[/]/g, "[/]");
+    host = (host ?? "")
+      .replace(/^[*][.]/, "([^/]+.)*")
+      .replace(/^[*]$/, "[^/]+")
+      .replace(/[.]/g, "[.]")
+      .replace(/[*]$/g, "[^.]+");
+    pathname = pathname
+      .replace(/[/]/g, "[/]")
+      .replace(/[.]/g, "[.]")
+      .replace(/[*]/g, ".*");
+    return "^" + protocol + host + "(" + pathname + ")?$";
+  }
+
+  function patternToRegex(matchPatterns) {
+    if (matchPatterns.length === 0) return /$./;
+    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
+    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
+    return new RegExp(
+      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
+    );
+  }
+
+  try {
+    return patternToRegex(patterns).test(url);
+  } catch (e) {
+    console.log("ERROR matchPatterns", e);
+    return false;
+  }
 }
 
 // https://stackoverflow.com/a/68634884/11898496
@@ -109,13 +223,10 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
-  await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: func,
-    args: args,
-  });
-  focusAfterRunScript && focusToTab(tab);
+  let res = await runScriptInTab({ func, tabId: tab.id, args });
+  !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
   closeAfterRunScript && closeTab(tab);
+  return res;
 }
 
 export function attachDebugger(tab) {
@@ -138,17 +249,11 @@ export async function sendDevtoolCommand(tab, commandName, commandParams = {}) {
   return res;
 }
 
-// https://developer.chrome.com/docs/extensions/reference/debugger/#event-onEvent
-export async function onDebuggerEvent(commandName, callback) {
-  ALL_DEBUGGER_EVENTS[commandName] = callback;
-}
-const ALL_DEBUGGER_EVENTS = {};
-chrome.debugger.onEvent.addListener((source, commandName, commandParams) => {
-  ALL_DEBUGGER_EVENTS[commandName]?.(commandParams, source);
-});
-
 // https://developer.chrome.com/docs/extensions/reference/tabs/#method-captureVisibleTab
 // https://stackoverflow.com/q/14990822/11898496
+// Merge image uri
+// https://stackoverflow.com/a/50658710/11898496
+// https://stackoverflow.com/a/50658710/11898496
 export async function captureVisibleTab(options = {}, willDownload = true) {
   let imgData = await chrome.tabs.captureVisibleTab(null, {
     format: options.format || "png",
@@ -156,6 +261,84 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
   });
   willDownload && downloadURI(imgData, "img.png");
   return imgData;
+}
+
+// #endregion
+
+// #region Function Utils
+
+export const isFunction = (o) => typeof o === "function";
+
+// https://stackoverflow.com/a/7960435
+export const isEmptyFunction = (func) => {
+  try {
+    var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
+    return !m.replace(/^\s*\/\/.*$/gm, "");
+  } catch (e) {
+    console.log("Error isEmptyFunction", e);
+    return false;
+  }
+};
+
+// #endregion
+
+// #region String Utils
+
+export function moneyFormat(number, fixed = 0) {
+  if (isNaN(number)) return 0;
+  number = number.toFixed(fixed);
+  let delimeter = ",";
+  number += "";
+  let rgx = /(\d+)(\d{3})/;
+  while (rgx.test(number)) {
+    number = number.replace(rgx, "$1" + delimeter + "$2");
+  }
+  return number;
+}
+
+// https://stackoverflow.com/a/9310752
+export function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
+// https://stackoverflow.com/q/38849009
+export function unescapeRegExp(text) {
+  return text.replace(/\\(.)/g, "$1");
+}
+
+// https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
+export function removeAccents(str) {
+  var from =
+      "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+    to =
+      "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+  for (var i = 0, l = from.length; i < l; i++) {
+    str = str.replace(RegExp(from[i], "gi"), to[i]);
+  }
+
+  str = str.toLowerCase().trim();
+  // .replace(/[^a-z0-9\-]/g, "-")
+  // .replace(/-+/g, "-");
+
+  return str;
+}
+
+export function encodeQueryString(obj) {
+  var str = [];
+  for (var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+}
+
+// #endregion
+
+// #region Download Utils
+
+// https://stackoverflow.com/a/39914235
+export function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // https://stackoverflow.com/a/15832662/11898496
@@ -169,9 +352,34 @@ export function downloadURI(uri, name) {
   document.body.removeChild(link);
 }
 
-// Merge image uri
-// https://stackoverflow.com/a/50658710/11898496
-// https://stackoverflow.com/a/50658710/11898496
+export function downloadData(data, filename, type) {
+  var file = new Blob([data], { type: type });
+  if (window.navigator.msSaveOrOpenBlob)
+    window.navigator.msSaveOrOpenBlob(file, filename);
+  else {
+    var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  }
+}
+
+// #endregion
+
+// #region Security
+
+export async function getCookie(domain, raw = false) {
+  let cookies = await chrome.cookies.getAll({ domain });
+  return raw
+    ? cookies
+    : cookies.map((_) => _.name + "=" + decodeURI(_.value)).join(";");
+}
 
 export const JSONUtils = {
   // https://stackoverflow.com/a/9804835/11898496
@@ -239,54 +447,33 @@ export function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-export async function getAvailableScripts() {
-  let url = (await getCurrentTab()).url;
-  let avai = [];
-  for (let script of Object.values(allScripts)) {
-    if (await checkBlackWhiteList(script, url)) {
-      avai.push(script);
-    }
-  }
+//#endregion
 
-  return avai;
-}
+// #region Snap Utils (snaptik, snapinsta)
 
-export const GlobalBlackList = ["edge://*", "chrome://*"];
-export async function checkBlackWhiteList(script, url = null) {
-  if (!url) {
-    url = (await getCurrentTab()).url;
-  }
+//prettier-ignore
+export function doSomething(e,i,n){for(var r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),t=r.slice(0,i),f=r.slice(0,n),o=e.split("").reverse().reduce(function(e,n,r){if(-1!==t.indexOf(n))return e+t.indexOf(n)*Math.pow(i,r)},0),c="";o>0;)c=f[o%n]+c,o=(o-o%n)/n;return c||"0"}
+//prettier-ignore
+export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){for(var h="";r[t]!==e[a];)h+=r[t],t++;for(var l=0;l<e.length;l++)h=h.replace(RegExp(e[l],"g"),l);f+=String.fromCharCode(doSomething(h,a,10)-n)}return decodeURIComponent(escape(f))}
 
-  let w = script.whiteList,
-    b = script.blackList,
-    hasWhiteList = w?.length > 0,
-    hasBlackList = b?.length > 0,
-    inWhiteList = w?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inBlackList = b?.findIndex((_) => isUrlMatchPattern(url, _)) >= 0,
-    inGlobalBlackList =
-      GlobalBlackList.findIndex((_) => isUrlMatchPattern(url, _)) >= 0;
+// #endregion
 
-  let willRun =
-    !inGlobalBlackList &&
-    ((!hasWhiteList && !hasBlackList) ||
-      (hasWhiteList && inWhiteList) ||
-      (hasBlackList && !inBlackList));
+// #region UI
 
-  return willRun;
-}
+// const seperated_popup_search_param = "isSeparatedPopup";
 
-export function isUrlMatchPattern(url, pattern) {
-  let curIndex = 0,
-    visiblePartsInPattern = pattern.split("*").filter((_) => _ !== "");
+// Kiểm tra xem extension đang chạy trong popup rời hay không
+// export const isExtensionInSeperatedPopup = () => {
+//   let url = new URL(location.href);
+//   return url.searchParams.has(seperated_popup_search_param);
+// };
 
-  for (let p of visiblePartsInPattern) {
-    let index = url.indexOf(p, curIndex);
-    if (index < 0) return false;
-    curIndex = index + p.length;
-  }
-
-  return true;
-}
+// Mở extension trong popup rời
+// export const openExtensionInSeparatedPopup = () => {
+//   let url = new URL(location.href);
+//   url.searchParams.set(seperated_popup_search_param, 1);
+//   popupCenter({ url: url.href, title: "Useful scripts", w: 450, h: 700 });
+// };
 
 // https://stackoverflow.com/a/4068385/11898496
 export function popupCenter({ url, title, w, h }) {
@@ -311,48 +498,19 @@ export function showLoading(text = "") {
   let html = `
     <div class="loading-container">
         <div>
-            <div class="loader"></div>
-            ${text && `<br/><p class="text">${text}</p>`}
+            <div class="loader"></div><br/>
+            <p class="text">${text}</p>
         </div>
     </div>
-
-    <style>
-        .loading-container {
-            position: fixed;
-            top:0;left:0;right:0;bottom:0;
-            background:#333e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        .loading-container .text {
-            color: white;
-        }
-        .loading-container .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            animation: spin 1s linear infinite;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            margin: 0 auto 5px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
   `;
   let div = document.createElement("div");
   div.innerHTML = html;
   document.body.appendChild(div);
 
-  let textP = document.querySelector(".loading-container .text");
-
   return {
     closeLoading: () => div?.remove?.(),
     setLoadingText: (textOrFunction) => {
+      let textP = document.querySelector(".loading-container .text");
       if (!textP) return;
       if (typeof textOrFunction === "function") {
         textP.innerHTML = textOrFunction(textP.innerHTML);
@@ -367,45 +525,9 @@ export function showPopup(title = "", innerHTML = "") {
   let html = `<div class="popup-container">
     <div class="popup-inner-container">
         <button class="close-btn">X</button>
-        ${
-          title
-            ? `<h2 style="text-align: center; margin-bottom:10px">${title}</h2>`
-            : ""
-        }
+        <h2 style="text-align: center; margin-bottom:10px">${title}</h2>
         ${innerHTML}
     </div>
-
-    <style>
-        .popup-container {
-            position: fixed;
-            top:0;left:0;right:0;bottom:0;
-            background:#333e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        .popup-inner-container {
-          position: relative;
-          max-width: 100vw;
-          max-height: 100vh;
-          padding: 10px;
-          background: #eee;
-          overflow: auto;
-        }
-        .popup-container .close-btn {
-          position: absolute;
-          top:0px;
-          right:0px;
-          background: #e22;
-          color: white;
-          padding: 5px 10px;
-          border:none;
-          cursor: pointer;
-          max-width: 95%;
-          max-height: 95%;
-        }
-    </style>
   </div>`;
   let div = document.createElement("div");
   div.innerHTML = html;
@@ -422,7 +544,76 @@ export function showPopup(title = "", innerHTML = "") {
   };
 }
 
-export function openPopupWithHtml(html) {
-  let win = window.open("", "", "scrollbars=yes");
+export function openPopupWithHtml(html, width = 300, height = 300) {
+  let win = window.open(
+    "",
+    "",
+    `scrollbars=yes,width=${width},height=${height}`
+  );
   win.document.write(html);
 }
+
+/*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
+    that detects and handles AJAXed content. Forked for use without JQuery.
+    Usage example:
+        waitForKeyElements (
+            "div.comments"
+            , commentCallbackFunction
+        );
+        //--- Page-specific function to do what we want when the node is found.
+        function commentCallbackFunction (element) {
+            element.text ("This comment changed by waitForKeyElements().");
+        }
+
+    IMPORTANT: Without JQuery, this fork does not look into the content of
+    iframes.
+*/
+export function waitForKeyElements(
+  selectorTxt /* Required: The selector string that specifies the desired element(s).*/,
+  actionFunction /* Required: The code to run when elements are found. It is passed a jNode to the matched element.*/,
+  bWaitOnce /* Optional: If false, will continue to scan for new elements even after the first match is found.*/
+) {
+  var targetNodes, btargetsFound;
+  targetNodes = document.querySelectorAll(selectorTxt);
+
+  if (targetNodes && targetNodes.length > 0) {
+    btargetsFound = true;
+    /*--- Found target node(s).  Go through each and act if they are new. */
+    targetNodes.forEach(function (element) {
+      var alreadyFound =
+        element.dataset.found == "alreadyFound" ? "alreadyFound" : false;
+
+      if (!alreadyFound) {
+        //--- Call the payload function.
+        var cancelFound = actionFunction(element);
+        if (cancelFound) btargetsFound = false;
+        else element.dataset.found = "alreadyFound";
+      }
+    });
+  } else {
+    btargetsFound = false;
+  }
+
+  //--- Get the timer-control variable for this selector.
+  var controlObj = waitForKeyElements.controlObj || {};
+  var controlKey = selectorTxt.replace(/[^\w]/g, "_");
+  var timeControl = controlObj[controlKey];
+
+  //--- Now set or clear the timer as appropriate.
+  if (btargetsFound && bWaitOnce && timeControl) {
+    //--- The only condition where we need to clear the timer.
+    clearInterval(timeControl);
+    delete controlObj[controlKey];
+  } else {
+    //--- Set a timer, if needed.
+    if (!timeControl) {
+      timeControl = setInterval(function () {
+        waitForKeyElements(selectorTxt, actionFunction, bWaitOnce);
+      }, 300);
+      controlObj[controlKey] = timeControl;
+    }
+  }
+  waitForKeyElements.controlObj = controlObj;
+}
+
+// #endregion

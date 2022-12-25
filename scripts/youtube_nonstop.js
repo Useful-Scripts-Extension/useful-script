@@ -8,10 +8,9 @@ export default {
     en: 'Kiss the annoying "Video paused. Continue watching?" confirmation goodbye!',
     vi: "Phát youtube không còn bị làm phiền bởi popup 'Video đã tạm dừng. Bạn có muốn xem tiếp?' của youtube.",
   },
-  blackList: [],
-  whiteList: ["*://music.youtube.com", "*://www.youtube.com"],
+    whiteList: ["*://music.youtube.com/*", "*://www.youtube.com/*"],
 
-  func: function () {
+  onClick: function () {
     // source code from: https://chrome.google.com/webstore/detail/youtube-nonstop/nlkaejimjacpillmajjnopmpbkbnocid
 
     try {

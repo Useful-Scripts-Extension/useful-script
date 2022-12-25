@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-computer-mouse"></i>`,
+  icon: `<i class="fa-solid fa-computer-mouse fa-lg"></i>`,
   name: {
     en: "Re-Enable context menu (right click)",
     vi: "Bật lại menu chuột phải",
@@ -9,7 +9,7 @@ export default {
     vi: "Dùng cho web nào không cho phép bật menu chuột phải",
   },
 
-  func: function () {
+  onClick: function () {
     document.onmousedown = "return true";
     document.onmouseup = "return true";
     document.oncontextmenu = null;

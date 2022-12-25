@@ -2,32 +2,31 @@
 
 # Useful scripts - Chrome extension
 
+[English](./README-en.md)
+
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
-## Change logs - Lịch sử cập nhât
+## Lịch sử cập nhật
 
-Verion hiện tại: <del>v1.1</del> <del>v1.2</del> **v1.3** (27/11/2022)
+Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (25/12/2022)
 
-[Change logs / Lịch sử cập nhật](/md/CHANGELOGS.md)
+[Lịch sử cập nhật](/md/CHANGELOGS.md)
 
-## Overview - Giới thiệu
+## Giới thiệu
 
 1 extension chứa 1 đống extensions nhỏ.
 
 - Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
-- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
-## Install - Cài đặt
+## Cài đặt
 
-- Chrome Webstore - Coming soon...
-
-- Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
+- Cài đặt thủ công - [Xem hướng dẫn (youtube)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
-## Screenshots - Ảnh chụp màn hình
+## Ảnh chụp màn hình
 
-![screenshot](./assets/screenshots/Screen%20Shot%202022-11-27%20at%2022.05.00.png)
+![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
 ## Tutorial (Demo) 
 
@@ -35,11 +34,11 @@ Verion hiện tại: <del>v1.1</del> <del>v1.2</del> **v1.3** (27/11/2022)
 
 [![Video Tutorial (Demo)](./assets/screenshots/Screenshot_3.png)](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
 
-## Contribute - Đóng góp
+## Contribute
 
 Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
 
-## Learn - Kiến thức hay
+## Kiến thức hay
 
 - Extension Tips
 

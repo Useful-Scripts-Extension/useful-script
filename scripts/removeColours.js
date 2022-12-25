@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-droplet-slash"></i>`,
+  icon: `<i class="fa-solid fa-droplet-slash fa-lg"></i>`,
   name: {
     en: "Remove all colors in web",
     vi: "Xoá màu website",
@@ -9,7 +9,7 @@ export default {
     vi: "Xoá mọi màu có trong website",
   },
 
-  func: function () {
+  onClick: function () {
     var newSS,
       styles =
         "* { background: white ! important; color: black !important } :link, :link * { color: #0000EE !important } :visited, :visited * { color: #551A8B !important }";

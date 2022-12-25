@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-snowflake"></i>`,
+  icon: `<i class="fa-solid fa-snowflake fa-lg"></i>`,
   name: {
     en: "Let it snow",
     vi: "Hiệu ứng tuyết rơi",
@@ -9,7 +9,7 @@ export default {
     vi: "Thêm hiệu ứng tuyết rơi vào trang web",
   },
 
-  func: function () {
+  onClick: function () {
     function i() {
       this.D = function () {
         const t = h.atan(this.i / this.d);

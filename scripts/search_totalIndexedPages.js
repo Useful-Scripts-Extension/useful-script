@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-google"></i>`,
+  icon: `<i class="fa-brands fa-google fa-lg"></i>`,
   name: {
     en: "Check total indexed pages",
     vi: "Xem các pages được google quét",
@@ -9,7 +9,7 @@ export default {
     vi: "Biết có bao nhiêu trang con của website hiện tại đã được quét bởi Google",
   },
 
-  func: function () {
+  onClick: function () {
     window.open(
       "http://www.google.com/search?num=100&q=site:" + escape(location.hostname)
     );

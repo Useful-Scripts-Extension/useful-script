@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-pen-nib"></i>`,
+  icon: `<i class="fa-solid fa-pen-nib fa-lg"></i>`,
   name: {
     en: "Toggle edit page",
     vi: "Bật/tắt chế độ chỉnh sửa website",
@@ -9,7 +9,7 @@ export default {
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
 
-  func: function () {
+  onClick: function () {
     let isOn = document.designMode == "on";
     let willOn = isOn ? false : true;
 

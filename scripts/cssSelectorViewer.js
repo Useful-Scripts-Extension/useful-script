@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-brands fa-css3"></i>`,
+  icon: `<i class="fa-brands fa-css3 fa-lg"></i>`,
   name: {
     en: "CSS selector viewer",
     vi: "Trình kiểm tra css cục bộ",
@@ -8,10 +8,8 @@ export default {
     en: "Inspect css at specific element on the web",
     vi: "Kiểm tra mã css cho thành phần bất kỳ trong trang web",
   },
-  blackList: [],
-  whiteList: [],
 
-  func: function () {
+  onClick: function () {
     var s = document.createElement("div");
     s.innerHTML = "Loading...";
     s.style.color = "black";

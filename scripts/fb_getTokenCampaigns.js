@@ -1,18 +1,17 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb token EAAB (campaigns)",
     vi: "Lấy fb token EAAB (campaigns)",
   },
   description: {
-    en: "Get fb token EAAG from www.facebook.com campaigns",
-    vi: "Lấy fb token EAAG từ www.facebook.com campaigns",
+    en: "Get facebook token EAAG from www.facebook.com campaigns",
+    vi: "Lấy facebook token EAAG từ www.facebook.com campaigns",
   },
-  runInExtensionContext: true,
 
-  func: function () {
+  onClickExtension: function () {
     // Source code extracted from https://chrome.google.com/webstore/detail/get-token-cookie/naciaagbkifhpnoodlkhbejjldaiffcm/related
 
     async function getToken() {

@@ -7,10 +7,9 @@ export default {
     en: "Get all video in doutu.be user profile",
     vi: "Tải tất cả video từ profile của user doutu.be bất kỳ",
   },
-  blackList: [],
-  whiteList: ["*://doutu.be"],
+  whiteList: ["https://doutu.be/*"],
 
-  func: async function () {
+  onClick: async function () {
     // https://stackoverflow.com/a/18197341/11898496
     function download(filename, text) {
       var element = document.createElement("a");
@@ -69,7 +68,6 @@ export default {
       closeFullVideo();
       await sleep(500);
     }
-
     console.log(allUrls);
     alert("Tìm được " + allUrls.length + " videos. Bấm ok để tải xuống link.");
     download(location.pathname + ".txt", allUrls.join("\n"));

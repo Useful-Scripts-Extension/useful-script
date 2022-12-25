@@ -1,4 +1,5 @@
-import { isTitle, tabs } from "../popup/tabs.js";
+import { isTitle } from "../popup/helpers/utils.js";
+import { tabs } from "../popup/tabs.js";
 
 function generateMd(lang = "vi") {
   let index = 1;

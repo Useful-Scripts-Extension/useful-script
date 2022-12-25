@@ -17,9 +17,8 @@ export default {
     en: "Convert current website to PDF",
     vi: "Chuyển trang web hiện tại thành PDF",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     const { setLoadingText, closeLoading } = showLoading("Đang tạo PDF...");
     let tab = await getCurrentTab();
     try {

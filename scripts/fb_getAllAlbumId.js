@@ -4,13 +4,12 @@ export default {
     vi: "Lấy tất cả fb album id",
   },
   description: {
-    en: "Get all id of album in current website",
-    vi: "Lấy tất cả album id có trong trang web",
+    en: "Get all id of album in facebook website",
+    vi: "Lấy tất cả album id có trong trang facebook",
   },
-  blackList: [],
-  whiteList: ["*://www.facebook.com"],
+  whiteList: ["https://www.facebook.com/*"],
 
-  func: function () {
+  onClick: function () {
     // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
 
     const list_a = document.querySelectorAll("a");

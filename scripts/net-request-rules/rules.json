@@ -24,5 +24,57 @@
                 "xmlhttprequest"
             ]
         }
+    },
+    {
+        "id": 2,
+        "priority": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "referer",
+                    "operation": "set",
+                    "value": "https://www.snaptikvideo.com/"
+                },
+                {
+                    "header": "origin",
+                    "operation": "set",
+                    "value": "https://www.snaptikvideo.com"
+                }
+            ]
+        },
+        "condition": {
+            "domain": "extension://*",
+            "urlFilter": "https://api.snaptikvideo.com/st-tik/tiktok/dl",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "priority": 1,
+        "action": {
+            "type": "modifyHeaders",
+            "requestHeaders": [
+                {
+                    "header": "referer",
+                    "operation": "set",
+                    "value": "https://www.facebook.com"
+                },
+                {
+                    "header": "origin",
+                    "operation": "set",
+                    "value": "https://www.facebook.com"
+                }
+            ]
+        },
+        "condition": {
+            "domain": "extension://*",
+            "urlFilter": "https://www.facebook.com",
+            "resourceTypes": [
+                "xmlhttprequest"
+            ]
+        }
     }
 ]

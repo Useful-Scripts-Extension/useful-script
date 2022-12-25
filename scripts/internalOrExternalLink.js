@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-brush"></i>`,
+  icon: `<i class="fa-solid fa-brush fa-lg"></i>`,
   name: {
     en: "Highlight internal/external link",
     vi: "Tô màu cho link",
@@ -9,7 +9,7 @@ export default {
     vi: "+Đỏ: cùng domain\n+Cam: hiện tại\n+Xanh: khác domain",
   },
 
-  func: function () {
+  onClick: function () {
     var i, x;
     for (i = 0; (x = document.links[i]); ++i)
       x.style.color = ["blue", "red", "orange"][sim(x, location)];

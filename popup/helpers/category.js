@@ -1,4 +1,11 @@
 export const CATEGORY = {
+  contentScript: {
+    id: "contentScript",
+    name: {
+      en: "Content scripts",
+      vi: "Content scripts",
+    },
+  },
   favorite: {
     id: "favorite",
     style: { textDecoration: "underline" },
@@ -15,29 +22,21 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Gần đây`,
     },
   },
-  available: {
-    id: "available",
-    showCount: true,
+  all: {
+    id: "all",
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Available`,
-      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Có thể dùng`,
+      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
+      vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
     },
   },
-  hot: {
-    id: "hot",
+  autorun: {
+    id: "autorun",
+    // showCount: true,
     style: { textDecoration: "underline" },
     name: {
-      en: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Hot`,
-      vi: `<i class="fa-brands fa-hotjar fa-flip" style="color:#1F51FF;"></i> Nổi bật`,
-    },
-  },
-  new: {
-    id: "new",
-    style: { textDecoration: "underline" },
-    name: {
-      en: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> New`,
-      vi: `<i class="fa-solid fa-solid fa-bolt fa-shake" style="color:#1F51FF"></i> Mới`,
+      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Autorun`,
+      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
     },
   },
   search: {
@@ -89,6 +88,13 @@ export const CATEGORY = {
       vi: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
     },
   },
+  shopping: {
+    id: "shopping",
+    name: {
+      en: `<i class="fa-solid fa-cart-shopping"></i> Shopping`,
+      vi: `<i class="fa-solid fa-cart-shopping"></i> Mua sắm`,
+    },
+  },
   github: {
     id: "github",
     name: {
@@ -101,13 +107,6 @@ export const CATEGORY = {
     name: {
       en: `<i class="fa-solid fa-robot"></i> Automation`,
       vi: `<i class="fa-solid fa-robot"></i> Tự động hoá`,
-    },
-  },
-  password: {
-    id: "password",
-    name: {
-      en: `<i class="fa-solid fa-key"></i> Password`,
-      vi: `<i class="fa-solid fa-key"></i> Mật khẩu`,
     },
   },
   unlock: {

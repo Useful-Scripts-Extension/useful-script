@@ -8,15 +8,26 @@ export default {
     en: "",
     vi: "",
   },
+  infoLink: "",
 
-  // Chọn 1 trong 2 cách, xoá cách không dùng:
-
-  // Cách 1: Mở link web trong tab mới, không cần dùng func
-  link: "",
-
-  // Cách 2: Chạy script
   blackList: [],
   whiteList: [],
-  runInExtensionContext: false,
-  func: function () {},
+
+  // run (if enable autorun) in web page context
+  onDocumentStart: () => {},
+  onDocumentEnd: () => {},
+  onDocumentIdle: () => {},
+
+  // run onclick in extension-popup-page context
+  onClickExtension: () => {},
+
+  // run onclick in content-script context
+  onClickContentScript: () => {},
+
+  // run onclick in web page context
+  // cannot access to shared or any variable outside of webpage
+  onClick: () => {},
 };
+
+// functions/attributes that other scripts can import and use
+export const shared = {};

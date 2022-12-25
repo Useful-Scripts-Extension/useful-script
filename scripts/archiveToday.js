@@ -10,9 +10,8 @@ export default {
     en: "Creates an archive of the current page on archive.today.",
     vi: "Lưu trang web hiện tại lên archive.today",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     let { url } = await getCurrentTab();
 
     var a = prompt(

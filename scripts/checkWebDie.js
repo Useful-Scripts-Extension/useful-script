@@ -10,9 +10,8 @@ export default {
     en: "Check web die using downforeveryoneorjustme",
     vi: "Dùng bên thứ 3 để kiểm tra xem website có bị die thật không",
   },
-  runInExtensionContext: true,
 
-  func: async function () {
+  onClickExtension: async function () {
     let { url } = await getCurrentTab();
     if (url) {
       let url_to_check = prompt("Enter web url to check", url);

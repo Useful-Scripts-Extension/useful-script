@@ -8,10 +8,8 @@ export default {
     en: "Instantly shows meta information about the current site in an on-page iFrame.",
     vi: "Xem thông tin meta của website trực tiếp trong trang web",
   },
-  blackList: [],
-  whiteList: [],
-
-  func: function () {
+    
+  onClick: function () {
     // source code from: https://bookmarklet.vercel.app/
 
     if (window.ouiseo === undefined) {

@@ -7,14 +7,11 @@ export default {
     vi: "Lấy fb token từ cookie (ffb.vn)",
   },
   description: {
-    en: "Post your fb cookie to ffb.vn API",
-    vi: "Gửi cookie fb lên API của ffb.vn",
+    en: "Post your facebook cookie to ffb.vn API",
+    vi: "Gửi cookie facebook lên API của ffb.vn",
   },
-  blackList: [],
-  whiteList: [],
-  runInExtensionContext: true,
-
-  func: async function () {
+    
+  onClickExtension: async function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy cookie...");
     let cookie = await getCookie("facebook.com");
     if (!cookie) {

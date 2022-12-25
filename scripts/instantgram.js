@@ -1,17 +1,15 @@
 export default {
   icon: "https://www.instagram.com/favicon.ico",
   name: {
-    en: "Instantgram - Download full-size image",
-    vi: "Instantgram - Tải ảnh chất lượng cao",
+    en: "Download watching insta photo/story",
+    vi: "Tải ảnh/story insta đang xem",
   },
   description: {
-    en: "Download full-size instagram image in 1 click",
-    vi: "Tải ảnh instagram chất lượng cao bằng 1 click",
+    en: "Download full-size instagram image/story in 1 click",
+    vi: "Tải ảnh/story instagram nhanh chóng bằng 1 click",
   },
-  blackList: [],
-  whiteList: [],
-
-  func: function () {
+  
+  onClick: function () {
     // Source code from: https://theus.github.io/instantgram/
     // Minify source code: https://www.toptal.com/developers/javascript-minifier
 

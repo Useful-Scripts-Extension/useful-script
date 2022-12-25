@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: `<i class="fa-solid fa-key"></i>`,
+  icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
     en: "Get fb Token (m.facebook.com)",
     vi: "Lấy fb token (m.facebook.com)",
@@ -10,9 +10,8 @@ export default {
     en: "Get facebook access token from m.facebook.com",
     vi: "Lấy facebook access token từ trang m.facebook.com",
   },
-  runInExtensionContext: true,
 
-  func: function () {
+  onClickExtension: function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy token ...");
     fetch("https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed")
       .then((response) => response.text())

@@ -1,5 +1,7 @@
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+
 export default {
-  icon: `<i class="fa-solid fa-angles-down"></i>`,
+  icon: `<i class="fa-solid fa-angles-down fa-lg"></i>`,
   name: {
     en: "Scroll to very end",
     vi: "Cuộn trang xuống cuối cùng",
@@ -9,13 +11,21 @@ export default {
     vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi. Click chuột để huỷ.",
   },
 
-  func: function () {
-    let height = () =>
-      (document.scrollingElement || document.body).scrollHeight;
-    let down = () => window.scrollTo({ left: 0, top: height() });
-    let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  onClickExtension: async function () {
+    const { closeLoading } = showLoading("Đang scroll xuống cuối cùng...");
+    await runScriptInCurrentTab(shared.scrollToVeryEnd);
+    closeLoading();
+  },
+};
 
-    (async () => {
+export const shared = {
+  scrollToVeryEnd: function () {
+    return new Promise(async (resolve, reject) => {
+      let height = () =>
+        (document.scrollingElement || document.body).scrollHeight;
+      let down = () => window.scrollTo({ left: 0, top: height() });
+      let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
       let lastScroll = {
         time: Date.now(),
         top: 0,
@@ -25,7 +35,7 @@ export default {
       let clickToCancel = () => {
         running = false;
         document.removeEventListener("click", clickToCancel);
-        alert("scroll to very end STOPPED by user click");
+        // alert("scroll to very end STOPPED by user click");
       };
       document.addEventListener("click", clickToCancel);
 
@@ -37,12 +47,12 @@ export default {
           lastScroll.time = Date.now();
         } else if (Date.now() - lastScroll.time > 5000) {
           running = false;
-          alert("scroll to very end DONE");
+          // alert("scroll to very end DONE");
         }
-
-        if (!running) break;
-        else await sleep(100);
+        await sleep(100);
       }
-    })();
+
+      resolve();
+    });
   },
 };

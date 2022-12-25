@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-solid fa-cookie-bite"></i>`,
+  icon: `<i class="fa-solid fa-cookie-bite fa-lg"></i>`,
   name: {
     en: "Remove cookies",
     vi: "Xoá Cookies",
@@ -9,7 +9,7 @@ export default {
     vi: "Xoá cookies trang hiện tại",
   },
 
-  func: function () {
+  onClick: function () {
     let clearCookies = () => {
       let C = document.cookie.split("; ");
       for (d = "." + location.host; d; d = ("" + d).substr(1).match(/\..*$/))

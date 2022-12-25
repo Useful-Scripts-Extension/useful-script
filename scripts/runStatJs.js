@@ -8,7 +8,7 @@ export default {
     vi: "Tính toán FPS website",
   },
 
-  func: function () {
+  onClick: function () {
     let src = "//mrdoob.github.io/stats.js/build/stats.min.js";
     var script = document.createElement("script");
     script.onload = function () {

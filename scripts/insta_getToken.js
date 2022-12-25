@@ -8,10 +8,7 @@ export default {
     en: "Get instagram access token",
     vi: "Lấy instagram access token",
   },
-  blackList: [],
-  whiteList: ["*://*.instagram.com"],
-
-  func: function () {
+    onClick: function () {
     try {
       const encoded = document.cookie
         .split("; ")
@@ -31,3 +28,13 @@ export default {
     }
   },
 };
+
+function backup() {
+  // https://greasyfork.org/en/scripts/14755-instagram-reloaded
+  function get_csrf_token() {
+    return document.body.innerHTML
+      .match(/\"csrf_token\":(?:"[^"]*"|^[^"]*$)/)[0]
+      .replace(/\"/g, "")
+      .split(":")[1];
+  }
+}

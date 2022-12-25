@@ -9,7 +9,7 @@ export default {
     vi: "Lấy link favicon của trang web",
   },
 
-  func: function () {
+  onClick: function () {
     // https://stackoverflow.com/a/15750809
     const getFaviconFromGoogle = (willGetUrlFavicon = true) => {
       return willGetUrlFavicon

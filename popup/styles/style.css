@@ -37,9 +37,11 @@ div {
 
 html,
 body {
-    min-width: 350px;
     background-color: #e6e6e6;
+    min-width: 370px;
+    min-height: 600px;
 }
+
 
 h1,
 h3 {
@@ -97,7 +99,6 @@ a:hover {
 
 /* ---------- Tab button ---------- */
 .tab {
-    overflow: hidden;
     background-color: #cccccc;
     overflow: auto;
 }
@@ -120,6 +121,35 @@ a:hover {
     background-color: #a8a8a8;
 }
 
+/* ---------- Search --------- */
+.search {
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background-color: inherit;
+}
+
+.search input[type='text'] {
+    border: none;
+    padding: 5px 10px;
+    width: 50%;
+    text-align: center;
+    background-color: #f5f5f5;
+    width: 100%;
+}
+
+.search .searchFound {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    text-align: right;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #dddd;
+}
+
 /* ---------- Content & content button ---------- */
 .tabcontent {
     padding: 6px;
@@ -134,15 +164,20 @@ a:hover {
 .section-title {
     padding: 10px 0 5px;
     position: sticky;
-    top: 0;
+    top: 30px;
     background-color: #e6e6e6;
-    z-index: 1;
+    z-index: 2;
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
+.content .buttonContainer {
+    display: flex;
+    align-items: center;
+}
+
 .content button {
-    display: block;
+    position: relative;
     border: none;
     margin: 0.25em;
     padding: 0.75em 1em;
@@ -154,7 +189,7 @@ a:hover {
 .content button:hover {
     background-color: #a8a8a8;
     cursor: pointer;
-    z-index: 2;
+    z-index: 3;
 }
 
 .content button:active {
@@ -163,7 +198,8 @@ a:hover {
 }
 
 .content button i.star,
-.content button i.view-source {
+.content button i.view-source,
+.content button i.fa-circle-question {
     opacity: 0;
     width: 0;
     transition: all .2s;
@@ -174,13 +210,15 @@ a:hover {
 }
 
 .content button i.star:hover,
-.content button i.view-source:hover {
+.content button i.view-source:hover,
+.content button i.fa-circle-question:hover {
     transform: scale(1.8);
 }
 
 .content button:hover i.star,
 .content button i.star.active,
-.content button:hover i.view-source {
+.content button:hover i.view-source,
+.content button:hover i.fa-circle-question {
     width: auto;
     margin-left: 5px;
     opacity: 1;
@@ -201,6 +239,39 @@ a:hover {
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
+}
+
+.content .checkmark {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin: 0px;
+    border: 1px solid #999;
+    background-color: #e6e6e6;
+}
+
+.content .checkmark:hover {
+    background-color: #ccc;
+}
+
+.content .checkmark.active {
+    background-color: #04AA6D;
+}
+
+.content .checkmark.active:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .content button .badgeContainer {
@@ -257,7 +328,7 @@ a:hover {
     visibility: visible;
     top: 105%;
     opacity: 1;
-    transition: all .3s linear .7s;
+    transition: all .3s linear .3s;
 }
 
 .tooltip .tooltiptext::after {
@@ -276,13 +347,15 @@ a:hover {
 .modal {
     display: none;
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     left: 0;
     top: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
 }
 
 .modal-content {
@@ -320,11 +393,129 @@ a:hover {
     overflow: auto;
 }
 
+/* --------- Loading --------- */
+#loading-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #e8e8e8db;
+    -webkit-backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
+}
+
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #333e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    -webkit-backdrop-filter: blur(.1rem);
+    backdrop-filter: blur(.1rem);
+}
+
+.loading-container .text {
+    color: white;
+}
+
+.loading-container .loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 5px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --------- Popup --------- */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #333e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.popup-inner-container {
+    position: relative;
+    max-width: 100vw;
+    max-height: 100vh;
+    padding: 10px;
+    background: #eee;
+    overflow: auto;
+}
+
+.popup-container .close-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: #e22;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    max-width: 95%;
+    max-height: 95%;
+}
+
+/* --------- border fancy --------- */
+.border-fancy:after {
+    content: "";
+    background: linear-gradient(45deg, red, #ff9a00 10%, #d0de21 20%, #4fdc4a 30%, #3fdad8 40%, #2fc9e2 50%, #1c7fee 60%, #5f15f2 70%, #ba0cf8 80%, #fb07d9 90%, red) repeat 0% 0%/300% 100%;
+    position: absolute;
+    inset: -1px;
+    border-radius: 8px;
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+    -webkit-transform: translateZ(-1px);
+    transform: translateZ(-1px);
+    -webkit-animation: border-fancy 6s linear infinite;
+    animation: border-fancy 6s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes border-fancy {
+    0% {
+        background-position: 0 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    to {
+        background-position: 0 50%
+    }
+}
+
 /* --------- scrollbar --------- */
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 7px;
+    height: 7px;
 }
 
 /* Track */

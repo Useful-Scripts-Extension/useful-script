@@ -7,29 +7,29 @@ export const LANG = {
 
 let currentLangKey = null;
 
-export async function setLang(lang) {
+export function setLang(lang) {
   if (lang in LANG) {
     currentLangKey = lang;
-    await langSaver.set(lang);
+    langSaver.set(lang);
   } else {
     alert("WRONG LANG KEY " + lang);
   }
 }
 
-export async function toggleLang() {
+export function toggleLang() {
   let newLang = currentLangKey === LANG.vi ? LANG.en : LANG.vi;
   currentLangKey = newLang;
-  await setLang(newLang);
+  setLang(newLang);
   return newLang;
 }
 
-export async function getLang() {
-  if (!currentLangKey) currentLangKey = await langSaver.get(LANG.vi);
+export function getLang() {
+  if (!currentLangKey) currentLangKey = langSaver.get(LANG.vi);
   return currentLangKey;
 }
 
-export async function getFlag() {
-  return "./assets/flag-" + (await getLang()) + ".png";
+export function getFlag() {
+  return "./assets/flag-" + getLang() + ".png";
 }
 
 export function t(o) {
