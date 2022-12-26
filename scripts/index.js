@@ -163,6 +163,8 @@ import scribd_bypassPreview from "./scribd_bypassPreview.js";
 import fb_removeFbclid from "./fb_removeFbclid.js";
 // import fb_messengerHistory from "./fb_messengerHistory.js";
 import fb_messengerCount from "./fb_messengerCount.js";
+import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
+import fb_searchPageForOther from "./fb_searchPageForOther.js";
 
 // inject badges
 const allScripts = {
@@ -344,6 +346,8 @@ const allScripts = {
   fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
   // fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
   fb_messengerCount: addBadge(fb_messengerCount, BADGES.new),
+  fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.new),
+  fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

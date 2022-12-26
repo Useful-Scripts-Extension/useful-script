@@ -136,6 +136,7 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Facebook: {
+    // Helpers
     async fetchGraphQl(str, fb_dtsg) {
       var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
       fb_dtsg += str.includes("variables")
@@ -152,12 +153,62 @@ const UsefulScriptGlobalPageContext = {
       let json = await res.json();
       return json;
     },
+    decodeArrId(arrId) {
+      return arrId[0] * 4294967296 + arrId[1];
+    },
+    async getFbdtsg() {
+      let methods = [
+        () => require("DTSGInitData").token,
+        () => require("DTSG").getToken(),
+        () => {
+          return document.documentElement.innerHTML.match(
+            /"DTSGInitialData",\[],{"token":"(.+?)"/gm
+          )[1];
+        },
+        async () => {
+          let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+          let text = await res.text();
+          return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
+        },
+        () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
+      ];
+      for (let m of methods) {
+        try {
+          let d = await m();
+          if (d) return d;
+        } catch (e) {}
+      }
+      return null;
+    },
+
+    // User Data
     getUserAvatarFromUid(uid) {
       return (
         "https://graph.facebook.com/" +
         uid +
         "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
       );
+    },
+    async getYourUserId() {
+      let methods = [
+        () => require("CurrentUserInitialData").USER_ID,
+        () => require("RelayAPIConfigDefaults").actorID,
+        () => document.cookie.match(/c_user=(\d+)/)[1],
+        async () =>
+          (
+            await chrome.cookies.get({
+              url: "https://www.facebook.com",
+              name: "c_user",
+            })
+          ).value,
+      ];
+      for (let m of methods) {
+        try {
+          let d = await m();
+          if (d) return d;
+        } catch (e) {}
+      }
+      return null;
     },
     async getUserInfoFromUid(uid) {
       const variables = {
@@ -212,9 +263,6 @@ const UsefulScriptGlobalPageContext = {
         avatar: json?.picture?.data?.url,
       };
     },
-    decodeArrId(arrId) {
-      return arrId[0] * 4294967296 + arrId[1];
-    },
     async getUidFromUrl(url) {
       let methods = [
         () => require("CometRouteStore").getRoute(url).rootView.props.userID,
@@ -239,6 +287,8 @@ const UsefulScriptGlobalPageContext = {
       }
       return null;
     },
+
+    // Story
     getStoryBucketIdFromURL(url) {
       return url.match(/stories\/(\d+)\//)?.[1];
     },
@@ -248,53 +298,8 @@ const UsefulScriptGlobalPageContext = {
       );
       return htmlStory[htmlStory.length - 1].getAttribute("data-id");
     },
-    async getFbdtsg() {
-      let methods = [
-        () => require("DTSGInitData").token,
-        () => require("DTSG").getToken(),
-        () => {
-          return document.documentElement.innerHTML.match(
-            /"DTSGInitialData",\[],{"token":"(.+?)"/gm
-          )[1];
-        },
-        async () => {
-          let res = await fetch("https://mbasic.facebook.com/photos/upload/");
-          let text = await res.text();
-          return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
-        },
-        () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
-      ];
-      for (let m of methods) {
-        try {
-          let d = await m();
-          if (d) return d;
-        } catch (e) {}
-      }
-      return null;
-    },
-    async getYourUserId() {
-      let methods = [
-        () => require("CurrentUserInitialData").USER_ID,
-        () => require("RelayAPIConfigDefaults").actorID,
-        () => document.cookie.match(/c_user=(\d+)/)[1],
-        async () =>
-          (
-            await chrome.cookies.get({
-              url: "https://www.facebook.com",
-              name: "c_user",
-            })
-          ).value,
-      ];
-      for (let m of methods) {
-        try {
-          let d = await m();
-          if (d) return d;
-        } catch (e) {}
-      }
-      return null;
-    },
-    // Source: https://pastebin.com/CNvUxpfc
     async getStoryInfo(bucketID, fb_dtsg) {
+      // Source: https://pastebin.com/CNvUxpfc
       let body = new URLSearchParams();
       body.append("__a", 1);
       body.append("fb_dtsg", fb_dtsg);
@@ -407,13 +412,42 @@ const UsefulScriptGlobalPageContext = {
       // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       // xhr.send(body);
     },
-    async unlikePage(pageId, user, fb_dtsg) {
+
+    // Friend
+    async removeFriendConfirm(friend_uid, uid, fb_dtsg) {
+      var f = new FormData();
+      f.append("uid", friend_uid),
+        f.append("unref", "bd_friends_tab"),
+        f.append("floc", "friends_tab"),
+        f.append("__user", uid),
+        f.append("__a", 1),
+        f.append("fb_dtsg", fb_dtsg);
+      await fetch(
+        "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
+        {
+          method: "POST",
+          credentials: "include",
+          body: f,
+        }
+      );
+    },
+
+    // Messages
+    async messagesCount(fb_dtsg) {
+      return await UsefulScriptGlobalPageContext.Facebook.fetchGraphQl(
+        "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
+        fb_dtsg
+      );
+    },
+
+    // Page
+    async unlikePage(pageId, uid, fb_dtsg) {
       var f = new FormData();
       f.append("fbpage_id", pageId),
         f.append("add", false),
         f.append("reload", false),
         f.append("fan_origin", "page_timeline"),
-        f.append("__user", user),
+        f.append("__user", uid),
         f.append("__a", 1),
         f.append("fb_dtsg", fb_dtsg);
       await fetch("https://www.facebook.com/ajax/pages/fan_status.php?dpr=1", {
@@ -422,11 +456,81 @@ const UsefulScriptGlobalPageContext = {
         body: f,
       });
     },
-    async leaveGroup(groupId, user, fb_dtsg) {
+    async searchPageForOther(other_uid, cursor, uid, fb_dtsg) {
+      let variables = JSON.stringify({
+        count: 8,
+        scale: 1,
+        cursor: cursor ?? null,
+        id: btoa(`app_collection:${other_uid}:2409997254:96`),
+      });
+
+      let f = new URLSearchParams();
+      f.append("__user", uid);
+      f.append("__a", 1);
+      f.append("dpr", 1);
+      f.append("fb_dtsg", fb_dtsg);
+      f.append("fb_api_caller_class", "RelayModern");
+      f.append(
+        "fb_api_req_friendly_name",
+        "ProfileCometAppCollectionGridRendererPaginationQuery"
+      );
+      f.append("variables", variables);
+      f.append("doc_id", 2983410188445167);
+
+      try {
+        let res = await fetch("https://www.facebook.com/api/graphql/", {
+          method: "POST",
+          body: f,
+        });
+
+        let json = await res.json();
+        let { items } = json.data.node;
+        return {
+          nextCursor: items.page_info.end_cursor,
+          data: items.edges.map((e) => ({
+            id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
+            name: e.node.title.text,
+            subTitle: e.node.subtitle_text?.text,
+            url: e.node.url,
+            image: e.node.image.uri,
+            cursor: e.cursor,
+          })),
+        };
+      } catch (e) {
+        console.log("ERROR fetch page", e);
+        return {
+          nextCursor: null,
+          data: [],
+        };
+      }
+    },
+    async searchAllPageForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
+      let cursor = "";
+      let allPages = [];
+      while (true) {
+        let { nextCursor, data } =
+          await UsefulScriptGlobalPageContext.Facebook.searchPageForOther(
+            other_uid,
+            cursor,
+            uid,
+            fb_dtsg
+          );
+        if (!nextCursor) {
+          break;
+        }
+        cursor = nextCursor;
+        allPages = allPages.concat(data);
+        await pageFetchedCallback?.(data, allPages);
+      }
+      return allPages;
+    },
+
+    // Group
+    async leaveGroup(groupId, uid, fb_dtsg) {
       var f = new FormData();
       f.append("fb_dtsg", fb_dtsg),
         f.append("confirmed", 1),
-        f.append("__user", user),
+        f.append("__user", uid),
         f.append("__a", 1);
       await fetch(
         "https://www.facebook.com/ajax/groups/membership/leave.php?group_id=" +
@@ -439,28 +543,80 @@ const UsefulScriptGlobalPageContext = {
         }
       );
     },
-    async removeFriendConfirm(friend_uid, user, fb_dtsg) {
-      var f = new FormData();
-      f.append("uid", friend_uid),
-        f.append("unref", "bd_friends_tab"),
-        f.append("floc", "friends_tab"),
-        f.append("__user", user),
-        f.append("__a", 1),
-        f.append("fb_dtsg", fb_dtsg);
-      await fetch(
-        "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
-        {
+    async searchGroupForOther(other_uid, cursor, uid, fb_dtsg) {
+      let variables = JSON.stringify({
+        count: 8,
+        cursor: cursor ?? null,
+        id: btoa(`app_collection:${other_uid}:2361831622:66`),
+      });
+
+      let f = new URLSearchParams();
+      f.append("__user", uid);
+      f.append("__a", 1);
+      f.append("dpr", 1);
+      f.append("fb_dtsg", fb_dtsg);
+      f.append("fb_api_caller_class", "RelayModern");
+      f.append(
+        "fb_api_req_friendly_name",
+        "ProfileCometAppCollectionGridRendererPaginationQuery"
+      );
+      f.append("variables", variables);
+      f.append("doc_id", 5244211935648733);
+
+      try {
+        let res = await fetch("https://www.facebook.com/api/graphql/", {
           method: "POST",
-          credentials: "include",
           body: f,
-        }
-      );
+        });
+
+        let json = await res.json();
+        let { pageItems } = json.data.node;
+        return {
+          nextCursor: pageItems.page_info.end_cursor,
+          data: pageItems.edges.map((e) => ({
+            id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
+            title: e.node.title.text,
+            subTitle: e.node.subtitle_text?.text,
+            url: e.node.url,
+            visibility: e.node.node.visibility,
+            image: e.node.image.uri,
+            membersCount: Number(
+              // e.node.node.forum_member_profiles.formatted_count_text ||
+              // e.node.node.group_member_profiles.formatted_count_text
+              (e.node.subtitle_text.text.split("\n")?.[0] || "")
+                .match(/\d+/g)
+                .join("") ?? 1
+            ),
+            cursor: e.cursor,
+          })),
+        };
+      } catch (e) {
+        console.log("ERROR fetch page", e);
+        return {
+          nextCursor: null,
+          data: [],
+        };
+      }
     },
-    async messagesCount(fb_dtsg) {
-      return await UsefulScriptGlobalPageContext.Facebook.fetchGraphQl(
-        "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
-        fb_dtsg
-      );
+    async searchAllGroupForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
+      let cursor = "";
+      let allGroups = [];
+      while (true) {
+        let { nextCursor, data } =
+          await UsefulScriptGlobalPageContext.Facebook.searchGroupForOther(
+            other_uid,
+            cursor,
+            uid,
+            fb_dtsg
+          );
+        if (!nextCursor) {
+          break;
+        }
+        cursor = nextCursor;
+        allGroups = allGroups.concat(data);
+        await pageFetchedCallback?.(data, allGroups);
+      }
+      return allGroups;
     },
   },
 };
