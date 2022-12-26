@@ -25,7 +25,6 @@ export async function viewScriptSource(script) {
 }
 
 export async function updateScriptClickCount(scriptId) {
-  return; // TODO remove this before commit
   try {
     let res = await fetch(
       "https://useful-script-statistic.onrender.com/count",

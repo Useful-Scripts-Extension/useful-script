@@ -13,6 +13,10 @@ export default {
   blackList: [],
   whiteList: [],
 
+  // run when event enable/disable script. Run in extension-popup-page context
+  onEnable: () => {},
+  onDisable: () => {},
+
   // run (if enable autorun) in web page context
   onDocumentStart: () => {},
   onDocumentEnd: () => {},

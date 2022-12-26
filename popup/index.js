@@ -160,6 +160,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.onclick = async (e) => {
       let newValue = toggleActiveScript(script.id);
       newValue && updateScriptClickCount(script.id);
+      newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
     };
 
