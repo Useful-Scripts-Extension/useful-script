@@ -54,6 +54,10 @@ export default {
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
 
+    UsefulScriptGlobalPageContext.Extension.getURL(
+      "scripts/fb_whoIsTyping.css"
+    ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
+
     function notifyTypingEvent(uid, name, avatar, isTyping) {
       let divId = "ufs-who-is-typing";
       let exist = document.querySelector("#" + divId);
@@ -61,17 +65,17 @@ export default {
         exist = document.createElement("div");
         exist.id = divId;
         exist.innerHTML = `<div class="ufs-header clearfix">
-          <button>+</button>
+          <button class="ufs-clear-btn">X</button>
+          <button class="ufs-minimize-btn">-</button>
         </div>`;
-        exist.querySelector(".ufs-header button").onclick = (e) => {
+        exist.querySelector(".ufs-header .ufs-minimize-btn").onclick = (e) => {
           exist.classList.toggle("collapsed");
+        };
+        exist.querySelector(".ufs-header .ufs-clear-btn").onclick = (e) => {
+          if (confirm("Bạn có chắc muốn xoá hết thông báo?")) exist.remove();
         };
 
         document.body.appendChild(exist);
-
-        UsefulScriptGlobalPageContext.Extension.getURL(
-          "scripts/fb_whoIsTyping.css"
-        ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
       }
 
       let time = new Date().toLocaleTimeString();
