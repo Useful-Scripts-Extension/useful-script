@@ -6,10 +6,17 @@
   overflow: auto;
   background-color: #fff;
   border-radius: 3px;
+  z-index: 99999;
 }
 
 #ufs-who-is-typing.collapsed .ufs-noti-item {
   display: none;
+}
+
+#ufs-who-is-typing .ufs-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 #ufs-who-is-typing .ufs-header button {

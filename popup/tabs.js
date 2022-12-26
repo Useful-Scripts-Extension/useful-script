@@ -28,6 +28,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
+      s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,

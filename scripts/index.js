@@ -1,5 +1,6 @@
 import { addBadge, BADGES } from "./helpers/badge.js";
 
+import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";
 import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
@@ -165,6 +166,7 @@ import fb_messengerCount from "./fb_messengerCount.js";
 
 // inject badges
 const allScripts = {
+  _test: _test,
   fb_toggleLight: fb_toggleLight,
   fb_getTokenBusinessStudio: addBadge(fb_getTokenBusinessStudio, BADGES.hot),
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
