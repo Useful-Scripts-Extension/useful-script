@@ -41,20 +41,24 @@ function getCurrentScriptSrc() {
 function runScripts(scriptIds, event, path) {
   for (let id of scriptIds.filter((_) => _)) {
     let scriptPath = `${path}/${id}.js`;
-    import(scriptPath).then(({ default: script }) => {
-      try {
-        if (
-          event in script &&
-          typeof script[event] === "function" &&
-          checkWillRun(script)
-        ) {
-          console.log("> Useful-script: Run script " + id + " " + event);
-          script[event]();
+    import(scriptPath)
+      .then(({ default: script }) => {
+        try {
+          if (
+            event in script &&
+            typeof script[event] === "function" &&
+            checkWillRun(script)
+          ) {
+            console.log("> Useful-script: Run script " + id + " " + event);
+            script[event]();
+          }
+        } catch (e) {
+          console.log("ERROR run script " + id + " " + event, e);
         }
-      } catch (e) {
-        console.log("ERROR run script " + id + " " + event, e);
-      }
-    });
+      })
+      .catch((e) => {
+        console.log("ERROR import script ", e);
+      });
   }
 }
 
