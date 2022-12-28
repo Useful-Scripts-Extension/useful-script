@@ -431,6 +431,7 @@ const UsefulScriptGlobalPageContext = {
         }
       );
     },
+    async fetchAddedFriends(uid, fb_dtsg, cursor) {},
 
     // Messages
     async messagesCount(fb_dtsg) {
