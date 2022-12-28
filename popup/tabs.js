@@ -114,6 +114,7 @@ const tabs = [
       s.fb_messengerCount,
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
+      s.fb_fetchAllAddedFriends,
       createTitle("--- UI ---", "--- Giao diện ---"),
       s.fb_toggleLight,
       s.fb_toggleNewFeed,

@@ -1,14 +1,14 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: "",
+  icon: '<i class="fa-solid fa-user-group fa-lg"></i>',
   name: {
-    en: "Test",
-    vi: "Test",
+    en: "Facebook - Fetch all added friends",
+    vi: "Facebook - Xem tất cả bạn bè đã thêm",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "View all friends added to your Facebook account.",
+    vi: "Xem danh sách tất cả bạn bè facebook đã kết bạn với bạn.",
   },
 
   onClickExtension: async () => {

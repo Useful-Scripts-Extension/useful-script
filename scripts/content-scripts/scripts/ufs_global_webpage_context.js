@@ -431,7 +431,73 @@ const UsefulScriptGlobalPageContext = {
         }
       );
     },
-    async fetchAddedFriends(uid, fb_dtsg, cursor) {},
+    async fetchAddedFriends(uid, fb_dtsg, cursor) {
+      let variables = JSON.stringify({
+        count: 8,
+        cursor: cursor ?? null,
+        category_key: "FRIENDS",
+      });
+      const t = new URLSearchParams();
+      t.append("__user", uid),
+        t.append("__a", 1),
+        t.append("dpr", 1),
+        t.append("fb_dtsg", fb_dtsg),
+        t.append("fb_api_caller_class", "RelayModern"),
+        t.append("fb_api_req_friendly_name", "ActivityLogStoriesQuery"),
+        t.append("doc_id", "2761528123917382"),
+        t.append("variables", variables);
+
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        method: "POST",
+        body: t,
+      });
+      let json = await res.json();
+
+      let { edges, page_info } =
+        json.data.viewer.activity_log_actor.activity_log_stories;
+
+      return {
+        nextCursor: page_info.end_cursor,
+        data: edges
+          .map((e) => {
+            if (
+              "UNFRIEND" === e.curation_options[0] ||
+              e.node.attachments.length
+            ) {
+              return {
+                uid: e.node.attachments[0].target.id,
+                name: e.node.attachments[0].title_with_entities.text,
+                avatar: e.node.attachments[0].media.image.uri,
+                addedTime: 1e3 * e.node.creation_time,
+              };
+            }
+            return null;
+          })
+          .filter((_) => _),
+      };
+    },
+    async fetchAllAddedFriendsSince(uid, fb_dtsg, since, pageFetchedCallback) {
+      let cursor = "";
+      let allFriends = [];
+      try {
+        while (true) {
+          let { nextCursor, data } =
+            await UsefulScriptGlobalPageContext.Facebook.fetchAddedFriends(
+              uid,
+              fb_dtsg,
+              cursor
+            );
+          cursor = nextCursor;
+          allFriends = allFriends.concat(data);
+          await pageFetchedCallback?.(data, allFriends);
+
+          if (!nextCursor || (since && nextCursor < since)) break;
+        }
+      } catch (e) {
+        console.log("ERROR fetch all added friends", e);
+      }
+      return allFriends;
+    },
 
     // Messages
     async messagesCount(fb_dtsg) {
@@ -508,20 +574,23 @@ const UsefulScriptGlobalPageContext = {
     async searchAllPageForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
       let cursor = "";
       let allPages = [];
-      while (true) {
-        let { nextCursor, data } =
-          await UsefulScriptGlobalPageContext.Facebook.searchPageForOther(
-            other_uid,
-            cursor,
-            uid,
-            fb_dtsg
-          );
-        if (!nextCursor) {
-          break;
+      try {
+        while (true) {
+          let { nextCursor, data } =
+            await UsefulScriptGlobalPageContext.Facebook.searchPageForOther(
+              other_uid,
+              cursor,
+              uid,
+              fb_dtsg
+            );
+          cursor = nextCursor;
+          allPages = allPages.concat(data);
+          await pageFetchedCallback?.(data, allPages);
+
+          if (!cursor) break;
         }
-        cursor = nextCursor;
-        allPages = allPages.concat(data);
-        await pageFetchedCallback?.(data, allPages);
+      } catch (e) {
+        console.log("ERROR search all page for other", e);
       }
       return allPages;
     },
@@ -602,20 +671,23 @@ const UsefulScriptGlobalPageContext = {
     async searchAllGroupForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
       let cursor = "";
       let allGroups = [];
-      while (true) {
-        let { nextCursor, data } =
-          await UsefulScriptGlobalPageContext.Facebook.searchGroupForOther(
-            other_uid,
-            cursor,
-            uid,
-            fb_dtsg
-          );
-        if (!nextCursor) {
-          break;
+      try {
+        while (true) {
+          let { nextCursor, data } =
+            await UsefulScriptGlobalPageContext.Facebook.searchGroupForOther(
+              other_uid,
+              cursor,
+              uid,
+              fb_dtsg
+            );
+          cursor = nextCursor;
+          allGroups = allGroups.concat(data);
+          await pageFetchedCallback?.(data, allGroups);
+
+          if (!cursor) break;
         }
-        cursor = nextCursor;
-        allGroups = allGroups.concat(data);
-        await pageFetchedCallback?.(data, allGroups);
+      } catch (e) {
+        console.log("ERROR search all group for other", e);
       }
       return allGroups;
     },
