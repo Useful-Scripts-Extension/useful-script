@@ -36,9 +36,11 @@ export default {
     }
 
     function getLinkFromSomethingResult(somethingResult) {
-      let jwttoken = /token=(.*)&/.exec(somethingResult)?.[1];
-      let data = parseJwt(jwttoken);
-      return data?.url;
+      // let jwttoken = /token=(.*)&/.exec(somethingResult)?.[1];
+      // let data = parseJwt(jwttoken);
+      // return data?.url;
+      let link = /down-right"><a href="(.*?)&dl=1"/.exec(somethingResult)?.[1];
+      return link;
     }
 
     async function getLinkSnapTik(tiktokURL, token, lang) {
@@ -54,8 +56,11 @@ export default {
 
       let text = await res.text();
       let params = getParamsFromResponse(text);
+      console.log(params)
       let somethingResult = doSomething2(...params);
+      console.log(somethingResult)
       let link = getLinkFromSomethingResult(somethingResult);
+      console.log(link)
       return link;
     }
 
@@ -72,7 +77,7 @@ export default {
         let link = await getLinkSnapTik(tiktokUrl, token, lang);
         if (!link) throw Error("Không tìm thấy link");
 
-        window.open(link);
+        // window.open(link);
       } catch (e) {
         prompt(
           "Lỗi: " + e + "\n\nBạn có thể mở trang web sau để thử lại:",
