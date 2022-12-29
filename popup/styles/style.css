@@ -65,6 +65,11 @@ a:hover {
     top: 0px;
     right: 5px;
     cursor: pointer;
+    transition: all .2s;
+}
+
+#flag:hover {
+    transform: scale(1.1);
 }
 
 #open-in-new-tab {
