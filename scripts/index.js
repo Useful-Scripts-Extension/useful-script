@@ -36,7 +36,7 @@ import textToQRCode from "./textToQRCode.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
 import passwordGenerator from "./passwordGenerator.js";
 import search_sharedAccount from "./search_sharedAccount.js";
-import passwordFieldToggle from "./passwordFieldToggle.js";
+// import passwordFieldToggle from "./passwordFieldToggle.js";
 import checkWebDie from "./checkWebDie.js";
 import removeCookies from "./removeCookies.js";
 import simpleAllowCopy from "./simpleAllowCopy.js";
@@ -160,7 +160,7 @@ import fb_moreReactionStory from "./fb_moreReactionStory.js";
 import changeAudioOutput from "./changeAudioOutput.js";
 import docDownloader from "./docDownloader.js";
 import scribd_bypassPreview from "./scribd_bypassPreview.js";
-import fb_removeFbclid from "./fb_removeFbclid.js";
+// import fb_removeFbclid from "./fb_removeFbclid.js";
 // import fb_messengerHistory from "./fb_messengerHistory.js";
 import fb_messengerCount from "./fb_messengerCount.js";
 import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
@@ -208,7 +208,7 @@ const allScripts = {
   scrollToVeryEnd,
   passwordGenerator: addBadge(passwordGenerator, BADGES.hot),
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
-  passwordFieldToggle,
+  // passwordFieldToggle,
   checkWebDie,
   removeCookies,
   simpleAllowCopy: addBadge(simpleAllowCopy, BADGES.hot),
@@ -344,7 +344,7 @@ const allScripts = {
   changeAudioOutput: addBadge(changeAudioOutput, BADGES.new),
   docDownloader: addBadge(docDownloader, BADGES.new),
   scribd_bypassPreview: addBadge(scribd_bypassPreview, BADGES.new),
-  fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
+  // fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
   // fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
   fb_messengerCount: addBadge(fb_messengerCount, BADGES.new),
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.new),
