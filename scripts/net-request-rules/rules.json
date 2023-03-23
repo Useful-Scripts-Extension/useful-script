@@ -1,80 +1,98 @@
 [
-    {
-        "id": 1,
-        "priority": 1,
-        "action": {
-            "type": "modifyHeaders",
-            "requestHeaders": [
-                {
-                    "header": "referer",
-                    "operation": "set",
-                    "value": "https://unshorten.it/"
-                },
-                {
-                    "header": "origin",
-                    "operation": "set",
-                    "value": "https://unshorten.it/"
-                }
-            ]
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://unshorten.it/"
         },
-        "condition": {
-            "domain": "extension://*",
-            "urlFilter": "https://unshorten.it/main/get_long_url",
-            "resourceTypes": [
-                "xmlhttprequest"
-            ]
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://unshorten.it/"
         }
+      ]
     },
-    {
-        "id": 2,
-        "priority": 1,
-        "action": {
-            "type": "modifyHeaders",
-            "requestHeaders": [
-                {
-                    "header": "referer",
-                    "operation": "set",
-                    "value": "https://www.snaptikvideo.com/"
-                },
-                {
-                    "header": "origin",
-                    "operation": "set",
-                    "value": "https://www.snaptikvideo.com"
-                }
-            ]
-        },
-        "condition": {
-            "domain": "extension://*",
-            "urlFilter": "https://api.snaptikvideo.com/st-tik/tiktok/dl",
-            "resourceTypes": [
-                "xmlhttprequest"
-            ]
-        }
-    },
-    {
-        "id": 3,
-        "priority": 1,
-        "action": {
-            "type": "modifyHeaders",
-            "requestHeaders": [
-                {
-                    "header": "referer",
-                    "operation": "set",
-                    "value": "https://www.facebook.com"
-                },
-                {
-                    "header": "origin",
-                    "operation": "set",
-                    "value": "https://www.facebook.com"
-                }
-            ]
-        },
-        "condition": {
-            "domain": "extension://*",
-            "urlFilter": "https://www.facebook.com",
-            "resourceTypes": [
-                "xmlhttprequest"
-            ]
-        }
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://unshorten.it/main/get_long_url",
+      "resourceTypes": ["xmlhttprequest"]
     }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.snaptikvideo.com/"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.snaptikvideo.com"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://api.snaptikvideo.com/st-tik/tiktok/dl",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.facebook.com"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.facebook.com"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://www.facebook.com",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.bing.com/images/create/"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.bing.com"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://www.bing.com/images/create/",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  }
 ]

@@ -1,11 +1,4 @@
 export const CATEGORY = {
-  contentScript: {
-    id: "contentScript",
-    name: {
-      en: "Content scripts",
-      vi: "Content scripts",
-    },
-  },
   favorite: {
     id: "favorite",
     style: { textDecoration: "underline" },
@@ -37,6 +30,13 @@ export const CATEGORY = {
     name: {
       en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Autorun`,
       vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
+    },
+  },
+  ai: {
+    id: "ai",
+    name: {
+      en: `<i class="fa-solid fa-robot"></i> AI`,
+      vi: `<i class="fa-solid fa-robot"></i> AI`,
     },
   },
   search: {

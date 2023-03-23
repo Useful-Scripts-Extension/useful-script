@@ -26,6 +26,10 @@ const specialTabs = [
 
 const tabs = [
   {
+    ...CATEGORY.ai,
+    scripts: [s.bing_imageCreator],
+  },
+  {
     ...CATEGORY.search,
     scripts: [
       s._test,

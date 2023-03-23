@@ -166,6 +166,7 @@ import fb_messengerCount from "./fb_messengerCount.js";
 import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
 import fb_searchPageForOther from "./fb_searchPageForOther.js";
 import fb_fetchAllAddedFriends from "./fb_fetchAllAddedFriends.js";
+import bing_imageCreator from "./bing_imageCreator.js";
 
 // inject badges
 const allScripts = {
@@ -350,6 +351,7 @@ const allScripts = {
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.new),
   fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.new),
   fb_fetchAllAddedFriends: addBadge(fb_fetchAllAddedFriends, BADGES.new),
+  bing_imageCreator: addBadge(bing_imageCreator, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
