@@ -27,7 +27,7 @@ export default {
                   `<img src="${url}" style="max-width:400px; margin: 10px 0px;"/>`
               )
               .join("");
-          openPopupWithHtml(html, 600, 500);
+          openPopupWithHtml(html, 600, window.screen.availHeight);
         }
       });
     }
@@ -78,6 +78,10 @@ export default {
             await sleep(1000);
           } else {
             console.log(text);
+
+            if (text.startsWith('{"errorMessage"')) {
+              throw Error("Get Error: " + text);
+            }
 
             setLoadingText("Extracting images from data...");
             const regex = /src="([^"]+)"/g;
