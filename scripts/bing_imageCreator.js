@@ -13,7 +13,7 @@ export default {
   infoLink: "https://www.bing.com/create",
 
   onClickExtension: () => {
-    let prompt_text = window.prompt("Enter text to create image", "");
+    let prompt_text = window.prompt("Enter prompt to create image", "");
 
     if (prompt_text) {
       getBingImages(prompt_text).then((urls) => {
@@ -80,7 +80,9 @@ export default {
             console.log(text);
 
             if (text.startsWith('{"errorMessage"')) {
-              throw Error("Get Error: " + text);
+              throw Error(
+                "Get Error: " + text + "\n\n Please enter another prompt."
+              );
             }
 
             setLoadingText("Extracting images from data...");
