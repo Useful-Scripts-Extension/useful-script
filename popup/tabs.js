@@ -27,7 +27,17 @@ const specialTabs = [
 const tabs = [
   {
     ...CATEGORY.ai,
-    scripts: [s.bing_imageCreator],
+    scripts: [
+      s.huggingface,
+      createTitle("--- AI Art ---", "--- AI Art - Tranh/Ảnh ---"),
+      s.bing_imageCreator,
+      s.pixaiart,
+      s.playgroundai,
+      s.dreamai,
+      s.skybox_blockadelabs,
+      s.stable_diffusion_demo,
+      s.stable_diffusion_baseten,
+    ],
   },
   {
     ...CATEGORY.search,

@@ -167,6 +167,13 @@ import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
 import fb_searchPageForOther from "./fb_searchPageForOther.js";
 import fb_fetchAllAddedFriends from "./fb_fetchAllAddedFriends.js";
 import bing_imageCreator from "./bing_imageCreator.js";
+import stable_diffusion_baseten from "./stable_diffusion_baseten.js";
+import stable_diffusion_demo from "./stable_diffusion_demo.js";
+import dreamai from "./dreamai.js";
+import playgroundai from "./playgroundai.js";
+import pixaiart from "./pixaiart.js";
+import skybox_blockadelabs from "./skybox_blockadelabs.js";
+import huggingface from "./huggingface.js";
 
 // inject badges
 const allScripts = {
@@ -352,6 +359,13 @@ const allScripts = {
   fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.new),
   fb_fetchAllAddedFriends: addBadge(fb_fetchAllAddedFriends, BADGES.new),
   bing_imageCreator: addBadge(bing_imageCreator, BADGES.new),
+  stable_diffusion_baseten: addBadge(stable_diffusion_baseten, BADGES.new),
+  stable_diffusion_demo: addBadge(stable_diffusion_demo, BADGES.new),
+  dreamai: addBadge(dreamai, BADGES.new),
+  playgroundai: addBadge(playgroundai, BADGES.new),
+  pixaiart: addBadge(pixaiart, BADGES.new),
+  skybox_blockadelabs: addBadge(skybox_blockadelabs, BADGES.new),
+  huggingface: addBadge(huggingface, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

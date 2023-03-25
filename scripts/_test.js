@@ -14,34 +14,16 @@ export default {
   onClickExtension: async () => {
     let { setLoadingText, closeLoading } = showLoading("Đang chuẩn bị...");
     try {
-      let {
-        getYourUserId,
-        getFbdtsg,
-        fetchAddedFriends,
-        fetchAllAddedFriendsSince,
-      } = UsefulScriptGlobalPageContext.Facebook;
-
-      setLoadingText("Đang lấy uid, token...");
-      let uid = await getYourUserId();
-      let dtsg = await getFbdtsg();
-
-      setLoadingText("Đang tải thông tin...");
-      // let twoMonthAgo = parseInt(new Date() / 1e3 - 5184e3).toString();
-      const allFriends = await fetchAllAddedFriendsSince(
-        uid,
-        dtsg,
-        null, // twoMonthAgo
-        (data, total) => {
-          let lastest = data[data.length - 1];
-          setLoadingText(
-            `Đang lấy thông tin...<br/>` +
-              `Tải được ${total.length} bạn.<br/>` +
-              `Thời điểm: ` +
-              new Date(lastest?.addedTime).toLocaleDateString()
-          );
-        }
-      );
-      console.log(allFriends);
+      let url =
+        "https://app.baseten.co/applications/1Bbgjg0/draft/worklets/M0kMMkq/invoke";
+      let resp = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          worklet_input: {
+            prompt: "An astronaut riding a horse on mars",
+          },
+        }),
+      });
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
