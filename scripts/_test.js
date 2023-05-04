@@ -18,7 +18,7 @@ export default {
       let res = await fetch(
         "https://graph.facebook.com/v12.0/" +
           pageid +
-          "/videos?fields=universal_video_id,title,description,length,picture,captions,source,permalink_url,created_time" +
+          "/videos?fields=universal_video_id,title,description,length,picture,captions,source,permalink_url,created_time,views" +
           "&access_token=" +
           token
       );
