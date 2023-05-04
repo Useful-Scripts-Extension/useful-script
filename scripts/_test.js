@@ -12,6 +12,8 @@ export default {
   },
 
   onClickExtension: async () => {
+    // python version: https://colab.research.google.com/drive/11bb_8v7ASJopHW-ZLA-3TiJ7LnHwDwDG?usp=sharing
+
     async function getVideoDataOne(pageid, token) {
       let res = await fetch(
         "https://graph.facebook.com/v12.0/" +
