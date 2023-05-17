@@ -174,6 +174,7 @@ import playgroundai from "./playgroundai.js";
 import pixaiart from "./pixaiart.js";
 import skybox_blockadelabs from "./skybox_blockadelabs.js";
 import huggingface from "./huggingface.js";
+import tailieu_vn from "./tailieu_vn.js";
 
 // inject badges
 const allScripts = {
@@ -366,6 +367,7 @@ const allScripts = {
   pixaiart: addBadge(pixaiart, BADGES.new),
   skybox_blockadelabs: addBadge(skybox_blockadelabs, BADGES.new),
   huggingface: addBadge(huggingface, BADGES.new),
+  tailieu_vn: addBadge(tailieu_vn, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

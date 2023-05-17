@@ -81,6 +81,7 @@ const tabs = [
       s.showTheImages,
       s.download_image,
       createTitle("--- Document ---", "--- Tài liệu ---"),
+      s.tailieu_vn,
       s.docDownloader,
       s.scribd_downloadDocuments,
       s.studocu_dl,
