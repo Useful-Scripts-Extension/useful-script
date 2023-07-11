@@ -4,6 +4,7 @@
   <summary>v1.5 - 12/07/2022</summary>
 
 - Sửa script xem tin nhắn thu hồi
+- Sửa script thông báo ai đang gõ tin nhắn cho bạn
 
 </details>
 
