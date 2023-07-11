@@ -1,6 +1,13 @@
 ## Change logs
 
 <details>
+  <summary>v1.5 - 12/07/2022</summary>
+
+- Sửa script xem tin nhắn thu hồi
+
+</details>
+
+<details>
   <summary>v1.4 - 25/12/2022</summary>
 
 - 57 script mới (Tổng 160 scripts):
@@ -62,7 +69,6 @@
   55. tiktok_snaptikVideo
   56. vimeo_downloader
   57. whatApp_storySaver
-
 
 - Fix/Update các scripts:
 

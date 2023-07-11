@@ -8,7 +8,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## Lịch sử cập nhật
 
-Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (25/12/2022)
+Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>v1.4</del> **v1.5** (12/07/2022)
 
 [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
@@ -30,7 +30,7 @@ Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (2
 
 ![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
-## Tutorial (Demo) 
+## Tutorial (Demo)
 
 [Watch on Youtube](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
 
