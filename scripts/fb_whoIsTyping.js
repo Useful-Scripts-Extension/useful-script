@@ -24,15 +24,11 @@ export default {
           utf8_str.startsWith("1") &&
           utf8_str.includes("updateTypingIndicator")
         ) {
-          // console.log(utf8_str);
+          console.log(utf8_str);
           try {
-            let isStartTyping = utf8_str.includes(",true)");
-            let isStopTyping = utf8_str.includes(",false)");
-
-            let arr = utf8_str.match(/(\[)(.*?)(\])/g);
-            let uid = UsefulScriptGlobalPageContext.Facebook.decodeArrId(
-              JSON.parse(arr[arr.length - 2])
-            );
+            let isStartTyping = utf8_str.includes(",true");
+            let isStopTyping = utf8_str.includes(",false");
+            let uid = /\\\"(\d+)\\\"/g.exec(utf8_str)[1];
 
             if (!(uid in window.ufs_whoIsTyping_Cached)) {
               let userData =
