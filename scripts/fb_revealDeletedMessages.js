@@ -232,15 +232,10 @@ export default {
           } = a.message;
 
           if (isUnsent) {
-            threadKey =
-              UsefulScriptGlobalPageContext.Facebook.decodeArrId(threadKey);
-            senderId =
-              UsefulScriptGlobalPageContext.Facebook.decodeArrId(senderId);
-
             let savedMsg = window.ufs_rvdfm_all_msgs[messageId];
 
             a.message.isUnsent = false;
-            a.message.displayedContentTypes = [0, 2]; // text
+            a.message.displayedContentTypes = [0, 1]; // text
             if (savedMsg) {
               let title = `[Tin thu hồi - ${savedMsg.type}]:\n`;
               let text = `${savedMsg?.data}`;
