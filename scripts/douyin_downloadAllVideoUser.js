@@ -1,5 +1,3 @@
-import { downloadData, getCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.douyin.com/favicon.ico",
   name: {
@@ -11,79 +9,89 @@ export default {
     vi: "Tải tất cả video trong trang cá nhân của người dùng douyin.",
   },
 
-  onClickExtension: async function () {
-    let { closeLoading, setLoadingText } = showLoading("Đang tìm uid...");
-    try {
-      let tab = await getCurrentTab();
-      let uid =
-        shared.extractUidFromUrl(tab.url) ||
-        shared.extractUidFromUrl(
-          prompt(
-            "Nhập link douyin user:\n" +
-              "Ví dụ: https://www.douyin.com/user/ABCXYZ..."
-          )
-        );
-      if (!uid) return;
+  whiteList: ["https://www.douyin.com/user/*"],
 
-      setLoadingText(`Đang thu thập thông tin...`);
-      let max_cursor = 0;
-      let all_data = [];
-      while (1) {
-        let postData = await shared.getUserPostData(uid, max_cursor);
-        let [data, cursor] = await shared.parseUserPostData(postData);
-        max_cursor = cursor;
-        all_data.push(...data);
-        setLoadingText(
-          `Đang thu thập douyin videos... (${all_data.length} video)`
-        );
-        if (!max_cursor) break;
-      }
-      console.log(all_data);
-      downloadData(
-        all_data.map((_) => _.src).join("\n"),
-        "douyin_" + uid,
-        "txt"
+  // https://github.com/diepvantien/douyin-dowload-all-video
+  onClick: () => {
+    alert("Mở console (F12) để xem tiến trình tải video.");
+    var getid = async function (sec_user_id, max_cursor) {
+      var res = await fetch(
+        "https://www.douyin.com/aweme/v1/web/aweme/post/?device_platform=webapp&aid=6383&channel=channel_pc_web&sec_user_id=" +
+          sec_user_id +
+          "&max_cursor=" +
+          max_cursor,
+        {
+          headers: {
+            accept: "application/json, text/plain, */*",
+            "accept-language": "vi",
+            "sec-ch-ua":
+              '"Not?A_Brand";v="8", "Chromium";v="108", "Microsoft Edge";v="108"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+          },
+          referrer:
+            "https://www.douyin.com/user/MS4wLjABAAAA5A-hCBCTdv102baOvaoZqg7nCIW_Bn_YBA0Aiz9uYPY",
+          referrerPolicy: "strict-origin-when-cross-origin",
+          body: null,
+          method: "GET",
+          mode: "cors",
+          credentials: "include",
+        }
       );
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
-  },
-};
+      try {
+        res = await res.json();
+      } catch (e) {
+        res = await getid(sec_user_id, max_cursor);
+      }
+      return res;
+    };
 
-export const shared = {
-  // Original source code from: https://github.com/N-X-T/Download-All-Video-User-Douyin/blob/main/DownloadAllVideoDouyin.js?fbclid=IwAR3ne_fDNpRpduM23kLJxOpDaQjI2-V3CA3iZ0BA0gvCgGdnMCfemyoMyO8
-  // Modified by Hoang Tran
-  getUserPostData: async function (uid, max_cursor) {
-    let API_ENDPOINT =
-      "https://www.iesdouyin.com/web/api/v2/aweme/post/?sec_uid=" +
-      uid +
-      "&count=10&max_cursor=" +
-      max_cursor;
-    let data = await fetch(API_ENDPOINT, {
-      headers: {
-        accept: "application/json",
-        "user-agent":
-          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)",
-      },
-      method: "GET",
-    });
-    data = await data.json();
-    return data;
-  },
-  parseUserPostData: async function (postData) {
-    let data = postData.aweme_list.map((item) => ({
-      id: item.aweme_id,
-      src: item.video.play_addr.url_list[0],
-      desc: item.desc,
-    }));
+    var saveToFile = function (text) {
+      var blob = new Blob([text], { type: "text/plain" });
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(blob);
+      a.download = "douyin-video-links.txt";
+      a.click();
+    };
 
-    if (postData["has_more"] || postData["aweme_list"].length != 0)
-      return [data, postData["max_cursor"]];
-    else return [data, 0];
-  },
-  extractUidFromUrl: function (url) {
-    return /https:\/\/www\.douyin\.com\/user\/([^?]+)/gm.exec(url)?.[1];
+    var run = async function () {
+      var result = [];
+      var hasMore = 1;
+      var sec_user_id = location.pathname.replace("/user/", "");
+      var max_cursor = 0;
+
+      console.log('Đang chuẩn bị tải video của "' + sec_user_id + '" ...');
+      while (hasMore == 1) {
+        var moredata = await getid(sec_user_id, max_cursor);
+        hasMore = moredata["has_more"];
+        max_cursor = moredata["max_cursor"];
+        for (var i in moredata["aweme_list"]) {
+          if (
+            moredata["aweme_list"][i]["video"]["play_addr"][
+              "url_list"
+            ][0].startsWith("https")
+          )
+            result.push(
+              moredata["aweme_list"][i]["video"]["play_addr"]["url_list"][0]
+            );
+          else
+            result.push(
+              moredata["aweme_list"][i]["video"]["play_addr"][
+                "url_list"
+              ][0].replace("http", "https")
+            );
+          console.clear();
+          console.log("Number of videos: " + result.length);
+        }
+      }
+      saveToFile(result.join("\n"));
+      alert(
+        "Link videos sẽ được lưu vào file .txt, thêm file này vào idm để tải hàng loạt."
+      );
+    };
+    run();
   },
 };
