@@ -9,7 +9,7 @@ import fb_getUid from "./fb_getUid.js";
 import fb_getPageId from "./fb_getPageId.js";
 import fb_getGroupId from "./fb_getGroupId.js";
 import fb_getAlbumId from "./fb_getAlbumId.js";
-import fb_getAllAlbumId from "./fb_getAllAlbumId.js";
+import fb_getAllAlbumIdFromCurrentWebsite from "./fb_getAllAlbumIdFromCurrentWebsite.js";
 import fb_getUidFromUrl from "./fb_getUidFromUrl.js";
 import fb_getAllUidFromFbSearch from "./fb_getAllUidFromFbSearch.js";
 import fb_getAllUidFromFriendsPage from "./fb_getAllUidFromFriendsPage.js";
@@ -161,7 +161,7 @@ import changeAudioOutput from "./changeAudioOutput.js";
 import docDownloader from "./docDownloader.js";
 import scribd_bypassPreview from "./scribd_bypassPreview.js";
 // import fb_removeFbclid from "./fb_removeFbclid.js";
-// import fb_messengerHistory from "./fb_messengerHistory.js";
+import fb_messengerHistory from "./fb_messengerHistory.js";
 import fb_messengerCount from "./fb_messengerCount.js";
 import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
 import fb_searchPageForOther from "./fb_searchPageForOther.js";
@@ -175,6 +175,8 @@ import pixaiart from "./pixaiart.js";
 import skybox_blockadelabs from "./skybox_blockadelabs.js";
 import huggingface from "./huggingface.js";
 import tailieu_vn from "./tailieu_vn.js";
+import fb_downloadWallMediaFromPosts from "./fb_downloadWallMediaFromPosts.js";
+import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
 
 // inject badges
 const allScripts = {
@@ -187,7 +189,8 @@ const allScripts = {
   fb_getPageId: addBadge(fb_getPageId, BADGES.hot),
   fb_getGroupId: addBadge(fb_getGroupId, BADGES.hot),
   fb_getAlbumId: addBadge(fb_getAlbumId, BADGES.hot),
-  fb_getAllAlbumId,
+  fb_getAllAlbumIdFromCurrentWebsite,
+  fb_getAllAlbumInformation: addBadge(fb_getAllAlbumInformation, BADGES.new),
   fb_getUidFromUrl: addBadge(fb_getUidFromUrl, BADGES.hot),
   fb_getAllUidFromFbSearch,
   fb_getAllUidFromFriendsPage,
@@ -354,7 +357,7 @@ const allScripts = {
   docDownloader: addBadge(docDownloader, BADGES.new),
   scribd_bypassPreview: addBadge(scribd_bypassPreview, BADGES.new),
   // fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
-  // fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
+  fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.new),
   fb_messengerCount: addBadge(fb_messengerCount, BADGES.new),
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.new),
   fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.new),
@@ -368,6 +371,10 @@ const allScripts = {
   skybox_blockadelabs: addBadge(skybox_blockadelabs, BADGES.new),
   huggingface: addBadge(huggingface, BADGES.new),
   tailieu_vn: addBadge(tailieu_vn, BADGES.new),
+  fb_downloadWallMediaFromPosts: addBadge(
+    fb_downloadWallMediaFromPosts,
+    BADGES.new
+  ),
 };
 
 // alert(Object.keys(allScripts).length);

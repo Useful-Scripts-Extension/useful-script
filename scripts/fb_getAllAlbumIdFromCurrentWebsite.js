@@ -1,7 +1,7 @@
 export default {
   name: {
-    en: "Get all fb Album ID",
-    vi: "Lấy tất cả fb album id",
+    en: "Get all fb Album ID from current page",
+    vi: "Lấy tất cả fb album id từ trang hiện tại",
   },
   description: {
     en: "Get all id of album in facebook website",
