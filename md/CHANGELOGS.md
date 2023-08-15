@@ -1,7 +1,7 @@
 ## Change logs
 
 <details>
-  <summary>v1.5 - 12/07/2022</summary>
+  <summary>v1.5 - 12/07/2023</summary>
 
 - Sửa script xem tin nhắn thu hồi
 - Sửa script thông báo ai đang gõ tin nhắn cho bạn
