@@ -177,6 +177,7 @@ import huggingface from "./huggingface.js";
 import tailieu_vn from "./tailieu_vn.js";
 import fb_downloadWallMediaFromPosts from "./fb_downloadWallMediaFromPosts.js";
 import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
+import textToSpeech from "./textToSpeech.js";
 
 // inject badges
 const allScripts = {
@@ -375,6 +376,7 @@ const allScripts = {
     fb_downloadWallMediaFromPosts,
     BADGES.new
   ),
+  textToSpeech: addBadge(textToSpeech, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
