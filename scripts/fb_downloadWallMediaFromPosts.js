@@ -1,5 +1,3 @@
-import { downloadData } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-regular fa-images"></i>',
   name: {
@@ -195,7 +193,7 @@ export default {
         alert(
           "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
         );
-        downloadData(urls, "urls.txt");
+        UsefulScriptsUtils.downloadData(urls, "urls.txt");
       });
     }
   },
