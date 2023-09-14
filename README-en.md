@@ -8,7 +8,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## Change logs 
 
-Verion: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> **v1.4** (25/12/2023)
+Verion: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>1.4</del> **v1.5** (12/07/2023)
 
 [Change logs](/md/CHANGELOGS.md)
 
