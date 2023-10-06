@@ -220,6 +220,7 @@ const tabs = [
   {
     ...CATEGORY.automation,
     scripts: [
+      s.ittools,
       s.shortenURL,
       s.unshorten,
       s.textToSpeech,
