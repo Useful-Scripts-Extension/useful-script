@@ -220,7 +220,6 @@ const tabs = [
   {
     ...CATEGORY.automation,
     scripts: [
-      s.ittools,
       s.shortenURL,
       s.unshorten,
       s.textToSpeech,
@@ -335,6 +334,15 @@ const recommendTab = {
         vi: "Trình tìm kiếm sử dụng trí tuệ nhân tạo",
       },
       onClickExtension: () => window.open("https://you.com/"),
+    },
+    {
+      icon: "https://it-tools.tech/favicon-32x32.png",
+      name: { en: "IT Tools", vi: "IT Tools" },
+      description: {
+        en: "Handy tools for developers",
+        vi: "Tổng hợp tools hữu ích cho IT",
+      },
+      onClickExtension: () => window.open("https://it-tools.tech/"),
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
