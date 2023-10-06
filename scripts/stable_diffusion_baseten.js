@@ -10,6 +10,6 @@ export default {
   },
 
   onClickExtension: () => {
-    window.open("https://app.baseten.co/apps/VBlnMVP/operator_views/nBrd8zP);
+    window.open("https://app.baseten.co/apps/VBlnMVP/operator_views/nBrd8zP");
   },
 };
