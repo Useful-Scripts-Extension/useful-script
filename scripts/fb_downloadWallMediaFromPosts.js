@@ -1,3 +1,5 @@
+import { downloadData, showLoading } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-regular fa-images"></i>',
   name: {
@@ -8,9 +10,8 @@ export default {
     en: "Get photos from all posts of group/page/user",
     vi: "Lấy tất cả hình trên các bài viết (post) của group/page/user",
   },
-  whiteList: ["https://graph.facebook.com/*"],
 
-  onClick: () => {
+  onClickExtension: () => {
     const WAIT_BEFORE_NEXT_FETCH = 500;
     const FB_API_HOST = "https://graph.facebook.com/v12.0";
     const MEDIA_TYPE = {
@@ -164,7 +165,7 @@ export default {
           console.log("media: " + all_media.length, all_media);
 
           // callback when each page fetched
-          await pageFetchedCallback(media);
+          await pageFetchedCallback(media, all_media);
 
           // get next paging
           url = fetchData?.paging?.next;
@@ -183,18 +184,35 @@ export default {
 
     let id = prompt("Nhập ID của user, group, page cần lấy media", "");
     if (id) {
-      alert("Quá trình lấy link ảnh sẽ diễn ra trong console (F12).");
+      alert(
+        "Quá trình lấy link ảnh sắp diễn ra.\nVui lòng không tắt popup extension trong quá trình này.\nThông tin chi tiết sẽ được hiển thị ở console của extension."
+      );
+
+      let { setLoadingText, closeLoading } = showLoading("Prepairing...");
       fetchWallMedia({
         targetId: id,
-        pageFetchedCallback: (media) => {},
-      }).then((all_media) => {
-        let urls = Array.from(new Set(all_media.map((_) => _.url))).join("\n");
-        console.log(urls);
-        alert(
-          "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
-        );
-        UsefulScriptsUtils.downloadData(urls, "urls.txt");
-      });
+        pageFetchedCallback: (media, all_media) => {
+          setLoadingText(`Tải được ${all_media.length} ảnh/video...`);
+        },
+      })
+        .then((all_media) => {
+          let urls = Array.from(new Set(all_media.map((_) => _.url))).join(
+            "\n"
+          );
+          console.log(urls);
+          setLoadingText(`Đang lưu ${urls.length} links vào file...`);
+          alert(
+            "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
+          );
+          downloadData(urls, "urls.txt");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Có lỗi xảy ra: " + err);
+        })
+        .finally(() => {
+          closeLoading();
+        });
     }
   },
 };
