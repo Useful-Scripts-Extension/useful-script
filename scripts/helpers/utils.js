@@ -341,6 +341,72 @@ export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Create a function to zip and download Blobs
+// blobList: [{ blob: Blob, fileName: string }]
+export function zipAndDownloadBlobs(
+  blobList,
+  zipFileName,
+  progressCallback,
+  successCallback
+) {
+  const zip = new JSZip();
+
+  // Add each Blob to the ZIP archive with a unique name
+  blobList.forEach(({ blob, fileName }, index) => {
+    console.log(fileName);
+    zip.file(fileName, blob);
+  });
+
+  // Generate the ZIP content with progress callback
+  zip
+    .generateAsync({ type: "blob" }, (metadata) => {
+      if (progressCallback) {
+        // Calculate progress as a percentage
+        const progress = metadata.percent | 0;
+        progressCallback(progress);
+      }
+    })
+    .then((content) => {
+      successCallback?.();
+
+      // Create a link to trigger the download
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(content);
+      a.download = zipFileName;
+
+      // Trigger a click event to initiate the download
+      a.click();
+    });
+}
+
+export async function getBlobFromUrl(url) {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return blob;
+  } catch (error) {
+    alert("Error: " + error);
+  }
+}
+
+export async function downloadBlob(url, fileName) {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+
+    const url_1 = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url_1;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url_1);
+  } catch (error) {
+    alert("Error: " + error);
+  }
+}
+
 // https://stackoverflow.com/a/15832662/11898496
 // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
 export function downloadURI(uri, name) {

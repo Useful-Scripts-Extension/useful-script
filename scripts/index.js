@@ -25,9 +25,7 @@ import pictureInPicture from "./pictureInPicture.js";
 import youtube_toggleLight from "./youtube_toggleLight.js";
 import github_goToAnyCommit from "./github_goToAnyCommit.js";
 import github1s from "./github1s.js";
-import doutube_enableDownloadVideo from "./doutube_enableDownloadVideo.js";
 import doutube_downloadWatchingVideo from "./doutube_downloadWatchingVideo.js";
-import doutube_downloadWatchingStory from "./doutube_downloadWatchingStory.js";
 import doutube_getAllVideoInUserProfile from "./doutube_getAllVideoInUserProfile.js";
 import darkModePDF from "./darkModePDF.js";
 import webToPDF from "./webToPDF.js";
@@ -210,9 +208,10 @@ const allScripts = {
   youtube_toggleLight,
   github_goToAnyCommit: addBadge(github_goToAnyCommit, BADGES.hot),
   github1s,
-  doutube_enableDownloadVideo,
-  doutube_downloadWatchingVideo,
-  doutube_downloadWatchingStory,
+  doutube_downloadWatchingVideo: addBadge(
+    doutube_downloadWatchingVideo,
+    BADGES.hot
+  ),
   doutube_getAllVideoInUserProfile,
   darkModePDF: addBadge(darkModePDF, BADGES.hot),
   webToPDF,

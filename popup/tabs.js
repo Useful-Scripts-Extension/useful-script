@@ -187,6 +187,9 @@ const tabs = [
   {
     ...CATEGORY.tiktok,
     scripts: [
+      createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
+      s.doutube_downloadWatchingVideo,
+      s.doutube_getAllVideoInUserProfile,
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
       s.tiktok_downloadWatchingVideo,
       s.tiktok_downloadVideo,
@@ -198,11 +201,6 @@ const tabs = [
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.tiktok_downloadUserVideos,
       s.douyin_downloadAllVideoUser,
-      createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
-      s.doutube_enableDownloadVideo,
-      s.doutube_downloadWatchingVideo,
-      s.doutube_downloadWatchingStory,
-      s.doutube_getAllVideoInUserProfile,
     ],
   },
   {

@@ -1,4 +1,12 @@
+import {
+  getBlobFromUrl,
+  runScriptInCurrentTab,
+  showLoading,
+  zipAndDownloadBlobs,
+} from "./helpers/utils.js";
+
 export default {
+  icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
   name: {
     en: "Get all video from user doutu.be profile",
     vi: "Tải tất cả video từ doutu.be profile",
@@ -9,67 +17,87 @@ export default {
   },
   whiteList: ["https://doutu.be/*"],
 
-  onClick: async function () {
-    // https://stackoverflow.com/a/18197341/11898496
-    function download(filename, text) {
-      var element = document.createElement("a");
-      element.setAttribute(
-        "href",
-        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  onClickExtension: async function () {
+    let user_id = await runScriptInCurrentTab(() => {
+      let url = window.location.href;
+      let id = url.split("/u/")?.[1];
+      return id;
+    });
+
+    if (!user_id) {
+      alert(
+        "Không tìm thấy user id từ url.\nVui lòng vào trang profile của user doutu.be\n\nVD: https://doutu.be/u/123456789"
       );
-      element.setAttribute("download", filename);
-      element.style.display = "none";
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    }
-
-    const WAIT_FOR_FULL_VIDEO_LOADED = 5000;
-    const FIND_FULL_VIDEO_INTERVAL = 100;
-    const sleep = (m) => new Promise((r) => setTimeout(r, m));
-    const getAllVideo = () =>
-      Array.from(document.querySelectorAll('img[loading="lazy"].object-cover'));
-    const getFullVideo = () => document.querySelector("video");
-    const closeFullVideo = () =>
-      document.querySelector("div.top-8.left-4")?.click();
-
-    if (
-      !confirm(
-        "Tool sẽ tự động mở từng ảnh/video để lấy link.\nVui lòng không thoát trang web.\nBấm OK để bắt đầu quá trình lấy link."
-      )
-    ) {
       return;
     }
 
-    let allUrls = [];
+    let hasNextPage = true;
+    let page = 1;
+    let skip = 0;
+    let videos = [];
 
-    const queue = getAllVideo();
-    while (queue.length > 0) {
-      const first = queue.shift();
-      first.scrollIntoView();
-      first.click();
+    const { closeLoading, setLoadingText } = showLoading("Đang tìm video...");
+    while (hasNextPage) {
+      try {
+        let url = `https://api.doutu.be/api/video/?author=${user_id}&skips=${skip}`;
+        let response = await fetch(url);
+        let data = await response.json();
 
-      let full_video;
-      let limit = WAIT_FOR_FULL_VIDEO_LOADED / FIND_FULL_VIDEO_INTERVAL;
+        if (data?.length) {
+          data.forEach((d) => {
+            videos.push(d);
+          });
 
-      while (!full_video && limit > 0) {
-        full_video = getFullVideo();
-        limit--;
-        await sleep(FIND_FULL_VIDEO_INTERVAL);
+          skip += data.length;
+          page++;
+          setLoadingText(
+            `Đang tìm trang ${page}.<br/>Đã tìm được ${videos.length} videos...`
+          );
+        } else {
+          hasNextPage = false;
+        }
+      } catch (e) {
+        alert("Lỗi: " + e);
+        break;
       }
-
-      if (full_video) {
-        allUrls.push(full_video.src);
-        console.log(full_video.src);
-      } else {
-        console.log("Not found full video");
-      }
-
-      closeFullVideo();
-      await sleep(500);
     }
-    console.log(allUrls);
-    alert("Tìm được " + allUrls.length + " videos. Bấm ok để tải xuống link.");
-    download(location.pathname + ".txt", allUrls.join("\n"));
+
+    console.log(videos);
+    if (!videos.length) {
+      alert("Không tìm thấy video nào");
+    } else if (
+      !confirm(
+        `Tìm được ${videos.length} videos. Bấm OK để bắt đầu quá trình tải`
+      )
+    ) {
+      closeLoading();
+    } else {
+      let blobs = [];
+      for (let i = 0; i < videos.length; i++) {
+        let v = videos[i];
+        let id = v._id;
+        let url = v.playUrl || v.videoMP4URL;
+        setLoadingText(`Đang tải video ${id}...`);
+        let blob = await getBlobFromUrl(url);
+        blobs.push({
+          blob,
+          fileName: `${i}_${id}.mp4`,
+        });
+      }
+
+      setLoadingText(`Đang nén...`);
+      zipAndDownloadBlobs(
+        blobs,
+        `doutube_${user_id}.zip`,
+        (progress) => {
+          setLoadingText(
+            `Đang nén... ${progress}%<br/>Vui lòng không tắt popup này`
+          );
+        },
+        () => {
+          closeLoading();
+        }
+      );
+    }
   },
 };

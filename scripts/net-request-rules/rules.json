@@ -94,5 +94,29 @@
       "urlFilter": "https://www.bing.com/images/create/",
       "resourceTypes": ["xmlhttprequest"]
     }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://doutu.be/"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://doutu.be"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://doutube.*/*",
+      "resourceTypes": ["xmlhttprequest"]
+    }
   }
 ]
