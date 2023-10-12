@@ -118,5 +118,29 @@
       "urlFilter": "https://doutube.*/*",
       "resourceTypes": ["xmlhttprequest"]
     }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://www.tiktok.com/"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://www.tiktok.com"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://*.tiktok.com/*",
+      "resourceTypes": ["xmlhttprequest"]
+    }
   }
 ]

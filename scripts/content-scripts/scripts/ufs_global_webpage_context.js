@@ -153,12 +153,18 @@ const UsefulScriptGlobalPageContext = {
         ) - Math.max(0, rect.top)
       );
     },
-
+    makeUrlValid(url) {
+      if (url.startsWith("//")) {
+        url = "https:" + url;
+      }
+      return url;
+    },
     async getWatchingVideoSrc() {
-      const { getOverlapScore, isElementInViewport } =
+      const { getOverlapScore, isElementInViewport, makeUrlValid } =
         UsefulScriptGlobalPageContext.DOM;
 
-      let videos = Array.from(document.querySelectorAll("video"));
+      // video or xg-video tag
+      let videos = Array.from(document.querySelectorAll("video, xg-video"));
       let sorted = videos
         .filter((v) => isElementInViewport(v))
         .sort((a, b) => {
@@ -166,10 +172,10 @@ const UsefulScriptGlobalPageContext = {
         });
 
       for (let v of sorted) {
-        if (v.src) return v.src;
+        if (v.src) return makeUrlValid(v.src);
         let sources = Array.from(v.querySelectorAll("source"));
         for (let s of sources) {
-          if (s.src) return s.src;
+          if (s.src) return makeUrlValid(s.src);
         }
       }
     },
@@ -280,7 +286,7 @@ const UsefulScriptGlobalPageContext = {
         const blob = new Blob(chunks, {
           type: response.headers.get("content-type"),
         });
-        downloadBlob(blob, fileName);
+        UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
       } catch (error) {
         alert("Error: " + error);
       }

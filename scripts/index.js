@@ -100,7 +100,6 @@ import screenshotFullPage from "./screenshotFullPage.js";
 import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
 import viewBrowserInfo from "./viewBrowserInfo.js";
-import tiktok_snaptikApp from "./tiktok_snaptikApp.js";
 import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import instantgram from "./instantgram.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
@@ -117,11 +116,8 @@ import envato_bypassPreview from "./envato_bypassPreview.js";
 import shopee_topVariation from "./shopee_topVariation.js";
 import donotBlockMe from "./donotBlockMe.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
-import tiktok_snaptikVideo from "./tiktok_snaptikVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
-import tiktok_downloadUserVideos from "./tiktok_downloadUserVideos.js";
-import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downs from "./studocu_downs.js";
@@ -132,7 +128,6 @@ import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
-import douyin_downloadVideo from "./douyin_downloadVideo.js";
 import freesound_downloadAudio from "./freesound_downloadAudio.js";
 // import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
@@ -287,7 +282,6 @@ const allScripts = {
   visualEvent: visualEvent,
   fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
   viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
-  tiktok_snaptikApp: addBadge(tiktok_snaptikApp, BADGES.new),
   douyin_downloadWachingVideo: addBadge(
     douyin_downloadWachingVideo,
     BADGES.new
@@ -310,14 +304,11 @@ const allScripts = {
   shopee_topVariation: addBadge(shopee_topVariation, BADGES.hot),
   donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
-  tiktok_snaptikVideo: addBadge(tiktok_snaptikVideo, BADGES.new),
   google_downloadAllYourData: addBadge(google_downloadAllYourData, BADGES.new),
   tiktok_downloadWatchingVideo: addBadge(
     tiktok_downloadWatchingVideo,
-    BADGES.new
+    BADGES.hot
   ),
-  tiktok_downloadUserVideos: addBadge(tiktok_downloadUserVideos, BADGES.beta),
-  tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
   ggDrive_downloadAllVideosInFolder: addBadge(
     ggDrive_downloadAllVideosInFolder,
     BADGES.new
@@ -331,7 +322,6 @@ const allScripts = {
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: addBadge(search_hopamchuan, BADGES.new),
   ggdrive_generateDirectLink: addBadge(ggdrive_generateDirectLink, BADGES.new),
-  douyin_downloadVideo: addBadge(douyin_downloadVideo, BADGES.new),
   freesound_downloadAudio: addBadge(freesound_downloadAudio, BADGES.new),
   // soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: addBadge(fastDoc, BADGES.new),

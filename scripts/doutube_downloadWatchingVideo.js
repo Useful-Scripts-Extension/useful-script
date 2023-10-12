@@ -19,14 +19,15 @@ export default {
       return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
     });
 
-    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
-    if (src) {
-      await downloadBlobUrl(src, "doutube_video.mp4", (loaded, total) => {
-        setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
-      });
-    } else {
+    if (!src) {
       alert("Không tìm thấy video nào.");
+      return;
     }
+
+    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
+    await downloadBlobUrl(src, "doutube_video.mp4", (loaded, total) => {
+      setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
+    });
     closeLoading();
   },
 };

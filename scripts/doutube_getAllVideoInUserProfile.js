@@ -3,8 +3,8 @@ import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
   name: {
-    en: "Get all video from user doutu.be profile",
-    vi: "Tải tất cả video từ doutu.be profile",
+    en: "Get all video from user profile",
+    vi: "Tải tất cả video người dùng",
   },
   description: {
     en: "Get all video in doutu.be user profile",

@@ -1,16 +1,35 @@
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
-    en: "Tiktok - Download watching video",
-    vi: "Tiktok - Tải video đang xem",
+    en: "Tiktok - Download watching video (no watermark)",
+    vi: "Tiktok - Tải video đang xem (no watermark)",
   },
   description: {
-    en: "Download tiktok video you are watching (no/have watermark)",
-    vi: "Tải video tiktok bạn đang xem (không/có watermark)",
+    en: "Download tiktok video you are watching (no watermark)",
+    vi: "Tải video tiktok bạn đang xem (không watermark)",
   },
 
-  onClickExtension: () => {
-    alert("Chuột phải vào video để tải video");
+  onClickExtension: async () => {
+    let src = await runScriptInCurrentTab(async () => {
+      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
+    });
+
+    if (!src) {
+      alert("Không tìm thấy video");
+      return;
+    }
+
+    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
+    await UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
+      src,
+      "tiktok_video.mp4",
+      (loaded, total) => {
+        setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
+      }
+    );
+    closeLoading();
   },
 };
 
