@@ -306,6 +306,7 @@ const UsefulScriptGlobalPageContext = {
     // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
     downloadURL(url, name) {
       var link = document.createElement("a");
+      link.target = "_blank";
       link.download = name;
       link.href = url;
       document.body.appendChild(link);

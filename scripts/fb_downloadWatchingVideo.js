@@ -1,5 +1,4 @@
 import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-import { parseXml, xml2json } from "./helpers/xmlParser.js";
 import { shared as fb_videoDownloader } from "./fb_videoDownloader.js";
 
 export default {
@@ -32,8 +31,12 @@ export default {
         dtsg
       );
 
-      if (videoUrl) window.open(videoUrl);
-      else throw Error("Không tìm được video link");
+      if (videoUrl) {
+        UsefulScriptGlobalPageContext.Utils.downloadURL(
+          videoUrl,
+          "fb_video.mp4"
+        );
+      } else throw Error("Không tìm được video link");
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
@@ -73,60 +76,3 @@ export const shared = {
     });
   },
 };
-
-async function backup() {
-  // Get video urls from manifest (no audio)
-  let listXml = await runScriptInCurrentTab(() => {
-    // https://stackoverflow.com/a/7557433
-    function isElementInViewport(el) {
-      var rect = el.getBoundingClientRect();
-      return !(
-        rect.bottom < 0 ||
-        rect.top > (window.innerHeight || document.documentElement.clientHeight)
-      );
-    }
-
-    let allVideos = Array.from(document.querySelectorAll("video"));
-    let result = [];
-    for (let video of allVideos) {
-      try {
-        let key = "";
-        for (let k in video.parentElement) {
-          if (k.startsWith("__reactProps")) {
-            key = k;
-            break;
-          }
-        }
-        result.push({
-          inViewPort: isElementInViewport(video),
-          xml: video.parentElement[key].children.props.manifest,
-        });
-      } catch (e) {
-        console.log("ERROR on get video manifest: ", e);
-      }
-    }
-
-    return result;
-  });
-
-  let urls = listXml
-    .map(({ inViewPort, xml }) => {
-      try {
-        let json = JSON.parse(xml2json(parseXml(xml)).replace("undefined", ""));
-        console.log(json);
-        let urls = json.MPD.Period.AdaptationSet[0].Representation.map((_) => ({
-          quality: _["@FBQualityLabel"],
-          url: _.BaseURL.replaceAll("&amp;", "&"),
-        }));
-        return {
-          inViewPort,
-          urls,
-        };
-      } catch (e) {
-        return null;
-      }
-    })
-    .filter((_) => _ && _.inViewPort);
-
-  console.log(urls);
-}
