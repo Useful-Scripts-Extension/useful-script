@@ -62,6 +62,7 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
+      s.download_watchingVideo,
       s.getLinkLuanxt,
       s.getFavicon,
       // s.bookmark_exporter,

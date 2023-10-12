@@ -172,6 +172,7 @@ import fb_downloadWallMediaFromPosts from "./fb_downloadWallMediaFromPosts.js";
 import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
 import textToSpeech from "./textToSpeech.js";
 import shopee_totalSpendMoney_excel from "./shopee_totalSpendMoney_excel.js";
+import download_watchingVideo from "./download_watchingVideo.js";
 
 // inject badges
 const allScripts = {
@@ -371,6 +372,7 @@ const allScripts = {
     shopee_totalSpendMoney_excel,
     BADGES.hot
   ),
+  download_watchingVideo: addBadge(download_watchingVideo, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

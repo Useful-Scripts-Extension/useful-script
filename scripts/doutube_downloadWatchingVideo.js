@@ -1,4 +1,4 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import download_watchingVideo from "./download_watchingVideo.js";
 
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
@@ -12,22 +12,5 @@ export default {
   },
   whiteList: ["https://doutu.be/*"],
 
-  onClickExtension: async function () {
-    const { downloadBlobUrl } = UsefulScriptGlobalPageContext.Utils;
-
-    const src = await runScriptInCurrentTab(async () => {
-      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
-    });
-
-    if (!src) {
-      alert("Không tìm thấy video nào.");
-      return;
-    }
-
-    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
-    await downloadBlobUrl(src, "doutube_video.mp4", (loaded, total) => {
-      setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
-    });
-    closeLoading();
-  },
+  onClickExtension: download_watchingVideo.onClickExtension,
 };

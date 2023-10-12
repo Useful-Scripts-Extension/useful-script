@@ -1,4 +1,4 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import download_watchingVideo from "./download_watchingVideo.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -11,26 +11,7 @@ export default {
     vi: "Tải video tiktok bạn đang xem (không watermark)",
   },
 
-  onClickExtension: async () => {
-    let src = await runScriptInCurrentTab(async () => {
-      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
-    });
-
-    if (!src) {
-      alert("Không tìm thấy video");
-      return;
-    }
-
-    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
-    await UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
-      src,
-      "tiktok_video.mp4",
-      (loaded, total) => {
-        setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
-      }
-    );
-    closeLoading();
-  },
+  onClickExtension: download_watchingVideo.onClickExtension,
 };
 
 export const shared = {
