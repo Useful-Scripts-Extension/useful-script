@@ -1,8 +1,4 @@
-import {
-  downloadData,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: '<i class="fa-solid fa-file-export fa-lg"></i>',
@@ -16,6 +12,8 @@ export default {
   },
 
   onClickExtension: async function () {
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+
     const c = (e) => {
       try {
         return e();

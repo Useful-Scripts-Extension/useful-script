@@ -1,4 +1,4 @@
-import { escapeRegExp, getCurrentTab } from "./helpers/utils.js";
+import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
   icon: "https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14bdb.ico",
@@ -43,7 +43,9 @@ export const shared = {
     let res = await fetch(resource_url);
     let text = await res.text();
 
-    let x = escapeRegExp("forEach(function(e){n(e)})}catch(e){}})},");
+    let x = UsefulScriptGlobalPageContext.Utils.escapeRegExp(
+      "forEach(function(e){n(e)})}catch(e){}})},"
+    );
     x = new RegExp(x + "(.*)\\);</script>").exec(text);
 
     // info = json.loads(x.group(1))[-1]['data'][0]

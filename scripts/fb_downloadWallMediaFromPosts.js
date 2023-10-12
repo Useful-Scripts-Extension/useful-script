@@ -1,4 +1,4 @@
-import { downloadData, showLoading } from "./helpers/utils.js";
+import { showLoading } from "./helpers/utils.js";
 
 export default {
   icon: '<i class="fa-regular fa-images"></i>',
@@ -12,6 +12,8 @@ export default {
   },
 
   onClickExtension: () => {
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+
     const WAIT_BEFORE_NEXT_FETCH = 500;
     const FB_API_HOST = "https://graph.facebook.com/v12.0";
     const MEDIA_TYPE = {

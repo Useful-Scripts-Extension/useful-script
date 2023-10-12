@@ -1,4 +1,4 @@
-import { moneyFormat, showLoading } from "./helpers/utils.js";
+import { showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://tiki.vn/favicon.ico",
@@ -10,9 +10,12 @@ export default {
     en: "See how much money you have spend on Tiki",
     vi: "Xem bạn đã mua hết bao nhiêu tiền trên Tiki",
   },
+  whiteList: ["https://tiki.vn/*"],
 
   onClickExtension: async () => {
     // https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
+
+    const { moneyFormat } = UsefulScriptGlobalPageContext.Utils;
 
     const OrderType = {
       all: "",
@@ -52,7 +55,7 @@ export default {
           }`
         );
         let json = await res.json();
-        if (json?.error) throw Error("Error: " + json.error);
+        if (json?.error) throw json.error;
 
         let orders = json.data;
         totalOrders += orders.length;
@@ -124,7 +127,8 @@ export default {
       );
       console.table(stats);
     } catch (e) {
-      alert("ERROR: " + e);
+      console.log(e);
+      alert("ERROR: " + e.message);
     } finally {
       closeLoading();
     }

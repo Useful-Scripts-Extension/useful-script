@@ -259,52 +259,12 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
     format: options.format || "png",
     quality: options.quality || 100,
   });
-  willDownload && downloadURI(imgData, "img.png");
+  willDownload &&
+    UsefulScriptGlobalPageContext.Utils.downloadURL(imgData, "img.png");
   return imgData;
 }
 
 // #endregion
-
-// #region Function Utils
-
-export const isFunction = (o) => typeof o === "function";
-
-// https://stackoverflow.com/a/7960435
-export const isEmptyFunction = (func) => {
-  try {
-    var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
-    return !m.replace(/^\s*\/\/.*$/gm, "");
-  } catch (e) {
-    console.log("Error isEmptyFunction", e);
-    return false;
-  }
-};
-
-// #endregion
-
-// #region String Utils
-
-export function moneyFormat(number, fixed = 0) {
-  if (isNaN(number)) return 0;
-  number = number.toFixed(fixed);
-  let delimeter = ",";
-  number += "";
-  let rgx = /(\d+)(\d{3})/;
-  while (rgx.test(number)) {
-    number = number.replace(rgx, "$1" + delimeter + "$2");
-  }
-  return number;
-}
-
-// https://stackoverflow.com/a/9310752
-export function escapeRegExp(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}
-
-// https://stackoverflow.com/q/38849009
-export function unescapeRegExp(text) {
-  return text.replace(/\\(.)/g, "$1");
-}
 
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
@@ -323,16 +283,7 @@ export function removeAccents(str) {
   return str;
 }
 
-export function encodeQueryString(obj) {
-  var str = [];
-  for (var p in obj)
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-    }
-  return str.join("&");
-}
-
-// #endregion
+export const isFunction = (o) => typeof o === "function";
 
 // #region Download Utils
 
@@ -342,99 +293,6 @@ export function sleep(ms) {
 }
 
 // Create a function to zip and download Blobs
-// blobList: [{ blob: Blob, fileName: string }]
-export function zipAndDownloadBlobs(
-  blobList,
-  zipFileName,
-  progressCallback,
-  successCallback
-) {
-  const zip = new JSZip();
-
-  // Add each Blob to the ZIP archive with a unique name
-  blobList.forEach(({ blob, fileName }, index) => {
-    console.log(fileName);
-    zip.file(fileName, blob);
-  });
-
-  // Generate the ZIP content with progress callback
-  zip
-    .generateAsync({ type: "blob" }, (metadata) => {
-      if (progressCallback) {
-        // Calculate progress as a percentage
-        const progress = metadata.percent | 0;
-        progressCallback(progress);
-      }
-    })
-    .then((content) => {
-      successCallback?.();
-
-      // Create a link to trigger the download
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(content);
-      a.download = zipFileName;
-
-      // Trigger a click event to initiate the download
-      a.click();
-    });
-}
-
-export async function getBlobFromUrl(url) {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    return blob;
-  } catch (error) {
-    alert("Error: " + error);
-  }
-}
-
-export async function downloadBlob(url, fileName) {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-
-    const url_1 = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.style.display = "none";
-    a.href = url_1;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url_1);
-  } catch (error) {
-    alert("Error: " + error);
-  }
-}
-
-// https://stackoverflow.com/a/15832662/11898496
-// TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
-export function downloadURI(uri, name) {
-  var link = document.createElement("a");
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-export function downloadData(data, filename, type) {
-  var file = new Blob([data], { type: type });
-  if (window.navigator.msSaveOrOpenBlob)
-    window.navigator.msSaveOrOpenBlob(file, filename);
-  else {
-    var a = document.createElement("a"),
-      url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 0);
-  }
-}
 
 // #endregion
 

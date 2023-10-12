@@ -134,6 +134,195 @@ const UsefulScriptGlobalPageContext = {
       css.setAttribute("href", filePath);
       document.head.appendChild(css);
     },
+
+    isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.bottom > 0 &&
+        rect.right > 0 &&
+        rect.left < window.innerWidth &&
+        rect.top < window.innerHeight
+      );
+    },
+    getOverlapScore(el) {
+      var rect = el.getBoundingClientRect();
+      return (
+        Math.min(
+          rect.bottom,
+          window.innerHeight || document.documentElement.clientHeight
+        ) - Math.max(0, rect.top)
+      );
+    },
+
+    async getWatchingVideoSrc() {
+      const { getOverlapScore, isElementInViewport } =
+        UsefulScriptGlobalPageContext.DOM;
+
+      let videos = Array.from(document.querySelectorAll("video"));
+      let sorted = videos
+        .filter((v) => isElementInViewport(v))
+        .sort((a, b) => {
+          return getOverlapScore(b) - getOverlapScore(a);
+        });
+
+      for (let v of sorted) {
+        if (v.src) return v.src;
+        let sources = Array.from(v.querySelectorAll("source"));
+        for (let s of sources) {
+          if (s.src) return s.src;
+        }
+      }
+    },
+  },
+  Utils: {
+    // https://stackoverflow.com/a/7960435
+    isEmptyFunction(func) {
+      try {
+        var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
+        return !m.replace(/^\s*\/\/.*$/gm, "");
+      } catch (e) {
+        console.log("Error isEmptyFunction", e);
+        return false;
+      }
+    },
+    // https://stackoverflow.com/a/9310752
+    escapeRegExp(text) {
+      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    },
+    // https://stackoverflow.com/q/38849009
+    unescapeRegExp(text) {
+      return text.replace(/\\(.)/g, "$1");
+    },
+    encodeQueryString(obj) {
+      var str = [];
+      for (var p in obj)
+        if (obj.hasOwnProperty(p)) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+      return str.join("&");
+    },
+    moneyFormat(number, fixed = 0) {
+      if (isNaN(number)) return 0;
+      number = number.toFixed(fixed);
+      let delimeter = ",";
+      number += "";
+      let rgx = /(\d+)(\d{3})/;
+      while (rgx.test(number)) {
+        number = number.replace(rgx, "$1" + delimeter + "$2");
+      }
+      return number;
+    },
+
+    zipAndDownloadBlobs(
+      blobList,
+      zipFileName,
+      progressCallback,
+      successCallback
+    ) {
+      const zip = new JSZip();
+
+      // Add each Blob to the ZIP archive with a unique name
+      blobList.forEach(({ blob, fileName }, index) => {
+        console.log(fileName);
+        zip.file(fileName, blob);
+      });
+
+      // Generate the ZIP content with progress callback
+      zip
+        .generateAsync({ type: "blob" }, (metadata) => {
+          if (progressCallback) {
+            // Calculate progress as a percentage
+            const progress = metadata.percent | 0;
+            progressCallback(progress);
+          }
+        })
+        .then((content) => {
+          successCallback?.();
+
+          // Create a link to trigger the download
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(content);
+          a.download = zipFileName;
+
+          // Trigger a click event to initiate the download
+          a.click();
+        });
+    },
+    async getBlobFromUrl(url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return blob;
+      } catch (error) {
+        alert("Error: " + error);
+      }
+    },
+    async downloadBlobUrl(url, fileName, progressCallback) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        const contentLength = response.headers.get("content-length");
+        const total = parseInt(contentLength, 10);
+        let loaded = 0;
+        const reader = response.body.getReader();
+        const chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          loaded += value.byteLength;
+          progressCallback?.(loaded, total);
+          chunks.push(value);
+        }
+
+        const blob = new Blob(chunks, {
+          type: response.headers.get("content-type"),
+        });
+        downloadBlob(blob, fileName);
+      } catch (error) {
+        alert("Error: " + error);
+      }
+    },
+    downloadBlob(blob, filename) {
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    },
+    // https://stackoverflow.com/a/15832662/11898496
+    // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
+    downloadURL(url, name) {
+      var link = document.createElement("a");
+      link.download = name;
+      link.href = url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    downloadData(data, filename, type = "text/plain") {
+      var file = new Blob([data], { type: type });
+      if (window.navigator.msSaveOrOpenBlob)
+        window.navigator.msSaveOrOpenBlob(file, filename);
+      else {
+        var a = document.createElement("a"),
+          url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      }
+    },
   },
   Facebook: {
     // Helpers
@@ -831,23 +1020,7 @@ const UsefulScriptsUtils = {
     );
   },
 
-  downloadData(data, filename, type) {
-    var file = new Blob([data], { type: type });
-    if (window.navigator.msSaveOrOpenBlob)
-      window.navigator.msSaveOrOpenBlob(file, filename);
-    else {
-      var a = document.createElement("a"),
-        url = URL.createObjectURL(file);
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 0);
-    }
-  },
+  downloadData: UsefulScriptGlobalPageContext.Utils.downloadData,
 };
 window.UsefulScriptsUtils = UsefulScriptsUtils;
 

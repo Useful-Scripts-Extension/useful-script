@@ -1,4 +1,4 @@
-import { downloadData, showLoading } from "./helpers/utils.js";
+import { showLoading } from "./helpers/utils.js";
 import { AccessToken } from "./helpers/constants.js";
 
 export default {
@@ -13,6 +13,8 @@ export default {
   },
 
   onClickExtension: async function () {
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
     if (!uids) return;
 

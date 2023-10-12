@@ -1,5 +1,3 @@
-import { downloadData, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -10,15 +8,18 @@ export default {
     en: "Download photo/video links from facebook album",
     vi: "Tải về danh sách link ảnh/video từ album facebook",
   },
+  whiteList: ["https://graph.facebook.com/*"],
 
-  onClickExtension: function () {
+  onClick: function () {
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+
     const accessToken = prompt("Nhập access token:", "");
     if (!accessToken) return;
     const albumId = prompt("Nhập album id: ", "");
     if (!albumId) return;
 
     async function fetchAlbumPhotosFromCursor({ albumId, cursor }) {
-      let url = `https://graph.facebook.com/v12.0/${albumId}/photos?fields=largest_image&limit=100&access_token=${accessToken}`;
+      let url = `https://graph.facebook.com/v13.0/${albumId}/photos?fields=largest_image&limit=100&access_token=${accessToken}`;
       if (cursor) url += `&after=${cursor}`;
       const data = await fetch(url);
       const json = await data.json();
@@ -88,13 +89,11 @@ export default {
       return result;
     }
 
-    const { closeLoading, setLoadingText } = showLoading(
-      "Đang thu thập link ảnh/video trong album..."
-    );
+    console.log("Đang thu thập link ảnh/video trong album...");
     fetchAllPhotoLinksInAlbum({
       albumId,
       progress: (length) =>
-        setLoadingText("Đang thu thập " + length + " links..."),
+        console.log("Đang thu thập " + length + " links..."),
     })
       .then((links) => {
         if (
@@ -108,9 +107,6 @@ export default {
       })
       .catch((e) => {
         alert("ERROR: " + e);
-      })
-      .finally(() => {
-        closeLoading();
       });
   },
 };

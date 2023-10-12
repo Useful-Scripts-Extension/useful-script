@@ -1,7 +1,6 @@
 import {
   attachDebugger,
   detachDebugger,
-  downloadURI,
   getCurrentTab,
   sendDevtoolCommand,
   showLoading,
@@ -19,6 +18,8 @@ export default {
   },
 
   onClickExtension: async function () {
+    const { downloadURL } = UsefulScriptGlobalPageContext.Utils;
+
     const { setLoadingText, closeLoading } = showLoading("Đang tạo PDF...");
     let tab = await getCurrentTab();
     try {
@@ -31,7 +32,7 @@ export default {
       await detachDebugger(tab);
 
       // https://stackoverflow.com/a/59352848/11898496
-      downloadURI("data:application/pdf;base64," + res.data, "web.pdf");
+      downloadURL("data:application/pdf;base64," + res.data, "web.pdf");
     } catch (e) {
       if (
         confirm(

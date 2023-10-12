@@ -45,15 +45,7 @@ export default {
 export const shared = {
   getListVideoIdInWebsite: async function () {
     return await runScriptInCurrentTab(() => {
-      function getOverlapScore(el) {
-        var rect = el.getBoundingClientRect();
-        return (
-          Math.min(
-            rect.bottom,
-            window.innerHeight || document.documentElement.clientHeight
-          ) - Math.max(0, rect.top)
-        );
-      }
+      const { getOverlapScore } = UsefulScriptGlobalPageContext.DOM;
 
       let allVideos = Array.from(document.querySelectorAll("video"));
       let result = [];

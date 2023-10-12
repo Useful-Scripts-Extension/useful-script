@@ -1,4 +1,4 @@
-import showTheVideos from "./showTheVideos.js";
+import { runScriptInCurrentTab } from "./helpers/utils.js";
 
 export default {
   icon: "https://www.douyin.com/favicon.ico",
@@ -12,5 +12,18 @@ export default {
   },
   whiteList: ["https://www.douyin.com/*"],
 
-  onClick: showTheVideos.onClick,
+  onClickExtension: async function () {
+    const { downloadURL } = UsefulScriptGlobalPageContext.Utils;
+
+    const src = await runScriptInCurrentTab(async () => {
+      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
+    });
+
+    if (!src) {
+      alert("Không tìm thấy video nào.");
+      return;
+    }
+
+    downloadURL(src, "douyin_video.mp4");
+  },
 };

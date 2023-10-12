@@ -1,9 +1,4 @@
-import {
-  getBlobFromUrl,
-  runScriptInCurrentTab,
-  showLoading,
-  zipAndDownloadBlobs,
-} from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
@@ -18,6 +13,9 @@ export default {
   whiteList: ["https://doutu.be/*"],
 
   onClickExtension: async function () {
+    const { zipAndDownloadBlobs, getBlobFromUrl } =
+      UsefulScriptGlobalPageContext.Utils;
+
     let user_id = await runScriptInCurrentTab(() => {
       let url = window.location.href;
       let id = url.split("/u/")?.[1];

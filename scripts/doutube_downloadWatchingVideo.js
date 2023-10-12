@@ -1,8 +1,4 @@
-import {
-  downloadBlob,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
@@ -17,32 +13,20 @@ export default {
   whiteList: ["https://doutu.be/*"],
 
   onClickExtension: async function () {
-    const src = await runScriptInCurrentTab(() => {
-      const isElementInViewport = (el) => {
-        const rect = el.getBoundingClientRect();
-        return (
-          rect.bottom > 0 &&
-          rect.right > 0 &&
-          rect.left < window.innerWidth &&
-          rect.top < window.innerHeight
-        );
-      };
-      for (let v of Array.from(document.querySelectorAll("video"))) {
-        if (isElementInViewport(v)) {
-          if (v.src) return v.src;
-          let sources = Array.from(v.querySelectorAll("source"));
-          for (let s of sources) {
-            if (s.src) return s.src;
-          }
-        }
-      }
+    const { downloadBlobUrl } = UsefulScriptGlobalPageContext.Utils;
+
+    const src = await runScriptInCurrentTab(async () => {
+      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
     });
 
+    const { closeLoading, setLoadingText } = showLoading("Đang tải video...");
     if (src) {
-      const { closeLoading } = showLoading("Đang tải video...");
-      downloadBlob(src, "doutube_video.mp4").then(closeLoading);
+      await downloadBlobUrl(src, "doutube_video.mp4", (loaded, total) => {
+        setLoadingText(`Đang tải video... (${((loaded / total) * 100) | 0}%)`);
+      });
     } else {
       alert("Không tìm thấy video nào.");
     }
+    closeLoading();
   },
 };

@@ -1,4 +1,4 @@
-import { downloadData, showLoading } from "./helpers/utils.js";
+import { showLoading } from "./helpers/utils.js";
 
 export default {
   name: {
@@ -11,6 +11,8 @@ export default {
   },
 
   onClickExtension: async function () {
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;
     function getBiggestMediaFromNode(node) {

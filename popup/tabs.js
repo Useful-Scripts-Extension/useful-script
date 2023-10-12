@@ -208,6 +208,7 @@ const tabs = [
     scripts: [
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
+      s.shopee_totalSpendMoney_excel,
       s.tiki_totalSpendMoney,
     ],
   },

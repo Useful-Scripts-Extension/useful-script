@@ -1,7 +1,6 @@
 import {
   attachDebugger,
   detachDebugger,
-  downloadURI,
   getCurrentTab,
   sendDevtoolCommand,
   showLoading,
@@ -19,6 +18,8 @@ export default {
   },
 
   onClickExtension: async function () {
+    const { downloadURL } = UsefulScriptGlobalPageContext.Utils;
+
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."
     );
@@ -40,7 +41,7 @@ export default {
       await detachDebugger(tab);
 
       setLoadingText("Đang lưu ảnh...");
-      downloadURI("data:image/png;base64," + img.data, "fullpage.png");
+      downloadURL("data:image/png;base64," + img.data, "fullpage.png");
     } catch (e) {
       alert("Lỗi: " + e);
     }

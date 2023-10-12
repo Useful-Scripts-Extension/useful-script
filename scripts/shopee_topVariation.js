@@ -15,6 +15,7 @@ export default {
     en: "See how many times each product variant was purchased",
     vi: "Thống kê xem tùy chọn sản phẩm nào được mọi người mua nhiều nhất",
   },
+  whiteList: ["https://shopee.vn/*"],
 
   onClickExtension: async function () {
     // Source: https://gist.github.com/J2TEAM/bc5d9a1f3e648d6a3d679edf8689e5de

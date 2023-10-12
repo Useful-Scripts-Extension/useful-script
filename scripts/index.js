@@ -176,6 +176,7 @@ import tailieu_vn from "./tailieu_vn.js";
 import fb_downloadWallMediaFromPosts from "./fb_downloadWallMediaFromPosts.js";
 import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
 import textToSpeech from "./textToSpeech.js";
+import shopee_totalSpendMoney_excel from "./shopee_totalSpendMoney_excel.js";
 
 // inject badges
 const allScripts = {
@@ -344,7 +345,7 @@ const allScripts = {
   fb_openAdsActivities: addBadge(fb_openAdsActivities, BADGES.new),
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.beta),
   studyphim_unlimited: addBadge(studyphim_unlimited, BADGES.new),
-  shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.new),
+  shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.hot),
   tiki_totalSpendMoney: addBadge(tiki_totalSpendMoney, BADGES.beta),
   fb_invisible_message: addBadge(fb_invisible_message, BADGES.new),
   insta_injectDownloadBtn: addBadge(insta_injectDownloadBtn, BADGES.new),
@@ -376,6 +377,10 @@ const allScripts = {
     BADGES.new
   ),
   textToSpeech: addBadge(textToSpeech, BADGES.new),
+  shopee_totalSpendMoney_excel: addBadge(
+    shopee_totalSpendMoney_excel,
+    BADGES.hot
+  ),
 };
 
 // alert(Object.keys(allScripts).length);

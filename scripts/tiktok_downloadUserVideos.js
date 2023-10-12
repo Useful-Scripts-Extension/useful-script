@@ -1,9 +1,4 @@
-import {
-  downloadData,
-  runScriptInCurrentTab,
-  showLoading,
-  sleep,
-} from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
 import * as tiktok_downloadVideoNoWM from "./tiktok_downloadVideo.js";
 
@@ -19,6 +14,8 @@ export default {
   },
   onClickExtension: async function () {
     // Source code: https://github.com/karim0sec/tiktokdl
+
+    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
 
     let { closeLoading, setLoadingText } = showLoading();
     try {
