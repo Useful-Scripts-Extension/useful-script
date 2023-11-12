@@ -8,6 +8,7 @@ export default {
     en: "View VIP document on Studocu.com, bypass preview popup / reveal blurred content.",
     vi: "Xem tài liệu VIP trên Studocu.com, loại bỏ popup chặn xem trước, loại bỏ hiệu ứng làm mờ.",
   },
+  whiteList: ["https://www.studocu.com/*", "https://studeersnel.nl/*"],
 
   // https://github.com/lambwheit/Studocu-Paywall-Bypass
   onDocumentStart: async () => {
