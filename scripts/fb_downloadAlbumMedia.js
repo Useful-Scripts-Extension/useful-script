@@ -1,3 +1,5 @@
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -8,9 +10,9 @@ export default {
     en: "Download photo/video links from facebook album",
     vi: "Tải về danh sách link ảnh/video từ album facebook",
   },
-  whiteList: ["https://graph.facebook.com/*"],
+  // whiteList: ["https://graph.facebook.com/*"],
 
-  onClick: function () {
+  onClickExtension: function () {
     const { downloadData } = UsefulScriptGlobalPageContext.Utils;
 
     const accessToken = prompt("Nhập access token:", "");
@@ -89,11 +91,16 @@ export default {
       return result;
     }
 
-    console.log("Đang thu thập link ảnh/video trong album...");
+    const { closeLoading, setLoadingText } = showLoading(
+      "Đang thu thập link ảnh/video trong album..."
+    );
+    let total = 0;
     fetchAllPhotoLinksInAlbum({
       albumId,
-      progress: (length) =>
-        console.log("Đang thu thập " + length + " links..."),
+      progress: (length) => {
+        total += length;
+        setLoadingText("Đang thu thập " + total + " links...");
+      },
     })
       .then((links) => {
         if (
@@ -107,6 +114,9 @@ export default {
       })
       .catch((e) => {
         alert("ERROR: " + e);
+      })
+      .finally(() => {
+        closeLoading();
       });
   },
 };
