@@ -329,6 +329,15 @@ const recommendTab = {
       },
       onClickExtension: () => window.open("https://you.com/"),
     },
+    {
+      icon: "https://it-tools.tech/favicon-32x32.png",
+      name: { en: "IT Tools", vi: "IT Tools" },
+      description: {
+        en: "Handy tools for developers",
+        vi: "Tổng hợp tools hữu ích cho IT",
+      },
+      onClickExtension: () => window.open("https://it-tools.tech/"),
+    },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
       icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
