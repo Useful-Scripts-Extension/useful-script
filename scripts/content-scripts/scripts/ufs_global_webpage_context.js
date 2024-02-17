@@ -181,6 +181,32 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    copyToClipboard(text) {
+      // Check if Clipboard API is supported
+      if (!navigator.clipboard) {
+        alert("Clipboard API not supported, falling back to older method.");
+        function fallbackCopyToClipboard(text) {
+          const tempInput = document.createElement("input");
+          tempInput.value = text;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand("copy");
+          document.body.removeChild(tempInput);
+          console.log("Text copied to clipboard (fallback method)");
+        }
+        return fallbackCopyToClipboard(text);
+      }
+
+      // Copy text to clipboard
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          console.log("Text copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy text to clipboard:", err);
+        });
+    },
     // https://stackoverflow.com/a/7960435
     isEmptyFunction(func) {
       try {
@@ -886,6 +912,26 @@ const UsefulScriptGlobalPageContext = {
         console.log("ERROR search all group for other", e);
       }
       return allGroups;
+    },
+  },
+  Tiktok: {
+    downloadTiktokVideoFromId: async function (videoId) {
+      for (let api of [
+        "https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=",
+        "https://api2.musical.ly/aweme/v1/feed/?aweme_id=",
+      ]) {
+        try {
+          let data = await fetch(api + videoId);
+          let json = await data.json();
+          console.log(json);
+          let url =
+            json.aweme_list?.[0]?.video?.play_addr?.url_list?.[0] ||
+            json.aweme_list?.[0]?.video?.download_addr?.url_list?.[0];
+          return url;
+        } catch (e) {
+          console.error(e);
+        }
+      }
     },
   },
 };

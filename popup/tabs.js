@@ -190,6 +190,8 @@ const tabs = [
     scripts: [
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
       s.tiktok_downloadWatchingVideo,
+      s.tiktok_downloadVideo,
+      s.tiktok_downloadUserProfile,
       createTitle("--- Douyin ---", "--- Douyin ---"),
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,

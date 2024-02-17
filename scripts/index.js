@@ -173,6 +173,8 @@ import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
 import textToSpeech from "./textToSpeech.js";
 import shopee_totalSpendMoney_excel from "./shopee_totalSpendMoney_excel.js";
 import download_watchingVideo from "./download_watchingVideo.js";
+import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
+import tiktok_downloadUserProfile from "./tiktok_downloadUserProfile.js";
 
 // inject badges
 const allScripts = {
@@ -373,6 +375,8 @@ const allScripts = {
     BADGES.hot
   ),
   download_watchingVideo: addBadge(download_watchingVideo, BADGES.new),
+  tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
+  tiktok_downloadUserProfile: addBadge(tiktok_downloadUserProfile, BADGES.beta),
 };
 
 // alert(Object.keys(allScripts).length);
