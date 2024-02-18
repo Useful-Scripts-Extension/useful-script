@@ -195,6 +195,7 @@ const tabs = [
       createTitle("--- Douyin ---", "--- Douyin ---"),
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
+      // s.douyin_batchDownload,
       createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
       s.doutube_downloadWatchingVideo,
       s.doutube_getAllVideoInUserProfile,

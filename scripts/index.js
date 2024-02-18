@@ -175,6 +175,7 @@ import shopee_totalSpendMoney_excel from "./shopee_totalSpendMoney_excel.js";
 import download_watchingVideo from "./download_watchingVideo.js";
 import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import tiktok_batchDownload from "./tiktok_batchDownload.js";
+import douyin_batchDownload from "./douyin_batchDownload.js";
 
 // inject badges
 const allScripts = {
@@ -377,6 +378,7 @@ const allScripts = {
   download_watchingVideo: addBadge(download_watchingVideo, BADGES.new),
   tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
   tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.beta),
+  douyin_batchDownload: addBadge(douyin_batchDownload, BADGES.beta),
 };
 
 // alert(Object.keys(allScripts).length);

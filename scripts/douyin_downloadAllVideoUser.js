@@ -66,24 +66,18 @@ export default {
       console.log('Đang chuẩn bị tải video của "' + sec_user_id + '" ...');
       while (hasMore == 1) {
         var moredata = await getid(sec_user_id, max_cursor);
+        console.log(moredata);
         hasMore = moredata["has_more"];
         max_cursor = moredata["max_cursor"];
-        for (var i in moredata["aweme_list"]) {
-          if (
-            moredata["aweme_list"][i]["video"]["play_addr"][
-              "url_list"
-            ][0].startsWith("https")
-          )
-            result.push(
-              moredata["aweme_list"][i]["video"]["play_addr"]["url_list"][0]
-            );
-          else
-            result.push(
-              moredata["aweme_list"][i]["video"]["play_addr"][
-                "url_list"
-              ][0].replace("http", "https")
-            );
-          console.clear();
+        for (var item of moredata["aweme_list"]) {
+          let url = item.video.play_addr.url_list[0];
+
+          if (url.startsWith("https")) {
+            result.push(url);
+          } else {
+            result.push(url.replace("http", "https"));
+          }
+          // console.clear();
           console.log("Number of videos: " + result.length);
         }
       }
