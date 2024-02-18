@@ -924,9 +924,11 @@ const UsefulScriptGlobalPageContext = {
           let data = await fetch(api + videoId);
           let json = await data.json();
           console.log(json);
+          let item = json.aweme_list.find((a) => a.aweme_id == videoId);
+          if (!item) throw Error("Không tìm thấy video");
           let url =
-            json.aweme_list?.[0]?.video?.play_addr?.url_list?.[0] ||
-            json.aweme_list?.[0]?.video?.download_addr?.url_list?.[0];
+            item?.video?.play_addr?.url_list?.[0] ||
+            item?.video?.download_addr?.url_list?.[0];
           return url;
         } catch (e) {
           console.error(e);
