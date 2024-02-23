@@ -37,7 +37,7 @@ export default {
     const { closeLoading, setLoadingText } = showLoading("Đang tìm video...");
     while (hasNextPage) {
       try {
-        let url = `https://api.doutu.be/api/video/?author=${user_id}&skips=${skip}`;
+        let url = `https://api.doutu.be/api/video/?author=${user_id}&skips=${skip}&limit=20`;
         let response = await fetch(url);
         let data = await response.json();
 
@@ -63,24 +63,27 @@ export default {
     console.log(videos);
     if (!videos.length) {
       alert("Không tìm thấy video nào");
-    } else if (
-      !confirm(
-        `Tìm được ${videos.length} videos. Bấm OK để bắt đầu quá trình tải`
-      )
-    ) {
       closeLoading();
     } else {
+      alert(`Tiện ích sẽ tiến hành bắt link từng video.
+Vui lòng không tắt popup tiện ích trong quá trình này.
+
+(Do idm không thể bắt link hàng loạt, nên các bạn ráng chờ tiện ích tải xong tất cả video nhé)`);
       let blobs = [];
       for (let i = 0; i < videos.length; i++) {
-        let v = videos[i];
-        let id = v._id;
-        let url = v.playUrl || v.videoMP4URL;
-        setLoadingText(`Đang tải video ${id}...`);
-        let blob = await getBlobFromUrl(url);
-        blobs.push({
-          blob,
-          fileName: `${i}_${id}.mp4`,
-        });
+        try {
+          let v = videos[i];
+          let id = v._id;
+          let url = v.playUrl || v.videoMP4URL;
+          setLoadingText(`Đang tải video [${i}/${videos.length}] ${id}...`);
+          let blob = await getBlobFromUrl(url);
+          blobs.push({
+            blob,
+            fileName: `${i}_${id}.mp4`,
+          });
+        } catch (e) {
+          alert("Không thể tải video " + id + ". Ok để bỏ qua.");
+        }
       }
 
       setLoadingText(`Đang nén...`);
