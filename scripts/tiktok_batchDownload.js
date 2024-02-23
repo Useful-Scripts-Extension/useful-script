@@ -5,8 +5,8 @@ export default {
     vi: "Tiktok - Tải hàng loạt",
   },
   description: {
-    en: "Select and download all tiktok video (user profile, tiktok explore)",
-    vi: "Tải hàng loạt video tiktok (người dùng, tìm kiếm)",
+    en: "Select and download all tiktok video (user profile, tiktok explore).",
+    vi: "Tải hàng loạt video tiktok (trang người dùng, trang tìm kiếm), có giao diện chọn video muốn tải.",
   },
 
   whiteList: ["https://www.tiktok.com/*"],
