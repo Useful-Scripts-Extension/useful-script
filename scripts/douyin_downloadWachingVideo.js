@@ -13,7 +13,8 @@ export default {
   whiteList: ["https://www.douyin.com/*"],
 
   onClickExtension: async function () {
-    const { downloadURL } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadURL, downloadBlobUrl } =
+      UsefulScriptGlobalPageContext.Utils;
 
     const src = await runScriptInCurrentTab(async () => {
       return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
@@ -24,6 +25,6 @@ export default {
       return;
     }
 
-    downloadURL(src, "douyin_video.mp4");
+    downloadBlobUrl(src, "douyin_video.mp4");
   },
 };

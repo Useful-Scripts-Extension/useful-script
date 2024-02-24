@@ -7,8 +7,8 @@ export default {
     vi: "Tiktok - Tải video từ URL",
   },
   description: {
-    en: "Download tiktok video from url (no/have watermark)",
-    vi: "Tải video tiktok từ link (không/có watermark)",
+    en: "Download tiktok video from url (no watermark)",
+    vi: "Tải video tiktok từ link (không watermark)",
   },
 
   onClickExtension: async function () {

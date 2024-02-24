@@ -3,8 +3,8 @@ import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
-    en: "Tiktok - Download watching video (no watermark)",
-    vi: "Tiktok - Tải video đang xem (không watermark)",
+    en: "Tiktok - Download watching video",
+    vi: "Tiktok - Tải video đang xem",
   },
   description: {
     en: "Download tiktok video you are watching (no watermark)",
@@ -47,20 +47,6 @@ export default {
 };
 
 export const shared = {
-  getLinkWatchingVideoFromWeb: function () {
-    let el = document.querySelector("video")?.parentElement.parentElement,
-      keyFiber = "",
-      keyProp = "";
-    for (let k of Object.keys(el)) {
-      if (k.startsWith("__reactFiber")) keyFiber = k;
-      if (k.startsWith("__reactProps")) keyProp = k;
-    }
-    return (
-      el[keyFiber].firstEffect?.memoizedProps?.url ||
-      el[keyProp].children?.[0]?.props?.url ||
-      el[keyFiber].child?.memoizedProps?.url
-    );
-  },
   getListVideoIdInWebsite: async function () {
     return await runScriptInCurrentTab(() => {
       const { getOverlapScore } = UsefulScriptGlobalPageContext.DOM;

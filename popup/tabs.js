@@ -441,15 +441,6 @@ const recommendTab = {
       },
       onClickExtension: () => window.open("https://beecost.vn/"),
     },
-    {
-      icon: "https://lh3.googleusercontent.com/wafm5uFaPRSo1RHMbhcdEghFzTPUfYo5GosPmBhkdNuYlGz8WigoAQM-8lulzuhWQBGTbbUyRvfoyIMDypJzuAVZ=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Octotree", vi: "Octotree" },
-      description: {
-        en: "Filetree for github",
-        vi: "Cây thư mục cho github",
-      },
-      onClickExtension: () => window.open("https://www.octotree.io/"),
-    },
   ],
 };
 
