@@ -21,6 +21,10 @@ export default {
       tab.url
     );
     if (url != null)
-      window.open("https://documents-downloader.pages.dev/?documentUrl=" + url);
+      // window.open("https://documents-downloader.pages.dev/?documentUrl=" + url);
+      window.open(
+        "https://scribd.downloader.tips/" +
+          url.replace("https://www.scribd.com", "")
+      );
   },
 };
