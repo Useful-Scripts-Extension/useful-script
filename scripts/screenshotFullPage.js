@@ -29,23 +29,28 @@ export default {
       let res = await sendDevtoolCommand(tab, "Page.getLayoutMetrics", {});
       const { x, y, width, height } = res.cssContentSize;
 
-      setLoadingText("Đang tạo ảnh chụp màn hình...");
-      let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
-        format: "png",
-        quality: 100,
-        fromSurface: true,
-        captureBeyondViewport: true,
-        clip: { x: 0, y: 0, width, height, scale: 1 },
-      });
-      console.log(img);
-      await detachDebugger(tab);
+      if (confirm(`Kích thước trang: ${width} x ${height}\n Bấm OK để chụp`)) {
+        setLoadingText("Đang tạo ảnh chụp màn hình...");
+        let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
+          format: "png",
+          quality: 100,
+          fromSurface: true,
+          captureBeyondViewport: true,
+          clip: { x: 0, y: 0, width, height, scale: 1 },
+        });
+        await detachDebugger(tab);
+        console.log(img);
 
-      setLoadingText("Đang lưu ảnh...");
-      downloadURL("data:image/png;base64," + img.data, "fullpage.png");
+        setLoadingText("Đang lưu ảnh...");
+        downloadURL("data:image/png;base64," + img.data, "fullpage.png");
+      } else {
+        await detachDebugger(tab);
+      }
     } catch (e) {
       alert("Lỗi: " + e);
+    } finally {
+      closeLoading();
     }
-    closeLoading();
   },
 };
 
