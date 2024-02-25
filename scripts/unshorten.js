@@ -20,7 +20,7 @@ export default {
       async getToken() {
         let res = await fetch("https://unshorten.it/");
         let text = await res.text();
-        let token = /name='csrfmiddlewaretoken' value='(.*)'/.exec(text)?.[1];
+        let token = /name="csrfmiddlewaretoken" value="(.*)"/.exec(text)?.[1];
         return token;
       },
       async getLongUrl(shortURL) {
@@ -66,17 +66,19 @@ export default {
 
       const { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
       try {
-        setLoadingText(
-          "Đang giải mã link rút gọn...<br/>Sử dụng linkunshorten.com"
-        );
-        let long_url = await linkunshorten.getLongUrl(short_url);
-        if (!long_url || long_url == short_url) {
+        let long_url;
+        try {
+          setLoadingText(
+            "Đang giải mã link rút gọn...<br/>Sử dụng linkunshorten.com"
+          );
+          long_url = await linkunshorten.getLongUrl(short_url);
+          if (long_url == short_url) throw Error();
+        } catch (e) {
           setLoadingText(
             "Đang giải mã link rút gọn...<br/>Sử dụng unshorten.it"
           );
           long_url = await unshortenIt.getLongUrl(short_url);
         }
-
         long_url
           ? prompt("Link gốc của " + short_url, long_url)
           : alert("Không tìm thấy link gốc");
