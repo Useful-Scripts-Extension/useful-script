@@ -100,7 +100,6 @@ import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
 import viewBrowserInfo from "./viewBrowserInfo.js";
 import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
-import instantgram from "./instantgram.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
 import fb_storySaver from "./fb_storySaver.js";
@@ -288,7 +287,6 @@ const allScripts = {
     douyin_downloadWachingVideo,
     BADGES.new
   ),
-  instantgram: addBadge(instantgram, BADGES.new),
   douyin_downloadAllVideoUser: addBadge(
     douyin_downloadAllVideoUser,
     BADGES.new

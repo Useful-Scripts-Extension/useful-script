@@ -162,11 +162,10 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
-      s.insta_injectDownloadBtn,
       s.insta_getToken,
       s.insta_getUserInfo,
       createTitle("--- Download ---", "--- Tải xuống ---"),
-      s.instantgram,
+      s.insta_injectDownloadBtn,
       s.insta_storySaver,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.insta_getAllUserMedia,
