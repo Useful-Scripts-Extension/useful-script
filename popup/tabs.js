@@ -244,7 +244,7 @@ const tabs = [
     ...CATEGORY.unlock,
     scripts: [
       createTitle("--- Unlock web ---", "--- Mở khoá web ---"),
-      s.donotBlockMe,
+      s.medium_readFullArticle,
       s.envato_bypassPreview,
       s.scribd_bypassPreview,
       s.studyphim_unlimited,

@@ -112,7 +112,6 @@ import fb_toggleNewFeed from "./fb_toggleNewFeed.js";
 // import fb_storyInfo from "./fb_storyInfo.js";
 import envato_bypassPreview from "./envato_bypassPreview.js";
 import shopee_topVariation from "./shopee_topVariation.js";
-import donotBlockMe from "./donotBlockMe.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
 import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
@@ -174,6 +173,7 @@ import download_watchingVideo from "./download_watchingVideo.js";
 import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import tiktok_batchDownload from "./tiktok_batchDownload.js";
 import douyin_batchDownload from "./douyin_batchDownload.js";
+import medium_readFullArticle from "./medium_readFullArticle.js";
 
 // inject badges
 const allScripts = {
@@ -302,7 +302,6 @@ const allScripts = {
   // fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_bypassPreview: addBadge(envato_bypassPreview, BADGES.new),
   shopee_topVariation: addBadge(shopee_topVariation, BADGES.hot),
-  donotBlockMe: addBadge(donotBlockMe, BADGES.new),
   ggdrive_downloadVideo: addBadge(ggdrive_downloadVideo, BADGES.new),
   google_downloadAllYourData: addBadge(google_downloadAllYourData, BADGES.new),
   tiktok_downloadWatchingVideo: addBadge(
@@ -375,6 +374,7 @@ const allScripts = {
   tiktok_downloadVideo: addBadge(tiktok_downloadVideo, BADGES.new),
   tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.beta),
   douyin_batchDownload: addBadge(douyin_batchDownload, BADGES.beta),
+  medium_readFullArticle: addBadge(medium_readFullArticle, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
