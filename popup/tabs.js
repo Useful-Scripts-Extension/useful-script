@@ -71,7 +71,6 @@ const tabs = [
       // s.soundcloud_downloadMusic,
       s.nhaccuatui_downloader,
       s.zingmp3_downloadMusic,
-      s.zingmp3_oldLayout,
       s.freesound_downloadAudio,
       createTitle("--- Videos ---", "--- Video ---"),
       s.savevideo_me,

@@ -86,7 +86,6 @@ import youtube_nonstop from "./youtube_nonstop.js";
 import zingmp3_downloadMusic from "./zingmp3_downloadMusic.js";
 import showTheAudios from "./showTheAudios.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
-import zingmp3_oldLayout from "./zingmp3_oldLayout.js";
 import fb_getTokenBussinessLocation from "./fb_getTokenBussinessLocation.js";
 import injectScriptToWebsite from "./injectScriptToWebsite.js";
 import getLinkLuanxt from "./getLinkLuanxt.js";
@@ -272,7 +271,6 @@ const allScripts = {
   zingmp3_downloadMusic: zingmp3_downloadMusic,
   showTheAudios: showTheAudios,
   nhaccuatui_downloader: nhaccuatui_downloader,
-  zingmp3_oldLayout: zingmp3_oldLayout,
   fb_getTokenBussinessLocation: fb_getTokenBussinessLocation,
   injectScriptToWebsite: injectScriptToWebsite,
   getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.hot),
