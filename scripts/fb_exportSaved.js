@@ -8,7 +8,7 @@ export default {
   },
   description: {
     en: "Export all your saved items on facebook to json file",
-    vi: "Xuất ra file các mục đã lưu của bạn trên facebook ra file json",
+    vi: "Xuất các mục đã lưu của bạn trên facebook ra file json",
   },
 
   onClickExtension: async function () {
@@ -50,25 +50,26 @@ export default {
         let json = await getSaved(uid, fb_dtsg, cursor);
         console.log(json);
         json.data.viewer.saver_info.all_saves.edges.forEach((e) => {
-          data.push({
-            title: c(() => e.node.savable.savable_title.text),
-            type: c(() => e.node.savable.__typename),
-            image: c(() => e.node.savable.savable_image.uri),
-            url: c(() => e.node.savable.url),
-            urlPost: c(() => e.node.container_savable.savable_permalink),
-            source: {
-              type: c(
-                () => e.node.container_savable.savable_actors[0].__typename
-              ),
-              name: c(() => e.node.container_savable.savable_actors[0].name),
-              id: c(() => e.node.container_savable.savable_actors[0].id),
-              avatar: c(
-                () =>
-                  e.node.container_savable.savable_actors[0].profile_picture.uri
-              ),
-            },
-            containingLists: c(() => e.node.containing_lists.nodes),
-          });
+          data.push(e.node);
+          // data.push({
+          //   title: c(() => e.node.savable.savable_title.text),
+          //   type: c(() => e.node.savable.__typename),
+          //   image: c(() => e.node.savable.savable_image.uri),
+          //   url: c(() => e.node.savable.url),
+          //   urlPost: c(() => e.node.container_savable.savable_permalink),
+          //   source: {
+          //     type: c(
+          //       () => e.node.container_savable.savable_actors[0].__typename
+          //     ),
+          //     name: c(() => e.node.container_savable.savable_actors[0].name),
+          //     id: c(() => e.node.container_savable.savable_actors[0].id),
+          //     avatar: c(
+          //       () =>
+          //         e.node.container_savable.savable_actors[0].profile_picture.uri
+          //     ),
+          //   },
+          //   containingLists: c(() => e.node.containing_lists.nodes),
+          // });
         });
         let nextCursor = c(
           () => json.data.viewer.saver_info.all_saves.page_info.end_cursor
