@@ -42,7 +42,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s._test,
+      // s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,
@@ -243,6 +243,9 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.whellOfNames_hack,
+      s.viewSavedWifiPass,
+      s.leakCheck,
       createTitle("--- Unlock web ---", "--- Mở khoá web ---"),
       s.medium_readFullArticle,
       s.envato_bypassPreview,
