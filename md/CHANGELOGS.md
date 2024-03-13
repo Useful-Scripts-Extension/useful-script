@@ -3,6 +3,12 @@
 <details>
   <summary>v1.6 - 13/03/2024</summary>
 
+  Cập nhật quá nhiều thứ :v
+
+  Thôi thì các bạn cứ xem danh sách chức năng là được nhé.
+
+  [Tất cả Chức năng](./LIST_SCRIPTS_VI.md)
+
 </details>
 
 <details>
