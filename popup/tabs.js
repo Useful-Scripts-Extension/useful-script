@@ -62,9 +62,10 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
+      s.saveAllVideo,
+      s.getFavicon,
       s.download_watchingVideo,
       s.getLinkLuanxt,
-      s.getFavicon,
       // s.bookmark_exporter,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.showTheAudios,
@@ -162,7 +163,7 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
-      s.insta_getToken,
+      // s.insta_getToken,
       s.insta_getUserInfo,
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.insta_injectDownloadBtn,
@@ -176,6 +177,7 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
+      s.saveAllVideo,
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
@@ -194,6 +196,7 @@ const tabs = [
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
       // s.douyin_batchDownload,
+      s.saveAllVideo,
       createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
       s.doutube_downloadWatchingVideo,
       s.doutube_getAllVideoInUserProfile,

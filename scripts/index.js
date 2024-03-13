@@ -177,6 +177,7 @@ import medium_readFullArticle from "./medium_readFullArticle.js";
 import viewSavedWifiPass from "./viewSavedWifiPass.js";
 import leakCheck from "./leakCheck.js";
 import whellOfNames_hack from "./whellOfNames_hack.js";
+import saveAllVideo from "./saveAllVideo.js";
 
 // inject badges
 const allScripts = {
@@ -375,6 +376,7 @@ const allScripts = {
   viewSavedWifiPass: addBadge(viewSavedWifiPass, BADGES.new),
   leakCheck: addBadge(leakCheck, BADGES.new),
   whellOfNames_hack: addBadge(whellOfNames_hack, BADGES.new),
+  saveAllVideo: addBadge(saveAllVideo, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
