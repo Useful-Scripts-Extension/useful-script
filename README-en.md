@@ -6,9 +6,9 @@
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
-## Change logs 
+## Change logs
 
-Verion: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>1.4</del> **v1.5** (12/07/2023)
+Verion: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>v1.4</del> <del>v1.5</del> **v1.6** (13/03/2024)
 
 [Change logs](/md/CHANGELOGS.md)
 
@@ -30,7 +30,7 @@ an extension includes a lot of small extensions.
 
 ![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
-## Tutorial (Demo) 
+## Tutorial (Demo)
 
 [Watch on Youtube](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
 
