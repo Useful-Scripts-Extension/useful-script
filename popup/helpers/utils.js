@@ -27,7 +27,8 @@ export async function viewScriptSource(script) {
 export async function updateScriptClickCount(scriptId) {
   try {
     let res = await fetch(
-      "https://useful-script-statistic.onrender.com/count",
+      "https://useful-script-statistic.glitch.me/count",
+      // "https://useful-script-statistic.onrender.com/count",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
