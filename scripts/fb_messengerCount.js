@@ -10,7 +10,6 @@ export default {
     en: "Counts the number of messages sent from your Facebook Messenger account.",
     vi: "Đếm tin nhắn từ tài khoản Facebook Messenger của bạn.",
   },
-  whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onClickExtension: async () => {
     let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");

@@ -1,9 +1,16 @@
 const inputSearch = document.querySelector("#search-inp");
 const tableDiv = document.querySelector("table");
+const searchCount = document.querySelector("#searchCount");
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function main() {
   try {
-    let data = JSON.parse(localStorage.ufs_fb_msg_kount);
+    let data = JSON.parse(localStorage.ufs_fb_msg_kount) || [];
+
+    searchCount.innerHTML = data.length;
 
     tableDiv.innerHTML = `
         <tr>
@@ -18,7 +25,10 @@ function main() {
             let isGroup = c.type === "GROUP";
             let group = isGroup ? "✅" : "";
             let participants_name = c.participants
-              .map((_) => _.name)
+              .map(
+                (_) =>
+                  `<a target="_blank" href="https://fb.com/${_.id}">${_.name}</a>`
+              )
               .filter((_) => _)
               .join(", ");
             let name = isGroup
@@ -39,7 +49,7 @@ function main() {
               ${avatar}
               <a href="${link}" target="_blank">${name}</a>
             </td>
-            <td>${c.count}</td>
+            <td style="text-align: right">${numberWithCommas(c.count)}</td>
           </tr>`;
           })
           .join("")}
@@ -54,6 +64,7 @@ function main() {
 }
 
 function search(text) {
+  let count = 0;
   [...tableDiv.querySelectorAll("tr")].forEach((tr, index) => {
     if (index == 0) return; // ignore table header
 
@@ -62,8 +73,10 @@ function search(text) {
       tr.classList.add("hidden");
     } else {
       tr.classList.remove("hidden");
+      count++;
     }
   });
+  searchCount.innerHTML = count;
 }
 
 main();

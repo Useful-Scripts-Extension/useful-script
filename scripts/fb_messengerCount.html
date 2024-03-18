@@ -44,6 +44,10 @@
       text-decoration: none;
     }
 
+    table a:hover {
+      text-decoration: underline;
+    }
+
     input#search-inp {
       width: 50%;
       margin: auto;
@@ -70,6 +74,15 @@
     .avatar-list .avatar:not(:first-child) {
       margin-left: -20px;
     }
+
+    #searchCount {
+      font-weight: bold;
+    }
+
+    .center {
+      text-align: center;
+      font-size: 1.5em;
+    }
   </style>
 
 </head>
@@ -77,6 +90,7 @@
 <body>
   <h1>Useful script</h1>
   <h1>Facebook Messenger Count - Đếm tin nhắn Facebook</h1>
+  <p class="center">Tìm thấy <span id="searchCount">~</span> cuộc trò chuyện.</p>
   <input id="search-inp" type="text" placeholder="Tìm theo tên, rank, count, group...">
   <span>Gợi ý: Nhập ✅ để tìm tất cả tin nhắn group</span>
   <table></table>
