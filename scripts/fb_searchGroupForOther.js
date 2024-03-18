@@ -37,6 +37,12 @@ export default {
         }
       );
       console.log(allGroups);
+      localStorage.ufs_fb_searchGroupForOther = JSON.stringify(allGroups);
+      window.open(
+        await UsefulScriptGlobalPageContext.Extension.getURL(
+          "scripts/fb_searchGroupForOther.html"
+        )
+      );
     } catch (e) {
       alert("ERROR: " + e);
     } finally {

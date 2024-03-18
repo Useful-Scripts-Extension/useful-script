@@ -784,12 +784,14 @@ const UsefulScriptGlobalPageContext = {
             image: e.node.image.uri,
             cursor: e.cursor,
           })),
+          totalCount: items.count,
         };
       } catch (e) {
         console.log("ERROR fetch page", e);
         return {
           nextCursor: null,
           data: [],
+          totalCount: 0,
         };
       }
     },
@@ -798,7 +800,7 @@ const UsefulScriptGlobalPageContext = {
       let allPages = [];
       try {
         while (true) {
-          let { nextCursor, data } =
+          let { nextCursor, data, totalCount } =
             await UsefulScriptGlobalPageContext.Facebook.searchPageForOther(
               other_uid,
               cursor,
@@ -807,7 +809,7 @@ const UsefulScriptGlobalPageContext = {
             );
           cursor = nextCursor;
           allPages = allPages.concat(data);
-          await pageFetchedCallback?.(data, allPages);
+          await pageFetchedCallback?.(data, allPages, totalCount);
 
           if (!cursor) break;
         }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook - Xem các nhóm mà bạn bè tham gia</title>
+
+  <style>
+    body {
+      margin: auto;
+      max-width: 700px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 1.2em;
+      margin: auto;
+      margin-bottom: 100px;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+    tr.hidden {
+      display: none;
+    }
+
+    table a {
+      text-decoration: none;
+    }
+
+    table a:hover {
+      text-decoration: underline;
+    }
+
+    #searchCount {
+      font-weight: bold;
+    }
+
+    .center {
+      text-align: center;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Useful script</h1>
+  <h1>Facebook - Xem các trang mà bạn bè thích</h1>
+  <p class="center"><span id="owner"></span> đã thích <span id="searchCount">~</span> trang.</p>
+  <input id="search-inp" type="text" placeholder="Tìm kiếm...">
+  <table id="table"></table>
+  <script src="./fb_searchPageForOther_main.js"></script>
+</body>
+
+</html>

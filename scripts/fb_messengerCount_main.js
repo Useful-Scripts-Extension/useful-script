@@ -9,6 +9,7 @@ function numberWithCommas(x) {
 function main() {
   try {
     let data = JSON.parse(localStorage.ufs_fb_msg_kount) || [];
+    console.log(data);
 
     searchCount.innerHTML = data.length;
 
