@@ -59,7 +59,7 @@ const UsefulScriptGlobalPageContext = {
     },
 
     deleteElements(selector, willReRun) {
-      UsefulScriptGlobalPageContext.onElementsVisible(
+      UsefulScriptGlobalPageContext.DOM.onElementsVisible(
         selector,
         (nodes) => {
           [].forEach.call(nodes, function (node) {
@@ -73,7 +73,7 @@ const UsefulScriptGlobalPageContext = {
 
     waitForElements(selector) {
       return new Promise((resolve, reject) => {
-        UsefulScriptGlobalPageContext.onElementsVisible(
+        UsefulScriptGlobalPageContext.DOM.onElementsVisible(
           selector,
           resolve,
           false
