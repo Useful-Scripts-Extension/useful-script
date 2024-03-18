@@ -17,13 +17,20 @@ export default {
 
     let { setLoadingText, closeLoading } = showLoading("Đang chuẩn bị...");
     try {
-      let { getUidFromUrl, getYourUserId, getFbdtsg, searchAllGroupForOther } =
-        UsefulScriptGlobalPageContext.Facebook;
+      let {
+        getUidFromUrl,
+        getYourUserId,
+        getFbdtsg,
+        searchAllGroupForOther,
+        getUserInfoFromUid,
+      } = UsefulScriptGlobalPageContext.Facebook;
 
       setLoadingText("Đang lấy uid, token...");
       let other_uid = await getUidFromUrl(url);
       let uid = await getYourUserId();
       let dtsg = await getFbdtsg();
+      let info = await getUserInfoFromUid(other_uid);
+      console.log(info);
 
       setLoadingText("Đang tải danh sách group...");
       let allGroups = await searchAllGroupForOther(
@@ -38,6 +45,7 @@ export default {
       );
       console.log(allGroups);
       localStorage.ufs_fb_searchGroupForOther = JSON.stringify(allGroups);
+      localStorage.ufs_fb_searchGroupForOther_owner = JSON.stringify(info);
       window.open(
         await UsefulScriptGlobalPageContext.Extension.getURL(
           "scripts/fb_searchGroupForOther.html"

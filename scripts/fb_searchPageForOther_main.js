@@ -10,7 +10,8 @@ function numberWithCommas(x) {
 function main() {
   try {
     let data = JSON.parse(localStorage.ufs_fb_searchPageForOther) || [];
-    let owner = JSON.parse(localStorage.ufs_fb_searchPageForOther_owner) || {};
+    let owner =
+      JSON.parse(localStorage.ufs_fb_searchPageForOther_owner || "{}") || {};
     console.log(data, owner);
 
     let link = "https://fb.com/" + owner.uid;

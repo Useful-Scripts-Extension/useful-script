@@ -1,6 +1,7 @@
 const inputSearch = document.querySelector("#search-inp");
 const tableDiv = document.querySelector("table");
 const searchCount = document.querySelector("#searchCount");
+const ownerLink = document.querySelector("#owner");
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -9,8 +10,16 @@ function numberWithCommas(x) {
 function main() {
   try {
     let data = JSON.parse(localStorage.ufs_fb_searchGroupForOther) || [];
-    console.log(data);
+    let owner =
+      JSON.parse(localStorage.ufs_fb_searchGroupForOther_owner || "{}") || {};
+    console.log(data, owner);
 
+    let link = "https://fb.com/" + owner.uid;
+    ownerLink.innerHTML = `
+      <a href="${link}" target="_blank" style="display: inline-block;">
+        <img style="max-height: 80px;border-radius: 50%" src="${owner.avatar}" />
+        ${owner.name}
+      </a>`;
     searchCount.innerHTML = data.length;
 
     tableDiv.innerHTML = `
@@ -34,7 +43,9 @@ function main() {
               <br/>
               <span>${c.subTitle?.split?.("\n")?.[1] || ""}</span>
             </td>
-            <td>${numberWithCommas(c.membersCount)}</td>
+            <td style="text-align: right">${numberWithCommas(
+              c.membersCount
+            )}</td>
           </tr>`;
           })
           .join("")}
