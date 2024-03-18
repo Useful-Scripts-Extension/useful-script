@@ -27,6 +27,7 @@ function main() {
           <th>STT</th>
           <th>Ảnh</th>
           <th>Tên</th>
+          <th>Mô tả</th>
           <th>Thành viên</th>
         </tr>
         ${data
@@ -35,14 +36,17 @@ function main() {
 
             return `<tr>
             <td>${i + 1}</td>
-            <td><img src="${c.image}" style="max-height: 80px"></img></td>
+            <td><img src="${
+              c.image
+            }" style="max-height: 80px;max-width:130px"></img></td>
             <td>
               <a style="font-size: 1.1em" href="${link}" target="_blank">${
               c.title
             }</a>
-              <br/>
-              <span>${c.subTitle?.split?.("\n")?.[1] || ""}</span>
             </td>
+            <td style="max-width:150px">${
+              c.subTitle?.split?.("\n")?.[1] || ""
+            }</td>
             <td style="text-align: right">${numberWithCommas(
               c.membersCount
             )}</td>
