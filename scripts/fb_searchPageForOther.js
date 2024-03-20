@@ -3,12 +3,12 @@ import { showLoading } from "./helpers/utils.js";
 export default {
   icon: '<i class="fa-solid fa-flag fa-lg"></i>',
   name: {
-    en: "Facebook - View your friend's liked page",
+    en: "Facebook - View your friend's liked pages",
     vi: "Facebook - Xem các trang bạn bè thích",
   },
   description: {
-    en: "Know about your friends's linked page on facebook",
-    vi: "Biết bạn bè của bạn đang thích các trang nào trên facebook",
+    en: "Know about your friends's liked pages (public pages) on facebook",
+    vi: "Biết bạn bè của bạn đang thích các trang (công khai) nào trên facebook",
   },
 
   onClickExtension: async () => {

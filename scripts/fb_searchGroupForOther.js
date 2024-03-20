@@ -7,8 +7,8 @@ export default {
     vi: "Facebook - Xem các nhóm bạn bè tham gia",
   },
   description: {
-    en: "Know about your friends's joined groups on facebook",
-    vi: "Biết bạn bè của bạn đang tham gia các nhóm nào trên facebook",
+    en: "Know about your friends's joined groups (public groups) on facebook",
+    vi: "Biết bạn bè của bạn đang tham gia các nhóm (công khai) nào trên facebook",
   },
 
   onClickExtension: async () => {
