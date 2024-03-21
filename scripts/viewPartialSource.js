@@ -195,6 +195,7 @@ export default {
               x.focus();
               e.preventDefault();
             };
+            alert("Click vào phần tử muốn xem style css");
           })();
         },
       },
