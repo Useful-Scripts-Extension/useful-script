@@ -106,6 +106,15 @@ export default {
           } catch {
             console.log("no overpage ads found");
           }
+
+          try {
+            let overlay = document.querySelector(
+              "._95f5f1767857._0838fb325c04"
+            );
+            if (overlay) {
+              overlay.style.display = "none";
+            }
+          } catch (e) {}
         }, 100);
       });
     })();
