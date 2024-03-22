@@ -289,32 +289,37 @@ const UsefulScriptGlobalPageContext = {
         alert("Error: " + error);
       }
     },
-    async downloadBlobUrl(url, fileName, progressCallback) {
+    async downloadBlobUrlWithProgress(url, fileName, progressCallback) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const contentLength = response.headers.get("content-length");
+      const total = parseInt(contentLength, 10);
+      let loaded = 0;
+      const reader = response.body.getReader();
+      const chunks = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        loaded += value.byteLength;
+        progressCallback?.(loaded, total);
+        chunks.push(value);
+      }
+
+      const blob = new Blob(chunks, {
+        type: response.headers.get("content-type"),
+      });
+      UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
+    },
+    async downloadBlobUrl(url, title) {
       try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-        const contentLength = response.headers.get("content-length");
-        const total = parseInt(contentLength, 10);
-        let loaded = 0;
-        const reader = response.body.getReader();
-        const chunks = [];
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          loaded += value.byteLength;
-          progressCallback?.(loaded, total);
-          chunks.push(value);
-        }
-
-        const blob = new Blob(chunks, {
-          type: response.headers.get("content-type"),
-        });
-        UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
-      } catch (error) {
-        alert("Error: " + error);
+        let res = await fetch(url);
+        let blob = await res.blob();
+        UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, title);
+      } catch (e) {
+        alert("Error: " + e);
       }
     },
     downloadBlob(blob, filename) {

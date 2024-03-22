@@ -13,36 +13,47 @@ export default {
 
   onClickExtension: async function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy video id..");
-    try {
-      const videoIds = await shared.getListVideoIdInWebsite();
-      if (!videoIds.length) throw Error("Không tìm thấy video nào");
-      else {
-        setLoadingText(`Đang tìm link tải video ${videoIds[0]}...`);
-        const link =
-          await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
+
+    const getLinkFuncs = [
+      async () => {
+        setLoadingText("Đang tìm videoid...");
+        const videoIds = await shared.getListVideoIdInWebsite();
+        if (videoIds.length) {
+          setLoadingText(`Đang tìm link tải video ${videoIds[0]}...`);
+          return await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
             videoIds[0]
           );
-        if (link) {
-          // await UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
-          //   link,
-          //   "video.mp4",
-          //   (loaded, total) => {
-          //     let loadedMB = ~~(loaded / 1024 / 1024);
-          //     let totalMB = ~~(total / 1024 / 1024);
-          //     let percent = ((loaded / total) * 100) | 0;
-          //     setLoadingText(
-          //       `Đang tải video... (${loadedMB}/${totalMB}MB - ${percent}%)`
-          //     );
-          //   }
-          // );
-          window.open(link);
-        } else alert("Không tìm được video đang xem");
+        }
+      },
+
+      async () => {
+        setLoadingText("Đang tìm video url từ DOM...");
+        return await runScriptInCurrentTab(
+          async () =>
+            await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc()
+        );
+      },
+    ];
+
+    let link;
+    for (let func of getLinkFuncs) {
+      try {
+        link = await func();
+        if (link) break;
+      } catch (e) {
+        alert("lol");
       }
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
     }
+
+    if (!link) alert("Không tìm được link video");
+    else {
+      UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
+        link,
+        "tiktok_video.mp4"
+      );
+    }
+
+    closeLoading();
   },
 };
 
