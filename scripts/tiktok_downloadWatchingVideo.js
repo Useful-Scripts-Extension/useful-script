@@ -47,7 +47,8 @@ export default {
 
     if (!link) alert("Không tìm được link video");
     else {
-      UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
+      setLoadingText("Đang tải video...");
+      await UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
         link,
         "tiktok_video.mp4"
       );

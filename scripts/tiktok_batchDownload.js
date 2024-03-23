@@ -142,21 +142,31 @@ export default {
 
     async function getLinkVideos(videoUrls) {
       if (!videoUrls.length) return;
-      const ids = videoUrls.map((url) => url.split("/").at(-1));
-      const queue = [...ids];
+      const getId = (url) => url.split("/").at(-1);
+      const queue = [...videoUrls];
       const links = [];
       downloadBtn.disabled = true;
 
       while (queue.length) {
-        let progress = `[${ids.length - queue.length + 1}/${ids.length}]`;
+        let progress = `[${videoUrls.length - queue.length + 1}/${
+          videoUrls.length
+        }]`;
         try {
           console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
           progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
           downloadBtn.innerText = `Đang get link ${progress}...`;
-          const link =
+          let link =
             await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
-              queue[0]
+              getId(queue[0])
             );
+
+          if (!link) {
+            link =
+              await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromUrl(
+                queue[0]
+              );
+          }
+
           if (link) {
             resultTxt.hidden = false;
             resultTxt.value += link + "\n";

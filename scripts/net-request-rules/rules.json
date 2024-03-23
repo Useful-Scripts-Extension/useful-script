@@ -32,18 +32,18 @@
         {
           "header": "referer",
           "operation": "set",
-          "value": "https://www.snaptikvideo.com/"
+          "value": "https://snaptik.app"
         },
         {
           "header": "origin",
           "operation": "set",
-          "value": "https://www.snaptikvideo.com"
+          "value": "https://snaptik.app"
         }
       ]
     },
     "condition": {
       "domain": "extension://*",
-      "urlFilter": "https://api.snaptikvideo.com/st-tik/tiktok/dl",
+      "urlFilter": "https://snaptik.app/abc2.php",
       "resourceTypes": ["xmlhttprequest"]
     }
   },
@@ -141,6 +141,47 @@
       "domain": "extension://*",
       "urlFilter": "https://*.tiktok.com/*",
       "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "User-Agent",
+          "operation": "set",
+          "value": "com.ss.android.ugc.trill/2613 (Linux; U; Android 10; en_US; Pixel 4; Build/QQ3A.200805.001; Cronet/58.0.2991.0)"
+        },
+        {
+          "header": "Sec-Fetch-Dest",
+          "operation": "set",
+          "value": "document"
+        },
+        {
+          "header": "Sec-Fetch-Mode",
+          "operation": "set",
+          "value": "navigate"
+        },
+        {
+          "header": "Sec-Fetch-Site",
+          "operation": "set",
+          "value": "cross-site"
+        },
+        {
+          "header": "referer",
+          "operation": "remove"
+        },
+        {
+          "header": "origin",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://api22-normal-c-useast2a.tiktokv.com/*",
+      "resourceTypes": ["main_frame", "xmlhttprequest"]
     }
   }
 ]
