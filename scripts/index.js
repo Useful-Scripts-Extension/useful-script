@@ -178,6 +178,7 @@ import viewSavedWifiPass from "./viewSavedWifiPass.js";
 import leakCheck from "./leakCheck.js";
 import whellOfNames_hack from "./whellOfNames_hack.js";
 import saveAllVideo from "./saveAllVideo.js";
+import fb_bulkDownload from "./fb_bulkDownload.js";
 
 // inject badges
 const allScripts = {
@@ -377,6 +378,7 @@ const allScripts = {
   leakCheck: addBadge(leakCheck, BADGES.new),
   whellOfNames_hack: addBadge(whellOfNames_hack, BADGES.new),
   saveAllVideo: addBadge(saveAllVideo, BADGES.new),
+  fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.hot),
 };
 
 // alert(Object.keys(allScripts).length);
