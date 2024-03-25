@@ -11,7 +11,7 @@ export default {
     en: "Download any facebook video that you are watching (watch/story/comment/reel/chat)",
     vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch/story/comment/reel/chat/bình luận/tin nhắn)",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onClickExtension: async function () {
     let { closeLoading, setLoadingText } = showLoading(

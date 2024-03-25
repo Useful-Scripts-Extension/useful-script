@@ -11,7 +11,7 @@ export default {
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1769666783365434",
 
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
   // Source https://github.com/whoant/react-story-facebook
@@ -37,8 +37,10 @@ export default {
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
-        const fb_dtsg = await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-        const user_id = await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
+        const fb_dtsg =
+          await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
+        const user_id =
+          await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
 
         /* HTML template
         <div class="ufs-more-react-story">

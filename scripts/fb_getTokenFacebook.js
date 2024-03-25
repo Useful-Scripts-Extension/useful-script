@@ -8,7 +8,7 @@ export default {
     en: "Get facebook access token from www.facebook.com",
     vi: "Lấy facebook access token từ trang www.facebook.com",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onClick: function () {
     try {

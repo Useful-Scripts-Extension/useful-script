@@ -8,8 +8,9 @@ export default {
     en: "Hide Newfeed facebook for better focus to work",
     vi: "Ẩn Newfeed facebook để tập trung làm việc",
   },
-  infoLink: "https://www.facebook.com/groups/j2team.community/posts/1919935575005220/",
-  whiteList: ["https://www.facebook.com/*"],
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/1919935575005220/",
+  whiteList: ["https://*.facebook.com/*"],
 
   onDocumentStart: () => {
     UsefulScriptGlobalPageContext.DOM.onElementsVisible(

@@ -7,7 +7,7 @@ export default {
     en: "Get id of all user from group members facebook",
     vi: "Lấy id của tất cả user từ group facebook",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onClick: async function () {
     // Lấy tất cả id của member trong group

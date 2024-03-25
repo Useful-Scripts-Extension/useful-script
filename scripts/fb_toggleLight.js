@@ -8,7 +8,7 @@ export default {
     en: "Hide Navigator bar and complementary bar in facebook",
     vi: "Ẩn giao diện 2 bên newfeed, giúp tập trung vào newfeed facebook",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onDocumentIdle: () => {
     [

@@ -8,7 +8,7 @@ export default {
     en: "Get id of group in facebook website",
     vi: "Lấy id của group trong trang facebook hiện tại",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onClick: async function () {
     // Lấy group id - trường hợp url của group hiển thị tên chứ ko hiển thị id. Ví dụ: https://www.facebook.com/groups/j2team.community.girls

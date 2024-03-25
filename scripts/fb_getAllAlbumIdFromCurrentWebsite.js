@@ -7,7 +7,7 @@ export default {
     en: "Get all id of album in facebook website",
     vi: "Lấy tất cả album id có trong trang facebook",
   },
-  whiteList: ["https://www.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   onClick: function () {
     // Lấy tất cả album id có trong trang web - Khi đang xem 1 danh sách album của user/group/page
