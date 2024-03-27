@@ -21,36 +21,28 @@ export default {
     let options = [
       {
         name: "yt1s.com",
-        func: (url) => {
-          window.open("https://yt1s.com/vi/youtube-to-mp4?q=" + url);
-        },
+        func: (url) => "https://yt1s.com/vi/youtube-to-mp4?q=" + url,
+      },
+      {
+        name: "yt5s.com",
+        func: (url) => url.replace("youtube", "youtube5s"),
       },
       {
         name: "10downloader.com",
-        func: (url) => {
-          window.open("https://10downloader.com/download?v=" + url);
-        },
-      },
-      {
-        name: "ymp4.com",
-        func: (url) => {
-          window.open("https://ymp4.download/en50/?url=" + url);
-        },
+        func: (url) => "https://10downloader.com/download?v=" + url,
       },
       {
         name: "9xbuddy.com",
-        func: (url) => {
-          window.open("https://9xbuddy.com/process?url=" + url);
-        },
+        func: (url) => "https://9xbuddy.com/process?url=" + url,
       },
       {
         name: "getlinks.vip",
-        url: "https://getlinks.vip/vi/youtube/",
-        func: (url) => {
-          window.open(
-            "https://getlinks.vip/vi/youtube/" + getIdFromYoutubeURL(url)
-          );
-        },
+        func: (url) =>
+          "https://getlinks.vip/vi/youtube/" + getIdFromYoutubeURL(url),
+      },
+      {
+        name: "ymp4.com",
+        func: (url) => "https://ymp4.download/en50/?url=" + url,
       },
     ];
 
@@ -63,7 +55,14 @@ export default {
 
     if (choose != null && choose >= 0 && choose < options.length) {
       let url = prompt("Nhập link youtube:", location.href);
-      url && options[choose].func(url);
+      if (url) {
+        url = options[choose].func(url);
+        let myWin = window.open(
+          url,
+          "Download Youtube Video",
+          "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800, height=900"
+        );
+      }
     }
   },
 };
