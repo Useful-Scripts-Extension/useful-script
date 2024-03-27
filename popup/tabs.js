@@ -62,10 +62,10 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
-      s.saveAllVideo,
       s.getFavicon,
       s.download_watchingVideo,
       s.getLinkLuanxt,
+      s.saveAllVideo,
       // s.bookmark_exporter,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.showTheAudios,
@@ -177,7 +177,6 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
-      s.saveAllVideo,
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
