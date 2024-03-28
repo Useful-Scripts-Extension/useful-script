@@ -14,7 +14,8 @@ export default {
     if (c == "") {
       alert("There is No cookie here");
     } else {
-      prompt("Cookies found:", decodeURI(c));
+      c = decodeURI(c);
+      prompt(`Cookies found:\n\n${c}\n\nYou can copy cookie here:`, c);
     }
   },
 };
