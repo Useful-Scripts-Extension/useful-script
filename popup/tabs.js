@@ -42,7 +42,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
+      s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,
@@ -94,6 +94,7 @@ const tabs = [
     scripts: [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.ggdrive_generateDirectLink,
+      s.ggdrive_downloadPdf,
       s.ggdrive_downloadVideo,
       s.google_downloadAllYourData,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
@@ -117,6 +118,7 @@ const tabs = [
       s.fb_getAvatarFromUid,
       // s.fb_storyInfo,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      s.fb_bulkDownload,
       s.fb_downloadAlbumMedia,
       s.fb_downloadWallMediaFromPosts,
       s.fb_getAllAlbumInformation,

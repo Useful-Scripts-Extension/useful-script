@@ -181,6 +181,7 @@ import fb_bulkDownload from "./fb_bulkDownload.js";
 import fireship_vip from "./fireship_vip.js";
 import vuiz_createLogo from "./vuiz_createLogo.js";
 import vuiz_getLink from "./vuiz_getLink.js";
+import ggdrive_downloadPdf from "./ggdrive_downloadPdf.js";
 
 // inject badges
 const allScripts = {
@@ -383,6 +384,7 @@ const allScripts = {
   fireship_vip: addBadge(fireship_vip, BADGES.new),
   vuiz_createLogo: addBadge(vuiz_createLogo, BADGES.new),
   vuiz_getLink: addBadge(vuiz_getLink, BADGES.new),
+  ggdrive_downloadPdf: addBadge(ggdrive_downloadPdf, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

@@ -83,7 +83,7 @@ const UsefulScriptGlobalPageContext = {
 
     // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
     // https://stackoverflow.com/a/61511955/11898496
-    onElementsVisible: async (selector, callback, willReRun) => {
+    onElementsVisible: (selector, callback, willReRun) => {
       let nodes = document.querySelectorAll(selector);
       if (nodes?.length) {
         callback(nodes);
@@ -133,6 +133,37 @@ const UsefulScriptGlobalPageContext = {
       css.setAttribute("type", "text/css");
       css.setAttribute("href", filePath);
       document.head.appendChild(css);
+    },
+
+    getTrustedPolicy() {
+      let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
+      if (!policy) {
+        policy = window.trustedTypes.createPolicy("ufsTrustedTypesPolicy", {
+          createHTML: (input) => input,
+          createScriptURL: (input) => input,
+        });
+      }
+      return policy;
+    },
+
+    createTrustedHtml(html) {
+      let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
+      return policy.createHTML(html);
+    },
+
+    injectScriptSrc(src, callback) {
+      let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
+      let jsSrc = policy.createScriptURL(src);
+
+      let script = document.createElement("script");
+      script.onload = function () {
+        callback?.(true);
+      };
+      script.onerror = function (e) {
+        callback?.(false, e);
+      };
+      script.src = jsSrc; // Assigning the TrustedScriptURL to src
+      document.head.appendChild(script);
     },
 
     isElementInViewport(el) {
