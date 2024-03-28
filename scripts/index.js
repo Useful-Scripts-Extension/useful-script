@@ -125,7 +125,6 @@ import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
-import freesound_downloadAudio from "./freesound_downloadAudio.js";
 // import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
@@ -180,6 +179,8 @@ import whellOfNames_hack from "./whellOfNames_hack.js";
 import saveAllVideo from "./saveAllVideo.js";
 import fb_bulkDownload from "./fb_bulkDownload.js";
 import fireship_vip from "./fireship_vip.js";
+import vuiz_createLogo from "./vuiz_createLogo.js";
+import vuiz_getLink from "./vuiz_getLink.js";
 
 // inject badges
 const allScripts = {
@@ -288,7 +289,7 @@ const allScripts = {
   screenshotFullPage: screenshotFullPage,
   visualEvent: visualEvent,
   fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
-  viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
+  viewBrowserInfo: viewBrowserInfo,
   douyin_downloadWachingVideo: addBadge(
     douyin_downloadWachingVideo,
     BADGES.new
@@ -324,7 +325,6 @@ const allScripts = {
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: search_hopamchuan,
   ggdrive_generateDirectLink: ggdrive_generateDirectLink,
-  freesound_downloadAudio: freesound_downloadAudio,
   // soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: fastDoc,
   smartPDF: smartPDF,
@@ -381,6 +381,8 @@ const allScripts = {
   saveAllVideo: addBadge(saveAllVideo, BADGES.new),
   fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.hot),
   fireship_vip: addBadge(fireship_vip, BADGES.new),
+  vuiz_createLogo: addBadge(vuiz_createLogo, BADGES.new),
+  vuiz_getLink: addBadge(vuiz_getLink, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
