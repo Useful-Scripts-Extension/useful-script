@@ -100,7 +100,7 @@ export default {
               pdf.addImage(imgData, "JPEG", 0, 0);
               if (i < imgs.length - 1) pdf.addPage([img.width, img.height]);
             }
-            infiContainer.remove();
+            // infiContainer.remove();
             pdf.save("download.pdf");
           }
         }, 500);
