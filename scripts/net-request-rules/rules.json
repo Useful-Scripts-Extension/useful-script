@@ -115,7 +115,7 @@
     },
     "condition": {
       "domain": "extension://*",
-      "urlFilter": "https://doutube.*/*",
+      "urlFilter": "https://||doutube.*/*",
       "resourceTypes": ["xmlhttprequest"]
     }
   },

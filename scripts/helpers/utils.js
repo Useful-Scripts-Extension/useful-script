@@ -88,6 +88,10 @@ export const getCurrentTabId = async () => {
   return (await getCurrentTab())?.id;
 };
 
+export const getCurrentTabUrl = async () => {
+  return (await getCurrentTab())?.url;
+};
+
 // https://stackoverflow.com/a/25226679/11898496
 export function focusToTab(tab) {
   return chrome.tabs.update(tab.id, { active: true });

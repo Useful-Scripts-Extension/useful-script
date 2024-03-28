@@ -14,8 +14,6 @@ export default {
   infoLink: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/",
 
   onClickExtension: async function () {
-    // https://luanxt.com/get-link-mp3-320-lossless-vip-zing/
-
     const apiBaseURL = "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/";
 
     // let xtSalt = "(k[1>>8]>>>k%2=0).fromCharCode";
@@ -39,7 +37,7 @@ export default {
     }
 
     async function getLinkLuanxt(link, token) {
-      let sig = "667c818f"; // xtSign(`${link}${token}`);
+      let sig = xtSign(`${link}${token}`);
 
       let res = await fetch(`${apiBaseURL}api/get-link`, {
         method: "POST",
@@ -217,9 +215,5 @@ function backup() {
   http://easyload50.com/mini/index.php
   http://rapidgrab.pl/
   http://preemlinks.com/generator.php
-  http://vnfri.tk/index.php
-  http://yoru.cu.cc/ | ForeverAlone
-  http://htlove.org/mod-320kb
-  http://mp3.lisvn.net/
  */
 }

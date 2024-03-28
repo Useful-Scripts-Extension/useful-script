@@ -1,5 +1,7 @@
 // javascript:window.open("https://freedium.cfd/"+encodeURIComponent(window.location))
 
+import { getCurrentTabUrl } from "./helpers/utils.js";
+
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=freedium.cfd",
   name: {
@@ -11,9 +13,16 @@ export default {
     vi: "Đọc bài viết medium full không cần đăng nhập",
   },
 
-  whiteList: ["https://medium.com/*"],
+  // whiteList: ["https://medium.com/*"],
 
-  onClick: () => {
-    window.open("https://freedium.cfd/" + encodeURIComponent(window.location));
+  onClickExtension: async () => {
+    let url = await getCurrentTabUrl();
+    url = prompt("Nhập link medium:", url);
+
+    if (url) {
+      window.open(
+        "https://freedium.cfd/" + encodeURIComponent(window.location)
+      );
+    }
   },
 };

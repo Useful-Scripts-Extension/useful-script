@@ -1,3 +1,5 @@
+import { getCurrentTabUrl } from "./helpers/utils.js";
+
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain_url=https://tailieu.vn/tim-kiem/lu%E1%BA%ADt.html",
   name: {
@@ -11,9 +13,10 @@ export default {
 
   whiteList: ["https://tailieu.vn/*"],
 
-  onClick: () => {
+  onClickExtension: async () => {
     // change location from tailieu.vn to tailieu.download
-    let url = new URL(window.location.href);
+    let url = await getCurrentTabUrl();
+    url = new URL(url);
     url.hostname = "tailieu.download";
     window.open(url.href, "_blank");
   },
