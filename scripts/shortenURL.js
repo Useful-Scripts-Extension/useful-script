@@ -225,7 +225,7 @@ export default {
 };
 
 function backup() {
-  let div = `<div class="container">
+  let div = /*html*/ `<div class="container">
   <div class="inner-container">
     <button id="close-btn">Close</button>
 

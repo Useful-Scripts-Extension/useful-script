@@ -361,7 +361,7 @@ javascript: if (window.location.hostname.includes("reddit")) {
       window.open(url, "_self");
     }
     function infoPop() {
-      var a = `<div style:padding:10px;><img src=http://reddit.com/favicon.ico /><br />
+      var a = /*html*/ `<div style:padding:10px;><img src=http://reddit.com/favicon.ico /><br />
     <h2>Welcome to the Reddit Toolkit!</h2>
     <ul>
     <li>Upvote all will up vote all all of the posts on a subreddit or even of an individual user. This will work even for subs that you are not subscribed to!<br />
@@ -369,7 +369,7 @@ javascript: if (window.location.hostname.includes("reddit")) {
     <li>Downvote all will down vote all all of the posts on a subreddit or even of an individual user. This will work even for subs that you are not subscribed to!<br />
     <i style=color:red>CAVEAT! - See above!</i></li>
     <li>Old/New Reddit toggle. This will toggle between old and new Reddit. Most of these tools ONLY work in Old Reddit.</li>
-    <li>Stealth Mode. This will hide much of the graphics and headers/footers that give away the fact that you are surfing Reddit. Often used by people who are at work.</li> 
+    <li>Stealth Mode. This will hide much of the graphics and headers/footers that give away the fact that you are surfing Reddit. Often used by people who are at work.</li>
     <li>Coder Mode. Looks like you have some kind of coding interface open. Another way of reading Reddit when you are supposed to be doing something else!</li>
     <li>OpenInNewTab. Clicking this will not make any visible changes on the page, however, all of the links you click on will open in a new tab!</li>
     <li>GetRedditVideo - This will open an interface that will let you download a Reddit hosted video.</li>

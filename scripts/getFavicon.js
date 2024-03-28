@@ -46,7 +46,7 @@ export default {
 
     let allFaviconsStr = allFavicons
       .map((_) => {
-        return `<div class="item">
+        return /*html*/ `<div class="item">
           <a href="${_}" target="_blank">
             <img src="${_}" />
           </a>
@@ -66,7 +66,7 @@ export default {
     let escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
       createHTML: (to_escape) => to_escape,
     });
-    win.document.body.innerHTML = escapeHTMLPolicy.createHTML(`<div>
+    win.document.body.innerHTML = escapeHTMLPolicy.createHTML(/*html*/ `<div>
       <style>
         .container {
           text-align: center;

@@ -15,7 +15,7 @@ export default {
     en: "Download google drive video that dont have download button",
     vi: "Tải video không có nút download trên google drive",
   },
-    
+
   onClickExtension: async function () {
     let { closeLoading } = showLoading("Đang tìm link video...");
     try {
@@ -39,7 +39,7 @@ export default {
         ${res
           .map((_) => {
             let name = _.name.replace(/ /g, "_");
-            return `<div>
+            return /*html*/ `<div>
               <h1><a href="${_.url}" target="_blank">${_.quality}</a></h1>
               <video src="${_.url}" controls style="max-width:95%" />
             </div>`;

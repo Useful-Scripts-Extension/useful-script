@@ -10,8 +10,18 @@ export default {
   },
 
   onClick: function () {
+    function getSrc(audio) {
+      let src = audio.getAttribute("src");
+      if (src) return src;
+      else {
+        let source = audio.querySelector("source");
+        if (source) return source.getAttribute("src");
+        else return null;
+      }
+    }
+
     let audios = Array.from(document.querySelectorAll("audio") || []);
-    audios = audios?.filter((_) => !!_.src);
+    audios = audios?.filter((_) => !!getSrc(_));
 
     if (!audios?.length) {
       alert(
@@ -19,7 +29,7 @@ export default {
       );
     } else {
       let div = document.createElement("div");
-      div.innerHTML = `
+      div.innerHTML = /*html*/ `
       <div style="position:fixed;bottom:0;left:0;bottom:0;background:#000d;padding:10px;z-index:999999999;">
         <button onclick="this.parentElement.remove()" style="position:absolute;top:-20px;right:-20px;padding:5px 10px;background:red;cursor:pointer;color:white;">
           Close
@@ -28,8 +38,9 @@ export default {
         <div style="overflow:auto;max-height:90vh;">
        ${audios
          .map((audio) => {
-           return `<audio controls src="${audio.src}"></audio><br/>
-          <a href="${audio.src}" target="_blank" style="color:#ddd">Open in new tab</a>`;
+           let src = getSrc(audio);
+           return `<audio controls src="${src}"></audio><br/>
+           <a href="${src}" target="_blank" style="color:#ddd">Open in new tab</a>`;
          })
          .join("<br/>")}
         </div>

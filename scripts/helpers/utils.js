@@ -394,7 +394,7 @@ export function popupCenter({ url, title, w, h }) {
 }
 
 export function showLoading(text = "") {
-  let html = `
+  let html = /*html*/ `
     <div class="loading-container">
         <div>
             <div class="loader"></div><br/>
@@ -421,7 +421,7 @@ export function showLoading(text = "") {
 }
 
 export function showPopup(title = "", innerHTML = "") {
-  let html = `<div class="popup-container">
+  let html = /*html*/ `<div class="popup-container">
     <div class="popup-inner-container">
         <button class="close-btn">X</button>
         <h2 style="text-align: center; margin-bottom:10px">${title}</h2>

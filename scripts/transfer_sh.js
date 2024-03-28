@@ -63,8 +63,8 @@ export default {
     // <a href="https://transfer.sh/" target="_blank">Mở transfer.sh trong tab mới</a>
 
     (async () => {
-      let html = `<div class="transfer-sh-container">
-      
+      let html = /*html*/ `<div class="transfer-sh-container">
+
             <div class="inner-container">
                 <button id="close-btn">X</button>
                 <h1><a href="https://transfer.sh/" target="_blank">Transfer.sh</a></h1>
@@ -75,7 +75,7 @@ export default {
                 <progress id="upload-progress" value="0" max="100"> </progress>
 
                 <div class="result"></div>
-                
+
             </div>
 
             <style>
@@ -183,7 +183,7 @@ export default {
           let downloadZipUrl = url + ".zip";
           let downloadTarGzUrl = url + ".tar.gz";
 
-          resultDiv.innerHTML = `<div style="text-align:left">
+          resultDiv.innerHTML = /*html*/ `<div style="text-align:left">
             <span>URL:</span> <input value="${url}" /><br/>
             <span>Delete token:</span> <input value="${deletionToken}" /><br/>
             <span>Download .zip</span> <input value="${downloadZipUrl}" /><br/>
