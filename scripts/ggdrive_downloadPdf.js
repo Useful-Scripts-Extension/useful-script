@@ -1,5 +1,19 @@
 export default {
-  icon: "https://drive.google.com/favicon.ico",
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.document
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.spreadsheet
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.presentationml.presentation
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.jgraph.mxfile
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.jam
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/octet-stream
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/pdf
+  // https://drive-thirdparty.googleusercontent.com/32/type/application/epub+zip
+  // https://drive-thirdparty.googleusercontent.com/32/type/video/mp4
+  // https://drive-thirdparty.googleusercontent.com/32/type/image/png
+  // https://drive-thirdparty.googleusercontent.com/32/type/audio/mpeg
+  // https://drive-thirdparty.googleusercontent.com/32/type/text/markdown
+  icon: "https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_3_pdf_x32.png",
   name: {
     en: "GG Drive - Download PDF",
     vi: "GG Drive - Tải PDF",
@@ -33,33 +47,59 @@ export default {
           document.querySelectorAll(".ndfHFb-c4YZDc-cYSp0e-DARUcf")
         );
 
-        if (pageContainers.length === 0) {
+        let pageCount = pageContainers.length;
+        if (pageCount === 0) {
           alert("Pdf page not found");
           return;
         }
 
-        // let infiContainer = document.createElement("div");
-        // infiContainer.innerHTML = UsefulScriptGlobalPageContext.DOM
-        //   .createTrustedHtml(`
-        // <div style="${[
-        //   "position: fixed",
-        //   "left: 10px",
-        //   "top: 10px",
-        //   "color: white",
-        //   "background: #0007",
-        //   "padding: 10px",
-        //   "font-size: 20px",
-        // ].join(";")}">
-        //   PDF: ${pageContainers.length} trang
-        // </div>`);
-        // let infoDiv = infiContainer.querySelector("div");
-        // document.body.append(infiContainer);
+        let delay = prompt(
+          `Tìm được ${pageCount} trang pdf\n\n` +
+            "Sẽ bắt đầu quá trình scoll để tải các trang\n" +
+            "Scroll trang chậm sẽ hạn chế lỗi không tải được trang pdf\n\n" +
+            "Vui lòng nhập độ trễ chuyển trang (ms) (>0):\n",
+          50
+        );
 
-        for (let i = 0; i < pageContainers.length; i++) {
+        if (!delay) return;
+
+        let id = "ufs_ggdrive_downloadPdf";
+        let info = document.querySelector("#" + id);
+
+        if (!info) {
+          info = document.createElement("div");
+          info.id = id;
+          info.style = [
+            "position: fixed",
+            "left: 50%",
+            "top: 50%",
+            "transform: translate(-50%, -50%)",
+            "color: white",
+            "background: #000d",
+            "border-radius: 5px",
+            "padding: 10px",
+            "font-size: 20px",
+            "z-index: 1000",
+          ].join(";");
+          info.innerText = "ABC";
+          document.body.appendChild(info);
+        }
+
+        let startTime = Date.now();
+        function formatTime(ms) {
+          return new Date(ms).toISOString().slice(11, 19);
+        }
+        function getTime() {
+          return formatTime(Date.now() - startTime);
+        }
+
+        for (let i = 0; i < pageCount; i++) {
           let page = pageContainers[i];
           page.scrollIntoView();
-          console.log("Đang scroll PDF: trang " + i + "...");
-          await sleep(100);
+          info.innerText =
+            `Đang scroll PDF:` +
+            `trang ${i + 1}/${pageCount}... (${getTime()}s)`;
+          await sleep(delay);
         }
 
         let canvasElement = document.createElement("canvas");
@@ -70,12 +110,13 @@ export default {
             document.querySelectorAll("img[src^='blob:']")
           ).filter((_) => _.complete);
 
-          console.log(
-            `Đang đợi các trang load xong: ${imgs.length}/${pageContainers.length}`
-          );
+          info.innerText =
+            `Đang đợi các trang load xong: ` +
+            `${imgs.length}/${pageCount}` +
+            `(${getTime()}s)`;
 
           if (imgs.length === pageContainers.length) {
-            console.log("Đang tạo PDF...");
+            info.innerText = "Đang tạo PDF...";
             clearInterval(checkImagesLoadedInterval);
 
             let pdf;
@@ -100,10 +141,10 @@ export default {
               pdf.addImage(imgData, "JPEG", 0, 0);
               if (i < imgs.length - 1) pdf.addPage([img.width, img.height]);
             }
-            // infiContainer.remove();
-            pdf.save("download.pdf");
+            info.remove();
+            pdf.save((document.title || "download") + ".pdf");
           }
-        }, 500);
+        }, 1000);
       }
     );
   },

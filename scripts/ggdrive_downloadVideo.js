@@ -6,7 +6,7 @@ import {
 } from "./helpers/utils.js";
 
 export default {
-  icon: "https://drive.google.com/favicon.ico",
+  icon: "https://drive-thirdparty.googleusercontent.com/32/type/video/mp4",
   name: {
     en: "GG Drive - Download video",
     vi: "GG Drive - Tải video",

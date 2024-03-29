@@ -1,7 +1,7 @@
 import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
-  icon: "https://drive.google.com/favicon.ico",
+  icon: "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.presentationml.presentation",
   name: {
     en: "GG Drive - Download PowerPoint (Slides/Presentation)",
     vi: "GG Drive - Tải PowerPoint (Slides)",
