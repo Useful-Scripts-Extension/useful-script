@@ -15,6 +15,8 @@ export default {
     en: "Download google drive video that dont have download button",
     vi: "Tải video không có nút download trên google drive",
   },
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
 
   onClickExtension: async function () {
     let { closeLoading } = showLoading("Đang tìm link video...");

@@ -9,7 +9,7 @@ export default {
     vi: "Cho phép sao chép trong mọi website",
   },
 
-  onClick: function () {
+  onClickContentScript: function () {
     // https://chrome.google.com/webstore/detail/simple-allow-copy/aefehdhdciieocakfobpaaolhipkcpgc
 
     const unlocker = (() => {
@@ -47,10 +47,10 @@ export default {
       }
       const logger = {
         log(...args) {
-          // return console.log(...args);
+          // return console.log(...args)
         },
         error(...args) {
-          // return console.error(...args);
+          // return console.error(...args)
         },
       };
       const JS_ELEM_ID = "allow-copy_script";
@@ -64,7 +64,7 @@ export default {
             doc.documentElement.append(script);
           }
         } catch (error) {
-          logger.error("[simple allow copy] cannot inject agent", error, wnd);
+          logger.error("[simple allow copy] cannot inject agent", error);
         }
       };
       const enableAgent = (wnd = window.top) => {

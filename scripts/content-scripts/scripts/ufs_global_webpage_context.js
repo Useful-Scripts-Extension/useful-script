@@ -151,19 +151,27 @@ const UsefulScriptGlobalPageContext = {
       return policy.createHTML(html);
     },
 
-    injectScriptSrc(src, callback) {
+    injectScriptSrc(srcs, callback) {
       let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
-      let jsSrc = policy.createScriptURL(src);
 
-      let script = document.createElement("script");
-      script.onload = function () {
-        callback?.(true);
-      };
-      script.onerror = function (e) {
-        callback?.(false, e);
-      };
-      script.src = jsSrc; // Assigning the TrustedScriptURL to src
-      document.head.appendChild(script);
+      let listSrcs = srcs;
+      if (!Array.isArray(listSrcs)) {
+        listSrcs = [listSrcs];
+      }
+
+      for (let src of listSrcs) {
+        let jsSrc = policy.createScriptURL(src);
+
+        let script = document.createElement("script");
+        script.onload = function () {
+          callback?.(true);
+        };
+        script.onerror = function (e) {
+          callback?.(false, e);
+        };
+        script.src = jsSrc; // Assigning the TrustedScriptURL to src
+        document.head.appendChild(script);
+      }
     },
 
     isElementInViewport(el) {

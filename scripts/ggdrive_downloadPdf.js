@@ -9,7 +9,7 @@ export default {
     vi: "Tải file PDF không có nút download trên google drive",
   },
 
-  whiteList: ["https://drive.google.com/file/*"],
+  whiteList: ["https://drive.google.com/file/d/*"],
 
   onClick: () => {
     UsefulScriptGlobalPageContext.DOM.injectScriptSrc(

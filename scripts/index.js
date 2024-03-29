@@ -182,6 +182,7 @@ import fireship_vip from "./fireship_vip.js";
 import vuiz_createLogo from "./vuiz_createLogo.js";
 import vuiz_getLink from "./vuiz_getLink.js";
 import ggdrive_downloadPdf from "./ggdrive_downloadPdf.js";
+import ggdrive_downloadPresentation from "./ggdrive_downloadPresentation.js";
 
 // inject badges
 const allScripts = {
@@ -385,6 +386,10 @@ const allScripts = {
   vuiz_createLogo: addBadge(vuiz_createLogo, BADGES.new),
   vuiz_getLink: addBadge(vuiz_getLink, BADGES.new),
   ggdrive_downloadPdf: addBadge(ggdrive_downloadPdf, BADGES.new),
+  ggdrive_downloadPresentation: addBadge(
+    ggdrive_downloadPresentation,
+    BADGES.new
+  ),
 };
 
 // alert(Object.keys(allScripts).length);

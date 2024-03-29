@@ -19,9 +19,9 @@ export default {
         url,
         (success, error) => {
           if (success) {
-            alert("Inject SUCCESS: " + url);
+            alert("Inject SUCCESS.\n\n" + url);
           } else {
-            alert("Inject FAILED. " + error);
+            alert("Inject FAILED.\n\n" + JSON.stringify(error));
           }
         }
       );

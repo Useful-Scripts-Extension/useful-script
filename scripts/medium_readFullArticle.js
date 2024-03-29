@@ -20,9 +20,7 @@ export default {
     url = prompt("Nhập link medium:", url);
 
     if (url) {
-      window.open(
-        "https://freedium.cfd/" + encodeURIComponent(window.location)
-      );
+      window.open("https://freedium.cfd/" + url);
     }
   },
 };

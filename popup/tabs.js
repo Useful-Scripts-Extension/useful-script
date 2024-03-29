@@ -95,6 +95,7 @@ const tabs = [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.ggdrive_generateDirectLink,
       s.ggdrive_downloadPdf,
+      s.ggdrive_downloadPresentation,
       s.ggdrive_downloadVideo,
       s.google_downloadAllYourData,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
