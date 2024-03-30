@@ -164,6 +164,51 @@ export default {
       "https://unpkg.com/vue@2.6.10/dist/vue.js"
     );
 
+    async function downloadBlobUrlWithProgressMultiChunk(
+      url,
+      progressCallback,
+      chunkSize = 65536
+    ) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const contentLength = response.headers.get("content-length");
+      const total = parseInt(contentLength, 10);
+      let loaded = 0;
+      const startTime = Date.now();
+
+      const chunks = [];
+      const numChunks = Math.ceil(total / chunkSize);
+      const promises = [];
+
+      for (let i = 0; i < numChunks; i++) {
+        const start = i * chunkSize;
+        const end = Math.min(start + chunkSize - 1, total - 1);
+        promises.push(
+          fetch(url + `&range=${start}-${end}`).then((res) => res.blob())
+        );
+      }
+
+      await Promise.all(promises)
+        .then((downloadedChunks) => {
+          chunks.push(...downloadedChunks);
+          loaded = total;
+          progressCallback?.({
+            loaded,
+            total,
+            speed: loaded / ((Date.now() - startTime + 1) / 1000),
+          });
+        })
+        .catch((error) => {
+          console.error("Download error:", error);
+        });
+
+      return new Blob(chunks, {
+        type: response.headers.get("content-type"),
+      });
+    }
+
     const xhrDownloadUint8Array = async (
       { url, contentLength },
       progressCb
@@ -323,6 +368,25 @@ export default {
               this.audio.total = (e.total / 1024 / 1024).toFixed(2);
               this.audio.speed = (e.speed / 1024).toFixed(2);
             });
+
+            // const vPromise = downloadBlobUrlWithProgressMultiChunk(
+            //   videoObj.url,
+            //   ({ loaded, total, speed }) => {
+            //     this.video.progress = (loaded / total) * 100;
+            //     this.video.loaded = (loaded / 1024 / 1024).toFixed(2);
+            //     this.video.total = (total / 1024 / 1024).toFixed(2);
+            //     this.video.speed = (speed / 1024).toFixed(2);
+            //   }
+            // );
+            // const aPromise = downloadBlobUrlWithProgressMultiChunk(
+            //   audioObj.url,
+            //   ({ loaded, total, speed }) => {
+            //     this.audio.progress = (loaded / total) * 100;
+            //     this.audio.loaded = (loaded / 1024 / 1024).toFixed(2);
+            //     this.audio.total = (total / 1024 / 1024).toFixed(2);
+            //     this.audio.speed = (speed / 1024).toFixed(2);
+            //   }
+            // );
             const [varr, aarr] = await Promise.all([vPromise, aPromise]);
             this.merging = true;
             win.onunload = () => {

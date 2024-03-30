@@ -358,7 +358,7 @@ const UsefulScriptGlobalPageContext = {
       }
     },
     async downloadBlobUrlWithProgress(url, progressCallback) {
-      const response = await fetch(url);
+      const response = await fetch(url, {});
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -368,11 +368,17 @@ const UsefulScriptGlobalPageContext = {
       const reader = response.body.getReader();
       const chunks = [];
 
+      const startTime = Date.now();
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         loaded += value.byteLength;
-        progressCallback?.(loaded, total);
+        const ds = (Date.now() - startTime + 1) / 1000;
+        progressCallback?.({
+          loaded,
+          total,
+          speed: loaded / ds,
+        });
         chunks.push(value);
       }
 
@@ -381,7 +387,6 @@ const UsefulScriptGlobalPageContext = {
       });
 
       return blob;
-      UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
     },
     async downloadBlobUrl(url, title) {
       try {
