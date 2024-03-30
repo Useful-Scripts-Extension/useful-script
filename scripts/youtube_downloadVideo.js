@@ -1,8 +1,8 @@
 export default {
   icon: `https://www.youtube.com/s/desktop/ff71ea81/img/favicon_48x48.png`,
   name: {
-    en: "Download youtube video",
-    vi: "Tải video youtube",
+    en: "Download youtube video/audio",
+    vi: "Tải video/audio youtube",
   },
   description: {
     en: "Bypass age restriction, without login",
@@ -26,6 +26,10 @@ export default {
       {
         name: "yt5s.com",
         func: (url) => url.replace("youtube", "youtube5s"),
+      },
+      {
+        name: "tubemp3.to",
+        func: (url) => "https://tubemp3.to/" + url,
       },
       {
         name: "10downloader.com",
