@@ -90,6 +90,7 @@ export default {
         );
         if (progressive) {
           downloadBtn.textContent = "Download";
+          downloadBtn.title = songTitle;
           downloadBtn.onclick = async (e) => {
             const res = await fetch(progressive.url + `?client_id=${clientId}`);
             const { url } = await res.json();
