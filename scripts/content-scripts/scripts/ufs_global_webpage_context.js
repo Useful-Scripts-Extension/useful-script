@@ -357,7 +357,7 @@ const UsefulScriptGlobalPageContext = {
         alert("Error: " + error);
       }
     },
-    async downloadBlobUrlWithProgress(url, fileName, progressCallback) {
+    async downloadBlobUrlWithProgress(url, progressCallback) {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -379,6 +379,8 @@ const UsefulScriptGlobalPageContext = {
       const blob = new Blob(chunks, {
         type: response.headers.get("content-type"),
       });
+
+      return blob;
       UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
     },
     async downloadBlobUrl(url, title) {
