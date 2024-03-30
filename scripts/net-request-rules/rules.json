@@ -180,8 +180,33 @@
       ]
     },
     "condition": {
+      "domain": "extension://*",
       "urlFilter": "*://api22-normal-c-useast2a.tiktokv.com/*",
       "resourceTypes": ["main_frame", "xmlhttprequest"]
+    }
+  },
+  {
+    "id": 8,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "referer",
+          "operation": "set",
+          "value": "https://savevideo.me/en/"
+        },
+        {
+          "header": "origin",
+          "operation": "set",
+          "value": "https://savevideo.me"
+        }
+      ]
+    },
+    "condition": {
+      "domain": "extension://*",
+      "urlFilter": "https://savevideo.me/*",
+      "resourceTypes": ["xmlhttprequest"]
     }
   }
 ]
