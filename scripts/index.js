@@ -183,6 +183,7 @@ import vuiz_createLogo from "./vuiz_createLogo.js";
 import vuiz_getLink from "./vuiz_getLink.js";
 import ggdrive_downloadPdf from "./ggdrive_downloadPdf.js";
 import ggdrive_downloadPresentation from "./ggdrive_downloadPresentation.js";
+import youtube_localDownloader from "./youtube_localDownloader.js";
 
 // inject badges
 const allScripts = {
@@ -390,6 +391,7 @@ const allScripts = {
     ggdrive_downloadPresentation,
     BADGES.new
   ),
+  youtube_localDownloader: addBadge(youtube_localDownloader, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

@@ -1,5 +1,5 @@
 export default {
-  icon: "https://lh3.googleusercontent.com/OS9P4SJOFAg8lhCyaRTJ7y4ADF0TGpqFF904BcpCtdBjJIDBbNb_J8PpgoJ9QvariiG_RzgH8fCSSY_kQu-chQQ0Aw=w128-h128-e365-rj-sc0x00ffffff",
+  icon: "https://www.youtube.com/s/desktop/accca349/img/favicon_48x48.png",
   name: {
     en: "Youtube nonstop",
     vi: "Youtube nonstop",
@@ -8,7 +8,7 @@ export default {
     en: 'Kiss the annoying "Video paused. Continue watching?" confirmation goodbye!',
     vi: "Phát youtube không còn bị làm phiền bởi popup 'Video đã tạm dừng. Bạn có muốn xem tiếp?' của youtube.",
   },
-    whiteList: ["*://music.youtube.com/*", "*://www.youtube.com/*"],
+  whiteList: ["*://music.youtube.com/*", "*://www.youtube.com/*"],
 
   onClick: function () {
     // source code from: https://chrome.google.com/webstore/detail/youtube-nonstop/nlkaejimjacpillmajjnopmpbkbnocid

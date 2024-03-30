@@ -181,6 +181,7 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
+      s.youtube_localDownloader,
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
