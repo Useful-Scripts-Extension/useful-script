@@ -19,8 +19,8 @@ export default {
     vi: "GG Drive - Tải PDF",
   },
   description: {
-    en: "Download google drive PDF file that dont have download button",
-    vi: "Tải file PDF không có nút download trên google drive",
+    en: "Download google drive PDF file that dont have download button. Pages will be convert to image, cannot edit.",
+    vi: "Tải file PDF không có nút download trên google drive. Tải về định dạng hình ảnh, không thể sửa nội dung.",
   },
 
   whiteList: ["https://drive.google.com/file/d/*"],
@@ -105,7 +105,11 @@ export default {
         let canvasElement = document.createElement("canvas");
         let con = canvasElement.getContext("2d");
 
-        let checkImagesLoadedInterval = setInterval(() => {
+        if (window.ufs_checkImagesLoadedInterval) {
+          clearInterval(window.ufs_checkImagesLoadedInterval);
+        }
+
+        window.ufs_checkImagesLoadedInterval = setInterval(() => {
           let imgs = Array.from(
             document.querySelectorAll("img[src^='blob:']")
           ).filter((_) => _.complete);
@@ -115,9 +119,17 @@ export default {
             `${imgs.length}/${pageCount}` +
             `(${getTime()}s)`;
 
+          let errorPage = Array.from(
+            document.querySelectorAll(".ndfHFb-c4YZDc-bN97Pc-u0pjoe-haAclf")
+          );
+
+          if (errorPage.length) {
+            info.innerText += `\nCó ${errorPage.length} trang không tải được.`;
+          }
+
           if (imgs.length === pageContainers.length) {
             info.innerText = "Đang tạo PDF...";
-            clearInterval(checkImagesLoadedInterval);
+            clearInterval(window.ufs_checkImagesLoadedInterval);
 
             let pdf;
             for (let i = 0; i < imgs.length; i++) {
