@@ -19,3 +19,7 @@
 - [ ] html2img khá ngon, nhưng chưa biết xài vô cái gì
 
 - [ ] Crack tải pdf trên tailieugiangday.vn dễ vl
+
+- [ ] Optimize import jszip
+
+- [ ] làm cho xong soundcloud_downloadMusic hoặc xóa

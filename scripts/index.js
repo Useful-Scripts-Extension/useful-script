@@ -125,7 +125,7 @@ import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
-// import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
+import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
 import studocu_dl from "./studocu_dl.js";
@@ -327,7 +327,7 @@ const allScripts = {
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: search_hopamchuan,
   ggdrive_generateDirectLink: ggdrive_generateDirectLink,
-  // soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
+  soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: fastDoc,
   smartPDF: smartPDF,
   studocu_dl: studocu_dl,

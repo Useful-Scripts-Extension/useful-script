@@ -1,71 +1,113 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14bdb.ico",
   name: {
-    en: "Soundcloud - Download music",
-    vi: "Soundcloud - Tải nhạc",
+    en: "Soundcloud - Add download button",
+    vi: "Soundcloud - Thêm nút tải nhạc",
   },
   description: {
-    en: "Download music from soundcloud",
-    vi: "Tải nhạc trên soundcloud",
+    en: "Add download button on soundcloud (before like button). Use soundcloud API, no external service <img style='width:100%' src='/scripts/soundcloud_downloadMusic.png' />",
+    vi: "Thêm nút tải nhạc trên soundcloud (trước nút like). Sử dụng trực tiếp soundcloud API <img style='width:100%' src='/scripts/soundcloud_downloadMusic.png' />",
   },
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Nhập link soundcloud: ", tab.url);
-    if (url == null) return;
-  },
-};
+  whiteList: ["https://soundcloud.com/*"],
 
-export const shared = {
-  downloadSoundCloud: async function (url) {
-    let client_id = await shared.getApiKey();
-    let info = await shared.getResourceInfo(url, client_id);
-  },
-  getApiKey: async function () {
-    let res = await fetch("https://soundcloud.com");
+  infoLink:
+    "https://greasyfork.org/en/scripts/394837-local-soundcloud-downloader",
 
-    let text = await res.text();
+  onDocumentStart: async () => {
+    function hook(obj, name, callback) {
+      const fn = obj[name];
+      obj[name] = function (...args) {
+        callback.apply(this, args);
+        fn.apply(this, args);
+      };
+      return () => {
+        // restore
+        obj[name] = fn;
+      };
+    }
 
-    // prettier-ignore
-    let jsUrl =
-      new RegExp('<script crossorigin="" src="(.+?)"></script>').exec(text)?.[-1] ||
-      new RegExp('<script crossorigin src="(.+?)"></script>').exec(text)?.[-1];
+    const btnId = "ufs-soundcloud-downloadBtn";
+    const downloadBtn = document.createElement("button");
+    downloadBtn.id = btnId;
+    downloadBtn.textContent = "Download";
+    downloadBtn.classList.add("sc-button");
+    downloadBtn.classList.add("sc-button-medium");
+    downloadBtn.classList.add("sc-button-responsive");
+    downloadBtn.classList.add("sc-button-download");
+    downloadBtn.classList.add("sc-button-cta");
 
-    res = await fetch(jsUrl);
-    let jsCode = await res.text();
-    let client_id = new RegExp('client_id:"(.+?)"').exec(jsCode)?.[1];
+    setInterval(() => {
+      if (!document.querySelector("#" + btnId)) {
+        const par = document.querySelector(
+          ".listenEngagement__footer .sc-button-toolbar .sc-button-group"
+        );
+        if (par) {
+          par.prepend(downloadBtn);
+        }
+      }
+    }, [1000]);
 
-    return client_id;
-  },
-  getResourceInfo: async function (resource_url, client_id) {
-    let res = await fetch(resource_url);
-    let text = await res.text();
+    let clientId;
+    window.ufs_soundcloud_allData = new Map();
 
-    let x = UsefulScriptGlobalPageContext.Utils.escapeRegExp(
-      "forEach(function(e){n(e)})}catch(e){}})},"
-    );
-    x = new RegExp(x + "(.*)\\);</script>").exec(text);
+    // listen for request => save track
+    hook(XMLHttpRequest.prototype, "open", async (method, url) => {
+      const u = new URL(url, document.baseURI);
+      clientId = u.searchParams.get("client_id") || clientId;
+      if (!clientId) return;
 
-    // info = json.loads(x.group(1))[-1]['data'][0]
+      const res = await fetch(
+        `https://api-v2.soundcloud.com/resolve?url=${encodeURIComponent(
+          location.href
+        )}&client_id=${clientId}`
+      );
+      const json = await res.json();
 
-    // info = info['tracks'] if info.get('track_count') else [info]
+      if (json && json.id) {
+        // save media
+        if (json.media) {
+          window.ufs_soundcloud_allData.set(json.id, json);
+        }
+        // save media from tracks
+        json.tracks
+          ?.filter((track) => track.media)
+          ?.forEach((track) => {
+            window.ufs_soundcloud_allData.set(track.id, track);
+          });
 
-    // ids = [i['id'] for i in info if i.get('comment_count') is None]
-    // ids = list(map(str, ids))
-    // ids_split = ['%2C'.join(ids[i:i+10]) for i in range(0, len(ids), 10)]
-    // api_url = 'https://api-v2.soundcloud.com/tracks?ids={ids}&client_id={client_id}&%5Bobject%20Object%5D=&app_version=1584348206&app_locale=en'
+        // add download button
+        let songTitle = document
+          .querySelector(".soundTitle__title")
+          ?.textContent?.trim();
 
-    // res = []
-    // for ids in ids_split:
-    //     uri = api_url.format(ids=ids, client_id=client_id)
-    //     cont = get_content(uri, decoded=True)
-    //     res += json.loads(cont)
+        let songInCache = Array.from(
+          window.ufs_soundcloud_allData.values()
+        ).find((_) => _.title === songTitle);
 
-    // res = iter(res)
-    // info = [next(res) if i.get('comment_count') is None else i for i in info]
+        const progressive = songInCache?.media?.transcodings?.find?.(
+          (t) => t?.format?.protocol === "progressive"
+        );
+        if (progressive) {
+          downloadBtn.textContent = "Download";
+          downloadBtn.onclick = async (e) => {
+            const res = await fetch(progressive.url + `?client_id=${clientId}`);
+            const { url } = await res.json();
+            window.open(url);
+          };
+        } else {
+          downloadBtn.textContent = "Unsupported";
+          downloadBtn.onclick = () => {
+            alert("Sorry, downloading this music is currently unsupported.");
+          };
+        }
+      }
+    });
 
-    // return info
+    // for (const f of ["pushState", "replaceState", "forward", "back", "go"]) {
+    //   hook(history, f, () => {
+
+    //   });
+    // }
   },
 };

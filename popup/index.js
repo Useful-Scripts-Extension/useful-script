@@ -288,7 +288,7 @@ function createScriptButton(script, isFavorite = false) {
   // tooltip
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
-  tooltip.innerText = t(script.description);
+  tooltip.innerHTML = t(script.description);
   button.appendChild(tooltip);
 
   buttonContainer.appendChild(button);

@@ -151,27 +151,30 @@ const UsefulScriptGlobalPageContext = {
       return policy.createHTML(html);
     },
 
-    injectScriptSrc(srcs, callback) {
+    injectScriptSrc(src, callback) {
       let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
+      let jsSrc = policy.createScriptURL(src);
+      let script = document.createElement("script");
+      script.onload = function () {
+        callback?.(true);
+      };
+      script.onerror = function (e) {
+        callback?.(false, e);
+      };
+      script.src = jsSrc; // Assigning the TrustedScriptURL to src
+      document.head.appendChild(script);
+    },
 
-      let listSrcs = srcs;
-      if (!Array.isArray(listSrcs)) {
-        listSrcs = [listSrcs];
-      }
-
-      for (let src of listSrcs) {
-        let jsSrc = policy.createScriptURL(src);
-
-        let script = document.createElement("script");
-        script.onload = function () {
-          callback?.(true);
-        };
-        script.onerror = function (e) {
-          callback?.(false, e);
-        };
-        script.src = jsSrc; // Assigning the TrustedScriptURL to src
-        document.head.appendChild(script);
-      }
+    injectScriptSrcAsync(src) {
+      return new Promise((resolve, reject) => {
+        UsefulScriptGlobalPageContext.DOM.injectScriptSrc(src, (success, e) => {
+          if (success) {
+            resolve();
+          } else {
+            reject(e);
+          }
+        });
+      });
     },
 
     isElementInViewport(el) {
@@ -220,6 +223,17 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    hook(obj, name, callback) {
+      const fn = obj[name];
+      obj[name] = function (...args) {
+        callback.apply(this, args);
+        fn.apply(this, args);
+      };
+      return () => {
+        // restore
+        obj[name] = fn;
+      };
+    },
     // https://stackoverflow.com/a/38552302/11898496
     parseJwt(token) {
       var base64Url = token.split(".")[1];
