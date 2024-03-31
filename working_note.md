@@ -14,7 +14,7 @@
 
 - [ ] Test thử [rapid api](https://rapidapi.com/)
 
-- [ ] **(IN-PROGRESS)** Youtube local download => lấy data từ ytplayer.config.args.raw_player_response
+- [ ] **(IN-PROGRESS)** Youtube local download => lấy data từ ytplayer.config.args.raw_player_response => Làm UI
 
 - [ ] html2img khá ngon, nhưng chưa biết xài vô cái gì
 
