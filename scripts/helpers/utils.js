@@ -156,8 +156,8 @@ export function checkBlackWhiteList(script, url) {
     b = script.blackList || [],
     hasWhiteList = w.length > 0,
     hasBlackList = b.length > 0,
-    inWhiteList = matchPatterns(url, w) ?? true,
-    inBlackList = matchPatterns(url, b) ?? false;
+    inWhiteList = matchOneOfPatterns(url, w) ?? true,
+    inBlackList = matchOneOfPatterns(url, b) ?? false;
 
   let willRun =
     (!hasWhiteList && !hasBlackList) ||
@@ -167,16 +167,19 @@ export function checkBlackWhiteList(script, url) {
   return willRun;
 }
 
-function matchPatterns(url, patterns) {
+function matchOneOfPatterns(url, patterns) {
   for (let pattern of patterns) {
-    // Replace wildcard characters * with regex wildcard .*
-    const regexRule = pattern.replace(/\*/g, ".*");
-    // Create a regex pattern from the rule
-    const reg = new RegExp("^" + regexRule + "$");
-    // Check if the URL matches the pattern
-    if (!reg.test(url)) return false;
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
+    );
+    if (regex.test(url)) return true;
   }
-  return true;
+  return false;
 }
 
 // https://stackoverflow.com/a/68634884/11898496

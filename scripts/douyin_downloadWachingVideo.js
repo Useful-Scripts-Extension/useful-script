@@ -1,4 +1,4 @@
-import { runScriptInCurrentTab } from "./helpers/utils.js";
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://www.douyin.com/favicon.ico",
@@ -13,8 +13,16 @@ export default {
   whiteList: ["https://www.douyin.com/*"],
 
   onClickExtension: async function () {
-    const { downloadURL, downloadBlobUrl } =
-      UsefulScriptGlobalPageContext.Utils;
+    const {
+      downloadURL,
+      downloadBlob,
+      getBlobFromUrlWithProgress,
+      formatSize,
+    } = UsefulScriptGlobalPageContext.Utils;
+
+    const { closeLoading, setLoadingText } = showLoading(
+      "Đang tìm video url..."
+    );
 
     const src = await runScriptInCurrentTab(async () => {
       return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
@@ -22,9 +30,23 @@ export default {
 
     if (!src) {
       alert("Không tìm thấy video nào.");
-      return;
+    } else {
+      setLoadingText("Đang tải video...");
+      downloadURL(src, "douyin_video.mp4");
+      // const blob = await getBlobFromUrlWithProgress(
+      //   src,
+      //   ({ loaded, total, speed }) => {
+      //     const percent = ((loaded / total) * 100) | 0;
+      //     setLoadingText(
+      //       `Đang tải video...<br/>` +
+      //         `Vui lòng không tắt popup <br/>` +
+      //         `${formatSize(loaded)}/${formatSize(total)} (${percent}%)` +
+      //         ` - ${formatSize(speed)}/s`
+      //     );
+      //   }
+      // );
+      // await downloadBlob(blob, "douyin_video.mp4");
     }
-
-    downloadBlobUrl(src, "douyin_video.mp4");
+    closeLoading();
   },
 };

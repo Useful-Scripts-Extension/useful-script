@@ -32,8 +32,8 @@ export default {
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin",
           },
-          referrer:
-            "https://www.douyin.com/user/MS4wLjABAAAA5A-hCBCTdv102baOvaoZqg7nCIW_Bn_YBA0Aiz9uYPY",
+          referrer: location.href,
+          // "https://www.douyin.com/user/MS4wLjABAAAA5A-hCBCTdv102baOvaoZqg7nCIW_Bn_YBA0Aiz9uYPY",
           referrerPolicy: "strict-origin-when-cross-origin",
           body: null,
           method: "GET",
@@ -69,17 +69,22 @@ export default {
         console.log(moredata);
         hasMore = moredata["has_more"];
         max_cursor = moredata["max_cursor"];
-        for (var item of moredata["aweme_list"]) {
-          let url = item.video.play_addr.url_list[0];
+        for (var item of moredata["aweme_list"] || []) {
+          try {
+            let url = item.video.play_addr.url_list[0];
 
-          if (url.startsWith("https")) {
-            result.push(url);
-          } else {
-            result.push(url.replace("http", "https"));
+            if (url.startsWith("https")) {
+              result.push(url);
+            } else {
+              result.push(url.replace("http", "https"));
+            }
+            // console.clear();
+            console.log("Number of videos: " + result.length);
+          } catch (e) {
+            console.log("ERROR: ", e);
           }
-          // console.clear();
-          console.log("Number of videos: " + result.length);
         }
+        console.log(hasMore);
       }
       saveToFile(result.join("\n"));
       alert(

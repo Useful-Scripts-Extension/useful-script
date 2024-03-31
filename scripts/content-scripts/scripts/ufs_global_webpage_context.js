@@ -223,6 +223,24 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    formatSize(size, fixed = 0) {
+      size = Number(size);
+
+      if (!size) return "?";
+
+      // format to KB, MB, GB
+      if (size < 1024) {
+        return size + "B";
+      }
+      if (size < 1024 * 1024) {
+        return (size / 1024).toFixed(fixed) + "KB";
+      }
+      if (size < 1024 * 1024 * 1024) {
+        return (size / (1024 * 1024)).toFixed(fixed) + "MB";
+      }
+      return (size / (1024 * 1024 * 1024)).toFixed(fixed) + "GB";
+    },
+
     // modified by chatgpt based on: https://gist.github.com/jcouyang/632709f30e12a7879a73e9e132c0d56b
     promiseAllStepN(n, list) {
       const head = list.slice(0, n);
@@ -394,7 +412,7 @@ const UsefulScriptGlobalPageContext = {
         alert("Error: " + error);
       }
     },
-    async downloadBlobUrlWithProgress(url, progressCallback) {
+    async getBlobFromUrlWithProgress(url, progressCallback) {
       const response = await fetch(url, {});
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);

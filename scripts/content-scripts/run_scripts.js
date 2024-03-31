@@ -66,8 +66,8 @@ function checkWillRun(script) {
   let url = location.href;
   let hasWhiteList = script.whiteList?.length > 0;
   let hasBlackList = script.blackList?.length > 0;
-  let inWhiteList = matchPatterns(url, script.whiteList || []);
-  let inBlackList = matchPatterns(url, script.blackList || []);
+  let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+  let inBlackList = matchOneOfPatterns(url, script.blackList || []);
   return (
     (!hasWhiteList && !hasBlackList) ||
     (hasWhiteList && inWhiteList) ||
@@ -75,14 +75,17 @@ function checkWillRun(script) {
   );
 }
 
-function matchPatterns(url, patterns) {
+function matchOneOfPatterns(url, patterns) {
   for (let pattern of patterns) {
-    // Replace wildcard characters * with regex wildcard .*
-    const regexRule = pattern.replace(/\*/g, ".*");
-    // Create a regex pattern from the rule
-    const reg = new RegExp("^" + regexRule + "$");
-    // Check if the URL matches the pattern
-    if (!reg.test(url)) return false;
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
+    );
+    if (regex.test(url)) return true;
   }
-  return true;
+  return false;
 }
