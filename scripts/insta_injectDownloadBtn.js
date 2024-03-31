@@ -5,10 +5,13 @@ export default {
     vi: "Thêm nút tải cho Instagram",
   },
   description: {
-    en: "Add a download button to all photo/video/post/story on Instagram",
-    vi: "Thêm nút để tải (ảnh/video/story/post) trên Instagram",
+    en: "Add a download button to all photo/video/post/story on Instagram <img style='width:100%' src='/scripts/insta_injectDownloadBtn.png' />",
+    vi: "Thêm nút để tải (ảnh/video/story/post) trên Instagram <img style='width:100%' src='/scripts/insta_injectDownloadBtn.png' />",
   },
   whiteList: ["https://www.instagram.com/*"],
+
+  infoLink:
+    "https://greasyfork.org/en/scripts/406535-instagram-download-button",
 
   onDocumentIdle: () => {
     // ==UserScript==
@@ -22,7 +25,7 @@ export default {
     // @name:hi             इंस्टाग्राम डाउनलोडर
     // @name:ru             Загрузчик Instagram
     // @namespace           https://github.com/y252328/Instagram_Download_Button
-    // @version             1.17.17
+    // @version             1.17.18
     // @compatible          chrome
     // @description         Add the download button and the open button to download or open profile picture and media in the posts, stories, and highlights in Instagram
     // @description:zh-TW   在Instagram頁面加入下載按鈕與開啟按鈕，透過這些按鈕可以下載或開啟大頭貼與貼文、限時動態、Highlight中的照片或影片
@@ -76,7 +79,7 @@ export default {
       const postUrlPattern = /instagram\.com\/p\/[\w-]+\//;
 
       var svgDownloadBtn = `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" height="24" width="24"
-     viewBox="0 0 477.867 477.867" style="fill:%color;" xml:space="preserve">
+    viewBox="0 0 477.867 477.867" style="fill:%color;" xml:space="preserve">
     <g>
         <path d="M443.733,307.2c-9.426,0-17.067,7.641-17.067,17.067v102.4c0,9.426-7.641,17.067-17.067,17.067H68.267
             c-9.426,0-17.067-7.641-17.067-17.067v-102.4c0-9.426-7.641-17.067-17.067-17.067s-17.067,7.641-17.067,17.067v102.4
@@ -88,11 +91,11 @@ export default {
             l85.333,85.333c6.657,6.673,17.463,6.687,24.136,0.031c0.01-0.01,0.02-0.02,0.031-0.031l85.333-85.333
             C342.915,312.486,342.727,301.682,335.947,295.134z"/>
     </g>
-</svg>`;
+  </svg>`;
 
       var svgNewtabBtn = `<svg id="Capa_1" style="fill:%color;" viewBox="0 0 482.239 482.239" xmlns="http://www.w3.org/2000/svg" height="24" width="24">
     <path d="m465.016 0h-344.456c-9.52 0-17.223 7.703-17.223 17.223v86.114h-86.114c-9.52 0-17.223 7.703-17.223 17.223v344.456c0 9.52 7.703 17.223 17.223 17.223h344.456c9.52 0 17.223-7.703 17.223-17.223v-86.114h86.114c9.52 0 17.223-7.703 17.223-17.223v-344.456c0-9.52-7.703-17.223-17.223-17.223zm-120.56 447.793h-310.01v-310.01h310.011v310.01zm103.337-103.337h-68.891v-223.896c0-9.52-7.703-17.223-17.223-17.223h-223.896v-68.891h310.011v310.01z"/>
-</svg>`;
+  </svg>`;
 
       var preUrl = "";
 
@@ -529,6 +532,15 @@ export default {
         return { url, mediaIndex };
       }
 
+      function findHighlightsIndex() {
+        let currentDivProgressbarDiv = document.querySelector(
+          'div[style^="transform"]'
+        ).parentElement;
+        let progressbarRootDiv = currentDivProgressbarDiv.parentElement;
+        let progressbarDivs = progressbarRootDiv.children;
+        return Array.from(progressbarDivs).indexOf(currentDivProgressbarDiv);
+      }
+
       let infoCache = {}; // key: media id, value: info json
       let mediaIdCache = {}; // key: post id, value: media id
       async function getUrlFromInfoApi(articleNode, mediaIdx = 0) {
@@ -555,19 +567,19 @@ export default {
           }
 
           async function findMediaId() {
-            // method 1
+            // method 1: extract from url.
             function method1() {
-              let match = window.location.href.match(
+              let href = window.location.href;
+              let match = href.match(
                 /www.instagram.com\/stories\/[^\/]+\/(\d+)/
               );
-              if (match) return match[1];
+              if (!href.includes("highlights") && match) return match[1];
             }
 
             // method 3
             async function method3() {
               let postId = await findPostId(articleNode);
               if (!postId) {
-                console.log("Cannot find post id");
                 return null;
               }
 
@@ -594,7 +606,19 @@ export default {
                 let match = scriptJson[i].text.match(
                   /"pk":"(\d+)","id":"[\d_]+"/
                 );
-                if (match) return match[1];
+                if (match) {
+                  if (!window.location.href.includes("highlights")) {
+                    return match[1];
+                  }
+                  let matchs = Array.from(
+                    scriptJson[i].text.matchAll(/"pk":"(\d+)","id":"[\d_]+"/g),
+                    (match) => match[1]
+                  );
+                  const matchIndex = findHighlightsIndex();
+                  if (matchs.length > matchIndex) {
+                    return matchs[matchIndex];
+                  }
+                }
               }
             }
 

@@ -167,55 +167,16 @@ export function checkBlackWhiteList(script, url) {
   return willRun;
 }
 
-// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
 function matchPatterns(url, patterns) {
-  const patternValidationRegex =
-    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
-  const isFirefox =
-    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
-  const allStarsRegex = isFirefox
-    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
-    : /^https?:[/][/][^/]+([/].*)?$/;
-  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
-
-  function getRawPatternRegex(pattern) {
-    if (!patternValidationRegex.test(pattern))
-      throw new Error(
-        pattern +
-          " is an invalid pattern, it must match " +
-          String(patternValidationRegex)
-      );
-    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
-    protocol = protocol
-      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
-      .replace(/[/]/g, "[/]");
-    host = (host ?? "")
-      .replace(/^[*][.]/, "([^/]+.)*")
-      .replace(/^[*]$/, "[^/]+")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]$/g, "[^.]+");
-    pathname = pathname
-      .replace(/[/]/g, "[/]")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]/g, ".*");
-    return "^" + protocol + host + "(" + pathname + ")?$";
+  for (let pattern of patterns) {
+    // Replace wildcard characters * with regex wildcard .*
+    const regexRule = pattern.replace(/\*/g, ".*");
+    // Create a regex pattern from the rule
+    const reg = new RegExp("^" + regexRule + "$");
+    // Check if the URL matches the pattern
+    if (!reg.test(url)) return false;
   }
-
-  function patternToRegex(matchPatterns) {
-    if (matchPatterns.length === 0) return /$./;
-    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
-    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
-    return new RegExp(
-      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
-    );
-  }
-
-  try {
-    return patternToRegex(patterns).test(url);
-  } catch (e) {
-    console.log("ERROR matchPatterns", e);
-    return false;
-  }
+  return true;
 }
 
 // https://stackoverflow.com/a/68634884/11898496
@@ -272,11 +233,11 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
-  var from =
+  let from =
       "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
     to =
       "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
-  for (var i = 0, l = from.length; i < l; i++) {
+  for (let i = 0, l = from.length; i < l; i++) {
     str = str.replace(RegExp(from[i], "gi"), to[i]);
   }
 
@@ -380,8 +341,8 @@ export const JSONUtils = {
 
 // https://stackoverflow.com/a/4068385/11898496
 export function popupCenter({ url, title, w, h }) {
-  var left = screen.width / 2 - w / 2;
-  var top = screen.height / 2 - h / 2;
+  let left = screen.width / 2 - w / 2;
+  let top = screen.height / 2 - h / 2;
   const newWindow = window.open(
     url,
     title,
@@ -476,19 +437,19 @@ export function waitForKeyElements(
   actionFunction /* Required: The code to run when elements are found. It is passed a jNode to the matched element.*/,
   bWaitOnce /* Optional: If false, will continue to scan for new elements even after the first match is found.*/
 ) {
-  var targetNodes, btargetsFound;
+  let targetNodes, btargetsFound;
   targetNodes = document.querySelectorAll(selectorTxt);
 
   if (targetNodes && targetNodes.length > 0) {
     btargetsFound = true;
     /*--- Found target node(s).  Go through each and act if they are new. */
     targetNodes.forEach(function (element) {
-      var alreadyFound =
+      let alreadyFound =
         element.dataset.found == "alreadyFound" ? "alreadyFound" : false;
 
       if (!alreadyFound) {
         //--- Call the payload function.
-        var cancelFound = actionFunction(element);
+        let cancelFound = actionFunction(element);
         if (cancelFound) btargetsFound = false;
         else element.dataset.found = "alreadyFound";
       }
@@ -497,10 +458,10 @@ export function waitForKeyElements(
     btargetsFound = false;
   }
 
-  //--- Get the timer-control variable for this selector.
-  var controlObj = waitForKeyElements.controlObj || {};
-  var controlKey = selectorTxt.replace(/[^\w]/g, "_");
-  var timeControl = controlObj[controlKey];
+  //--- Get the timer-control letiable for this selector.
+  let controlObj = waitForKeyElements.controlObj || {};
+  let controlKey = selectorTxt.replace(/[^\w]/g, "_");
+  let timeControl = controlObj[controlKey];
 
   //--- Now set or clear the timer as appropriate.
   if (btargetsFound && bWaitOnce && timeControl) {

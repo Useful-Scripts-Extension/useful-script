@@ -223,6 +223,43 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    // modified by chatgpt based on: https://gist.github.com/jcouyang/632709f30e12a7879a73e9e132c0d56b
+    promiseAllStepN(n, list) {
+      const head = list.slice(0, n);
+      const tail = list.slice(n);
+      const resolved = [];
+
+      return new Promise((resolve) => {
+        let processed = 0;
+
+        function runNext() {
+          if (processed === tail.length) {
+            resolve(Promise.all(resolved));
+            return;
+          }
+
+          const promise = tail[processed]();
+          resolved.push(
+            promise.then((result) => {
+              runNext();
+              return result;
+            })
+          );
+          processed++;
+        }
+
+        head.forEach((func) => {
+          const promise = func();
+          resolved.push(
+            promise.then((result) => {
+              runNext();
+              return result;
+            })
+          );
+        });
+      });
+    },
+
     hook(obj, name, callback) {
       const fn = obj[name];
       obj[name] = function (...args) {

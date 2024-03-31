@@ -12,9 +12,9 @@ export default {
   onClick: function () {
     // https://stackoverflow.com/a/8260383/11898496
     function getIdFromYoutubeURL(url) {
-      var regExp =
+      let regExp =
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-      var match = url.match(regExp);
+      let match = url.match(regExp);
       return match && match[1].length == 11 ? match[1] : false;
     }
 

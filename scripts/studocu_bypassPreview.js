@@ -12,6 +12,17 @@ export default {
 
   // https://github.com/lambwheit/Studocu-Paywall-Bypass
   onDocumentStart: async () => {
+    // ==UserScript==
+    // @name         Bypass studocu paywall
+    // @namespace    http://tampermonkey.net/
+    // @version      1.21
+    // @description  try to take over the world!
+    // @author       https://github.com/lambwheit
+    // @match        https://studeersnel.nl/*
+    // @match        https://www.studocu.com/*
+    // @icon         https://www.google.com/s2/favicons?domain=studocu.com
+    // ==/UserScript==
+
     function addGlobalStyle(css) {
       var head, style;
       head = document.getElementsByTagName("head")[0];

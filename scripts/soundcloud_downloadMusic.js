@@ -5,8 +5,9 @@ export default {
     vi: "Soundcloud - Thêm nút tải nhạc",
   },
   description: {
-    en: "Add download button on soundcloud (before like button). Use soundcloud API, no external service <img style='width:100%' src='/scripts/soundcloud_downloadMusic.png' />",
-    vi: "Thêm nút tải nhạc trên soundcloud (trước nút like). Sử dụng trực tiếp soundcloud API <img style='width:100%' src='/scripts/soundcloud_downloadMusic.png' />",
+    en: "Add download button on soundcloud (before like button). Use soundcloud API, no external service",
+    vi: "Thêm nút tải nhạc trên soundcloud (trước nút like). Sử dụng trực tiếp soundcloud API",
+    img: "/scripts/soundcloud_downloadMusic.png",
   },
 
   whiteList: ["https://soundcloud.com/*"],

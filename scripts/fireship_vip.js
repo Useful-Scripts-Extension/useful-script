@@ -15,7 +15,7 @@ export default {
     // ==UserScript==
     // @name         Freeship
     // @namespace    lemons
-    // @version      1.6
+    // @version      1.7
     // @description  Unlock all Fireship PRO courses/lessons.
     // @author       lemons
     // @match        https://fireship.io/*
@@ -35,7 +35,7 @@ export default {
       }
 
       if (document.querySelector("video-player")?.shadowRoot?.querySelector(".vid")?.innerHTML) return; // return if no video player
-      const vimeoId = Number(atob(document.querySelector("global-data").vimeo)) - Number(document.querySelector("head").getAttribute("data-build")); // get id for vimeo video
+      const vimeoId = Number(atob(document.querySelector("global-data").vimeo)); // get id for vimeo video
       const youtubeId = atob(document.querySelector("global-data").youtube); // get id for vimeo video
 
       if (youtubeId) { // if there is an id,

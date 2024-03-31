@@ -75,48 +75,14 @@ function checkWillRun(script) {
   );
 }
 
-// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
 function matchPatterns(url, patterns) {
-  const patternValidationRegex =
-    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
-  const isFirefox =
-    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
-  const allStarsRegex = isFirefox
-    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
-    : /^https?:[/][/][^/]+([/].*)?$/;
-  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
-
-  function getRawPatternRegex(pattern) {
-    if (!patternValidationRegex.test(pattern))
-      throw new Error(
-        pattern +
-          " is an invalid pattern, it must match " +
-          String(patternValidationRegex)
-      );
-    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
-    protocol = protocol
-      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
-      .replace(/[/]/g, "[/]");
-    host = (host ?? "")
-      .replace(/^[*][.]/, "([^/]+.)*")
-      .replace(/^[*]$/, "[^/]+")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]$/g, "[^.]+");
-    pathname = pathname
-      .replace(/[/]/g, "[/]")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]/g, ".*");
-    return "^" + protocol + host + "(" + pathname + ")?$";
+  for (let pattern of patterns) {
+    // Replace wildcard characters * with regex wildcard .*
+    const regexRule = pattern.replace(/\*/g, ".*");
+    // Create a regex pattern from the rule
+    const reg = new RegExp("^" + regexRule + "$");
+    // Check if the URL matches the pattern
+    if (!reg.test(url)) return false;
   }
-
-  function patternToRegex(matchPatterns) {
-    if (matchPatterns.length === 0) return /$./;
-    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
-    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
-    return new RegExp(
-      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
-    );
-  }
-
-  return patternToRegex(patterns).test(url);
+  return true;
 }

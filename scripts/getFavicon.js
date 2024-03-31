@@ -1,5 +1,5 @@
 export default {
-  icon: `https://s2.googleusercontent.com/s2/favicons?domain=favicon.io`,
+  icon: `https://s2.googleusercontent.com/s2/favicons?domain_url=https://favicon.io/`,
   name: {
     en: "Download favicon from website",
     vi: "Tải favicon của trang web",
