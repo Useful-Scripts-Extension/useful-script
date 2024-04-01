@@ -91,6 +91,11 @@ window.onload = () => {
       let data = xhrDownloadUint8Array(video, (progress) => {
         console.log(progress);
       });
+      // saveAs(video.url, "video.mp4", {
+      //   onprogress: (e) => {
+      //     console.log(e);
+      //   },
+      // });
     };
     document.body.appendChild(button);
   }
