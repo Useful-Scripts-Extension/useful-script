@@ -1,20 +1,50 @@
-function formatSize(size) {
-  size = Number(size);
+const { formatSize, promiseAllStepN } = UsefulScriptGlobalPageContext.Utils;
+const { injectScriptSrc } = UsefulScriptGlobalPageContext.DOM;
 
-  if (!size) return "?";
+const xhrDownloadUint8Array = async ({ url, contentLength }, progressCb) => {
+  if (typeof contentLength === "string")
+    contentLength = parseInt(contentLength);
+  progressCb({
+    loaded: 0,
+    total: contentLength,
+    speed: 0,
+  });
+  const chunkSize = 65536;
+  const getBuffer = (start, end) =>
+    fetch(url + `&range=${start}-${end ? end - 1 : ""}`).then((r) =>
+      r.arrayBuffer()
+    );
+  const data = new Uint8Array(contentLength);
+  let downloaded = 0;
+  const tasks = [];
+  const startTime = Date.now();
 
-  // format to KB, MB, GB
-  if (size < 1024) {
-    return size + "B";
+  for (let start = 0; start < contentLength; start += chunkSize) {
+    const exceeded = start + chunkSize > contentLength;
+    const curChunkSize = exceeded ? contentLength - start : chunkSize;
+    const end = exceeded ? null : start + chunkSize;
+    tasks.push(() => {
+      console.log("dl start", url, start, end);
+      return getBuffer(start, end)
+        .then((buf) => {
+          console.log("dl done", url, start, end);
+          downloaded += curChunkSize;
+          data.set(new Uint8Array(buf), start);
+          const ds = (Date.now() - startTime + 1) / 1000;
+          progressCb({
+            loaded: downloaded,
+            total: contentLength,
+            speed: downloaded / ds,
+          });
+        })
+        .catch((err) => {
+          console.log("Download error");
+        });
+    });
   }
-  if (size < 1024 * 1024) {
-    return (size / 1024).toFixed(2) + "KB";
-  }
-  if (size < 1024 * 1024 * 1024) {
-    return (size / (1024 * 1024)).toFixed(2) + "MB";
-  }
-  return (size / (1024 * 1024 * 1024)).toFixed(2) + "GB";
-}
+  await promiseAllStepN(6, tasks);
+  return data;
+};
 
 window.onload = () => {
   const yt_data = JSON.parse(
@@ -50,20 +80,19 @@ window.onload = () => {
 
   // video
   for (let video of videos) {
-    const div = document.createElement("div");
-    div.innerHTML = `
-      <a
-        href="${video.url}"
-        target="_blank">
-        <p>
+    const button = document.createElement("button");
+    button.style = "display:block;margin-bottom:5px";
+    button.innerHTML = `
           ${video.qualityLabel}
           - ${video.width}x${video.height}
-          - ${formatSize(video.contentLength)}
-          ${video.audioQuality ? "" : " (no audio)"}
-        </p>
-      </a>
-    `;
-    document.body.appendChild(div);
+          - ${formatSize(video.contentLength, 2)}
+          ${video.audioQuality ? "" : " (no audio)"}`;
+    button.onclick = () => {
+      let data = xhrDownloadUint8Array(video, (progress) => {
+        console.log(progress);
+      });
+    };
+    document.body.appendChild(button);
   }
 
   // audio
@@ -73,7 +102,7 @@ window.onload = () => {
       <audio src="${audio.url}" controls></audio>
       <p>
         ${audio.audioTrack?.displayName || audio.audioQuality}
-         - ${formatSize(audio.contentLength)}
+         - ${formatSize(audio.contentLength, 2)}
       </p>
     `;
     document.body.appendChild(div);
