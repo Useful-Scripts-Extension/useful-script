@@ -25,3 +25,5 @@
 - [x] làm cho xong soundcloud_downloadMusic hoặc xóa => Xong rồi, Ngon
 
 - [ ] Move transfer.sh sang popup
+
+- [ ] text to qrcode không còn hoạt động
