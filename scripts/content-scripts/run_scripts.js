@@ -66,8 +66,8 @@ function checkWillRun(script) {
   let url = location.href;
   let hasWhiteList = script.whiteList?.length > 0;
   let hasBlackList = script.blackList?.length > 0;
-  let inWhiteList = matchPatterns(url, script.whiteList || []);
-  let inBlackList = matchPatterns(url, script.blackList || []);
+  let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+  let inBlackList = matchOneOfPatterns(url, script.blackList || []);
   return (
     (!hasWhiteList && !hasBlackList) ||
     (hasWhiteList && inWhiteList) ||
@@ -75,48 +75,17 @@ function checkWillRun(script) {
   );
 }
 
-// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
-function matchPatterns(url, patterns) {
-  const patternValidationRegex =
-    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
-  const isFirefox =
-    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
-  const allStarsRegex = isFirefox
-    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
-    : /^https?:[/][/][^/]+([/].*)?$/;
-  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
-
-  function getRawPatternRegex(pattern) {
-    if (!patternValidationRegex.test(pattern))
-      throw new Error(
-        pattern +
-          " is an invalid pattern, it must match " +
-          String(patternValidationRegex)
-      );
-    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
-    protocol = protocol
-      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
-      .replace(/[/]/g, "[/]");
-    host = (host ?? "")
-      .replace(/^[*][.]/, "([^/]+.)*")
-      .replace(/^[*]$/, "[^/]+")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]$/g, "[^.]+");
-    pathname = pathname
-      .replace(/[/]/g, "[/]")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]/g, ".*");
-    return "^" + protocol + host + "(" + pathname + ")?$";
-  }
-
-  function patternToRegex(matchPatterns) {
-    if (matchPatterns.length === 0) return /$./;
-    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
-    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
-    return new RegExp(
-      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
+function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
     );
+    if (regex.test(url)) return true;
   }
-
-  return patternToRegex(patterns).test(url);
+  return false;
 }

@@ -83,7 +83,7 @@ const UsefulScriptGlobalPageContext = {
 
     // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
     // https://stackoverflow.com/a/61511955/11898496
-    onElementsVisible: async (selector, callback, willReRun) => {
+    onElementsVisible: (selector, callback, willReRun) => {
       let nodes = document.querySelectorAll(selector);
       if (nodes?.length) {
         callback(nodes);
@@ -135,6 +135,48 @@ const UsefulScriptGlobalPageContext = {
       document.head.appendChild(css);
     },
 
+    getTrustedPolicy() {
+      let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
+      if (!policy) {
+        policy = window.trustedTypes.createPolicy("ufsTrustedTypesPolicy", {
+          createHTML: (input) => input,
+          createScriptURL: (input) => input,
+        });
+      }
+      return policy;
+    },
+
+    createTrustedHtml(html) {
+      let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
+      return policy.createHTML(html);
+    },
+
+    injectScriptSrc(src, callback) {
+      let policy = UsefulScriptGlobalPageContext.DOM.getTrustedPolicy();
+      let jsSrc = policy.createScriptURL(src);
+      let script = document.createElement("script");
+      script.onload = function () {
+        callback?.(true);
+      };
+      script.onerror = function (e) {
+        callback?.(false, e);
+      };
+      script.src = jsSrc; // Assigning the TrustedScriptURL to src
+      document.head.appendChild(script);
+    },
+
+    injectScriptSrcAsync(src) {
+      return new Promise((resolve, reject) => {
+        UsefulScriptGlobalPageContext.DOM.injectScriptSrc(src, (success, e) => {
+          if (success) {
+            resolve();
+          } else {
+            reject(e);
+          }
+        });
+      });
+    },
+
     isElementInViewport(el) {
       const rect = el.getBoundingClientRect();
       return (
@@ -181,6 +223,72 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    formatSize(size, fixed = 0) {
+      size = Number(size);
+
+      if (!size) return "?";
+
+      // format to KB, MB, GB
+      if (size < 1024) {
+        return size + "B";
+      }
+      if (size < 1024 * 1024) {
+        return (size / 1024).toFixed(fixed) + "KB";
+      }
+      if (size < 1024 * 1024 * 1024) {
+        return (size / (1024 * 1024)).toFixed(fixed) + "MB";
+      }
+      return (size / (1024 * 1024 * 1024)).toFixed(fixed) + "GB";
+    },
+
+    // modified by chatgpt based on: https://gist.github.com/jcouyang/632709f30e12a7879a73e9e132c0d56b
+    promiseAllStepN(n, list) {
+      const head = list.slice(0, n);
+      const tail = list.slice(n);
+      const resolved = [];
+
+      return new Promise((resolve) => {
+        let processed = 0;
+
+        function runNext() {
+          if (processed === tail.length) {
+            resolve(Promise.all(resolved));
+            return;
+          }
+
+          const promise = tail[processed]();
+          resolved.push(
+            promise.then((result) => {
+              runNext();
+              return result;
+            })
+          );
+          processed++;
+        }
+
+        head.forEach((func) => {
+          const promise = func();
+          resolved.push(
+            promise.then((result) => {
+              runNext();
+              return result;
+            })
+          );
+        });
+      });
+    },
+
+    hook(obj, name, callback) {
+      const fn = obj[name];
+      obj[name] = function (...args) {
+        callback.apply(this, args);
+        fn.apply(this, args);
+      };
+      return () => {
+        // restore
+        obj[name] = fn;
+      };
+    },
     // https://stackoverflow.com/a/38552302/11898496
     parseJwt(token) {
       var base64Url = token.split(".")[1];
@@ -304,8 +412,8 @@ const UsefulScriptGlobalPageContext = {
         alert("Error: " + error);
       }
     },
-    async downloadBlobUrlWithProgress(url, fileName, progressCallback) {
-      const response = await fetch(url);
+    async getBlobFromUrlWithProgress(url, progressCallback) {
+      const response = await fetch(url, {});
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -315,18 +423,25 @@ const UsefulScriptGlobalPageContext = {
       const reader = response.body.getReader();
       const chunks = [];
 
+      const startTime = Date.now();
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         loaded += value.byteLength;
-        progressCallback?.(loaded, total);
+        const ds = (Date.now() - startTime + 1) / 1000;
+        progressCallback?.({
+          loaded,
+          total,
+          speed: loaded / ds,
+        });
         chunks.push(value);
       }
 
       const blob = new Blob(chunks, {
         type: response.headers.get("content-type"),
       });
-      UsefulScriptGlobalPageContext.Utils.downloadBlob(blob, fileName);
+
+      return blob;
     },
     async downloadBlobUrl(url, title) {
       try {
@@ -1231,8 +1346,3 @@ window.UsefulScriptsUtils = UsefulScriptsUtils;
 // Chrome pre-34
 if (!Element.prototype.matches)
   Element.prototype.matches = Element.prototype.webkitMatchesSelector;
-
-// https://mmazzarolo.com/blog/2022-08-25-simple-colored-logging-for-javascript-clis/
-window.console.success = (...args) => console.log("\x1b[32m✔\x1b[0m", ...args);
-window.console.failure = (...args) =>
-  console.error("\x1b[31mｘ\x1b[0m", ...args);

@@ -18,7 +18,7 @@ export default {
       //prettier-ignore
       const {following, incoming_request, outgoing_request, is_bestie, is_restricted, is_feed_favorite} = friendship_status;
 
-      return `<tr>
+      return /*html*/ `<tr>
         <td>${index}</td>
         <td>
           <a href="${profile_pic_url}" target="_blank">
@@ -72,7 +72,7 @@ export default {
           "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=600,top=50,left=50"
         );
         win.document.title = "Instagram searchh for " + txt;
-        win.document.body.innerHTML = `
+        win.document.body.innerHTML = /*html*/ `
           <table>
             <tr>
               <th>#</th>

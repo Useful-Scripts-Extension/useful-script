@@ -1,4 +1,4 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+import { getCurrentTabUrl, showLoading } from "./helpers/utils.js";
 
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=doutu.be",
@@ -16,11 +16,8 @@ export default {
     const { zipAndDownloadBlobs, getBlobFromUrl } =
       UsefulScriptGlobalPageContext.Utils;
 
-    let user_id = await runScriptInCurrentTab(() => {
-      let url = window.location.href;
-      let id = url.split("/u/")?.[1];
-      return id;
-    });
+    let url = await getCurrentTabUrl();
+    let user_id = url?.split("/u/")?.[1];
 
     if (!user_id) {
       alert(

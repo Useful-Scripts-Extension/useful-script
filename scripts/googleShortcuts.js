@@ -9,20 +9,22 @@ export default {
     vi: "Tạo mới google doc/sheet/slide/form/site/keep/calendar",
   },
 
-  onClick: function () {
+  onClickExtension: function () {
     let urls = [
-      ["Google Doc", "https://doc.new"],
-      ["Google Sheet", "https://sheet.new"],
-      ["Google Slide", "https://slide.new"],
-      ["Google Form", "https://form.new"],
-      ["Google Site", "https://site.new"],
-      ["Google Keep", "https://keep.new"],
+      ["Google Doc     ", "https://doc.new"],
+      ["Google Sheet   ", "https://sheet.new"],
+      ["Google Slide   ", "https://slide.new"],
+      ["Google Form    ", "https://form.new"],
+      ["Google Site    ", "https://site.new"],
+      ["Google Keep    ", "https://keep.new"],
       ["Google Calendar", "https://calendar.new"],
     ];
 
     let option = prompt(
       "Create new:\n\n" +
-        urls.map(([name, url], index) => `- ${index}: ${name}\n`).join(""),
+        urls
+          .map(([name, url], index) => `- ${index}: ${name}   (${url})\n`)
+          .join(""),
       0
     );
 

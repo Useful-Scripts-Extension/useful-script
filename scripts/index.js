@@ -16,7 +16,6 @@ import fb_getAllUidFromFriendsPage from "./fb_getAllUidFromFriendsPage.js";
 import fb_getAllUidOfGroupMembers from "./fb_getAllUidOfGroupMembers.js";
 import fb_getAvatarFromUid from "./fb_getAvatarFromUid.js";
 import fb_downloadAlbumMedia from "./fb_downloadAlbumMedia.js";
-import insta_getToken from "./insta_getToken.js";
 import insta_getUserInfo from "./insta_getUserInfo.js";
 import insta_getAllUserMedia from "./insta_getAllUserMedia.js";
 import insta_getAllImagesInNewFeed from "./insta_getAllImagesInNewFeed.js";
@@ -29,12 +28,9 @@ import doutube_downloadWatchingVideo from "./doutube_downloadWatchingVideo.js";
 import doutube_getAllVideoInUserProfile from "./doutube_getAllVideoInUserProfile.js";
 import darkModePDF from "./darkModePDF.js";
 import webToPDF from "./webToPDF.js";
-import webToQRCode from "./webToQRCode.js";
-import textToQRCode from "./textToQRCode.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
 import passwordGenerator from "./passwordGenerator.js";
 import search_sharedAccount from "./search_sharedAccount.js";
-// import passwordFieldToggle from "./passwordFieldToggle.js";
 import checkWebDie from "./checkWebDie.js";
 import removeCookies from "./removeCookies.js";
 import simpleAllowCopy from "./simpleAllowCopy.js";
@@ -93,8 +89,6 @@ import getFavicon from "./getFavicon.js";
 import fb_checkToken from "./fb_checkToken.js";
 import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
 import unshorten from "./unshorten.js";
-import transfer_sh from "./transfer_sh.js";
-import jsonformatter from "./jsonformatter.js";
 import screenshotFullPage from "./screenshotFullPage.js";
 import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
@@ -103,13 +97,12 @@ import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
 import fb_storySaver from "./fb_storySaver.js";
-import insta_storySaver from "./insta_storySaver.js";
 import whatApp_storySaver from "./whatApp_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
 import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
 import fb_toggleNewFeed from "./fb_toggleNewFeed.js";
-// import fb_storyInfo from "./fb_storyInfo.js";
+import fb_storyInfo from "./fb_storyInfo.js";
 import envato_bypassPreview from "./envato_bypassPreview.js";
 import shopee_topVariation from "./shopee_topVariation.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
@@ -125,8 +118,7 @@ import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
-import freesound_downloadAudio from "./freesound_downloadAudio.js";
-// import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
+import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
 import fastDoc from "./fastDoc.js";
 import smartPDF from "./smartPDF.js";
 import studocu_dl from "./studocu_dl.js";
@@ -156,14 +148,6 @@ import fb_messengerCount from "./fb_messengerCount.js";
 import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
 import fb_searchPageForOther from "./fb_searchPageForOther.js";
 import fb_fetchAllAddedFriends from "./fb_fetchAllAddedFriends.js";
-import bing_imageCreator from "./bing_imageCreator.js";
-import stable_diffusion_baseten from "./stable_diffusion_baseten.js";
-import stable_diffusion_demo from "./stable_diffusion_demo.js";
-import dreamai from "./dreamai.js";
-import playgroundai from "./playgroundai.js";
-import pixaiart from "./pixaiart.js";
-import skybox_blockadelabs from "./skybox_blockadelabs.js";
-import huggingface from "./huggingface.js";
 import tailieu_vn from "./tailieu_vn.js";
 import fb_downloadWallMediaFromPosts from "./fb_downloadWallMediaFromPosts.js";
 import fb_getAllAlbumInformation from "./fb_getAllAlbumInformation.js";
@@ -179,6 +163,14 @@ import leakCheck from "./leakCheck.js";
 import whellOfNames_hack from "./whellOfNames_hack.js";
 import saveAllVideo from "./saveAllVideo.js";
 import fb_bulkDownload from "./fb_bulkDownload.js";
+import fireship_vip from "./fireship_vip.js";
+import vuiz_createLogo from "./vuiz_createLogo.js";
+import vuiz_getLink from "./vuiz_getLink.js";
+import ggdrive_downloadPdf from "./ggdrive_downloadPdf.js";
+import ggdrive_downloadPresentation from "./ggdrive_downloadPresentation.js";
+import youtube_localDownloader from "./youtube_localDownloader.js";
+import twitter_downloadButton from "./twitter_downloadButton.js";
+import spotify_downloadButton from "./spotify_downloadButton.js";
 
 // inject badges
 const allScripts = {
@@ -199,7 +191,6 @@ const allScripts = {
   fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.hot),
   fb_getAvatarFromUid,
   fb_downloadAlbumMedia,
-  insta_getToken: addBadge(insta_getToken, BADGES.hot),
   insta_getUserInfo: insta_getUserInfo,
   insta_getAllUserMedia,
   insta_getAllImagesInNewFeed: addBadge(
@@ -218,8 +209,6 @@ const allScripts = {
   doutube_getAllVideoInUserProfile,
   darkModePDF: addBadge(darkModePDF, BADGES.hot),
   webToPDF,
-  webToQRCode,
-  textToQRCode: addBadge(textToQRCode, BADGES.hot),
   scrollToVeryEnd,
   passwordGenerator: addBadge(passwordGenerator, BADGES.hot),
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
@@ -282,12 +271,10 @@ const allScripts = {
   fb_checkToken: fb_checkToken,
   fb_getTokenCampaigns: fb_getTokenCampaigns,
   unshorten: addBadge(unshorten, BADGES.hot),
-  transfer_sh: transfer_sh,
-  jsonformatter: jsonformatter,
   screenshotFullPage: screenshotFullPage,
   visualEvent: visualEvent,
   fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
-  viewBrowserInfo: addBadge(viewBrowserInfo, BADGES.new),
+  viewBrowserInfo: viewBrowserInfo,
   douyin_downloadWachingVideo: addBadge(
     douyin_downloadWachingVideo,
     BADGES.new
@@ -298,13 +285,12 @@ const allScripts = {
   ),
   showTheVideos: showTheVideos,
   fb_storySaver: addBadge(fb_storySaver, BADGES.new),
-  insta_storySaver: insta_storySaver,
   whatApp_storySaver: whatApp_storySaver,
   send_shareFiles: send_shareFiles,
   fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.hot),
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_toggleNewFeed: fb_toggleNewFeed,
-  // fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
+  fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_bypassPreview: envato_bypassPreview,
   shopee_topVariation: addBadge(shopee_topVariation, BADGES.hot),
   ggdrive_downloadVideo: ggdrive_downloadVideo,
@@ -323,8 +309,7 @@ const allScripts = {
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: search_hopamchuan,
   ggdrive_generateDirectLink: ggdrive_generateDirectLink,
-  freesound_downloadAudio: freesound_downloadAudio,
-  // soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
+  soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
   fastDoc: fastDoc,
   smartPDF: smartPDF,
   studocu_dl: studocu_dl,
@@ -354,14 +339,6 @@ const allScripts = {
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.hot),
   fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.hot),
   fb_fetchAllAddedFriends: fb_fetchAllAddedFriends,
-  bing_imageCreator: bing_imageCreator,
-  stable_diffusion_baseten: stable_diffusion_baseten,
-  stable_diffusion_demo: stable_diffusion_demo,
-  dreamai: dreamai,
-  playgroundai: playgroundai,
-  pixaiart: pixaiart,
-  skybox_blockadelabs: skybox_blockadelabs,
-  huggingface: huggingface,
   tailieu_vn: tailieu_vn,
   fb_downloadWallMediaFromPosts: fb_downloadWallMediaFromPosts,
   textToSpeech: textToSpeech,
@@ -379,6 +356,17 @@ const allScripts = {
   whellOfNames_hack: addBadge(whellOfNames_hack, BADGES.new),
   saveAllVideo: addBadge(saveAllVideo, BADGES.new),
   fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.hot),
+  fireship_vip: addBadge(fireship_vip, BADGES.new),
+  vuiz_createLogo: addBadge(vuiz_createLogo, BADGES.new),
+  vuiz_getLink: addBadge(vuiz_getLink, BADGES.new),
+  ggdrive_downloadPdf: addBadge(ggdrive_downloadPdf, BADGES.new),
+  ggdrive_downloadPresentation: addBadge(
+    ggdrive_downloadPresentation,
+    BADGES.new
+  ),
+  youtube_localDownloader: addBadge(youtube_localDownloader, BADGES.new),
+  twitter_downloadButton: addBadge(twitter_downloadButton, BADGES.new),
+  spotify_downloadButton: addBadge(spotify_downloadButton, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

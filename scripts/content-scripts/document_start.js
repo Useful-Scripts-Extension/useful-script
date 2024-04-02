@@ -19,7 +19,7 @@
 
 // run all scripts that has onDocumentStart event
 (async () => {
-  injectScript(
+  import(
     chrome.runtime.getURL(
       "/scripts/content-scripts/scripts/ufs_global_webpage_context.js"
     )
@@ -38,9 +38,7 @@
     })
   );
 
-  injectScript(
-    chrome.runtime.getURL("/scripts/content-scripts/run_scripts.js")
-  );
+  import(chrome.runtime.getURL("/scripts/content-scripts/run_scripts.js"));
 })();
 
 // Run script on user click (if clicked script has onClickContentScript event)

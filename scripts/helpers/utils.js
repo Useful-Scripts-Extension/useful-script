@@ -88,6 +88,10 @@ export const getCurrentTabId = async () => {
   return (await getCurrentTab())?.id;
 };
 
+export const getCurrentTabUrl = async () => {
+  return (await getCurrentTab())?.url;
+};
+
 // https://stackoverflow.com/a/25226679/11898496
 export function focusToTab(tab) {
   return chrome.tabs.update(tab.id, { active: true });
@@ -152,8 +156,8 @@ export function checkBlackWhiteList(script, url) {
     b = script.blackList || [],
     hasWhiteList = w.length > 0,
     hasBlackList = b.length > 0,
-    inWhiteList = matchPatterns(url, w) ?? true,
-    inBlackList = matchPatterns(url, b) ?? false;
+    inWhiteList = matchOneOfPatterns(url, w) ?? true,
+    inBlackList = matchOneOfPatterns(url, b) ?? false;
 
   let willRun =
     (!hasWhiteList && !hasBlackList) ||
@@ -163,55 +167,19 @@ export function checkBlackWhiteList(script, url) {
   return willRun;
 }
 
-// Source: https://github.com/fregante/webext-patterns/blob/main/index.ts
-function matchPatterns(url, patterns) {
-  const patternValidationRegex =
-    /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^file:\/\/\/.*$|^resource:\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$|^about:/;
-  const isFirefox =
-    typeof navigator === "object" && navigator.userAgent.includes("Firefox/");
-  const allStarsRegex = isFirefox
-    ? /^(https?|wss?):[/][/][^/]+([/].*)?$/
-    : /^https?:[/][/][^/]+([/].*)?$/;
-  const allUrlsRegex = /^(https?|file|ftp):[/]+/;
-
-  function getRawPatternRegex(pattern) {
-    if (!patternValidationRegex.test(pattern))
-      throw new Error(
-        pattern +
-          " is an invalid pattern, it must match " +
-          String(patternValidationRegex)
-      );
-    let [, protocol, host, pathname] = pattern.split(/(^[^:]+:[/][/])([^/]+)?/);
-    protocol = protocol
-      .replace("*", isFirefox ? "(https?|wss?)" : "https?")
-      .replace(/[/]/g, "[/]");
-    host = (host ?? "")
-      .replace(/^[*][.]/, "([^/]+.)*")
-      .replace(/^[*]$/, "[^/]+")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]$/g, "[^.]+");
-    pathname = pathname
-      .replace(/[/]/g, "[/]")
-      .replace(/[.]/g, "[.]")
-      .replace(/[*]/g, ".*");
-    return "^" + protocol + host + "(" + pathname + ")?$";
-  }
-
-  function patternToRegex(matchPatterns) {
-    if (matchPatterns.length === 0) return /$./;
-    if (matchPatterns.includes("<all_urls>")) return allUrlsRegex;
-    if (matchPatterns.includes("*://*/*")) return allStarsRegex;
-    return new RegExp(
-      matchPatterns.map((x) => getRawPatternRegex(x)).join("|")
+function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
     );
+    if (regex.test(url)) return true;
   }
-
-  try {
-    return patternToRegex(patterns).test(url);
-  } catch (e) {
-    console.log("ERROR matchPatterns", e);
-    return false;
-  }
+  return false;
 }
 
 // https://stackoverflow.com/a/68634884/11898496
@@ -268,11 +236,11 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
-  var from =
+  let from =
       "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
     to =
       "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
-  for (var i = 0, l = from.length; i < l; i++) {
+  for (let i = 0, l = from.length; i < l; i++) {
     str = str.replace(RegExp(from[i], "gi"), to[i]);
   }
 
@@ -357,15 +325,6 @@ export const JSONUtils = {
 
 //#endregion
 
-// #region Snap Utils (snaptik, snapinsta)
-
-//prettier-ignore
-export function doSomething(e,i,n){for(var r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),t=r.slice(0,i),f=r.slice(0,n),o=e.split("").reverse().reduce(function(e,n,r){if(-1!==t.indexOf(n))return e+t.indexOf(n)*Math.pow(i,r)},0),c="";o>0;)c=f[o%n]+c,o=(o-o%n)/n;return c||"0"}
-//prettier-ignore
-export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){for(var h="";r[t]!==e[a];)h+=r[t],t++;for(var l=0;l<e.length;l++)h=h.replace(RegExp(e[l],"g"),l);f+=String.fromCharCode(doSomething(h,a,10)-n)}return decodeURIComponent(escape(f))}
-
-// #endregion
-
 // #region UI
 
 // const seperated_popup_search_param = "isSeparatedPopup";
@@ -385,8 +344,8 @@ export function doSomething2(r,o,e,n,a,f){f="";for(var t=0,g=r.length;t<g;t++){f
 
 // https://stackoverflow.com/a/4068385/11898496
 export function popupCenter({ url, title, w, h }) {
-  var left = screen.width / 2 - w / 2;
-  var top = screen.height / 2 - h / 2;
+  let left = screen.width / 2 - w / 2;
+  let top = screen.height / 2 - h / 2;
   const newWindow = window.open(
     url,
     title,
@@ -403,7 +362,7 @@ export function popupCenter({ url, title, w, h }) {
 }
 
 export function showLoading(text = "") {
-  let html = `
+  let html = /*html*/ `
     <div class="loading-container">
         <div>
             <div class="loader"></div><br/>
@@ -430,7 +389,7 @@ export function showLoading(text = "") {
 }
 
 export function showPopup(title = "", innerHTML = "") {
-  let html = `<div class="popup-container">
+  let html = /*html*/ `<div class="popup-container">
     <div class="popup-inner-container">
         <button class="close-btn">X</button>
         <h2 style="text-align: center; margin-bottom:10px">${title}</h2>
@@ -481,19 +440,19 @@ export function waitForKeyElements(
   actionFunction /* Required: The code to run when elements are found. It is passed a jNode to the matched element.*/,
   bWaitOnce /* Optional: If false, will continue to scan for new elements even after the first match is found.*/
 ) {
-  var targetNodes, btargetsFound;
+  let targetNodes, btargetsFound;
   targetNodes = document.querySelectorAll(selectorTxt);
 
   if (targetNodes && targetNodes.length > 0) {
     btargetsFound = true;
     /*--- Found target node(s).  Go through each and act if they are new. */
     targetNodes.forEach(function (element) {
-      var alreadyFound =
+      let alreadyFound =
         element.dataset.found == "alreadyFound" ? "alreadyFound" : false;
 
       if (!alreadyFound) {
         //--- Call the payload function.
-        var cancelFound = actionFunction(element);
+        let cancelFound = actionFunction(element);
         if (cancelFound) btargetsFound = false;
         else element.dataset.found = "alreadyFound";
       }
@@ -502,10 +461,10 @@ export function waitForKeyElements(
     btargetsFound = false;
   }
 
-  //--- Get the timer-control variable for this selector.
-  var controlObj = waitForKeyElements.controlObj || {};
-  var controlKey = selectorTxt.replace(/[^\w]/g, "_");
-  var timeControl = controlObj[controlKey];
+  //--- Get the timer-control letiable for this selector.
+  let controlObj = waitForKeyElements.controlObj || {};
+  let controlKey = selectorTxt.replace(/[^\w]/g, "_");
+  let timeControl = controlObj[controlKey];
 
   //--- Now set or clear the timer as appropriate.
   if (btargetsFound && bWaitOnce && timeControl) {

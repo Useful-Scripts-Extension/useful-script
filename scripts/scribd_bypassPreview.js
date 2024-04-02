@@ -1,5 +1,5 @@
 export default {
-  icon: "https://www.scribd.com/favicon.ico",
+  icon: "https://s-f.scribdassets.com/scribd.ico?014e86d16?v=5",
   name: {
     en: "Scribd - bypass preview",
     vi: "Scribd - Xem miễn phí VIP",

@@ -7,6 +7,7 @@ export default {
   description: {
     en: "",
     vi: "",
+    img: "",
   },
   infoLink: "",
 

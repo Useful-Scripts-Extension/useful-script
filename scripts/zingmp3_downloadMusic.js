@@ -1,3 +1,5 @@
+import { getCurrentTab } from "./helpers/utils.js";
+
 export default {
   icon: "https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.64/static/media/icon_zing_mp3_60.f6b51045.svg",
   name: {
@@ -227,16 +229,40 @@ export default {
     };
 
     (async function () {
-      // window.open(await ZingMp3.search('game thủ liên minh'));
+      // window.open(await ZingMp3.search("game thủ liên minh"));
       // window.open(await ZingMp3.getLastPlaying());
       // window.open(await ZingMp3.getHome());
       // window.open(await ZingMp3.getChartHome());
-      // window.open(await ZingMp3.getInfoMusic('ZWFE8OUO'))
+      // window.open(await ZingMp3.getInfoMusic("ZWFE8OUO"));
+      // window.open(await ZingMp3.getStreaming("Z6WZD78I"));
 
-      let url = prompt("Nhap link bai hat: ", location.href);
+      const tab = await getCurrentTab();
+      let url = prompt("Nhap link bai hat: ", tab.url);
       if (url) {
         let songid = ZingMp3.getSongIdFromURL(url);
-        if (songid) window.open(await ZingMp3.getStreaming(songid));
+        if (songid) {
+          try {
+            const streamUrl = await ZingMp3.getStreaming(songid);
+            const res = await fetch(streamUrl);
+            const json = await res.json();
+            console.log(json);
+            if (json.err) throw new Error(json.msg);
+            if (!json.data) throw new Error("No Data");
+
+            let options = Object.keys(json.data);
+            let choice = prompt(
+              "Chọn chất lượng nhạc: \n" + options.join("\n"),
+              options[options.length - 1]
+            );
+
+            if (choice !== null) {
+              let url = json.data[choice];
+              window.open(url);
+            }
+          } catch (error) {
+            alert("ERROR: " + error);
+          }
+        }
       }
     })();
   },

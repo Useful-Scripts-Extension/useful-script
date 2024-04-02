@@ -288,7 +288,10 @@ function createScriptButton(script, isFavorite = false) {
   // tooltip
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
-  tooltip.innerText = t(script.description);
+  tooltip.innerHTML = t(script.description);
+  if (script.description?.img) {
+    tooltip.innerHTML += `<img src="${script.description.img}" style="width:95%" />`;
+  }
   button.appendChild(tooltip);
 
   buttonContainer.appendChild(button);

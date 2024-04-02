@@ -59,17 +59,17 @@ export default {
         div.style.bottom = "5px";
         div.style.overflow = "auto";
 
-        div.innerHTML = `<tr>
+        div.innerHTML = /*html*/ `<tr>
               <th colspan="2">Found ${L.length} Image(s):</th>
           </tr>
-          
+
           <div style="padding:20px;border:0;outline:0;background:#eee">
             ${L.map(
               (img) => '<img src="' + img + '" style="margin:5px"/>'
             ).join("")}
           </div>
-          
-          <div style="position:fixed;top:5px;right:5px;width:20px;height:20px;font-size:16px;font-weight:bold;z-index:9999;padding:2px;margin:0;opacity:0.8;border-radius:6px;background:#f55;cursor:pointer;color:white;text-align:center;box-shadow:2px 2px 4px rgba(0,0,0,0.5)" 
+
+          <div style="position:fixed;top:5px;right:5px;width:20px;height:20px;font-size:16px;font-weight:bold;z-index:9999;padding:2px;margin:0;opacity:0.8;border-radius:6px;background:#f55;cursor:pointer;color:white;text-align:center;box-shadow:2px 2px 4px rgba(0,0,0,0.5)"
             onclick="document.querySelector('#${id}')?.remove?.()">X
           </div>`;
 

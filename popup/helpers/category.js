@@ -32,13 +32,6 @@ export const CATEGORY = {
       vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
     },
   },
-  ai: {
-    id: "ai",
-    name: {
-      en: `<i class="fa-solid fa-robot"></i> AI`,
-      vi: `<i class="fa-solid fa-robot"></i> AI`,
-    },
-  },
   search: {
     id: "search",
     name: {
@@ -86,20 +79,6 @@ export const CATEGORY = {
     name: {
       en: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
       vi: `<i class="fa-brands fa-tiktok"></i> Tiktok`,
-    },
-  },
-  shopping: {
-    id: "shopping",
-    name: {
-      en: `<i class="fa-solid fa-cart-shopping"></i> Shopping`,
-      vi: `<i class="fa-solid fa-cart-shopping"></i> Mua sắm`,
-    },
-  },
-  github: {
-    id: "github",
-    name: {
-      en: `<i class="fa-brands fa-github"></i> Github`,
-      vi: `<i class="fa-brands fa-github"></i> Github`,
     },
   },
   automation: {

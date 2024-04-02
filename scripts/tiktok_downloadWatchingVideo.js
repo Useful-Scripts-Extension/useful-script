@@ -11,6 +11,8 @@ export default {
     vi: "Tải video tiktok bạn đang xem (không watermark)",
   },
 
+  whiteList: ["https://www.tiktok.com/*"],
+
   onClickExtension: async function () {
     const { closeLoading, setLoadingText } = showLoading("Đang lấy video id..");
 

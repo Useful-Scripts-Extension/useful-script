@@ -16,7 +16,7 @@ export default {
     en: "Download all videos in folder of google drive (bypass download permission)",
     vi: "Tải tất cả video trong thư mục google drive (tải được video không cho phép tải)",
   },
-    
+
   onClickExtension: async function () {
     // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
 
@@ -38,15 +38,13 @@ export default {
       let result = [];
       for (let i = 0; i < allDocs.length; i++) {
         let { id, name } = allDocs[i];
-        setLoadingText(
-          `Tìm thấy ${allDocs.length} videos.<br/>
+        setLoadingText(/*html*/ `Tìm thấy ${allDocs.length} videos.<br/>
           Đang tìm link video ${i + 1}...<br/><br/>
           <p style="max-width:200px">${name}</p><br/><br/>
           Lỗi: ${errors.length} video<br/>
           <div style="max-height:150px;overflow:auto">
             ${errors.map(({ id, name, e }) => name).join("<br/>")}
-          </div>`
-        );
+          </div>`);
         try {
           // prettier-ignore
           let videoInfo = await ggdrive_downloadVideo.getLinkVideoGDriveFromDocId(id);

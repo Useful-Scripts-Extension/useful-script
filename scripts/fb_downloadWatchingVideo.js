@@ -12,6 +12,8 @@ export default {
     vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch/story/comment/reel/chat/bình luận/tin nhắn)",
   },
   whiteList: ["https://*.facebook.com/*"],
+  infoLink:
+    "https://greasyfork.org/en/scripts/477748-facebook-video-downloader",
 
   onClickExtension: async function () {
     let { closeLoading, setLoadingText } = showLoading(
@@ -19,7 +21,7 @@ export default {
     );
     try {
       let listVideoId = await shared.getListVideoIdInWebsite();
-      let watchingVideoId = listVideoId[0];
+      let watchingVideoId = listVideoId?.[0];
       if (!watchingVideoId) throw Error("Không tìm thấy video nào");
 
       setLoadingText("Đang lấy token dtsg...");

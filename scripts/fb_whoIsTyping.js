@@ -60,7 +60,7 @@ export default {
       if (!exist) {
         exist = document.createElement("div");
         exist.id = divId;
-        exist.innerHTML = `<div class="ufs-header clearfix">
+        exist.innerHTML = /*html*/ `<div class="ufs-header clearfix">
           <button class="ufs-clear-btn">X</button>
           <button class="ufs-minimize-btn">-</button>
         </div>`;

@@ -6,7 +6,7 @@ import {
 } from "./helpers/utils.js";
 
 export default {
-  icon: "https://drive.google.com/favicon.ico",
+  icon: "https://drive-thirdparty.googleusercontent.com/32/type/video/mp4",
   name: {
     en: "GG Drive - Download video",
     vi: "GG Drive - Tải video",
@@ -15,7 +15,9 @@ export default {
     en: "Download google drive video that dont have download button",
     vi: "Tải video không có nút download trên google drive",
   },
-    
+  infoLink:
+    "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
+
   onClickExtension: async function () {
     let { closeLoading } = showLoading("Đang tìm link video...");
     try {
@@ -39,7 +41,7 @@ export default {
         ${res
           .map((_) => {
             let name = _.name.replace(/ /g, "_");
-            return `<div>
+            return /*html*/ `<div>
               <h1><a href="${_.url}" target="_blank">${_.quality}</a></h1>
               <video src="${_.url}" controls style="max-width:95%" />
             </div>`;

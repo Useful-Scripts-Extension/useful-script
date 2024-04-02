@@ -8,7 +8,7 @@ export default {
     en: "Download the song that be playing in Nhaccuatui",
     vi: "Tải bài nhạc / lời bài hát đang nghe trên Nhaccuatui",
   },
-  
+
   onClick: function () {
     const renderSongInfo = (songInfos, tableId = "") => {
       if (!songInfos?.length) return `<p>Không có gì hết.</p>`;
@@ -46,11 +46,13 @@ export default {
           "curPlayInde": 1
       } */
           //prettier-ignore
-          const {title,key,info,location,kbit,avatar,lyric,creator,newtab} = songInfo;
+          const {title,key,info,location,highquality,kbit,avatar,lyric,creator,newtab} = songInfo;
 
           let action =
             (location
-              ? /*html*/ `<a href="${location}" target="_blank">Tải nhạc (${kbit}kbit)</a>`
+              ? /*html*/ `<a href="${
+                  highquality || location
+                }" target="_blank">Tải nhạc (${kbit}kbit)</a>`
               : "_") +
             (lyric
               ? /*html*/ `<a href="${lyric}" target="_blank">Tải lyric</a>`

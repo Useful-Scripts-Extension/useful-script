@@ -19,7 +19,7 @@ export default {
       if (url == null) return;
 
       let directLink = shared.generateDirectLinkFromUrl(url);
-      prompt("Thành công! Link tải ngay của bạn: ", directLink);
+      if (directLink) window.open(directLink);
     } catch (e) {
       alert("ERROR: " + e);
     }

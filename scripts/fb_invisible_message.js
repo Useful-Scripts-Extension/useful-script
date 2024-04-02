@@ -8,7 +8,7 @@ export default {
     en: "Add the > character before writing a message to send hidden messages.\n\nYour friends needs to install this extension and enable it to view hidden messages.",
     vi: "Thêm ký tự > trước tin nhắn để tạo tin nhắn tàng hình.\n\nChỉ xem được tin nhắn tàng hình khi cài extension và bật chức năng này.",
   },
-  infoLink: "https://www.facebook.com/groups/j2team.community/posts/1607769529555161/",
+  infoLink: "https://github.com/t-rekttt/invisible_message",
 
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
@@ -16,7 +16,7 @@ export default {
     // ==UserScript==
     // @name         Invisible Text
     // @namespace    https://thao.pw
-    // @version      0.6
+    // @version      0.10
     // @description  FB Messenger invisible text
     // @author       T-Rekt
     // @match        https://*.facebook.com/*
@@ -24,14 +24,13 @@ export default {
     // @grant        none
     // @run-at       document-idle
     // ==/UserScript==
-
     (function () {
       // Thank you zws
-
-      const PADDING = "\u200c";
+      const PADDING_START = "\u200c";
+      const PADDING_END = "\u{e0061}";
       const CHARS = [
         // "\u200d",
-        "\u{e0061}",
+        // "\u{e0061}",
         "\u{e0062}",
         "\u{e0063}",
         "\u{e0064}",
@@ -59,12 +58,14 @@ export default {
         "\u{e007a}",
         "\u{e007f}",
       ];
-
+      const shouldEncodePattern = / *>(.+?)< */;
+      const encodedPattern = new RegExp(
+        `${PADDING_START}([${CHARS.join("")}]+?)${PADDING_END}`
+      );
       const CHARS_MAP = CHARS.reduce((curr, val, i) => {
         curr[val] = i;
         return curr;
       }, {});
-
       const lenCalc = (base, chars) => {
         var len = 0;
         var curr = 1;
@@ -74,11 +75,9 @@ export default {
         }
         return len;
       };
-
       const UNICODE_CHARS = 1114112;
       const BASE = CHARS.length;
       const LEN = lenCalc(BASE, UNICODE_CHARS);
-
       const charConvert = (char) => {
         let charCode = char.codePointAt(0);
         let arr = [];
@@ -91,20 +90,17 @@ export default {
         }
         return arr.reverse();
       };
-
       const charEncode = (convertedChar) => {
         return convertedChar.reduce((curr, digit) => curr + CHARS[digit], "");
       };
-
       const encode = (s) => {
         let converted = [];
         for (let c of s) {
           converted.push(charConvert(c));
         }
         let res = converted.map(charEncode);
-        return PADDING + res.join("");
+        return PADDING_START + res.join("") + PADDING_END;
       };
-
       const decodeChar = (encodedChar) => {
         encodedChar = encodedChar.reverse();
         let curr = 1;
@@ -115,9 +111,8 @@ export default {
         }
         return String.fromCodePoint(charCode);
       };
-
       const decode = (s) => {
-        s = s.substr(1);
+        s = encodedPattern.exec(s)[1];
         let curr = [];
         let res = "";
         for (let c of s) {
@@ -127,28 +122,27 @@ export default {
             curr = [];
           }
         }
-
         return res;
       };
-
       const checkEncode = (s) => {
-        if (s?.[0] != PADDING) return false;
-        s = s.substr(1);
-        for (let c of s) if (CHARS_MAP[c] === undefined) return false;
-        return true;
+        //console.log(s);
+        return encodedPattern.exec(s);
       };
-
       requireLazy(
         ["MWV2ChatText.bs", "MqttProtocolClient"],
         (MWV2ChatText, protocolClient) => {
+          console.log({ MWV2ChatText, protocolClient });
           const MWV2ChatTextMakeOrig = MWV2ChatText.make;
           MWV2ChatText.make = function (a) {
             let text = a?.message?.text;
-            if (checkEncode(text))
-              a.message.text = `[Encrypted]: ${decode(text)}`;
+            if (checkEncode(text)) {
+              //a.message.isAdminMessage = true;
+              a.message.text =
+                "Encrypted message: " +
+                a.message.text.replace(encodedPattern, `>${decode(text)}<`);
+            }
             return MWV2ChatTextMakeOrig.apply(this, arguments);
           };
-
           // Message publish
           const publishOrig = protocolClient.prototype.publish;
           protocolClient.prototype.publish = function () {
@@ -159,17 +153,19 @@ export default {
                 if (!b || !b.payload) return;
                 let payload = JSON.parse(b.payload);
                 if (!payload || !payload.tasks) return;
-
                 payload.tasks = payload.tasks.map((task) => {
                   let payload = JSON.parse(task.payload);
                   if (!payload || !payload.text) return task;
-                  if (payload.text.length > 1 && payload.text[0] === ">") {
-                    payload.text = encode(payload.text.substr(1));
+                  let matches = shouldEncodePattern.exec(payload.text);
+                  if (payload.text.length > 1 && matches) {
+                    payload.text = payload.text.replace(
+                      shouldEncodePattern,
+                      " " + encode(matches[1])
+                    );
                   }
                   task.payload = JSON.stringify(payload);
                   return task;
                 });
-
                 b.payload = JSON.stringify(payload);
                 b = JSON.stringify(b);
               })();

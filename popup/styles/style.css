@@ -319,6 +319,7 @@ a:hover {
     border-radius: 6px;
     padding: 5px;
     pointer-events: none;
+    width: calc(100vw - 40px);
 
     /* Position the tooltip */
     position: absolute;

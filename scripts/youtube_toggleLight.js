@@ -8,7 +8,7 @@ export default {
     en: "Toggle light on/off to focus to youtube video",
     vi: "Tắt/Mở đèn để tập trung xem video youtube",
   },
-    whiteList: ["*://www.youtube.com/*"],
+  whiteList: ["*://www.youtube.com/*"],
 
   onClick: function () {
     ["#below", "#secondary", "#masthead-container"].forEach((_) => {
@@ -21,8 +21,9 @@ export default {
       });
     });
 
-    document.querySelector("#player-theater-container")?.scrollIntoView?.({
+    document.querySelector("ytd-player")?.scrollIntoView?.({
       behavior: "smooth",
+      block: "center",
     });
   },
 };

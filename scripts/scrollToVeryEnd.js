@@ -21,9 +21,48 @@ export default {
 export const shared = {
   scrollToVeryEnd: function () {
     return new Promise(async (resolve, reject) => {
-      let height = () =>
-        (document.scrollingElement || document.body).scrollHeight;
-      let down = () => window.scrollTo({ left: 0, top: height() });
+      function findMainScrollableElement() {
+        let scrollableElements = [];
+
+        // Check all elements for scrollable content
+        let elements = document.querySelectorAll("*");
+        for (let element of elements) {
+          let style = window.getComputedStyle(element);
+          if (
+            (style.overflowY === "scroll" ||
+              style.overflowY === "auto" ||
+              style.overflowX === "scroll" ||
+              style.overflowX === "auto") &&
+            (element.scrollHeight > element.clientHeight ||
+              element.scrollWidth > element.clientWidth)
+          ) {
+            scrollableElements.push(element);
+          }
+        }
+
+        // If only one scrollable element is found, return it
+        if (scrollableElements.length === 1) {
+          return scrollableElements[0];
+        }
+
+        // Otherwise, try to find the main scrollable element based on its size and position
+        let mainScrollableElement = null;
+        let maxArea = 0;
+        for (let element of scrollableElements) {
+          let rect = element.getBoundingClientRect();
+          let area = rect.width * rect.height;
+          if (area > maxArea) {
+            maxArea = area;
+            mainScrollableElement = element;
+          }
+        }
+
+        return mainScrollableElement;
+      }
+
+      let height = (ele) => (ele || document.body).scrollHeight;
+      let down = (ele = document) =>
+        ele.scrollTo({ left: 0, top: height(ele) });
       let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
       let lastScroll = {
@@ -39,9 +78,11 @@ export const shared = {
       };
       document.addEventListener("click", clickToCancel);
 
+      let scrollEle = findMainScrollableElement();
+
       while (running) {
-        down();
-        let currentHeight = height();
+        down(scrollEle);
+        let currentHeight = height(scrollEle);
         if (currentHeight != lastScroll.top) {
           lastScroll.top = currentHeight;
           lastScroll.time = Date.now();

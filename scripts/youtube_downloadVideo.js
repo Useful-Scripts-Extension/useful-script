@@ -1,8 +1,8 @@
 export default {
   icon: `https://www.youtube.com/s/desktop/ff71ea81/img/favicon_48x48.png`,
   name: {
-    en: "Download youtube video",
-    vi: "Tải video youtube",
+    en: "Download youtube video/audio",
+    vi: "Tải video/audio youtube",
   },
   description: {
     en: "Bypass age restriction, without login",
@@ -12,45 +12,41 @@ export default {
   onClick: function () {
     // https://stackoverflow.com/a/8260383/11898496
     function getIdFromYoutubeURL(url) {
-      var regExp =
+      let regExp =
         /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-      var match = url.match(regExp);
+      let match = url.match(regExp);
       return match && match[1].length == 11 ? match[1] : false;
     }
 
     let options = [
       {
         name: "yt1s.com",
-        func: (url) => {
-          window.open("https://yt1s.com/vi/youtube-to-mp4?q=" + url);
-        },
+        func: (url) => "https://yt1s.com/vi/youtube-to-mp4?q=" + url,
+      },
+      {
+        name: "yt5s.com",
+        func: (url) => url.replace("youtube", "youtube5s"),
+      },
+      {
+        name: "tubemp3.to",
+        func: (url) => "https://tubemp3.to/" + url,
       },
       {
         name: "10downloader.com",
-        func: (url) => {
-          window.open("https://10downloader.com/download?v=" + url);
-        },
-      },
-      {
-        name: "ymp4.com",
-        func: (url) => {
-          window.open("https://ymp4.download/en50/?url=" + url);
-        },
+        func: (url) => "https://10downloader.com/download?v=" + url,
       },
       {
         name: "9xbuddy.com",
-        func: (url) => {
-          window.open("https://9xbuddy.com/process?url=" + url);
-        },
+        func: (url) => "https://9xbuddy.com/process?url=" + url,
       },
       {
         name: "getlinks.vip",
-        url: "https://getlinks.vip/vi/youtube/",
-        func: (url) => {
-          window.open(
-            "https://getlinks.vip/vi/youtube/" + getIdFromYoutubeURL(url)
-          );
-        },
+        func: (url) =>
+          "https://getlinks.vip/vi/youtube/" + getIdFromYoutubeURL(url),
+      },
+      {
+        name: "ymp4.com",
+        func: (url) => "https://ymp4.download/en50/?url=" + url,
       },
     ];
 
@@ -63,7 +59,14 @@ export default {
 
     if (choose != null && choose >= 0 && choose < options.length) {
       let url = prompt("Nhập link youtube:", location.href);
-      url && options[choose].func(url);
+      if (url) {
+        url = options[choose].func(url);
+        let myWin = window.open(
+          url,
+          "Download Youtube Video",
+          "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800, height=900"
+        );
+      }
     }
   },
 };

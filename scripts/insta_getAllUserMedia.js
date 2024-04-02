@@ -64,8 +64,12 @@ export default {
         }
       }
       console.log(all_urls);
-      setLoadingText(`Đang tải xuống ... (${all_urls.length} link)`);
-      downloadData(all_urls.join("\n"), user_id, ".txt");
+      if (!all_urls?.length) {
+        alert("Không tìm được link ảnh/video nào.");
+      } else {
+        setLoadingText(`Đang tải xuống ... (${all_urls.length} link)`);
+        downloadData(all_urls.join("\n"), user_id, ".txt");
+      }
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
