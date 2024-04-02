@@ -1,6 +1,26 @@
 ## Change logs
 
 <details>
+  <summary>v1.63-hotfix - 03/04/2024</summary>
+
+  Thật ra chưa muốn nâng version đâu tại đang làm/sửa nhiều chức năng.
+
+  Nhưng khổ nỗi google cập nhật gì đó khiến các chức năng lỗi gần hết. Phải fix và nâng version gấp trong đêm :(
+
+  1 vài chức năng nổi bật ở version này:
+
+- Xem các group fb mà bạn bè đang tham gia
+- Xem các page fb mà bạn bè đang thích
+- Tải file pdf/power-point bị chặn tải trên google drive
+- Thêm nút tải nhạc/hình/video cho soundcloud/spotify/twitter
+- Mở khoá Fireship PRO -> xem khoá học free
+- Cập nhật tab Khuyên dùng
+
+  [Tất cả Chức năng](./LIST_SCRIPTS_VI.md)
+
+</details>
+
+<details>
   <summary>v1.6 - 13/03/2024</summary>
 
   Cập nhật quá nhiều thứ :v
