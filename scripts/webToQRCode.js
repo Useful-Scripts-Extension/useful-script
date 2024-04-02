@@ -1,3 +1,5 @@
+import { getCurrentTab, popupCenter } from "./helpers/utils.js";
+
 export default {
   icon: `<i class="fa-solid fa-barcode fa-lg"></i>`,
   name: {
@@ -9,19 +11,31 @@ export default {
     vi: "Chuyển URL của trang web sang QR Code",
   },
 
-  onClick: function () {
-    var url =
-      "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" +
-      encodeURIComponent(location.href);
-    w = open(
-      url,
-      "w",
-      "location=no,status=yes,menubar=no,scrollbars=no,resizable=yes,width=500,height=500,modal=yes,dependent=yes"
-    );
-    if (w) {
-      setTimeout("w.focus()", 1000);
-    } else {
-      location = url;
+  onClickExtension: async function () {
+    let tab = await getCurrentTab();
+    let url = tab.url;
+    if (!url) {
+      alert("Không tìm thấy url web hiện tại");
+      return;
     }
+
+    popupCenter({
+      url: chrome.runtime.getURL("/scripts/textToQRCode.html?text=" + url),
+      title: "Text To QRCode",
+    });
+
+    // var url =
+    //   "http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=" +
+    //   encodeURIComponent(location.href);
+    // w = open(
+    //   url,
+    //   "w",
+    //   "location=no,status=yes,menubar=no,scrollbars=no,resizable=yes,width=500,height=500,modal=yes,dependent=yes"
+    // );
+    // if (w) {
+    //   setTimeout("w.focus()", 1000);
+    // } else {
+    //   location = url;
+    // }
   },
 };
