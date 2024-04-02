@@ -1346,8 +1346,3 @@ window.UsefulScriptsUtils = UsefulScriptsUtils;
 // Chrome pre-34
 if (!Element.prototype.matches)
   Element.prototype.matches = Element.prototype.webkitMatchesSelector;
-
-// https://mmazzarolo.com/blog/2022-08-25-simple-colored-logging-for-javascript-clis/
-window.console.success = (...args) => console.log("\x1b[32m✔\x1b[0m", ...args);
-window.console.failure = (...args) =>
-  console.error("\x1b[31mｘ\x1b[0m", ...args);
