@@ -28,7 +28,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s._test,
+      // s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,
@@ -166,7 +166,7 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
-      s.youtube_localDownloader,
+      // s.youtube_localDownloader,
       s.youtube_downloadVideo,
       s.pictureInPicture,
       s.youtube_toggleLight,
