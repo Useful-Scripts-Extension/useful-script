@@ -21,7 +21,7 @@ export default {
     );
     try {
       let listVideoId = await shared.getListVideoIdInWebsite();
-      let watchingVideoId = listVideoId[0];
+      let watchingVideoId = listVideoId?.[0];
       if (!watchingVideoId) throw Error("Không tìm thấy video nào");
 
       setLoadingText("Đang lấy token dtsg...");

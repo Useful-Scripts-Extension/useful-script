@@ -29,7 +29,10 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/document_start.js"],
+      "js": [
+        "scripts/content-scripts/document_start.js",
+        "scripts/content-scripts/scripts/ufs_global_webpage_context.js"
+      ],
       "run_at": "document_start"
     },
     {

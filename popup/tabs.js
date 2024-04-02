@@ -26,20 +26,6 @@ const specialTabs = [
 
 const tabs = [
   {
-    ...CATEGORY.ai,
-    scripts: [
-      s.huggingface,
-      createTitle("--- AI Art ---", "--- AI Art - Tranh/Ảnh ---"),
-      s.bing_imageCreator,
-      s.pixaiart,
-      s.playgroundai,
-      s.dreamai,
-      s.skybox_blockadelabs,
-      s.stable_diffusion_demo,
-      s.stable_diffusion_baseten,
-    ],
-  },
-  {
     ...CATEGORY.search,
     scripts: [
       s._test,
@@ -120,7 +106,7 @@ const tabs = [
       s.fb_downloadCommentVideo,
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      // s.fb_storyInfo,
+      s.fb_storyInfo,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.fb_bulkDownload,
       s.fb_downloadAlbumMedia,
@@ -169,11 +155,8 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
-      // s.insta_getToken,
       s.insta_getUserInfo,
-      createTitle("--- Download ---", "--- Tải xuống ---"),
       s.insta_injectDownloadBtn,
-      s.insta_storySaver,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.insta_getAllUserMedia,
       s.insta_getAllImagesInNewFeed,
@@ -209,45 +192,36 @@ const tabs = [
     ],
   },
   {
-    ...CATEGORY.shopping,
-    scripts: [
-      s.shopee_topVariation,
-      s.shopee_totalSpendMoney,
-      s.shopee_totalSpendMoney_excel,
-      s.tiki_totalSpendMoney,
-    ],
-  },
-  {
-    ...CATEGORY.github,
-    scripts: [s.github_goToAnyCommit, s.githubdev, s.github1s],
-  },
-  {
     ...CATEGORY.automation,
     scripts: [
       s.shortenURL,
       s.unshorten,
       s.textToSpeech,
       s.changeAudioOutput,
+      s.send_shareFiles,
       createTitle("--- Image ---", "--- Ảnh ---"),
-      s.textToQRCode,
-      s.webToQRCode,
       s.screenshotFullPage,
       s.vuiz_createLogo,
       createTitle("--- Automation ---", "--- Tự động hoá ---"),
       s.passwordGenerator,
       s.getAllEmailsInWeb,
-      s.jsonformatter,
       s.performanceAnalyzer,
       s.scrollToVeryEnd,
       s.dino_hack,
+      createTitle("--- Github ---", "--- Github ---"),
+      s.github_goToAnyCommit,
+      s.githubdev,
+      s.github1s,
+      createTitle("--- Shopping ---", "--- Mua sắm ---"),
+      s.shopee_topVariation,
+      s.shopee_totalSpendMoney,
+      s.shopee_totalSpendMoney_excel,
+      s.tiki_totalSpendMoney,
       createTitle("--- PDF ---", "--- PDF ---"),
       s.webToPDF,
       s.fastDoc,
       s.smartPDF,
       s.pdfstuffs,
-      createTitle("--- Share ---", "--- Chia sẻ ---"),
-      s.send_shareFiles,
-      s.transfer_sh,
     ],
   },
   {
@@ -268,7 +242,6 @@ const tabs = [
       s.simpleAllowCopy,
       s.reEnableContextMenu,
       s.showHiddenFields,
-      // s.passwordFieldToggle,
       s.viewCookies,
       s.removeCookies,
       s.viewBrowserInfo,
@@ -312,6 +285,22 @@ const recommendTab = {
   scripts: [
     { name: { en: "--- Same author ---", vi: "--- Cùng tác giả ---" } },
     {
+      id: "recommend_LOL2D",
+      icon: "https://hoangtran0410.github.io/LOL2D/favicon/apple-touch-icon.png",
+      name: {
+        en: "LOL2D - League of Legends 2D",
+        vi: "LOL2D - Liên minh huyền thoại 2D",
+      },
+      description: {
+        en: "Play League of Legends right on your browser",
+        vi: "Chơi Liên minh huyền thoại ngay trên trình duyệt",
+        img: "https://raw.githubusercontent.com/HoangTran0410/LOL2D/main/assets/images/screenshots/Screenshot_4.jpg",
+      },
+      onClickExtension: () =>
+        window.open("https://github.com/HoangTran0410/LOL2D"),
+    },
+    {
+      id: "recommend_RevealDeletedFBMessage",
       icon: "https://github.com/HoangTran0410/RevealDeletedFBMessages/raw/master/icons/icon48.png",
       name: {
         en: "Reveal Deleted FB Message",
@@ -325,6 +314,7 @@ const recommendTab = {
         window.open("https://github.com/HoangTran0410/RevealDeletedFBMessages"),
     },
     {
+      id: "recommend_FBMediaDownloader",
       icon: "https://www.facebook.com/favicon.ico",
       name: { en: "FB Media Downloader", vi: "FB Media Downloader" },
       description: {
@@ -336,6 +326,7 @@ const recommendTab = {
     },
     { name: { en: "--- Web ---", vi: "--- Web hay ---" } },
     {
+      id: "recommend_YouCom",
       icon: "https://you.com/favicon/apple-touch-icon-72x72.png",
       name: { en: "You.com", vi: "You.com" },
       description: {
@@ -345,6 +336,7 @@ const recommendTab = {
       onClickExtension: () => window.open("https://you.com/"),
     },
     {
+      id: "recommend_ItTools",
       icon: "https://it-tools.tech/favicon-32x32.png",
       name: { en: "IT Tools", vi: "IT Tools" },
       description: {
@@ -355,18 +347,7 @@ const recommendTab = {
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
-      icon: "https://lh3.googleusercontent.com/2GdtpZt9NWFkfrfLZnWL2gM2UdCOsgpQhhdxSx4wPw5Iz10NcT433g3iHyAAZ8J-ZCyz3gwLKR1kJQC0PidRVKKJ1Ws=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "J2Team Security", vi: "J2Team Security" },
-      description: {
-        en: "Use fb better with more security and tools",
-        vi: "Dùng fb sướng hơn bao giờ hết",
-      },
-      onClickExtension: () =>
-        window.open(
-          "https://chrome.google.com/webstore/detail/j2team-security/hmlcjjclebjnfohgmgikjfnbmfkigocc"
-        ),
-    },
-    {
+      id: "recommend_CRXViewer",
       icon: "https://lh3.googleusercontent.com/fD5QA80tZj1up43xmnxnxiqKNEq7515-HNtLfjoZlz_I626zxXmjlhKaQPUme_evpCEnN5-U7VnG3VfOcnTPzv_i=w128-h128-e365-rj-sc0x00ffffff",
       name: { en: "CRX Viewer", vi: "CRX Viewer" },
       description: {
@@ -379,18 +360,33 @@ const recommendTab = {
         ),
     },
     {
-      icon: "https://lh3.googleusercontent.com/nnMASpwJY4U5ukhKl4PfIdaOpuKXNrVvfIc9n8-NJOJIY7m3RLgsazN6ATmDkXyaMll8zADOXuBR574MwC7T71kJcQ=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Adblock Plus", vi: "Adblock Plus" },
+      id: "recommend_uBlockOrigin",
+      icon: "https://lh3.googleusercontent.com/rrgyVBVte7CfjjeTU-rCHDKba7vtq-yn3o8-10p5b6QOj_2VCDAO3VdggV5fUnugbG2eDGPPjoJ9rsiU_tUZBExgLGc=s60",
+      name: { en: "uBlock Origin", vi: "uBlock Origin" },
       description: {
         en: "Block advertisements for all website",
         vi: "Chặn quảng cáo cho mọi website",
       },
       onClickExtension: () =>
         window.open(
-          "https://chrome.google.com/webstore/detail/adblock-plus-free-ad-bloc/cfhdojbkjhnklbpkdaibdccddilifddb"
+          "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm"
         ),
     },
     {
+      id: "recommend_DarkReader",
+      icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
+      name: { en: "Dark reader", vi: "Dark reader" },
+      description: {
+        en: "Darkmode for every website",
+        vi: "Chế độ tối cho mọi trang web",
+      },
+      onClickExtension: () =>
+        window.open(
+          "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+        ),
+    },
+    {
+      id: "recommend_GoogleTranslate",
       icon: "https://lh3.googleusercontent.com/3ZU5aHnsnQUl9ySPrGBqe5LXz_z9DK05DEfk10tpKHv5cvG19elbOr0BdW_k8GjLMFDexT2QHlDwAmW62iLVdek--Q=w128-h128-e365-rj-sc0x00ffffff",
       name: { en: "Google translate", vi: "Google dịch" },
       description: {
@@ -403,6 +399,7 @@ const recommendTab = {
         ),
     },
     {
+      id: "recommend_NSFWFilter",
       icon: "https://lh3.googleusercontent.com/M_2Q8eJAj1ejsRg30LuJs_Q94Jk7d-6ZbE5cyddULweH5LrfsVJtjK8zbpSjwA3G9oHwZeyHyrYrr971kqLwtNNP=w128-h128-e365-rj-sc0x00ffffff",
       name: {
         en: "NSFW Filter: Hide NSFW content",
@@ -418,33 +415,52 @@ const recommendTab = {
         ),
     },
     {
-      icon: "https://lh3.googleusercontent.com/tGvFFAf_mkjk-mfiRipdYU_WTMCZSReAy4opGxvWJppyHzHTKy6f1NO1tSpV998-ZcKJjPOWpWbtEFLEMr0Y_SyBKA=w128-h128-e365-rj-sc0x00ffffff",
+      id: "recommend_Violentmonkey",
+      icon: "https://violentmonkey.github.io/favicon-32x32.png?v=e0d9ed50fb982761b0f7cdea8b093ae9",
       name: {
-        en: "DYL Download Facebook Video",
-        vi: "DYL Download Facebook Video",
+        en: "Violentmonkey",
+        vi: "Violentmonkey",
       },
       description: {
-        en: "Video, Story, download with one click",
-        vi: "Tải video, story facebook với 1 nút nhấn",
+        en: "An open source userscript manager.",
+        vi: "Trình quản lý userscript tốt.",
+      },
+      onClickExtension: () => window.open("https://violentmonkey.github.io/"),
+    },
+    {
+      id: "recommend_Extensity",
+      icon: "https://lh3.googleusercontent.com/mgOg2hnGuthlYj-MEUXedWn_s9QjTXBwusffIAhbIuHM8L3K2c5cq1xf7bCzbRE5f9E6RXaGLPNEuJEt4hP6sLDL=s60",
+      name: {
+        en: "Extensity",
+        vi: "Extensity",
+      },
+      description: {
+        en: "Extension manager - Quickly enable/disable browser extensions",
+        vi: "Trình quản lý extension - Nhanh chóng tắt/mở extension của trình duyệt",
       },
       onClickExtension: () =>
         window.open(
-          "https://chrome.google.com/webstore/detail/dyl-download-facebook-vid/honmapcmnfgjmahijdniaaollhhfpcnj?hl=vi"
+          "https://chromewebstore.google.com/detail/extensity/jjmflmamggggndanpgfnpelongoepncg"
         ),
     },
     {
-      icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Dark reader", vi: "Dark reader" },
+      id: "recommend_BookmarkSidebar",
+      icon: "https://lh3.googleusercontent.com/4kT7DxtoPSmSLzTit1w2Vbx7b1L2zkASTrqGzEpBW-qs2EwmLYzBTyv0cvlGZo-rD-s732OIrUXX-C33RHPSFvOj=s0",
+      name: {
+        en: "Bookmark Sidebar",
+        vi: "Bookmark Sidebar",
+      },
       description: {
-        en: "Darkmode for every website",
-        vi: "Chế độ tối cho mọi trang web",
+        en: "Very good Bookmark manager, find your bookmarks faster.",
+        vi: "Trình quản lý extension ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
       },
       onClickExtension: () =>
         window.open(
-          "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+          "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
         ),
     },
     {
+      id: "recommend_Beecost",
       icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
       name: { en: "Beecost", vi: "Beecost" },
       description: {
