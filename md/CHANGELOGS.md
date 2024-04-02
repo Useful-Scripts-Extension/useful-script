@@ -1,7 +1,7 @@
 ## Change logs
 
 <details>
-  <summary>v1.63-hotfix - 03/04/2024</summary>
+  <summary>v1.64-hotfix - 03/04/2024</summary>
 
   Thật ra chưa muốn nâng version đâu tại đang làm/sửa nhiều chức năng.
 
