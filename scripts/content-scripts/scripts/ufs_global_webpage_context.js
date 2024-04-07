@@ -30,6 +30,11 @@ const UsefulScriptGlobalPageContext = {
         );
       }
     },
+    getActiveScripts: async function () {
+      return await UsefulScriptGlobalPageContext.Extension.sendToContentScript(
+        "getActiveScripts"
+      );
+    },
   },
   DOM: {
     // https://stackoverflow.com/a/3381522

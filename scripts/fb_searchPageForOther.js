@@ -47,11 +47,7 @@ export default {
       localStorage.ufs_fb_searchPageForOther = JSON.stringify(allPages);
       localStorage.ufs_fb_searchPageForOther_owner = JSON.stringify(info);
 
-      window.open(
-        await UsefulScriptGlobalPageContext.Extension.getURL(
-          "scripts/fb_searchPageForOther.html"
-        )
-      );
+      window.open(chrome.runtime.getURL("scripts/fb_searchPageForOther.html"));
     } catch (e) {
       alert("ERROR: " + e);
     } finally {
