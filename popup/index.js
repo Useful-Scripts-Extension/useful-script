@@ -68,8 +68,7 @@ function createTabs() {
     // show scripts count
     if (tab.showCount) {
       let avaiCount = tab.scripts.filter((script) => !isTitle(script)).length;
-      let allCount = Object.keys(allScripts).length;
-      tabBtn.innerHTML += ` (${avaiCount}/${allCount})`;
+      tabBtn.innerHTML += ` (${avaiCount})`;
     }
 
     // custom style

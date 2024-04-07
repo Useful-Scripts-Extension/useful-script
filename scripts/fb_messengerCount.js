@@ -47,11 +47,7 @@ export default {
 
       localStorage.ufs_fb_msg_kount = JSON.stringify(ranking);
 
-      window.open(
-        await UsefulScriptGlobalPageContext.Extension.getURL(
-          "scripts/fb_messengerCount.html"
-        )
-      );
+      window.open(chrome.runtime.getURL("scripts/fb_messengerCount.html"));
     } catch (e) {
       alert("ERROR: " + e);
     } finally {

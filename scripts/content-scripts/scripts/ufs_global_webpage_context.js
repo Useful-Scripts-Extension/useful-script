@@ -30,6 +30,11 @@ const UsefulScriptGlobalPageContext = {
         );
       }
     },
+    getActiveScripts: async function () {
+      return await UsefulScriptGlobalPageContext.Extension.sendToContentScript(
+        "getActiveScripts"
+      );
+    },
   },
   DOM: {
     // https://stackoverflow.com/a/3381522
@@ -1341,8 +1346,3 @@ const UsefulScriptsUtils = {
   downloadData: UsefulScriptGlobalPageContext.Utils.downloadData,
 };
 window.UsefulScriptsUtils = UsefulScriptsUtils;
-
-// ================================= Polyfill =================================
-// Chrome pre-34
-if (!Element.prototype.matches)
-  Element.prototype.matches = Element.prototype.webkitMatchesSelector;

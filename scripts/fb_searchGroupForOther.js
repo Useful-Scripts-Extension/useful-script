@@ -46,11 +46,7 @@ export default {
       console.log(allGroups);
       localStorage.ufs_fb_searchGroupForOther = JSON.stringify(allGroups);
       localStorage.ufs_fb_searchGroupForOther_owner = JSON.stringify(info);
-      window.open(
-        await UsefulScriptGlobalPageContext.Extension.getURL(
-          "scripts/fb_searchGroupForOther.html"
-        )
-      );
+      window.open(chrome.runtime.getURL("scripts/fb_searchGroupForOther.html"));
     } catch (e) {
       alert("ERROR: " + e);
     } finally {

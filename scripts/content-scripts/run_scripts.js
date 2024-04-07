@@ -7,36 +7,25 @@
 // Kể cả việc nó đã được viết ở file khác (utils, helper, ...)
 // Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
 
-(() => {
-  // let search = new URLSearchParams(getCurrentScriptSrc().split("?")?.[1]);
-  // let path = search.get("path");
-
-  let { path, ids, event } = JSON.parse(
-    localStorage.getItem("ufs-auto-run-scripts") ?? "{}"
-  );
+(async () => {
+  let ids = [],
+    path = "";
 
   // run script on receive event
   window.addEventListener("ufs-run-page-scripts", ({ detail }) => {
-    const { event, ids } = detail;
-    runScripts(ids, event, path);
+    runScripts(ids, detail.event, path);
   });
 
-  // auto run initial event defined in URL search params
-  if (ids && event) {
-    let scriptIds = ids.split(",");
-    runScripts(scriptIds, event, path);
+  const data = await UsefulScriptGlobalPageContext.Extension.getActiveScripts();
+  console.log(data);
+  ids = data?.ids?.split(",") || [];
+  path = data?.path || "";
+
+  // auto run documentStart
+  if (ids) {
+    runScripts(ids, "onDocumentStart", path);
   }
 })();
-
-function getCurrentScriptSrc() {
-  try {
-    // cannot get currentScript if script type is module: https://stackoverflow.com/a/45845801/11898496
-    // return import.meta.url;
-    throw false;
-  } catch (e) {
-    return document.currentScript.src;
-  }
-}
 
 function runScripts(scriptIds, event, path) {
   for (let id of scriptIds.filter((_) => _)) {
