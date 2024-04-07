@@ -1,3 +1,5 @@
+import("./scripts/ufs_global_webpage_context.js");
+
 // communication between page-script and content-script
 (() => {
   function sendToPageScript(event, data) {
@@ -39,7 +41,9 @@
       switch (message.type) {
         case MsgType.runScript:
           let scriptId = message.scriptId;
-          const script = (await import("../" + scriptId + ".js"))?.default;
+          const script = (
+            await import(chrome.runtime.getURL("/scripts/") + scriptId + ".js")
+          )?.default;
 
           if (script && isFunction(script[ClickType.onClickContentScript])) {
             script[ClickType.onClickContentScript]();

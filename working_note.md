@@ -20,10 +20,12 @@
 
 - [ ] Crack tải pdf trên tailieugiangday.vn dễ vl
 
-- [ ] Optimize import jszip
+- [x] Optimize import jszip => có lẽ không cần
 
 - [x] làm cho xong soundcloud_downloadMusic hoặc xóa => Xong rồi, Ngon
 
-- [ ] Move transfer.sh sang popup
+- [x] Move transfer.sh sang popup => Xoá luôn
 
-- [ ] text to qrcode không còn hoạt động
+- [x] text to qrcode không còn hoạt động => xoá luôn, ít xài
+
+- [ ] bookmark exporter/manager

@@ -29,45 +29,38 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/scripts/ufs_global_webpage_context.js"],
-      "run_at": "document_start",
-      "world": "MAIN"
-    },
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/scripts/ufs_global_webpage_context.js"],
-      "run_at": "document_start",
-      "world": "ISOLATED"
-    },
-    {
-      "matches": ["<all_urls>"],
       "js": ["scripts/content-scripts/content_script.js"],
       "run_at": "document_start",
-      "world": "ISOLATED"
+      "world": "ISOLATED",
+      "match_origin_as_fallback": true,
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/run_scripts.js"],
+      "js": [
+        "scripts/content-scripts/scripts/ufs_global_webpage_context.js",
+        "scripts/content-scripts/run_scripts.js"
+      ],
       "run_at": "document_start",
-      "world": "MAIN"
-    },
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/document_start.js"],
-      "run_at": "document_start",
-      "world": "MAIN"
+      "world": "MAIN",
+      "match_origin_as_fallback": true,
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
       "js": ["scripts/content-scripts/document_idle.js"],
       "run_at": "document_idle",
-      "world": "MAIN"
+      "world": "MAIN",
+      "match_origin_as_fallback": true,
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
       "js": ["scripts/content-scripts/document_end.js"],
       "run_at": "document_end",
-      "world": "MAIN"
+      "world": "MAIN",
+      "match_origin_as_fallback": true,
+      "match_about_blank": true
     }
   ],
   "web_accessible_resources": [

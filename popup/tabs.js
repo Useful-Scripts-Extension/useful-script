@@ -28,7 +28,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
+      s._test,
       s.search_userscript,
       s.whatFont,
       s.similarWeb,
@@ -49,10 +49,10 @@ const tabs = [
     ...CATEGORY.download,
     scripts: [
       createTitle("--- All in one ---", "--- Tổng hợp ---"),
-      s.savevideo_me,
-      s.saveAllVideo,
-      s.getLinkLuanxt,
       s.vuiz_getLink,
+      s.saveAllVideo,
+      s.savevideo_me,
+      s.getLinkLuanxt,
       // s.bookmark_exporter,
       s.twitter_downloadButton,
       createTitle("--- Music ---", "--- Nhạc ---"),

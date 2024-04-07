@@ -1346,8 +1346,3 @@ const UsefulScriptsUtils = {
   downloadData: UsefulScriptGlobalPageContext.Utils.downloadData,
 };
 window.UsefulScriptsUtils = UsefulScriptsUtils;
-
-// ================================= Polyfill =================================
-// Chrome pre-34
-if (!Element.prototype.matches)
-  Element.prototype.matches = Element.prototype.webkitMatchesSelector;
