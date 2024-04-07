@@ -65,7 +65,8 @@ export default {
             .map(({ quality, url }) => {
               if (!(quality in allUrls)) allUrls[quality] = [];
               allUrls[quality].push(url);
-              return `<a target="_blank" href="${url}">${quality}</a>`;
+              return /* html */ `<a target="_blank" href="${url}">${quality}</a>
+              <video src="${url}" controls width="300"></video>`;
             })
             .join("<br/>");
 
