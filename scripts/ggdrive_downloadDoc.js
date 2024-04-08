@@ -26,61 +26,68 @@ export default {
           return;
         }
 
-        if (
-          !confirm(
-            "Để tool có thể tải tất cả các trang\nBạn hãy chắc chắn đã scroll lên trang docs đầu tiên\n\nOK để tiếp tục\nCancel để huỳ"
-          )
-        )
-          return;
-
-        const totalPage = Number(
+        const [currentPage, totalPage] =
           document
             .querySelector(".jfk-tooltip-contentId")
-            ?.textContent?.split(" / ")?.[1]
-        );
+            ?.textContent?.split(" / ") ?? [];
 
         const sleep = (ms = 0) =>
           new Promise((resolve) => setTimeout(resolve, ms));
 
-        let canvasQueue = Array.from(document.querySelectorAll("canvas"));
-        let currentY = 0;
+        // scroll to first page
+        const contanier = document.querySelector(
+          ".kix-rotatingtilemanager.docs-ui-hit-region-surface"
+        );
+        contanier?.scrollIntoView?.({ block: "start", behavior: "instant" });
 
-        let pageCount = canvasQueue.length;
-        if (pageCount === 0) {
+        await sleep(500);
+
+        // get first page
+        let canvas = document.querySelector("canvas");
+        if (!canvas) {
           alert("Docs page not found");
           return;
         }
 
         let pdf;
-        while (canvasQueue.length) {
-          let can = canvasQueue.shift();
-          can.scrollIntoView({ block: "center" });
+        while (canvas) {
+          // scroll current page into view => to load next page
+          canvas.scrollIntoView({ block: "start", behavior: "instant" });
+          await sleep(500);
 
-          if (can.width && can.height) {
-            await sleep(500);
-            currentY = Math.max(can.getBoundingClientRect().bottom, currentY);
-
-            let imgData = can.toDataURL("image/jpeg", 1.0);
+          // capture canvas page to pdf
+          if (canvas.width && canvas.height) {
+            let imgData = canvas.toDataURL("image/jpeg", 1.0);
             if (!pdf) {
-              let ori = can.width > can.height ? "l" : "p";
+              let ori = canvas.width > canvas.height ? "l" : "p";
               pdf = new jsPDF({
                 orientation: ori,
                 unit: "px",
-                format: [can.width, can.height],
+                format: [canvas.width, canvas.height],
                 hotfixes: ["px_scaling"],
               });
             }
             pdf.addImage(imgData, "JPEG", 0, 0);
-            pdf.addPage([can.width, can.height]);
           }
 
-          // query new canvas
-          let newCanvas = Array.from(document.querySelectorAll("canvas"));
-          newCanvas.forEach((c) => {
-            let y = c.getBoundingClientRect().bottom;
-            if (y >= currentY && c != can && !canvasQueue.includes(c))
-              canvasQueue.push(c);
-          });
+          // query next canvas
+          let listCanvas = Array.from(document.querySelectorAll("canvas"));
+          let nextCanvas = null;
+          for (let c of listCanvas) {
+            if (
+              c != canvas &&
+              c.getBoundingClientRect().top > canvas.getBoundingClientRect().top
+            ) {
+              nextCanvas = c;
+              break;
+            }
+          }
+          canvas = nextCanvas;
+
+          // prepare next pdf page
+          if (canvas) {
+            pdf.addPage([canvas.width, canvas.height]);
+          }
         }
         pdf.save((document.title || "download") + ".pdf");
       }

@@ -13,6 +13,8 @@ export default {
 
   onClick: () => {
     let url = location.href;
-    window.open(url.replace("/edit", "/mobilebasic"));
+    window.open(
+      url.replace("/edit", "/mobilebasic").replace("/preview", "/mobilebasic")
+    );
   },
 };
