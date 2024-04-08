@@ -62,7 +62,7 @@ export default {
         return sig;
       },
 
-      requestZing: async ({ path, qs, willHashParam }) => {
+      requestZing: async ({ path, qs, willHashParam, host = URL_API }) => {
         let param = new URLSearchParams(qs).toString();
         let sig = await Utils.hashParam(path, param, willHashParam);
 
@@ -73,7 +73,7 @@ export default {
           sig,
         };
 
-        return URL_API + path + "?" + new URLSearchParams(params).toString();
+        return host + path + "?" + new URLSearchParams(params).toString();
       },
     };
 
@@ -132,6 +132,19 @@ export default {
           path: "/api/v2/search/multi",
           qs: { q: keyword },
           willHashParam: false,
+        });
+      },
+      async downloadSong(id) {
+        return await Utils.requestZing({
+          host: "https://download.zingmp3.vn",
+          path: "/api/v2/download/post/song",
+          qs: { id },
+        });
+      },
+      async getLyric(id) {
+        return await Utils.requestZing({
+          path: "/api/v2/lyric/get/lyric",
+          qs: { id },
         });
       },
       //#endregion
@@ -202,44 +215,33 @@ export default {
           qs: { page },
         });
       },
-      //   async getUserListSong({
-      //     type = "library",
-      //     page = 1,
-      //     count = 50,
-      //     sectionId = "mFavSong",
-      //   } = {}) {
-      //     return await Utils.requestZing({
-      //       path: "/api/v2/user/song/get/list",
-      //       qs: { type, page, count, sectionId },
-      //       //   willHashParam: false,
-      //     });
-      //   },
-      //   async getSectionPlaylist(id) {
-      //     return await Utils.requestZing({
-      //       path: "/api/v2/playlist/getSectionBottom",
-      //       qs: { id },
-      //     });
-      //   },
-      // async getLastPlaying() {
-      //   return await Utils.requestZing({
-      //     path: "/api/v2/user/lasplaying/get/lasplaying",
-      //   });
-      // },
+      async getLastPlaying() {
+        return await Utils.requestZing({
+          path: "/api/v2/user/lasplaying/get/lasplaying",
+        });
+      },
       //#endregion
     };
 
     (async function () {
-      // window.open(await ZingMp3.search("game thủ liên minh"));
-      // window.open(await ZingMp3.getLastPlaying());
       // window.open(await ZingMp3.getHome());
-      // window.open(await ZingMp3.getChartHome());
-      // window.open(await ZingMp3.getInfoMusic("ZWFE8OUO"));
-      // window.open(await ZingMp3.getStreaming("Z6WZD78I"));
+      // window.open(await ZingMp3.getLyric("ZZDEZ8UC"));
+      // window.open(await ZingMp3.getInfoMusic("ZZDEZ8UC"));
+      // window.open(await ZingMp3.getStreaming("ZZDEZ8UC"));
+      // window.open(await ZingMp3.search("game thủ liên minh"));
+      // window.open(await ZingMp3.getUserMusicOverview());
+      // window.open(await ZingMp3.getDetailPlaylist("Z6CZOIWU"));
+      // window.open(await ZingMp3.getDetailArtist("ICM"));
+
+      // window.open(await ZingMp3.getChartHome()); // => die
+      // window.open(await ZingMp3.getLastPlaying()); // => not working?
+      // window.open(await ZingMp3.downloadSong("Z7ZCD9BD")); // => some songs be blocked on pc
+      // return;
 
       const tab = await getCurrentTab();
-      let url = prompt("Nhap link bai hat: ", tab.url);
+      let url = prompt("Nhập link hoặc id bài hát: ", tab.url);
       if (url) {
-        let songid = ZingMp3.getSongIdFromURL(url);
+        let songid = url.length > 10 ? ZingMp3.getSongIdFromURL(url) : url;
         if (songid) {
           try {
             const streamUrl = await ZingMp3.getStreaming(songid);

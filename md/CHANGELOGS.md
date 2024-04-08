@@ -1,6 +1,19 @@
 ## Change logs
 
 <details>
+  <summary>v1564-hotfix - 08/04/2024</summary>
+
+  Fix các chức năng tự động chạy
+
+  Optimize scripts autorun
+
+  Bữa 03/04 fix chưa hết :(
+
+  [Tất cả Chức năng](./LIST_SCRIPTS_VI.md)
+
+</details>
+
+<details>
   <summary>v1.64-hotfix - 03/04/2024</summary>
 
   Thật ra chưa muốn nâng version đâu tại đang làm/sửa nhiều chức năng.

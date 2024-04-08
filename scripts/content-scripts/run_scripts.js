@@ -16,7 +16,8 @@
     runScripts(ids, detail.event, path);
   });
 
-  const data = await UsefulScriptGlobalPageContext.Extension.getActiveScripts();
+  const data =
+    await UsefulScriptGlobalPageContext?.Extension?.getActiveScripts?.();
   console.log(data);
   ids = data?.ids?.split(",") || [];
   path = data?.path || "";
