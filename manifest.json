@@ -33,8 +33,7 @@
       "run_at": "document_start",
       "world": "ISOLATED",
       "match_origin_as_fallback": true,
-      "match_about_blank": true,
-      "all_frames": true
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
@@ -45,8 +44,7 @@
       "run_at": "document_start",
       "world": "MAIN",
       "match_origin_as_fallback": true,
-      "match_about_blank": true,
-      "all_frames": true
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
@@ -54,8 +52,7 @@
       "run_at": "document_idle",
       "world": "MAIN",
       "match_origin_as_fallback": true,
-      "match_about_blank": true,
-      "all_frames": true
+      "match_about_blank": true
     },
     {
       "matches": ["<all_urls>"],
@@ -63,8 +60,7 @@
       "run_at": "document_end",
       "world": "MAIN",
       "match_origin_as_fallback": true,
-      "match_about_blank": true,
-      "all_frames": true
+      "match_about_blank": true
     }
   ],
   "web_accessible_resources": [
