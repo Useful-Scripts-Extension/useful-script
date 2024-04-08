@@ -171,6 +171,9 @@ import ggdrive_downloadPresentation from "./ggdrive_downloadPresentation.js";
 import youtube_localDownloader from "./youtube_localDownloader.js";
 import twitter_downloadButton from "./twitter_downloadButton.js";
 import spotify_downloadButton from "./spotify_downloadButton.js";
+import ggdrive_downloadDoc from "./ggdrive_downloadDoc.js";
+import ggdrive_copyDocText from "./ggdrive_copyDocText.js";
+import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
 
 // inject badges
 const allScripts = {
@@ -367,6 +370,9 @@ const allScripts = {
   youtube_localDownloader: addBadge(youtube_localDownloader, BADGES.new),
   twitter_downloadButton: addBadge(twitter_downloadButton, BADGES.new),
   spotify_downloadButton: addBadge(spotify_downloadButton, BADGES.new),
+  ggdrive_downloadDoc: addBadge(ggdrive_downloadDoc, BADGES.new),
+  ggdrive_copyDocText: addBadge(ggdrive_copyDocText, BADGES.new),
+  ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
