@@ -1,5 +1,5 @@
 export default {
-  icon: "https://www.tampermonkey.net/favicon.ico",
+  icon: "https://www.userscript.zone/favicon.ico",
   name: {
     en: "Search Userscripts",
     vi: "Tìm Userscripts",
@@ -10,9 +10,6 @@ export default {
   },
 
   onClickExtension: function () {
-    let search = prompt("Search for Userscripts:", "");
-    if (search != null) {
-      window.open("https://www.userscript.zone/search?q=" + search);
-    }
+    window.open("https://www.userscript.zone/");
   },
 };

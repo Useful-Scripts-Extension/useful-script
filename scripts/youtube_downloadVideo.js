@@ -20,12 +20,16 @@ export default {
 
     let options = [
       {
+        name: "y2mate.com",
+        func: (url) => url.replace("youtube.com", "youtubepp.com"),
+      },
+      {
         name: "yt1s.com",
         func: (url) => "https://yt1s.com/vi/youtube-to-mp4?q=" + url,
       },
       {
         name: "yt5s.com",
-        func: (url) => url.replace("youtube", "youtube5s"),
+        func: (url) => url.replace("youtube.com", "youtube5s.com"),
       },
       {
         name: "tubemp3.to",
