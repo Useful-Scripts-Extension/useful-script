@@ -14,11 +14,9 @@
 
 - [ ] Test thử [rapid api](https://rapidapi.com/)
 
-- [ ] **(IN-PROGRESS)** Youtube local download => lấy data từ ytplayer.config.args.raw_player_response => Làm UI
+- [ ] Youtube local download => lấy data từ ytplayer.config.args.raw_player_response => Làm UI
 
 - [ ] html2img khá ngon, nhưng chưa biết xài vô cái gì
-
-- [ ] Crack tải pdf trên tailieugiangday.vn dễ vl
 
 - [x] Optimize import jszip => có lẽ không cần
 
@@ -29,3 +27,9 @@
 - [x] text to qrcode không còn hoạt động => xoá luôn, ít xài
 
 - [ ] bookmark exporter/manager
+
+- [x] Google docs/sheet downloader => Done
+
+- [x] Tailieu.vn => PDFjs dễ crack
+
+- [ ] Wheel of name - input list of values

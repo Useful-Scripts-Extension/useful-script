@@ -342,7 +342,7 @@ const allScripts = {
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.hot),
   fb_searchPageForOther: addBadge(fb_searchPageForOther, BADGES.hot),
   fb_fetchAllAddedFriends: fb_fetchAllAddedFriends,
-  tailieu_vn: tailieu_vn,
+  tailieu_vn: addBadge(tailieu_vn, BADGES.new),
   fb_downloadWallMediaFromPosts: fb_downloadWallMediaFromPosts,
   textToSpeech: textToSpeech,
   shopee_totalSpendMoney_excel: addBadge(

@@ -9,7 +9,6 @@ import {
   sendEventToTab,
   toggleActiveScript,
 } from "../scripts/helpers/utils.js";
-import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { openModal } from "./helpers/modal.js";
@@ -27,6 +26,8 @@ import {
 } from "./helpers/utils.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
+
+updateScriptClickCount("ufs_open_extension_popup");
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");

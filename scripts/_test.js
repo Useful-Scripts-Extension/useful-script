@@ -10,13 +10,13 @@ export default {
   },
 
   onClick: async () => {
-    try {
-      let abc = getEventListeners(
-        document.querySelector("#wheelCanvas")
-      ).click[0].listener.toString();
-      console.log(abc);
-    } catch (e) {
-      console.error(e);
-    }
+    console.log("web: ", window.ufs_rvdfm_all_msgs);
+  },
+  onClickExtension: () => {
+    console.log("extension: " + JSON.stringify(localStorage));
+  },
+  onClickContentScript: () => {
+    console.log("content script: ", window.top.ufs_rvdfm_all_msgs);
+    console.log("content script: ", UsefulScriptGlobalPageContext);
   },
 };

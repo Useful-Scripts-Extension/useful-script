@@ -119,9 +119,8 @@ export default {
           }
 
           try {
-            let overlay = document.querySelector(
-              "._95f5f1767857._0838fb325c04"
-            );
+            let page = document.querySelector("#page-container-wrapper");
+            let overlay = page.parentElement.previousElementSibling;
             if (overlay) {
               overlay.style.display = "none";
             }
