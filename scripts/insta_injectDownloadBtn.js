@@ -5,8 +5,9 @@ export default {
     vi: "Thêm nút tải cho Instagram",
   },
   description: {
-    en: "Add a download button to all photo/video/post/story on Instagram <img style='width:100%' src='/scripts/insta_injectDownloadBtn.png' />",
-    vi: "Thêm nút để tải (ảnh/video/story/post) trên Instagram <img style='width:100%' src='/scripts/insta_injectDownloadBtn.png' />",
+    en: "Add a download button to all photo/video/post/story on Instagram",
+    vi: "Thêm nút để tải (ảnh/video/story/post) trên Instagram",
+    img: "/scripts/insta_injectDownloadBtn.png",
   },
   whiteList: ["https://www.instagram.com/*"],
 
