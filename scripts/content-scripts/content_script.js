@@ -1,7 +1,14 @@
 import("./scripts/ufs_global_webpage_context.js");
 
-// communication between page-script and content-script
-(() => {
+(async () => {
+  async function getActiveScripts() {
+    const key = "activeScripts";
+    let ids = (await chrome.storage.sync.get([key]))?.[key] || "";
+    let path = chrome.runtime.getURL("/scripts/");
+    return { ids, path };
+  }
+
+  // communication between page-script and content-script
   function sendToPageScript(event, data) {
     window.dispatchEvent(
       new CustomEvent("ufs-contentscript-sendto-pagescript", {
@@ -9,6 +16,7 @@ import("./scripts/ufs_global_webpage_context.js");
       })
     );
   }
+
   window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
     let { event, data } = e.detail;
     switch (event) {
@@ -16,17 +24,19 @@ import("./scripts/ufs_global_webpage_context.js");
         sendToPageScript(event, chrome.runtime.getURL(data));
         break;
       case "getActiveScripts":
-        const key = "activeScripts";
-        let ids = (await chrome.storage.sync.get([key]))?.[key] || "";
-        let path = chrome.runtime.getURL("/scripts/");
+        let { ids, path } = await getActiveScripts();
         sendToPageScript(event, { ids, path });
         break;
     }
   });
-})();
 
-// Run script on user click (if clicked script has onClickContentScript event)
-(async () => {
+  // save active scripts to local storage to share with page script
+  localStorage.setItem(
+    "ufs_active_scripts",
+    JSON.stringify(await getActiveScripts())
+  );
+
+  // Run script on user click (if clicked script has onClickContentScript event)
   try {
     const { MsgType, ClickType } = await import("../helpers/constants.js");
     const { isFunction } = await import("../helpers/utils.js");

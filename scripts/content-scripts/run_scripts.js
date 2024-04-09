@@ -16,11 +16,23 @@
     runScripts(ids, detail.event, path);
   });
 
-  const data =
-    await UsefulScriptGlobalPageContext?.Extension?.getActiveScripts?.();
-  console.log(data);
-  ids = data?.ids?.split(",") || [];
-  path = data?.path || "";
+  // auto run documentStart
+  try {
+    const res = JSON.parse(localStorage.getItem("ufs_active_scripts") || "{}");
+    ids = res?.ids?.split(",") || [];
+    path = res?.path || "";
+  } catch (e) {
+    console.log("ERRO ufs", e);
+  }
+
+  if (!ids || !path) {
+    const data =
+      await UsefulScriptGlobalPageContext?.Extension?.getActiveScripts?.();
+    ids = data?.ids?.split(",") || [];
+    path = data?.path || "";
+  }
+
+  console.log("ufs auto_run scripts: ", ids);
 
   // auto run documentStart
   if (ids) {
