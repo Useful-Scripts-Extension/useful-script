@@ -13,9 +13,6 @@ export default {
   whiteList: [],
 
   onClick: () => {
-    if (!window.ufs_duckRace_originalShuffle)
-      window.ufs_duckRace_originalShuffle = Array.prototype.shuffle;
-
     const target = prompt("Nhập kết quả mong muốn:", "");
     if (target === null) return;
 
@@ -24,9 +21,12 @@ export default {
     [window, iframe?.contentWindow]
       .filter((_) => _)
       .forEach((win) => {
+        if (!win.ufs_duckRace_originalShuffle)
+          win.ufs_duckRace_originalShuffle = win.Array.prototype.shuffle;
+
         console.log("modify shuffle in", win);
         win.Array.prototype.shuffle = function () {
-          const result = window.ufs_duckRace_originalShuffle.apply(
+          const result = win.ufs_duckRace_originalShuffle.apply(
             this,
             arguments
           );
