@@ -32,4 +32,6 @@
 
 - [x] Tailieu.vn => PDFjs dễ crack
 
-- [ ] Wheel of name - input list of values
+- [x] Wheel of name - input list of values
+
+- [ ] duck race - input list of values
