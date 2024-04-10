@@ -324,7 +324,7 @@ Chỉ xem được tin nhắn tàng hình khi cài extension và bật chức n�
 
 ### <i class="fa-solid fa-unlock"></i> Mở khoá
 
-  129. [Hack Wheel of Names](/scripts/whellOfNames_hack.js): Hack kết quả trang web Wheel of Names, luôn ra kết quả bạn mong muốn thay vì ngẫu nhiên.
+  129. [Hack Wheel of Names](/scripts/wheelOfNames_hack.js): Hack kết quả trang web Wheel of Names, luôn ra kết quả bạn mong muốn thay vì ngẫu nhiên.
 
   130. [Xem mật khẩu wifi đã lưu](/scripts/viewSavedWifiPass.js): Powershell script giúp xem mật khẩu wifi đã lưu trên máy tính
 

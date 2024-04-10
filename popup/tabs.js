@@ -232,7 +232,7 @@ const tabs = [
     ...CATEGORY.unlock,
     scripts: [
       s.duckRace_cheat,
-      s.whellOfNames_hack,
+      s.wheelOfNames_hack,
       s.viewSavedWifiPass,
       s.leakCheck,
       createTitle("--- Unlock web ---", "--- Mở khoá web ---"),

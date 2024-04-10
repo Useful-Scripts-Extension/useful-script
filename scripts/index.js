@@ -160,7 +160,7 @@ import douyin_batchDownload from "./douyin_batchDownload.js";
 import medium_readFullArticle from "./medium_readFullArticle.js";
 import viewSavedWifiPass from "./viewSavedWifiPass.js";
 import leakCheck from "./leakCheck.js";
-import whellOfNames_hack from "./whellOfNames_hack.js";
+import wheelOfNames_hack from "./wheelOfNames_hack.js";
 import saveAllVideo from "./saveAllVideo.js";
 import fb_bulkDownload from "./fb_bulkDownload.js";
 import fireship_vip from "./fireship_vip.js";
@@ -358,7 +358,7 @@ const allScripts = {
   medium_readFullArticle: medium_readFullArticle,
   viewSavedWifiPass: addBadge(viewSavedWifiPass, BADGES.new),
   leakCheck: addBadge(leakCheck, BADGES.new),
-  whellOfNames_hack: addBadge(whellOfNames_hack, BADGES.new),
+  wheelOfNames_hack: addBadge(wheelOfNames_hack, BADGES.new),
   saveAllVideo: addBadge(saveAllVideo, BADGES.new),
   fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.hot),
   fireship_vip: addBadge(fireship_vip, BADGES.new),

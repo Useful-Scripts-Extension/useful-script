@@ -324,7 +324,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 ### <i class="fa-solid fa-unlock"></i> Unlock
 
-  129. [Hack Wheel of Names](/scripts/whellOfNames_hack.js): Hack result of Wheel of Names, choose your target, then result will always be your target.
+  129. [Hack Wheel of Names](/scripts/wheelOfNames_hack.js): Hack result of Wheel of Names, choose your target, then result will always be your target.
 
   130. [View saved wifi passwords](/scripts/viewSavedWifiPass.js): PowerShell script to view saved wifi passwords on your computer
 
