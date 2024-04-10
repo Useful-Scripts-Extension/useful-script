@@ -13,8 +13,16 @@ export default {
   whiteList: ["https://www.online-stopwatch.com/*"],
 
   onClick: () => {
-    const target = prompt("Nhập kết quả mong muốn:", "");
-    if (target === null) return;
+    let targets = prompt(
+      "Nhập các kết quả mong muốn (tên hoặc số):\nCách nhau bởi dấu phẩy ,\n Ví dụ: 1,abc,5,20,test",
+      ""
+    );
+    if (targets === null) return;
+
+    targets = targets
+      .split(",")
+      .map((_) => _.trim())
+      .filter((_) => _);
 
     let iframe = document.querySelector('iframe[src*="duck-race"]');
 
@@ -30,13 +38,16 @@ export default {
             arguments
           );
           if (result?.[0]?.instance) {
-            let targetIndex = result.findIndex(
-              (i) => i?.name === target || i?.number == target
-            );
-            if (targetIndex >= 0) {
-              let temp = result[0];
-              result[0] = result[targetIndex];
-              result[targetIndex] = temp;
+            for (let target of targets) {
+              let targetIndex = result.findIndex(
+                (i) => i?.name === target || i?.number == target
+              );
+              if (targetIndex >= 0) {
+                let temp = result[0];
+                result[0] = result[targetIndex];
+                result[targetIndex] = temp;
+                break;
+              }
             }
           }
           console.log("shuffle", this, result, result[0]);

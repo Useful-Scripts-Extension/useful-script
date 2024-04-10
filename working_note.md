@@ -34,7 +34,7 @@
 
 - [x] Wheel of name - input list of values
 
-- [ ] duck race - input list of values
+- [x] duck race - input list of values
 
 - [ ] fb_getAllUidOfGroupMembers đang lỗi
 
