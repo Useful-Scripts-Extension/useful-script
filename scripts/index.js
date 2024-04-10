@@ -174,6 +174,7 @@ import spotify_downloadButton from "./spotify_downloadButton.js";
 import ggdrive_downloadDoc from "./ggdrive_downloadDoc.js";
 import ggdrive_copyDocText from "./ggdrive_copyDocText.js";
 import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
+import duckRace_cheat from "./duckRace_cheat.js";
 
 // inject badges
 const allScripts = {
@@ -373,6 +374,7 @@ const allScripts = {
   ggdrive_downloadDoc: addBadge(ggdrive_downloadDoc, BADGES.new),
   ggdrive_copyDocText: addBadge(ggdrive_copyDocText, BADGES.new),
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
+  duckRace_cheat: addBadge(duckRace_cheat, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

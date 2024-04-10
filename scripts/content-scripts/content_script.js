@@ -1,4 +1,4 @@
-import("./scripts/ufs_global_webpage_context.js");
+import("./ufs_global_webpage_context.js");
 
 (async () => {
   async function getActiveScripts() {

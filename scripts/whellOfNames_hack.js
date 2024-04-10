@@ -5,10 +5,14 @@ export default {
     vi: "Hack Wheel of Names",
   },
   description: {
-    en: "Hack result of Wheel of Names, choose your target, then result will always be your target.",
-    vi: "Hack kết quả trang web Wheel of Names, luôn ra kết quả bạn mong muốn thay vì ngẫu nhiên.",
+    en: "Hack result of wheelofnames.com/wheelrandom.com/spinthewheel.io, choose your target, then result will always be your target.",
+    vi: "Hack kết quả trang web wheelofnames.com/wheelrandom.com/spinthewheel.io, luôn ra kết quả bạn mong muốn thay vì ngẫu nhiên.",
   },
-  whiteList: ["https://wheelofnames.com/*"],
+  whiteList: [
+    "https://wheelofnames.com/*",
+    "https://wheelrandom.com/*",
+    "https://spinthewheel.io/*",
+  ],
 
   // https://gist.github.com/HoangTran0410/0b7763cb1f318c209d0cf18865579748
   onClick: () => {
@@ -17,36 +21,102 @@ export default {
     }
 
     let key = "ufs-whellofnames-target";
-    let old_target = localStorage.getItem(key) || "";
-    let target = prompt(
-      `HACK Wheel of Names\n\nNhập kết quả mong muốn:\nĐể rỗng nếu muốn kết quả ngẫu nhiên trở lại.`,
-      old_target
+    let old_targets = localStorage.getItem(key) || "";
+    let targets = prompt(
+      `HACK Wheel of Names\n\n
+Nhập kết quả mong muốn:\n
+Cách nhau bởi dấu phẩy (,)\n
+Để rỗng nếu muốn kết quả ngẫu nhiên trở lại.`,
+      old_targets
     );
 
-    localStorage.setItem(key, target);
+    localStorage.setItem(key, targets);
 
-    if (!target && old_target) {
+    function contrain(value, min, max) {
+      if (value < min) return min;
+      if (value > max) return max;
+      return value;
+    }
+
+    function getCurrentValues() {
+      switch (location.hostname) {
+        case "wheelofnames.com":
+          return {
+            values: document
+              .querySelector(".basic-editor")
+              ?.innerText?.split("\n")
+              ?.filter((_) => _),
+            offset: 1,
+          };
+        case "wheelrandom.com":
+          return {
+            values: document
+              .querySelector("#names")
+              ?.innerText?.split("\n")
+              ?.filter((_) => _),
+            offset: 0,
+          };
+        case "spinthewheel.io":
+          return {
+            values: document
+              .querySelector("#name0")
+              ?.innerText?.split("\n")
+              ?.filter((_) => _),
+            offset: -1,
+          };
+        default:
+          return {};
+      }
+    }
+
+    function reset() {
       Math.random = window.ufs_originalRandom;
-      alert("Đã reset chức năng. Kết quả quay sẽ ngẫu nhiên trở lại");
+      if (window.ufs_wheelOfNames_interval)
+        clearInterval(window.ufs_wheelOfNames_interval);
+      console.log("Không còn tên nào để hack. Kết quả sẽ ngẫu nhiên trở lại.");
+    }
+
+    function setTarget() {
+      let { values = [], offset } = getCurrentValues();
+
+      targets = targets.filter((_) => values.includes(_));
+      if (targets.length === 0) {
+        reset();
+        return;
+      }
+
+      let target = targets[0];
+      let index = values.indexOf(target);
+
+      if (index >= 0) {
+        let realIndex = index + offset;
+        if (offset && realIndex >= values.length)
+          realIndex = realIndex % values.length;
+        if (offset && realIndex < 0) realIndex = realIndex + values.length;
+
+        Math.random = () => contrain(realIndex / values.length, 0, 1);
+        console.log(
+          `Xong. Kết quả sẽ luôn là '${target}', index: ${realIndex}, Math.random = ${Math.random()}`
+        );
+      } else {
+        reset();
+      }
+    }
+
+    if (!targets && old_targets) {
+      reset();
     } else {
-      let values = document
-        .querySelector(".basic-editor")
-        .innerText.split("\n")
+      targets = targets
+        .split(",")
+        .map((_) => _.trim())
         .filter((_) => _);
 
-      let targetIndex = values.indexOf(target);
-      if (targetIndex === -1) {
-        alert(
-          "Không tìm thấy kết quả mong muốn. Kết quả sẽ ngẫu nhiên trở lại"
-        );
-        Math.random = window.ufs_originalRandom;
-      } else {
-        alert(`Xong. Kết quả sẽ luôn là '${target}'`);
-        let realIndex = targetIndex - 3;
-        if (realIndex < 0) realIndex = values.length + realIndex;
+      if (window.ufs_wheelOfNames_interval)
+        clearInterval(window.ufs_wheelOfNames_interval);
 
-        Math.random = () => realIndex / values.length;
-      }
+      window.ufs_wheelOfNames_interval = setInterval(() => {
+        setTarget();
+      }, 500);
     }
   },
 };

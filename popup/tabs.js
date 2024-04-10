@@ -230,6 +230,7 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
+      s.duckRace_cheat,
       s.whellOfNames_hack,
       s.viewSavedWifiPass,
       s.leakCheck,
