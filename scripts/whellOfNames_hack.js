@@ -5,8 +5,8 @@ export default {
     vi: "Hack Wheel of Names",
   },
   description: {
-    en: "Hack result of wheelofnames.com/wheelrandom.com/spinthewheel.io, choose your target, then result will always be your target.",
-    vi: "Hack kết quả trang web wheelofnames.com/wheelrandom.com/spinthewheel.io, luôn ra kết quả bạn mong muốn thay vì ngẫu nhiên.",
+    en: "Hack result of <ul><li>wheelofnames.com</li><li>wheelrandom.com</li><li>spinthewheel.io</li></ul>always get the result you want.",
+    vi: "Hack kết quả trang web <ul><li>wheelofnames.com</li><li>wheelrandom.com</li><li>spinthewheel.io</li></ul>luôn ra kết quả bạn mong muốn.",
   },
   whiteList: [
     "https://wheelofnames.com/*",

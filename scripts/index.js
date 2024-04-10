@@ -175,6 +175,7 @@ import ggdrive_downloadDoc from "./ggdrive_downloadDoc.js";
 import ggdrive_copyDocText from "./ggdrive_copyDocText.js";
 import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
 import duckRace_cheat from "./duckRace_cheat.js";
+import magnify_image from "./magnify_image.js";
 
 // inject badges
 const allScripts = {
@@ -375,6 +376,7 @@ const allScripts = {
   ggdrive_copyDocText: addBadge(ggdrive_copyDocText, BADGES.new),
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
   duckRace_cheat: addBadge(duckRace_cheat, BADGES.new),
+  magnify_image: addBadge(magnify_image, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

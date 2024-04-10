@@ -10,7 +10,7 @@ export default {
     img: "/scripts/duckRage_cheat.png",
   },
 
-  whiteList: [],
+  whiteList: ["https://www.online-stopwatch.com/*"],
 
   onClick: () => {
     const target = prompt("Nhập kết quả mong muốn:", "");
@@ -24,7 +24,6 @@ export default {
         if (!win.ufs_duckRace_originalShuffle)
           win.ufs_duckRace_originalShuffle = win.Array.prototype.shuffle;
 
-        console.log("modify shuffle in", win);
         win.Array.prototype.shuffle = function () {
           const result = win.ufs_duckRace_originalShuffle.apply(
             this,
@@ -46,6 +45,3 @@ export default {
       });
   },
 };
-
-// functions/attributes that other scripts can import and use
-export const shared = {};

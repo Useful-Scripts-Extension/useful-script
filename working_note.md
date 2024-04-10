@@ -1,6 +1,6 @@
 # WORKING NOTES
 
-## 29/03/2024
+## 29/03/2024 - 10/04/2024
 
 - [ ] fb_invisible_message có vẻ không hoạt động
 
@@ -35,3 +35,7 @@
 - [x] Wheel of name - input list of values
 
 - [ ] duck race - input list of values
+
+- [ ] fb_getAllUidOfGroupMembers đang lỗi
+
+- [ ] text to qrcode <https://hoothin.com/qrcode/>

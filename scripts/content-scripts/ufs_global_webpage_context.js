@@ -37,6 +37,34 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   DOM: {
+    onDoublePress(key, callback, timeout = 500) {
+      let timer = null;
+      let clickCount = 0;
+
+      const keydown = (event) => {
+        if (event.key !== key) return;
+
+        clickCount++;
+        if (clickCount === 2) {
+          callback?.();
+          clickCount = 0;
+          return;
+        }
+
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          clickCount = 0;
+        }, timeout);
+      };
+
+      document.addEventListener("keydown", keydown);
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener("keydown", keydown);
+      };
+    },
+
     // https://stackoverflow.com/a/3381522
     createFlashTitle(newMsg, howManyTimes) {
       var original = document.title;

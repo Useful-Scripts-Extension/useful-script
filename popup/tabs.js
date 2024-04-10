@@ -203,6 +203,7 @@ const tabs = [
       s.changeAudioOutput,
       s.send_shareFiles,
       createTitle("--- Image ---", "--- Ảnh ---"),
+      s.magnify_image,
       s.screenshotFullPage,
       s.vuiz_createLogo,
       createTitle("--- Automation ---", "--- Tự động hoá ---"),
