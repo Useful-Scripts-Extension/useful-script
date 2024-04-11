@@ -46,8 +46,9 @@ export default {
     function getImgSrcAtMouse() {
       try {
         let data = Array.from(document.querySelectorAll("img"))
+          .concat(Array.from(document.querySelectorAll("image")))
           .map((i) => ({
-            src: i.src,
+            src: i.src || i.srcset || i.getAttribute("xlink:href"),
             rect: i.getBoundingClientRect(),
           }))
           .concat(
@@ -70,7 +71,7 @@ export default {
               mouse.y < rect.y + rect.height
             );
           });
-        console.log(data);
+        console.log(mouse, data);
 
         // small one first
         data = data.sort((a, b) => {
@@ -101,8 +102,8 @@ export default {
         UsefulScriptGlobalPageContext.Extension.getURL(
           "/scripts/magnify_image.html"
         ).then((url) => {
-          let w = 600,
-            h = 600,
+          let w = 500,
+            h = 500,
             left = screen.width / 2 - w / 2,
             top = screen.height / 2 - h / 2;
 
