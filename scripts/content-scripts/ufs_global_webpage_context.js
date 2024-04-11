@@ -1,6 +1,3 @@
-// Tất cả các hàm/biến toàn cục được nhúng vào trang web at document_start
-// Có thể truy cập từ các script chạy trong webpage context (có hàm onClick)
-
 const UsefulScriptGlobalPageContext = {
   Extension: {
     sendToContentScript: function (event, data) {
@@ -37,6 +34,36 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   DOM: {
+    notify(msg, x, y) {
+      let id = "ufs_notify_div";
+      let exist = document.getElementById(id);
+      if (exist) exist.remove();
+
+      // create notify msg in website at postion, fade out animation, auto clean up
+      let div = document.createElement("div");
+      div.id = id;
+      div.style.cssText = `
+        position: fixed;
+        left: ${x}px;
+        top: ${y}px;
+        padding: 10px;
+        background-color: #333;
+        color: #fff;
+        border-radius: 5px;
+        z-index: 999999;
+        transition: all 1s ease-out;
+      `;
+      div.textContent = msg;
+      document.body.appendChild(div);
+
+      setTimeout(() => {
+        div.style.opacity = 0;
+        div.style.top = `${y - 50}px`;
+      }, 2000);
+      setTimeout(() => {
+        div.remove();
+      }, 3000);
+    },
     onDoublePress(key, callback, timeout = 500) {
       let timer = null;
       let clickCount = 0;
@@ -261,36 +288,45 @@ const UsefulScriptGlobalPageContext = {
       var minutes = date.getMinutes().toString().padStart(2, "0");
       var seconds = date.getSeconds().toString().padStart(2, "0");
       var milliseconds = date.getMilliseconds().toString().padStart(3, "0");
-
       return hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
     },
     getLargestImageSrc(src) {
       try {
         let url = new URL(src);
-        if (url.host === "lh3.googleusercontent.com") {
+        // https://lh3.googleusercontent.com/proxy/mxAm-SOUdYAQxnF726rLzTrWAA_I3YTjv3jSMlowuSzELjBC9QoOQOmwxqrvfRVKV9siDmdBlbuShaKntl4Xy4pV4m72rnwfqb7S=s0
+        if (url.hostname === "lh3.googleusercontent.com") {
           return src.split("=s")?.[0] + "=s0";
         }
-        return src;
+        // https://s.gravatar.com/avatar/e41b3c74ad1bcae377ec6aebb83e834f?s=0&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2F99.png
+        if (url.hostname === "s.gravatar.com" && url.searchParams.get("s")) {
+          url.searchParams.set("s", "9999");
+          return url.toString();
+        }
+        // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
+        if (url.hostname === "atlassiansuite.mservice.com.vn") {
+          if (url.searchParams.get("size")) {
+            url.searchParams.set("size", "9999");
+          }
+          return url.toString();
+        }
+        if (url.hostname === "atlassiantool.mservice.com.vn") {
+          if (url.href.includes("/thumbnails/")) {
+            return url.href.replace("/thumbnails/", "/attachments/");
+          }
+        }
       } catch (e) {
         console.log("ERROR: ", e);
-        return src;
       }
+      return src;
     },
     formatSize(size, fixed = 0) {
       size = Number(size);
-
       if (!size) return "?";
-
       // format to KB, MB, GB
-      if (size < 1024) {
-        return size + "B";
-      }
-      if (size < 1024 * 1024) {
-        return (size / 1024).toFixed(fixed) + "KB";
-      }
-      if (size < 1024 * 1024 * 1024) {
+      if (size < 1024) return size + "B";
+      if (size < 1024 * 1024) return (size / 1024).toFixed(fixed) + "KB";
+      if (size < 1024 * 1024 * 1024)
         return (size / (1024 * 1024)).toFixed(fixed) + "MB";
-      }
       return (size / (1024 * 1024 * 1024)).toFixed(fixed) + "GB";
     },
 
@@ -299,16 +335,13 @@ const UsefulScriptGlobalPageContext = {
       const head = list.slice(0, n);
       const tail = list.slice(n);
       const resolved = [];
-
       return new Promise((resolve) => {
         let processed = 0;
-
         function runNext() {
           if (processed === tail.length) {
             resolve(Promise.all(resolved));
             return;
           }
-
           const promise = tail[processed]();
           resolved.push(
             promise.then((result) => {
@@ -318,7 +351,6 @@ const UsefulScriptGlobalPageContext = {
           );
           processed++;
         }
-
         head.forEach((func) => {
           const promise = func();
           resolved.push(
@@ -1402,13 +1434,3 @@ const UsefulScriptsUtils = {
   downloadData: UsefulScriptGlobalPageContext.Utils.downloadData,
 };
 window.UsefulScriptsUtils = UsefulScriptsUtils;
-
-console.log = function () {
-  // add time to console.log
-  UsefulScriptGlobalPageContext.Origin.consoleLog(
-    `${UsefulScriptGlobalPageContext.Utils.formatTimeToHHMMSSDD(
-      new Date()
-    )} | `,
-    ...arguments
-  );
-};

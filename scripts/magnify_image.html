@@ -14,18 +14,30 @@
       width: 100%;
       height: 100%;
       background-color: #221c1c;
+      overflow: hidden;
     }
 
     .magnify {
       box-sizing: border-box;
       text-align: center;
     }
+
+    img {
+      user-select: none;
+      cursor: grab;
+      object-fit: contain;
+    }
+
+    input {
+      width: 90%;
+    }
   </style>
 </head>
 
 <body>
   <div class="magnify">
-    <img style="width: 500px" />
+    <img />
+    <br />
     <input type="text">
   </div>
   <script src="./content-scripts/ufs_global_webpage_context.js"></script>

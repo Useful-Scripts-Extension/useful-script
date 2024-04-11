@@ -176,24 +176,27 @@ import ggdrive_copyDocText from "./ggdrive_copyDocText.js";
 import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
 import duckRace_cheat from "./duckRace_cheat.js";
 import magnify_image from "./magnify_image.js";
+import consoleLog_withTime from "./consoleLog_withTime.js";
+import auto_redirectLargestImageSrc from "./auto_redirectLargestImageSrc.js";
+import textToQrCode from "./textToQrCode.js";
 
 // inject badges
 const allScripts = {
   _test: _test,
   fb_toggleLight: fb_toggleLight,
-  fb_getTokenBusinessStudio: addBadge(fb_getTokenBusinessStudio, BADGES.hot),
+  fb_getTokenBusinessStudio: fb_getTokenBusinessStudio,
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
   fb_getTokenMFacebook,
-  fb_getUid: addBadge(fb_getUid, BADGES.hot),
-  fb_getPageId: addBadge(fb_getPageId, BADGES.hot),
-  fb_getGroupId: addBadge(fb_getGroupId, BADGES.hot),
-  fb_getAlbumId: addBadge(fb_getAlbumId, BADGES.hot),
+  fb_getUid: fb_getUid,
+  fb_getPageId: fb_getPageId,
+  fb_getGroupId: fb_getGroupId,
+  fb_getAlbumId: fb_getAlbumId,
   fb_getAllAlbumIdFromCurrentWebsite,
-  fb_getAllAlbumInformation: addBadge(fb_getAllAlbumInformation, BADGES.new),
+  fb_getAllAlbumInformation: fb_getAllAlbumInformation,
   fb_getUidFromUrl: addBadge(fb_getUidFromUrl, BADGES.hot),
   fb_getAllUidFromFbSearch,
   fb_getAllUidFromFriendsPage,
-  fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.hot),
+  fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.beta),
   fb_getAvatarFromUid,
   fb_downloadAlbumMedia,
   insta_getUserInfo: insta_getUserInfo,
@@ -278,32 +281,23 @@ const allScripts = {
   unshorten: addBadge(unshorten, BADGES.hot),
   screenshotFullPage: screenshotFullPage,
   visualEvent: visualEvent,
-  fb_videoDownloader: addBadge(fb_videoDownloader, BADGES.new),
+  fb_videoDownloader: fb_videoDownloader,
   viewBrowserInfo: viewBrowserInfo,
-  douyin_downloadWachingVideo: addBadge(
-    douyin_downloadWachingVideo,
-    BADGES.new
-  ),
-  douyin_downloadAllVideoUser: addBadge(
-    douyin_downloadAllVideoUser,
-    BADGES.new
-  ),
+  douyin_downloadWachingVideo: douyin_downloadWachingVideo,
+  douyin_downloadAllVideoUser: douyin_downloadAllVideoUser,
   showTheVideos: showTheVideos,
-  fb_storySaver: addBadge(fb_storySaver, BADGES.new),
+  fb_storySaver: fb_storySaver,
   whatApp_storySaver: whatApp_storySaver,
   send_shareFiles: send_shareFiles,
-  fb_downloadCommentVideo: addBadge(fb_downloadCommentVideo, BADGES.hot),
+  fb_downloadCommentVideo: fb_downloadCommentVideo,
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_toggleNewFeed: fb_toggleNewFeed,
   fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_bypassPreview: envato_bypassPreview,
-  shopee_topVariation: addBadge(shopee_topVariation, BADGES.hot),
+  shopee_topVariation: shopee_topVariation,
   ggdrive_downloadVideo: ggdrive_downloadVideo,
   google_downloadAllYourData: google_downloadAllYourData,
-  tiktok_downloadWatchingVideo: addBadge(
-    tiktok_downloadWatchingVideo,
-    BADGES.hot
-  ),
+  tiktok_downloadWatchingVideo: tiktok_downloadWatchingVideo,
   ggDrive_downloadAllVideosInFolder: ggDrive_downloadAllVideosInFolder,
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.hot),
   studocu_downs: studocu_downs,
@@ -326,8 +320,8 @@ const allScripts = {
   fb_openAdsActivities: fb_openAdsActivities,
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.beta),
   studyphim_unlimited: studyphim_unlimited,
-  shopee_totalSpendMoney: addBadge(shopee_totalSpendMoney, BADGES.hot),
-  tiki_totalSpendMoney: addBadge(tiki_totalSpendMoney, BADGES.beta),
+  shopee_totalSpendMoney: shopee_totalSpendMoney,
+  tiki_totalSpendMoney: tiki_totalSpendMoney,
   fb_invisible_message: fb_invisible_message,
   insta_injectDownloadBtn: insta_injectDownloadBtn,
   studocu_bypassPreview: studocu_bypassPreview,
@@ -347,29 +341,26 @@ const allScripts = {
   tailieu_vn: addBadge(tailieu_vn, BADGES.new),
   fb_downloadWallMediaFromPosts: fb_downloadWallMediaFromPosts,
   textToSpeech: textToSpeech,
-  shopee_totalSpendMoney_excel: addBadge(
-    shopee_totalSpendMoney_excel,
-    BADGES.hot
-  ),
+  shopee_totalSpendMoney_excel: shopee_totalSpendMoney_excel,
   download_watchingVideo: download_watchingVideo,
   tiktok_downloadVideo: tiktok_downloadVideo,
   tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.beta),
   douyin_batchDownload: addBadge(douyin_batchDownload, BADGES.beta),
   medium_readFullArticle: medium_readFullArticle,
-  viewSavedWifiPass: addBadge(viewSavedWifiPass, BADGES.new),
-  leakCheck: addBadge(leakCheck, BADGES.new),
+  viewSavedWifiPass: viewSavedWifiPass,
+  leakCheck: leakCheck,
   wheelOfNames_hack: addBadge(wheelOfNames_hack, BADGES.new),
-  saveAllVideo: addBadge(saveAllVideo, BADGES.new),
-  fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.hot),
+  saveAllVideo: addBadge(saveAllVideo, BADGES.hot),
+  fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.beta),
   fireship_vip: addBadge(fireship_vip, BADGES.new),
-  vuiz_createLogo: addBadge(vuiz_createLogo, BADGES.new),
-  vuiz_getLink: addBadge(vuiz_getLink, BADGES.new),
+  vuiz_createLogo: vuiz_createLogo,
+  vuiz_getLink: vuiz_getLink,
   ggdrive_downloadPdf: addBadge(ggdrive_downloadPdf, BADGES.new),
   ggdrive_downloadPresentation: addBadge(
     ggdrive_downloadPresentation,
     BADGES.new
   ),
-  youtube_localDownloader: addBadge(youtube_localDownloader, BADGES.new),
+  youtube_localDownloader: addBadge(youtube_localDownloader, BADGES.beta),
   twitter_downloadButton: addBadge(twitter_downloadButton, BADGES.new),
   spotify_downloadButton: addBadge(spotify_downloadButton, BADGES.new),
   ggdrive_downloadDoc: addBadge(ggdrive_downloadDoc, BADGES.new),
@@ -377,6 +368,12 @@ const allScripts = {
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
   duckRace_cheat: addBadge(duckRace_cheat, BADGES.new),
   magnify_image: addBadge(magnify_image, BADGES.new),
+  consoleLog_withTime: consoleLog_withTime,
+  auto_redirectLargestImageSrc: addBadge(
+    auto_redirectLargestImageSrc,
+    BADGES.new
+  ),
+  textToQrCode: addBadge(textToQrCode, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

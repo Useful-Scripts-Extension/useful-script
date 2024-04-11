@@ -18,15 +18,24 @@ export default {
       mouse.y = e.clientY;
     });
 
+    function extractBackgroundImageURLs(element) {
+      var computedStyle = window.getComputedStyle(element);
+      var backgroundImage = computedStyle.backgroundImage;
+      var urls = backgroundImage.match(/url\(['"]?(.*?)['"]?\)/gi);
+      urls = urls.map(function (url) {
+        return url.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
+      });
+      return urls;
+    }
+
     function getAllElementsWithBackgroundImage() {
       const elements = [];
-      const allElements = document.querySelectorAll("*"); // Select all elements
+      const allElements = document.querySelectorAll("*");
 
       for (const element of allElements) {
         const backgroundImage =
           getComputedStyle(element).getPropertyValue("background-image");
         if (backgroundImage !== "none" && backgroundImage.match(/url\(/)) {
-          // Check for "none" and existence of url(...) pattern
           elements.push(element);
         }
       }
@@ -42,11 +51,16 @@ export default {
             rect: i.getBoundingClientRect(),
           }))
           .concat(
-            getAllElementsWithBackgroundImage().map((i) => ({
-              src: i.style.backgroundImage.match(/url\("([^"]+)"\)/)?.[1],
-              rect: i.getBoundingClientRect(),
-            }))
+            getAllElementsWithBackgroundImage().map((i) => {
+              let urls = extractBackgroundImageURLs(i);
+              let rect = i.getBoundingClientRect();
+              return urls.map((url) => ({
+                src: url,
+                rect,
+              }));
+            })
           )
+          .flat()
           .filter(({ src, rect }) => {
             return (
               src &&
@@ -60,7 +74,7 @@ export default {
 
         // small one first
         data = data.sort((a, b) => {
-          return a.rect.width * a.rect.height - b.rect.width * b.rect.height;
+          return b.rect.width * b.rect.height - a.rect.width * a.rect.height;
         });
 
         return data?.[0]?.src;
@@ -75,33 +89,30 @@ export default {
       () => {
         const src = getImgSrcAtMouse();
 
-        if (src) {
-          UsefulScriptGlobalPageContext.Extension.getURL(
-            "/scripts/magnify_image.html"
-          ).then((url) => {
-            let w = 600,
-              h = 600,
-              left = screen.width / 2 - w / 2,
-              top = screen.height / 2 - h / 2;
-
-            window.open(
-              url + "?src=" + encodeURIComponent(src),
-              "Magnify image",
-              `width=${w},height=${h},top=${top},left=${left}`
-            );
-          });
+        if (!src) {
+          UsefulScriptGlobalPageContext.DOM.notify(
+            "Useful-script: No image found",
+            mouse.x,
+            mouse.y
+          );
+          return;
         }
+
+        UsefulScriptGlobalPageContext.Extension.getURL(
+          "/scripts/magnify_image.html"
+        ).then((url) => {
+          let w = 600,
+            h = 600,
+            left = screen.width / 2 - w / 2,
+            top = screen.height / 2 - h / 2;
+
+          window.open(
+            url + "?src=" + encodeURIComponent(src),
+            "Magnify image",
+            `width=${w},height=${h},top=${top},left=${left},location=no`
+          );
+        });
       }
     );
-  },
-
-  onDocumentEnd: () => {
-    // auto redirect to largest img
-    let url = UsefulScriptGlobalPageContext.Utils.getLargestImageSrc(
-      location.href
-    );
-    if (url != location.href) {
-      location.href = url;
-    }
   },
 };
