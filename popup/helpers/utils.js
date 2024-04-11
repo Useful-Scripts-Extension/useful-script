@@ -21,6 +21,8 @@ export async function viewScriptSource(script) {
     type: "popup",
     height: window.screen.height,
     width: 700,
+    left: window.screen.width / 2 - 350,
+    top: 0,
   });
 }
 
