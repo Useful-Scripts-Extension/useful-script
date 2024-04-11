@@ -17,13 +17,13 @@
   });
 
   // auto run documentStart
-  try {
-    const res = JSON.parse(localStorage.getItem("ufs_active_scripts") || "{}");
-    ids = res?.ids?.split(",") || [];
-    path = res?.path || "";
-  } catch (e) {
-    console.log("ERRO ufs", e);
-  }
+  // try {
+  //   const res = JSON.parse(localStorage.getItem("ufs_active_scripts") || "{}");
+  //   ids = res?.ids?.split(",") || [];
+  //   path = res?.path || "";
+  // } catch (e) {
+  //   console.log("ERRO ufs", e);
+  // }
 
   if (!ids || !path) {
     const data =
