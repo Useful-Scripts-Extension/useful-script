@@ -312,14 +312,19 @@ const UsefulScriptGlobalPageContext = {
     },
 
     hook(obj, name, callback) {
-      const fn = obj[name];
+      const orig = obj[name];
       obj[name] = function (...args) {
-        callback.apply(this, args);
-        fn.apply(this, args);
+        const result = orig.apply(this, args);
+        callback?.({
+          this: this,
+          args: args,
+          result: result,
+        });
+        return result;
       };
       return () => {
         // restore
-        obj[name] = fn;
+        obj[name] = orig;
       };
     },
     // https://stackoverflow.com/a/38552302/11898496
