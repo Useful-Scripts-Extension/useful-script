@@ -34,85 +34,74 @@ export default {
       return elements;
     }
 
+    function getImgSrcAtMouse() {
+      try {
+        let data = Array.from(document.querySelectorAll("img"))
+          .map((i) => ({
+            src: i.src,
+            rect: i.getBoundingClientRect(),
+          }))
+          .concat(
+            getAllElementsWithBackgroundImage().map((i) => ({
+              src: i.style.backgroundImage.match(/url\("([^"]+)"\)/)?.[1],
+              rect: i.getBoundingClientRect(),
+            }))
+          )
+          .filter(({ src, rect }) => {
+            return (
+              src &&
+              mouse.x > rect.x &&
+              mouse.x < rect.x + rect.width &&
+              mouse.y > rect.y &&
+              mouse.y < rect.y + rect.height
+            );
+          });
+        console.log(data);
+
+        // small one first
+        data = data.sort((a, b) => {
+          return a.rect.width * a.rect.height - b.rect.width * b.rect.height;
+        });
+
+        return data?.[0]?.src;
+      } catch (e) {
+        console.log("ERROR", e);
+      }
+      return null;
+    }
+
     let unsub = UsefulScriptGlobalPageContext.DOM.onDoublePress(
       "Control",
       () => {
-        try {
-          let src = Array.from(document.querySelectorAll("img"))
-            .map((i) => ({
-              src: i.src,
-              rect: i.getBoundingClientRect(),
-            }))
-            .concat(
-              getAllElementsWithBackgroundImage().map((i) => ({
-                src: i.style.backgroundImage
-                  ?.replace("url(", "")
-                  ?.replace(")", "")
-                  ?.replace('"', "")
-                  ?.replace('"', ""),
-                rect: i.getBoundingClientRect(),
-              }))
-            )
-            .filter(({ src, rect }) => {
-              return (
-                src &&
-                mouse.x > rect.x &&
-                mouse.x < rect.x + rect.width &&
-                mouse.y > rect.y &&
-                mouse.y < rect.y + rect.height
-              );
-            });
-          console.log(src);
+        const src = getImgSrcAtMouse();
 
-          src = src.sort((a, b) => {
-            // small one first
-            return a.rect.width * a.rect.height - b.rect.width * b.rect.height;
-          })?.[0]?.src;
-
-          console.log(src);
-
-          if (src) {
+        if (src) {
+          UsefulScriptGlobalPageContext.Extension.getURL(
+            "/scripts/magnify_image.html"
+          ).then((url) => {
             let w = 600,
               h = 600,
               left = screen.width / 2 - w / 2,
               top = screen.height / 2 - h / 2;
 
-            let win = window.open(
-              "",
-              "",
-              `scrollbars=yes,width=${w},height=${h},top=${top},left=${left}`
+            window.open(
+              url + "?src=" + encodeURIComponent(src),
+              "Magnify image",
+              `width=${w},height=${h},top=${top},left=${left}`
             );
-            win.document.write(`
-          <style>
-            html, body {
-              margin: 0;
-              padding: 0;
-              width: 100%;
-              height: 100%;
-              background-color: #221c1c;
-            }
-            .magnify {
-              box-sizing: border-box;
-              padding: 5px 5px 0;
-              position: absolute;
-              text-align: center;
-              top: 0;
-              left: 0;
-              overflow: hidden;
-              width: 100%;
-              height: 100%;
-              transform-origin: 0px 0px;
-              transform: scale(1) translate(0px, 0px);
-            }
-          </style>
-          <div class="magnify">
-            <img src="${src}" style="width: 500px" />
-          </div>`);
-          }
-        } catch (e) {
-          console.log("ERROR", e);
+          });
         }
       }
     );
+  },
+
+  onDocumentEnd: () => {
+    // auto redirect to largest img
+    let url = UsefulScriptGlobalPageContext.Utils.getLargestImageSrc(
+      location.href
+    );
+    if (url != location.href) {
+      location.href = url;
+    }
   },
 };

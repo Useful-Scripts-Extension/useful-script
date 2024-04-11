@@ -256,6 +256,26 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   Utils: {
+    formatTimeToHHMMSSDD(date) {
+      var hours = date.getHours().toString().padStart(2, "0");
+      var minutes = date.getMinutes().toString().padStart(2, "0");
+      var seconds = date.getSeconds().toString().padStart(2, "0");
+      var milliseconds = date.getMilliseconds().toString().padStart(3, "0");
+
+      return hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
+    },
+    getLargestImageSrc(src) {
+      try {
+        let url = new URL(src);
+        if (url.host === "lh3.googleusercontent.com") {
+          return src.split("=s")?.[0] + "=s0";
+        }
+        return src;
+      } catch (e) {
+        console.log("ERROR: ", e);
+        return src;
+      }
+    },
     formatSize(size, fixed = 0) {
       size = Number(size);
 
@@ -1237,6 +1257,9 @@ const UsefulScriptGlobalPageContext = {
       return payload?.url;
     },
   },
+  Origin: {
+    consoleLog: console.log,
+  },
 };
 window.UsefulScriptGlobalPageContext = UsefulScriptGlobalPageContext;
 
@@ -1379,3 +1402,13 @@ const UsefulScriptsUtils = {
   downloadData: UsefulScriptGlobalPageContext.Utils.downloadData,
 };
 window.UsefulScriptsUtils = UsefulScriptsUtils;
+
+console.log = function () {
+  // add time to console.log
+  UsefulScriptGlobalPageContext.Origin.consoleLog(
+    `${UsefulScriptGlobalPageContext.Utils.formatTimeToHHMMSSDD(
+      new Date()
+    )} | `,
+    ...arguments
+  );
+};

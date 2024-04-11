@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnify Image</title>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #221c1c;
+    }
+
+    .magnify {
+      box-sizing: border-box;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="magnify">
+    <img style="width: 500px" />
+    <input type="text">
+  </div>
+  <script src="./content-scripts/ufs_global_webpage_context.js"></script>
+  <script src="./magnify_image_main.js"></script>
+</body>
+
+</html>
