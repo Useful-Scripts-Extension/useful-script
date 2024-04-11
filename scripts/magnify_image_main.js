@@ -67,10 +67,15 @@ window.onload = () => {
     // set window position center
     window.moveTo(screen.width / 2 - w / 2, screen.height / 2 - h / 2);
   };
-  document.addEventListener("mousedown", function (e) {
+
+  img.addEventListener("mousedown", function (e) {
     isDragging = true;
     start.x = e.clientX - transform.x;
     start.y = e.clientY - transform.y;
+  });
+
+  img.addEventListener("mouseup", function () {
+    isDragging = false;
   });
 
   document.addEventListener("mousemove", function (e) {
@@ -83,10 +88,6 @@ window.onload = () => {
       transform.y = newPosY;
       update();
     }
-  });
-
-  document.addEventListener("mouseup", function () {
-    isDragging = false;
   });
 
   // Make image zoomable

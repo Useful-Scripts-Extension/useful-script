@@ -175,6 +175,23 @@ const tabs = [
       s.youtube_toggleLight,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
+      createTitle("--- Recommend ---", "--- Khuyên dùng ---"),
+      {
+        id: "recommend_improve_youtube",
+        icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
+        name: {
+          en: "Improve YouTube - 85+ features",
+          vi: "Improve YouTube - 85+ chức năng",
+        },
+        description: {
+          en: "Make YouTube more beautiful, faster, and more useful!",
+          vi: "Làm cho YouTube gọn gàng+thông minh!",
+        },
+        onClickExtension: () =>
+          window.open(
+            "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
+          ),
+      },
     ],
   },
   {
