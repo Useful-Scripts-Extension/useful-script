@@ -43,3 +43,5 @@
 - [x] extension ngon cho youtube [Improved youtube](https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd?authuser=1)
 
 - [ ] Fix hack wheel of names
+
+- [ ] Thêm visualize music vào bất kỳ trang web nào.

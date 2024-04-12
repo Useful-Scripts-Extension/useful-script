@@ -4,7 +4,6 @@ import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";
 import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
-import fb_getTokenMFacebook from "./fb_getTokenMFacebook.js";
 import fb_getUid from "./fb_getUid.js";
 import fb_getPageId from "./fb_getPageId.js";
 import fb_getGroupId from "./fb_getGroupId.js";
@@ -95,10 +94,8 @@ import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
 import fb_storySaver from "./fb_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
-import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
 import fb_toggleNewFeed from "./fb_toggleNewFeed.js";
-import fb_storyInfo from "./fb_storyInfo.js";
 import envato_bypassPreview from "./envato_bypassPreview.js";
 import shopee_topVariation from "./shopee_topVariation.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
@@ -107,23 +104,16 @@ import tiktok_downloadWatchingVideo from "./tiktok_downloadWatchingVideo.js";
 import ggDrive_downloadAllVideosInFolder from "./ggDrive_downloadAllVideosInFolder.js";
 import fb_downloadWatchingVideo from "./fb_downloadWatchingVideo.js";
 import studocu_downs from "./studocu_downs.js";
-import search_userscript from "./search_userscript.js";
-import search_musicTreding from "./search_musicTreding.js";
 import vimeo_downloader from "./vimeo_downloader.js";
 import savevideo_me from "./savevideo_me.js";
 import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
-import fastDoc from "./fastDoc.js";
-import smartPDF from "./smartPDF.js";
 import studocu_dl from "./studocu_dl.js";
-import pdfstuffs from "./pdfstuffs.js";
 import dino_hack from "./dino_hack.js";
 import google_mirror from "./google_mirror.js";
 import fb_openSaved from "./fb_openSaved.js";
-import fb_openMemories from "./fb_openMemories.js";
-import fb_openAdsActivities from "./fb_openAdsActivities.js";
 import fb_exportSaved from "./fb_exportSaved.js";
 import studyphim_unlimited from "./studyphim_unlimited.js";
 import shopee_totalSpendMoney from "./shopee_totalSpendMoney.js";
@@ -154,8 +144,6 @@ import tiktok_downloadVideo from "./tiktok_downloadVideo.js";
 import tiktok_batchDownload from "./tiktok_batchDownload.js";
 import douyin_batchDownload from "./douyin_batchDownload.js";
 import medium_readFullArticle from "./medium_readFullArticle.js";
-import viewSavedWifiPass from "./viewSavedWifiPass.js";
-import leakCheck from "./leakCheck.js";
 import wheelOfNames_hack from "./wheelOfNames_hack.js";
 import saveAllVideo from "./saveAllVideo.js";
 import fb_bulkDownload from "./fb_bulkDownload.js";
@@ -182,7 +170,6 @@ const allScripts = {
   fb_toggleLight: fb_toggleLight,
   fb_getTokenBusinessStudio: fb_getTokenBusinessStudio,
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
-  fb_getTokenMFacebook,
   fb_getUid: fb_getUid,
   fb_getPageId: fb_getPageId,
   fb_getGroupId: fb_getGroupId,
@@ -281,10 +268,8 @@ const allScripts = {
   showTheVideos: showTheVideos,
   fb_storySaver: fb_storySaver,
   send_shareFiles: send_shareFiles,
-  fb_downloadCommentVideo: fb_downloadCommentVideo,
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_toggleNewFeed: fb_toggleNewFeed,
-  fb_storyInfo: addBadge(fb_storyInfo, BADGES.beta),
   envato_bypassPreview: envato_bypassPreview,
   shopee_topVariation: shopee_topVariation,
   ggdrive_downloadVideo: ggdrive_downloadVideo,
@@ -293,23 +278,16 @@ const allScripts = {
   ggDrive_downloadAllVideosInFolder: ggDrive_downloadAllVideosInFolder,
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.hot),
   studocu_downs: studocu_downs,
-  search_userscript: search_userscript,
-  search_musicTreding: search_musicTreding,
   vimeo_downloader: vimeo_downloader,
   savevideo_me: savevideo_me,
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: search_hopamchuan,
   ggdrive_generateDirectLink: ggdrive_generateDirectLink,
   soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
-  fastDoc: fastDoc,
-  smartPDF: smartPDF,
   studocu_dl: studocu_dl,
-  pdfstuffs: pdfstuffs,
   dino_hack: dino_hack,
   google_mirror: google_mirror,
   fb_openSaved: addBadge(fb_openSaved, BADGES.hot),
-  fb_openMemories: fb_openMemories,
-  fb_openAdsActivities: fb_openAdsActivities,
   fb_exportSaved: addBadge(fb_exportSaved, BADGES.beta),
   studyphim_unlimited: studyphim_unlimited,
   shopee_totalSpendMoney: shopee_totalSpendMoney,
@@ -339,8 +317,6 @@ const allScripts = {
   tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.beta),
   douyin_batchDownload: addBadge(douyin_batchDownload, BADGES.beta),
   medium_readFullArticle: medium_readFullArticle,
-  viewSavedWifiPass: viewSavedWifiPass,
-  leakCheck: leakCheck,
   wheelOfNames_hack: addBadge(wheelOfNames_hack, BADGES.new),
   saveAllVideo: addBadge(saveAllVideo, BADGES.hot),
   fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.beta),

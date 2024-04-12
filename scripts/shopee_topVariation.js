@@ -14,6 +14,7 @@ export default {
   description: {
     en: "See how many times each product variant was purchased",
     vi: "Thống kê xem tùy chọn sản phẩm nào được mọi người mua nhiều nhất",
+    img: "/scripts/shopee_topVariation.png",
   },
   whiteList: ["https://shopee.vn/*"],
 

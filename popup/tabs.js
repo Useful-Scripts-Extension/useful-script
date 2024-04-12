@@ -29,14 +29,42 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       s._test,
-      s.search_userscript,
+      {
+        id: "recommend_search_userscript",
+        icon: "https://www.userscript.zone/favicon.ico",
+        name: {
+          en: "Search Userscripts",
+          vi: "Tìm Userscripts",
+        },
+        description: {
+          en: "Search Userscripts on Usersript.zone",
+          vi: "Tìm Userscripts trên Usersript.zone",
+        },
+
+        onClickExtension: function () {
+          window.open("https://www.userscript.zone/");
+        },
+      },
       s.whatFont,
       s.similarWeb,
       s.search_sharedAccount,
       s.whatWebsiteStack,
       s.whois,
       s.viewWebMetaInfo,
-      s.search_musicTreding,
+      {
+        id: "recommend_search_musicTreding",
+        icon: "https://kworb.net/favicon.ico",
+        name: {
+          en: "Top global treding music?",
+          vi: "Bài nhạc top treding toàn cầu?",
+        },
+        description: {
+          en: "The web to find all kinds of music-related data.",
+          vi: "Trang web thống kê top trending âm nhạc toàn cầu.",
+        },
+        onClickExtension: () =>
+          window.open("https://kworb.net/youtube/trending_music.html"),
+      },
       s.search_paperWhere,
       s.search_hopamchuan,
       s.checkWebDie,
@@ -132,10 +160,8 @@ const tabs = [
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.fb_downloadWatchingVideo,
       s.fb_storySaver,
-      s.fb_downloadCommentVideo,
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      // s.fb_storyInfo,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       // s.fb_bulkDownload,
       s.fb_downloadAlbumMedia,
@@ -149,15 +175,14 @@ const tabs = [
       s.fb_moreReactionStory,
       s.fb_whoIsTyping,
       // s.fb_removeFbclid,
+      s.fb_toggleLight,
+      s.fb_toggleNewFeed,
       createTitle("--- Statistic ---", "--- Thống kê ---"),
       s.fb_messengerHistory,
       s.fb_messengerCount,
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
       s.fb_fetchAllAddedFriends,
-      createTitle("--- UI ---", "--- Giao diện ---"),
-      s.fb_toggleLight,
-      s.fb_toggleNewFeed,
       createTitle("--- Access Token ---", "--- Access Token ---"),
       s.fb_checkToken,
       s.fb_getTokenFfb,
@@ -165,7 +190,6 @@ const tabs = [
       s.fb_getTokenBussinessLocation,
       // s.fb_getTokenBusinessStudio,
       s.fb_getTokenCampaigns,
-      // s.fb_getTokenMFacebook,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
       s.fb_getUid,
       s.fb_getPageId,
@@ -177,8 +201,50 @@ const tabs = [
       s.fb_getAllUidFromFriendsPage,
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
-      s.fb_openMemories,
-      s.fb_openAdsActivities,
+      {
+        id: "fb_openMemories",
+        icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',
+        name: {
+          en: "View your memories on facebook",
+          vi: "Xem kỷ niệm của bạn trên facebook",
+        },
+        description: {
+          en: "View your memories on facebook",
+          vi: "Xem kỷ niệm (memories) của bạn trên facebook",
+        },
+        onClickExtension: () =>
+          window.open("https://www.facebook.com/memories/"),
+      },
+      {
+        id: "fb_openAdsActivities",
+        icon: '<i class="fa-brands fa-adversal fa-lg"></i>',
+        name: {
+          en: "View your ads activities",
+          vi: "Xem các quảng cáo fb bạn đã xem",
+        },
+        description: {
+          en: "View ads you have seen on facebook",
+          vi: "Xem các quảng cáo bạn đã xem trên facebook",
+        },
+        onClickExtension: () =>
+          window.open("https://www.facebook.com/ads/activity"),
+      },
+      {
+        id: "fb_openAllActivities",
+        icon: '<i class="fa-solid fa-eye"></i>',
+        name: {
+          en: "Check your activities on Facebook",
+          vi: "Xem nhật ký hoạt động trên facebook",
+        },
+        description: {
+          en: "Check all your activities on facebook",
+          vi: "Kiểm tra nhật ký hoạt động của bạn trên facebook",
+        },
+        onClickExtension: () =>
+          window.open(
+            "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
+          ),
+      },
     ],
   },
   {
@@ -246,11 +312,11 @@ const tabs = [
       s.changeAudioOutput,
       s.send_shareFiles,
       createTitle("--- Image ---", "--- Ảnh ---"),
+      s.magnify_image,
+      s.auto_redirectLargestImageSrc,
       s.screenshotFullPage,
       s.vuiz_createLogo,
       s.textToQrCode,
-      s.magnify_image,
-      s.auto_redirectLargestImageSrc,
       createTitle("--- Automation ---", "--- Tự động hoá ---"),
       s.passwordGenerator,
       s.getAllEmailsInWeb,
@@ -261,6 +327,21 @@ const tabs = [
       s.github_goToAnyCommit,
       s.githubdev,
       s.github1s,
+      {
+        id: "recommend_cloc",
+        icon: '<i class="fa-solid fa-code"></i>',
+        name: {
+          en: "Cloc - count line of code (recommend)",
+          vi: "Cloc - đếm số dòng code (khuyên dùng)",
+        },
+        description: {
+          en: "Count blank lines, comment lines, and physical lines of source code in many programming languages.",
+          vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
+          img: "/scripts/recommend_cloc.png",
+        },
+        onClickExtension: () =>
+          window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
+      },
       createTitle("--- Shopping ---", "--- Mua sắm ---"),
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
@@ -268,9 +349,46 @@ const tabs = [
       s.tiki_totalSpendMoney,
       createTitle("--- PDF ---", "--- PDF ---"),
       s.webToPDF,
-      s.fastDoc,
-      s.smartPDF,
-      s.pdfstuffs,
+      {
+        id: "recommend_fastDoc",
+        icon: "https://fastdoc.vn/favicon.png",
+        name: {
+          en: "FastDoc - Convert PDF/Photo to Word/Excel",
+          vi: "FastDoc - Chuyển PDF/Ảnh sang Word/Excel",
+        },
+        description: {
+          en: "Convert Photos & PDF to Excel, Word, Searchable PDF for free",
+          vi: "Chuyển đổi hình ảnh và pdf sang Excel, Word, Searchable PDF miễn phí",
+        },
+        onClickExtension: () => window.open("https://fastdoc.vn/"),
+      },
+      {
+        id: "recommend_smartPDF",
+        icon: "https://smallpdf.com/favicon.ico",
+        name: {
+          en: "SmartPDF - Tools for PDF",
+          vi: "SmartPDF - Công cụ cho PDF",
+        },
+        description: {
+          en: "Compress PDF, PDF Converter, PPT to PDF, PDF to PPT, JPG to PDF, PDF to JPG, Excel to PDF, PDF to Excel, Edit PDF, PDF Reader, Number Pages, Delete PDF Pages, Rotate PDF, Word to PDF, PDF to Word, Merge PDF, Split PDF, eSign PDF, Unlock PDF, Protect PDF, PDF Scanner",
+          vi: "Giảm dung lượng PDF, Chuyển đổi PDF, PPT sang PDF, PDF sang PPT, JPG sang PDF, PDF sang JPG, Excel sang PDF, PDF sang Excel, Chỉnh sửa PDF, Trình đọc PDF, Số trang, Xóa các trang PDF, Xoay PDF, Word sang PDF, PDF sang Word, Ghép PDF, Cắt PDF, Ký tên PDF, Mở khóa PDF, Bảo vệ PDF, Máy quét PDF",
+        },
+        onClickExtension: () =>
+          window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
+      },
+      {
+        id: "recommend_pdfstuffs",
+        icon: "https://pdfstuff.com/themes/pdfstuff/img/favicons/apple-icon-57x57.png",
+        name: {
+          en: "PDF Stuffs - Tools for PDF",
+          vi: "PDF Stuffs - Công cụ PDF",
+        },
+        description: {
+          en: "Free PDF converter online service: Merge PDF, Split PDF, Compress PDF, PDF to Word, PDF to PPT, PDF to Excel, Word to PDF, Excel to PDF, PPT to PDF, PDF to JPG, JPG to PDF, PDF to HTML, HTML to PDF, Unlock PDF, Protect PDF, Rotate PDF, Crop PDF, Delete pages, Add page numbers, Watermark PDF",
+          vi: "Công cụ chuyển đổi PDF online miễn phí: Ghép file PDF, Tách file PDF, Nén file PDF, PDF sang Word, PDF sang PPT, PDF sang Excel, Word sang PDF, Excel sang PDF, PPT sang PDF, PDF sang JPG, JPG sang PDF, PDF sang HTML, HTML sang PDF, Mở khóa PDF, Khóa file PDF, Xoay file PDF,  Cắt file PDF, Xóa trang PDF, Đánh số trang PDF, Chèn watermark",
+        },
+        onClickExtension: () => window.open("https://pdfstuff.com/"),
+      },
     ],
   },
   {
@@ -278,8 +396,49 @@ const tabs = [
     scripts: [
       s.duckRace_cheat,
       s.wheelOfNames_hack,
-      s.viewSavedWifiPass,
-      s.leakCheck,
+      {
+        id: "recommend_viewSavedWifiPass",
+        icon: '<i class="fa-solid fa-wifi"></i>',
+        name: {
+          en: "View saved wifi passwords",
+          vi: "Xem mật khẩu wifi đã lưu",
+        },
+        description: {
+          en: "PowerShell script to view saved wifi passwords on your computer",
+          vi: "Powershell script giúp xem mật khẩu wifi đã lưu trên máy tính",
+        },
+        infoLink:
+          "https://www.facebook.com/groups/j2team.community/posts/2328915024107271/",
+
+        onClickExtension: () => {
+          prompt(
+            `File danh sách mật khẩu Wifi sẽ lưu ở:
+      "C:\\WifiPasswords\\listWifiPasswords.txt"
+      có dạng: [Tên Wifi]:[Mật khẩu]
+
+      Mở Powershell và chạy lệnh sau:`,
+            `irm https://tinyurl.com/GetListWifiPasswords | iex`
+          );
+        },
+      },
+      {
+        id: "recommend_leakCheck",
+        icon: "https://leakcheck.io/favicon.ico",
+        name: {
+          en: "Leak check - your password has been leaked?",
+          vi: "Leak check - lộ mật khẩu email?",
+        },
+        description: {
+          en: "Check your password has been leaked on internet or not",
+          vi: "Kiểm tra xem mật khẩu email/username của bạn có bị phát tán trên mạng hay không",
+        },
+        infoLink:
+          "https://www.facebook.com/groups/j2team.community/posts/2329878560677584/",
+
+        onClickExtension: () => {
+          window.open("https://okela.fun/");
+        },
+      },
       createTitle("--- Unlock web ---", "--- Mở khoá web ---"),
       s.medium_readFullArticle,
       s.fireship_vip,
