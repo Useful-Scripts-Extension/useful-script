@@ -195,6 +195,7 @@ export default {
           ) {
             const have_msg_id = /(?=mid\.\$)(.*?)(?=\\")/.exec(utf8_str);
             if (have_msg_id) {
+              console.log("reveal deleted ", utf8_str);
               let dataStr = utf8_str.slice(utf8_str.indexOf("{"));
               let data = JSON.parse(dataStr);
               let payload = JSON.parse(data?.["payload"]);

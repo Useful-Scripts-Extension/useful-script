@@ -33,7 +33,6 @@ import search_sharedAccount from "./search_sharedAccount.js";
 import checkWebDie from "./checkWebDie.js";
 import removeCookies from "./removeCookies.js";
 import simpleAllowCopy from "./simpleAllowCopy.js";
-import reEnableContextMenu from "./reEnableContextMenu.js";
 import table_addSortTable from "./table_addSortTable.js";
 import table_addNumberColumn from "./table_addNumberColumn.js";
 import table_swapRowAndColumn from "./table_swapRowAndColumn.js";
@@ -64,7 +63,6 @@ import viewCookies from "./viewCookies.js";
 import viewAllLinks from "./viewAllLinks.js";
 import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
-import scrollByDrag from "./scrollByDrag.js";
 import youtube_viewDislikes from "./youtube_viewDislikes.js";
 import downDetector from "./downDetector.js";
 import fb_getTokenFfb from "./fb_getTokenFfb.js";
@@ -96,7 +94,6 @@ import fb_storySaver from "./fb_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
 import fb_toggleNewFeed from "./fb_toggleNewFeed.js";
-import envato_bypassPreview from "./envato_bypassPreview.js";
 import shopee_topVariation from "./shopee_topVariation.js";
 import ggdrive_downloadVideo from "./ggdrive_downloadVideo.js";
 import google_downloadAllYourData from "./google_downloadAllYourData.js";
@@ -156,13 +153,14 @@ import youtube_localDownloader from "./youtube_localDownloader.js";
 import twitter_downloadButton from "./twitter_downloadButton.js";
 import spotify_downloadButton from "./spotify_downloadButton.js";
 import ggdrive_downloadDoc from "./ggdrive_downloadDoc.js";
-import ggdrive_copyDocText from "./ggdrive_copyDocText.js";
 import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
 import duckRace_cheat from "./duckRace_cheat.js";
 import magnify_image from "./magnify_image.js";
 import consoleLog_withTime from "./consoleLog_withTime.js";
 import auto_redirectLargestImageSrc from "./auto_redirectLargestImageSrc.js";
 import textToQrCode from "./textToQrCode.js";
+import insta_anonymousStoryViewer from "./insta_anonymousStoryViewer.js";
+import removeWebLimit from "./removeWebLimit.js";
 
 // inject badges
 const allScripts = {
@@ -201,19 +199,18 @@ const allScripts = {
   darkModePDF: addBadge(darkModePDF, BADGES.hot),
   webToPDF,
   scrollToVeryEnd,
-  passwordGenerator: addBadge(passwordGenerator, BADGES.hot),
+  passwordGenerator: passwordGenerator,
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
   // passwordFieldToggle,
   checkWebDie,
   removeCookies,
-  simpleAllowCopy: addBadge(simpleAllowCopy, BADGES.hot),
-  reEnableContextMenu,
+  simpleAllowCopy: simpleAllowCopy,
   table_addSortTable,
   table_addNumberColumn,
   table_swapRowAndColumn,
   toggleEditPage: addBadge(toggleEditPage, BADGES.hot),
   whatFont: addBadge(whatFont, BADGES.hot),
-  performanceAnalyzer: addBadge(performanceAnalyzer, BADGES.hot),
+  performanceAnalyzer: performanceAnalyzer,
   removeColours,
   removeStylesheet,
   removeImages,
@@ -237,8 +234,7 @@ const allScripts = {
   viewCookies,
   viewAllLinks,
   googleCache: googleCache,
-  githubdev: addBadge(githubdev, BADGES.hot),
-  scrollByDrag,
+  githubdev: githubdev,
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
   downDetector: downDetector,
   fb_getTokenFfb: fb_getTokenFfb,
@@ -270,7 +266,6 @@ const allScripts = {
   send_shareFiles: send_shareFiles,
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
   fb_toggleNewFeed: fb_toggleNewFeed,
-  envato_bypassPreview: envato_bypassPreview,
   shopee_topVariation: shopee_topVariation,
   ggdrive_downloadVideo: ggdrive_downloadVideo,
   google_downloadAllYourData: google_downloadAllYourData,
@@ -332,7 +327,6 @@ const allScripts = {
   twitter_downloadButton: addBadge(twitter_downloadButton, BADGES.new),
   spotify_downloadButton: addBadge(spotify_downloadButton, BADGES.new),
   ggdrive_downloadDoc: addBadge(ggdrive_downloadDoc, BADGES.new),
-  ggdrive_copyDocText: addBadge(ggdrive_copyDocText, BADGES.new),
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
   duckRace_cheat: addBadge(duckRace_cheat, BADGES.new),
   magnify_image: addBadge(magnify_image, BADGES.new),
@@ -342,6 +336,8 @@ const allScripts = {
     BADGES.new
   ),
   textToQrCode: addBadge(textToQrCode, BADGES.new),
+  insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
+  removeWebLimit: addBadge(removeWebLimit, BADGES.hot),
 };
 
 // alert(Object.keys(allScripts).length);

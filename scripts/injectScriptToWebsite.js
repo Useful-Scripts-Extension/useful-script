@@ -5,8 +5,8 @@ export default {
     vi: "Nhúng script vào trang web",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Inject script url to current website, eg. jquery, library, etc.",
+    vi: "Nhúng link script vào website, ví dụ nhúng jquery, thư viện js, ...",
   },
   onClick: function () {
     let url = prompt(

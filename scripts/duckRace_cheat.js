@@ -1,8 +1,8 @@
 export default {
   icon: "https://www.online-stopwatch.com/favicon.ico",
   name: {
-    en: "Duck race - hack",
-    vi: "Duck race - hack",
+    en: "Hack Duck race",
+    vi: "Hack Duck race",
   },
   description: {
     en: "Hack result of Duck race, always get the result you want",

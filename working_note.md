@@ -45,3 +45,5 @@
 - [ ] Fix hack wheel of names
 
 - [ ] Thêm visualize music vào bất kỳ trang web nào.
+
+- [ ] get bigest image: <https://greasyfork.org/scripts/2312> <https://github.com/hoothin/UserScripts/blob/master/Picviewer%20CE%2B/pvcep_rules.js>

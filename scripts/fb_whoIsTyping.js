@@ -20,7 +20,7 @@ export default {
       websocket_instant.addEventListener("message", async function (achunk) {
         let utf8_str = textDecoder.decode(achunk.data);
 
-        console.log(utf8_str, achunk);
+        // console.log(utf8_str, achunk);
 
         if (
           utf8_str.startsWith("1") &&

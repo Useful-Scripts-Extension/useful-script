@@ -69,7 +69,7 @@ const UsefulScriptGlobalPageContext = {
       };
       img.src = dataurl;
     },
-    notify(msg, x, y) {
+    notify(msg, x, y, styleText = "", ms = 3000) {
       let id = "ufs_notify_div";
       let exist = document.getElementById(id);
       if (exist) exist.remove();
@@ -87,6 +87,7 @@ const UsefulScriptGlobalPageContext = {
         border-radius: 5px;
         z-index: 999999;
         transition: all 1s ease-out;
+        ${styleText || ""}
       `;
       div.textContent = msg;
       document.body.appendChild(div);
@@ -94,10 +95,10 @@ const UsefulScriptGlobalPageContext = {
       setTimeout(() => {
         div.style.opacity = 0;
         div.style.top = `${y - 50}px`;
-      }, 2000);
+      }, ms - 1000);
       setTimeout(() => {
         div.remove();
-      }, 3000);
+      }, ms);
     },
     onDoublePress(key, callback, timeout = 500) {
       let timer = null;

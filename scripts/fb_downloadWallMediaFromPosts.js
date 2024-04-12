@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-regular fa-images"></i>',
+  icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
     en: "Download all photos from posts",
     vi: "Tải tất cả hình trên bài viết",

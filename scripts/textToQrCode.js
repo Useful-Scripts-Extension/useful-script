@@ -1,7 +1,7 @@
 import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-solid fa-qrcode"></i>',
+  icon: '<i class="fa-solid fa-qrcode fa-lg"></i>',
   name: {
     en: "Text to QRCode",
     vi: "Chữ sang QRCode",
