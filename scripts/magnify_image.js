@@ -18,77 +18,80 @@ export default {
       mouse.y = e.clientY;
     });
 
-    function extractBackgroundImageURLs(element) {
-      var computedStyle = window.getComputedStyle(element);
-      var backgroundImage = computedStyle.backgroundImage;
-      var urls = backgroundImage.match(/url\(['"]?(.*?)['"]?\)/gi);
-      urls = urls.map(function (url) {
-        return url.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
-      });
-      return urls;
+    const imageUrlRegex =
+      /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|ico|jfif|jpe?g|png|svg|tiff?|webp))(?:\?([^#]*))?(?:#(.*))?/i;
+    function extractImagesFromSelector(selector) {
+      return unique(
+        toArray(document.querySelectorAll(selector))
+          .filter(isOverlapWithMouse)
+          .map(extractImageFromElement)
+          .filter(isTruthy)
+          .map(relativeUrlToAbsolute)
+      );
     }
-
-    function getAllElementsWithBackgroundImage() {
-      const elements = [];
-      const allElements = document.querySelectorAll("*");
-
-      for (const element of allElements) {
-        const backgroundImage =
-          getComputedStyle(element).getPropertyValue("background-image");
-        if (backgroundImage !== "none" && backgroundImage.match(/url\(/)) {
-          elements.push(element);
+    function isOverlapWithMouse(element) {
+      const rect =
+        UsefulScriptGlobalPageContext.DOM.getContentClientRect(element);
+      return (
+        mouse.x > rect.left &&
+        mouse.x < rect.right &&
+        mouse.y > rect.top &&
+        mouse.y < rect.bottom
+      );
+    }
+    function extractImageFromElement(element) {
+      if (element.tagName.toLowerCase() === "img") {
+        const src = element.src;
+        const hashIndex = src.indexOf("#");
+        return hashIndex >= 0 ? src.substr(0, hashIndex) : src;
+      }
+      if (element.tagName.toLowerCase() === "image") {
+        const src = element.getAttribute("xlink:href");
+        const hashIndex = src.indexOf("#");
+        return hashIndex >= 0 ? src.substr(0, hashIndex) : src;
+      }
+      if (element.tagName.toLowerCase() === "a") {
+        const href = element.href;
+        if (isImageURL(href)) {
+          return href;
         }
       }
-
-      return elements;
-    }
-
-    function getImgSrcAtMouse() {
-      try {
-        let data = Array.from(document.querySelectorAll("img"))
-          .concat(Array.from(document.querySelectorAll("image")))
-          .map((i) => ({
-            src: i.src || i.srcset || i.getAttribute("xlink:href"),
-            rect: i.getBoundingClientRect(),
-          }))
-          .concat(
-            getAllElementsWithBackgroundImage().map((i) => {
-              let urls = extractBackgroundImageURLs(i);
-              let rect = i.getBoundingClientRect();
-              return urls.map((url) => ({
-                src: url,
-                rect,
-              }));
-            })
-          )
-          .flat()
-          .filter(({ src, rect }) => {
-            return (
-              src &&
-              mouse.x > rect.x &&
-              mouse.x < rect.x + rect.width &&
-              mouse.y > rect.y &&
-              mouse.y < rect.y + rect.height
-            );
-          });
-        console.log(mouse, data);
-
-        // small one first
-        data = data.sort((a, b) => {
-          return b.rect.width * b.rect.height - a.rect.width * a.rect.height;
-        });
-
-        return data?.[0]?.src;
-      } catch (e) {
-        console.log("ERROR", e);
+      const backgroundImage = window.getComputedStyle(element).backgroundImage;
+      if (backgroundImage) {
+        const parsedURL = extractURLFromStyle(backgroundImage);
+        if (isImageURL(parsedURL)) {
+          return parsedURL;
+        }
       }
-      return null;
+    }
+    function isImageURL(url) {
+      return url.indexOf("data:image") === 0 || imageUrlRegex.test(url);
+    }
+    function extractURLFromStyle(style) {
+      return style.replace(/^.*url\(["']?/, "").replace(/["']?\).*$/, "");
+    }
+    function relativeUrlToAbsolute(url) {
+      return url.indexOf("/") === 0 ? `${window.location.origin}${url}` : url;
+    }
+    function unique(values) {
+      return toArray(new Set(values));
+    }
+    function toArray(values) {
+      return [...values];
+    }
+    function isTruthy(value) {
+      return !!value;
     }
 
     let unsub = UsefulScriptGlobalPageContext.DOM.onDoublePress(
       "Control",
       () => {
-        const src = getImgSrcAtMouse();
+        const srcs = extractImagesFromSelector(
+          "img, image, a, [class], [style]"
+        );
+
+        console.log(srcs);
+        let src = srcs?.[0];
 
         if (!src) {
           UsefulScriptGlobalPageContext.DOM.notify(

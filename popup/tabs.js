@@ -52,9 +52,40 @@ const tabs = [
       s.vuiz_getLink,
       s.saveAllVideo,
       s.savevideo_me,
-      s.getLinkLuanxt,
+      {
+        id: "getLinkLuanxt_newtab",
+        icon: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/favicon.ico",
+        name: {
+          en: "Get audio/video (luanxt)",
+          vi: "Tải nhạc/video (luanxt)",
+        },
+        description: {
+          en: "Using API from luanxt.com. Download Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
+          vi: "Sử dụng API của luanxt.com. Tải Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
+        },
+        infoLink: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/",
+        onClickExtension: () =>
+          window.open("https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"),
+      },
       // s.bookmark_exporter,
       s.twitter_downloadButton,
+      createTitle("--- Photos ---", "--- Ảnh ---"),
+      {
+        id: "recommend_picviewer_ce+",
+        icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
+        name: {
+          en: "Picviewer CE+ (recommend)",
+          vi: "Picviewer CE+ (khuyên dùng)",
+        },
+        description: {
+          en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
+          vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
+          img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
+        },
+        onClickExtension: () =>
+          window.open("https://greasyfork.org/en/scripts/24204-picviewer-ce"),
+      },
+      s.getFavicon,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.spotify_downloadButton,
       s.soundcloud_downloadMusic,
@@ -65,11 +96,6 @@ const tabs = [
       s.download_watchingVideo,
       s.vimeo_downloader,
       s.showTheVideos,
-      createTitle("--- Photos ---", "--- Ảnh ---"),
-      s.getFavicon,
-      s.whatApp_storySaver,
-      s.showTheImages,
-      s.download_image,
       createTitle("--- Document ---", "--- Tài liệu ---"),
       s.tailieu_vn,
       s.docDownloader,

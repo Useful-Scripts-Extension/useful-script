@@ -62,7 +62,6 @@ import whatWebsiteStack from "./whatWebsiteStack.js";
 import youtube_downloadVideo from "./youtube_downloadVideo.js";
 import search_paperWhere from "./search_paperWhere.js";
 import viewCookies from "./viewCookies.js";
-import download_image from "./download_image.js";
 import viewAllLinks from "./viewAllLinks.js";
 import googleCache from "./googleCache.js";
 import githubdev from "./githubdev.js";
@@ -75,7 +74,6 @@ import archiveToday from "./archiveToday.js";
 import whois from "./whois.js";
 import viewWebMetaInfo from "./viewWebMetaInfo.js";
 import getAllEmailsInWeb from "./getAllEmailsInWeb.js";
-import showTheImages from "./showTheImages.js";
 import showHiddenFields from "./showHiddenFields.js";
 import cssSelectorViewer from "./cssSelectorViewer.js";
 import youtube_nonstop from "./youtube_nonstop.js";
@@ -84,7 +82,6 @@ import showTheAudios from "./showTheAudios.js";
 import nhaccuatui_downloader from "./nhaccuatui_downloader.js";
 import fb_getTokenBussinessLocation from "./fb_getTokenBussinessLocation.js";
 import injectScriptToWebsite from "./injectScriptToWebsite.js";
-import getLinkLuanxt from "./getLinkLuanxt.js";
 import getFavicon from "./getFavicon.js";
 import fb_checkToken from "./fb_checkToken.js";
 import fb_getTokenCampaigns from "./fb_getTokenCampaigns.js";
@@ -97,7 +94,6 @@ import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
 import fb_storySaver from "./fb_storySaver.js";
-import whatApp_storySaver from "./whatApp_storySaver.js";
 import send_shareFiles from "./send_shareFiles.js";
 import fb_downloadCommentVideo from "./fb_downloadCommentVideo.js";
 import scribd_downloadDocuments from "./scribd_downloadDocuments.js";
@@ -252,7 +248,6 @@ const allScripts = {
   youtube_downloadVideo: addBadge(youtube_downloadVideo, BADGES.hot),
   search_paperWhere,
   viewCookies,
-  download_image: addBadge(download_image, BADGES.hot),
   viewAllLinks,
   googleCache: googleCache,
   githubdev: addBadge(githubdev, BADGES.hot),
@@ -265,7 +260,6 @@ const allScripts = {
   whois: whois,
   viewWebMetaInfo: viewWebMetaInfo,
   getAllEmailsInWeb: addBadge(getAllEmailsInWeb, BADGES.hot),
-  showTheImages: showTheImages,
   showHiddenFields: showHiddenFields,
   cssSelectorViewer: cssSelectorViewer,
   youtube_nonstop: youtube_nonstop,
@@ -274,7 +268,6 @@ const allScripts = {
   nhaccuatui_downloader: nhaccuatui_downloader,
   fb_getTokenBussinessLocation: fb_getTokenBussinessLocation,
   injectScriptToWebsite: injectScriptToWebsite,
-  getLinkLuanxt: addBadge(getLinkLuanxt, BADGES.hot),
   getFavicon: getFavicon,
   fb_checkToken: fb_checkToken,
   fb_getTokenCampaigns: fb_getTokenCampaigns,
@@ -287,7 +280,6 @@ const allScripts = {
   douyin_downloadAllVideoUser: douyin_downloadAllVideoUser,
   showTheVideos: showTheVideos,
   fb_storySaver: fb_storySaver,
-  whatApp_storySaver: whatApp_storySaver,
   send_shareFiles: send_shareFiles,
   fb_downloadCommentVideo: fb_downloadCommentVideo,
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),

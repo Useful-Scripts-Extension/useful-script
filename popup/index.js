@@ -209,7 +209,8 @@ function createScriptButton(script, isFavorite = false) {
     // image icon
     if (
       script.icon.indexOf("http://") === 0 ||
-      script.icon.indexOf("https://") === 0
+      script.icon.indexOf("https://") === 0 ||
+      script.icon.indexOf("data:image") === 0
     ) {
       const icon = document.createElement("img");
       icon.classList.add("icon-img");

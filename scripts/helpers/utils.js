@@ -418,6 +418,12 @@ export function openPopupWithHtml(html, width = 300, height = 300) {
     `scrollbars=yes,width=${width},height=${height}`
   );
   win.document.write(html);
+  setTimeout(() => {
+    win.focus();
+  }, 500);
+  return {
+    closePopup: () => win?.close?.(),
+  };
 }
 
 /*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,

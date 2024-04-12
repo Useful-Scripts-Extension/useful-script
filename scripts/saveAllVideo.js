@@ -10,8 +10,8 @@ export default {
     en: "Download video from Douyin Twitter Instagram TikTok Youtube",
     vi: "Tải video từ Douyin Twitter Instagram TikTok Youtube",
   },
-  infoLink:
-    "https://www.facebook.com/groups/j2team.community/posts/2316412945357479/",
+  infoLink: "https://saveallvideo.net",
+  // "https://www.facebook.com/groups/j2team.community/posts/2316412945357479/",
 
   onClickExtension: async () => {
     const { closeLoading, setLoadingText } = showLoading(
@@ -38,6 +38,7 @@ export default {
       else throw Error("API không trả link video.");
     } catch (e) {
       alert("ERROR: " + e);
+      window.open("https://saveallvideo.net");
     } finally {
       closeLoading();
     }

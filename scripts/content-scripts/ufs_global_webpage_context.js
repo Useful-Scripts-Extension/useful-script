@@ -34,6 +34,41 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   DOM: {
+    // prettier-ignore
+    getContentClientRect(target) {
+      var rect = target.getBoundingClientRect();
+      var compStyle = window.getComputedStyle(target);
+      var pFloat = parseFloat;
+      var top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
+      var right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
+      var bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
+      var left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
+      return {
+          top : top,
+          right : right,
+          bottom : bottom,
+          left : left,
+          width : right-left,
+          height : bottom-top,
+      };
+    },
+    dataURLToCanvas(dataurl, cb) {
+      if (!dataurl) return cb(null);
+      var ctx = canvas.getContext("2d");
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        cb(canvas);
+      };
+      img.onerror = function () {
+        cb(null);
+      };
+      img.src = dataurl;
+    },
     notify(msg, x, y) {
       let id = "ufs_notify_div";
       let exist = document.getElementById(id);
@@ -199,8 +234,9 @@ const UsefulScriptGlobalPageContext = {
       let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
       if (!policy) {
         policy = window.trustedTypes.createPolicy("ufsTrustedTypesPolicy", {
-          createHTML: (input) => input,
-          createScriptURL: (input) => input,
+          createHTML: (string, sink) => string,
+          createScriptURL: (string) => string,
+          createScript: (string) => string,
         });
       }
       return policy;
@@ -284,52 +320,77 @@ const UsefulScriptGlobalPageContext = {
   },
   Utils: {
     formatTimeToHHMMSSDD(date) {
-      var hours = date.getHours().toString().padStart(2, "0");
-      var minutes = date.getMinutes().toString().padStart(2, "0");
-      var seconds = date.getSeconds().toString().padStart(2, "0");
-      var milliseconds = date.getMilliseconds().toString().padStart(3, "0");
-      return hours + ":" + minutes + ":" + seconds + ":" + milliseconds;
+      const hours = ("0" + date.getHours()).slice(-2);
+      const minutes = ("0" + date.getMinutes()).slice(-2);
+      const seconds = ("0" + date.getSeconds()).slice(-2);
+      const milliseconds = ("00" + date.getMilliseconds()).slice(-3);
+      return `${hours}:${minutes}:${seconds}:${milliseconds}`;
     },
     getLargestImageSrc(src) {
       try {
-        let url = new URL(src);
-        // https://lh3.googleusercontent.com/proxy/mxAm-SOUdYAQxnF726rLzTrWAA_I3YTjv3jSMlowuSzELjBC9QoOQOmwxqrvfRVKV9siDmdBlbuShaKntl4Xy4pV4m72rnwfqb7S=s0
-        if (url.hostname === "lh3.googleusercontent.com") {
-          return src.split("=s")?.[0] + "=s0";
-        }
-        // https://s.gravatar.com/avatar/e41b3c74ad1bcae377ec6aebb83e834f?s=0&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2F99.png
-        if (url.hostname === "s.gravatar.com" && url.searchParams.get("s")) {
-          url.searchParams.set("s", "9999");
-          return url.toString();
-        }
-        // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
-        if (url.hostname === "atlassiansuite.mservice.com.vn") {
-          if (url.searchParams.get("size")) {
-            url.searchParams.set("size", "9999");
-          }
-          return url.toString();
-        }
-        if (url.hostname === "atlassiantool.mservice.com.vn") {
-          if (url.href.includes("/thumbnails/")) {
-            return url.href.replace("/thumbnails/", "/attachments/");
-          }
+        const url = new URL(src);
+        switch (url.hostname) {
+          // https://lh3.googleusercontent.com/proxy/mxAm-SOUdYAQxnF726rLzTrWAA_I3YTjv3jSMlowuSzELjBC9QoOQOmwxqrvfRVKV9siDmdBlbuShaKntl4Xy4pV4m72rnwfqb7S=s0
+          case "lh3.googleusercontent.com":
+          case "yt3.ggpht.com":
+            return src.split("=s")?.[0] + "=s0";
+          // https://s.gravatar.com/avatar/e41b3c74ad1bcae377ec6aebb83e834f?s=0&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2F99.png
+          case "s.gravatar.com":
+            if (url.searchParams.get("s")) {
+              url.searchParams.set("s", "9999");
+              return url.toString();
+            }
+            break;
+          // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
+          case "atlassiansuite.mservice.com.vn":
+            if (url.searchParams.get("size")) {
+              url.searchParams.set("size", "9999");
+            }
+            return url.toString();
+          case "atlassiantool.mservice.com.vn":
+            if (url.href.includes("/thumbnails/")) {
+              return url.href.replace("/thumbnails/", "/attachments/");
+            }
+            break;
+          default:
+            return src;
         }
       } catch (e) {
         console.log("ERROR: ", e);
       }
       return src;
     },
+    // resolve relative URLs into canonical absolute URLs based on the current location.
+    canonicalUri(src, location = window.location) {
+      if (src.charAt(0) == "#") return location.href + src;
+      if (src.charAt(0) == "?")
+        return location.href.replace(/^([^\?#]+).*/, "$1" + src);
+      var root_page = /^[^?#]*\//.exec(location.href)[0],
+        base_path = location.pathname.replace(/\/[^\/]+\.[^\/]+$/, "/"),
+        root_domain = /^\w+\:\/\/\/?[^\/]+/.exec(root_page)[0],
+        absolute_regex = /^\w+\:\/\//;
+      src = src.replace("./", "");
+      if (/^\/\/\/?/.test(src)) {
+        src = location.protocol + src;
+      } else if (!absolute_regex.test(src) && src.charAt(0) != "/") {
+        src = (base_path || "") + src;
+      }
+      return absolute_regex.test(src)
+        ? src
+        : (src.charAt(0) == "/" ? root_domain : root_page) + src;
+    },
     formatSize(size, fixed = 0) {
       size = Number(size);
       if (!size) return "?";
-      // format to KB, MB, GB
-      if (size < 1024) return size + "B";
-      if (size < 1024 * 1024) return (size / 1024).toFixed(fixed) + "KB";
-      if (size < 1024 * 1024 * 1024)
-        return (size / (1024 * 1024)).toFixed(fixed) + "MB";
-      return (size / (1024 * 1024 * 1024)).toFixed(fixed) + "GB";
-    },
 
+      const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+      let unitIndex = 0;
+      while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex++;
+      }
+      return size.toFixed(fixed) + units[unitIndex];
+    },
     // modified by chatgpt based on: https://gist.github.com/jcouyang/632709f30e12a7879a73e9e132c0d56b
     promiseAllStepN(n, list) {
       const head = list.slice(0, n);
