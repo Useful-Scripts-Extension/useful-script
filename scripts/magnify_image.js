@@ -24,6 +24,7 @@ export default {
       return unique(
         toArray(document.querySelectorAll(selector))
           .filter(isOverlapWithMouse)
+          .sort(smallImageFirst)
           .map(extractImageFromElement)
           .filter(isTruthy)
           .map(relativeUrlToAbsolute)
@@ -38,6 +39,11 @@ export default {
         mouse.y > rect.top &&
         mouse.y < rect.bottom
       );
+    }
+    function smallImageFirst(a, b) {
+      let aRect = UsefulScriptGlobalPageContext.DOM.getContentClientRect(a);
+      let bRect = UsefulScriptGlobalPageContext.DOM.getContentClientRect(b);
+      return aRect.width * aRect.height - bRect.width * bRect.height;
     }
     function extractImageFromElement(element) {
       if (element.tagName.toLowerCase() === "img") {
