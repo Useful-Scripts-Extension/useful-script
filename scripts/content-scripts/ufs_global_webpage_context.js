@@ -34,6 +34,92 @@ const UsefulScriptGlobalPageContext = {
     },
   },
   DOM: {
+    enableDragAndZoom(element, container) {
+      // set style
+      element.style.cssText += `
+        cursor: grab;
+        position: fixed;
+        user-select: none !important;
+        max-width: none !important;
+        max-height: none !important;
+        min-width: none !important;
+        min-height: none !important;
+      `;
+
+      // Variables to track the current position
+      var lastX = 0;
+      var lastY = 0;
+      var dragging = false;
+      let mouse = { x: 0, y: 0 };
+
+      // Mouse down event listener
+      element.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+        dragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        element.style.cursor = "grabbing";
+      });
+
+      // Mouse move event listener
+      container.addEventListener("mousemove", function (e) {
+        mouse = { x: e.clientX, y: e.clientY };
+        if (dragging) {
+          var deltaX = e.clientX - lastX;
+          var deltaY = e.clientY - lastY;
+
+          element.style.left = element.offsetLeft + deltaX + "px";
+          element.style.top = element.offsetTop + deltaY + "px";
+
+          lastX = e.clientX;
+          lastY = e.clientY;
+        }
+      });
+
+      // Mouse up event listener
+      container.addEventListener("mouseup", function () {
+        dragging = false;
+        element.style.cursor = "grab";
+      });
+
+      // Mouse leave event listener
+      container.addEventListener("mouseleave", function () {
+        dragging = false;
+        element.style.cursor = "grab";
+      });
+
+      // Mouse wheel event listener for zooming
+      container.addEventListener("wheel", function (e) {
+        e.preventDefault();
+        var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
+        var scaleFactor = 1.2;
+        var scale = delta > 0 ? scaleFactor : 1 / scaleFactor;
+
+        // Calculate mouse position relative to the container
+        // var rect = container.getBoundingClientRect();
+        // var mouseX = e.clientX - rect.left;
+        // var mouseY = e.clientY - rect.top;
+
+        // Adjust scale at mouse position
+        var offsetX = mouse.x - element.offsetLeft;
+        var offsetY = mouse.y - element.offsetTop;
+
+        var newWidth = element.width * scale;
+        var newHeight = element.height * scale;
+
+        var newLeft =
+          element.offsetLeft -
+          (newWidth - element.width) * (offsetX / element.width);
+        var newTop =
+          element.offsetTop -
+          (newHeight - element.height) * (offsetY / element.height);
+
+        element.style.width = newWidth + "px";
+        element.style.height = newHeight + "px";
+        element.style.left = newLeft + "px";
+        element.style.top = newTop + "px";
+      });
+    },
     // prettier-ignore
     getContentClientRect(target) {
       var rect = target.getBoundingClientRect();
@@ -69,7 +155,14 @@ const UsefulScriptGlobalPageContext = {
       };
       img.src = dataurl;
     },
-    notify(msg, x, y, styleText = "", ms = 3000) {
+    notify({
+      msg = "",
+      x = window.innerWidth / 2,
+      y = window.innerHeight - 100,
+      align = "center",
+      styleText = "",
+      lifeTime = 3000,
+    } = {}) {
       let id = "ufs_notify_div";
       let exist = document.getElementById(id);
       if (exist) exist.remove();
@@ -87,24 +180,60 @@ const UsefulScriptGlobalPageContext = {
         border-radius: 5px;
         z-index: 999999;
         transition: all 1s ease-out;
+        ${
+          align === "right"
+            ? "transform: translateX(-100%);"
+            : align === "center"
+            ? "transform: translateX(-50%);"
+            : ""
+        }
         ${styleText || ""}
       `;
       div.textContent = msg;
-      document.body.appendChild(div);
+      (document.body || document.documentElement).appendChild(div);
 
-      setTimeout(() => {
-        div.style.opacity = 0;
-        div.style.top = `${y - 50}px`;
-      }, ms - 1000);
-      setTimeout(() => {
-        div.remove();
-      }, ms);
+      let timeouts = [];
+      function closeAfter(_time) {
+        timeouts.forEach((t) => clearTimeout(t));
+        timeouts = [
+          setTimeout(() => {
+            if (div) {
+              div.style.opacity = 0;
+              div.style.top = `${y - 50}px`;
+            }
+          }, _time - 1000),
+          setTimeout(() => {
+            div?.remove();
+          }, _time),
+        ];
+      }
+
+      closeAfter(lifeTime);
+
+      return {
+        closeAfter: closeAfter,
+        remove() {
+          if (div) {
+            div.remove();
+            div = null;
+            return true;
+          }
+          return false;
+        },
+        setText(text) {
+          if (div) {
+            div.textContent = text;
+            return true;
+          }
+          return false;
+        },
+      };
     },
     onDoublePress(key, callback, timeout = 500) {
       let timer = null;
       let clickCount = 0;
 
-      const keydown = (event) => {
+      const keyup = (event) => {
         if (event.key !== key) return;
 
         clickCount++;
@@ -120,11 +249,11 @@ const UsefulScriptGlobalPageContext = {
         }, timeout);
       };
 
-      document.addEventListener("keydown", keydown);
+      document.addEventListener("keyup", keyup);
 
       return () => {
         clearTimeout(timer);
-        document.removeEventListener("keydown", keydown);
+        document.removeEventListener("keyup", keyup);
       };
     },
 
@@ -353,8 +482,131 @@ const UsefulScriptGlobalPageContext = {
               return url.href.replace("/thumbnails/", "/attachments/");
             }
             break;
-          default:
-            return src;
+        }
+
+        // https://gist.github.com/ykelvis/b982c062771d874a8c774945f29d759f
+        //google
+        if (
+          (m = url.match(
+            /^(https?:\/\/\w+\.googleusercontent\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            return m[1] + "s0" + m[3];
+          }
+        } else if (
+          (m = url.match(
+            /^(http?:\/\/imgl[^\.]*\.nosdn\.127\.net\/img\/)([^\?]*)(\S+)?$/i
+          ))
+        ) {
+          if (m[3] !== undefined) {
+            return m[1] + m[2];
+          }
+        } else if (
+          (m = url.match(
+            /^(http?:\/\/image\d+-c\.poco\.cn\/mypoco\/myphoto\/)([^\/]+)([^\/]+)([^\?]*)(\S+)?$/i
+          ))
+        ) {
+          if (m[5] !== undefined) {
+            return m[1] + m[2] + m[3] + m[4];
+          }
+        } else if (
+          (m = url.match(
+            /^(https?:\/\/\w+\.googleusercontent\.com\/.+=)(.+)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            return m[1] + "s0";
+          }
+        }
+
+        //blogspot
+        else if (
+          (m = url.match(
+            /^(https?:\/\/\w+\.bp\.blogspot\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            return m[1] + "s0" + m[3];
+          }
+        }
+
+        //twitter
+        else if (
+          (m = url.match(
+            /^(https?:\/\/\w+\.twimg\.com\/media\/(?:[^\/:]+\.(?:jpg|jpeg|gif|png|bmp|webp)))(:\w+)?(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] === null || m[2] != ":orig") return m[1] + ":orig";
+        }
+
+        //Steam (Only user content)
+        else if (
+          (m = url.match(
+            /^(http:\/\/images\.akamai\.steamusercontent\.com\/[^\?]+)\?.+$/i
+          ))
+        ) {
+          return m[1];
+        }
+
+        //性浪微博
+        else if (
+          (m = url.match(
+            /^(https?:\/\/\w+\.sinaimg\.cn\/)([a-zA-Z]\w+)(\/.+)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "large") {
+            return m[1] + "large" + m[3];
+          }
+        }
+
+        //疼逊微博
+        else if (
+          (m = url.match(/^(http:\/\/[\w\d]+\.qpic\.cn\/.+\/)(\d+)(?:\?.+)?$/i))
+        ) {
+          if (m[2] < 2000) {
+            return m[1] + "2000";
+          }
+          /*if(m[2]!=0) {
+      document.location = m[1] + "0";
+  }*/
+        }
+
+        //zhihu
+        else if (
+          (m = url.match(
+            /^(https?:\/\/.+\.zhimg\.com\/\w+_)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "r") {
+            return m[1] + "r" + m[3];
+          }
+        }
+
+        //artstation
+        else if (
+          (m = url.match(
+            /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\w+)(\/[^\/]+)$/i
+          ))
+        ) {
+          if (m[2] != "original") {
+            return m[1] + "original" + m[3];
+          }
+        }
+
+        //百度贴吧（然而对于画质提升什么的并没有什么卵用...）
+        else if (
+          !(m = url.match(
+            /^http:\/\/imgsrc\.baidu\.com\/forum\/pic\/item\/.+/i
+          ))
+        ) {
+          if (
+            (m = url.match(
+              /^http:\/\/(?:imgsrc|\w+\.hiphotos)\.(?:bdimg|baidu)\.com\/(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+            ))
+          ) {
+            return "http://imgsrc.baidu.com/forum/pic/item/" + m[1];
+          }
         }
       } catch (e) {
         console.log("ERROR: ", e);

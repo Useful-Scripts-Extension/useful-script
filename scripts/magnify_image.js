@@ -43,7 +43,14 @@ export default {
     function smallImageFirst(a, b) {
       let aRect = UsefulScriptGlobalPageContext.DOM.getContentClientRect(a);
       let bRect = UsefulScriptGlobalPageContext.DOM.getContentClientRect(b);
-      return aRect.width * aRect.height - bRect.width * bRect.height;
+      let diff = aRect.width * aRect.height - bRect.width * bRect.height;
+      if (diff > 10) {
+        return diff;
+      }
+      // natural size
+      let aSize = a.naturalWidth * a.naturalHeight;
+      let bSize = b.naturalWidth * b.naturalHeight;
+      return bSize - aSize;
     }
     function extractImageFromElement(element) {
       if (element.tagName.toLowerCase() === "img") {
@@ -89,6 +96,81 @@ export default {
       return !!value;
     }
 
+    function createPreview(src) {
+      let id = "ufs-magnify-image";
+      let exist = document.getElementById(id);
+      if (exist) exist.remove();
+
+      // container
+      let overlay = document.createElement("div");
+      overlay.id = id;
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 99999;
+        overflow: hidden;
+      `;
+      overlay.onclick = (e) => {
+        if (e.target == overlay) overlay.remove();
+      };
+      document.body.appendChild(overlay);
+
+      // toolbar
+      let toolbar = document.createElement("div");
+      toolbar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        background-color: #111;
+        color: white;
+      `;
+      overlay.appendChild(toolbar);
+
+      // size
+      let size = document.createElement("div");
+      size.innerText = "Size";
+      toolbar.appendChild(size);
+
+      // image
+      let img = document.createElement("img");
+      img.src = src;
+      img.style.cssText = `
+        top: ${window.innerHeight / 2}px;
+        left: ${window.innerWidth / 2}px;
+        transform: translate(-50%, -50%);
+      `;
+      img.onload = () => {
+        let w = img.naturalWidth,
+          h = img.naturalHeight;
+
+        size.innerText = `${w} x ${h}`;
+
+        // constrain to screen size
+        let screenW = window.innerWidth / 1.5;
+        let screenH = window.innerHeight / 1.5;
+
+        if (w > screenW) {
+          h = h * (screenW / w);
+          w = screenW;
+        }
+        if (h > screenH) {
+          w = w * (screenH / h);
+          h = screenH;
+        }
+
+        img.style.width = `${w}px`;
+        img.style.height = `${h}px`;
+      };
+      overlay.appendChild(img);
+
+      UsefulScriptGlobalPageContext.DOM.enableDragAndZoom(img, overlay);
+    }
+
     let unsub = UsefulScriptGlobalPageContext.DOM.onDoublePress(
       "Control",
       () => {
@@ -100,28 +182,18 @@ export default {
         let src = srcs?.[0];
 
         if (!src) {
-          UsefulScriptGlobalPageContext.DOM.notify(
-            "Useful-script: No image found",
-            mouse.x,
-            mouse.y
-          );
+          UsefulScriptGlobalPageContext.DOM.notify({
+            msg: "Useful-script: No image found",
+            x: mouse.x,
+            y: mouse.y,
+            align: "left",
+          });
           return;
         }
 
-        UsefulScriptGlobalPageContext.Extension.getURL(
-          "/scripts/magnify_image.html"
-        ).then((url) => {
-          let w = 500,
-            h = 500,
-            left = screen.width / 2 - w / 2,
-            top = screen.height / 2 - h / 2;
-
-          window.open(
-            url + "?src=" + encodeURIComponent(src),
-            "Magnify image",
-            `width=${w},height=${h},top=${top},left=${left},location=no`
-          );
-        });
+        createPreview(
+          UsefulScriptGlobalPageContext.Utils.getLargestImageSrc(src)
+        );
       }
     );
   },

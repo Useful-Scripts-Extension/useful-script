@@ -198,7 +198,7 @@ const allScripts = {
   doutube_getAllVideoInUserProfile,
   darkModePDF: addBadge(darkModePDF, BADGES.hot),
   webToPDF,
-  scrollToVeryEnd,
+  scrollToVeryEnd: addBadge(scrollToVeryEnd, BADGES.hot),
   passwordGenerator: passwordGenerator,
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
   // passwordFieldToggle,

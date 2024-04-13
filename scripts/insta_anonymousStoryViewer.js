@@ -24,12 +24,9 @@ export default {
           typeof arguments[0] === "string" &&
           arguments[0].includes("viewSeenAt")
         ) {
-          UsefulScriptGlobalPageContext.DOM.notify(
-            "Usefull-script: Blocked story view tracking",
-            window.innerWidth / 2,
-            window.innerHeight - 100,
-            `transform: translate(-50%, -50%);`
-          );
+          UsefulScriptGlobalPageContext.DOM.notify({
+            msg: "Usefull-script: Blocked story view tracking",
+          });
           console.log("blocked");
           // Block the request by doing nothing
           // This prevents the "viewSeenAt" field from being sent

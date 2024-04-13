@@ -35,7 +35,6 @@ export default {
     // ==/UserScript==
     // prettier-ignore
     (function() {
-      'use strict';
 
       // 域名规则列表
       var rules = {
@@ -62,7 +61,11 @@ export default {
           /.*\.youtube\.com.*/,
           /.*\.wikipedia\.org.*/,
           /mail\.qq\.com.*/,
-          /translate\.google\..*/
+          /translate\.google\..*/,
+
+          // added by hoangtran
+          /github\.dev.*/,
+          /hoangtran0410\.github\.io\/LOL2D/
         ]
       };
 
@@ -161,9 +164,11 @@ export default {
 
       // 添加css
       function addStyle(css) {
-        var style = document.createElement('style');
-        style.innerHTML = css;
-        document.head.appendChild(style);
+        console.log(UsefulScriptGlobalPageContext.DOM.createTrustedHtml)
+        const html = UsefulScriptGlobalPageContext.DOM.createTrustedHtml(
+          `<style>${css}</style>`,
+        )
+        (document.head || document.documentElement).appendChild(html);
       }
 
       // 获取目标域名应该使用的规则
@@ -190,6 +195,15 @@ export default {
         // 获取当前域名的规则
         var url = window.location.host + window.location.pathname;
         var rule = getRule(url);
+
+        if(rule.name === rules.black_rule.name) {
+          return;
+        } else {
+          UsefulScriptGlobalPageContext.DOM.notify({
+            msg:"UsefulScript - Remove web limit - ON (" + rule.name + ")",
+            align: "center"
+          })
+        }
 
         // 设置 event 列表
         hook_eventNames = rule.hook_eventNames.split("|");
@@ -233,7 +247,13 @@ export default {
 
         // 添加CSS
         if(rule.add_css) {
-          addStyle('html, * {-webkit-user-select:text!important; -moz-user-select:text!important; user-select:text!important; -ms-user-select:text!important; -khtml-user-select:text!important;}');
+          addStyle(`html, * {
+            -webkit-user-select:text!important;
+            -moz-user-select:text!important;
+            user-select:text!important;
+            -ms-user-select:text!important;
+            -khtml-user-select:text!important;
+          }`);
         }
       }
 

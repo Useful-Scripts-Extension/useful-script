@@ -1,3 +1,4 @@
+import { BADGES, addBadge } from "../scripts/helpers/badge.js";
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
@@ -98,21 +99,24 @@ const tabs = [
       // s.bookmark_exporter,
       s.twitter_downloadButton,
       createTitle("--- Photos ---", "--- Ảnh ---"),
-      {
-        id: "recommend_picviewer_ce+",
-        icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
-        name: {
-          en: "Picviewer CE+ (recommend)",
-          vi: "Picviewer CE+ (khuyên dùng)",
+      addBadge(
+        {
+          id: "recommend_picviewer_ce+",
+          icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
+          name: {
+            en: "Picviewer CE+",
+            vi: "Picviewer CE+",
+          },
+          description: {
+            en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
+            vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
+            img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
+          },
+          onClickExtension: () =>
+            window.open("https://greasyfork.org/en/scripts/24204-picviewer-ce"),
         },
-        description: {
-          en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
-          vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
-          img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
-        },
-        onClickExtension: () =>
-          window.open("https://greasyfork.org/en/scripts/24204-picviewer-ce"),
-      },
+        BADGES.recommend
+      ),
       s.getFavicon,
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.spotify_downloadButton,
@@ -267,23 +271,25 @@ const tabs = [
       s.youtube_toggleLight,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
-      createTitle("--- Recommend ---", "--- Khuyên dùng ---"),
-      {
-        id: "recommend_improve_youtube",
-        icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
-        name: {
-          en: "Improve YouTube - 85+ features",
-          vi: "Improve YouTube - 85+ chức năng",
+      addBadge(
+        {
+          id: "recommend_improve_youtube",
+          icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
+          name: {
+            en: "Improve YouTube - 85+ features",
+            vi: "Improve YouTube - 85+ chức năng",
+          },
+          description: {
+            en: "Make YouTube more beautiful, faster, and more useful!",
+            vi: "Làm cho YouTube gọn gàng+thông minh!",
+          },
+          onClickExtension: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
+            ),
         },
-        description: {
-          en: "Make YouTube more beautiful, faster, and more useful!",
-          vi: "Làm cho YouTube gọn gàng+thông minh!",
-        },
-        onClickExtension: () =>
-          window.open(
-            "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
-          ),
-      },
+        BADGES.recommend
+      ),
     ],
   },
   {
@@ -315,34 +321,37 @@ const tabs = [
       createTitle("--- Automation ---", "--- Tự động ---"),
       s.scrollToVeryEnd,
       s.dino_hack,
-      s.vuiz_createLogo,
       s.getAllEmailsInWeb,
       s.screenshotFullPage,
-      createTitle("--- Tools ---", "--- Công cụ ---"),
-      s.textToSpeech,
-      s.send_shareFiles,
-      s.changeAudioOutput,
       s.passwordGenerator,
+      createTitle("--- Tools ---", "--- Công cụ ---"),
+      s.send_shareFiles,
+      s.textToSpeech,
+      s.vuiz_createLogo,
+      s.changeAudioOutput,
       s.performanceAnalyzer,
       createTitle("--- Github ---", "--- Github ---"),
       s.github_goToAnyCommit,
       s.githubdev,
       s.github1s,
-      {
-        id: "recommend_cloc",
-        icon: '<i class="fa-solid fa-code"></i>',
-        name: {
-          en: "Cloc - count line of code (recommend)",
-          vi: "Cloc - đếm số dòng code (khuyên dùng)",
+      addBadge(
+        {
+          id: "recommend_cloc",
+          icon: '<i class="fa-solid fa-code"></i>',
+          name: {
+            en: "Cloc - count line of code",
+            vi: "Cloc - đếm số dòng code",
+          },
+          description: {
+            en: "Count blank lines, comment lines, and physical lines of source code in many programming languages.",
+            vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
+            img: "/scripts/recommend_cloc.png",
+          },
+          onClickExtension: () =>
+            window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
         },
-        description: {
-          en: "Count blank lines, comment lines, and physical lines of source code in many programming languages.",
-          vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
-          img: "/scripts/recommend_cloc.png",
-        },
-        onClickExtension: () =>
-          window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
-      },
+        BADGES.recommend
+      ),
       createTitle("--- Shopping ---", "--- Mua sắm ---"),
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
@@ -465,21 +474,24 @@ const tabs = [
       s.runStatJs,
       createTitle("--- View ---", "--- Xem ---"),
       s.consoleLog_withTime,
-      {
-        id: "recommend_fontRendering",
-        icon: '<i class="fa-solid fa-font fa-lg"></i>',
-        name: {
-          en: "Font Rendering - enhance font for websites",
-          vi: "Font Rendering - font chữ dễ nhìn",
+      addBadge(
+        {
+          id: "recommend_fontRendering",
+          icon: '<i class="fa-solid fa-font fa-lg"></i>',
+          name: {
+            en: "Font Rendering - better font display",
+            vi: "Font Rendering - font chữ dễ nhìn",
+          },
+          description: {
+            en: "Improve browser displaying, font rewriting, smoothing, scaling, stroke, shadow, special style elements, custom monospaced, etc",
+            vi: "Cải thiện font chữ web, giúp lướt web dễ chịu hơn.",
+          },
+          onClickExtension: () => {
+            window.open("https://greasyfork.org/scripts/416688");
+          },
         },
-        description: {
-          en: "Improve browser displaying, font rewriting, smoothing, scaling, stroke, shadow, special style elements, custom monospaced, etc",
-          vi: "Cải thiện font chữ web, giúp lướt web dễ chịu hơn.",
-        },
-        onClickExtension: () => {
-          window.open("https://greasyfork.org/scripts/416688");
-        },
-      },
+        BADGES.recommend
+      ),
       s.visualEvent,
       s.listAllImagesInWeb,
       s.viewAllLinks,
