@@ -87,10 +87,8 @@ function detectZeroWidthCharacters() {
 
   (async () => {
     // inject css
-    UsefulScriptGlobalPageContext.DOM.injectCssFile(
-      await UsefulScriptGlobalPageContext.Extension.getURL(
-        "scripts/detect_zeroWidthCharacters.css"
-      )
+    UfsGlobal.DOM.injectCssFile(
+      await UfsGlobal.Extension.getURL("scripts/detect_zeroWidthCharacters.css")
     );
 
     // Check Page

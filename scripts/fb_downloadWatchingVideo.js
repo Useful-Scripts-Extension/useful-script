@@ -34,10 +34,7 @@ export default {
       );
 
       if (videoUrl) {
-        UsefulScriptGlobalPageContext.Utils.downloadURL(
-          videoUrl,
-          "fb_video.mp4"
-        );
+        UfsGlobal.Utils.downloadURL(videoUrl, "fb_video.mp4");
       } else throw Error("Không tìm được video link");
     } catch (e) {
       alert("ERROR: " + e);
@@ -50,7 +47,7 @@ export default {
 export const shared = {
   getListVideoIdInWebsite: async function () {
     return await runScriptInCurrentTab(() => {
-      const { getOverlapScore } = UsefulScriptGlobalPageContext.DOM;
+      const { getOverlapScore } = UfsGlobal.DOM;
 
       let allVideos = Array.from(document.querySelectorAll("video"));
       let result = [];

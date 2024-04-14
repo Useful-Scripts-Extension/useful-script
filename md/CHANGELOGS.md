@@ -151,7 +151,7 @@
   - Loại bỏ tab Hot, tab New, Open extension in popup, runInExtensionContext
   - Thêm **tab Autorun, tab Tất cả**
   - Thêm **infoLink** cho các script (mở trang demo hoặc giới thiệu script)
-  - Thêm **UsefulScriptGlobalPageContext** và **content-script** (dùng cho các chức năng tự động chạy)
+  - Thêm **UfsGlobal** và **content-script** (dùng cho các chức năng tự động chạy)
 
 </details>
 

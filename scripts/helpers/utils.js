@@ -227,8 +227,7 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
     format: options.format || "png",
     quality: options.quality || 100,
   });
-  willDownload &&
-    UsefulScriptGlobalPageContext.Utils.downloadURL(imgData, "img.png");
+  willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
   return imgData;
 }
 

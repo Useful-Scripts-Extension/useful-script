@@ -33,10 +33,7 @@ export default {
             let uid = /\\\"(\d+)\\\"/g.exec(utf8_str)[1];
 
             if (!(uid in window.ufs_whoIsTyping_Cached)) {
-              let userData =
-                await UsefulScriptGlobalPageContext.Facebook.getUserInfoFromUid(
-                  uid
-                );
+              let userData = await UfsGlobal.Facebook.getUserInfoFromUid(uid);
               window.ufs_whoIsTyping_Cached[uid] = userData;
             }
 
@@ -52,9 +49,9 @@ export default {
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
 
-    UsefulScriptGlobalPageContext.Extension.getURL(
-      "scripts/fb_whoIsTyping.css"
-    ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
+    UfsGlobal.Extension.getURL("scripts/fb_whoIsTyping.css").then(
+      UfsGlobal.DOM.injectCssFile
+    );
 
     function notifyTypingEvent(uid, name, avatar, isTyping) {
       let divId = "ufs-who-is-typing";

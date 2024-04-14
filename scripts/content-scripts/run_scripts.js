@@ -27,8 +27,7 @@
   }
 
   if (!ids || !path) {
-    const data =
-      await UsefulScriptGlobalPageContext?.Extension?.getActiveScripts?.();
+    const data = await UfsGlobal?.Extension?.getActiveScripts?.();
     ids = data?.ids?.split(",") || [];
     path = data?.path || "";
   }

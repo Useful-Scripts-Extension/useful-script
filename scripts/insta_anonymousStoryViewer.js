@@ -24,7 +24,7 @@ export default {
           typeof arguments[0] === "string" &&
           arguments[0].includes("viewSeenAt")
         ) {
-          UsefulScriptGlobalPageContext.DOM.notify({
+          UfsGlobal.DOM.notify({
             msg: "Usefull-script: Blocked story view tracking",
           });
           console.log("blocked");

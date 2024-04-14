@@ -27,7 +27,6 @@ export async function viewScriptSource(script) {
 }
 
 export async function updateScriptClickCount(scriptId) {
-  return;
   try {
     let res = await fetch(
       "https://useful-script-statistic.glitch.me/count",

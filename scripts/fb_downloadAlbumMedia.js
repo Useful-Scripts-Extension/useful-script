@@ -13,7 +13,7 @@ export default {
   // whiteList: ["https://graph.facebook.com/*"],
 
   onClickExtension: function () {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     const accessToken = prompt("Nhập access token:", "");
     if (!accessToken) return;

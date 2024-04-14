@@ -13,8 +13,7 @@ export default {
   whiteList: ["https://doutu.be/*"],
 
   onClickExtension: async function () {
-    const { zipAndDownloadBlobs, getBlobFromUrl } =
-      UsefulScriptGlobalPageContext.Utils;
+    const { zipAndDownloadBlobs, getBlobFromUrl } = UfsGlobal.Utils;
 
     let url = await getCurrentTabUrl();
     let user_id = url?.split("/u/")?.[1];

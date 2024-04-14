@@ -26,7 +26,7 @@ export default {
   whiteList: ["https://drive.google.com/file/d/*"],
 
   onClick: () => {
-    UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
+    UfsGlobal.DOM.injectScriptSrc(
       "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
       async (success, error) => {
         if (!success) {

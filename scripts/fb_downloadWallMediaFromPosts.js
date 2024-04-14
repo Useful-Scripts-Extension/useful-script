@@ -12,7 +12,7 @@ export default {
   },
 
   onClickExtension: () => {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     const WAIT_BEFORE_NEXT_FETCH = 500;
     const FB_API_HOST = "https://graph.facebook.com/v12.0";

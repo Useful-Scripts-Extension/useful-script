@@ -75,10 +75,7 @@ export default {
     if (!listUrls.length) {
       alert("Không tìm thấy facebook story nào trong trang web.");
     } else if (listUrls.length === 1) {
-      UsefulScriptGlobalPageContext.Utils.downloadURL(
-        listUrls[0].url,
-        "fb_story_video.mp4"
-      );
+      UfsGlobal.Utils.downloadURL(listUrls[0].url, "fb_story_video.mp4");
     } else {
       let w = window.open("", "", "width=500,height=700");
       w.document.write(

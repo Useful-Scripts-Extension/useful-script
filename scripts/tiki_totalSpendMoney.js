@@ -15,7 +15,7 @@ export default {
   onClickExtension: async () => {
     // https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
-    const { moneyFormat } = UsefulScriptGlobalPageContext.Utils;
+    const { moneyFormat } = UfsGlobal.Utils;
 
     const OrderType = {
       all: "",

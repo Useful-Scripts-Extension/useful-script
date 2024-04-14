@@ -19,7 +19,7 @@ export default {
         getFbdtsg,
         fetchAddedFriends,
         fetchAllAddedFriendsSince,
-      } = UsefulScriptGlobalPageContext.Facebook;
+      } = UfsGlobal.Facebook;
 
       setLoadingText("Đang lấy uid, token...");
       let uid = await getYourUserId();

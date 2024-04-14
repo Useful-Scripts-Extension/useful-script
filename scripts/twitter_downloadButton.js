@@ -310,7 +310,7 @@ export default {
             start: function (task) {
               this.update();
               return new Promise(resolve => {
-                UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(task.url, task.name)
+                UfsGlobal.Utils.downloadBlobUrl(task.url, task.name)
                   .then(() => {
                     task.onload();
                     resolve();

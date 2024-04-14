@@ -12,7 +12,7 @@ export default {
   whiteList: ["https://docs.google.com/document/*"],
 
   onClick: () => {
-    UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
+    UfsGlobal.DOM.injectScriptSrc(
       "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
       async (success, error) => {
         if (!success) {

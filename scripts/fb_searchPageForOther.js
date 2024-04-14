@@ -23,7 +23,7 @@ export default {
         getFbdtsg,
         searchAllPageForOther,
         getUserInfoFromUid,
-      } = UsefulScriptGlobalPageContext.Facebook;
+      } = UfsGlobal.Facebook;
 
       setLoadingText("Đang lấy uid, token...");
       let other_uid = await getUidFromUrl(url);

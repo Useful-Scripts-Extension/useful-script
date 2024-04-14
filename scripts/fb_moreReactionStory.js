@@ -20,7 +20,7 @@ export default {
       try {
         // crawl emoji from https://emojipedia.org https://getemoji.com/
         // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
-        let url = await UsefulScriptGlobalPageContext.Extension.getURL(
+        let url = await UfsGlobal.Extension.getURL(
           "scripts/fb_moreReactionStory.json"
         );
         const emojiJson = await fetch(url);
@@ -37,10 +37,8 @@ export default {
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
-        const fb_dtsg =
-          await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-        const user_id =
-          await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
+        const fb_dtsg = await UfsGlobal.Facebook.getFbdtsg();
+        const user_id = await UfsGlobal.Facebook.getYourUserId();
 
         /* HTML template
         <div class="ufs-more-react-story">
@@ -92,8 +90,7 @@ export default {
 
               let loading = 0;
               emojiLi.onclick = async function () {
-                const storyId =
-                  UsefulScriptGlobalPageContext.Facebook.getStoryId();
+                const storyId = UfsGlobal.Facebook.getStoryId();
                 try {
                   if (!loading) emojiLi.classList.add("loading");
                   loading++;
@@ -196,9 +193,9 @@ export default {
   },
 
   onDocumentIdle: async () => {
-    let cssFile = await UsefulScriptGlobalPageContext.Extension.getURL(
+    let cssFile = await UfsGlobal.Extension.getURL(
       "scripts/fb_moreReactionStory.css"
     );
-    UsefulScriptGlobalPageContext.DOM.injectCssFile(cssFile);
+    UfsGlobal.DOM.injectCssFile(cssFile);
   },
 };

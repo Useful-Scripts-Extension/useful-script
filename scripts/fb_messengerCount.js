@@ -15,13 +15,11 @@ export default {
     let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");
     try {
       setLoadingText("Đang lấy token...");
-      let dtsg = await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-      let uid = await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
+      let dtsg = await UfsGlobal.Facebook.getFbdtsg();
+      let uid = await UfsGlobal.Facebook.getYourUserId();
 
       setLoadingText("Đang lấy dữ liệu tin nhắn...");
-      let msgData = await UsefulScriptGlobalPageContext.Facebook.messagesCount(
-        dtsg
-      );
+      let msgData = await UfsGlobal.Facebook.messagesCount(dtsg);
 
       let { count: threadCount, nodes } = msgData.viewer.message_threads;
       let ranking = nodes

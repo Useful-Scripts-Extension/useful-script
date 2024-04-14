@@ -18,7 +18,7 @@ export default {
   },
 
   onClickExtension: async function () {
-    const { downloadURL } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadURL } = UfsGlobal.Utils;
 
     const { setLoadingText, closeLoading } = showLoading(
       "Đang lấy kích thước trang..."

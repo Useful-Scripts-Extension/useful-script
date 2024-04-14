@@ -47,8 +47,6 @@ export const shared = {
       ? video_url
       : shared.getTiktokVideoIdFromUrl(video_url);
     if (!videoId) throw Error("Video URL không đúng định dạng");
-    return await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
-      videoId
-    );
+    return await UfsGlobal.Tiktok.downloadTiktokVideoFromId(videoId);
   },
 };

@@ -1,7 +1,7 @@
 export const shared = {
   scrollToVeryEnd: function () {
     return new Promise(async (resolve, reject) => {
-      const notify = UsefulScriptGlobalPageContext.DOM.notify({
+      const notify = UfsGlobal.DOM.notify({
         msg: "Usefull-script: Scrolling to very end...",
         lifeTime: 99999,
       });

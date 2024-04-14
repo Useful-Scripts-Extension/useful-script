@@ -12,7 +12,7 @@ export default {
   },
 
   onClickExtension: async function () {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     const c = (e) => {
       try {

@@ -155,16 +155,12 @@ export default {
           console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
           progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
           downloadBtn.innerText = `Đang get link ${progress}...`;
-          let link =
-            await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
-              getId(queue[0])
-            );
+          let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(
+            getId(queue[0])
+          );
 
           if (!link) {
-            link =
-              await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromUrl(
-                queue[0]
-              );
+            link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(queue[0]);
           }
 
           if (link) {
@@ -191,12 +187,12 @@ export default {
       downloadBtn.disabled = false;
       downloadBtn.innerText = "GET LINK 🔗";
 
-      UsefulScriptGlobalPageContext.Utils.copyToClipboard(links.join("\n"));
+      UfsGlobal.Utils.copyToClipboard(links.join("\n"));
       console.log(links);
     }
 
     // Listen for videos
-    UsefulScriptGlobalPageContext.DOM.onElementsVisible(
+    UfsGlobal.DOM.onElementsVisible(
       'a[href*="/video/"]',
       (nodes) => {
         // remove if not in DOM

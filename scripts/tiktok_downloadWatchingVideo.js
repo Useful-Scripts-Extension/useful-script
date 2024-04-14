@@ -22,17 +22,14 @@ export default {
         const videoIds = await shared.getListVideoIdInWebsite();
         if (videoIds.length) {
           setLoadingText(`Đang tìm link tải video ${videoIds[0]}...`);
-          return await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
-            videoIds[0]
-          );
+          return await UfsGlobal.Tiktok.downloadTiktokVideoFromId(videoIds[0]);
         }
       },
 
       async () => {
         setLoadingText("Đang tìm video url từ DOM...");
         return await runScriptInCurrentTab(
-          async () =>
-            await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc()
+          async () => await UfsGlobal.DOM.getWatchingVideoSrc()
         );
       },
     ];
@@ -50,10 +47,7 @@ export default {
     if (!link) alert("Không tìm được link video");
     else {
       setLoadingText("Đang tải video...");
-      await UsefulScriptGlobalPageContext.Utils.downloadBlobUrl(
-        link,
-        "tiktok_video.mp4"
-      );
+      await UfsGlobal.Utils.downloadBlobUrl(link, "tiktok_video.mp4");
     }
 
     closeLoading();
@@ -63,7 +57,7 @@ export default {
 export const shared = {
   getListVideoIdInWebsite: async function () {
     return await runScriptInCurrentTab(() => {
-      const { getOverlapScore } = UsefulScriptGlobalPageContext.DOM;
+      const { getOverlapScore } = UfsGlobal.DOM;
 
       let allVideos = Array.from(document.querySelectorAll("video"));
       let result = [];

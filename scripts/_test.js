@@ -9,14 +9,31 @@ export default {
     vi: "",
   },
 
-  onClick: async () => {
-    console.log("web: ", window.ufs_rvdfm_all_msgs);
-  },
-  onClickExtension: () => {
-    console.log("extension: " + JSON.stringify(localStorage));
-  },
-  onClickContentScript: () => {
-    console.log("content script: ", window.top.ufs_rvdfm_all_msgs);
-    console.log("content script: ", UsefulScriptGlobalPageContext);
+  onDocumentStart: async () => {
+    function blobToDataURL(blob, cb) {
+      var a = new FileReader();
+      a.readAsDataURL(blob);
+      a.onload = function (e) {
+        cb(e.target.result);
+      };
+      a.onerror = function (e) {
+        cb(null);
+      };
+    }
+
+    window.blobUrlMap = new Map();
+    const createObjectURLProxy = new Proxy(window.URL.createObjectURL, {
+      apply: function (target, thisArg, argumentsList) {
+        const blob = argumentsList[0];
+        const blobUrl = target.apply(thisArg, argumentsList);
+        window.blobUrlMap.set(blobUrl, blob);
+        console.log(blobUrl, blob);
+        blobToDataURL(blob, (dataUrl) => {
+          console.log(dataUrl);
+        });
+        return blobUrl;
+      },
+    });
+    window.URL.createObjectURL = createObjectURLProxy;
   },
 };

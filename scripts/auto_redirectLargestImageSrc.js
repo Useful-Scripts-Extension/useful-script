@@ -12,12 +12,14 @@ export default {
 
   onDocumentStart: () => {
     // auto redirect to largest img src
-    let url = UsefulScriptGlobalPageContext.Utils.getLargestImageSrc(
-      location.href
-    );
+    let url = UfsGlobal.Utils.getLargestImageSrc(location.href, location.href);
     console.log(url, location.href);
     if (url != location.href) {
       location.replace(url);
+
+      UfsGlobal.DOM.notify({
+        msg: "Useful-script: Auto redirect to largest image",
+      });
     }
   },
 

@@ -10,7 +10,7 @@ export default {
   },
 
   onClick: function () {
-    UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
+    UfsGlobal.DOM.injectScriptSrc(
       "//mrdoob.github.io/stats.js/build/stats.min.js",
       (success, error) => {
         if (success) {

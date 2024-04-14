@@ -12,10 +12,8 @@ export default {
   onDocumentStart: () => {
     console.log = function () {
       // add time to console.log
-      UsefulScriptGlobalPageContext.Origin.consoleLog(
-        `${UsefulScriptGlobalPageContext.Utils.formatTimeToHHMMSSDD(
-          new Date()
-        )} | `,
+      UfsGlobal.Origin.consoleLog(
+        `${UfsGlobal.Utils.formatTimeToHHMMSSDD(new Date())} | `,
         ...arguments
       );
     };

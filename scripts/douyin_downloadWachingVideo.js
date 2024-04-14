@@ -18,14 +18,14 @@ export default {
       downloadBlob,
       getBlobFromUrlWithProgress,
       formatSize,
-    } = UsefulScriptGlobalPageContext.Utils;
+    } = UfsGlobal.Utils;
 
     const { closeLoading, setLoadingText } = showLoading(
       "Đang tìm video url..."
     );
 
     const src = await runScriptInCurrentTab(async () => {
-      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
+      return await UfsGlobal.DOM.getWatchingVideoSrc();
     });
 
     if (!src) {

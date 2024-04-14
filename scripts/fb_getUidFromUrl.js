@@ -14,7 +14,7 @@ export default {
     // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
     const url = prompt("Nhập url của user fb:", "");
     if (url) {
-      UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(url)
+      UfsGlobal.Facebook.getUidFromUrl(url)
         .then((uid) => {
           if (uid) prompt(`UID của user ${url}:`, uid);
           else alert("Không tìm thấy uid của user!");

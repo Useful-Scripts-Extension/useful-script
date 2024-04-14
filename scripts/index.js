@@ -254,7 +254,7 @@ const allScripts = {
   getFavicon: getFavicon,
   fb_checkToken: fb_checkToken,
   fb_getTokenCampaigns: fb_getTokenCampaigns,
-  unshorten: addBadge(unshorten, BADGES.hot),
+  unshorten: unshorten,
   screenshotFullPage: screenshotFullPage,
   visualEvent: visualEvent,
   fb_videoDownloader: fb_videoDownloader,

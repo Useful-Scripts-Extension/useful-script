@@ -13,7 +13,7 @@ export default {
     // source code from: https://bookmarklet.vercel.app/
 
     if (window.ouiseo === undefined) {
-      UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
+      UfsGlobal.DOM.injectScriptSrc(
         "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js"
       );
     } else if (!!window.ouiseo && !document.getElementById("ouiseo")) {

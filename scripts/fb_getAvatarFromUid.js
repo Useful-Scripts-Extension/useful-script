@@ -13,7 +13,7 @@ export default {
   },
 
   onClickExtension: async function () {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
     if (!uids) return;

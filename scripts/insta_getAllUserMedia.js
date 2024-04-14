@@ -11,7 +11,7 @@ export default {
   },
 
   onClickExtension: async function () {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;

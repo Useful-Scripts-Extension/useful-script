@@ -40,7 +40,7 @@ export default {
         }
 
         let name = l.split("facebook.com/")[1];
-        uid = await UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(l);
+        uid = await UfsGlobal.Facebook.getUidFromUrl(l);
         uids.push(uid);
         console.log(name, uid);
       } catch (e) {

@@ -65,7 +65,8 @@ export default {
 
           // added by hoangtran
           /github\.dev.*/,
-          /hoangtran0410\.github\.io\/LOL2D/
+          /hoangtran0410\.github\.io\/LOL2D/,
+          /regexr\.com/
         ]
       };
 
@@ -164,11 +165,10 @@ export default {
 
       // 添加css
       function addStyle(css) {
-        console.log(UsefulScriptGlobalPageContext.DOM.createTrustedHtml)
-        const html = UsefulScriptGlobalPageContext.DOM.createTrustedHtml(
-          `<style>${css}</style>`,
-        )
-        (document.head || document.documentElement).appendChild(html);
+        const style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = UfsGlobal.DOM.createTrustedHtml(css);
+        (document.head || document.documentElement).appendChild(style);
       }
 
       // 获取目标域名应该使用的规则
@@ -199,7 +199,7 @@ export default {
         if(rule.name === rules.black_rule.name) {
           return;
         } else {
-          UsefulScriptGlobalPageContext.DOM.notify({
+          UfsGlobal.DOM.notify({
             msg:"UsefulScript - Remove web limit - ON (" + rule.name + ")",
             align: "center"
           })

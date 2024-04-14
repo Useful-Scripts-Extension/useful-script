@@ -15,16 +15,13 @@ export default {
     );
 
     if (url) {
-      UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
-        url,
-        (success, error) => {
-          if (success) {
-            alert("Inject SUCCESS.\n\n" + url);
-          } else {
-            alert("Inject FAILED.\n\n" + JSON.stringify(error));
-          }
+      UfsGlobal.DOM.injectScriptSrc(url, (success, error) => {
+        if (success) {
+          alert("Inject SUCCESS.\n\n" + url);
+        } else {
+          alert("Inject FAILED.\n\n" + JSON.stringify(error));
         }
-      );
+      });
     }
   },
 };
