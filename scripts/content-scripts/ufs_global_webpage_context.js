@@ -458,7 +458,9 @@ UfsGlobal.Utils = {
         // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
         case "atlassiansuite.mservice.com.vn":
           if (url.searchParams.get("size")) {
-            url.searchParams.set("size", "9999");
+            url.searchParams.set("size", "256");
+          } else {
+            url.searchParams.append("size", "256");
           }
           return url.toString();
         case "atlassiantool.mservice.com.vn":
