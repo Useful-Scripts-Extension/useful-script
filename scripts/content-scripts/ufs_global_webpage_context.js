@@ -508,6 +508,7 @@ UfsGlobal.Utils = {
       return imgSrc;
     }
 
+    // https://greasyfork.org/en/scripts/2312-resize-image-on-open-image-in-new-tab
     function try3() {
       return UfsGlobal.Utils.timeoutPromise(
         new Promise((resolve) => {
@@ -590,15 +591,17 @@ UfsGlobal.Utils = {
               ajax.open("HEAD", m[1] + "maxresdefault" + m[3], true);
               ajax.send();
             }
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\w+\.ggpht\.com\/.+)=(?:[s|w|h])(\d+)(.+)?$/i
-            ))
-          ) {
-            if (m[2] != "0") {
-              resolve(m[1] + "=s0");
-            }
           }
+
+          // else if (
+          //   (m = imgSrc.match(
+          //     /^(https?:\/\/\w+\.ggpht\.com\/.+)=(?:[s|w|h])(\d+)(.+)?$/i
+          //   ))
+          // ) {
+          //   if (m[2] != "0") {
+          //     resolve(m[1] + "=s0");
+          //   }
+          // }
 
           //tumblr
           else if (

@@ -10,18 +10,24 @@ export default {
     img: "/scripts/auto_redirectLargestImageSrc.png",
   },
 
-  onDocumentStart: async () => {
+  onDocumentEnd: async () => {
     // auto redirect to largest img src
     let url = await UfsGlobal.Utils.getLargestImageSrc(
       location.href,
       location.href
     );
-    console.log(url, location.href);
+    console.log(url, location.href, url == location.href);
     if (url && url != location.href) {
-      window.open(url, "_self");
+      let timeout = setTimeout(() => {
+        window.open(url, "_self");
+      }, 1000);
+
+      document.onclick = () => {
+        clearTimeout(timeout);
+      };
 
       UfsGlobal.DOM.notify({
-        msg: "Useful-script: Auto redirect to largest image",
+        msg: "Useful-script: Auto redirect to largest image after 1s, click to cancel",
       });
     }
   },
