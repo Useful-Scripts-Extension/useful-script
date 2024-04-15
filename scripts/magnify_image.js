@@ -520,7 +520,7 @@ export default {
 
       const { setSrc } = createPreview(src);
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
-        if (src !== _src) {
+        if (_src && src !== _src) {
           let tempImg = new Image();
           tempImg.src = _src;
           tempImg.onload = () => {
