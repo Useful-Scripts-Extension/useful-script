@@ -10,12 +10,15 @@ export default {
     img: "/scripts/auto_redirectLargestImageSrc.png",
   },
 
-  onDocumentStart: () => {
+  onDocumentStart: async () => {
     // auto redirect to largest img src
-    let url = UfsGlobal.Utils.getLargestImageSrc(location.href, location.href);
+    let url = await UfsGlobal.Utils.getLargestImageSrc(
+      location.href,
+      location.href
+    );
     console.log(url, location.href);
-    if (url != location.href) {
-      location.replace(url);
+    if (url && url != location.href) {
+      window.open(url, "_self");
 
       UfsGlobal.DOM.notify({
         msg: "Useful-script: Auto redirect to largest image",

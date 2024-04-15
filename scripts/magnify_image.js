@@ -428,12 +428,10 @@ export default {
       img.style.cssText = `
         top: ${window.innerHeight / 2}px;
         left: ${window.innerWidth / 2}px;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) !important;
         background:
-          linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0.2) 100%),
-          linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0.2) 100%);
-        background-size: 20px 20px;
-        background-position: 0 0, 10px 10px;
+          linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 0 0 / 20px 20px,
+          linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 10px 10px / 20px 20px !important;
       `;
       img.onload = () => {
         let w = img.naturalWidth,
@@ -459,21 +457,44 @@ export default {
       };
       overlay.appendChild(img);
 
+      // loading
+      let loading = document.createElement("div");
+      loading.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        background-color: #111;
+        color: white;
+        z-index: 1;
+      `;
+      loading.innerText = "Loading...";
+      overlay.appendChild(loading);
+
       UfsGlobal.DOM.enableDragAndZoom(img, overlay);
+
+      return {
+        setSrc: (src) => {
+          img.src = src;
+        },
+        remove: () => {
+          overlay.remove();
+        },
+      };
     }
 
-    UfsGlobal.DOM.injectScriptSrc(
-      "https://update.greasyfork.org/scripts/438080/1322681/pvcep_rules.js",
-      (success, error) => {
-        if (error) {
-          console.log("ERROR: ", error);
-          return;
-        }
-        console.log(siteInfo);
-      }
-    );
+    // UfsGlobal.DOM.injectScriptSrc(
+    //   "https://update.greasyfork.org/scripts/438080/1322681/pvcep_rules.js",
+    //   (success, error) => {
+    //     if (error) {
+    //       console.log("ERROR: ", error);
+    //       return;
+    //     }
+    //     console.log(siteInfo);
+    //   }
+    // );
 
-    let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
+    let unsub = UfsGlobal.DOM.onDoublePress("Control", async () => {
       const srcs = extractImagesFromSelector("img, image, a, [class], [style]");
 
       console.log(srcs);
@@ -489,7 +510,16 @@ export default {
         return;
       }
 
-      createPreview(UfsGlobal.Utils.getLargestImageSrc(src, location.href));
+      const { setSrc, remove } = createPreview(src);
+      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
+        if (src !== _src) {
+          let tempImg = new Image();
+          tempImg.src = _src;
+          tempImg.onload = () => {
+            setSrc(_src);
+          };
+        }
+      });
     });
     // #endregion
   },

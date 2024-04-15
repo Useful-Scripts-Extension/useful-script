@@ -256,9 +256,7 @@ UfsGlobal.DOM = {
       clearTimeout(timer);
       document.removeEventListener("keyup", keyup);
     };
-  },
-
-  // https://stackoverflow.com/a/3381522
+  }, // https://stackoverflow.com/a/3381522
   createFlashTitle(newMsg, howManyTimes) {
     var original = document.title;
     var timeout;
@@ -283,7 +281,6 @@ UfsGlobal.DOM = {
 
     return cancel;
   },
-
   deleteElements(selector, willReRun) {
     UfsGlobal.DOM.onElementsVisible(
       selector,
@@ -296,14 +293,11 @@ UfsGlobal.DOM = {
       willReRun
     );
   },
-
   waitForElements(selector) {
     return new Promise((resolve, reject) => {
       UfsGlobal.DOM.onElementsVisible(selector, resolve, false);
     });
-  },
-
-  // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
+  }, // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
   // https://stackoverflow.com/a/61511955/11898496
   onElementsVisible: (selector, callback, willReRun) => {
     let nodes = document.querySelectorAll(selector);
@@ -341,14 +335,12 @@ UfsGlobal.DOM = {
     // return disconnect function
     return () => observer.disconnect();
   },
-
   injectCssCode(code) {
     var css = document.createElement("style");
     if ("textContent" in css) css.textContent = code;
     else css.innerText = code;
     document.head.appendChild(css);
   },
-
   injectCssFile(filePath) {
     var css = document.createElement("link");
     css.setAttribute("rel", "stylesheet");
@@ -356,7 +348,6 @@ UfsGlobal.DOM = {
     css.setAttribute("href", filePath);
     document.head.appendChild(css);
   },
-
   getTrustedPolicy() {
     let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
     if (!policy) {
@@ -368,12 +359,10 @@ UfsGlobal.DOM = {
     }
     return policy;
   },
-
   createTrustedHtml(html) {
     let policy = UfsGlobal.DOM.getTrustedPolicy();
     return policy.createHTML(html);
   },
-
   injectScriptSrc(src, callback) {
     let policy = UfsGlobal.DOM.getTrustedPolicy();
     let jsSrc = policy.createScriptURL(src);
@@ -387,7 +376,6 @@ UfsGlobal.DOM = {
     script.src = jsSrc; // Assigning the TrustedScriptURL to src
     document.head.appendChild(script);
   },
-
   injectScriptSrcAsync(src) {
     return new Promise((resolve, reject) => {
       UfsGlobal.DOM.injectScriptSrc(src, (success, e) => {
@@ -399,7 +387,6 @@ UfsGlobal.DOM = {
       });
     });
   },
-
   isElementInViewport(el) {
     const rect = el.getBoundingClientRect();
     return (
@@ -453,18 +440,21 @@ UfsGlobal.Utils = {
     const milliseconds = ("00" + date.getMilliseconds()).slice(-3);
     return `${hours}:${minutes}:${seconds}:${milliseconds}`;
   },
-  getLargestImageSrc(imgSrc, webUrl) {
+  timeoutPromise(prom, time) {
+    return Promise.race([
+      prom,
+      new Promise((_r, rej) => setTimeout(rej, time)),
+    ]);
+  },
+  async getLargestImageSrc(imgSrc, webUrl) {
     var base64Img = /^data:/i.test(imgSrc);
     if (base64Img) {
       return imgSrc;
     }
 
-    try {
+    function try1() {
       const url = new URL(imgSrc);
       switch (url.hostname) {
-        // https://lh3.googleusercontent.com/proxy/mxAm-SOUdYAQxnF726rLzTrWAA_I3YTjv3jSMlowuSzELjBC9QoOQOmwxqrvfRVKV9siDmdBlbuShaKntl4Xy4pV4m72rnwfqb7S=s0
-        case "lh3.googleusercontent.com":
-        case "yt3.ggpht.com":
         // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
         case "atlassiansuite.mservice.com.vn":
           if (url.searchParams.get("size")) {
@@ -477,157 +467,22 @@ UfsGlobal.Utils = {
           }
           break;
       }
-
-      // https://gist.github.com/ykelvis/b982c062771d874a8c774945f29d759f
-      //google
-      if (
-        (m = imgSrc.match(
-          /^(https?:\/\/\w+\.googleusercontent\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] != "s0") {
-          return m[1] + "s0" + m[3];
-        }
-      } else if (
-        (m = imgSrc.match(
-          /^(http?:\/\/imgl[^\.]*\.nosdn\.127\.net\/img\/)([^\?]*)(\S+)?$/i
-        ))
-      ) {
-        if (m[3] !== undefined) {
-          return m[1] + m[2];
-        }
-      } else if (
-        (m = imgSrc.match(
-          /^(http?:\/\/image\d+-c\.poco\.cn\/mypoco\/myphoto\/)([^\/]+)([^\/]+)([^\?]*)(\S+)?$/i
-        ))
-      ) {
-        if (m[5] !== undefined) {
-          return m[1] + m[2] + m[3] + m[4];
-        }
-      } else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/\w+\.googleusercontent\.com\/.+=)(.+)(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] != "s0") {
-          return m[1] + "s0";
-        }
-      }
-
-      //blogspot
-      else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/\w+\.bp\.blogspot\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] != "s0") {
-          return m[1] + "s0" + m[3];
-        }
-      }
-
-      //twitter
-      else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/\w+\.twimg\.com\/media\/(?:[^\/:]+\.(?:jpg|jpeg|gif|png|bmp|webp)))(:\w+)?(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] === null || m[2] != ":orig") return m[1] + ":orig";
-      }
-
-      //Steam (Only user content)
-      else if (
-        (m = imgSrc.match(
-          /^(http:\/\/images\.akamai\.steamusercontent\.com\/[^\?]+)\?.+$/i
-        ))
-      ) {
-        return m[1];
-      }
-
-      //性浪微博
-      else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/\w+\.sinaimg\.cn\/)([a-zA-Z]\w+)(\/.+)(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] != "large") {
-          return m[1] + "large" + m[3];
-        }
-      }
-
-      // Weibo
-      else if (
-        (m = imgSrc.match(
-          /^(http:\/\/[\w\d]+\.qpic\.cn\/.+\/)(\d+)(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] < 2000) {
-          return m[1] + "2000";
-        }
-      }
-
-      //zhihu
-      else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/.+\.zhimg\.com\/\w+_)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
-        ))
-      ) {
-        if (m[2] != "r") {
-          return m[1] + "r" + m[3];
-        }
-      }
-
-      //artstation
-      else if (
-        (m = imgSrc.match(
-          /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\w+)(\/[^\/]+)$/i
-        ))
-      ) {
-        if (m[2] != "original") {
-          return m[1] + "original" + m[3];
-        }
-      }
-
-      // Baidu Tieba (however, it is of no use in improving image quality...)
-      else if (
-        !(m = imgSrc.match(
-          /^http:\/\/imgsrc\.baidu\.com\/forum\/pic\/item\/.+/i
-        ))
-      ) {
-        if (
-          (m = imgSrc.match(
-            /^http:\/\/(?:imgsrc|\w+\.hiphotos)\.(?:bdimg|baidu)\.com\/(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
-          ))
-        ) {
-          return "http://imgsrc.baidu.com/forum/pic/item/" + m[1];
-        }
-      }
-    } catch (e) {
-      console.log("ERROR: ", e);
+      return null;
     }
 
     function replace(str, r, s) {
-      var results = [],
-        rt;
-      if (Array.isArray(s)) {
-        s.forEach((_s) => {
-          rt = str.replace(r, _s);
-          if (rt && rt != str) results.push(rt);
-        });
-      } else {
-        rt = str.replace(r, s);
-        if (rt && rt != str) return str.replace(r, s);
-      }
-      return results;
+      let rt = str.replace(r, s);
+      if (rt && rt != str) return str.replace(r, s);
+      return null;
     }
 
-    try {
-      let newSrc = imgSrc;
+    function try2() {
+      let newSrc = null;
       for (let rule of UfsGlobal.largeImgSiteRules) {
         if (rule.url && webUrl && !rule.url.test(webUrl)) continue;
         if (rule.src && !rule.src.test(imgSrc)) continue;
         if (rule.exclude && rule.exclude.test(imgSrc)) continue;
         if (rule.r) {
-          console.log(rule);
           if (Array.isArray(rule.r)) {
             for (var j in rule.r) {
               var _r = rule.r[j];
@@ -644,11 +499,342 @@ UfsGlobal.Utils = {
           } else {
             newSrc = replace(imgSrc, rule.r, rule.s);
           }
+
+          if (newSrc) return newSrc;
         }
       }
-      return newSrc;
-    } catch (e) {
-      console.log("ERROR", e);
+      return imgSrc;
+    }
+
+    function getQueryParams(qs) {
+      //by http://stackoverflow.com/a/1099670
+      qs = qs.split("+").join(" ");
+      var params = {},
+        tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+      while ((tokens = re.exec(qs))) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+      }
+      return params;
+    }
+
+    function try3() {
+      return UfsGlobal.Utils.timeoutPromise(
+        new Promise((resolve) => {
+          var m = null;
+          //google
+          if (
+            (m = imgSrc.match(
+              /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "s0") {
+              resolve(m[1] + "s0" + m[3]);
+            }
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+=)(.+)(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "s0") {
+              resolve(m[1] + "s0");
+            }
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\w+\.ggpht\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "s0") {
+              resolve(m[1] + "s0" + m[3]);
+            }
+          }
+
+          //blogspot
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\w+\.bp\.blogspot\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "s0") {
+              resolve(m[1] + "s0" + m[3]);
+            }
+          }
+
+          //youtube
+          else if (
+            (m = imgSrc.match(
+              /^https?:\/\/i\.ytimg.com\/an_webp\/([^\/]+)\/\w+\.(jpg|jpeg|gif|png|bmp|webp)(\?.+)?$/i
+            ))
+          ) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+              if (ajax.status == 200) {
+                document.location =
+                  "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg";
+              } else if (ajax.status == 404) {
+                document.location =
+                  "https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg";
+              }
+            };
+            ajax.open(
+              "HEAD",
+              "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg",
+              true
+            );
+            ajax.send();
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/i\.ytimg.com\/vi\/[^\/]+\/)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "maxresdefault") {
+              var ajax = new XMLHttpRequest();
+              ajax.onreadystatechange = function () {
+                if (ajax.status == 200) {
+                  resolve(m[1] + "maxresdefault" + m[3]);
+                } else if (ajax.status == 404) {
+                  if (m[5] || m[2] === "mqdefault")
+                    resolve(m[1] + "hqdefault" + m[3]);
+                }
+              };
+              ajax.open("HEAD", m[1] + "maxresdefault" + m[3], true);
+              ajax.send();
+            }
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\w+\.ggpht\.com\/.+)=(?:[s|w|h])(\d+)(.+)?$/i
+            ))
+          ) {
+            if (m[2] != "0") {
+              resolve(m[1] + "=s0");
+            }
+          }
+
+          //tumblr
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\d+\.media\.tumblr\.com\/.*tumblr_\w+_)(\d+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] < 1280) {
+              var ajax = new XMLHttpRequest();
+              ajax.onreadystatechange = function () {
+                if (ajax.status == 200) {
+                  resolve(m[1] + "1280" + m[3]);
+                }
+              };
+              ajax.open("HEAD", m[1] + "1280" + m[3], true);
+              ajax.send();
+            }
+          }
+
+          //twitter
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\w+\.twimg\.com\/media\/[^\/:]+)\.(jpg|jpeg|gif|png|bmp|webp)(:\w+)?$/i
+            ))
+          ) {
+            var format = m[2];
+            if (m[2] == "jpeg") format = "jpg";
+            resolve(m[1] + "?format=" + format + "&name=orig");
+          } else if (
+            (m = imgSrc.match(/^(https?:\/\/\w+\.twimg\.com\/.+)(\?.+)$/i))
+          ) {
+            var pars = getQueryParams(document.location.search);
+            if (!pars.format || !pars.name) return;
+            if (pars.name == "orig") return;
+            resolve(m[1] + "?format=" + pars.format + "&name=orig");
+          }
+
+          //Steam (Only user content)
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/(images\.akamai\.steamusercontent\.com|steamuserimages-a\.akamaihd\.net)\/[^\?]+)\?.+$/i
+            ))
+          ) {
+            resolve(m[1]);
+          }
+
+          //性浪微博
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/(?:(?:ww|wx|ws|tvax|tva)\d+|wxt|wt)\.sinaimg\.(?:cn|com)\/)([\w\.]+)(\/.+)(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[2] != "large") {
+              resolve(m[1] + "large" + m[3]);
+            }
+          }
+
+          //zhihu
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/.+\.zhimg\.com\/)(?:\d+\/)?([\w\-]+_)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+            ))
+          ) {
+            if (m[3] != "r") {
+              resolve(m[1] + m[2] + "r" + m[4]);
+            }
+          }
+
+          //artstation
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\d{4,}\/)(\w+)(\/[^\/]+)$/i
+            ))
+          ) {
+            if (m[3] != "original") {
+              var ajax = new XMLHttpRequest();
+              ajax.onreadystatechange = function () {
+                if (ajax.status == 200) {
+                  resolve(m[1] + "original" + m[4]);
+                } else if (ajax.status == 404) {
+                  if (m[3] != "large") {
+                    resolve(m[1] + "large" + m[4]);
+                  }
+                }
+              };
+              ajax.open("HEAD", m[1] + "original" + m[3], true);
+              ajax.send();
+            }
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\w+)(\/[^\/]+)$/i
+            ))
+          ) {
+            //if(m[2] != "original") {
+            //	resolve(m[1] + "original" + m[3])
+            //}
+            if (m[2] != "original") {
+              var ajax = new XMLHttpRequest();
+              ajax.onreadystatechange = function () {
+                if (ajax.status == 200) {
+                  resolve(m[1] + "original" + m[3]);
+                } else if (ajax.status == 404) {
+                  if (m[2] != "large") {
+                    resolve(m[1] + "large" + m[3]);
+                  }
+                }
+              };
+              ajax.open("HEAD", m[1] + "original" + m[3], true);
+              ajax.send();
+            }
+          }
+
+          //pinimg
+          else if (
+            (m = imgSrc.match(/^(https?:\/\/i\.pinimg\.com\/)(\w+)(\/.+)$/i))
+          ) {
+            if (m[2] != "originals") {
+              resolve(m[1] + "originals" + m[3]);
+            }
+          } else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/s-media[\w-]+\.pinimg\.com\/)(\w+)(\/.+)$/i
+            ))
+          ) {
+            //need delete?
+            if (m[2] != "originals") {
+              resolve(m[1] + "originals" + m[3]);
+            }
+          }
+
+          //bilibili
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/\w+\.hdslb\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))(@|_).+$/i
+            ))
+          ) {
+            resolve(m[1]);
+          }
+
+          //taobao(tmall)
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/(?:.+?)\.alicdn\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))_.+$/i
+            ))
+          ) {
+            resolve(m[1]);
+          }
+
+          //jd
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/(?:img\d+)\.360buyimg\.com\/)((?:.+?)\/(?:.+?))(\/(?:.+?))(\!.+)?$/i
+            ))
+          ) {
+            if (m[2] != "sku/jfs") {
+              resolve(m[1] + "sku/jfs" + m[3]);
+            }
+          }
+
+          // https://s01.riotpixels.net/data/2a/b2/2ab23684-6cec-41da-9bce-f72c5264353a.jpg.240p.jpg
+          else if (
+            (m = imgSrc.match(
+              /^(https?:\/\/(?:.+?)\.riotpixels\.net\/.+\.(jpg|jpeg|gif|png|bmp|webp))\..+?$/i
+            ))
+          ) {
+            resolve(m[1]);
+          }
+
+          // reddit NEED TEST
+          else if (
+            (m = imgSrc.match(
+              /^https?:\/\/preview\.redd\.it\/(.+\.(jpg|jpeg|gif|png|bmp|webp))\?.+?$/i
+            ))
+          ) {
+            resolve("https://i.redd.it/" + m[1]);
+          }
+
+          // akamaized.net/imagecache NEED TEST
+          else if (
+            (m = imgSrc.match(
+              /^(https:\/\/.+\.akamaized\.net\/imagecache\/\d+\/\d+\/\d+\/\d+\/)(\d+)(\/.+)$/i
+            ))
+          ) {
+            if (m[2] < 1920) resolve(m[1] + "1920" + m[3]);
+          }
+
+          // 微信公众号 by sbdx
+          else if (
+            (m = imgSrc.match(
+              /^(https:\/\/mmbiz\.qpic\.cn\/mmbiz_jpg\/.+?\/)(\d+)(\?wx_fmt=jpeg)/i
+            ))
+          ) {
+            if (m[2] != 0) resolve(m[1] + "0" + m[3]);
+          }
+
+          //百度贴吧（然而对于画质提升什么的并没有什么卵用...）
+          else if (
+            !(m = imgSrc.match(
+              /^https?:\/\/imgsrc\.baidu\.com\/forum\/pic\/item\/.+/i
+            ))
+          ) {
+            if (
+              (m = imgSrc.match(
+                /^(https?):\/\/(?:imgsrc|imgsa|\w+\.hiphotos)\.(?:bdimg|baidu)\.com\/(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+              ))
+            ) {
+              resolve(m[1] + "://imgsrc.baidu.com/forum/pic/item/" + m[2]);
+            }
+            //if( (m = imgSrc.match(/^(https?)(:\/\/(?:imgsrc|imgsa|\w+\.hiphotos|tiebapic)\.(?:bdimg|baidu)\.com\/)(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i)) ){
+            //	resolve(m[1] + m[2] + "forum/pic/item/" + m[3])
+            //}
+          }
+        }),
+        5000
+      );
+    }
+
+    for (let fn of [try1, try2, try3]) {
+      try {
+        let res = await fn();
+        if (res && res != imgSrc) {
+          return res;
+        }
+      } catch (e) {
+        console.log("ERROR getLargestImageSrc: " + fn.name + " -> ", e);
+      }
     }
 
     return imgSrc;
@@ -716,7 +902,6 @@ UfsGlobal.Utils = {
       });
     });
   },
-
   hook(obj, name, callback) {
     const orig = obj[name];
     obj[name] = function (...args) {
@@ -811,7 +996,6 @@ UfsGlobal.Utils = {
     }
     return number;
   },
-
   zipAndDownloadBlobs(
     blobList,
     zipFileName,
@@ -981,7 +1165,6 @@ UfsGlobal.Facebook = {
     }
     return null;
   },
-
   // User Data
   getUserAvatarFromUid(uid) {
     return (
@@ -1085,7 +1268,6 @@ UfsGlobal.Facebook = {
     }
     return null;
   },
-
   // Story
   getStoryBucketIdFromURL(url) {
     return url.match(/stories\/(\d+)\//)?.[1];
@@ -1136,29 +1318,23 @@ UfsGlobal.Facebook = {
           pictureBlurred:
             data.unified_stories.edges[i].node.attachments[0].media.blurredImage
               .uri,
-
           picturePreview:
             data.unified_stories.edges[i].node.attachments[0].media.previewImage
               .uri,
-
           totalReaction:
             data.unified_stories.edges[i].node.story_card_info.feedback_summary
               .total_reaction_count,
-
           backgroundCss:
             data.unified_stories.edges[i].node.story_default_background.color,
-
           backgroundCss3:
             data.unified_stories.edges[i].node.story_default_background.gradient
               .css,
-
           ...(data.unified_stories.edges[i].node.attachments[0].media
             .__typename == "Photo"
             ? {
                 caption:
                   data.unified_stories.edges[i].node.attachments[0].media
                     .accessibility_caption,
-
                 image:
                   data.unified_stories.edges[i].node.attachments[0].media.image
                     .uri,
@@ -1169,19 +1345,15 @@ UfsGlobal.Facebook = {
                 permanlinkUrl:
                   data.unified_stories.edges[i].node.attachments[0].media
                     .permalink_url,
-
                 playableVideo:
                   data.unified_stories.edges[i].node.attachments[0].media
                     .playable_url,
-
                 playableUrlDash:
                   data.unified_stories.edges[0].node.attachments[0].media
                     .playable_url_dash,
-
                 playableUrlHDString:
                   data.unified_stories.edges[i].node.attachments[0].media
                     .playableUrlHdString,
-
                 playableUrlHD:
                   data.unified_stories.edges[i].node.attachments[0].media
                     .playable_url_quality_hd,
@@ -1210,7 +1382,6 @@ UfsGlobal.Facebook = {
     // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     // xhr.send(body);
   },
-
   // Friend
   async removeFriendConfirm(friend_uid, uid, fb_dtsg) {
     var f = new FormData();
@@ -1295,7 +1466,6 @@ UfsGlobal.Facebook = {
     }
     return allFriends;
   },
-
   // Messages
   async messagesCount(fb_dtsg) {
     return await UfsGlobal.Facebook.fetchGraphQl(
@@ -1303,7 +1473,6 @@ UfsGlobal.Facebook = {
       fb_dtsg
     );
   },
-
   // Page
   async unlikePage(pageId, uid, fb_dtsg) {
     var f = new FormData();
@@ -1393,7 +1562,6 @@ UfsGlobal.Facebook = {
     }
     return allPages;
   },
-
   // Group
   async leaveGroup(groupId, uid, fb_dtsg) {
     var f = new FormData();
@@ -1647,9 +1815,7 @@ UfsGlobal.DEBUG = {
   disableAutoConsoleClear() {
     window.console.clear = () => null;
     console.log("Auto console.clear DISABLED!");
-  },
-
-  // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
+  }, // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
   // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
   listGlobalVariables() {
     let browserGlobals = [];
@@ -1679,15 +1845,11 @@ UfsGlobal.DEBUG = {
     }
 
     return getRuntimeGlobals();
-  },
-
-  // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
+  }, // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
   // Kiểm tra xem function nào đó có bị override hay chưa
   isNativeFunction(f) {
     return f.toString().toString().includes("[native code]");
-  },
-
-  // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
+  }, // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
   // Làm đầy localStorage
   fillLocalStorage() {
     const key = "__filling_localstorage__";
@@ -1712,17 +1874,13 @@ UfsGlobal.DEBUG = {
       localStorage.removeItem(key);
       console.success("Storage is cleaned");
     };
-  },
-
-  // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
+  }, // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
   globalsDebugger(varName = "") {
     // https://stackoverflow.com/a/56933091/11898496
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set("globalsToInspect", varName);
     window.location.search = urlParams.toString();
-  },
-
-  // Tìm chuỗi xung quanh chuỗi bất kỳ
+  }, // Tìm chuỗi xung quanh chuỗi bất kỳ
   // Ví dụ fullString = "abcd1234567890abcd" targetString = "6" bound = 3
   // => Kết quả around = 3456789
   getTextAround(fullString, targetString, bound = 10) {
@@ -1746,18 +1904,14 @@ UfsGlobal.DEBUG = {
       limit--;
     }
     return arounds;
-  },
-
-  // https://stackoverflow.com/a/40410744/11898496
+  }, // https://stackoverflow.com/a/40410744/11898496
   // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
   decodeEscapedUnicodeString(str) {
     if (!str) return "";
     return decodeURIComponent(
       JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
     );
-  },
-
-  // https://stackoverflow.com/a/8649003
+  }, // https://stackoverflow.com/a/8649003
   searchParamsToObject(search) {
     // let d = {};
     // decodeURI(search)
@@ -1774,7 +1928,6 @@ UfsGlobal.DEBUG = {
       }
     );
   },
-
   downloadData: UfsGlobal.Utils.downloadData,
 };
 UfsGlobal.largeImgSiteRules = [
@@ -1785,35 +1938,11 @@ UfsGlobal.largeImgSiteRules = [
     s: "previews.123rf.com/images/",
   },
   {
-    name: "126",
-    src: /\.126\.net/i,
-    r: /\/\d+\.\d+x\d+\.\d+\.([^\.]+)$/i,
-    s: "/5.5000x5000.100.$1",
-  },
-  {
-    name: "24meitu",
-    url: /24meitu\.com|25meinv\.com|aisimeinv\.com|24tupian\.com|24meinv\.|24mntp\.|24cos\.|24fh\.|24shipin\.|24mn\./,
-    r: [/\/m([^\/]+)$/i, /imgs\./i],
-    s: ["/$1", "bimg."],
-  },
-  {
     name: "wikipedia",
     url: /^https?:\/\/.+\.wikipedia\.org\//i,
+    src: /^https?:\/\/.+\.wikimedia\.org\//i,
     r: /(https?:\/\/.*)\/thumb(\/.*)\/\d+px-.*/i,
     s: "$1$2",
-  },
-  {
-    name: "沪江碎碎",
-    url: /^https?:\/\/([^.]+\.)*(?:yeshj\.com|hjenglish\.com|hujiang\.com)/i,
-    r: /^(https?:\/\/(?:[^.]+\.)*hjfile.cn\/.+)(_(?:s|m))(\.\w+)$/i,
-    s: "$1$3",
-  },
-  {
-    name: "大众点评",
-    example: "http://www.dianping.com/shop/17873296/photos",
-    url: /^https?:\/\/www.dianping.com\/shop/i,
-    r: /(.+?dpfile\.com\/.+)\(240c180\)\/(thumb\..+)/i,
-    s: "$1(700x700)/$2",
   },
   {
     name: "trakt.tv",
@@ -1821,26 +1950,6 @@ UfsGlobal.largeImgSiteRules = [
     example: "http://trakt.tv/shows",
     r: /(.*\/images\/posters\/\d+)-(?:300|138)\.jpg\?(\d+)$/i,
     s: "$1.jpg?$2",
-  },
-  {
-    name: "极限主题社区",
-    url: /^https?:\/\/bbs\.themex\.net\/.+/i,
-    r: /^(https?:\/\/bbs\.themex\.net\/attachment\.php\?.+)&thumb=1(.+)/i,
-    s: "$1$2",
-  },
-  {
-    name: "opera官方论坛",
-    example: "http://bbs.operachina.com",
-    url: /^http:\/\/bbs\.operachina\.com/i,
-    src: /file.php\?id=\d+$/i,
-    r: /.*/,
-    s: "$1&mode=view",
-  },
-  {
-    name: "半次元",
-    url: /^https?:\/\/bcy\.net\//,
-    r: [/\/\dX\d$|\/w\d+$/i, "/cover/", /\/(middle|small)\.jpg/i],
-    s: ["", "/post/", "/big.jpg"],
   },
   {
     name: "Steampowered",
@@ -1853,12 +1962,6 @@ UfsGlobal.largeImgSiteRules = [
     url: /steamcommunity\.com/,
     r: /output\-quality=\d+&fit=inside\|\d+\:\d+/i,
     s: "output-quality=100&fit=inside|0:0",
-  },
-  {
-    name: "知乎",
-    url: /(zhihu|zhimg)\.com/,
-    r: /_(b|xs|s|l|\d+x\d+)\./i,
-    s: ".",
   },
   {
     name: "500px",
@@ -1882,55 +1985,10 @@ UfsGlobal.largeImgSiteRules = [
     s: "1400x1400bb.",
   },
   {
-    name: "汽车之家",
-    url: /\.autohome\.com\.cn/,
-    r: /(\?imageView.*|\d+x\d+_\d+_|f_m_|t_|s_)/i,
-    s: "",
-  },
-  {
-    name: "易车",
-    url: /\.bitauto\.com/,
-    r: /_\d+\.jpg$/i,
-    s: "_12.jpg",
-  },
-  {
-    name: "爱卡",
-    url: /\.xcar\.com\.cn/,
-    r: /\-\d+x\d+\.jpg/i,
-    s: "",
-  },
-  {
-    name: "太平洋汽车",
-    url: /\.pcauto\.com\.cn/,
-    r: /_\d+x\d+\.jpg$/i,
-    s: ".jpg",
-  },
-  {
-    name: "新浪汽车",
-    url: /\.auto\.sina\.com\.cn/,
-    r: /_\d+\.jpg$/i,
-    s: "_src.jpg",
-  },
-  {
     name: "dribbble",
     url: /dribbble\.com/,
     r: [/_teaser(.[^\.]+)$/i, /_1x\./i, /\?compress=.*/],
     s: ["$1", ".", ""],
-  },
-  {
-    name: "百度百科",
-    url: /baike\.baidu\.com/,
-    r: [
-      /.*bdstatic\.com.*\/([^\/]+)\.jpg/i,
-      /(.*bkimg\.cdn\.bcebos\.com.*\?x-bce-process=image).*/i,
-    ],
-    s: ["http://imgsrc.baidu.com/baike/pic/item/$1.jpg", "$1"],
-  },
-  {
-    name: "nvshens",
-    url: /nvshens\.com|onvshen\.com/,
-    r: /(\img\.onvshen\.com.*)(?:thumb\/|_s)(.*)/i,
-    s: "$1$2",
   },
   {
     name: "Tumblr",
@@ -1947,12 +2005,6 @@ UfsGlobal.largeImgSiteRules = [
     s: "$1512$2",
   },
   {
-    name: "Acgget",
-    url: /acg18\.us|acgget\./,
-    r: /(pic\.acgget\.com\/thumb\/)w\d+_h\d+\//i,
-    s: "$1w9999_h9999/",
-  },
-  {
     name: "Pixiv",
     url: /pixiv\.net|pximg\.net/,
     src: /pximg\.net\/c\/\d+x\d+/i,
@@ -1961,12 +2013,6 @@ UfsGlobal.largeImgSiteRules = [
       "pximg.net/img-original/img/$1.jpg",
       "pximg.net/img-original/img/$1.png",
     ],
-  },
-  {
-    name: "sohu",
-    url: /(sohu|sohucs)\.com/,
-    r: /(sohucs\.com\/).*\/(images\/|os\/)/i,
-    s: "$1$2",
   },
   {
     name: "moegirl",
