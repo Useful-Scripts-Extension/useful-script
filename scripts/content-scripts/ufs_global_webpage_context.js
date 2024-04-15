@@ -593,16 +593,6 @@ UfsGlobal.Utils = {
             }
           }
 
-          // else if (
-          //   (m = imgSrc.match(
-          //     /^(https?:\/\/\w+\.ggpht\.com\/.+)=(?:[s|w|h])(\d+)(.+)?$/i
-          //   ))
-          // ) {
-          //   if (m[2] != "0") {
-          //     resolve(m[1] + "=s0");
-          //   }
-          // }
-
           //tumblr
           else if (
             (m = imgSrc.match(
@@ -668,50 +658,6 @@ UfsGlobal.Utils = {
           ) {
             if (m[3] != "r") {
               resolve(m[1] + m[2] + "r" + m[4]);
-            }
-          }
-
-          //artstation
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\d{4,}\/)(\w+)(\/[^\/]+)$/i
-            ))
-          ) {
-            if (m[3] != "original") {
-              var ajax = new XMLHttpRequest();
-              ajax.onreadystatechange = function () {
-                if (ajax.status == 200) {
-                  resolve(m[1] + "original" + m[4]);
-                } else if (ajax.status == 404) {
-                  if (m[3] != "large") {
-                    resolve(m[1] + "large" + m[4]);
-                  }
-                }
-              };
-              ajax.open("HEAD", m[1] + "original" + m[3], true);
-              ajax.send();
-            }
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/cdn\w+\.artstation\.com\/.+\/)(\w+)(\/[^\/]+)$/i
-            ))
-          ) {
-            //if(m[2] != "original") {
-            //	resolve(m[1] + "original" + m[3])
-            //}
-            if (m[2] != "original") {
-              var ajax = new XMLHttpRequest();
-              ajax.onreadystatechange = function () {
-                if (ajax.status == 200) {
-                  resolve(m[1] + "original" + m[3]);
-                } else if (ajax.status == 404) {
-                  if (m[2] != "large") {
-                    resolve(m[1] + "large" + m[3]);
-                  }
-                }
-              };
-              ajax.open("HEAD", m[1] + "original" + m[3], true);
-              ajax.send();
             }
           }
 
@@ -1927,6 +1873,18 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    name: "artstation avatar",
+    url: /artstation\.com/,
+    r: /\/(avatars\/+\/)?medium\//i,
+    s: "/large/",
+  },
+  {
+    name: "artstation",
+    url: /artstation\.com/,
+    r: /\/(\d{14}\/)?smaller_square\//i,
+    s: "/large/",
+  },
+  {
     name: "123rf",
     url: /123rf\.com/,
     r: /us\.123rf\.com\/\d+wm\//i,
@@ -2384,7 +2342,7 @@ UfsGlobal.largeImgSiteRules = [
     name: "ggpht",
     src: /ggpht\.com/i,
     r: /=s\d+.*/i,
-    s: "=s9999",
+    s: "=s0",
   },
   {
     name: "kodansha",

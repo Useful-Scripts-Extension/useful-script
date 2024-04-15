@@ -22,9 +22,15 @@ export default {
         window.open(url, "_self");
       }, 1000);
 
-      document.onclick = () => {
+      function click() {
         clearTimeout(timeout);
-      };
+        UfsGlobal.DOM.notify({
+          msg: "Useful-script: Redirect cancelled",
+        });
+        document.removeEventListener("click", click);
+      }
+
+      document.addEventListener("click", click);
 
       UfsGlobal.DOM.notify({
         msg: "Useful-script: Auto redirect to largest image after 1s, click to cancel",
