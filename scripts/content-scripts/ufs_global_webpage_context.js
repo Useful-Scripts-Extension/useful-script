@@ -508,18 +508,6 @@ UfsGlobal.Utils = {
       return imgSrc;
     }
 
-    function getQueryParams(qs) {
-      //by http://stackoverflow.com/a/1099670
-      qs = qs.split("+").join(" ");
-      var params = {},
-        tokens,
-        re = /[?&]?([^=]+)=([^&]*)/g;
-      while ((tokens = re.exec(qs))) {
-        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-      }
-      return params;
-    }
-
     function try3() {
       return UfsGlobal.Utils.timeoutPromise(
         new Promise((resolve) => {
@@ -571,11 +559,11 @@ UfsGlobal.Utils = {
             var ajax = new XMLHttpRequest();
             ajax.onreadystatechange = function () {
               if (ajax.status == 200) {
-                document.location =
-                  "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg";
+                resolve(
+                  "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg"
+                );
               } else if (ajax.status == 404) {
-                document.location =
-                  "https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg";
+                resolve("https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg");
               }
             };
             ajax.open(
@@ -642,7 +630,8 @@ UfsGlobal.Utils = {
           } else if (
             (m = imgSrc.match(/^(https?:\/\/\w+\.twimg\.com\/.+)(\?.+)$/i))
           ) {
-            var pars = getQueryParams(document.location.search);
+            let url = new URL(webUrl);
+            var pars = url.searchParams;
             if (!pars.format || !pars.name) return;
             if (pars.name == "orig") return;
             resolve(m[1] + "?format=" + pars.format + "&name=orig");
@@ -832,6 +821,7 @@ UfsGlobal.Utils = {
       try {
         let res = await fn();
         if (res && res != imgSrc) {
+          console.log("getLargestImageSrc: " + fn.name + " -> ", res);
           return res;
         }
       } catch (e) {
@@ -2212,13 +2202,13 @@ UfsGlobal.largeImgSiteRules = [
     r: /\.md(\.[^\.]+)$/i,
     s: "$1",
   },
-  {
-    name: "ytimg",
-    src: /i\.ytimg\.com/i,
-    exclude: /mqdefault_6s/i,
-    r: /\?.*$/i,
-    s: "",
-  },
+  // {
+  //   name: "ytimg",
+  //   src: /i\.ytimg\.com/i,
+  //   exclude: /mqdefault_6s/i,
+  //   r: /\?.*$/i,
+  //   s: "",
+  // },
   {
     name: "meituan",
     url: /\.meituan\.net/i,

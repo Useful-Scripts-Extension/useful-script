@@ -377,6 +377,35 @@ export default {
     // #endregion
 
     // #region create UI
+    function resize(curW, curH, minW, minH, maxW, maxH) {
+      // Calculate aspect ratio
+      const aspectRatio = curW / curH;
+
+      // Calculate new dimensions while maintaining aspect ratio
+      let newWidth = curW;
+      let newHeight = curH;
+
+      // Check if width needs to be adjusted
+      if (newWidth < minW) {
+        newWidth = minW;
+        newHeight = newWidth / aspectRatio;
+      } else if (newWidth > maxW) {
+        newWidth = maxW;
+        newHeight = newWidth / aspectRatio;
+      }
+
+      // Check if height needs to be adjusted
+      if (newHeight < minH) {
+        newHeight = minH;
+        newWidth = newHeight * aspectRatio;
+      } else if (newHeight > maxH) {
+        newHeight = maxH;
+        newWidth = newHeight * aspectRatio;
+      }
+
+      return { width: newWidth, height: newHeight };
+    }
+
     function createPreview(src) {
       let id = "ufs-magnify-image";
       let exist = document.getElementById(id);
@@ -433,44 +462,29 @@ export default {
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 0 0 / 20px 20px,
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 10px 10px / 20px 20px !important;
       `;
-      let preSize = null;
+      let isFirstLoad = false;
       img.onload = () => {
-        let w = img.naturalWidth,
-          h = img.naturalHeight;
+        let curW = img.naturalWidth,
+          curH = img.naturalHeight;
 
-        size.innerText = `${w} x ${h}`;
+        size.innerText = `${curW} x ${curH}`;
 
         // first load - original image
-        if (!preSize) {
-          // constrain to screen size
+        if (!isFirstLoad) {
+          isFirstLoad = true;
+
           let screenW = window.innerWidth;
           let screenH = window.innerHeight;
+          let newSize = resize(curW, curH, 400, 400, screenW, screenH);
 
-          let minSize = 400;
-          if (w < minSize) {
-            h = h * (minSize / w);
-            w = minSize;
-          }
-          if (h < minSize) {
-            w = w * (minSize / h);
-            h = minSize;
-          }
-          if (w > screenW) {
-            h = h * (screenW / w);
-            w = screenW;
-          }
-          if (h > screenH) {
-            w = w * (screenH / h);
-            h = screenH;
-          }
-          img.style.width = `${w}px`;
-          img.style.height = `${h}px`;
+          img.style.width = `${newSize.w}px`;
+          img.style.height = `${newSize.h}px`;
         }
 
         // second+ load -> usually largest image
         else {
-          img.style.width = `${preSize.w}px`;
-          img.style.height = `${preSize.h}px`;
+          let newRatio = img.naturalWidth / img.naturalHeight;
+          img.style.height = `${parseInt(img.style.width) / newRatio}px`;
         }
       };
       overlay.appendChild(img);
@@ -493,10 +507,6 @@ export default {
 
       return {
         setSrc: (src) => {
-          preSize = {
-            w: img.style.width,
-            h: img.style.height,
-          };
           img.src = src;
         },
       };
