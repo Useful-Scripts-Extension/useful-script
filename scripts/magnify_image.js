@@ -433,27 +433,45 @@ export default {
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 0 0 / 20px 20px,
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 10px 10px / 20px 20px !important;
       `;
+      let preSize = null;
       img.onload = () => {
         let w = img.naturalWidth,
           h = img.naturalHeight;
 
         size.innerText = `${w} x ${h}`;
 
-        // constrain to screen size
-        let screenW = window.innerWidth;
-        let screenH = window.innerHeight;
+        // first load - original image
+        if (!preSize) {
+          // constrain to screen size
+          let screenW = window.innerWidth;
+          let screenH = window.innerHeight;
 
-        if (w > screenW) {
-          h = h * (screenW / w);
-          w = screenW;
-        }
-        if (h > screenH) {
-          w = w * (screenH / h);
-          h = screenH;
+          let minSize = 400;
+          if (w < minSize) {
+            h = h * (minSize / w);
+            w = minSize;
+          }
+          if (h < minSize) {
+            w = w * (minSize / h);
+            h = minSize;
+          }
+          if (w > screenW) {
+            h = h * (screenW / w);
+            w = screenW;
+          }
+          if (h > screenH) {
+            w = w * (screenH / h);
+            h = screenH;
+          }
+          img.style.width = `${w}px`;
+          img.style.height = `${h}px`;
         }
 
-        img.style.width = `${w}px`;
-        img.style.height = `${h}px`;
+        // second+ load -> usually largest image
+        else {
+          img.style.width = `${preSize.w}px`;
+          img.style.height = `${preSize.h}px`;
+        }
       };
       overlay.appendChild(img);
 
@@ -475,24 +493,14 @@ export default {
 
       return {
         setSrc: (src) => {
+          preSize = {
+            w: img.style.width,
+            h: img.style.height,
+          };
           img.src = src;
-        },
-        remove: () => {
-          overlay.remove();
         },
       };
     }
-
-    // UfsGlobal.DOM.injectScriptSrc(
-    //   "https://update.greasyfork.org/scripts/438080/1322681/pvcep_rules.js",
-    //   (success, error) => {
-    //     if (error) {
-    //       console.log("ERROR: ", error);
-    //       return;
-    //     }
-    //     console.log(siteInfo);
-    //   }
-    // );
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", async () => {
       const srcs = extractImagesFromSelector("img, image, a, [class], [style]");
@@ -510,7 +518,7 @@ export default {
         return;
       }
 
-      const { setSrc, remove } = createPreview(src);
+      const { setSrc } = createPreview(src);
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
         if (src !== _src) {
           let tempImg = new Image();

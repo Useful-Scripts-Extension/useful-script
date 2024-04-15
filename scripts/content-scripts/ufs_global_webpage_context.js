@@ -1939,7 +1939,7 @@ UfsGlobal.largeImgSiteRules = [
   },
   {
     name: "wikipedia",
-    url: /^https?:\/\/.+\.wikipedia\.org\//i,
+    url: /^https?:\/\/.+\.(wikipedia|wikimedia)\.org\//i,
     src: /^https?:\/\/.+\.wikimedia\.org\//i,
     r: /(https?:\/\/.*)\/thumb(\/.*)\/\d+px-.*/i,
     s: "$1$2",
