@@ -18,30 +18,14 @@ export default {
     );
     console.log(url, location.href, url == location.href);
     if (url && url != location.href) {
-      let timeout = setTimeout(() => {
+      if (
+        confirm(
+          "Found bigger image. Redirect to that now?\n\nTìm thấy ảnh lớn hơn. Chuyển trang ngay?\n\n" +
+            url
+        )
+      ) {
         window.open(url, "_self");
-      }, 1000);
-
-      function click() {
-        clearTimeout(timeout);
-        UfsGlobal.DOM.notify({
-          msg: "Useful-script: Redirect cancelled",
-        });
-        document.removeEventListener("click", click);
       }
-
-      document.addEventListener("click", click);
-
-      UfsGlobal.DOM.notify({
-        msg: "Useful-script: Auto redirect to largest image after 1s, click to cancel",
-      });
     }
-  },
-
-  onClickExtension: () => {
-    alert(`Hỗ trợ:
-    https://lh3.googleusercontent.com
-    https://s.gravatar.com/avatar
-    https://atlassiansuite.mservice.com.vn`);
   },
 };

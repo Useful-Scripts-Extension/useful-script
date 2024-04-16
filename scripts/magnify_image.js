@@ -26,7 +26,9 @@ export default {
       return url.indexOf("data:image") === 0 || imageUrlRegex.test(url);
     }
     function relativeUrlToAbsolute(url) {
-      return url.indexOf("/") === 0 ? `${window.location.origin}${url}` : url;
+      var anchor = document.createElement("a");
+      anchor.href = url;
+      return anchor.href;
     }
     function hasBg(node) {
       if (
