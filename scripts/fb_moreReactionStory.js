@@ -7,6 +7,7 @@ export default {
   description: {
     en: "React story Facebook with more emojis",
     vi: "React story Facebook với nhiều loại emoji khác nhau",
+    img: "/scripts/fb_moreReactionStory.png",
   },
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1769666783365434",
