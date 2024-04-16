@@ -230,6 +230,9 @@ export default {
           padding: 0 10px 5px;
           border-radius: 0 0 5px 5px;
         }
+        #${id} img {
+          transition: transform 0.15s ease;
+        }
         `;
       overlay.appendChild(style);
 
@@ -363,7 +366,7 @@ export default {
           `rotate(${transformStatus.rotate}deg)`,
           ""
         );
-        transformStatus.rotate = (transformStatus.rotate - 90) % 360;
+        transformStatus.rotate = transformStatus.rotate - 90;
         img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
       };
       toolbar.appendChild(rotateLeft);
@@ -378,7 +381,7 @@ export default {
           `rotate(${transformStatus.rotate}deg)`,
           ""
         );
-        transformStatus.rotate = (transformStatus.rotate + 90) % 360;
+        transformStatus.rotate = transformStatus.rotate + 90;
         img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
       };
       toolbar.appendChild(rotateRight);
