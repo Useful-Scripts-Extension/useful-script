@@ -14,7 +14,7 @@
   // run script on receive event
   window.addEventListener("ufs-run-page-scripts", async ({ detail }) => {
     console.log("ufs-run-page-scripts", detail);
-    const { ids, path } = await getActiveScripts();
+    const { ids, path } = (await getActiveScripts()) || {};
     runScripts(ids, detail.event, path);
   });
 
@@ -26,7 +26,7 @@
   main();
 
   async function main() {
-    const { ids, path } = await getActiveScripts();
+    const { ids, path } = (await getActiveScripts()) || {};
     runScripts(ids, "onDocumentStart", path);
   }
 

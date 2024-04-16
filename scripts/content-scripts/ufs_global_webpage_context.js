@@ -30,24 +30,26 @@ UfsGlobal.Extension = {
   },
 };
 UfsGlobal.DOM = {
-  addLoadingAnimation(element) {
-    element.classList.add("ufs-loading");
+  addLoadingAnimation(element, size = 30) {
+    let id = Math.random().toString(36).substr(2, 9);
+    element.classList.add("ufs-loading-" + id);
+
+    size = Math.min(element.clientWidth, element.clientHeight, size * 2) / 2;
 
     // inject css code
-    if (!document.getElementById("ufs-loading-style")) {
-      let style = document.createElement("style");
-      style.id = "ufs-loading-style";
-      style.textContent = `
-      .ufs-loading::after {
+    let style = document.createElement("style");
+    style.id = "ufs-loading-style-" + id;
+    style.textContent = `
+      .ufs-loading-${id}::after {
         content: "";
         display: block;
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 40px;
-        height: 40px;
-        margin-top: -20px;
-        margin-left: -20px;
+        width: ${size}px;
+        height: ${size}px;
+        margin-top: -${size / 2}px;
+        margin-left: -${size / 2}px;
         border-radius: 50%;
         border: 3px solid #555 !important;
         border-top-color: #eee !important;
@@ -59,11 +61,10 @@ UfsGlobal.DOM = {
         }
       }
       `;
-      (document.head || document.documentElement).appendChild(style);
-    }
+    (document.head || document.documentElement).appendChild(style);
 
     return () => {
-      if (element) element.classList.remove("ufs-loading");
+      if (element) element.classList.remove("ufs-loading-" + id);
     };
   },
   enableDragAndZoom(element, container, callback) {
@@ -482,7 +483,7 @@ UfsGlobal.Utils = {
   timeoutPromise(prom, time) {
     return Promise.race([
       prom,
-      new Promise((_r, rej) => setTimeout(rej, time)),
+      new Promise((_r, rej) => setTimeout(() => rej("time out " + time), time)),
     ]);
   },
   async getLargestImageSrc(imgSrc, webUrl) {
@@ -516,45 +517,52 @@ UfsGlobal.Utils = {
       return null;
     }
 
+    function unique(array) {
+      return Array.from(new Set(array));
+    }
+
     function replace(str, r, s) {
-      var results = [],
-        rt;
-      if (Array.isArray(s)) {
-        s.forEach((_s) => {
-          rt = str.replace(r, _s);
-          if (rt && rt != str) results.push(rt);
-        });
-      } else {
-        rt = str.replace(r, s);
-        if (rt && rt != str) return str.replace(r, s);
+      var results = [];
+
+      if (!Array.isArray(r) && !Array.isArray(s)) {
+        if (r && r.test && r.test(str)) {
+          results.push(str.replace(r, s));
+        }
+      } else if (!Array.isArray(r) && Array.isArray(s)) {
+        if (r && r.test && r.test(str)) {
+          for (let si = 0; si < s.length; si++) {
+            results.push(str.replace(r, s[si]));
+          }
+        }
+      } else if (Array.isArray(r) && !Array.isArray(s)) {
+        for (let ri = 0; ri < r.length; ri++) {
+          let _r = r[ri];
+          if (_r && _r.test && _r.test(str)) {
+            results.push(str.replace(_r, s));
+          }
+        }
+      } else if (Array.isArray(r) && Array.isArray(s)) {
+        for (let ri = 0; ri < r.length; ri++) {
+          let _r = r[ri];
+          if (_r && _r.test && _r.test(str)) {
+            let _s = Array.isArray(s[ri]) ? s[ri] : [s[ri]];
+            for (let si = 0; si < _s.length; si++) {
+              results.push(str.replace(_r, _s[si]));
+            }
+          }
+        }
       }
-      return results;
+
+      return unique(results);
     }
 
     function try2() {
-      let newSrc = null;
       for (let rule of UfsGlobal.largeImgSiteRules) {
         if (rule.url && webUrl && !rule.url.test(webUrl)) continue;
         if (rule.src && !rule.src.test(imgSrc)) continue;
         if (rule.exclude && rule.exclude.test(imgSrc)) continue;
         if (rule.r) {
-          if (Array.isArray(rule.r)) {
-            for (var j in rule.r) {
-              var _r = rule.r[j];
-              if (_r && _r.test && _r.test(imgSrc)) {
-                if (Array.isArray(rule.s)) {
-                  var _s = rule.s[j];
-                  newSrc = replace(imgSrc, _r, _s);
-                } else {
-                  newSrc = replace(imgSrc, _r, rule.s);
-                }
-                break;
-              }
-            }
-          } else {
-            newSrc = replace(imgSrc, rule.r, rule.s);
-          }
-
+          let newSrc = replace(imgSrc, rule.r, rule.s);
           if (newSrc) return newSrc;
         }
       }
@@ -563,274 +571,273 @@ UfsGlobal.Utils = {
 
     // https://greasyfork.org/en/scripts/2312-resize-image-on-open-image-in-new-tab
     function try3() {
-      return UfsGlobal.Utils.timeoutPromise(
-        new Promise((resolve) => {
-          var m = null;
-          //google
-          if (
-            (m = imgSrc.match(
-              /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "s0") {
-              resolve(m[1] + "s0" + m[3]);
-            }
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+=)(.+)(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "s0") {
-              resolve(m[1] + "s0");
-            }
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\w+\.ggpht\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "s0") {
-              resolve(m[1] + "s0" + m[3]);
-            }
+      return new Promise((resolve) => {
+        var m = null;
+        //google
+        if (
+          (m = imgSrc.match(
+            /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            resolve(m[1] + "s0" + m[3]);
           }
-
-          //blogspot
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\w+\.bp\.blogspot\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "s0") {
-              resolve(m[1] + "s0" + m[3]);
-            }
+        } else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/lh\d+\.googleusercontent\.com\/.+=)(.+)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            resolve(m[1] + "s0");
           }
+        } else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/\w+\.ggpht\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            resolve(m[1] + "s0" + m[3]);
+          }
+        }
 
-          //youtube
-          else if (
-            (m = imgSrc.match(
-              /^https?:\/\/i\.ytimg.com\/an_webp\/([^\/]+)\/\w+\.(jpg|jpeg|gif|png|bmp|webp)(\?.+)?$/i
-            ))
-          ) {
+        //blogspot
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/\w+\.bp\.blogspot\.com\/.+\/)([^\/]+)(\/[^\/]+(\.(jpg|jpeg|gif|png|bmp|webp))?)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "s0") {
+            resolve(m[1] + "s0" + m[3]);
+          }
+        }
+
+        //youtube
+        else if (
+          (m = imgSrc.match(
+            /^https?:\/\/i\.ytimg.com\/an_webp\/([^\/]+)\/\w+\.(jpg|jpeg|gif|png|bmp|webp)(\?.+)?$/i
+          ))
+        ) {
+          var ajax = new XMLHttpRequest();
+          ajax.onreadystatechange = function () {
+            if (ajax.status == 200) {
+              resolve("https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg");
+            } else if (ajax.status == 404) {
+              resolve("https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg");
+            }
+          };
+          ajax.open(
+            "HEAD",
+            "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg",
+            true
+          );
+          ajax.send();
+        } else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/i\.ytimg.com\/vi\/[^\/]+\/)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "maxresdefault") {
             var ajax = new XMLHttpRequest();
             ajax.onreadystatechange = function () {
               if (ajax.status == 200) {
-                resolve(
-                  "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg"
-                );
+                resolve(m[1] + "maxresdefault" + m[3]);
               } else if (ajax.status == 404) {
-                resolve("https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg");
+                if (m[5] || m[2] === "mqdefault")
+                  resolve(m[1] + "hqdefault" + m[3]);
               }
             };
-            ajax.open(
-              "HEAD",
-              "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg",
-              true
-            );
+            ajax.open("HEAD", m[1] + "maxresdefault" + m[3], true);
             ajax.send();
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/i\.ytimg.com\/vi\/[^\/]+\/)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "maxresdefault") {
-              var ajax = new XMLHttpRequest();
-              ajax.onreadystatechange = function () {
-                if (ajax.status == 200) {
-                  resolve(m[1] + "maxresdefault" + m[3]);
-                } else if (ajax.status == 404) {
-                  if (m[5] || m[2] === "mqdefault")
-                    resolve(m[1] + "hqdefault" + m[3]);
-                }
-              };
-              ajax.open("HEAD", m[1] + "maxresdefault" + m[3], true);
-              ajax.send();
-            }
           }
+        }
 
-          //tumblr
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\d+\.media\.tumblr\.com\/.*tumblr_\w+_)(\d+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] < 1280) {
-              var ajax = new XMLHttpRequest();
-              ajax.onreadystatechange = function () {
-                if (ajax.status == 200) {
-                  resolve(m[1] + "1280" + m[3]);
-                }
-              };
-              ajax.open("HEAD", m[1] + "1280" + m[3], true);
-              ajax.send();
-            }
+        //tumblr
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/\d+\.media\.tumblr\.com\/.*tumblr_\w+_)(\d+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] < 1280) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+              if (ajax.status == 200) {
+                resolve(m[1] + "1280" + m[3]);
+              }
+            };
+            ajax.open("HEAD", m[1] + "1280" + m[3], true);
+            ajax.send();
           }
+        }
 
-          //twitter
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\w+\.twimg\.com\/media\/[^\/:]+)\.(jpg|jpeg|gif|png|bmp|webp)(:\w+)?$/i
-            ))
-          ) {
-            var format = m[2];
-            if (m[2] == "jpeg") format = "jpg";
-            resolve(m[1] + "?format=" + format + "&name=orig");
-          } else if (
-            (m = imgSrc.match(/^(https?:\/\/\w+\.twimg\.com\/.+)(\?.+)$/i))
-          ) {
-            let url = new URL(webUrl);
-            var pars = url.searchParams;
-            if (!pars.format || !pars.name) return;
-            if (pars.name == "orig") return;
-            resolve(m[1] + "?format=" + pars.format + "&name=orig");
-          }
+        //twitter
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/\w+\.twimg\.com\/media\/[^\/:]+)\.(jpg|jpeg|gif|png|bmp|webp)(:\w+)?$/i
+          ))
+        ) {
+          var format = m[2];
+          if (m[2] == "jpeg") format = "jpg";
+          resolve(m[1] + "?format=" + format + "&name=orig");
+        } else if (
+          (m = imgSrc.match(/^(https?:\/\/\w+\.twimg\.com\/.+)(\?.+)$/i))
+        ) {
+          let url = new URL(webUrl);
+          var pars = url.searchParams;
+          if (!pars.format || !pars.name) return;
+          if (pars.name == "orig") return;
+          resolve(m[1] + "?format=" + pars.format + "&name=orig");
+        }
 
-          //Steam (Only user content)
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/(images\.akamai\.steamusercontent\.com|steamuserimages-a\.akamaihd\.net)\/[^\?]+)\?.+$/i
-            ))
-          ) {
-            resolve(m[1]);
-          }
+        //Steam (Only user content)
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/(images\.akamai\.steamusercontent\.com|steamuserimages-a\.akamaihd\.net)\/[^\?]+)\?.+$/i
+          ))
+        ) {
+          resolve(m[1]);
+        }
 
-          //性浪微博
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/(?:(?:ww|wx|ws|tvax|tva)\d+|wxt|wt)\.sinaimg\.(?:cn|com)\/)([\w\.]+)(\/.+)(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[2] != "large") {
-              resolve(m[1] + "large" + m[3]);
-            }
+        //性浪微博
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/(?:(?:ww|wx|ws|tvax|tva)\d+|wxt|wt)\.sinaimg\.(?:cn|com)\/)([\w\.]+)(\/.+)(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[2] != "large") {
+            resolve(m[1] + "large" + m[3]);
           }
+        }
 
-          //zhihu
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/.+\.zhimg\.com\/)(?:\d+\/)?([\w\-]+_)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
-            ))
-          ) {
-            if (m[3] != "r") {
-              resolve(m[1] + m[2] + "r" + m[4]);
-            }
+        //zhihu
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/.+\.zhimg\.com\/)(?:\d+\/)?([\w\-]+_)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
+          ))
+        ) {
+          if (m[3] != "r") {
+            resolve(m[1] + m[2] + "r" + m[4]);
           }
+        }
 
-          //pinimg
-          else if (
-            (m = imgSrc.match(/^(https?:\/\/i\.pinimg\.com\/)(\w+)(\/.+)$/i))
-          ) {
-            if (m[2] != "originals") {
-              resolve(m[1] + "originals" + m[3]);
-            }
-          } else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/s-media[\w-]+\.pinimg\.com\/)(\w+)(\/.+)$/i
-            ))
-          ) {
-            //need delete?
-            if (m[2] != "originals") {
-              resolve(m[1] + "originals" + m[3]);
-            }
+        //pinimg
+        else if (
+          (m = imgSrc.match(/^(https?:\/\/i\.pinimg\.com\/)(\w+)(\/.+)$/i))
+        ) {
+          if (m[2] != "originals") {
+            resolve(m[1] + "originals" + m[3]);
           }
+        } else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/s-media[\w-]+\.pinimg\.com\/)(\w+)(\/.+)$/i
+          ))
+        ) {
+          //need delete?
+          if (m[2] != "originals") {
+            resolve(m[1] + "originals" + m[3]);
+          }
+        }
 
-          //bilibili
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/\w+\.hdslb\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))(@|_).+$/i
-            ))
-          ) {
-            resolve(m[1]);
-          }
+        //bilibili
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/\w+\.hdslb\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))(@|_).+$/i
+          ))
+        ) {
+          resolve(m[1]);
+        }
 
-          //taobao(tmall)
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/(?:.+?)\.alicdn\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))_.+$/i
-            ))
-          ) {
-            resolve(m[1]);
-          }
+        //taobao(tmall)
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/(?:.+?)\.alicdn\.com\/.+\.(jpg|jpeg|gif|png|bmp|webp))_.+$/i
+          ))
+        ) {
+          resolve(m[1]);
+        }
 
-          //jd
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/(?:img\d+)\.360buyimg\.com\/)((?:.+?)\/(?:.+?))(\/(?:.+?))(\!.+)?$/i
-            ))
-          ) {
-            if (m[2] != "sku/jfs") {
-              resolve(m[1] + "sku/jfs" + m[3]);
-            }
+        //jd
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/(?:img\d+)\.360buyimg\.com\/)((?:.+?)\/(?:.+?))(\/(?:.+?))(\!.+)?$/i
+          ))
+        ) {
+          if (m[2] != "sku/jfs") {
+            resolve(m[1] + "sku/jfs" + m[3]);
           }
+        }
 
-          // https://s01.riotpixels.net/data/2a/b2/2ab23684-6cec-41da-9bce-f72c5264353a.jpg.240p.jpg
-          else if (
-            (m = imgSrc.match(
-              /^(https?:\/\/(?:.+?)\.riotpixels\.net\/.+\.(jpg|jpeg|gif|png|bmp|webp))\..+?$/i
-            ))
-          ) {
-            resolve(m[1]);
-          }
+        // https://s01.riotpixels.net/data/2a/b2/2ab23684-6cec-41da-9bce-f72c5264353a.jpg.240p.jpg
+        else if (
+          (m = imgSrc.match(
+            /^(https?:\/\/(?:.+?)\.riotpixels\.net\/.+\.(jpg|jpeg|gif|png|bmp|webp))\..+?$/i
+          ))
+        ) {
+          resolve(m[1]);
+        }
 
-          // reddit NEED TEST
-          else if (
-            (m = imgSrc.match(
-              /^https?:\/\/preview\.redd\.it\/(.+\.(jpg|jpeg|gif|png|bmp|webp))\?.+?$/i
-            ))
-          ) {
-            resolve("https://i.redd.it/" + m[1]);
-          }
+        // reddit NEED TEST
+        else if (
+          (m = imgSrc.match(
+            /^https?:\/\/preview\.redd\.it\/(.+\.(jpg|jpeg|gif|png|bmp|webp))\?.+?$/i
+          ))
+        ) {
+          resolve("https://i.redd.it/" + m[1]);
+        }
 
-          // akamaized.net/imagecache NEED TEST
-          else if (
-            (m = imgSrc.match(
-              /^(https:\/\/.+\.akamaized\.net\/imagecache\/\d+\/\d+\/\d+\/\d+\/)(\d+)(\/.+)$/i
-            ))
-          ) {
-            if (m[2] < 1920) resolve(m[1] + "1920" + m[3]);
-          }
+        // akamaized.net/imagecache NEED TEST
+        else if (
+          (m = imgSrc.match(
+            /^(https:\/\/.+\.akamaized\.net\/imagecache\/\d+\/\d+\/\d+\/\d+\/)(\d+)(\/.+)$/i
+          ))
+        ) {
+          if (m[2] < 1920) resolve(m[1] + "1920" + m[3]);
+        }
 
-          // 微信公众号 by sbdx
-          else if (
-            (m = imgSrc.match(
-              /^(https:\/\/mmbiz\.qpic\.cn\/mmbiz_jpg\/.+?\/)(\d+)(\?wx_fmt=jpeg)/i
-            ))
-          ) {
-            if (m[2] != 0) resolve(m[1] + "0" + m[3]);
-          }
+        // 微信公众号 by sbdx
+        else if (
+          (m = imgSrc.match(
+            /^(https:\/\/mmbiz\.qpic\.cn\/mmbiz_jpg\/.+?\/)(\d+)(\?wx_fmt=jpeg)/i
+          ))
+        ) {
+          if (m[2] != 0) resolve(m[1] + "0" + m[3]);
+        }
 
-          //百度贴吧（然而对于画质提升什么的并没有什么卵用...）
-          else if (
-            !(m = imgSrc.match(
-              /^https?:\/\/imgsrc\.baidu\.com\/forum\/pic\/item\/.+/i
+        //百度贴吧（然而对于画质提升什么的并没有什么卵用...）
+        else if (
+          (m = imgSrc.match(
+            /^https?:\/\/imgsrc\.baidu\.com\/forum\/pic\/item\/.+/i
+          ))
+        ) {
+          if (
+            (m = imgSrc.match(
+              /^(https?):\/\/(?:imgsrc|imgsa|\w+\.hiphotos)\.(?:bdimg|baidu)\.com\/(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
             ))
           ) {
-            if (
-              (m = imgSrc.match(
-                /^(https?):\/\/(?:imgsrc|imgsa|\w+\.hiphotos)\.(?:bdimg|baidu)\.com\/(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i
-              ))
-            ) {
-              resolve(m[1] + "://imgsrc.baidu.com/forum/pic/item/" + m[2]);
-            }
-            //if( (m = imgSrc.match(/^(https?)(:\/\/(?:imgsrc|imgsa|\w+\.hiphotos|tiebapic)\.(?:bdimg|baidu)\.com\/)(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i)) ){
-            //	resolve(m[1] + m[2] + "forum/pic/item/" + m[3])
-            //}
+            resolve(m[1] + "://imgsrc.baidu.com/forum/pic/item/" + m[2]);
           }
-        }),
-        5000
-      );
+          //if( (m = imgSrc.match(/^(https?)(:\/\/(?:imgsrc|imgsa|\w+\.hiphotos|tiebapic)\.(?:bdimg|baidu)\.com\/)(?:forum|album)\/.+\/(\w+\.(?:jpg|jpeg|gif|png|bmp|webp))(?:\?.+)?$/i)) ){
+          //	resolve(m[1] + m[2] + "forum/pic/item/" + m[3])
+          //}
+        } else {
+          resolve(imgSrc);
+        }
+      });
     }
 
     for (let fn of [try1, try2, try3]) {
       try {
-        let res = await fn();
+        let res = await UfsGlobal.Utils.timeoutPromise(fn(), 5000);
         if (res && res != imgSrc) {
-          console.log("getLargestImageSrc: " + fn.name + " -> ", res);
           if (!Array.isArray(res)) res = [res];
-          let finalSrc = await UfsGlobal.Utils.timeoutPromise(
-            UfsGlobal.Utils.findWorkingSrc(res),
-            10000
-          );
-          console.log("final src:", finalSrc);
-          if (finalSrc) return finalSrc;
+          if (res.length) {
+            console.log("getLargestImageSrc: " + fn.name + " -> ", res);
+            let finalSrc = await UfsGlobal.Utils.timeoutPromise(
+              UfsGlobal.Utils.findWorkingSrc(res),
+              10000
+            );
+            console.log("final src:", finalSrc);
+            if (finalSrc) return finalSrc;
+          }
         }
       } catch (e) {
         console.log("ERROR getLargestImageSrc: " + fn.name + " -> ", e);
@@ -840,22 +847,34 @@ UfsGlobal.Utils = {
     return imgSrc;
   },
   findWorkingSrc(srcs) {
-    if (!srcs) return null;
-    if (!Array.isArray(srcs)) {
-      srcs = [srcs];
-    }
-    let promises = [];
-    for (let src of srcs) {
-      promises.push(
-        new Promise((resolve, reject) => {
-          let img = new Image();
-          img.src = src;
-          img.onload = () => resolve(src);
-          // img.onerror = (e) => reject(e);
-        })
-      );
-    }
-    return Promise.race(promises);
+    return new Promise((resolve, reject) => {
+      if (!srcs) {
+        reject(null); // Reject if srcs is falsy, not an array, or empty
+      } else {
+        if (!Array.isArray(srcs)) srcs = [srcs];
+
+        let resolved = false;
+        const promises = srcs.map((src) => {
+          return new Promise((innerResolve, innerReject) => {
+            const img = new Image();
+            img.onload = () => {
+              if (!resolved) {
+                resolved = true;
+                resolve(src); // Resolve with src if image loads successfully
+              }
+              innerResolve(); // Resolve inner promise
+            };
+            img.onerror = () => innerReject(null); // Reject with null if image fails to load
+            img.src = src;
+          });
+        });
+        Promise.allSettled(promises).then(() => {
+          if (!resolved) {
+            reject(null); // If all images fail, reject with null
+          }
+        });
+      }
+    });
   },
   // resolve relative URLs into canonical absolute URLs based on the current location.
   canonicalUri(src, location = window.location) {
@@ -2024,16 +2043,19 @@ UfsGlobal.largeImgSiteRules = [
     name: "Tumblr",
     url: /tumblr\.com/,
     exclude: /\/avatar_/i,
-    r: /[^\/]*(media\.tumblr\.com.*_)\d+(\.[^\.]+)$/i,
-    s: "$1raw$2",
+    r: [
+      /[^\/]*(media\.tumblr\.com.*_)\d+(\.[^\.]+)$/i,
+      /(media\.tumblr\.com.*_)[^_]+(\.[^\.]+)$/i,
+    ],
+    s: ["$1raw$2", "$1512$2"],
   },
-  {
-    name: "Tumblr",
-    url: /tumblr\.com/,
-    src: /\/avatar_/i,
-    r: /(media\.tumblr\.com.*_)[^_]+(\.[^\.]+)$/i,
-    s: "$1512$2",
-  },
+  // {
+  //   name: "Tumblr",
+  //   url: /tumblr\.com/,
+  //   src: /\/avatar_/i,
+  //   r: /(media\.tumblr\.com.*_)[^_]+(\.[^\.]+)$/i,
+  //   s: "$1512$2",
+  // },
   {
     name: "Pixiv",
     url: /pixiv\.net|pximg\.net/,
@@ -2141,8 +2163,13 @@ UfsGlobal.largeImgSiteRules = [
     r: [
       /\/(thumbnails|sample)\/(.*)\/(thumbnail|sample)_(.*)/i,
       /\/\d+x\d+\//i,
+      /\/\d+x\d+\/(.*)\.(.*)/i,
     ], // TODO: array of r??
-    s: ["/original/$2/$4", "/original/"],
+    s: [
+      "/original/$2/$4",
+      "/original/",
+      ["/original/$1.jpg", "/original/$1.png", "/original/$1.gif"],
+    ],
   },
   {
     name: "erosberry",

@@ -447,6 +447,7 @@ export default {
         },
         overlay,
         img,
+        size,
       };
     }
 
@@ -467,7 +468,7 @@ export default {
         return;
       }
 
-      const { setSrc, overlay, img } = createPreview(src);
+      const { setSrc, overlay, img, size } = createPreview(src);
 
       let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((src) => {
