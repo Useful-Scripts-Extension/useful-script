@@ -26,7 +26,7 @@ export async function setActiveScript(scriptId, isActive = true) {
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
   // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
-  await chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
+  chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
   return list;
 }
 
