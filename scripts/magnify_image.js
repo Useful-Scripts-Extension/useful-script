@@ -205,7 +205,6 @@ export default {
         if (e.target == overlay) overlay.remove();
       };
       document.body.appendChild(overlay);
-      let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
 
       const style = document.createElement("style");
       style.textContent = `
@@ -273,13 +272,14 @@ export default {
         transform-origin: center;
         transform: translate(-50%, -50%) !important;
         box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
-        width: 400px;
-        height: 400px;
+        min-width: 200px;
+        min-height: 200px;
+        max-width: 100vw;
+        max-height: 100vh;
       `;
 
       let isFirstLoad = false;
       img.onload = () => {
-        removeLoading();
         let curW = img.naturalWidth,
           curH = img.naturalHeight;
 
@@ -308,8 +308,6 @@ export default {
       };
       overlay.appendChild(img);
 
-      UfsGlobal.DOM.enableDragAndZoom(img, overlay);
-
       // toolbar
       let toolbar = document.createElement("div");
       toolbar.id = id + "-toolbar";
@@ -331,8 +329,18 @@ export default {
         img.style.height = img.naturalHeight + "px";
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
+        size.innerText = `${img.naturalWidth} x ${img.naturalHeight}`;
       };
       toolbar.appendChild(size);
+
+      UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
+        if (data?.type === "scale") {
+          let scale = img.clientWidth / img.naturalWidth;
+          size.innerText =
+            size.innerText.replace(/ \(\d+%\)/, "") +
+            ` (${(scale * 100).toFixed(0)}%)`;
+        }
+      });
 
       // toggle background
       let toggleBg = document.createElement("div");
@@ -435,18 +443,10 @@ export default {
       return {
         setSrc: (_src) => {
           if (_src == src) return;
-
-          let _removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
-          let tempImg = new Image();
-          tempImg.src = _src;
-          tempImg.onload = () => {
-            img.src = _src;
-            _removeLoading();
-          };
-          tempImg.onerror = () => {
-            _removeLoading();
-          };
+          img.src = _src;
         },
+        overlay,
+        img,
       };
     }
 
@@ -467,9 +467,12 @@ export default {
         return;
       }
 
-      const { setSrc } = createPreview(src);
-      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
-        setSrc(_src);
+      const { setSrc, overlay, img } = createPreview(src);
+
+      let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
+      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((src) => {
+        setSrc(src);
+        removeLoading();
       });
     });
     // #endregion

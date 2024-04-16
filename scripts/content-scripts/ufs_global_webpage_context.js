@@ -49,11 +49,11 @@ UfsGlobal.DOM = {
         margin-top: -20px;
         margin-left: -20px;
         border-radius: 50%;
-        border: 3px solid #ccc;
-        border-top-color: #333;
-        animation: spin 1s linear infinite;
+        border: 3px solid #555 !important;
+        border-top-color: #eee !important;
+        animation: ufs-spin 1s linear infinite;
       }
-      @keyframes spin {
+      @keyframes ufs-spin {
         to {
           transform: rotate(360deg);
         }
@@ -66,7 +66,7 @@ UfsGlobal.DOM = {
       if (element) element.classList.remove("ufs-loading");
     };
   },
-  enableDragAndZoom(element, container) {
+  enableDragAndZoom(element, container, callback) {
     // set style
     element.style.cssText += `
         cursor: grab;
@@ -102,11 +102,12 @@ UfsGlobal.DOM = {
     document.addEventListener("mousemove", function (e) {
       mouse = { x: e.clientX, y: e.clientY };
       if (dragging) {
-        var deltaX = e.clientX - lastX;
-        var deltaY = e.clientY - lastY;
+        let x = e.clientX - lastX + element.offsetLeft;
+        let y = e.clientY - lastY + element.offsetTop;
 
-        element.style.left = element.offsetLeft + deltaX + "px";
-        element.style.top = element.offsetTop + deltaY + "px";
+        element.style.left = x + "px";
+        element.style.top = y + "px";
+        callback?.({ x, y, type: "move" });
 
         lastX = e.clientX;
         lastY = e.clientY;
@@ -155,6 +156,8 @@ UfsGlobal.DOM = {
       element.style.height = newHeight + "px";
       element.style.left = newLeft + "px";
       element.style.top = newTop + "px";
+
+      callback?.({ type: "scale" });
     });
   },
   // prettier-ignore
@@ -514,9 +517,18 @@ UfsGlobal.Utils = {
     }
 
     function replace(str, r, s) {
-      let rt = str.replace(r, s);
-      if (rt && rt != str) return str.replace(r, s);
-      return null;
+      var results = [],
+        rt;
+      if (Array.isArray(s)) {
+        s.forEach((_s) => {
+          rt = str.replace(r, _s);
+          if (rt && rt != str) results.push(rt);
+        });
+      } else {
+        rt = str.replace(r, s);
+        if (rt && rt != str) return str.replace(r, s);
+      }
+      return results;
     }
 
     function try2() {
@@ -812,7 +824,13 @@ UfsGlobal.Utils = {
         let res = await fn();
         if (res && res != imgSrc) {
           console.log("getLargestImageSrc: " + fn.name + " -> ", res);
-          return res;
+          if (!Array.isArray(res)) res = [res];
+          let finalSrc = await UfsGlobal.Utils.timeoutPromise(
+            UfsGlobal.Utils.findWorkingSrc(res),
+            10000
+          );
+          console.log("final src:", finalSrc);
+          if (finalSrc) return finalSrc;
         }
       } catch (e) {
         console.log("ERROR getLargestImageSrc: " + fn.name + " -> ", e);
@@ -820,6 +838,24 @@ UfsGlobal.Utils = {
     }
 
     return imgSrc;
+  },
+  findWorkingSrc(srcs) {
+    if (!srcs) return null;
+    if (!Array.isArray(srcs)) {
+      srcs = [srcs];
+    }
+    let promises = [];
+    for (let src of srcs) {
+      promises.push(
+        new Promise((resolve, reject) => {
+          let img = new Image();
+          img.src = src;
+          img.onload = () => resolve(src);
+          // img.onerror = (e) => reject(e);
+        })
+      );
+    }
+    return Promise.race(promises);
   },
   // resolve relative URLs into canonical absolute URLs based on the current location.
   canonicalUri(src, location = window.location) {
@@ -2095,6 +2131,7 @@ UfsGlobal.largeImgSiteRules = [
     s: [
       "https://img3.gelbooru.com/images/$2/$4.png",
       "https://img3.gelbooru.com/images/$2/$4.jpg",
+      "https://img3.gelbooru.com/images/$2/$4.gif",
     ],
   },
   {
@@ -2104,7 +2141,7 @@ UfsGlobal.largeImgSiteRules = [
     r: [
       /\/(thumbnails|sample)\/(.*)\/(thumbnail|sample)_(.*)/i,
       /\/\d+x\d+\//i,
-    ],
+    ], // TODO: array of r??
     s: ["/original/$2/$4", "/original/"],
   },
   {
