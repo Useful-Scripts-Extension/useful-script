@@ -25,9 +25,9 @@ export function setActiveScript(scriptId, isActive = true) {
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
-  let valToSave = list.join(",");
-  localStorage.setItem(listActiveScriptsKey, valToSave);
-  chrome.storage.sync.set({ [listActiveScriptsKey]: valToSave }); // save to storage => content script can access
+  // let valToSave = list.join(",");
+  // localStorage.setItem(listActiveScriptsKey, valToSave);
+  chrome.storage.sync.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
   return list;
 }
 
@@ -37,7 +37,10 @@ export function isActiveScript(scriptId) {
 }
 
 export function getAllActiveScriptId() {
-  return (localStorage.getItem(listActiveScriptsKey) || "").split(",");
+  return (
+    chrome.storage.sync.get([listActiveScriptsKey])?.[listActiveScriptsKey] ||
+    []
+  );
 }
 
 export function toggleActiveScript(scriptId) {

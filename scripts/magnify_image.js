@@ -180,7 +180,7 @@ export default {
       document.body.appendChild(overlay);
 
       const style = document.createElement("style");
-      style.innerText = `
+      style.textContent = `
         #${id} {
           font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
           font-size: 1em !important;
@@ -233,6 +233,48 @@ export default {
         `;
       overlay.appendChild(style);
 
+      // image
+      let img = document.createElement("img");
+      img.src = src;
+      img.style.cssText = `
+        top: ${window.innerHeight / 2}px;
+        left: ${window.innerWidth / 2}px;
+        transform-origin: center;
+        transform: translate(-50%, -50%) !important;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
+      `;
+      let isFirstLoad = false;
+      img.onload = () => {
+        let curW = img.naturalWidth,
+          curH = img.naturalHeight;
+
+        size.innerText = `${curW} x ${curH}`;
+
+        // first load - original image
+        if (!isFirstLoad) {
+          isFirstLoad = true;
+
+          let newSize = resize(
+            curW,
+            curH,
+            Math.max(window.innerWidth - 100, 400),
+            Math.max(window.innerHeight - 100, 400)
+          );
+
+          img.style.width = `${newSize.width}px`;
+          img.style.height = `${newSize.height}px`;
+        }
+
+        // second+ load -> usually largest image
+        else {
+          let newRatio = curW / curH;
+          img.style.height = `${parseInt(img.style.width) / newRatio}px`;
+        }
+      };
+      overlay.appendChild(img);
+
+      UfsGlobal.DOM.enableDragAndZoom(img, overlay);
+
       // toolbar
       let toolbar = document.createElement("div");
       toolbar.id = id + "-toolbar";
@@ -276,6 +318,7 @@ export default {
             ? "0 0 10px 5px rgba(0,0,0,0.35)"
             : "none";
       };
+      toggleBg.click(); // default is toggle ON
       toolbar.appendChild(toggleBg);
 
       // toggle flip horizontally
@@ -353,49 +396,6 @@ export default {
         desc.innerText = "";
       };
       toolbar.appendChild(desc);
-
-      // image
-      let img = document.createElement("img");
-      img.src = src;
-      img.style.cssText = `
-        top: ${window.innerHeight / 2}px;
-        left: ${window.innerWidth / 2}px;
-        transform-origin: center;
-        transform: translate(-50%, -50%) !important;
-        background: linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px !important;
-        box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
-      `;
-      let isFirstLoad = false;
-      img.onload = () => {
-        let curW = img.naturalWidth,
-          curH = img.naturalHeight;
-
-        size.innerText = `${curW} x ${curH}`;
-
-        // first load - original image
-        if (!isFirstLoad) {
-          isFirstLoad = true;
-
-          let newSize = resize(
-            curW,
-            curH,
-            Math.max(window.innerWidth - 100, 400),
-            Math.max(window.innerHeight - 100, 400)
-          );
-
-          img.style.width = `${newSize.width}px`;
-          img.style.height = `${newSize.height}px`;
-        }
-
-        // second+ load -> usually largest image
-        else {
-          let newRatio = curW / curH;
-          img.style.height = `${parseInt(img.style.width) / newRatio}px`;
-        }
-      };
-      overlay.appendChild(img);
-
-      UfsGlobal.DOM.enableDragAndZoom(img, overlay);
 
       return {
         setSrc: (_src) => {

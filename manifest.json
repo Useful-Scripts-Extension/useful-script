@@ -50,7 +50,7 @@
       "matches": ["<all_urls>"],
       "js": ["scripts/content-scripts/document_idle.js"],
       "run_at": "document_idle",
-      "world": "MAIN",
+      "world": "ISOLATED",
       "match_origin_as_fallback": true,
       "match_about_blank": true
     },
@@ -58,7 +58,7 @@
       "matches": ["<all_urls>"],
       "js": ["scripts/content-scripts/document_end.js"],
       "run_at": "document_end",
-      "world": "MAIN",
+      "world": "ISOLATED",
       "match_origin_as_fallback": true,
       "match_about_blank": true
     }

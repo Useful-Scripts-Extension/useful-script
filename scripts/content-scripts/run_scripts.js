@@ -8,38 +8,62 @@
 // Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
 
 (async () => {
-  let ids = [],
-    path = "";
+  const CACHED = {};
+  const storage_key = "ufs_active_scripts";
 
   // run script on receive event
-  window.addEventListener("ufs-run-page-scripts", ({ detail }) => {
+  window.addEventListener("ufs-run-page-scripts", async ({ detail }) => {
     console.log("ufs-run-page-scripts", detail);
+    const { ids, path } = await getActiveScripts();
     runScripts(ids, detail.event, path);
   });
 
-  // auto run documentStart
-  try {
-    const res = JSON.parse(localStorage.getItem("ufs_active_scripts") || "{}");
-    ids = res?.ids?.split(",") || [];
-    path = res?.path || "";
-  } catch (e) {
-    console.log("ERRO ufs", e);
-  }
+  // save active script before unload
+  window.addEventListener("beforeunload", () => {
+    saveActiveScript();
+  });
 
-  if (!ids || !path) {
-    const data = await UfsGlobal?.Extension?.getActiveScripts?.();
-    ids = data?.ids?.split(",") || [];
-    path = data?.path || "";
-  }
+  main();
 
-  console.log("ufs auto_run scripts: ", ids);
-
-  // auto run documentStart
-  if (ids) {
+  async function main() {
+    const { ids, path } = await getActiveScripts();
     runScripts(ids, "onDocumentStart", path);
   }
 
+  async function getActiveScripts() {
+    if (!CACHED[storage_key]) {
+      try {
+        let ids, path;
+        // const res = JSON.parse(localStorage.getItem(storage_key) || "{}");
+        // ids = res?.ids;
+        // path = res?.path || "";
+        // if (typeof ids === "string") ids = ids.split(",");
+
+        if (!ids || !path) {
+          const data = await UfsGlobal?.Extension?.getActiveScripts?.();
+          ids = data?.ids || [];
+          path = data?.path || "";
+        }
+
+        CACHED[storage_key] = { ids, path };
+        saveActiveScript();
+      } catch (e) {
+        console.log("ERRO ufs", e);
+      }
+    }
+    return CACHED[storage_key];
+  }
+
+  function saveActiveScript() {
+    try {
+      localStorage.setItem(storage_key, JSON.stringify(CACHED[storage_key]));
+    } catch (e) {
+      console.log("SAVE active script ERROR: ", e);
+    }
+  }
+
   function runScripts(scriptIds, event, path) {
+    console.log("scriptids", scriptIds, event, path);
     for (let id of scriptIds.filter((_) => _)) {
       let scriptPath = `${path}/${id}.js`;
       import(scriptPath)
