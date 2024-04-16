@@ -10,7 +10,7 @@ export default {
     img: "/scripts/auto_redirectLargestImageSrc.png",
   },
 
-  onDocumentEnd: async () => {
+  onDocumentStart: async () => {
     // auto redirect to largest img src
     let url = await UfsGlobal.Utils.getLargestImageSrc(
       location.href,
