@@ -30,11 +30,47 @@ UfsGlobal.Extension = {
   },
 };
 UfsGlobal.DOM = {
-  enableDragAndZoom(element, container) {
+  addLoadingAnimation(element) {
+    element.classList.add("ufs-loading");
+
+    // inject css code
+    if (!document.getElementById("ufs-loading-style")) {
+      let style = document.createElement("style");
+      style.id = "ufs-loading-style";
+      style.textContent = `
+      .ufs-loading::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        margin-top: -20px;
+        margin-left: -20px;
+        border-radius: 50%;
+        border: 3px solid #ccc;
+        border-top-color: #333;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      `;
+      (document.head || document.documentElement).appendChild(style);
+    }
+
+    return () => {
+      element.classList.remove("ufs-loading");
+    };
+  },
+  enableDragAndZoom(element) {
     // set style
     element.style.cssText += `
         cursor: grab;
-        position: fixed;
+        position: relative;
         -webkit-user-select: none !important;
         -moz-user-select: none !important;
         -ms-user-select: none !important;
@@ -63,7 +99,7 @@ UfsGlobal.DOM = {
     });
 
     // Mouse move event listener
-    container.addEventListener("mousemove", function (e) {
+    document.addEventListener("mousemove", function (e) {
       mouse = { x: e.clientX, y: e.clientY };
       if (dragging) {
         var deltaX = e.clientX - lastX;
@@ -78,19 +114,19 @@ UfsGlobal.DOM = {
     });
 
     // Mouse up event listener
-    container.addEventListener("mouseup", function () {
+    document.addEventListener("mouseup", function () {
       dragging = false;
       element.style.cursor = "grab";
     });
 
     // Mouse leave event listener
-    container.addEventListener("mouseleave", function () {
+    document.addEventListener("mouseleave", function () {
       dragging = false;
       element.style.cursor = "grab";
     });
 
     // Mouse wheel event listener for zooming
-    container.addEventListener("wheel", function (e) {
+    element.addEventListener("wheel", function (e) {
       e.preventDefault();
       var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
       var scaleFactor = 1.2;
@@ -339,14 +375,14 @@ UfsGlobal.DOM = {
     var css = document.createElement("style");
     if ("textContent" in css) css.textContent = code;
     else css.innerText = code;
-    document.head.appendChild(css);
+    (document.head || document.documentElement).appendChild(css);
   },
   injectCssFile(filePath) {
     var css = document.createElement("link");
     css.setAttribute("rel", "stylesheet");
     css.setAttribute("type", "text/css");
     css.setAttribute("href", filePath);
-    document.head.appendChild(css);
+    (document.head || document.documentElement).appendChild(css);
   },
   getTrustedPolicy() {
     let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
@@ -457,16 +493,21 @@ UfsGlobal.Utils = {
       switch (url.hostname) {
         // https://atlassiansuite.mservice.com.vn:8443/secure/useravatar?size=small&ownerId=JIRAUSER14656&avatarId=11605
         case "atlassiansuite.mservice.com.vn":
-          if (url.searchParams.get("size")) {
-            url.searchParams.set("size", "256");
-          } else {
-            url.searchParams.append("size", "256");
-          }
-          return url.toString();
         case "atlassiantool.mservice.com.vn":
+          if (url.href.includes("avatar")) {
+            if (url.searchParams.get("size")) {
+              url.searchParams.set("size", "256");
+            } else {
+              url.searchParams.append("size", "256");
+            }
+          }
+          if (url.href.includes("/thumbnail/")) {
+            return url.href.replace("/thumbnail/", "/attachments/");
+          }
           if (url.href.includes("/thumbnails/")) {
             return url.href.replace("/thumbnails/", "/attachments/");
           }
+          return url.toString();
           break;
       }
       return null;

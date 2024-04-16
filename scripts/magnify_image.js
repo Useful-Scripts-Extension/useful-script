@@ -100,17 +100,6 @@ export default {
           return largeSrc;
         },
         () => {
-          if (hasBg(ele)) {
-            let bg = window
-              .getComputedStyle(ele)
-              .backgroundImage.replace(bgRegex, "$1")
-              .replace(/\\"/g, '"');
-            return bg;
-          }
-          return null;
-        },
-        () => {},
-        () => {
           if (/img|picture|image|a/i.test(ele.tagName))
             for (let i in lazyImgAttr) {
               let attrName = lazyImgAttr[i];
@@ -120,6 +109,16 @@ export default {
                 return attrValue;
               }
             }
+        },
+        () => {
+          if (hasBg(ele)) {
+            let bg = window
+              .getComputedStyle(ele)
+              .backgroundImage.replace(bgRegex, "$1")
+              .replace(/\\"/g, '"');
+            return bg;
+          }
+          return null;
         },
       ];
 
@@ -218,6 +217,7 @@ export default {
         background:
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 0 0 / 20px 20px,
           linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 10px 10px / 20px 20px !important;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
       `;
       let isFirstLoad = false;
       img.onload = () => {
@@ -249,25 +249,19 @@ export default {
       };
       overlay.appendChild(img);
 
-      // loading
-      let loading = document.createElement("div");
-      loading.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        background-color: #111;
-        color: white;
-        z-index: 1;
-      `;
-      loading.innerText = "Loading...";
-      overlay.appendChild(loading);
-
-      UfsGlobal.DOM.enableDragAndZoom(img, overlay);
+      UfsGlobal.DOM.enableDragAndZoom(img);
 
       return {
-        setSrc: (src) => {
-          img.src = src;
+        setSrc: (_src) => {
+          if (_src == src) return;
+
+          let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
+          let tempImg = new Image();
+          tempImg.src = _src;
+          tempImg.onload = () => {
+            img.src = _src;
+            removeLoading();
+          };
         },
       };
     }
@@ -291,13 +285,7 @@ export default {
 
       const { setSrc } = createPreview(src);
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
-        if (_src && src !== _src) {
-          let tempImg = new Image();
-          tempImg.src = _src;
-          tempImg.onload = () => {
-            setSrc(_src);
-          };
-        }
+        setSrc(_src);
       });
     });
     // #endregion
