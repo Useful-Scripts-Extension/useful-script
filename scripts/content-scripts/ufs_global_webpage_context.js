@@ -1198,10 +1198,10 @@ UfsGlobal.Facebook = {
     let text = await res.text();
     return {
       uid: uid,
-      name: UsefulScriptsUtils.decodeEscapedUnicodeString(
+      name: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
         /"name":"(.*?)"/.exec(text)?.[1]
       ),
-      avatar: UsefulScriptsUtils.decodeEscapedUnicodeString(
+      avatar: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
         /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1] ||
           /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1] ||
           /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1] ||
@@ -1801,7 +1801,7 @@ UfsGlobal.DEBUG = {
   // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
   listGlobalVariables() {
     let browserGlobals = [];
-    const ignoredGlobals = ["UsefulScriptsUtils"];
+    const ignoredGlobals = ["UfsGlobal"];
 
     function collectBrowserGlobals() {
       const iframe = window.document.createElement("iframe");
