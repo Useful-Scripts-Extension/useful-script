@@ -158,7 +158,7 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      let newValue = toggleActiveScript(script.id);
+      let newValue = await toggleActiveScript(script.id);
       newValue && updateScriptClickCount(script.id);
       newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
@@ -299,10 +299,10 @@ function createScriptButton(script, isFavorite = false) {
   return buttonContainer;
 }
 
-function updateButtonChecker(script, button, val) {
+async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (val ?? isActiveScript(script.id)) {
+  if (val ?? (await isActiveScript(script.id))) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",

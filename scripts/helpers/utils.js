@@ -20,31 +20,31 @@ export async function sendEventToTab(tabId, data) {
 // };
 
 const listActiveScriptsKey = "activeScripts";
-export function setActiveScript(scriptId, isActive = true) {
-  let list = getAllActiveScriptId();
+export async function setActiveScript(scriptId, isActive = true) {
+  let list = await getAllActiveScriptId();
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
-  // let valToSave = list.join(",");
-  // localStorage.setItem(listActiveScriptsKey, valToSave);
-  chrome.storage.sync.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
+  // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
+  await chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
   return list;
 }
 
-export function isActiveScript(scriptId) {
-  let currentList = getAllActiveScriptId();
+export async function isActiveScript(scriptId) {
+  let currentList = await getAllActiveScriptId();
   return currentList.find((_) => _ == scriptId) != null;
 }
 
 export function getAllActiveScriptId() {
-  return (
-    chrome.storage.sync.get([listActiveScriptsKey])?.[listActiveScriptsKey] ||
-    []
-  );
+  return new Promise((resolve) => {
+    chrome.storage.local.get([listActiveScriptsKey], (result) => {
+      resolve(result[listActiveScriptsKey] || []);
+    });
+  });
 }
 
-export function toggleActiveScript(scriptId) {
-  let current = isActiveScript(scriptId);
+export async function toggleActiveScript(scriptId) {
+  let current = await isActiveScript(scriptId);
   let newVal = !current;
   setActiveScript(scriptId, newVal);
   return newVal;

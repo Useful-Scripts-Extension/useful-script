@@ -7,7 +7,7 @@ import("./ufs_global_webpage_context.js");
     const key = "activeScripts";
     if (!CACHED[key]) {
       CACHED[key] = {
-        ids: (await chrome.storage.sync.get([key]))?.[key] || [],
+        ids: (await chrome.storage.local.get([key]))?.[key] || [],
         path: chrome.runtime.getURL("/scripts/"),
       };
     }
