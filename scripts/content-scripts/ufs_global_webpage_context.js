@@ -66,7 +66,7 @@ UfsGlobal.DOM = {
       element.classList.remove("ufs-loading");
     };
   },
-  enableDragAndZoom(element) {
+  enableDragAndZoom(element, container) {
     // set style
     element.style.cssText += `
         cursor: grab;
@@ -90,7 +90,7 @@ UfsGlobal.DOM = {
     let mouse = { x: 0, y: 0 };
 
     // Mouse down event listener
-    element.addEventListener("mousedown", function (e) {
+    (container || element).addEventListener("mousedown", function (e) {
       e.preventDefault();
       dragging = true;
       lastX = e.clientX;
@@ -126,7 +126,7 @@ UfsGlobal.DOM = {
     });
 
     // Mouse wheel event listener for zooming
-    element.addEventListener("wheel", function (e) {
+    (container || element).addEventListener("wheel", function (e) {
       e.preventDefault();
       var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
       var scaleFactor = 1.2;

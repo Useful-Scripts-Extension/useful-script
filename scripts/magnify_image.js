@@ -52,6 +52,7 @@ export default {
     const lazyImgAttr = [
       "src",
       "_src",
+      "xlink:href", // facebook
       "data-lazy-src",
       "org_src",
       "data-lazy",
@@ -170,33 +171,80 @@ export default {
       // container
       let overlay = document.createElement("div");
       overlay.id = id;
-      overlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 99999;
-        overflow: hidden;
-      `;
       overlay.onclick = (e) => {
+        e.preventDefault();
         if (e.target == overlay) overlay.remove();
       };
       document.body.appendChild(overlay);
 
+      const style = document.createElement("style");
+      style.innerText = `
+        #${id} {
+          font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
+          font-size: 1em !important;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          z-index: 99999;
+          overflow: hidden;
+        }
+        #${id + "-toolbar"} {
+          position: fixed;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #111a;
+          color: white;
+          z-index: 2;
+          text-align: center;
+        }
+        #${id} img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          max-width: 100%;
+          max-height: 100%;
+          cursor: zoom-out;
+        }
+        #${id} .ufs-btn {
+          cursor: pointer;
+          padding: 10px;
+          background-color: #111;
+        }
+        #${id} .ufs-btn:hover {
+          background: #555a;
+        }
+        #${id} .ufs-desc {
+          position: absolute;
+          top: 100%;
+          background: #333;
+          padding: 0 10px 5px;
+          border-radius: 0 0 5px 5px;
+        }
+        `;
+      overlay.appendChild(style);
+
+      // toolbar
+      let toolbar = document.createElement("div");
+      toolbar.id = id + "-toolbar";
+      overlay.appendChild(toolbar);
+
+      let transformStatus = {
+        flip_horizontal: false,
+        flip_vertical: false,
+        rotate: 0,
+      };
+
       // size
       let size = document.createElement("div");
-      size.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        background-color: #111;
-        color: white;
-        z-index: 2;
-        cursor: pointer;
-      `;
+      size.classList.add("ufs-btn");
       size.innerText = "Size";
       size.title = "Show original size";
       size.onclick = () => {
@@ -205,7 +253,104 @@ export default {
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
       };
-      overlay.appendChild(size);
+      toolbar.appendChild(size);
+
+      // toggle background
+      let toggleBg = document.createElement("div");
+      toggleBg.classList.add("ufs-btn");
+      toggleBg.innerText = "B";
+      toggleBg.title = "Toggle transparent";
+      toggleBg.onclick = () => {
+        if (!img.style.background) {
+          var gradientValue =
+            "linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px";
+          img.style.cssText += "background: " + gradientValue + " !important;";
+        } else {
+          img.style.background = "";
+        }
+
+        img.style.boxShadow =
+          img.style.boxShadow == "none"
+            ? "0 0 10px 5px rgba(0,0,0,0.35)"
+            : "none";
+      };
+      toolbar.appendChild(toggleBg);
+
+      // toggle flip horizontally
+      let flipH = document.createElement("div");
+      flipH.classList.add("ufs-btn");
+      flipH.innerText = "|";
+      flipH.title = "Flip horizontally";
+      flipH.onclick = () => {
+        if (transformStatus.flip_horizontal) {
+          img.style.transform = img.style.transform.replace("scaleX(-1)", "");
+          transformStatus.flip_horizontal = false;
+        } else {
+          img.style.transform += " scaleX(-1)";
+          transformStatus.flip_horizontal = true;
+        }
+      };
+      toolbar.appendChild(flipH);
+
+      // flip vertically
+      let flipV = document.createElement("div");
+      flipV.classList.add("ufs-btn");
+      flipV.innerText = "--";
+      flipV.title = "Flip vertically";
+      flipV.onclick = () => {
+        if (transformStatus.flip_vertical) {
+          img.style.transform = img.style.transform.replace("scaleY(-1)", "");
+          transformStatus.flip_vertical = false;
+        } else {
+          img.style.transform += " scaleY(-1)";
+          transformStatus.flip_vertical = true;
+        }
+      };
+      toolbar.appendChild(flipV);
+
+      // rotate left
+      let rotateLeft = document.createElement("div");
+      rotateLeft.classList.add("ufs-btn");
+      rotateLeft.innerText = "↺";
+      rotateLeft.title = "Rotate left";
+      rotateLeft.onclick = () => {
+        img.style.transform = img.style.transform.replace(
+          `rotate(${transformStatus.rotate}deg)`,
+          ""
+        );
+        transformStatus.rotate = (transformStatus.rotate - 90) % 360;
+        img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
+      };
+      toolbar.appendChild(rotateLeft);
+
+      // rorate right
+      let rotateRight = document.createElement("div");
+      rotateRight.classList.add("ufs-btn");
+      rotateRight.innerText = "↻";
+      rotateRight.title = "Rotate right";
+      rotateRight.onclick = () => {
+        img.style.transform = img.style.transform.replace(
+          `rotate(${transformStatus.rotate}deg)`,
+          ""
+        );
+        transformStatus.rotate = (transformStatus.rotate + 90) % 360;
+        img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
+      };
+      toolbar.appendChild(rotateRight);
+
+      // desc
+      let desc = document.createElement("div");
+      desc.classList.add("ufs-desc");
+      desc.innerText = "";
+      toolbar.appendChild(desc);
+      toolbar.onmousemove = (e) => {
+        if (e.target?.title) desc.innerText = e.target.title;
+        else desc.innerText = "";
+      };
+      toolbar.onmouseleave = () => {
+        desc.innerText = "";
+      };
+      toolbar.appendChild(desc);
 
       // image
       let img = document.createElement("img");
@@ -213,10 +358,9 @@ export default {
       img.style.cssText = `
         top: ${window.innerHeight / 2}px;
         left: ${window.innerWidth / 2}px;
+        transform-origin: center;
         transform: translate(-50%, -50%) !important;
-        background:
-          linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 0 0 / 20px 20px,
-          linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100% ) 10px 10px / 20px 20px !important;
+        background: linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px !important;
         box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
       `;
       let isFirstLoad = false;
@@ -249,7 +393,7 @@ export default {
       };
       overlay.appendChild(img);
 
-      UfsGlobal.DOM.enableDragAndZoom(img);
+      UfsGlobal.DOM.enableDragAndZoom(img, overlay);
 
       return {
         setSrc: (_src) => {
