@@ -10,20 +10,21 @@ export const shared = {
         let scrollableElements = [];
 
         // Check all elements for scrollable content
-        let elements = document.querySelectorAll("*");
+        let elements = Array.from(document.querySelectorAll("*")).concat(
+          document.documentElement
+        );
         for (let element of elements) {
           let style = window.getComputedStyle(element);
           if (
-            (style.overflowY === "scroll" ||
-              style.overflowY === "auto" ||
-              style.overflowX === "scroll" ||
-              style.overflowX === "auto") &&
+            style.overflowY !== "hidden" &&
             (element.scrollHeight > element.clientHeight ||
               element.scrollWidth > element.clientWidth)
           ) {
             scrollableElements.push(element);
           }
         }
+
+        console.log(scrollableElements);
 
         // If only one scrollable element is found, return it
         if (scrollableElements.length === 1) {
@@ -65,6 +66,8 @@ export const shared = {
       document.addEventListener("click", clickToCancel);
 
       let scrollEle = findMainScrollableElement();
+
+      console.log(scrollEle);
 
       while (running) {
         down(scrollEle);

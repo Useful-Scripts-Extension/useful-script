@@ -63,7 +63,7 @@ UfsGlobal.DOM = {
     }
 
     return () => {
-      element.classList.remove("ufs-loading");
+      if (element) element.classList.remove("ufs-loading");
     };
   },
   enableDragAndZoom(element, container) {

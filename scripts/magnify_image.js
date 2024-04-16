@@ -46,8 +46,8 @@ export default {
       if (!bg || bg == "none") return false;
       return (
         bg.length > 200 || // base64
-        (node.clientWidth > 1 &&
-          node.clientHeight > 1 &&
+        (node.clientWidth > 5 &&
+          node.clientHeight > 5 &&
           /^\s*url\(\s*['"]?\s*[^ad\s'"]/.test(bg))
       );
     }
@@ -129,7 +129,12 @@ export default {
         try {
           let src = f();
           src && console.log(src);
-          if (src) return relativeUrlToAbsolute(src);
+          if (
+            src &&
+            // exclude base64 image that too small
+            !(/data:image/.test(src) && src.length < 100)
+          )
+            return relativeUrlToAbsolute(src);
         } catch (e) {
           console.log("error", e);
         }
@@ -137,14 +142,36 @@ export default {
       return null;
     }
 
+    let lastTarget = null;
+    document.addEventListener("mouseover", (e) => {
+      lastTarget = e.target;
+    });
     function getImgAtMouse() {
+      if (lastTarget) {
+        let parents = [];
+        let ele = lastTarget;
+        while (ele) {
+          parents.push(ele);
+          ele = ele.parentElement;
+        }
+        for (ele of parents) {
+          let src = getImgSrcFromElement(ele);
+          if (src) {
+            console.log(ele);
+            return src;
+          }
+        }
+      }
+
       let eles = Array.from(document.elementsFromPoint(mouse.x, mouse.y));
       console.log(eles);
 
-      for (let i = 0; i < eles.length; i++) {
-        let ele = eles[i];
+      for (let ele of eles) {
         let src = getImgSrcFromElement(ele);
-        if (src) return src;
+        if (src) {
+          console.log(ele);
+          return src;
+        }
       }
 
       return null;
@@ -178,6 +205,7 @@ export default {
         if (e.target == overlay) overlay.remove();
       };
       document.body.appendChild(overlay);
+      let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
 
       const style = document.createElement("style");
       style.textContent = `
@@ -245,9 +273,13 @@ export default {
         transform-origin: center;
         transform: translate(-50%, -50%) !important;
         box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
+        width: 400px;
+        height: 400px;
       `;
+
       let isFirstLoad = false;
       img.onload = () => {
+        removeLoading();
         let curW = img.naturalWidth,
           curH = img.naturalHeight;
 
@@ -404,12 +436,15 @@ export default {
         setSrc: (_src) => {
           if (_src == src) return;
 
-          let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
+          let _removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
           let tempImg = new Image();
           tempImg.src = _src;
           tempImg.onload = () => {
             img.src = _src;
-            removeLoading();
+            _removeLoading();
+          };
+          tempImg.onerror = () => {
+            _removeLoading();
           };
         },
       };
