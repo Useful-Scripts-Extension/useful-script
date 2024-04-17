@@ -238,17 +238,20 @@ export default {
       };
       document.body.appendChild(overlay);
 
+      // styles
       const style = document.createElement("style");
       style.textContent = `
-        #${id} {
+        #${id} * {
           font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
           font-size: 1em !important;
+        }
+        #${id} {
           position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.8);
+          background-color: rgba(0, 0, 0, 0.85);
           z-index: 99999;
           overflow: hidden;
         }
@@ -307,9 +310,10 @@ export default {
         position: fixed;
         top: ${mouse.y - 5}px;
         left: ${mouse.x - 5}px;
-        width: 10px;
-        height: 10px;
-        background-color: #fff5;
+        width: 20px;
+        height: 20px;
+        background-color: #fffa;
+        border-radius: 50%;
       `;
       overlay.appendChild(animDiv);
 
@@ -353,7 +357,12 @@ export default {
           animDiv.style.left = img.style.left;
           animDiv.style.width = img.style.width;
           animDiv.style.height = img.style.height;
+          animDiv.style.borderRadius = 0;
           animDiv.style.opacity = 0;
+
+          setTimeout(() => {
+            animDiv.remove();
+          }, 300);
         }
 
         // second+ load -> usually largest image
@@ -379,13 +388,33 @@ export default {
       let size = document.createElement("div");
       size.classList.add("ufs-btn");
       size.innerText = "Size";
-      size.title = "Show original size";
+      size.title = "Toggle original size";
       size.onclick = () => {
-        img.style.width = img.naturalWidth + "px";
-        img.style.height = img.naturalHeight + "px";
+        let w = img.naturalWidth,
+          h = img.naturalHeight;
+        if (
+          parseInt(img.style.width) === w &&
+          parseInt(img.style.height) === h
+        ) {
+          let newSize = resize(
+            w,
+            h,
+            Math.max(window.innerWidth - 100, 400),
+            Math.max(window.innerHeight - 100, 400)
+          );
+          w = newSize.width;
+          h = newSize.height;
+        }
+
+        img.style.width = w + "px";
+        img.style.height = h + "px";
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
-        size.innerText = `${img.naturalWidth} x ${img.naturalHeight}`;
+
+        let zoom = 100 * (w / img.naturalWidth);
+        size.innerText =
+          `${img.naturalWidth} x ${img.naturalHeight}` +
+          ` (${zoom.toFixed(0)}%)`;
       };
       toolbar.appendChild(size);
 
