@@ -188,16 +188,26 @@ export default {
 
       eles = eles.concat(getAllChildElements(eles[0]));
 
-      console.log(eles);
+      let results = [];
       for (let ele of eles) {
         let src = getImgSrcFromElement(ele);
         if (src) {
-          console.log(ele);
-          return src;
+          console.log(ele, src);
+          // return src;
+          results.push({ src, ele });
         }
       }
 
-      return null;
+      let rank = [/img/i, /picture/i, /image/i, /a/i];
+      results.sort((a, b) => {
+        let rankA = rank.findIndex((r) => r.test(a.src));
+        let rankB = rank.findIndex((r) => r.test(b.src));
+        rankA = rankA == -1 ? 100 : rankA;
+        rankB = rankB == -1 ? 100 : rankB;
+        return rankB - rankA;
+      });
+
+      return results[0]?.src;
     }
 
     // #endregion
@@ -303,13 +313,13 @@ export default {
       animDiv.classList.add("ufs-img-anim");
       animDiv.style.cssText = `
         position: fixed;
-        top: ${mouse.y - 5}px;
-        left: ${mouse.x - 5}px;
+        top: ${mouse.y}px;
+        left: ${mouse.x}px;
       `;
       overlay.appendChild(animDiv);
       let removeAnimLoading;
       setTimeout(() => {
-        removeAnimLoading = UfsGlobal.DOM.addLoadingAnimation(animDiv);
+        removeAnimLoading = UfsGlobal.DOM.addLoadingAnimation(animDiv, 40);
       }, 500);
 
       // image
@@ -582,10 +592,8 @@ export default {
 
       const { setSrc, overlay, img, size } = createPreview(src);
 
-      let removeLoading = UfsGlobal.DOM.addLoadingAnimation(overlay);
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((src) => {
         setSrc(src);
-        removeLoading();
       });
     });
     // #endregion

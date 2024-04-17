@@ -30,11 +30,12 @@ UfsGlobal.Extension = {
   },
 };
 UfsGlobal.DOM = {
-  addLoadingAnimation(element, size = 30) {
+  addLoadingAnimation(
+    element,
+    size = Math.min(element?.clientWidth, element?.clientHeight) || 0
+  ) {
     let id = Math.random().toString(36).substr(2, 9);
     element.classList.add("ufs-loading-" + id);
-
-    size = Math.min(element.clientWidth, element.clientHeight, size);
 
     // inject css code
     let style = document.createElement("style");
