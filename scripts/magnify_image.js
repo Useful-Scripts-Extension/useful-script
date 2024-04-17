@@ -30,7 +30,7 @@ export default {
       anchor.href = url;
       return anchor.href;
     }
-    function hasBg(node) {
+    function getBg(node) {
       if (
         node.nodeName.toUpperCase() == "HTML" ||
         node.nodeName == "#document"
@@ -45,10 +45,10 @@ export default {
         nodeStyle.backgroundImage;
       if (!bg || bg == "none") return false;
       return (
-        bg.length > 200 || // base64
-        (node.clientWidth > 5 &&
-          node.clientHeight > 5 &&
-          /^\s*url\(\s*['"]?\s*[^ad\s'"]/.test(bg))
+        // bg.length > 200 || // base64??
+        node.clientWidth > 5 &&
+        node.clientHeight > 5 &&
+        bg.match(bgRegex)?.[1]?.replace(/\\"/g, '"')
       );
     }
     const lazyImgAttr = [
@@ -113,16 +113,7 @@ export default {
               }
             }
         },
-        () => {
-          if (hasBg(ele)) {
-            let bg = window
-              .getComputedStyle(ele)
-              .backgroundImage.replace(bgRegex, "$1")
-              .replace(/\\"/g, '"');
-            return bg;
-          }
-          return null;
-        },
+        () => getBg(ele),
       ];
 
       for (let f of fn) {
