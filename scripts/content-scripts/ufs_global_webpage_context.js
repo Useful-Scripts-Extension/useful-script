@@ -1971,6 +1971,14 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    // https://gitlab.mservice.com.vn/uploads/-/system/group/avatar/831/momo.jpeg?width=15
+    // https://gitlab.com/uploads/-/system/user/avatar/4027109/avatar.png?width=64
+    name: "gitlab",
+    src: /gitlab\.(.*?)\/uploads\//i,
+    r: /\?width=\d+/i,
+    s: "",
+  },
+  {
     name: "font gstatic",
     src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
     r: /(https?:\/\/.*)\/\d+.(png|jpg)/,
@@ -2255,8 +2263,8 @@ UfsGlobal.largeImgSiteRules = [
   {
     name: "gravatar",
     src: /gravatar\.com\/avatar\/|\/gravatar\//i,
-    r: /(avatar\/.*[\?&]s=).*/,
-    s: "$11920",
+    r: /(avatar\/.*[\?&]s=)\d+(.*)/,
+    s: "$11920$2",
   },
   {
     name: "ucServerAvatar",
