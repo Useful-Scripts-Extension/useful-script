@@ -1971,8 +1971,13 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
-    // https://gitlab.mservice.com.vn/uploads/-/system/group/avatar/831/momo.jpeg?width=15
-    // https://gitlab.com/uploads/-/system/user/avatar/4027109/avatar.png?width=64
+    // https://yt3.googleusercontent.com/Qiekx-HxQTiX332zq-LyypoWshtuDptDQYab3zqqPVwkZ2AA1FgXveeb9Vi-7-b822g_e5hxmw=s160-c-k-c0x00ffffff-no-rj
+    name: "googleusercontent",
+    src: /\.googleusercontent\./i,
+    r: /\=s\d+/i,
+    s: "=s0",
+  },
+  {
     name: "gitlab",
     src: /gitlab\.(.*?)\/uploads\//i,
     r: /\?width=\d+/i,
