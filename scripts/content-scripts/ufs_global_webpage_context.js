@@ -1969,15 +1969,15 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
-    name: "artstation avatar",
-    url: /artstation\.com/,
-    r: /\/(avatars\/+\/)?medium\//i,
-    s: "/large/",
+    name: "font gstatic",
+    src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
+    r: /(https?:\/\/.*)\/\d+.(png|jpg)/,
+    s: "$1/512.$2",
   },
   {
     name: "artstation",
     url: /artstation\.com/,
-    r: /\/(\d{14}\/)?smaller_square\//i,
+    r: [/\/(avatars\/+\/)?medium\//i, /\/(\d{14}\/)?smaller_square\//i],
     s: "/large/",
   },
   {

@@ -142,26 +142,55 @@ export default {
       return null;
     }
 
+    function getAllChildElements(element) {
+      let childElements = [];
+
+      // Get all direct child elements of the current element
+      let children = element.children;
+      if (children?.length) {
+        childElements = childElements.concat(children);
+
+        // Loop through each child element
+        for (let child of children) {
+          // Recursively call the function to get all descendants of the child element
+          let descendants = getAllChildElements(child);
+
+          // Add the descendants to the array
+          childElements = childElements.concat(descendants);
+        }
+      }
+
+      return childElements;
+    }
+
+    function getAllParentElements(element) {
+      let parentElements = [];
+      while (element.parentElement) {
+        parentElements.push(element.parentElement);
+        element = element.parentElement;
+      }
+      return parentElements;
+    }
+
     let lastTarget = null;
     document.addEventListener("mouseover", (e) => {
       lastTarget = e.target;
     });
     function getImgAtMouse() {
-      if (lastTarget) {
-        let parents = [];
-        let ele = lastTarget;
-        while (ele) {
-          parents.push(ele);
-          ele = ele.parentElement;
-        }
-        for (ele of parents) {
-          let src = getImgSrcFromElement(ele);
-          if (src) {
-            console.log(ele);
-            return src;
-          }
-        }
-      }
+      // if (lastTarget) {
+      //   let eles = [
+      //     lastTarget,
+      //     ...getAllChildElements(lastTarget),
+      //     ...getAllParentElements(lastTarget),
+      //   ];
+      //   for (let ele of eles) {
+      //     let src = getImgSrcFromElement(ele);
+      //     if (src) {
+      //       console.log(ele);
+      //       return src;
+      //     }
+      //   }
+      // }
 
       let eles = Array.from(document.elementsFromPoint(mouse.x, mouse.y));
       console.log(eles);
@@ -271,7 +300,6 @@ export default {
         left: ${window.innerWidth / 2}px;
         transform-origin: center;
         transform: translate(-50%, -50%) !important;
-        box-shadow: 0 0 10px 5px rgba(0,0,0,0.35);
         min-width: 200px;
         min-height: 200px;
         max-width: 100vw;
@@ -343,23 +371,54 @@ export default {
       });
 
       // toggle background
+      const BgState = {
+        none: "none",
+        transparent: "transparent",
+        dark: "dark",
+        light: "light",
+      };
+      let bgStates = [
+        BgState.none,
+        BgState.transparent,
+        BgState.dark,
+        BgState.light,
+      ];
+      let curBgState =
+        (Number(localStorage.getItem("ufs-magnify-image-bg")) || 0) - 1;
+
       let toggleBg = document.createElement("div");
       toggleBg.classList.add("ufs-btn");
       toggleBg.innerText = "B";
-      toggleBg.title = "Toggle transparent";
+      toggleBg.title = "Change background";
       toggleBg.onclick = () => {
-        if (!img.style.background) {
-          var gradientValue =
-            "linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px";
-          img.style.cssText += "background: " + gradientValue + " !important;";
-        } else {
-          img.style.background = "";
+        curBgState = (curBgState + 1) % bgStates.length;
+        img.style.background = "";
+        img.style.boxShadow = "none";
+
+        switch (bgStates[curBgState]) {
+          case BgState.none:
+            break;
+          case BgState.transparent:
+            var gradientValue =
+              "linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px";
+            img.style.cssText +=
+              "background: " + gradientValue + " !important;";
+            break;
+          case BgState.dark:
+            img.style.background = "rgba(30, 30, 30, 1)";
+            break;
+          case BgState.light:
+            img.style.background = "rgba(240, 240, 240, 1)";
+            break;
         }
 
-        img.style.boxShadow =
-          img.style.boxShadow == "none"
-            ? "0 0 10px 5px rgba(0,0,0,0.35)"
-            : "none";
+        toggleBg.innerText = "BG " + bgStates[curBgState];
+        localStorage.setItem("ufs-magnify-image-bg", curBgState);
+
+        // img.style.boxShadow =
+        //   img.style.boxShadow == "none"
+        //     ? "0 0 10px 5px rgba(0,0,0,0.35)"
+        //     : "none";
       };
       toggleBg.click(); // default is toggle ON
       toolbar.appendChild(toggleBg);
