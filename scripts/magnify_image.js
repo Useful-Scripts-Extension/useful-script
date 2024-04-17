@@ -298,7 +298,11 @@ export default {
         #${id} .ufs-img-anim {
           transition: all 0.3s ease;
           transform-origin: center;
-          transform: translate(-50%, -50%) !important;
+          transform: translate(-50%, -50%);
+          width: 40px;
+          height: 40px;
+          background-color: #fffa;
+          border-radius: 50%;
         }
         `;
       overlay.appendChild(style);
@@ -310,12 +314,12 @@ export default {
         position: fixed;
         top: ${mouse.y - 5}px;
         left: ${mouse.x - 5}px;
-        width: 20px;
-        height: 20px;
-        background-color: #fffa;
-        border-radius: 50%;
       `;
       overlay.appendChild(animDiv);
+      let removeAnimLoading;
+      setTimeout(() => {
+        removeAnimLoading = UfsGlobal.DOM.addLoadingAnimation(animDiv);
+      }, 500);
 
       // image
       let img = document.createElement("img");
@@ -353,6 +357,7 @@ export default {
           img.style.opacity = 1;
 
           // animation
+          removeAnimLoading?.();
           animDiv.style.top = img.style.top;
           animDiv.style.left = img.style.left;
           animDiv.style.width = img.style.width;
@@ -420,7 +425,7 @@ export default {
 
       UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
         if (data?.type === "scale") {
-          let scale = img.clientWidth / img.naturalWidth;
+          let scale = img.clientWidth / img.naturalWidth || 1;
           size.innerText =
             size.innerText.replace(/ \(\d+%\)/, "") +
             ` (${(scale * 100).toFixed(0)}%)`;

@@ -34,7 +34,7 @@ UfsGlobal.DOM = {
     let id = Math.random().toString(36).substr(2, 9);
     element.classList.add("ufs-loading-" + id);
 
-    size = Math.min(element.clientWidth, element.clientHeight, size * 2) / 2;
+    size = Math.min(element.clientWidth, element.clientHeight, size);
 
     // inject css code
     let style = document.createElement("style");
