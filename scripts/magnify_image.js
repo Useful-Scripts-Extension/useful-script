@@ -290,10 +290,28 @@ export default {
           border-radius: 0 0 5px 5px;
         }
         #${id} img {
-          transition: transform 0.15s ease;
+          transition: transform 0.15s ease, opacity 0.5s ease 0.15s;
+        }
+        #${id} .ufs-img-anim {
+          transition: all 0.3s ease;
+          transform-origin: center;
+          transform: translate(-50%, -50%) !important;
         }
         `;
       overlay.appendChild(style);
+
+      // animation div: a rect that represent image scaled up from original position (mouse position)
+      let animDiv = document.createElement("div");
+      animDiv.classList.add("ufs-img-anim");
+      animDiv.style.cssText = `
+        position: fixed;
+        top: ${mouse.y - 5}px;
+        left: ${mouse.x - 5}px;
+        width: 10px;
+        height: 10px;
+        background-color: #fff5;
+      `;
+      overlay.appendChild(animDiv);
 
       // image
       let img = document.createElement("img");
@@ -303,10 +321,9 @@ export default {
         left: ${window.innerWidth / 2}px;
         transform-origin: center;
         transform: translate(-50%, -50%) !important;
-        min-width: 200px;
-        min-height: 200px;
         max-width: 100vw;
         max-height: 100vh;
+        opacity: 0;
       `;
 
       let isFirstLoad = false;
@@ -329,6 +346,14 @@ export default {
 
           img.style.width = `${newSize.width}px`;
           img.style.height = `${newSize.height}px`;
+          img.style.opacity = 1;
+
+          // animation
+          animDiv.style.top = img.style.top;
+          animDiv.style.left = img.style.left;
+          animDiv.style.width = img.style.width;
+          animDiv.style.height = img.style.height;
+          animDiv.style.opacity = 0;
         }
 
         // second+ load -> usually largest image
