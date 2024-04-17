@@ -193,8 +193,11 @@ export default {
       // }
 
       let eles = Array.from(document.elementsFromPoint(mouse.x, mouse.y));
-      console.log(eles);
+      if (!eles.length) return null;
 
+      eles = eles.concat(getAllChildElements(eles[0]));
+
+      console.log(eles);
       for (let ele of eles) {
         let src = getImgSrcFromElement(ele);
         if (src) {

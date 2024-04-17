@@ -63,7 +63,6 @@
   }
 
   function runScripts(scriptIds, event, path) {
-    console.log("scriptids", scriptIds, event, path);
     for (let id of scriptIds.filter((_) => _)) {
       let scriptPath = `${path}/${id}.js`;
       import(scriptPath)

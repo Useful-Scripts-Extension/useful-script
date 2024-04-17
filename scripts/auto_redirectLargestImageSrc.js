@@ -31,9 +31,8 @@ export default {
     };
 
     async function check(href) {
-      // auto redirect to largest img src
       let url = await UfsGlobal.Utils.getLargestImageSrc(href, href);
-      console.log(url, href, url == href);
+      console.log(url === href, url);
 
       if (url && url != href) {
         if (

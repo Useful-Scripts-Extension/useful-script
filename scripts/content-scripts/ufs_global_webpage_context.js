@@ -563,10 +563,12 @@ UfsGlobal.Utils = {
         if (rule.exclude && rule.exclude.test(imgSrc)) continue;
         if (rule.r) {
           let newSrc = replace(imgSrc, rule.r, rule.s);
-          if (newSrc) return newSrc;
+          if (newSrc?.length) {
+            return newSrc;
+          }
         }
       }
-      return imgSrc;
+      return null;
     }
 
     // https://greasyfork.org/en/scripts/2312-resize-image-on-open-image-in-new-tab
@@ -819,7 +821,7 @@ UfsGlobal.Utils = {
           //	resolve(m[1] + m[2] + "forum/pic/item/" + m[3])
           //}
         } else {
-          resolve(imgSrc);
+          resolve(null);
         }
       });
     }
@@ -827,16 +829,16 @@ UfsGlobal.Utils = {
     for (let fn of [try1, try2, try3]) {
       try {
         let res = await UfsGlobal.Utils.timeoutPromise(fn(), 5000);
+        console.log("getLargestImageSrc: " + fn.name + " -> ", res);
         if (res && res != imgSrc) {
           if (!Array.isArray(res)) res = [res];
           if (res.length) {
-            console.log("getLargestImageSrc: " + fn.name + " -> ", res);
             let finalSrc = await UfsGlobal.Utils.timeoutPromise(
               UfsGlobal.Utils.findWorkingSrc(res),
               10000
             );
             console.log("final src:", finalSrc);
-            if (finalSrc) return finalSrc;
+            if (finalSrc?.length) return finalSrc;
           }
         }
       } catch (e) {
@@ -2213,16 +2215,16 @@ UfsGlobal.largeImgSiteRules = [
     r: /!.*/i,
     s: "",
   },
-  {
-    name: "discuz",
-    r: [
-      /(.+\/attachments?\/.+)\.thumb\.\w{2,5}$/i,
-      /((wp-content|moecdn\.org)\/uploads\/.*)\-\d+x\d+(-c)?/i,
-      /.*(?:url|src)=(https?:\/\/.*\.(?:jpg|jpeg|png|gif|bmp)).*/i,
-      /.*thumb\.php\?src=([^&]*).*/i,
-    ],
-    s: "$1",
-  },
+  // {
+  //   name: "discuz",
+  //   r: [
+  //     /(.+\/attachments?\/.+)\.thumb\.\w{2,5}$/i,
+  //     /((wp-content|moecdn\.org)\/uploads\/.*)\-\d+x\d+(-c)?/i,
+  //     /.*(?:url|src)=(https?:\/\/.*\.(?:jpg|jpeg|png|gif|bmp)).*/i,
+  //     /.*thumb\.php\?src=([^&]*).*/i,
+  //   ],
+  //   s: "$1",
+  // },
   {
     name: "weibo",
     r: /(\.sinaimg\.(cn|com)\/)(?:bmiddle|orj360|mw\d+)/i,
