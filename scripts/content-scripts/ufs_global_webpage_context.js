@@ -30,12 +30,41 @@ UfsGlobal.Extension = {
   },
 };
 UfsGlobal.DOM = {
+  addLoadingAnimationAtPos(
+    x,
+    y,
+    size = 40,
+    containerStyle = "",
+    loadingStyle = ""
+  ) {
+    let ele = document.createElement("div");
+    ele.style.cssText = `
+      position: absolute;
+      left: ${x - size / 2}px;
+      top: ${y - size / 2}px;
+      width: ${size}px;
+      height: ${size}px;
+      z-index: 999999;
+      pointer-events: none;
+      user-select: none;
+      ${containerStyle}
+    `;
+    UfsGlobal.DOM.addLoadingAnimation(ele, size, loadingStyle);
+    document.body.appendChild(ele);
+    return {
+      ele,
+      remove: () => ele.remove(),
+    };
+  },
   addLoadingAnimation(
     element,
-    size = Math.min(element?.clientWidth, element?.clientHeight) || 0
+    size = Math.min(element?.clientWidth, element?.clientHeight) || 0,
+    customStyle = ""
   ) {
     let id = Math.random().toString(36).substr(2, 9);
     element.classList.add("ufs-loading-" + id);
+
+    let borderSize = 4;
 
     // inject css code
     let style = document.createElement("style");
@@ -52,9 +81,11 @@ UfsGlobal.DOM = {
         margin-top: -${size / 2}px;
         margin-left: -${size / 2}px;
         border-radius: 50%;
-        border: 3px solid #555 !important;
+        border: ${borderSize}px solid #555 !important;
         border-top-color: #eee !important;
-        animation: ufs-spin 1s linear infinite;
+        animation: ufs-spin 1s ease-in-out infinite;
+        box-sizing: border-box !important;
+        ${customStyle}
       }
       @keyframes ufs-spin {
         to {
@@ -557,12 +588,23 @@ UfsGlobal.Utils = {
       return unique(results);
     }
 
+    function test(str, regexs) {
+      if (!Array.isArray(regexs)) regexs = [regexs];
+      for (let regex of regexs) {
+        if (regex && regex.test && regex.test(str)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function try2() {
       for (let rule of UfsGlobal.largeImgSiteRules) {
-        if (rule.url && webUrl && !rule.url.test(webUrl)) continue;
-        if (rule.src && !rule.src.test(imgSrc)) continue;
-        if (rule.exclude && rule.exclude.test(imgSrc)) continue;
+        if (rule.url && !test(webUrl, rule.url)) continue;
+        if (rule.src && !test(imgSrc, rule.src)) continue;
+        if (rule.exclude && test(imgSrc, rule.exclude)) continue;
         if (rule.r) {
+          console.log(rule);
           let newSrc = replace(imgSrc, rule.r, rule.s);
           if (newSrc?.length) {
             return newSrc;
@@ -611,46 +653,6 @@ UfsGlobal.Utils = {
         ) {
           if (m[2] != "s0") {
             resolve(m[1] + "s0" + m[3]);
-          }
-        }
-
-        //youtube
-        else if (
-          (m = imgSrc.match(
-            /^https?:\/\/i\.ytimg.com\/an_webp\/([^\/]+)\/\w+\.(jpg|jpeg|gif|png|bmp|webp)(\?.+)?$/i
-          ))
-        ) {
-          var ajax = new XMLHttpRequest();
-          ajax.onreadystatechange = function () {
-            if (ajax.status == 200) {
-              resolve("https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg");
-            } else if (ajax.status == 404) {
-              resolve("https://i.ytimg.com/vi/" + m[1] + "/hqdefault.jpg");
-            }
-          };
-          ajax.open(
-            "HEAD",
-            "https://i.ytimg.com/vi/" + m[1] + "/maxresdefault.jpg",
-            true
-          );
-          ajax.send();
-        } else if (
-          (m = imgSrc.match(
-            /^(https?:\/\/i\.ytimg.com\/vi\/[^\/]+\/)(\w+)(\.(jpg|jpeg|gif|png|bmp|webp))(\?.+)?$/i
-          ))
-        ) {
-          if (m[2] != "maxresdefault") {
-            var ajax = new XMLHttpRequest();
-            ajax.onreadystatechange = function () {
-              if (ajax.status == 200) {
-                resolve(m[1] + "maxresdefault" + m[3]);
-              } else if (ajax.status == 404) {
-                if (m[5] || m[2] === "mqdefault")
-                  resolve(m[1] + "hqdefault" + m[3]);
-              }
-            };
-            ajax.open("HEAD", m[1] + "maxresdefault" + m[3], true);
-            ajax.send();
           }
         }
 
@@ -834,10 +836,7 @@ UfsGlobal.Utils = {
         if (res && res != imgSrc) {
           if (!Array.isArray(res)) res = [res];
           if (res.length) {
-            let finalSrc = await UfsGlobal.Utils.timeoutPromise(
-              UfsGlobal.Utils.findWorkingSrc(res),
-              10000
-            );
+            let finalSrc = await UfsGlobal.Utils.findWorkingSrc(res, true);
             console.log("final src:", finalSrc);
             if (finalSrc?.length) return finalSrc;
           }
@@ -847,33 +846,44 @@ UfsGlobal.Utils = {
       }
     }
 
-    return imgSrc;
+    return null;
   },
-  findWorkingSrc(srcs) {
+  async isImageSrc(src) {
+    try {
+      const response = await fetch(src, { method: "HEAD" });
+      if (response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.startsWith("image/")) {
+          return true;
+        }
+      }
+    } catch (error) {
+      return false;
+    }
+  },
+  findWorkingSrc(srcs, inOrder = true) {
     return new Promise((resolve, reject) => {
-      if (!srcs) {
-        reject(null); // Reject if srcs is falsy, not an array, or empty
+      if (!srcs || !Array.isArray(srcs) || srcs.length === 0) {
+        reject("srcs is falsy, not an array, or empty");
       } else {
-        if (!Array.isArray(srcs)) srcs = [srcs];
-
         let resolved = false;
-        const promises = srcs.map((src) => {
-          return new Promise((innerResolve, innerReject) => {
-            const img = new Image();
-            img.onload = () => {
-              if (!resolved) {
-                resolved = true;
-                resolve(src); // Resolve with src if image loads successfully
-              }
-              innerResolve(); // Resolve inner promise
-            };
-            img.onerror = () => innerReject(null); // Reject with null if image fails to load
-            img.src = src;
+        const checkImage = (src) =>
+          UfsGlobal.Utils.isImageSrc(src).then((value) => {
+            if (inOrder) return value;
+            if (value) {
+              resolved = true;
+              resolve(src);
+            }
           });
-        });
-        Promise.allSettled(promises).then(() => {
-          if (!resolved) {
-            reject(null); // If all images fail, reject with null
+
+        const promises = srcs.map(checkImage);
+        Promise.all(promises).then((res) => {
+          if (resolved) return;
+          let trueIndex = res.indexOf(true);
+          if (trueIndex > -1) {
+            resolve(srcs[trueIndex]);
+          } else {
+            reject("none of the URLs are valid images");
           }
         });
       }
@@ -1972,6 +1982,27 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    // https://images.pexels.com/users/avatars/822138648/th-vinh-flute-776.jpg?auto=compress&fit=crop&h=40&w=40&dpr=2
+    name: "pexels",
+    src: [/pexels\.com\/users\/avatars/, /images\.pexels\.com\/photos/],
+    r: /\?.*/,
+    s: "",
+  },
+  {
+    // https://cdn.maze.guru/image/1F2B7646370A63B28C1F99B1E447C1C5.png?x-image-process=image/resize,w_400/quality,q_75/format,webp
+    name: "maze.guru",
+    src: /maze(\.|-)guru(.*?)\/image\//,
+    r: /\?x-image-process.*/,
+    s: "",
+  },
+  {
+    // https://images-ng.pixai.art/images/orig/9ec30200-baaa-4cd0-8cc8-04002496adda
+    name: "pixai",
+    src: /pixai\.art\/images\//,
+    r: /\/stillThumb\//,
+    s: "/orig/",
+  },
+  {
     // https://yt3.googleusercontent.com/Qiekx-HxQTiX332zq-LyypoWshtuDptDQYab3zqqPVwkZ2AA1FgXveeb9Vi-7-b822g_e5hxmw=s160-c-k-c0x00ffffff-no-rj
     name: "googleusercontent",
     src: /\.googleusercontent\./i,
@@ -2284,13 +2315,13 @@ UfsGlobal.largeImgSiteRules = [
     r: /\.md(\.[^\.]+)$/i,
     s: "$1",
   },
-  // {
-  //   name: "ytimg",
-  //   src: /i\.ytimg\.com/i,
-  //   exclude: /mqdefault_6s/i,
-  //   r: /\?.*$/i,
-  //   s: "",
-  // },
+  {
+    name: "ytimg",
+    src: /i\.ytimg\.com/i,
+    exclude: /mqdefault_6s/i,
+    r: /(.*?)(\w+)(\.\w+)(\?.+)?$/i,
+    s: ["$1maxresdefault$3", "$1hqdefault$3"],
+  },
   {
     name: "meituan",
     url: /\.meituan\.net/i,

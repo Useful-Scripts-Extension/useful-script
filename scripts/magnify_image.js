@@ -22,9 +22,6 @@ export default {
     const imageUrlRegex =
       /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|ico|jfif|jpe?g|png|svg|tiff?|webp))(?:\?([^#]*))?(?:#(.*))?/i;
     const bgRegex = /.*url\(\s*["']?(.+?)["']?\s*\)([^'"].*|$)/i;
-    function isImageURL(url) {
-      return url.indexOf("data:image") === 0 || imageUrlRegex.test(url);
-    }
     function relativeUrlToAbsolute(url) {
       var anchor = document.createElement("a");
       anchor.href = url;
@@ -92,6 +89,8 @@ export default {
           var srcs = ele.srcset.split(/[xw],/i),
             largeSize = -1,
             largeSrc = null;
+          if (!srcs.length) return null;
+          if (srcs.length === 1) return srcs[0];
           srcs.forEach((srci) => {
             let srcInfo = srci.trim().split(" "),
               curSize = parseInt(srcInfo[1] || 0);
@@ -103,15 +102,15 @@ export default {
           return largeSrc;
         },
         () => {
-          if (/img|picture|image|a/i.test(ele.tagName))
-            for (let i in lazyImgAttr) {
-              let attrName = lazyImgAttr[i];
-              let attrValue = ele.getAttribute(attrName);
-              if (/\bimagecover\.\w+$/i.test(attrValue)) continue;
-              if (attrValue) {
-                return attrValue;
-              }
+          // if (/img|picture|source|image|a/i.test(ele.tagName))
+          for (let i in lazyImgAttr) {
+            let attrName = lazyImgAttr[i];
+            let attrValue = ele.getAttribute(attrName);
+            if (/\bimagecover\.\w+$/i.test(attrValue)) continue;
+            if (attrValue) {
+              return attrValue;
             }
+          }
         },
         () => getBg(ele),
       ];
@@ -119,13 +118,10 @@ export default {
       for (let f of fn) {
         try {
           let src = f();
-          src && console.log(src);
-          if (
-            src &&
-            // exclude base64 image that too small
-            !(/data:image/.test(src) && src.length < 100)
-          )
+          if (src) {
+            console.log(src);
             return relativeUrlToAbsolute(src);
+          }
         } catch (e) {
           console.log("error", e);
         }
@@ -139,7 +135,7 @@ export default {
       // Get all direct child elements of the current element
       let children = element.children;
       if (children?.length) {
-        childElements = childElements.concat(children);
+        childElements = childElements.concat(Array.from(children));
 
         // Loop through each child element
         for (let child of children) {
@@ -163,51 +159,63 @@ export default {
       return parentElements;
     }
 
-    let lastTarget = null;
-    document.addEventListener("mouseover", (e) => {
-      lastTarget = e.target;
-    });
-    function getImgAtMouse() {
-      // if (lastTarget) {
-      //   let eles = [
-      //     lastTarget,
-      //     ...getAllChildElements(lastTarget),
-      //     ...getAllParentElements(lastTarget),
-      //   ];
-      //   for (let ele of eles) {
-      //     let src = getImgSrcFromElement(ele);
-      //     if (src) {
-      //       console.log(ele);
-      //       return src;
-      //     }
-      //   }
-      // }
+    async function filterImageSrcs(eleSrcs) {
+      try {
+        const results = await Promise.all(
+          eleSrcs.map((e) => UfsGlobal.Utils.isImageSrc(e.src))
+        );
+        return eleSrcs.filter((src, index) => results[index]);
+      } catch (error) {
+        console.log("ERROR", error);
+        return [];
+      }
+    }
 
-      let eles = Array.from(document.elementsFromPoint(mouse.x, mouse.y));
+    async function getImagesAtMouse() {
+      let eles = Array.from(document.querySelectorAll("*"));
+      eles = eles.reverse().filter((ele) => {
+        let rect = ele.getBoundingClientRect();
+        return (
+          rect.left <= mouse.x &&
+          rect.right >= mouse.x &&
+          rect.top <= mouse.y &&
+          rect.bottom >= mouse.y
+        );
+      });
+
       if (!eles.length) return null;
 
-      eles = eles.concat(getAllChildElements(eles[0]));
+      console.log("eles", eles);
 
       let results = [];
       for (let ele of eles) {
         let src = getImgSrcFromElement(ele);
-        if (src) {
-          console.log(ele, src);
-          // return src;
+        if (src && results.findIndex((r) => r.src == src) == -1) {
           results.push({ src, ele });
         }
       }
+      console.log("results", results);
 
-      let rank = [/img/i, /picture/i, /image/i, /a/i];
-      results.sort((a, b) => {
+      let rank = [/source/i, /img/i, /picture/i, /image/i, /a/i];
+      results = results.sort((a, b) => {
         let rankA = rank.findIndex((r) => r.test(a.src));
         let rankB = rank.findIndex((r) => r.test(b.src));
         rankA = rankA == -1 ? 100 : rankA;
         rankB = rankB == -1 ? 100 : rankB;
         return rankB - rankA;
       });
+      console.log("after sort", results);
 
-      return results[0]?.src;
+      // filter out video
+      results = results.filter(({ ele, src }) => {
+        return !/video/i.test(ele.tagName);
+      });
+
+      // results = await filterImageSrcs(results);
+
+      console.log("after filter", results);
+
+      return results;
     }
 
     // #endregion
@@ -225,7 +233,101 @@ export default {
       }
     }
 
-    function createPreview(src) {
+    function chooseImg(srcs, x = mouse.x, y = mouse.y) {
+      let id = "ufs-magnify-choose-image";
+      let exist = document.getElementById(id);
+      if (exist) exist.remove();
+
+      // container
+      let overlay = document.createElement("div");
+      overlay.id = id;
+      overlay.onclick = (e) => {
+        e.preventDefault();
+        if (e.target == overlay || e.target == container) {
+          overlay.remove();
+        }
+      };
+      document.body.appendChild(overlay);
+
+      // styles
+      const style = document.createElement("style");
+      style.textContent = `
+        #${id} {
+          position: fixed;
+          top: ${y}px;
+          left: ${x}px;
+          width: 0;
+          height: 0;
+          opacity: 0;
+          border-radius: 50%;
+          background-color: #000d;
+          z-index: 99999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: opacity 0.3s ease,
+                      transform 0.3s ease,
+                      width 0.3s ease,
+                      height 0.3s ease,
+                      top 0.3s ease,
+                      left 0.3s ease,
+                      position 0.3s ease;
+        }
+        #${id} .img-container {
+          display: flex;
+          flex-wrap: wrap;
+          overflow-y: auto;
+          overflow-x: hidden;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+        #${id} img {
+          max-width: 300px;
+          max-height: 300px;
+          object-fit: contain;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        #${id} img:hover {
+          transform: scale(1.2);
+          z-index: 99999;
+          box-shadow: 0 0 10px #fffa;
+        }
+      `;
+      overlay.appendChild(style);
+
+      // animation overlay
+      setTimeout(() => {
+        overlay.style.top = 0;
+        overlay.style.left = 0;
+        overlay.style.width = "100vw";
+        overlay.style.height = "100vh";
+        overlay.style.opacity = 1;
+        overlay.style.borderRadius = "0";
+      }, 0);
+
+      // images
+      let container = document.createElement("div");
+      container.classList.add("img-container");
+
+      for (let src of srcs) {
+        let img = document.createElement("img");
+        img.src = src;
+        img.onclick = () => {
+          // overlay.remove();
+          overlay.style.backgroundColor = "#0000";
+          createPreview(src, mouse.x, mouse.y, () => {
+            overlay.style.backgroundColor = "#000d";
+          });
+        };
+        container.appendChild(img);
+      }
+      overlay.appendChild(container);
+    }
+
+    function createPreview(src, x = mouse.x, y = mouse.y, onClose = () => {}) {
       let id = "ufs-magnify-image";
       let exist = document.getElementById(id);
       if (exist) exist.remove();
@@ -235,7 +337,10 @@ export default {
       overlay.id = id;
       overlay.onclick = (e) => {
         e.preventDefault();
-        if (e.target == overlay) overlay.remove();
+        if (e.target == overlay) {
+          overlay.remove();
+          onClose?.();
+        }
       };
       document.body.appendChild(overlay);
 
@@ -252,11 +357,11 @@ export default {
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.85);
+          background-color: #000d;
           z-index: 99999;
           overflow: hidden;
         }
-        #${id + "-toolbar"} {
+        #${id} .toolbar {
           position: fixed;
           display: flex;
           justify-content: center;
@@ -281,7 +386,7 @@ export default {
         #${id} .ufs-btn {
           cursor: pointer;
           padding: 10px;
-          background-color: #111;
+          background-color: #111a;
         }
         #${id} .ufs-btn:hover {
           background: #555a;
@@ -297,7 +402,7 @@ export default {
           transition: transform 0.15s ease, opacity 0.5s ease 0.15s;
         }
         #${id} .ufs-img-anim {
-          transition: all 0.3s ease;
+          transition: all 0.3s ease !important;
           transform-origin: center;
           transform: translate(-50%, -50%);
           width: 40px;
@@ -313,8 +418,8 @@ export default {
       animDiv.classList.add("ufs-img-anim");
       animDiv.style.cssText = `
         position: fixed;
-        top: ${mouse.y}px;
-        left: ${mouse.x}px;
+        top: ${y}px;
+        left: ${x}px;
       `;
       overlay.appendChild(animDiv);
       let removeAnimLoading;
@@ -381,7 +486,7 @@ export default {
 
       // toolbar
       let toolbar = document.createElement("div");
-      toolbar.id = id + "-toolbar";
+      toolbar.classList.add("toolbar");
       overlay.appendChild(toolbar);
 
       let transformStatus = {
@@ -417,7 +522,7 @@ export default {
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
 
-        let zoom = 100 * (w / img.naturalWidth);
+        let zoom = 100 * (w / (img.naturalWidth || 1));
         size.innerText =
           `${img.naturalWidth} x ${img.naturalHeight}` +
           ` (${zoom.toFixed(0)}%)`;
@@ -426,10 +531,12 @@ export default {
 
       UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
         if (data?.type === "scale") {
-          let scale = img.clientWidth / img.naturalWidth || 1;
-          size.innerText =
-            size.innerText.replace(/ \(\d+%\)/, "") +
-            ` (${(scale * 100).toFixed(0)}%)`;
+          if (img.naturalWidth && img.naturalHeight) {
+            let scale = img.clientWidth / img.naturalWidth;
+            size.innerText =
+              size.innerText.replace(/ \(\d+%\)/, "") +
+              ` (${(scale * 100).toFixed(0)}%)`;
+          }
         }
       });
 
@@ -562,15 +669,21 @@ export default {
       };
       toolbar.appendChild(desc);
 
-      return {
-        setSrc: (_src) => {
-          if (_src == src) return;
+      // auto get largest image
+      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
+        if (!_src || _src == src) return;
+
+        let removeTempLoading = UfsGlobal.DOM.addLoadingAnimation(overlay, 40);
+        let temp = new Image();
+        temp.src = _src;
+        temp.onload = () => {
           img.src = _src;
-        },
-        overlay,
-        img,
-        size,
-      };
+          removeTempLoading();
+        };
+        temp.onerror = () => {
+          removeTempLoading();
+        };
+      });
     }
 
     // #endregion
@@ -578,23 +691,34 @@ export default {
     // #region main
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", async () => {
-      let src = getImgAtMouse();
+      let ctrlMouse = { x: mouse.x, y: mouse.y };
+      let { remove } = UfsGlobal.DOM.addLoadingAnimationAtPos(
+        ctrlMouse.x,
+        ctrlMouse.y,
+        40,
+        "",
+        `background: #eee9;`
+      );
+      let imgs = await getImagesAtMouse();
+      remove();
 
-      if (!src) {
+      if (!imgs.length) {
         UfsGlobal.DOM.notify({
           msg: "Useful-script: No image found",
-          x: mouse.x,
-          y: mouse.y,
+          x: ctrlMouse.x,
+          y: ctrlMouse.y,
           align: "left",
         });
-        return;
+      } else if (imgs.length === 1) {
+        let src = imgs[0].src;
+        createPreview(src, ctrlMouse.x, ctrlMouse.y);
+      } else {
+        chooseImg(
+          imgs.map((img) => img.src),
+          ctrlMouse.x,
+          ctrlMouse.y
+        );
       }
-
-      const { setSrc, overlay, img, size } = createPreview(src);
-
-      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((src) => {
-        setSrc(src);
-      });
     });
     // #endregion
   },

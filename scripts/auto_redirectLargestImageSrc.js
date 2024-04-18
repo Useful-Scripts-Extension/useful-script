@@ -41,7 +41,7 @@ export default {
               url
           )
         ) {
-          window.open(url, "_self");
+          location.href = url;
         }
       }
     }
