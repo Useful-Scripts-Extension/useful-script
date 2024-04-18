@@ -10,6 +10,43 @@ export default {
     img: "",
   },
 
+  onClickExtension: () => {
+    window.close(); // close extension popup
+  },
+
+  onClick: () => {
+    const { remove, setPosition } = UfsGlobal.DOM.notify({
+      msg: "Useful-script: Click any image to magnify",
+      duration: 99999,
+      styleText: `
+        transition: none !important;
+        pointer-events: none !important;
+      `,
+    });
+
+    let overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0002;
+      z-index: 99998;
+    `;
+    overlay.addEventListener("mousemove", (e) => {
+      setPosition(e.clientX, e.clientY + 20);
+    });
+    document.body.appendChild(overlay);
+
+    function clickToMagnify(e) {
+      window.ufs_magnify_image?.(e.clientX, e.clientY);
+      overlay.remove();
+      remove();
+    }
+    overlay.addEventListener("click", clickToMagnify);
+  },
+
   onDocumentStart: () => {
     // #region get image src at mouse
 
@@ -19,8 +56,6 @@ export default {
       mouse.y = e.clientY;
     });
 
-    const imageUrlRegex =
-      /(?:([^:\/?#]+):)?(?:\/\/([^\/?#]*))?([^?#]*\.(?:bmp|gif|ico|jfif|jpe?g|png|svg|tiff?|webp))(?:\?([^#]*))?(?:#(.*))?/i;
     const bgRegex = /.*url\(\s*["']?(.+?)["']?\s*\)([^'"].*|$)/i;
     function relativeUrlToAbsolute(url) {
       var anchor = document.createElement("a");
@@ -34,19 +69,21 @@ export default {
       ) {
         return false;
       }
-      let nodeStyle = window.getComputedStyle(node);
-      let bg =
-        node &&
-        nodeStyle.backgroundRepeatX != "repeat" &&
-        nodeStyle.backgroundRepeatY != "repeat" &&
-        nodeStyle.backgroundImage;
-      if (!bg || bg == "none") return false;
-      return (
-        // bg.length > 200 || // base64??
-        node.clientWidth > 5 &&
-        node.clientHeight > 5 &&
-        bg.match(bgRegex)?.[1]?.replace(/\\"/g, '"')
-      );
+      return ["", "::before", "::after"]
+        .map((s) => {
+          let nodeStyle = window.getComputedStyle(node, s);
+          let bg = nodeStyle.backgroundImage;
+          if (bg) {
+            let bgUrls = bg.split(",");
+            let urls = bgUrls.map(
+              (url) => url.match(/url\((['"]?)(.*?)\1\)/)?.[2]
+            );
+            return urls.filter((url) => url !== null);
+          }
+          return null;
+        })
+        .flat()
+        .filter((_) => _);
     }
     const lazyImgAttr = [
       "src",
@@ -80,7 +117,7 @@ export default {
       "data-placeholder",
       "lazysrc",
     ];
-    function getImgSrcFromElement(ele) {
+    function getImgSrcsFromElement(ele) {
       if (!ele) return null;
 
       let fn = [
@@ -117,10 +154,10 @@ export default {
 
       for (let f of fn) {
         try {
-          let src = f();
-          if (src) {
-            console.log(src);
-            return relativeUrlToAbsolute(src);
+          let srcs = f();
+          if (srcs && srcs?.length) {
+            if (!Array.isArray(srcs)) srcs = [srcs];
+            return srcs.map((src) => relativeUrlToAbsolute(src));
           }
         } catch (e) {
           console.log("error", e);
@@ -173,6 +210,7 @@ export default {
 
     async function getImagesAtMouse() {
       let eles = Array.from(document.querySelectorAll("*"));
+
       eles = eles.reverse().filter((ele) => {
         let rect = ele.getBoundingClientRect();
         return (
@@ -189,26 +227,33 @@ export default {
 
       let results = [];
       for (let ele of eles) {
-        let src = getImgSrcFromElement(ele);
-        if (src && results.findIndex((r) => r.src == src) == -1) {
-          results.push({ src, ele });
+        let srcs = getImgSrcsFromElement(ele);
+        if (srcs && srcs?.length) {
+          if (!Array.isArray(srcs)) srcs = [srcs];
+          srcs
+            .filter((src) => !results.find((r) => r.src === src))
+            .forEach((src) => {
+              results.push({ src, ele });
+            });
         }
       }
       console.log("results", results);
 
-      let rank = [/source/i, /img/i, /picture/i, /image/i, /a/i];
-      results = results.sort((a, b) => {
-        let rankA = rank.findIndex((r) => r.test(a.src));
-        let rankB = rank.findIndex((r) => r.test(b.src));
-        rankA = rankA == -1 ? 100 : rankA;
-        rankB = rankB == -1 ? 100 : rankB;
-        return rankB - rankA;
-      });
-      console.log("after sort", results);
+      if (results.length > 1) {
+        let rank = [/source/i, /img/i, /picture/i, /image/i, /a/i];
+        results = results.sort((a, b) => {
+          let rankA = rank.findIndex((r) => r.test(a.src));
+          let rankB = rank.findIndex((r) => r.test(b.src));
+          rankA = rankA == -1 ? 100 : rankA;
+          rankB = rankB == -1 ? 100 : rankB;
+          return rankB - rankA;
+        });
+        console.log("after sort", results);
+      }
 
       // filter out video
       results = results.filter(({ ele, src }) => {
-        return !/video/i.test(ele.tagName);
+        return !/video/i.test(ele.tagName) && !/iframe/i.test(ele.tagName);
       });
 
       // results = await filterImageSrcs(results);
@@ -265,13 +310,7 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          transition: opacity 0.3s ease,
-                      transform 0.3s ease,
-                      width 0.3s ease,
-                      height 0.3s ease,
-                      top 0.3s ease,
-                      left 0.3s ease,
-                      position 0.3s ease;
+          transition: all 0.3s ease, background 0s ease;
         }
         #${id} .img-container {
           display: flex;
@@ -282,17 +321,42 @@ export default {
           height: 100%;
           align-items: center;
           justify-content: center;
+          grid-gap: 10px;
+        }
+        #${id} .con {
+          position: relative;
+        }
+        #${id} .size {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          font-size: 12px;
+          color: #eee;
+          background-color: #0005;
+          opacity: 0.5;
+          z-index: 2;
+          padding: 5px;
+          border-radius: 5px;
+          transition: all 0.2s ease;
+          pointer-events: none;
+        }
+        #${id} .con:hover .size {
+          opacity: 1;
+          background-color: #000a;
         }
         #${id} img {
           max-width: 300px;
           max-height: 300px;
+          min-width: 50px;
+          min-height: 50px;
           object-fit: contain;
+          border-radius: 5px;
           cursor: pointer;
           transition: all 0.2s ease;
         }
-        #${id} img:hover {
-          transform: scale(1.2);
-          z-index: 99999;
+        #${id} .con:hover img {
+          transform: scale(1.1);
+          z-index: 2;
           box-shadow: 0 0 10px #fffa;
         }
       `;
@@ -313,8 +377,21 @@ export default {
       container.classList.add("img-container");
 
       for (let src of srcs) {
+        let con = document.createElement("div");
+        con.classList.add("con");
+        container.appendChild(con);
+
+        // size
+        let size = document.createElement("div");
+        size.classList.add("size");
+        con.appendChild(size);
+
+        // img
         let img = document.createElement("img");
         img.src = src;
+        img.onload = () => {
+          size.innerText = `${img.naturalWidth} x ${img.naturalHeight}`;
+        };
         img.onclick = () => {
           // overlay.remove();
           overlay.style.backgroundColor = "#0000";
@@ -322,7 +399,7 @@ export default {
             overlay.style.backgroundColor = "#000d";
           });
         };
-        container.appendChild(img);
+        con.appendChild(img);
       }
       overlay.appendChild(container);
     }
@@ -387,16 +464,25 @@ export default {
           cursor: pointer;
           padding: 10px;
           background-color: #111a;
+          z-index: 1;
         }
         #${id} .ufs-btn:hover {
           background: #555a;
         }
         #${id} .ufs-desc {
           position: absolute;
-          top: 100%;
+          top: 0;
+          opacity: 0;
           background: #333;
           padding: 0 10px 5px;
           border-radius: 0 0 5px 5px;
+          transition: all 0.3s ease;
+          pointer-events: none;
+          z-index: 0;
+        }
+        #${id} .toolbar:hover .ufs-desc {
+          top: 100%;
+          opacity: 1;
         }
         #${id} img {
           transition: transform 0.15s ease, opacity 0.5s ease 0.15s;
@@ -499,10 +585,11 @@ export default {
       let size = document.createElement("div");
       size.classList.add("ufs-btn");
       size.innerText = "Size";
-      size.title = "Toggle original size";
+      size.ufs_title = "Toggle original size";
       size.onclick = () => {
         let w = img.naturalWidth,
           h = img.naturalHeight;
+
         if (
           parseInt(img.style.width) === w &&
           parseInt(img.style.height) === h
@@ -559,7 +646,7 @@ export default {
       let toggleBg = document.createElement("div");
       toggleBg.classList.add("ufs-btn");
       toggleBg.innerText = "B";
-      toggleBg.title = "Change background";
+      toggleBg.ufs_title = "Change background";
       toggleBg.onclick = () => {
         curBgState = (curBgState + 1) % bgStates.length;
         img.style.background = "";
@@ -596,8 +683,8 @@ export default {
       // toggle flip horizontally
       let flipH = document.createElement("div");
       flipH.classList.add("ufs-btn");
-      flipH.innerText = "|";
-      flipH.title = "Flip horizontally";
+      flipH.innerText = "↔";
+      flipH.ufs_title = "Flip horizontally";
       flipH.onclick = () => {
         if (transformStatus.flip_horizontal) {
           img.style.transform = img.style.transform.replace("scaleX(-1)", "");
@@ -612,8 +699,8 @@ export default {
       // flip vertically
       let flipV = document.createElement("div");
       flipV.classList.add("ufs-btn");
-      flipV.innerText = "--";
-      flipV.title = "Flip vertically";
+      flipV.innerText = "↕";
+      flipV.ufs_title = "Flip vertically";
       flipV.onclick = () => {
         if (transformStatus.flip_vertical) {
           img.style.transform = img.style.transform.replace("scaleY(-1)", "");
@@ -629,7 +716,7 @@ export default {
       let rotateLeft = document.createElement("div");
       rotateLeft.classList.add("ufs-btn");
       rotateLeft.innerText = "↺";
-      rotateLeft.title = "Rotate left";
+      rotateLeft.ufs_title = "Rotate left";
       rotateLeft.onclick = () => {
         img.style.transform = img.style.transform.replace(
           `rotate(${transformStatus.rotate}deg)`,
@@ -644,7 +731,7 @@ export default {
       let rotateRight = document.createElement("div");
       rotateRight.classList.add("ufs-btn");
       rotateRight.innerText = "↻";
-      rotateRight.title = "Rotate right";
+      rotateRight.ufs_title = "Rotate right";
       rotateRight.onclick = () => {
         img.style.transform = img.style.transform.replace(
           `rotate(${transformStatus.rotate}deg)`,
@@ -655,33 +742,60 @@ export default {
       };
       toolbar.appendChild(rotateRight);
 
+      // open in new tab
+      let openNewTab = document.createElement("div");
+      openNewTab.classList.add("ufs-btn");
+      openNewTab.innerText = "↗";
+      openNewTab.ufs_title = "Open in new tab";
+      openNewTab.onclick = () => {
+        window.open(src, "_blank");
+      };
+      toolbar.appendChild(openNewTab);
+
       // desc
       let desc = document.createElement("div");
       desc.classList.add("ufs-desc");
-      desc.innerText = "";
+      desc.textContent = "";
       toolbar.appendChild(desc);
       toolbar.onmousemove = (e) => {
-        if (e.target?.title) desc.innerText = e.target.title;
-        else desc.innerText = "";
+        if (e.target?.ufs_title && e.target?.ufs_title != desc.textContent) {
+          desc.textContent = e.target.ufs_title;
+        }
       };
       toolbar.onmouseleave = () => {
-        desc.innerText = "";
+        // desc.textContent = "";
       };
       toolbar.appendChild(desc);
 
       // auto get largest image
-      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
-        if (!_src || _src == src) return;
+      let removeTempLoading,
+        loaded = false;
+      setTimeout(() => {
+        if (!loaded)
+          removeTempLoading = UfsGlobal.DOM.addLoadingAnimation(overlay, 40);
 
-        let removeTempLoading = UfsGlobal.DOM.addLoadingAnimation(overlay, 40);
+        let interval = setInterval(() => {
+          if (loaded) {
+            removeTempLoading?.();
+            clearInterval(interval);
+          }
+        }, 100);
+      }, 300);
+
+      UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
+        if (!_src || _src == src) {
+          loaded = true;
+          return;
+        }
+
         let temp = new Image();
         temp.src = _src;
         temp.onload = () => {
           img.src = _src;
-          removeTempLoading();
+          loaded = true;
         };
         temp.onerror = () => {
-          removeTempLoading();
+          loaded = true;
         };
       });
     }
@@ -690,8 +804,8 @@ export default {
 
     // #region main
 
-    let unsub = UfsGlobal.DOM.onDoublePress("Control", async () => {
-      let ctrlMouse = { x: mouse.x, y: mouse.y };
+    async function magnifyImage(x, y) {
+      let ctrlMouse = { x, y };
       let { remove } = UfsGlobal.DOM.addLoadingAnimationAtPos(
         ctrlMouse.x,
         ctrlMouse.y,
@@ -710,6 +824,7 @@ export default {
           align: "left",
         });
       } else if (imgs.length === 1) {
+        console.log(imgs);
         let src = imgs[0].src;
         createPreview(src, ctrlMouse.x, ctrlMouse.y);
       } else {
@@ -719,6 +834,12 @@ export default {
           ctrlMouse.y
         );
       }
+    }
+
+    window.ufs_magnify_image = magnifyImage;
+
+    let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
+      magnifyImage(mouse.x, mouse.y);
     });
     // #endregion
   },

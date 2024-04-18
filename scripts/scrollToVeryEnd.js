@@ -3,7 +3,7 @@ export const shared = {
     return new Promise(async (resolve, reject) => {
       const notify = UfsGlobal.DOM.notify({
         msg: "Usefull-script: Scrolling to very end...",
-        lifeTime: 99999,
+        duration: 99999,
       });
 
       function findMainScrollableElement() {

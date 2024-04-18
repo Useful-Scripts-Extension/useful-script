@@ -41,6 +41,15 @@ export default {
         const fb_dtsg = await UfsGlobal.Facebook.getFbdtsg();
         const user_id = await UfsGlobal.Facebook.getYourUserId();
 
+        window.ufs_reactStory = async (text) => {
+          const storyId = await UfsGlobal.Facebook.getStoryId();
+          if (!UfsGlobal.Utils.isEmoji(text)) {
+            alert("Must be emoji");
+            return;
+          }
+          return await reactStory(user_id, fb_dtsg, storyId, text);
+        };
+
         /* HTML template
         <div class="ufs-more-react-story">
             <button class="btn-react">More</button>

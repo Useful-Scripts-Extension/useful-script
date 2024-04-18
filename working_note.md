@@ -46,6 +46,6 @@
 
 - [ ] Thêm visualize music vào bất kỳ trang web nào.
 
-- [ ] get bigest image: <https://greasyfork.org/scripts/2312> <https://github.com/hoothin/UserScripts/blob/master/Picviewer%20CE%2B/pvcep_rules.js> => check rule r array and s array
+- [x] get bigest image: <https://greasyfork.org/scripts/2312> <https://github.com/hoothin/UserScripts/blob/master/Picviewer%20CE%2B/pvcep_rules.js> => check rule r array and s array
 
-- [ ] hoc regex di <https://github.com/regexhq> <https://www.regexbuddy.com/>
+- [x] hoc regex di <https://github.com/regexhq> <https://www.regexbuddy.com/>

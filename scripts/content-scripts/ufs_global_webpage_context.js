@@ -1,11 +1,14 @@
 const UfsGlobal = {};
 
 UfsGlobal.Extension = {
-  sendToContentScript: function (event, data) {
+  // use basic customEvent technique - only communicate within the same document or window context
+  sendToContentScript(event, data) {
     return new Promise((resolve, reject) => {
       let listenerKey = "ufs-contentscript-sendto-pagescript";
+      let uuid = Math.random().toString(36);
       let listener = (evt) => {
-        if (evt.detail.event === event) {
+        console.log(evt);
+        if (evt.detail.event === event && evt.detail.uuid === uuid) {
           resolve(evt.detail.data);
           window.removeEventListener(listenerKey, listener);
         }
@@ -13,20 +16,26 @@ UfsGlobal.Extension = {
       window.addEventListener(listenerKey, listener);
       window.dispatchEvent(
         new CustomEvent("ufs-pagescript-sendto-contentscript", {
-          detail: { event, data },
+          detail: { event, data, uuid },
         })
       );
     });
   },
-  getURL: async function (filePath) {
-    if (typeof chrome?.runtime?.getURL === "function") {
-      return await chrome.runtime.getURL(filePath);
-    } else {
-      return await UfsGlobal.Extension.sendToContentScript("getURL", filePath);
-    }
+  // WARNING: can only transfer serializable data
+  async runInContentScript(fnPath, params) {
+    return await UfsGlobal.Extension.sendToContentScript("runInContentScript", {
+      fnPath,
+      params,
+    });
   },
-  getActiveScripts: async function () {
-    return await UfsGlobal.Extension.sendToContentScript("getActiveScripts");
+  async getURL(filePath) {
+    return await UfsGlobal.Extension.runInContentScript(
+      "chrome.runtime.getURL",
+      [filePath]
+    );
+  },
+  async getActiveScripts() {
+    return await UfsGlobal.Extension.runInContentScript("getActiveScripts");
   },
 };
 UfsGlobal.DOM = {
@@ -234,7 +243,7 @@ UfsGlobal.DOM = {
     y = window.innerHeight - 100,
     align = "center",
     styleText = "",
-    lifeTime = 3000,
+    duration = 3000,
   } = {}) {
     let id = "ufs_notify_div";
     let exist = document.getElementById(id);
@@ -281,7 +290,7 @@ UfsGlobal.DOM = {
       ];
     }
 
-    closeAfter(lifeTime);
+    closeAfter(duration);
 
     return {
       closeAfter: closeAfter,
@@ -296,6 +305,14 @@ UfsGlobal.DOM = {
       setText(text) {
         if (div) {
           div.textContent = text;
+          return true;
+        }
+        return false;
+      },
+      setPosition(x, y) {
+        if (div) {
+          div.style.left = `${x}px`;
+          div.style.top = `${y}px`;
           return true;
         }
         return false;
@@ -505,6 +522,12 @@ UfsGlobal.DOM = {
   },
 };
 UfsGlobal.Utils = {
+  // https://stackoverflow.com/a/67705964/23648002
+  isEmoji(text) {
+    return text?.match(
+      /^(\u00a9|\u00ae|[\u25a0-\u27bf]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/
+    );
+  },
   formatTimeToHHMMSSDD(date) {
     const hours = ("0" + date.getHours()).slice(-2);
     const minutes = ("0" + date.getMinutes()).slice(-2);
@@ -519,10 +542,11 @@ UfsGlobal.Utils = {
     ]);
   },
   async getLargestImageSrc(imgSrc, webUrl) {
-    var base64Img = /^data:/i.test(imgSrc);
-    if (base64Img) {
-      return imgSrc;
+    if (/^data:/i.test(imgSrc)) {
+      return null;
     }
+
+    console.log(imgSrc);
 
     function try1() {
       const url = new URL(imgSrc);
@@ -544,7 +568,6 @@ UfsGlobal.Utils = {
             return url.href.replace("/thumbnails/", "/attachments/");
           }
           return url.toString();
-          break;
       }
       return null;
     }
@@ -850,16 +873,23 @@ UfsGlobal.Utils = {
   },
   async isImageSrc(src) {
     try {
-      const response = await fetch(src, { method: "HEAD" });
-      if (response.ok) {
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.startsWith("image/")) {
+      const res = await fetch(src, { method: "HEAD", mode: "no-cors" });
+      if (res.ok) {
+        const type = res.headers.get("content-type");
+        if (type && type.startsWith("image/")) {
           return true;
         }
       }
     } catch (error) {
-      return false;
+      console.log("ERROR isImageSrc: " + src + " -> ", error);
     }
+
+    return new Promise((resolve) => {
+      let img = new Image();
+      img.src = src;
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+    });
   },
   findWorkingSrc(srcs, inOrder = true) {
     return new Promise((resolve, reject) => {
@@ -868,6 +898,7 @@ UfsGlobal.Utils = {
       } else {
         let resolved = false;
         const checkImage = (src) =>
+          // prevent Error: Content Security Policy directive: "connect-src 'self'
           UfsGlobal.Utils.isImageSrc(src).then((value) => {
             if (inOrder) return value;
             if (value) {
@@ -1982,6 +2013,13 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    // https://cdn.akamai.steamstatic.com/steam/apps/2357570/ss_d5acf4945c1f8db3b0bf048c08ba13fd04685ba0.600x338.jpg
+    name: "steam static",
+    src: /steamstatic\.com\/steam\/apps/,
+    r: /(_|\.)\d{2,}x\d{2,}\./,
+    s: ".",
+  },
+  {
     // https://images.pexels.com/users/avatars/822138648/th-vinh-flute-776.jpg?auto=compress&fit=crop&h=40&w=40&dpr=2
     name: "pexels",
     src: [/pexels\.com\/users\/avatars/, /images\.pexels\.com\/photos/],
@@ -2006,7 +2044,7 @@ UfsGlobal.largeImgSiteRules = [
     // https://yt3.googleusercontent.com/Qiekx-HxQTiX332zq-LyypoWshtuDptDQYab3zqqPVwkZ2AA1FgXveeb9Vi-7-b822g_e5hxmw=s160-c-k-c0x00ffffff-no-rj
     name: "googleusercontent",
     src: /\.googleusercontent\./i,
-    r: /\=s\d+/i,
+    r: /\=s\d+.*/i,
     s: "=s0",
   },
   {
@@ -2024,7 +2062,11 @@ UfsGlobal.largeImgSiteRules = [
   {
     name: "artstation",
     url: /artstation\.com/,
-    r: [/\/(avatars\/+\/)?medium\//i, /\/(\d{14}\/)?smaller_square\//i],
+    r: [
+      /\/(avatars\/+\/)?medium\//i,
+      /\/(\d{14}\/)?smaller_square\//i,
+      /\/(\d{14}\/)?thumbnail\//i,
+    ],
     s: "/large/",
   },
   {
@@ -2272,30 +2314,15 @@ UfsGlobal.largeImgSiteRules = [
   // },
   {
     name: "weibo",
-    r: /(\.sinaimg\.(cn|com)\/)(?:bmiddle|orj360|mw\d+)/i,
-    s: "$1large",
-  },
-  {
-    name: "weibo2",
-    r: /(\.sinaimg\.(cn|com)\/)(?:square|thumbnail)/i,
-    s: "$1mw1024",
-  },
-  {
-    name: "sina head",
-    r: /(\.sinaimg\.(cn|com)\/\d+)\/50\//i,
-    s: "$1/180/",
-  },
-  {
-    name: "新浪相册",
-    src: /\.sinaimg\.(cn|com)\/thumb\d+\/\w+/i,
-    r: /thumb\d+/,
-    s: "mw690",
-  },
-  {
-    name: "sina sports",
-    src: /k\.sinaimg\.cn\/n\//i,
-    r: /k\.sinaimg\.cn\/n\/(.*)\/(w\d+)?h\d+[^\/]+$/,
-    s: "n.sinaimg.cn/$1",
+    url: /sinaimg/,
+    r: [
+      /(\.sinaimg\.(cn|com)\/)(?:bmiddle|orj360|mw\d+)/i,
+      /(\.sinaimg\.(cn|com)\/)(?:square|thumbnail)/i,
+      /(\.sinaimg\.(cn|com)\/\d+)\/50\//i,
+      /k\.sinaimg\.cn\/n\/(.*)\/(w\d+)?h\d+[^\/]+$/,
+      /thumb\d+/,
+    ],
+    s: ["$1large", "$1mw1024", "$1/180/", "n.sinaimg.cn/$1", "mw690"],
   },
   {
     name: "gravatar",
