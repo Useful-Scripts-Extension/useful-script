@@ -809,7 +809,11 @@ export default {
       console.log("magnify image window message", e);
       if (data?.menuItemId === "ufs-magnify-image") {
         console.log(data);
-        createPreview(data?.srcUrl, mouse.x, mouse.y);
+        createPreview(
+          data?.srcUrl,
+          window.innerWidth / 2,
+          window.innerHeight / 2
+        );
       }
     });
 
