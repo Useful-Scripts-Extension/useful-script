@@ -5,8 +5,18 @@ export default {
     vi: "Remove web limits",
   },
   description: {
-    en: "Pass to kill most of the site, you can lift the restrictions prohibited to copy, cut, select the text, right-click menu.",
-    vi: "Mở khoá web, cho phép chọn text, copy, chuột phải trên mọi trang web",
+    en: `Pass to kill most of the site, you can lift the restrictions prohibited to copy, cut, select the text, right-click menu.
+    <br/><br/>
+    <h2 style="color:blue">WARNING</h2>
+    May cause some websites's functions to be disabled.<br/>
+    Only turn on when necessary (copy, right-click).<br/>
+    Turn off after using.`,
+    vi: `Mở khoá web, cho phép chọn text, copy, chuột phải trên mọi trang web
+    <br/><br/>
+    <h2 style="color:blue">Chú Ý</h2>
+    Có thể ảnh hưởng tới chức năng của 1 vài trang web.<br/>
+    Chỉ mở khi cần sử dụng (copy, chuột phải).<br/>
+    Tắt ngay khi sử dụng xong.`,
     img: "",
   },
   infoLink: "https://greasyfork.org/scripts/14146",
