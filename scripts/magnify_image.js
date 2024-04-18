@@ -127,11 +127,10 @@ export default {
             largeSize = -1,
             largeSrc = null;
           if (!srcs.length) return null;
-          if (srcs.length === 1) return srcs[0];
           srcs.forEach((srci) => {
-            let srcInfo = srci.trim().split(" "),
-              curSize = parseInt(srcInfo[1] || 0);
-            if (srcInfo[1] && curSize > largeSize) {
+            let srcInfo = srci.trim().split(/(\s+|%20)/),
+              curSize = parseInt(srcInfo[2] || 0);
+            if (srcInfo[0] && curSize > largeSize) {
               largeSize = curSize;
               largeSrc = srcInfo[0];
             }
@@ -152,18 +151,21 @@ export default {
         () => getBg(ele),
       ];
 
+      let results = [];
       for (let f of fn) {
         try {
           let srcs = f();
           if (srcs && srcs?.length) {
             if (!Array.isArray(srcs)) srcs = [srcs];
-            return srcs.map((src) => relativeUrlToAbsolute(src));
+            results = results.concat(
+              srcs.map((src) => relativeUrlToAbsolute(src))
+            );
           }
         } catch (e) {
           console.log("error", e);
         }
       }
-      return null;
+      return results;
     }
 
     function getAllChildElements(element) {
@@ -230,11 +232,9 @@ export default {
         let srcs = getImgSrcsFromElement(ele);
         if (srcs && srcs?.length) {
           if (!Array.isArray(srcs)) srcs = [srcs];
-          srcs
-            .filter((src) => !results.find((r) => r.src === src))
-            .forEach((src) => {
-              results.push({ src, ele });
-            });
+          srcs.forEach((src) => {
+            if (!results.find((r) => r.src == src)) results.push({ src, ele });
+          });
         }
       }
       console.log("results", results);
@@ -799,6 +799,19 @@ export default {
         };
       });
     }
+
+    // #endregion
+
+    // #region listen background script
+
+    window.addEventListener("message", (e) => {
+      let data = e.data?.data;
+      console.log("magnify image window message", e);
+      if (data?.menuItemId === "ufs-magnify-image") {
+        console.log(data);
+        createPreview(data?.srcUrl, mouse.x, mouse.y);
+      }
+    });
 
     // #endregion
 

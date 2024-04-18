@@ -24,6 +24,14 @@ function sendToPageScript(event, uuid, data) {
 }
 
 (async () => {
+  chrome.runtime.onMessage.addListener(async function (
+    message,
+    sender,
+    sendResponse
+  ) {
+    // TODO
+  });
+
   // listen page script (web page, cannot listen iframes ...)
   window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
     try {

@@ -896,20 +896,16 @@ UfsGlobal.Utils = {
       if (!srcs || !Array.isArray(srcs) || srcs.length === 0) {
         reject("srcs is falsy, not an array, or empty");
       } else {
-        let resolved = false;
         const checkImage = (src) =>
           // prevent Error: Content Security Policy directive: "connect-src 'self'
           UfsGlobal.Utils.isImageSrc(src).then((value) => {
             if (inOrder) return value;
-            if (value) {
-              resolved = true;
-              resolve(src);
-            }
+            if (value) resolve(src);
+            return value;
           });
 
         const promises = srcs.map(checkImage);
         Promise.all(promises).then((res) => {
-          if (resolved) return;
           let trueIndex = res.indexOf(true);
           if (trueIndex > -1) {
             resolve(srcs[trueIndex]);
@@ -2597,6 +2593,11 @@ UfsGlobal.largeImgSiteRules = [
   },
 ];
 
-window.UfsGlobal = UfsGlobal;
+if (window) window.UfsGlobal = UfsGlobal;
+
+// export if posible
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  module.exports = UfsGlobal;
+}
 
 console.log("UfsGlobal loaded");
