@@ -1,12 +1,16 @@
 export default {
   icon: '<i class="fa-solid fa-magnifying-glass-plus"></i>',
   name: {
-    en: "Magnify Image with Ctrl",
-    vi: "Phóng to hình ảnh bằng Ctrl",
+    en: "Magnify any Image",
+    vi: "Phóng to mọi hình ảnh",
   },
   description: {
-    en: "Press Ctrl twice to any image to open it in magnified window",
-    vi: "Nhấn Ctrl 2 lần lên bất kỳ hình ảnh nào để xem nó trong cửa sổ phóng đại",
+    en: `Press Ctrl twice (or right click) to any image to open it in magnified window
+    <br/><br/>
+    Auto find large version of image to show.`,
+    vi: `Nhấn Ctrl 2 lần (hoặc chuột phải) lên bất kỳ hình ảnh nào để xem nó trong cửa sổ phóng đại
+    <br/><br/>
+    Tự động tìm ảnh có kích thước lớn nhất để hiển thị.`,
     img: "",
   },
 
