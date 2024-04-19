@@ -442,7 +442,7 @@ export default {
           z-index: 99999;
           overflow: hidden;
         }
-        #${id} .toolbar {
+        #${id} .ufs-toolbar {
           position: fixed;
           display: flex;
           justify-content: center;
@@ -484,7 +484,7 @@ export default {
           pointer-events: none;
           z-index: 0;
         }
-        #${id} .toolbar:hover .ufs-desc {
+        #${id} .ufs-toolbar:hover .ufs-desc {
           top: 100%;
           opacity: 1;
         }
@@ -576,7 +576,7 @@ export default {
 
       // toolbar
       let toolbar = document.createElement("div");
-      toolbar.classList.add("toolbar");
+      toolbar.classList.add("ufs-toolbar");
       overlay.appendChild(toolbar);
 
       let transformStatus = {
@@ -766,9 +766,6 @@ export default {
           desc.textContent = e.target.ufs_title;
         }
       };
-      toolbar.onmouseleave = () => {
-        // desc.textContent = "";
-      };
       toolbar.appendChild(desc);
 
       // auto get largest image
@@ -795,6 +792,19 @@ export default {
         let temp = new Image();
         temp.src = _src;
         temp.onload = () => {
+          let curSize = { w: img.naturalWidth, h: img.naturalHeight };
+          let newSize = { w: temp.naturalWidth, h: temp.naturalHeight };
+
+          if (curSize.w == newSize.w && curSize.h == newSize.h) {
+            loaded = true;
+            return;
+          }
+
+          UfsGlobal.DOM.notify({
+            msg: `Found bigger image: ${curSize.w}x${curSize.h} -> ${newSize.w}x${newSize.h}`,
+            duration: 5000,
+          });
+
           img.src = _src;
           loaded = true;
         };
