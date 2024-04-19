@@ -44,7 +44,7 @@ export default {
     document.body.appendChild(overlay);
 
     function clickToMagnify(e) {
-      window.ufs_magnify_image?.(e.clientX, e.clientY);
+      window.ufs_magnify_image_magnifyImage?.(e.clientX, e.clientY);
       overlay.remove();
       remove();
     }
@@ -857,7 +857,8 @@ export default {
       }
     }
 
-    window.ufs_magnify_image = magnifyImage;
+    window.ufs_magnify_image_createPreview = createPreview;
+    window.ufs_magnify_image_magnifyImage = magnifyImage;
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
       magnifyImage(mouse.x, mouse.y);
