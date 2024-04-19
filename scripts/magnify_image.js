@@ -60,7 +60,6 @@ export default {
       mouse.y = e.clientY;
     });
 
-    const bgRegex = /.*url\(\s*["']?(.+?)["']?\s*\)([^'"].*|$)/i;
     function relativeUrlToAbsolute(url) {
       var anchor = document.createElement("a");
       anchor.href = url;
@@ -68,7 +67,8 @@ export default {
     }
     function getBg(node) {
       if (
-        node.nodeName.toUpperCase() == "HTML" ||
+        !node ||
+        node.nodeName?.toUpperCase?.() == "HTML" ||
         node.nodeName == "#document"
       ) {
         return false;
@@ -810,9 +810,8 @@ export default {
 
     window.addEventListener("message", (e) => {
       let data = e.data?.data;
-      console.log("magnify image window message", e);
       if (data?.menuItemId === "ufs-magnify-image") {
-        console.log(data);
+        console.log("magnify image window message", e);
         createPreview(
           data?.srcUrl,
           window.innerWidth / 2,

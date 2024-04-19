@@ -28,6 +28,12 @@ UfsGlobal.Extension = {
       params,
     });
   },
+  async backgroundFetch(url, options = {}) {
+    return await UfsGlobal.Extension.runInContentScript("backgroundFetch", [
+      url,
+      options,
+    ]);
+  },
   async getURL(filePath) {
     return await UfsGlobal.Extension.runInContentScript(
       "chrome.runtime.getURL",
@@ -541,12 +547,37 @@ UfsGlobal.Utils = {
       new Promise((_r, rej) => setTimeout(() => rej("time out " + time), time)),
     ]);
   },
+  async getRedirectedUrl(url) {
+    try {
+      while (true) {
+        let res = await UfsGlobal.Extension.backgroundFetch(url, {
+          method: "HEAD",
+        });
+        if (res.redirected) {
+          console.log("redirected:", url, "->", res.url);
+          url = res.url;
+        } else {
+          return url;
+        }
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
+      return url;
+    }
+  },
   async getLargestImageSrc(imgSrc, webUrl) {
     if (/^data:/i.test(imgSrc)) {
       return null;
     }
 
     console.log(imgSrc);
+
+    // bypass redirect
+    let redirectedUrl = await UfsGlobal.Utils.getRedirectedUrl(imgSrc);
+    if (redirectedUrl) {
+      console.log("bypass redirect:", redirectedUrl);
+      imgSrc = redirectedUrl;
+    }
 
     function try1() {
       const url = new URL(imgSrc);
@@ -873,9 +904,13 @@ UfsGlobal.Utils = {
   },
   async isImageSrc(src) {
     try {
-      const res = await fetch(src, { method: "HEAD", mode: "no-cors" });
+      const res = await UfsGlobal.Extension.backgroundFetch(src, {
+        method: "HEAD",
+      });
+      console.log("isImageSrc: " + src + " -> ", res);
       if (res.ok) {
-        const type = res.headers.get("content-type");
+        // const type = res.headers.get("content-type");
+        const type = res.headers?.["content-type"];
         if (type && type.startsWith("image/")) {
           return true;
         }

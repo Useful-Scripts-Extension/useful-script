@@ -13,6 +13,18 @@ async function getActiveScripts() {
   return CACHED[key];
 }
 
+function backgroundFetch(url, options = {}) {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(
+      { action: "fetch", params: { url, options } },
+      function (response) {
+        console.log("Response from background script:", response);
+        resolve(response);
+      }
+    );
+  });
+}
+
 // communication between page-script and content-script
 function sendToPageScript(event, uuid, data) {
   console.log("sendToPageScript", event, uuid, data);
