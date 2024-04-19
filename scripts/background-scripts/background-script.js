@@ -1,13 +1,18 @@
 import { runScriptInCurrentTab } from "../helpers/utils.js";
 
-function blobToBase64(blob) {
-  return new Promise((resolve, reject) => {
+const convertBlobToBase64 = (blob) =>
+  new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+      resolve(null);
+    };
   });
-}
 
 // listen content script message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -18,6 +23,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       fetch(url, options).then(async (res) => {
         let body;
 
+        // https://github.com/w3c/webextensions/issues/293
         if (res.headers.get("Content-Type").startsWith("text/")) {
           body = await res.clone().text();
         } else if (
@@ -27,9 +33,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else {
           // For other content types, read the body as blob
           const blob = await res.clone().blob();
-          body = await blobToBase64(blob).catch((e) => {
-            console.log("ERROR:", e);
-          });
+          body = await convertBlobToBase64(blob);
         }
 
         const data = {

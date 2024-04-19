@@ -14,14 +14,16 @@
     "default_icon": "./assets/icon32.png"
   },
   "permissions": [
-    "contextMenus",
+    "power",
     "tabs",
-    "scripting",
     "storage",
-    "unlimitedStorage",
     "cookies",
     "debugger",
     "bookmarks",
+    "scripting",
+    "contextMenus",
+    "notifications",
+    "unlimitedStorage",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"

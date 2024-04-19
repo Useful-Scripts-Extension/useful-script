@@ -2359,7 +2359,7 @@ UfsGlobal.largeImgSiteRules = [
     name: "gravatar",
     src: /gravatar\.com\/avatar\/|\/gravatar\//i,
     r: /(avatar\/.*[\?&]s=)\d+(.*)/,
-    s: "$11920$2",
+    s: "$19999$2",
   },
   {
     name: "ucServerAvatar",

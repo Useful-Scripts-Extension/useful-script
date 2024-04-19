@@ -49,3 +49,13 @@
 - [x] get bigest image: <https://greasyfork.org/scripts/2312> <https://github.com/hoothin/UserScripts/blob/master/Picviewer%20CE%2B/pvcep_rules.js> => check rule r array and s array
 
 - [x] hoc regex di <https://github.com/regexhq> <https://www.regexbuddy.com/>
+
+- [ ] đọc extension samples <https://github.dev/GoogleChrome/chrome-extensions-samples>
+  - [ ] Run auto script from background service worker chrome.webNavigation.onDOMContentLoaded
+  - [ ] Tìm hiểu chrome.topSites
+  - [ ] permissions userScripts
+  - [ ] chrome.power => keep PC awake
+  - [ ] chrome.windows => merge windows
+  - [ ] offscreen clipboard write => Copy selected text on any web?
+  - [ ] tabCapture => capture google meet?
+  - [ ] webSocket => do something great?

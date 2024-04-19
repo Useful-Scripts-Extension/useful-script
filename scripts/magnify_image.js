@@ -29,15 +29,7 @@ export default {
     });
 
     let overlay = document.createElement("div");
-    overlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #0002;
-      z-index: 99998;
-    `;
+    overlay.classList.add("ufs-click-to-magnify-overlay");
     overlay.addEventListener("mousemove", (e) => {
       setPosition(e.clientX, e.clientY + 20);
     });
@@ -290,6 +282,10 @@ export default {
       // container
       let overlay = document.createElement("div");
       overlay.id = id;
+      overlay.style.cssText = `
+        top: ${y}px;
+        left: ${x}px;
+      `;
       overlay.onclick = (e) => {
         e.preventDefault();
         if (e.target == overlay || e.target == container) {
@@ -301,68 +297,7 @@ export default {
       // styles
       const style = document.createElement("style");
       style.textContent = `
-        #${id} {
-          position: fixed;
-          top: ${y}px;
-          left: ${x}px;
-          width: 0;
-          height: 0;
-          opacity: 0;
-          border-radius: 50%;
-          background-color: #000d;
-          z-index: 99999;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transition: all 0.3s ease, background 0s ease;
-        }
-        #${id} .img-container {
-          display: flex;
-          flex-wrap: wrap;
-          overflow-y: auto;
-          overflow-x: hidden;
-          width: 100%;
-          height: 100%;
-          align-items: center;
-          justify-content: center;
-          grid-gap: 10px;
-        }
-        #${id} .con {
-          position: relative;
-        }
-        #${id} .size {
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          font-size: 12px;
-          color: #eee;
-          background-color: #0005;
-          opacity: 0.5;
-          z-index: 2;
-          padding: 5px;
-          border-radius: 5px;
-          transition: all 0.2s ease;
-          pointer-events: none;
-        }
-        #${id} .con:hover .size {
-          opacity: 1;
-          background-color: #000a;
-        }
-        #${id} img {
-          max-width: 300px;
-          max-height: 300px;
-          min-width: 50px;
-          min-height: 50px;
-          object-fit: contain;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        #${id} .con:hover img {
-          transform: scale(1.1);
-          z-index: 2;
-          box-shadow: 0 0 10px #fffa;
-        }
+
       `;
       overlay.appendChild(style);
 
@@ -425,89 +360,10 @@ export default {
       };
       document.body.appendChild(overlay);
 
-      // styles
-      const style = document.createElement("style");
-      style.textContent = `
-        #${id} * {
-          font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
-          font-size: 1em !important;
-        }
-        #${id} {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: #000d;
-          z-index: 99999;
-          overflow: hidden;
-        }
-        #${id} .ufs-toolbar {
-          position: fixed;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          background-color: #111a;
-          color: white;
-          z-index: 2;
-          text-align: center;
-        }
-        #${id} img {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          max-width: 100%;
-          max-height: 100%;
-          cursor: zoom-out;
-        }
-        #${id} .ufs-btn {
-          cursor: pointer;
-          padding: 10px;
-          background-color: #111a;
-          z-index: 1;
-        }
-        #${id} .ufs-btn:hover {
-          background: #555a;
-        }
-        #${id} .ufs-desc {
-          position: absolute;
-          top: 0;
-          opacity: 0;
-          background: #333;
-          padding: 0 10px 5px;
-          border-radius: 0 0 5px 5px;
-          transition: all 0.3s ease;
-          pointer-events: none;
-          z-index: 0;
-        }
-        #${id} .ufs-toolbar:hover .ufs-desc {
-          top: 100%;
-          opacity: 1;
-        }
-        #${id} img {
-          transition: transform 0.15s ease, opacity 0.5s ease 0.15s;
-        }
-        #${id} .ufs-img-anim {
-          transition: all 0.3s ease !important;
-          transform-origin: center;
-          transform: translate(-50%, -50%);
-          width: 40px;
-          height: 40px;
-          background-color: #fffa;
-          border-radius: 50%;
-        }
-        `;
-      overlay.appendChild(style);
-
       // animation div: a rect that represent image scaled up from original position (mouse position)
       let animDiv = document.createElement("div");
       animDiv.classList.add("ufs-img-anim");
       animDiv.style.cssText = `
-        position: fixed;
         top: ${y}px;
         left: ${x}px;
       `;
@@ -613,21 +469,25 @@ export default {
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
 
-        let zoom = 100 * (w / (img.naturalWidth || 1));
-        size.innerText =
-          `${img.naturalWidth} x ${img.naturalHeight}` +
-          ` (${zoom.toFixed(0)}%)`;
+        updateSize();
       };
       toolbar.appendChild(size);
 
+      function updateSize() {
+        if (img.naturalWidth && img.naturalHeight) {
+          let zoom = img.clientWidth / img.naturalWidth;
+          if (!(parseInt(zoom) === parseInt(zoom.toFixed(1))))
+            zoom = zoom.toFixed(1);
+          else zoom = parseInt(zoom);
+
+          size.innerText =
+            `${img.naturalWidth} x ${img.naturalHeight}` + ` (${zoom}x)`;
+        }
+      }
+
       UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
         if (data?.type === "scale") {
-          if (img.naturalWidth && img.naturalHeight) {
-            let scale = img.clientWidth / img.naturalWidth;
-            size.innerText =
-              size.innerText.replace(/ \(\d+%\)/, "") +
-              ` (${(scale * 100).toFixed(0)}%)`;
-          }
+          updateSize();
         }
       });
 
@@ -802,7 +662,7 @@ export default {
 
           UfsGlobal.DOM.notify({
             msg: `Found bigger image: ${curSize.w}x${curSize.h} -> ${newSize.w}x${newSize.h}`,
-            duration: 5000,
+            duration: 3000,
           });
 
           img.src = _src;
@@ -813,22 +673,6 @@ export default {
         };
       });
     }
-
-    // #endregion
-
-    // #region listen background script
-
-    window.addEventListener("message", (e) => {
-      let data = e.data?.data;
-      if (data?.menuItemId === "ufs-magnify-image") {
-        console.log("magnify image window message", e);
-        createPreview(
-          data?.srcUrl,
-          window.innerWidth / 2,
-          window.innerHeight / 2
-        );
-      }
-    });
 
     // #endregion
 
@@ -866,8 +710,27 @@ export default {
       }
     }
 
+    // expose for background script to call
     window.ufs_magnify_image_createPreview = createPreview;
     window.ufs_magnify_image_magnifyImage = magnifyImage;
+
+    // TODO: we dont need this anymore
+    window.addEventListener("message", (e) => {
+      let data = e.data?.data;
+      if (data?.menuItemId === "ufs-magnify-image") {
+        console.log("magnify image window message", e);
+        createPreview(
+          data?.srcUrl,
+          window.innerWidth / 2,
+          window.innerHeight / 2
+        );
+      }
+    });
+
+    // inject css
+    UfsGlobal.Extension.getURL("/scripts/magnify_image.css").then((url) => {
+      UfsGlobal.DOM.injectCssFile(url);
+    });
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
       magnifyImage(mouse.x, mouse.y);
