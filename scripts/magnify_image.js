@@ -209,15 +209,21 @@ export default {
     async function getImagesAtMouse() {
       let eles = Array.from(document.querySelectorAll("*"));
 
+      let sourceEles = [];
       eles = eles.reverse().filter((ele) => {
         let rect = ele.getBoundingClientRect();
-        return (
+        let isAtMouse =
           rect.left <= mouse.x &&
           rect.right >= mouse.x &&
           rect.top <= mouse.y &&
-          rect.bottom >= mouse.y
-        );
+          rect.bottom >= mouse.y;
+        if (isAtMouse && /picture|img/i.test(ele.tagName)) {
+          let sources = Array.from(ele.querySelectorAll("source"));
+          if (sources?.length) sourceEles = sourceEles.concat(sources);
+        }
+        return isAtMouse;
       });
+      eles = eles.concat(sourceEles);
 
       if (!eles.length) return null;
 
@@ -475,11 +481,8 @@ export default {
 
       function updateSize() {
         if (img.naturalWidth && img.naturalHeight) {
-          let zoom = img.clientWidth / img.naturalWidth;
-          if (!(parseInt(zoom) === parseInt(zoom.toFixed(1))))
-            zoom = zoom.toFixed(1);
-          else zoom = parseInt(zoom);
-
+          let zoom = (img.clientWidth / img.naturalWidth).toFixed(1);
+          if (parseInt(zoom) == zoom) zoom = parseInt(zoom);
           size.innerText =
             `${img.naturalWidth} x ${img.naturalHeight}` + ` (${zoom}x)`;
         }
