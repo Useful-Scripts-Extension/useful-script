@@ -529,17 +529,46 @@ UfsGlobal.DOM = {
   },
 };
 UfsGlobal.Utils = {
+  svgBase64ToUrl(sgvBase64) {
+    try {
+      if (!/^data:image\/svg/.test(sgvBase64)) throw new Error("Invalid SVG");
+      const svgContent = atob(sgvBase64.split(",")[1]);
+      const blob = new Blob([svgContent], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      return url;
+    } catch (e) {
+      console.log("ERROR: ", e);
+      return null;
+    }
+  },
+  svgToBase64(svg) {
+    try {
+      return (
+        "data:image/svg+xml;base64," +
+        window.btoa(new XMLSerializer().serializeToString(svg))
+      );
+    } catch (e) {
+      console.log("ERROR: ", e);
+      return null;
+    }
+  },
   getResolutionCategory(width, height) {
-    if (width <= 640 && height <= 480) return "SD (480p)";
-    if (width <= 1280 && height <= 720) return "HD (720p)";
-    if (width <= 1600 && height <= 900) return "HD+ (900p)";
-    if (width <= 1920 && height <= 1080) return "FHD (1080p)";
-    if (width <= 2560 && height <= 1440) return "QHD (1440p)";
-    if (width <= 3840 && height <= 2160) return "4K (2160p)";
-    if (width <= 5120 && height <= 2880) return "5K (2880p)";
-    if (width <= 7680 && height <= 4320) return "8K (4320p)";
-    if (width <= 10240 && height <= 4320) return "10K (4320p)";
-    if (width <= 15360 && height <= 8640) return "16K (8640p)";
+    let min = Math.min(width, height);
+    let max = Math.max(width, height);
+
+    if (max <= 256 && min <= 144) return "144p";
+    if (max <= 320 && min <= 180) return "240p";
+    if (max <= 640 && min <= 360) return "360p";
+    if (max <= 640 && min <= 480) return "SD (480p)";
+    if (max <= 1280 && min <= 720) return "HD (720p)";
+    if (max <= 1600 && min <= 900) return "HD+ (900p)";
+    if (max <= 1920 && min <= 1080) return "FHD (1080p)";
+    if (max <= 2560 && min <= 1440) return "QHD (1440p)";
+    if (max <= 3840 && min <= 2160) return "4K (2160p)";
+    if (max <= 5120 && min <= 2880) return "5K (2880p)";
+    if (max <= 7680 && min <= 4320) return "8K (4320p)";
+    if (max <= 10240 && min <= 4320) return "10K (4320p)";
+    if (max <= 15360 && min <= 8640) return "16K (8640p)";
     return "> 16K";
   },
   async saveAs(url_blob_file, title = "download", options = {}) {
@@ -2069,6 +2098,13 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    // https://styles.redditmedia.com/t5_c5295/styles/profileIcon_snooe729749b-a6a5-4ef0-bacf-f4a5c8331627-headshot.png?width=64&height=64&frame=1&auto=webp&crop=64:64,smart&s=cb449c2601606d921ba6d2cc6074e5c0d20ddb67
+    name: "reddit",
+    src: /redditmedia/,
+    r: /\?.*/,
+    s: "",
+  },
+  {
     // https://cdn.britannica.com/52/241752-050-39026C33/display-resolution-television-tv-screen.jpg?w=400&h=300&c=crop
     name: "britannica",
     src: /britannica\.com/,
@@ -2119,7 +2155,7 @@ UfsGlobal.largeImgSiteRules = [
   {
     name: "font gstatic",
     src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
-    r: /(https?:\/\/.*)\/\d+.(png|jpg)/,
+    r: /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)/,
     s: "$1/512.$2",
   },
   {

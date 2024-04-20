@@ -46,6 +46,13 @@ export default {
   onDocumentStart: () => {
     // #region get image src at mouse
 
+    const BgState = {
+      none: "none",
+      transparent: "transparent",
+      dark: "dark",
+      light: "light",
+    };
+
     let mouse = { x: 0, y: 0 };
     document.addEventListener("mousemove", (e) => {
       mouse.x = e.clientX;
@@ -145,6 +152,14 @@ export default {
           }
         },
         () => getBg(ele),
+        () => {
+          if (/image/i.test(ele.tagName)) {
+            return ele.getAttribute("href"); // reddit
+          }
+          if (/svg/i.test(ele.tagName)) {
+            return UfsGlobal.Utils.svgToBase64(ele);
+          }
+        },
       ];
 
       let results = [];
@@ -224,6 +239,12 @@ export default {
         return isAtMouse;
       });
       eles = eles.concat(sourceEles);
+      eles = eles.concat(
+        eles
+          .slice(0, 4)
+          .map((ele) => getAllChildElements(ele))
+          .flat()
+      );
 
       if (!eles.length) return null;
 
@@ -323,12 +344,64 @@ export default {
       };
       document.body.appendChild(overlay);
 
-      // styles
-      const style = document.createElement("style");
-      style.textContent = `
+      // toolbar
+      let toolbar = document.createElement("div");
+      toolbar.classList.add("ufs-toolbar");
+      overlay.appendChild(toolbar);
 
-      `;
-      overlay.appendChild(style);
+      // toggle background
+
+      let bgStates = [BgState.none, BgState.dark, BgState.light];
+      let curBgState =
+        (Number(localStorage.getItem("ufs-magnify-image-bg-choose-image")) ||
+          0) - 1;
+
+      let toggleBg = document.createElement("div");
+      toggleBg.classList.add("ufs-btn");
+      toggleBg.innerText = "B";
+      toggleBg.ufs_title = "Change background";
+      toggleBg.onclick = () => {
+        curBgState = (curBgState + 1) % bgStates.length;
+        overlay.style.background = "";
+
+        switch (bgStates[curBgState]) {
+          case BgState.none:
+            overlay.style.background = "#000b";
+            break;
+          case BgState.dark:
+            overlay.style.background = "rgba(30, 30, 30, 1)";
+            break;
+          case BgState.light:
+            overlay.style.background = "rgba(240, 240, 240, 1)";
+            break;
+        }
+
+        toggleBg.innerText = "BG " + bgStates[curBgState];
+        localStorage.setItem("ufs-magnify-image-bg-choose-image", curBgState);
+      };
+      toggleBg.click(); // default is toggle ON
+      toolbar.appendChild(toggleBg);
+
+      // desc
+      let desc = document.createElement("div");
+      desc.classList.add("ufs-desc");
+      desc.innerText = "Choose image";
+      toolbar.appendChild(desc);
+
+      toolbar.addEventListener("mousemove", (e) => {
+        if (
+          e.target != toolbar &&
+          e.target?.ufs_title &&
+          e.target?.ufs_title != desc.textContent
+        ) {
+          desc.textContent = e.target.ufs_title;
+          let x =
+            e.target.offsetLeft +
+            e.target.offsetWidth / 2 -
+            desc.offsetWidth / 2;
+          desc.style.cssText = `left: ${x}px`;
+        }
+      });
 
       // animation overlay
       setTimeout(() => {
@@ -342,16 +415,16 @@ export default {
 
       // images
       let container = document.createElement("div");
-      container.classList.add("img-container");
+      container.classList.add("ufs-img-container");
 
       for (let src of srcs) {
         let con = document.createElement("div");
-        con.classList.add("con");
+        con.classList.add("ufs-con");
         container.appendChild(con);
 
         // size
         let size = document.createElement("div");
-        size.classList.add("size");
+        size.classList.add("ufs-size");
         con.appendChild(size);
 
         // img
@@ -362,15 +435,12 @@ export default {
         };
         img.onclick = () => {
           // overlay.remove();
-          overlay.style.backgroundColor = "#0000";
           createPreview(
             src,
             mouse.x,
             mouse.y,
             // onClose
-            () => {
-              overlay.style.backgroundColor = "#000d";
-            },
+            () => {},
             // onFoundBigImg
             (_src) => {
               img.src = _src;
@@ -547,12 +617,6 @@ export default {
       }
 
       // toggle background
-      const BgState = {
-        none: "none",
-        transparent: "transparent",
-        dark: "dark",
-        light: "light",
-      };
       let bgStates = [
         BgState.none,
         BgState.transparent,
@@ -565,11 +629,10 @@ export default {
       let toggleBg = document.createElement("div");
       toggleBg.classList.add("ufs-btn");
       toggleBg.innerText = "B";
-      toggleBg.ufs_title = "Change background";
+      toggleBg.ufs_title = "Change image background";
       toggleBg.onclick = () => {
         curBgState = (curBgState + 1) % bgStates.length;
         img.style.background = "";
-        img.style.boxShadow = "none";
 
         switch (bgStates[curBgState]) {
           case BgState.none:
@@ -655,29 +718,31 @@ export default {
       // open in new tab
       let openNewTab = document.createElement("div");
       openNewTab.classList.add("ufs-btn");
-      openNewTab.style.cssText = `
-        border-left: 1px solid #999;
-      `;
       openNewTab.innerText = "↗";
       openNewTab.ufs_title = "Open in new tab";
       openNewTab.onclick = () => {
-        window.open(src, "_blank");
+        if (/^data:image\/svg/.test(img.src)) {
+          const url = UfsGlobal.Utils.svgBase64ToUrl(img.src);
+          window.open(url, "_blank");
+        } else {
+          window.open(img.src, "_blank");
+        }
       };
 
       // download
-      let download = document.createElement("div");
-      download.classList.add("ufs-btn");
-      download.innerText = "⤓";
-      download.ufs_title = "Download";
-      download.onclick = () => {
-        try {
-          let fileName = prompt("Enter file name: ", "image.jpg");
-          if (!fileName) return;
-          UfsGlobal.Utils.saveAs(img.src, fileName);
-        } catch (e) {
-          alert("Error: " + e);
-        }
-      };
+      // let download = document.createElement("div");
+      // download.classList.add("ufs-btn");
+      // download.innerText = "⤓";
+      // download.ufs_title = "Download";
+      // download.onclick = () => {
+      //   try {
+      //     let fileName = prompt("Enter file name: ", "image.jpg");
+      //     if (!fileName) return;
+      //     UfsGlobal.Utils.saveAs(img.src, fileName);
+      //   } catch (e) {
+      //     alert("Error: " + e);
+      //   }
+      // };
 
       // desc
       let desc = document.createElement("div");
@@ -707,7 +772,7 @@ export default {
       toolbar.appendChild(rotateLeft);
       toolbar.appendChild(rotateRight);
       toolbar.appendChild(openNewTab);
-      toolbar.appendChild(download);
+      // toolbar.appendChild(download);
       toolbar.appendChild(desc);
 
       UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
@@ -781,36 +846,45 @@ export default {
 
     // #region main
 
-    async function magnifyImage(x, y) {
+    function magnifyImage(x, y) {
       let ctrlMouse = { x, y };
-      let removeLoading = UfsGlobal.DOM.addLoadingAnimationAtPos(
-        ctrlMouse.x,
-        ctrlMouse.y,
-        40,
-        "",
-        `background: #eee9;`
-      );
-      let imgs = await getImagesAtMouse();
-      removeLoading();
+      let removeLoading,
+        loaded = false;
 
-      if (!imgs.length) {
-        UfsGlobal.DOM.notify({
-          msg: "Useful-script: No image found",
-          x: ctrlMouse.x,
-          y: ctrlMouse.y,
-          align: "left",
-        });
-      } else if (imgs.length === 1) {
-        console.log(imgs);
-        let src = imgs[0].src;
-        createPreview(src, ctrlMouse.x, ctrlMouse.y);
-      } else {
-        chooseImg(
-          imgs.map((img) => img.src),
-          ctrlMouse.x,
-          ctrlMouse.y
-        );
-      }
+      setTimeout(() => {
+        if (!loaded)
+          removeLoading = UfsGlobal.DOM.addLoadingAnimationAtPos(
+            ctrlMouse.x,
+            ctrlMouse.y,
+            40,
+            "",
+            `background: #eee9;`
+          );
+      }, 100);
+
+      getImagesAtMouse().then((imgs) => {
+        loaded = true;
+        removeLoading?.();
+
+        if (!imgs.length) {
+          UfsGlobal.DOM.notify({
+            msg: "Useful-script: No image found",
+            x: ctrlMouse.x,
+            y: ctrlMouse.y,
+            align: "left",
+          });
+        } else if (imgs.length === 1) {
+          console.log(imgs);
+          let src = imgs[0].src;
+          createPreview(src, ctrlMouse.x, ctrlMouse.y);
+        } else {
+          chooseImg(
+            imgs.map((img) => img.src),
+            ctrlMouse.x,
+            ctrlMouse.y
+          );
+        }
+      });
     }
 
     // expose for background script to call

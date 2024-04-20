@@ -14,17 +14,15 @@
   height: 0;
   opacity: 0;
   border-radius: 50%;
-  background-color: #000d;
+  background-color: #000b;
   z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease, background 0s ease;
-  -webkit-backdrop-filter: blur(.1rem);
-  backdrop-filter: blur(.1rem);
 }
 
-#ufs-magnify-choose-image .img-container {
+#ufs-magnify-choose-image .ufs-img-container {
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;
@@ -36,11 +34,11 @@
   grid-gap: 10px;
 }
 
-#ufs-magnify-choose-image .con {
+#ufs-magnify-choose-image .ufs-con {
   position: relative;
 }
 
-#ufs-magnify-choose-image .size {
+#ufs-magnify-choose-image .ufs-size {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -55,7 +53,7 @@
   pointer-events: none;
 }
 
-#ufs-magnify-choose-image .con:hover .size {
+#ufs-magnify-choose-image .ufs-con:hover .ufs-size {
   opacity: 1;
   background-color: #000a;
 }
@@ -71,7 +69,7 @@
   transition: all 0.2s ease;
 }
 
-#ufs-magnify-choose-image .con:hover img {
+#ufs-magnify-choose-image .ufs-con:hover img {
   transform: scale(1.1);
   z-index: 2;
   box-shadow: 0 0 10px #fffa;
@@ -90,14 +88,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000d;
+  background-color: #000b;
   z-index: 99999;
   overflow: hidden;
-  -webkit-backdrop-filter: blur(.1rem);
-  backdrop-filter: blur(.1rem);
 }
 
-#ufs-magnify-image .ufs-toolbar {
+.ufs-toolbar {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -108,7 +104,7 @@
   color: white;
   z-index: 2;
   text-align: center;
-  width: 100%;
+  width: max-content;
 }
 
 #ufs-magnify-image img {
@@ -121,7 +117,7 @@
   cursor: zoom-out;
 }
 
-#ufs-magnify-image .ufs-btn {
+.ufs-btn {
   cursor: pointer;
   padding: 10px;
   margin: 0;
@@ -129,21 +125,22 @@
   z-index: 1;
   min-width: 10px;
   border: none;
+  user-select: none;
 }
 
-#ufs-magnify-image .ufs-btn:first-of-type {
+.ufs-btn:first-of-type {
   border-radius: 0 0 0 5px;
 }
 
-#ufs-magnify-image .ufs-btn:last-of-type {
+.ufs-btn:last-of-type {
   border-radius: 0 0 5px 0;
 }
 
-#ufs-magnify-image .ufs-btn:hover {
+.ufs-btn:hover {
   background: #555d;
 }
 
-#ufs-magnify-image .ufs-desc {
+.ufs-desc {
   position: absolute;
   top: 0;
   opacity: 0;
@@ -156,7 +153,7 @@
   transition: all 0.3s ease;
 }
 
-#ufs-magnify-image .ufs-toolbar:hover .ufs-desc {
+.ufs-toolbar:hover .ufs-desc {
   top: 100%;
   opacity: 1;
 }
