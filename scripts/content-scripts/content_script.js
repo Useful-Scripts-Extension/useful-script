@@ -22,7 +22,7 @@ function sendToPageScript(event, uuid, data) {
   );
 }
 
-window.ufs_runScritps = runScript;
+window.ufs_runScritps = runScripts;
 function runScripts(scriptIds, event, path) {
   for (let scriptId of scriptIds) {
     runScript(scriptId, event);
