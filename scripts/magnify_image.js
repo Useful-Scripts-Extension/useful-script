@@ -268,16 +268,39 @@ export default {
     // #endregion
 
     // #region create UI
-    function resize(curW, curH, maxW, maxH) {
-      // if (curW <= maxW && curH <= maxH) return { width: curW, height: curH };
+    function resizeToFitWithMinSize(curW, curH, maxW, maxH, minSize) {
+      // Calculate the aspect ratio of the rectangle
+      const aspectRatio = curW / curH;
 
-      let ratio = curW / curH;
-      let newRatio = maxW / maxH;
-      if (ratio > newRatio) {
-        return { width: maxW, height: maxW / ratio };
-      } else {
-        return { width: maxH * ratio, height: maxH };
+      // Calculate the new width and height to fit inside the window while maintaining aspect ratio
+      let newWidth = maxW;
+      let newHeight = maxW / aspectRatio;
+
+      // If the new height exceeds the window height, resize based on height
+      if (newHeight > maxH) {
+        newHeight = maxH;
+        newWidth = maxH * aspectRatio;
       }
+      if (newWidth > maxW) {
+        newWidth = maxW;
+        newHeight = maxW / aspectRatio;
+      }
+
+      // Apply minimum size constraints
+      if (newWidth < minSize) {
+        newWidth = minSize;
+        newHeight = minSize / aspectRatio;
+      }
+      if (newHeight < minSize) {
+        newHeight = minSize;
+        newWidth = minSize * aspectRatio;
+      }
+
+      // Return the new dimensions
+      return {
+        width: newWidth,
+        height: newHeight,
+      };
     }
 
     function chooseImg(srcs, x = mouse.x, y = mouse.y) {
@@ -340,16 +363,32 @@ export default {
         img.onclick = () => {
           // overlay.remove();
           overlay.style.backgroundColor = "#0000";
-          createPreview(src, mouse.x, mouse.y, () => {
-            overlay.style.backgroundColor = "#000d";
-          });
+          createPreview(
+            src,
+            mouse.x,
+            mouse.y,
+            // onClose
+            () => {
+              overlay.style.backgroundColor = "#000d";
+            },
+            // onFoundBigImg
+            (_src) => {
+              img.src = _src;
+            }
+          );
         };
         con.appendChild(img);
       }
       overlay.appendChild(container);
     }
 
-    function createPreview(src, x = mouse.x, y = mouse.y, onClose = () => {}) {
+    function createPreview(
+      src,
+      x = mouse.x,
+      y = mouse.y,
+      onClose = () => {},
+      onFoundBigImg = () => {}
+    ) {
       let id = "ufs-magnify-image";
       let exist = document.getElementById(id);
       if (exist) exist.remove();
@@ -361,6 +400,7 @@ export default {
         e.preventDefault();
         if (e.target == overlay) {
           overlay.remove();
+          overlay = null;
           onClose?.();
         }
       };
@@ -397,17 +437,16 @@ export default {
         let curW = img.naturalWidth,
           curH = img.naturalHeight;
 
-        size.innerText = `${curW} x ${curH}`;
-
         // first load - original image
         if (!isFirstLoad) {
           isFirstLoad = true;
 
-          let newSize = resize(
+          let newSize = resizeToFitWithMinSize(
             curW,
             curH,
             Math.max(window.innerWidth - 100, 400),
-            Math.max(window.innerHeight - 100, 400)
+            Math.max(window.innerHeight - 100, 400),
+            100
           );
 
           img.style.width = `${newSize.width}px`;
@@ -433,6 +472,9 @@ export default {
           let newRatio = curW / curH;
           img.style.height = `${parseInt(img.style.width) / newRatio}px`;
         }
+
+        updateSize();
+        updateZoom();
       };
       overlay.appendChild(img);
 
@@ -448,11 +490,29 @@ export default {
       };
 
       // size
-      let size = document.createElement("div");
-      size.classList.add("ufs-btn");
-      size.innerText = "Size";
-      size.ufs_title = "Toggle original size";
-      size.onclick = () => {
+      let sizeEle = document.createElement("div");
+      sizeEle.classList.add("ufs-btn");
+      sizeEle.innerText = "Size";
+      sizeEle.ufs_title = "Original size";
+
+      function updateSize() {
+        if (img.naturalWidth && img.naturalHeight) {
+          let resolution = UfsGlobal.Utils.getResolutionCategory(
+            img.naturalWidth,
+            img.naturalHeight
+          );
+          sizeEle.innerText =
+            `${img.naturalWidth} x ${img.naturalHeight}` +
+            (resolution ? ` ~ ${resolution}` : "");
+        }
+      }
+
+      // zoom
+      let zoomEle = document.createElement("div");
+      zoomEle.classList.add("ufs-btn");
+      zoomEle.innerText = "Z";
+      zoomEle.ufs_title = "Toggle original size";
+      zoomEle.onclick = () => {
         let w = img.naturalWidth,
           h = img.naturalHeight;
 
@@ -460,11 +520,12 @@ export default {
           parseInt(img.style.width) === w &&
           parseInt(img.style.height) === h
         ) {
-          let newSize = resize(
+          let newSize = resizeToFitWithMinSize(
             w,
             h,
             Math.max(window.innerWidth - 100, 400),
-            Math.max(window.innerHeight - 100, 400)
+            Math.max(window.innerHeight - 100, 400),
+            100
           );
           w = newSize.width;
           h = newSize.height;
@@ -475,24 +536,15 @@ export default {
         img.style.left = window.innerWidth / 2 + "px";
         img.style.top = window.innerHeight / 2 + "px";
 
-        updateSize();
+        updateZoom();
       };
-      toolbar.appendChild(size);
-
-      function updateSize() {
+      function updateZoom() {
         if (img.naturalWidth && img.naturalHeight) {
           let zoom = (img.clientWidth / img.naturalWidth).toFixed(1);
           if (parseInt(zoom) == zoom) zoom = parseInt(zoom);
-          size.innerText =
-            `${img.naturalWidth} x ${img.naturalHeight}` + ` (${zoom}x)`;
+          zoomEle.innerText = `${zoom}x`;
         }
       }
-
-      UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
-        if (data?.type === "scale") {
-          updateSize();
-        }
-      });
 
       // toggle background
       const BgState = {
@@ -538,11 +590,6 @@ export default {
 
         toggleBg.innerText = "BG " + bgStates[curBgState];
         localStorage.setItem("ufs-magnify-image-bg", curBgState);
-
-        // img.style.boxShadow =
-        //   img.style.boxShadow == "none"
-        //     ? "0 0 10px 5px rgba(0,0,0,0.35)"
-        //     : "none";
       };
       toggleBg.click(); // default is toggle ON
       toolbar.appendChild(toggleBg);
@@ -561,7 +608,6 @@ export default {
           transformStatus.flip_horizontal = true;
         }
       };
-      toolbar.appendChild(flipH);
 
       // flip vertically
       let flipV = document.createElement("div");
@@ -577,7 +623,6 @@ export default {
           transformStatus.flip_vertical = true;
         }
       };
-      toolbar.appendChild(flipV);
 
       // rotate left
       let rotateLeft = document.createElement("div");
@@ -592,7 +637,6 @@ export default {
         transformStatus.rotate = transformStatus.rotate - 90;
         img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
       };
-      toolbar.appendChild(rotateLeft);
 
       // rorate right
       let rotateRight = document.createElement("div");
@@ -607,17 +651,33 @@ export default {
         transformStatus.rotate = transformStatus.rotate + 90;
         img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
       };
-      toolbar.appendChild(rotateRight);
 
       // open in new tab
       let openNewTab = document.createElement("div");
       openNewTab.classList.add("ufs-btn");
+      openNewTab.style.cssText = `
+        border-left: 1px solid #999;
+      `;
       openNewTab.innerText = "↗";
       openNewTab.ufs_title = "Open in new tab";
       openNewTab.onclick = () => {
         window.open(src, "_blank");
       };
-      toolbar.appendChild(openNewTab);
+
+      // download
+      let download = document.createElement("div");
+      download.classList.add("ufs-btn");
+      download.innerText = "⤓";
+      download.ufs_title = "Download";
+      download.onclick = () => {
+        try {
+          let fileName = prompt("Enter file name: ", "image.jpg");
+          if (!fileName) return;
+          UfsGlobal.Utils.saveAs(img.src, fileName);
+        } catch (e) {
+          alert("Error: " + e);
+        }
+      };
 
       // desc
       let desc = document.createElement("div");
@@ -625,54 +685,94 @@ export default {
       desc.textContent = "";
       toolbar.appendChild(desc);
       toolbar.onmousemove = (e) => {
-        if (e.target?.ufs_title && e.target?.ufs_title != desc.textContent) {
+        if (
+          e.target != toolbar &&
+          e.target?.ufs_title &&
+          e.target?.ufs_title != desc.textContent
+        ) {
           desc.textContent = e.target.ufs_title;
+          let x =
+            e.target.offsetLeft +
+            e.target.offsetWidth / 2 -
+            desc.offsetWidth / 2;
+          desc.style.cssText = `left: ${x}px`;
         }
       };
+
+      toolbar.appendChild(sizeEle);
+      toolbar.appendChild(zoomEle);
+      toolbar.appendChild(toggleBg);
+      toolbar.appendChild(flipH);
+      toolbar.appendChild(flipV);
+      toolbar.appendChild(rotateLeft);
+      toolbar.appendChild(rotateRight);
+      toolbar.appendChild(openNewTab);
+      toolbar.appendChild(download);
       toolbar.appendChild(desc);
 
+      UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
+        if (data?.type === "scale") {
+          updateZoom();
+        }
+      });
+
       // auto get largest image
-      let removeTempLoading,
+      let loadingRef,
+        notiRef = UfsGlobal.DOM.notify({
+          msg: `Finding big image...`,
+          duration: 99999,
+        }),
         loaded = false;
       setTimeout(() => {
-        if (!loaded)
-          removeTempLoading = UfsGlobal.DOM.addLoadingAnimation(overlay, 40);
+        if (!loaded) {
+          loadingRef = UfsGlobal.DOM.addLoadingAnimationAtPos(
+            window.innerWidth / 2,
+            window.innerHeight - 130
+          );
+        }
 
         let interval = setInterval(() => {
-          if (loaded) {
-            removeTempLoading?.();
+          if (loaded || !overlay) {
+            loadingRef?.();
+            notiRef?.closeAfter?.(!overlay ? 0 : 3000);
             clearInterval(interval);
           }
         }, 100);
-      }, 300);
+      }, 300); // show loading after 300ms
 
       UfsGlobal.Utils.getLargestImageSrc(src, location.href).then((_src) => {
         if (!_src || _src == src) {
           loaded = true;
+          UfsGlobal.DOM.notify({
+            msg: `Big image not found`,
+            duration: 3000,
+          });
           return;
         }
+
+        notiRef.setText(`Found big image. Loading...`);
 
         let temp = new Image();
         temp.src = _src;
         temp.onload = () => {
+          loaded = true;
+          notiRef.closeAfter(3000);
+
           let curSize = { w: img.naturalWidth, h: img.naturalHeight };
           let newSize = { w: temp.naturalWidth, h: temp.naturalHeight };
-
+          img.src = _src;
+          onFoundBigImg(_src);
           if (curSize.w == newSize.w && curSize.h == newSize.h) {
-            loaded = true;
+            notiRef.setText("Load success: Same size");
             return;
           }
-
-          UfsGlobal.DOM.notify({
-            msg: `Found bigger image: ${curSize.w}x${curSize.h} -> ${newSize.w}x${newSize.h}`,
-            duration: 3000,
-          });
-
-          img.src = _src;
-          loaded = true;
+          notiRef.setText(
+            `Load success: ${curSize.w}x${curSize.h} -> ${newSize.w}x${newSize.h}`
+          );
         };
-        temp.onerror = () => {
+        temp.onerror = (e) => {
           loaded = true;
+          notiRef.setText(`Load failed`);
         };
       });
     }
@@ -683,7 +783,7 @@ export default {
 
     async function magnifyImage(x, y) {
       let ctrlMouse = { x, y };
-      let { remove } = UfsGlobal.DOM.addLoadingAnimationAtPos(
+      let removeLoading = UfsGlobal.DOM.addLoadingAnimationAtPos(
         ctrlMouse.x,
         ctrlMouse.y,
         40,
@@ -691,7 +791,7 @@ export default {
         `background: #eee9;`
       );
       let imgs = await getImagesAtMouse();
-      remove();
+      removeLoading();
 
       if (!imgs.length) {
         UfsGlobal.DOM.notify({

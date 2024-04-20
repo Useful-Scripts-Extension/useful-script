@@ -51,10 +51,11 @@ function sendToPageScript(event, uuid, data) {
       switch (event) {
         case "runInContentScript":
           const { params = [], fnPath = "" } = data || {};
-          let fn = window;
+          let fn = fnPath?.startsWith?.("chrome") ? chrome : window;
           fnPath.split(".").forEach((part) => {
-            fn = fn?.[part];
+            fn = fn?.[part] || fn;
           });
+          console.log("runInContentScript", fnPath, params);
           sendToPageScript(event, uuid, await fn?.(...params));
           break;
       }

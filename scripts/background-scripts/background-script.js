@@ -24,16 +24,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         let body;
 
         // https://github.com/w3c/webextensions/issues/293
-        if (res.headers.get("Content-Type").startsWith("text/")) {
+        try {
+          if (res.headers.get("Content-Type").startsWith("text/")) {
+            body = await res.clone().text();
+          } else if (
+            res.headers.get("Content-Type").startsWith("application/json")
+          ) {
+            body = await res.clone().json();
+          } else {
+            // For other content types, read the body as blob
+            const blob = await res.clone().blob();
+            body = await convertBlobToBase64(blob);
+          }
+        } catch (e) {
           body = await res.clone().text();
-        } else if (
-          res.headers.get("Content-Type").startsWith("application/json")
-        ) {
-          body = await res.clone().json();
-        } else {
-          // For other content types, read the body as blob
-          const blob = await res.clone().blob();
-          body = await convertBlobToBase64(blob);
         }
 
         const data = {

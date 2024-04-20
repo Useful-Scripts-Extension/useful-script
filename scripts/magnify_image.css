@@ -4,7 +4,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #0002;
   z-index: 99998;
 }
 
@@ -21,6 +20,8 @@
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease, background 0s ease;
+  -webkit-backdrop-filter: blur(.1rem);
+  backdrop-filter: blur(.1rem);
 }
 
 #ufs-magnify-choose-image .img-container {
@@ -92,6 +93,8 @@
   background-color: #000d;
   z-index: 99999;
   overflow: hidden;
+  -webkit-backdrop-filter: blur(.1rem);
+  backdrop-filter: blur(.1rem);
 }
 
 #ufs-magnify-image .ufs-toolbar {
@@ -102,10 +105,10 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #111a;
   color: white;
   z-index: 2;
   text-align: center;
+  width: 100%;
 }
 
 #ufs-magnify-image img {
@@ -121,12 +124,23 @@
 #ufs-magnify-image .ufs-btn {
   cursor: pointer;
   padding: 10px;
-  background-color: #111a;
+  margin: 0;
+  background-color: #111d;
   z-index: 1;
+  min-width: 10px;
+  border: none;
+}
+
+#ufs-magnify-image .ufs-btn:first-of-type {
+  border-radius: 0 0 0 5px;
+}
+
+#ufs-magnify-image .ufs-btn:last-of-type {
+  border-radius: 0 0 5px 0;
 }
 
 #ufs-magnify-image .ufs-btn:hover {
-  background: #555a;
+  background: #555d;
 }
 
 #ufs-magnify-image .ufs-desc {
@@ -136,9 +150,10 @@
   background: #333;
   padding: 0 10px 5px;
   border-radius: 0 0 5px 5px;
-  transition: all 0.3s ease;
   pointer-events: none;
   z-index: 0;
+  inline-size: max-content;
+  transition: all 0.3s ease;
 }
 
 #ufs-magnify-image .ufs-toolbar:hover .ufs-desc {

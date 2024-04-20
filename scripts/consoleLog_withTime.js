@@ -10,9 +10,10 @@ export default {
   },
 
   onDocumentStart: () => {
+    const origLog = console.log;
     console.log = function () {
       // add time to console.log
-      UfsGlobal.Origin.consoleLog(
+      origLog(
         `${UfsGlobal.Utils.formatTimeToHHMMSSDD(new Date())} | `,
         ...arguments
       );

@@ -54,7 +54,7 @@ UfsGlobal.DOM = {
   ) {
     let ele = document.createElement("div");
     ele.style.cssText = `
-      position: absolute;
+      position: fixed;
       left: ${x - size / 2}px;
       top: ${y - size / 2}px;
       width: ${size}px;
@@ -66,10 +66,7 @@ UfsGlobal.DOM = {
     `;
     UfsGlobal.DOM.addLoadingAnimation(ele, size, loadingStyle);
     document.body.appendChild(ele);
-    return {
-      ele,
-      remove: () => ele.remove(),
-    };
+    return () => ele.remove();
   },
   addLoadingAnimation(
     element,
@@ -192,6 +189,10 @@ UfsGlobal.DOM = {
 
       var newWidth = element.width * scale;
       var newHeight = element.height * scale;
+
+      if (newWidth < 3 || newHeight < 3) {
+        return;
+      }
 
       var newLeft =
         element.offsetLeft -
@@ -528,6 +529,33 @@ UfsGlobal.DOM = {
   },
 };
 UfsGlobal.Utils = {
+  getResolutionCategory(width, height) {
+    if (width <= 640 && height <= 480) return "SD (480p)";
+    if (width <= 1280 && height <= 720) return "HD (720p)";
+    if (width <= 1600 && height <= 900) return "HD+ (900p)";
+    if (width <= 1920 && height <= 1080) return "FHD (1080p)";
+    if (width <= 2560 && height <= 1440) return "QHD (1440p)";
+    if (width <= 3840 && height <= 2160) return "4K (2160p)";
+    if (width <= 5120 && height <= 2880) return "5K (2880p)";
+    if (width <= 7680 && height <= 4320) return "8K (4320p)";
+    if (width <= 10240 && height <= 4320) return "10K (4320p)";
+    if (width <= 15360 && height <= 8640) return "16K (8640p)";
+    return "> 16K";
+  },
+  async saveAs(url_blob_file, title = "download", options = {}) {
+    try {
+      if (!window.saveAs) {
+        let url = await UfsGlobal.Extension.getURL(
+          "/scripts/libs/file-saver/index.js"
+        );
+        await UfsGlobal.DOM.injectScriptSrcAsync(url);
+      }
+
+      window.saveAs(url_blob_file, title, options);
+    } catch (e) {
+      alert("Error: " + e);
+    }
+  },
   // https://stackoverflow.com/a/67705964/23648002
   isEmoji(text) {
     return text?.match(
@@ -1917,9 +1945,6 @@ UfsGlobal.SnapTik = {
     return payload?.url;
   },
 };
-UfsGlobal.Origin = {
-  consoleLog: console.log,
-};
 UfsGlobal.DEBUG = {
   // Có trang web tự động xoá console để ngăn cản người dùng xem kết quả thực thi câu lệnh trong console
   // Ví dụ: https://beta.nhaccuatui.com/
@@ -2043,6 +2068,13 @@ UfsGlobal.DEBUG = {
   downloadData: UfsGlobal.Utils.downloadData,
 };
 UfsGlobal.largeImgSiteRules = [
+  {
+    // https://cdn.britannica.com/52/241752-050-39026C33/display-resolution-television-tv-screen.jpg?w=400&h=300&c=crop
+    name: "britannica",
+    src: /britannica\.com/,
+    r: /\?.*/,
+    s: "",
+  },
   {
     // https://cdn.akamai.steamstatic.com/steam/apps/2357570/ss_d5acf4945c1f8db3b0bf048c08ba13fd04685ba0.600x338.jpg
     name: "steam static",
@@ -2413,8 +2445,8 @@ UfsGlobal.largeImgSiteRules = [
   {
     name: "imgur",
     src: /imgur\.com\//i,
-    r: [/h(\.[^\/]+)$/i, /maxwidth=\d+/i],
-    s: ["$1", "maxwidth=99999"],
+    r: [/h(\.[^\/]+)$/i, /maxwidth=\d+/i, /s=\d+/],
+    s: ["$1", "maxwidth=99999", ""],
   },
   {
     name: "dmm",
