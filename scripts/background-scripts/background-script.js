@@ -121,15 +121,23 @@ function main() {
           fn = fn?.[part] || fn;
         });
         console.log("runInBackground", fnPath, params);
-        fn?.(...params)?.then((res) => {
+        let res = fn?.(...params);
+
+        if (typeof res?.then === "function") {
+          res.then?.((_res) => {
+            console.log(_res);
+            sendResponse(_res);
+          });
+        } else {
+          console.log(res);
           sendResponse(res);
-        });
+        }
 
         return true;
       }
     } catch (e) {
       console.log("ERROR:", e);
-      sendResponse({ error: error.message });
+      sendResponse({ error: e.message });
     }
   });
 

@@ -52,9 +52,10 @@
 
 - [x] đọc extension samples <https://github.dev/GoogleChrome/chrome-extensions-samples>
   - [x] Run auto script from background service worker chrome.webNavigation.onDOMContentLoaded
-  - [ ] Tìm hiểu chrome.topSites
+  - [x] Sử dụng chrome.downloads
+  - [x] Tìm hiểu chrome.topSites => không có nhiều ý tưởng lắm
   - [ ] permissions userScripts
-  - [ ] chrome.power => keep PC awake
+  - [x] chrome.power => keep PC awake => we dont need this
   - [ ] chrome.windows => merge windows
   - [ ] offscreen clipboard write => Copy selected text on any web?
   - [ ] tabCapture => capture google meet?
