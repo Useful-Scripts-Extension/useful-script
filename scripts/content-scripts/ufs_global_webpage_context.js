@@ -2098,6 +2098,13 @@ UfsGlobal.DEBUG = {
 };
 UfsGlobal.largeImgSiteRules = [
   {
+    // https://i1.sndcdn.com/avatars-IMMW4scIEiCxzOrR-hbX1hw-t240x240.jpg
+    name: "soundcloud",
+    src: /sndcdn\.com/,
+    r: /-t\d+x\d+\./,
+    s: ["-t500x500.", "-t240x240."],
+  },
+  {
     // https://styles.redditmedia.com/t5_c5295/styles/profileIcon_snooe729749b-a6a5-4ef0-bacf-f4a5c8331627-headshot.png?width=64&height=64&frame=1&auto=webp&crop=64:64,smart&s=cb449c2601606d921ba6d2cc6074e5c0d20ddb67
     name: "reddit",
     src: /redditmedia/,
