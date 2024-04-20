@@ -30,7 +30,8 @@ function runScripts(tabId, event, world) {
 }
 
 const global = {
-  fetch: async (url, options) => {
+  log: console.log,
+  async fetch(url, options) {
     const res = await fetch(url, options);
     let body;
 
@@ -64,7 +65,25 @@ const global = {
     console.log("Response from background script:", data);
     return data;
   },
-  log: console.log,
+  async updateScriptClickCount(scriptId) {
+    console.log("updateScriptClickCount", scriptId);
+    return;
+    try {
+      let res = await fetch(
+        "https://useful-script-statistic.glitch.me/count",
+        // "https://useful-script-statistic.onrender.com/count",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ script: scriptId }),
+        }
+      );
+      return await res.text();
+    } catch (e) {
+      console.log("ERROR update script click count: ", e);
+      return null;
+    }
+  },
 };
 
 function main() {
@@ -178,6 +197,8 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
+    global.updateScriptClickCount("ufs-installed");
+    console.log("install");
     chrome.contextMenus.create({
       title: "Magnify this image",
       contexts: ["image"],

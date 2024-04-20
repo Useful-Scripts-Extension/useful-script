@@ -50,6 +50,11 @@ UfsGlobal.Extension = {
       options,
     ]);
   },
+  updateScriptClickCount(scriptId) {
+    return UfsGlobal.Extension.runInBackground("updateScriptClickCount", [
+      scriptId,
+    ]);
+  },
 };
 UfsGlobal.DOM = {
   addLoadingAnimationAtPos(

@@ -28,22 +28,3 @@ export async function viewScriptSource(script) {
     top: 0,
   });
 }
-
-export async function updateScriptClickCount(scriptId) {
-  return;
-  try {
-    let res = await fetch(
-      "https://useful-script-statistic.glitch.me/count",
-      // "https://useful-script-statistic.onrender.com/count",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: scriptId }),
-      }
-    );
-    return await res.text();
-  } catch (e) {
-    console.log("ERROR update script click count: ", e);
-    return null;
-  }
-}

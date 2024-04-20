@@ -21,13 +21,10 @@ import {
   canAutoRun,
   canClick,
   isTitle,
-  updateScriptClickCount,
   viewScriptSource,
 } from "./helpers/utils.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
-
-updateScriptClickCount("ufs_open_extension_popup");
 
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
@@ -159,7 +156,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
       let newValue = await toggleActiveScript(script.id);
-      newValue && updateScriptClickCount(script.id);
+      newValue && UfsGlobal.Extension.updateScriptClickCount(script.id);
       newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
     };
@@ -323,7 +320,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
-      updateScriptClickCount(script.id);
+      UfsGlobal.Extension.updateScriptClickCount(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);
