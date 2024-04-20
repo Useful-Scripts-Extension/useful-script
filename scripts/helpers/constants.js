@@ -13,12 +13,9 @@ export const Events = {
   onDocumentStart: "onDocumentStart",
   onDocumentIdle: "onDocumentIdle",
   onDocumentEnd: "onDocumentEnd",
-};
-
-export const EventMap = {
-  [Events.onDocumentStart]: "document_start",
-  [Events.onDocumentIdle]: "document_idle",
-  [Events.onDocumentEnd]: "document_end",
+  onDocumentStartContentScript: "onDocumentStartContentScript",
+  onDocumentIdleContentScript: "onDocumentIdleContentScript",
+  onDocumentEndContentScript: "onDocumentEndContentScript",
 };
 
 export const AccessToken = {

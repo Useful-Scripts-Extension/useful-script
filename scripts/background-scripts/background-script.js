@@ -29,6 +29,44 @@ function runScripts(tabId, event, world) {
   });
 }
 
+const global = {
+  fetch: async (url, options) => {
+    const res = await fetch(url, options);
+    let body;
+
+    // https://github.com/w3c/webextensions/issues/293
+    try {
+      if (res.headers.get("Content-Type").startsWith("text/")) {
+        body = await res.clone().text();
+      } else if (
+        res.headers.get("Content-Type").startsWith("application/json")
+      ) {
+        body = await res.clone().json();
+      } else {
+        // For other content types, read the body as blob
+        const blob = await res.clone().blob();
+        body = await convertBlobToBase64(blob);
+      }
+    } catch (e) {
+      body = await res.clone().text();
+    }
+
+    const data = {
+      headers: Object.fromEntries(res.headers),
+      ok: res.ok,
+      redirected: res.redirected,
+      status: res.status,
+      statusText: res.statusText,
+      type: res.type,
+      url: res.url,
+      body: body,
+    };
+    console.log("Response from background script:", data);
+    return data;
+  },
+  log: console.log,
+};
+
 function main() {
   // listen change active scripts
   cacheActiveScriptIds();
@@ -38,25 +76,37 @@ function main() {
 
   // listen documentStart
   chrome.webNavigation.onCommitted.addListener((details) => {
-    if (details.frameType == "outermost_frame") {
-      runScripts(details.tabId, "onDocumentStart", MAIN);
-      runScripts(details.tabId, "onDocumentStartContentScript", ISOLATED);
+    try {
+      if (details.frameType == "outermost_frame") {
+        runScripts(details.tabId, "onDocumentStart", MAIN);
+        runScripts(details.tabId, "onDocumentStartContentScript", ISOLATED);
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
     }
   });
 
   // listen documentIdle
   chrome.webNavigation.onDOMContentLoaded.addListener((details) => {
-    if (details.frameType == "outermost_frame") {
-      runScripts(details.tabId, "onDocumentIdle", MAIN);
-      runScripts(details.tabId, "onDocumentIdleContentScript", ISOLATED);
+    try {
+      if (details.frameType == "outermost_frame") {
+        runScripts(details.tabId, "onDocumentIdle", MAIN);
+        runScripts(details.tabId, "onDocumentIdleContentScript", ISOLATED);
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
     }
   });
 
   // listen documentEnd
   chrome.webNavigation.onCompleted.addListener((details) => {
-    if (details.frameType == "outermost_frame") {
-      runScripts(details.tabId, "onDocumentEnd", MAIN);
-      runScripts(details.tabId, "onDocumentEndContentScript", ISOLATED);
+    try {
+      if (details.frameType == "outermost_frame") {
+        runScripts(details.tabId, "onDocumentEnd", MAIN);
+        runScripts(details.tabId, "onDocumentEndContentScript", ISOLATED);
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
     }
   });
 
@@ -64,41 +114,17 @@ function main() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("request", request);
     try {
-      if (request.action === "fetch") {
-        const { url, options } = request.params;
-        fetch(url, options).then(async (res) => {
-          let body;
-
-          // https://github.com/w3c/webextensions/issues/293
-          try {
-            if (res.headers.get("Content-Type").startsWith("text/")) {
-              body = await res.clone().text();
-            } else if (
-              res.headers.get("Content-Type").startsWith("application/json")
-            ) {
-              body = await res.clone().json();
-            } else {
-              // For other content types, read the body as blob
-              const blob = await res.clone().blob();
-              body = await convertBlobToBase64(blob);
-            }
-          } catch (e) {
-            body = await res.clone().text();
-          }
-
-          const data = {
-            headers: Object.fromEntries(res.headers),
-            ok: res.ok,
-            redirected: res.redirected,
-            status: res.status,
-            statusText: res.statusText,
-            type: res.type,
-            url: res.url,
-            body: body,
-          };
-          console.log("Response from background script:", data);
-          sendResponse(data);
+      if (request.action === "runInBackground") {
+        const { params = [], fnPath = "" } = request.data || {};
+        let fn = fnPath?.startsWith("chrome") ? chrome : global;
+        fnPath.split(".").forEach((part) => {
+          fn = fn?.[part] || fn;
         });
+        console.log("runInBackground", fnPath, params);
+        fn?.(...params)?.then((res) => {
+          sendResponse(res);
+        });
+
         return true;
       }
     } catch (e) {

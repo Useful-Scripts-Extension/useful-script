@@ -730,19 +730,13 @@ export default {
       };
 
       // download
-      // let download = document.createElement("div");
-      // download.classList.add("ufs-btn");
-      // download.innerText = "⤓";
-      // download.ufs_title = "Download";
-      // download.onclick = () => {
-      //   try {
-      //     let fileName = prompt("Enter file name: ", "image.jpg");
-      //     if (!fileName) return;
-      //     UfsGlobal.Utils.saveAs(img.src, fileName);
-      //   } catch (e) {
-      //     alert("Error: " + e);
-      //   }
-      // };
+      let download = document.createElement("div");
+      download.classList.add("ufs-btn");
+      download.innerText = "⤓";
+      download.ufs_title = "Download";
+      download.onclick = () => {
+        UfsGlobal.Extension.download({ url: img.src });
+      };
 
       // desc
       let desc = document.createElement("div");
@@ -772,7 +766,7 @@ export default {
       toolbar.appendChild(rotateLeft);
       toolbar.appendChild(rotateRight);
       toolbar.appendChild(openNewTab);
-      // toolbar.appendChild(download);
+      toolbar.appendChild(download);
       toolbar.appendChild(desc);
 
       UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {

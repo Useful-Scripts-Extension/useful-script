@@ -9,7 +9,10 @@ export const canClick = (script) =>
 export const canAutoRun = (script) =>
   Events.onDocumentStart in script ||
   Events.onDocumentIdle in script ||
-  Events.onDocumentEnd in script;
+  Events.onDocumentEnd in script ||
+  Events.onDocumentStartContentScript in script ||
+  Events.onDocumentIdleContentScript in script ||
+  Events.onDocumentEndContentScript in script;
 
 export const isTitle = (script) => !(canAutoRun(script) || canClick(script));
 
@@ -27,6 +30,7 @@ export async function viewScriptSource(script) {
 }
 
 export async function updateScriptClickCount(scriptId) {
+  return;
   try {
     let res = await fetch(
       "https://useful-script-statistic.glitch.me/count",

@@ -1,17 +1,5 @@
 import("./ufs_global_webpage_context.js");
 
-function backgroundFetch(url, options = {}) {
-  return new Promise((resolve) => {
-    chrome.runtime.sendMessage(
-      { action: "fetch", params: { url, options } },
-      function (response) {
-        console.log("Response from background script:", response);
-        resolve(response);
-      }
-    );
-  });
-}
-
 // communication between page-script and content-script
 function sendToPageScript(event, uuid, data) {
   console.log("sendToPageScript", event, uuid, data);
@@ -38,18 +26,28 @@ async function runScript(scriptId, event) {
 }
 
 (async () => {
-  chrome.runtime.onMessage.addListener(async function (
+  chrome.runtime.onMessage.addListener(function (
     message,
     sender,
     sendResponse
   ) {
-    // TODO
+    try {
+      console.log("> Received message:", message);
+
+      switch (message.type) {
+        case "runScript":
+          runScript(message.scriptId, "onClickContentScript");
+          break;
+      }
+    } catch (e) {
+      console.log("ERROR : ", e);
+    }
   });
 
   // listen page script (web page, cannot listen iframes ...)
   window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
+    let { event, data, uuid } = e?.detail || {};
     try {
-      let { event, data, uuid } = e.detail;
       switch (event) {
         case "runInContentScript":
           const { params = [], fnPath = "" } = data || {};
@@ -60,30 +58,19 @@ async function runScript(scriptId, event) {
           console.log("runInContentScript", fnPath, params);
           sendToPageScript(event, uuid, await fn?.(...params));
           break;
+        case "runInBackground":
+          chrome.runtime.sendMessage(
+            { action: "runInBackground", data },
+            function (response) {
+              console.log("Response from background script:", response);
+              sendToPageScript(event, uuid, response);
+            }
+          );
+          break;
       }
     } catch (e) {
       console.log("ERROR: ", e);
+      sendToPageScript(event, uuid, null);
     }
   });
-
-  // Run script on user click (if clicked script has onClickContentScript event)
-  try {
-    const { MsgType, ClickType } = await import("../helpers/constants.js");
-
-    chrome.runtime.onMessage.addListener(async function (
-      message,
-      sender,
-      sendResponse
-    ) {
-      console.log("> Received message:", message);
-
-      switch (message.type) {
-        case MsgType.runScript:
-          runScript(message.scriptId, ClickType.onClickContentScript);
-          break;
-      }
-    });
-  } catch (e) {
-    console.log("ERROR: ", e);
-  }
 })();

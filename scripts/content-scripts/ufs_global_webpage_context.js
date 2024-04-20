@@ -21,27 +21,34 @@ UfsGlobal.Extension = {
     });
   },
   // WARNING: can only transfer serializable data
-  async runInContentScript(fnPath, params) {
-    return await UfsGlobal.Extension.sendToContentScript("runInContentScript", {
+  runInContentScript(fnPath, params) {
+    return UfsGlobal.Extension.sendToContentScript("runInContentScript", {
       fnPath,
       params,
     });
   },
-  async fetchByPassOrigin(url, options = {}) {
+  runInBackground(fnPath, params) {
+    return UfsGlobal.Extension.sendToContentScript("runInBackground", {
+      fnPath,
+      params,
+    });
+  },
+  fetchByPassOrigin(url, options = {}) {
     // same origin case
     if (location.hostname == new URL(url)?.hostname) {
-      return await fetch(url, options);
+      return fetch(url, options);
     }
-    return await UfsGlobal.Extension.runInContentScript("backgroundFetch", [
-      url,
-      options,
+    return UfsGlobal.Extension.runInBackground("fetch", [url, options]);
+  },
+  getURL(filePath) {
+    return UfsGlobal.Extension.runInContentScript("chrome.runtime.getURL", [
+      filePath,
     ]);
   },
-  async getURL(filePath) {
-    return await UfsGlobal.Extension.runInContentScript(
-      "chrome.runtime.getURL",
-      [filePath]
-    );
+  download(options) {
+    return UfsGlobal.Extension.runInBackground("chrome.downloads.download", [
+      options,
+    ]);
   },
 };
 UfsGlobal.DOM = {
@@ -535,6 +542,7 @@ UfsGlobal.Utils = {
       const svgContent = atob(sgvBase64.split(",")[1]);
       const blob = new Blob([svgContent], { type: "image/svg+xml" });
       const url = URL.createObjectURL(blob);
+      setTimeout(() => URL.revokeObjectURL(url), 6e4);
       return url;
     } catch (e) {
       console.log("ERROR: ", e);
@@ -1193,11 +1201,13 @@ UfsGlobal.Utils = {
 
         // Create a link to trigger the download
         const a = document.createElement("a");
-        a.href = URL.createObjectURL(content);
+        const url = URL.createObjectURL(content);
+        a.href = url;
         a.download = zipFileName;
 
         // Trigger a click event to initiate the download
         a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
       });
   },
   async getBlobFromUrl(url) {
