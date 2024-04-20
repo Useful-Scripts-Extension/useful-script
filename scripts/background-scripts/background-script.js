@@ -67,7 +67,7 @@ const global = {
   },
   async updateScriptClickCount(scriptId) {
     console.log("updateScriptClickCount", scriptId);
-    return;
+    // return;
     try {
       let res = await fetch(
         "https://useful-script-statistic.glitch.me/count",
