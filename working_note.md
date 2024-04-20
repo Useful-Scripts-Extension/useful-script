@@ -50,8 +50,8 @@
 
 - [x] hoc regex di <https://github.com/regexhq> <https://www.regexbuddy.com/>
 
-- [ ] đọc extension samples <https://github.dev/GoogleChrome/chrome-extensions-samples>
-  - [ ] Run auto script from background service worker chrome.webNavigation.onDOMContentLoaded
+- [x] đọc extension samples <https://github.dev/GoogleChrome/chrome-extensions-samples>
+  - [x] Run auto script from background service worker chrome.webNavigation.onDOMContentLoaded
   - [ ] Tìm hiểu chrome.topSites
   - [ ] permissions userScripts
   - [ ] chrome.power => keep PC awake

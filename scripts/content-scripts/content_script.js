@@ -1,18 +1,5 @@
 import("./ufs_global_webpage_context.js");
 
-const CACHED = {};
-
-async function getActiveScripts() {
-  const key = "activeScripts";
-  if (!CACHED[key]) {
-    CACHED[key] = {
-      ids: (await chrome.storage.local.get([key]))?.[key] || [],
-      path: chrome.runtime.getURL("/scripts/"),
-    };
-  }
-  return CACHED[key];
-}
-
 function backgroundFetch(url, options = {}) {
   return new Promise((resolve) => {
     chrome.runtime.sendMessage(
@@ -33,6 +20,21 @@ function sendToPageScript(event, uuid, data) {
       detail: { event, uuid, data },
     })
   );
+}
+
+window.ufs_runScritps = runScript;
+function runScripts(scriptIds, event, path) {
+  for (let scriptId of scriptIds) {
+    runScript(scriptId, event);
+  }
+}
+
+async function runScript(scriptId, event) {
+  const script = (await import("/scripts/" + scriptId + ".js"))?.default;
+  if (script && typeof script[event] === "function") {
+    script[event]();
+    console.log("> Run script (content-script): " + scriptId);
+  }
 }
 
 (async () => {
@@ -64,9 +66,6 @@ function sendToPageScript(event, uuid, data) {
     }
   });
 
-  // get active scripts and store in CACHED
-  getActiveScripts();
-
   // Run script on user click (if clicked script has onClickContentScript event)
   try {
     const { MsgType, ClickType } = await import("../helpers/constants.js");
@@ -80,16 +79,7 @@ function sendToPageScript(event, uuid, data) {
 
       switch (message.type) {
         case MsgType.runScript:
-          let scriptId = message.scriptId;
-          const script = (await import("/scripts/" + scriptId + ".js"))
-            ?.default;
-          if (
-            script &&
-            typeof script[ClickType.onClickContentScript] === "function"
-          ) {
-            script[ClickType.onClickContentScript]();
-            console.log("> Run script (content-script): " + scriptId);
-          }
+          runScript(message.scriptId, ClickType.onClickContentScript);
           break;
       }
     });

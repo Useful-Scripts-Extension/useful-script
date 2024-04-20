@@ -22,6 +22,7 @@
     "bookmarks",
     "scripting",
     "contextMenus",
+    "webNavigation",
     "notifications",
     "unlimitedStorage",
     "declarativeNetRequest",
@@ -51,22 +52,6 @@
       ],
       "run_at": "document_start",
       "world": "MAIN",
-      "match_origin_as_fallback": true,
-      "match_about_blank": true
-    },
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/document_idle.js"],
-      "run_at": "document_idle",
-      "world": "ISOLATED",
-      "match_origin_as_fallback": true,
-      "match_about_blank": true
-    },
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/document_end.js"],
-      "run_at": "document_end",
-      "world": "ISOLATED",
       "match_origin_as_fallback": true,
       "match_about_blank": true
     }

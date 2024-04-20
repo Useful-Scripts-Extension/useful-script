@@ -21,7 +21,7 @@ export async function sendEventToTab(tabId, data) {
 
 const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {
-  let list = await getAllActiveScriptId();
+  let list = await getAllActiveScriptIds();
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
@@ -31,11 +31,11 @@ export async function setActiveScript(scriptId, isActive = true) {
 }
 
 export async function isActiveScript(scriptId) {
-  let currentList = await getAllActiveScriptId();
+  let currentList = await getAllActiveScriptIds();
   return currentList.find((_) => _ == scriptId) != null;
 }
 
-export function getAllActiveScriptId() {
+export function getAllActiveScriptIds() {
   return new Promise((resolve) => {
     chrome.storage.local.get([listActiveScriptsKey], (result) => {
       resolve(result[listActiveScriptsKey] || []);
@@ -104,14 +104,19 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScriptInTab = async ({ func, tabId, args = [] }) => {
+export const runScriptInTab = async ({
+  func,
+  tabId,
+  args = [],
+  world = chrome.scripting.ExecutionWorld.MAIN,
+}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
         target: { tabId: tabId },
         func: func,
         args: args,
-        world: chrome.scripting.ExecutionWorld.MAIN,
+        world: world,
         injectImmediately: true,
       },
       (injectionResults) => {
@@ -122,14 +127,19 @@ export const runScriptInTab = async ({ func, tabId, args = [] }) => {
   });
 };
 
-export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
+export const runScriptFile = ({
+  scriptFile,
+  tabId,
+  args = [],
+  world = chrome.scripting.ExecutionWorld.MAIN,
+}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
         target: { tabId: tabId },
         files: [scriptFile],
         args: args,
-        world: chrome.scripting.ExecutionWorld.MAIN,
+        world: world,
         injectImmediately: true,
       },
       (injectionResults) => {
@@ -140,16 +150,16 @@ export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
   });
 };
 
-export const runScriptInCurrentTab = async (func, args) => {
+export const runScriptInCurrentTab = async (func, args, world) => {
   const tab = await getCurrentTab();
   focusToTab(tab);
-  return await runScriptInTab({ func, args, tabId: tab.id });
+  return await runScriptInTab({ func, args, tabId: tab.id, world });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile, args) => {
+export const runScriptFileInCurrentTab = async (scriptFile, args, world) => {
   const tab = await getCurrentTab();
   focusToTab();
-  return await runScriptFile({ scriptFile, args, tabId: tab.id });
+  return await runScriptFile({ scriptFile, args, tabId: tab.id, world });
 };
 
 export function checkBlackWhiteList(script, url) {
@@ -235,6 +245,20 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
 }
 
 // #endregion
+
+export const convertBlobToBase64 = (blob) =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+      resolve(null);
+    };
+  });
 
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
@@ -426,69 +450,6 @@ export function openPopupWithHtml(html, width = 300, height = 300) {
   return {
     closePopup: () => win?.close?.(),
   };
-}
-
-/*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
-    that detects and handles AJAXed content. Forked for use without JQuery.
-    Usage example:
-        waitForKeyElements (
-            "div.comments"
-            , commentCallbackFunction
-        );
-        //--- Page-specific function to do what we want when the node is found.
-        function commentCallbackFunction (element) {
-            element.text ("This comment changed by waitForKeyElements().");
-        }
-
-    IMPORTANT: Without JQuery, this fork does not look into the content of
-    iframes.
-*/
-export function waitForKeyElements(
-  selectorTxt /* Required: The selector string that specifies the desired element(s).*/,
-  actionFunction /* Required: The code to run when elements are found. It is passed a jNode to the matched element.*/,
-  bWaitOnce /* Optional: If false, will continue to scan for new elements even after the first match is found.*/
-) {
-  let targetNodes, btargetsFound;
-  targetNodes = document.querySelectorAll(selectorTxt);
-
-  if (targetNodes && targetNodes.length > 0) {
-    btargetsFound = true;
-    /*--- Found target node(s).  Go through each and act if they are new. */
-    targetNodes.forEach(function (element) {
-      let alreadyFound =
-        element.dataset.found == "alreadyFound" ? "alreadyFound" : false;
-
-      if (!alreadyFound) {
-        //--- Call the payload function.
-        let cancelFound = actionFunction(element);
-        if (cancelFound) btargetsFound = false;
-        else element.dataset.found = "alreadyFound";
-      }
-    });
-  } else {
-    btargetsFound = false;
-  }
-
-  //--- Get the timer-control letiable for this selector.
-  let controlObj = waitForKeyElements.controlObj || {};
-  let controlKey = selectorTxt.replace(/[^\w]/g, "_");
-  let timeControl = controlObj[controlKey];
-
-  //--- Now set or clear the timer as appropriate.
-  if (btargetsFound && bWaitOnce && timeControl) {
-    //--- The only condition where we need to clear the timer.
-    clearInterval(timeControl);
-    delete controlObj[controlKey];
-  } else {
-    //--- Set a timer, if needed.
-    if (!timeControl) {
-      timeControl = setInterval(function () {
-        waitForKeyElements(selectorTxt, actionFunction, bWaitOnce);
-      }, 300);
-      controlObj[controlKey] = timeControl;
-    }
-  }
-  waitForKeyElements.controlObj = controlObj;
 }
 
 // #endregion

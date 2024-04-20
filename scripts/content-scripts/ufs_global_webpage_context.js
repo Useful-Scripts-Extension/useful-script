@@ -7,7 +7,6 @@ UfsGlobal.Extension = {
       let listenerKey = "ufs-contentscript-sendto-pagescript";
       let uuid = Math.random().toString(36);
       let listener = (evt) => {
-        console.log(evt);
         if (evt.detail.event === event && evt.detail.uuid === uuid) {
           resolve(evt.detail.data);
           window.removeEventListener(listenerKey, listener);
@@ -28,7 +27,11 @@ UfsGlobal.Extension = {
       params,
     });
   },
-  async backgroundFetch(url, options = {}) {
+  async fetchByPassOrigin(url, options = {}) {
+    // same origin case
+    if (location.hostname == new URL(url)?.hostname) {
+      return await fetch(url, options);
+    }
     return await UfsGlobal.Extension.runInContentScript("backgroundFetch", [
       url,
       options,
@@ -39,9 +42,6 @@ UfsGlobal.Extension = {
       "chrome.runtime.getURL",
       [filePath]
     );
-  },
-  async getActiveScripts() {
-    return await UfsGlobal.Extension.runInContentScript("getActiveScripts");
   },
 };
 UfsGlobal.DOM = {
@@ -607,7 +607,7 @@ UfsGlobal.Utils = {
   async getRedirectedUrl(url) {
     try {
       while (true) {
-        let res = await UfsGlobal.Extension.backgroundFetch(url, {
+        let res = await UfsGlobal.Extension.fetchByPassOrigin(url, {
           method: "HEAD",
         });
         if (res.redirected) {
@@ -961,7 +961,7 @@ UfsGlobal.Utils = {
   },
   async isImageSrc(src) {
     try {
-      const res = await UfsGlobal.Extension.backgroundFetch(src, {
+      const res = await UfsGlobal.Extension.fetchByPassOrigin(src, {
         method: "HEAD",
       });
       console.log("isImageSrc: " + src + " -> ", res);

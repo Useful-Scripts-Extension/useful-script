@@ -1,68 +1,20 @@
-// Để script thực thi ngay sau khi inject, thì cần hạn chế tối đa việc await import các file js khác
-// Do await import sẽ tốn 1 khoảng thời gian nhỏ, từ đó script cần chạy sẽ ko chạy đúng thời điểm
-// Đặc biệt là thời điểm document_start, lỡ await 1 nhịp là script của trang web sẽ chạy trước script của extension
-// Làm cho chức năng chạy không còn chính xác, hoặc ko chạy luôn :)
-
-// Do đó các hàm cần thiết nên ghi hết vào trong file này
-// Kể cả việc nó đã được viết ở file khác (utils, helper, ...)
-// Quá trình maintain sẽ khó hơn 1 chút, nhưng script sẽ chạy chính xác hơn
-
-(async () => {
-  const CACHED = {};
-  const storage_key = "ufs_active_scripts";
+(() => {
+  const CACHED = {
+    activeScriptIds: [],
+    path: "",
+  };
 
   // run script on receive event
   window.addEventListener("ufs-run-page-scripts", async ({ detail }) => {
     console.log("ufs-run-page-scripts", detail);
-    const { ids, path } = (await getActiveScripts()) || {};
-    runScripts(ids, detail.event, path);
+    runScripts(CACHED.activeScriptIds, detail.event, CACHED.path);
   });
 
-  // save active script before unload
-  window.addEventListener("beforeunload", () => {
-    saveActiveScript();
-  });
-
-  main();
-
-  async function main() {
-    const { ids, path } = (await getActiveScripts()) || {};
-    runScripts(ids, "onDocumentStart", path);
-  }
-
-  async function getActiveScripts() {
-    if (!CACHED[storage_key]) {
-      try {
-        let ids, path;
-        // const res = JSON.parse(localStorage.getItem(storage_key) || "{}");
-        // ids = res?.ids;
-        // path = res?.path || "";
-        // if (typeof ids === "string") ids = ids.split(",");
-
-        if (!ids || !path) {
-          const data = await UfsGlobal?.Extension?.getActiveScripts?.();
-          ids = data?.ids || [];
-          path = data?.path || "";
-        }
-
-        CACHED[storage_key] = { ids, path };
-        saveActiveScript();
-      } catch (e) {
-        console.log("ERRO ufs", e);
-      }
-    }
-    return CACHED[storage_key];
-  }
-
-  function saveActiveScript() {
-    try {
-      localStorage.setItem(storage_key, JSON.stringify(CACHED[storage_key]));
-    } catch (e) {
-      console.log("SAVE active script ERROR: ", e);
-    }
-  }
-
+  window.ufs_runScritps = runScripts;
   function runScripts(scriptIds, event, path) {
+    CACHED.activeScriptIds = scriptIds;
+    CACHED.path = path;
+
     for (let id of scriptIds.filter((_) => _)) {
       let scriptPath = `${path}/${id}.js`;
       import(scriptPath)
