@@ -10,7 +10,7 @@
     runScripts(CACHED.activeScriptIds, detail.event, CACHED.path);
   });
 
-  window.ufs_runScritps = runScripts;
+  window.runScripts = runScripts;
   function runScripts(scriptIds, event, path) {
     CACHED.activeScriptIds = scriptIds;
     CACHED.path = path;

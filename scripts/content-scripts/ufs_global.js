@@ -34,11 +34,21 @@ UfsGlobal.Extension = {
     });
   },
   fetchByPassOrigin(url, options = {}) {
-    // same origin case
-    if (location.hostname == new URL(url)?.hostname) {
-      return fetch(url, options);
-    }
-    return UfsGlobal.Extension.runInBackground("fetch", [url, options]);
+    return new Promise((resolve, reject) => {
+      let urlObject = new URL(url);
+      // https://stackoverflow.com/a/9375786/23648002
+      if (location.hostname == urlObject?.hostname) {
+        url = urlObject.pathname;
+      }
+      fetch(url, options)
+        .then(resolve)
+        .catch((e) => {
+          console.log("NORMAL FETCH FAIL: ", e);
+          UfsGlobal.Extension.runInBackground("fetch", [url, options])
+            .then(resolve)
+            .catch(reject);
+        });
+    });
   },
   getURL(filePath) {
     return UfsGlobal.Extension.runInContentScript("chrome.runtime.getURL", [
@@ -50,10 +60,8 @@ UfsGlobal.Extension = {
       options,
     ]);
   },
-  updateScriptClickCount(scriptId) {
-    return UfsGlobal.Extension.runInBackground("updateScriptClickCount", [
-      scriptId,
-    ]);
+  trackingUseScript(scriptId) {
+    return UfsGlobal.Extension.runInBackground("trackingUseScript", [scriptId]);
   },
 };
 UfsGlobal.DOM = {

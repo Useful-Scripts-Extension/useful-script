@@ -8,7 +8,7 @@
 
 - [ ] zing mp3 - có api ngon mà chưa dùng hết chức năng
 
-- [ ] tất cả các script inject code vào website cần update để tuân thủ TrustedScript
+- [x] tất cả các script inject code vào website cần update để tuân thủ TrustedScript
 
 - [ ] Tổng hợp các chức năng tải hàng loạt fb vào 1 trang web mới
 

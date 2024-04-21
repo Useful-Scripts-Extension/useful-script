@@ -3,6 +3,7 @@ import {
   convertBlobToBase64,
   runScriptInTab,
   getAllActiveScriptIds,
+  trackingUseScript,
 } from "../helpers/utils.js";
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
@@ -22,7 +23,7 @@ function runScripts(tabId, event, world) {
   runScriptInTab({
     tabId: tabId,
     func: (scriptIds, event, path) => {
-      window.ufs_runScritps?.(scriptIds, event, path);
+      window.runScripts?.(scriptIds, event, path);
     },
     args: [CACHED.activeScriptIds, event, CACHED.path],
     world,
@@ -31,6 +32,7 @@ function runScripts(tabId, event, world) {
 
 const global = {
   log: console.log,
+  trackingUseScript,
   async fetch(url, options) {
     const res = await fetch(url, options);
     let body;
@@ -64,25 +66,6 @@ const global = {
     };
     console.log("Response from background script:", data);
     return data;
-  },
-  async updateScriptClickCount(scriptId) {
-    console.log("updateScriptClickCount", scriptId);
-    // return;
-    try {
-      let res = await fetch(
-        "https://useful-script-statistic.glitch.me/count",
-        // "https://useful-script-statistic.onrender.com/count",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ script: scriptId }),
-        }
-      );
-      return await res.text();
-    } catch (e) {
-      console.log("ERROR update script click count: ", e);
-      return null;
-    }
   },
 };
 
@@ -197,8 +180,9 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
-    global.updateScriptClickCount("ufs-installed");
-    console.log("install");
+    global.trackingUseScript("ufs-installed");
+    console.log("installed", version);
+
     chrome.contextMenus.create({
       title: "Magnify this image",
       contexts: ["image"],

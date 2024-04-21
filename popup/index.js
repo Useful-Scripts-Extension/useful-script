@@ -8,6 +8,7 @@ import {
   runScriptInCurrentTab,
   sendEventToTab,
   toggleActiveScript,
+  trackingUseScript,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
@@ -156,7 +157,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
       let newValue = await toggleActiveScript(script.id);
-      newValue && UfsGlobal.Extension.updateScriptClickCount(script.id);
+      newValue && trackingUseScript(script.id);
       newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
     };
@@ -320,7 +321,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
-      UfsGlobal.Extension.updateScriptClickCount(script.id);
+      trackingUseScript(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);

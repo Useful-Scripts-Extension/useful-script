@@ -48,8 +48,8 @@
     {
       "matches": ["<all_urls>"],
       "js": [
-        "scripts/content-scripts/ufs_global_webpage_context.js",
-        "scripts/content-scripts/run_scripts.js"
+        "scripts/content-scripts/ufs_global.js",
+        "scripts/content-scripts/page_scripts.js"
       ],
       "run_at": "document_start",
       "world": "MAIN",

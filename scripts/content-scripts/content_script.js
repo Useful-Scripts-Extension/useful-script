@@ -1,4 +1,4 @@
-import("./ufs_global_webpage_context.js");
+import("./ufs_global.js");
 
 // communication between page-script and content-script
 function sendToPageScript(event, uuid, data) {
@@ -10,7 +10,7 @@ function sendToPageScript(event, uuid, data) {
   );
 }
 
-window.ufs_runScritps = runScripts;
+window.runScripts = runScripts;
 function runScripts(scriptIds, event, path) {
   for (let scriptId of scriptIds) {
     runScript(scriptId, event);

@@ -1,3 +1,29 @@
+//  Utils used by popup and background-script
+
+const { version } = chrome.runtime.getManifest();
+
+export async function trackingUseScript(scriptId) {
+  console.log("trackingUseScript", scriptId);
+  try {
+    let res = await fetch(
+      "https://useful-script-statistic.glitch.me/count",
+      // "https://useful-script-statistic.onrender.com/count",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          script: scriptId,
+          version: version,
+        }),
+      }
+    );
+    return await res.text();
+  } catch (e) {
+    console.log("ERROR update script click count: ", e);
+    return null;
+  }
+}
+
 export async function sendEventToTab(tabId, data) {
   console.log("... Sending ", data, " to tab...");
   const response = await chrome.tabs.sendMessage(tabId, data);
