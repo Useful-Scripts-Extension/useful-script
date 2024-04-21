@@ -8,7 +8,7 @@ import {
   runScriptInCurrentTab,
   sendEventToTab,
   toggleActiveScript,
-  trackingUseScript,
+  trackEvent,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
@@ -37,8 +37,10 @@ function initLanguage() {
   flagImg.setAttribute("src", getFlag());
 
   flagImg.onclick = () => {
-    toggleLang();
+    let newLang = toggleLang();
     flagImg.setAttribute("src", getFlag());
+
+    trackEvent("change-language-" + newLang);
 
     // reset UI
     createTabs();
@@ -157,7 +159,7 @@ function createScriptButton(script, isFavorite = false) {
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
       let newValue = await toggleActiveScript(script.id);
-      newValue && trackingUseScript(script.id);
+      trackEvent(script.id + (newValue ? "-ON" : "-OFF"));
       newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
     };
@@ -321,7 +323,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
-      trackingUseScript(script.id);
+      trackEvent(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);
@@ -385,8 +387,20 @@ function initSearch() {
   });
 }
 
+function initTracking() {
+  let trackingEles = document.querySelectorAll("[data-track]");
+
+  trackingEles.forEach((ele) => {
+    ele.onclick = () => {
+      trackEvent("click_" + ele.getAttribute("data-track"));
+    };
+  });
+}
+
 (async function () {
-  // initOpenInNewTabBtn();
+  trackEvent("open-popup");
+
+  initTracking();
   initSearch();
   initLanguage();
   createTabs();

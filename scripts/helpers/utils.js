@@ -2,8 +2,8 @@
 
 const { version } = chrome.runtime.getManifest();
 
-export async function trackingUseScript(scriptId) {
-  console.log("trackingUseScript", scriptId);
+export async function trackEvent(scriptId) {
+  console.log("trackEvent", scriptId);
   try {
     let res = await fetch(
       "https://useful-script-statistic.glitch.me/count",

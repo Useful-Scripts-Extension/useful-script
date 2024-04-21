@@ -886,17 +886,17 @@ export default {
     window.ufs_magnify_image_magnifyImage = magnifyImage;
 
     // TODO: we dont need this anymore
-    window.addEventListener("message", (e) => {
-      let data = e.data?.data;
-      if (data?.menuItemId === "ufs-magnify-image") {
-        console.log("magnify image window message", e);
-        createPreview(
-          data?.srcUrl,
-          window.innerWidth / 2,
-          window.innerHeight / 2
-        );
-      }
-    });
+    // window.addEventListener("message", (e) => {
+    //   let data = e.data?.data;
+    //   if (data?.menuItemId === "ufs-magnify-image") {
+    //     console.log("magnify image window message", e);
+    //     createPreview(
+    //       data?.srcUrl,
+    //       window.innerWidth / 2,
+    //       window.innerHeight / 2
+    //     );
+    //   }
+    // });
 
     // inject css
     UfsGlobal.Extension.getURL("/scripts/magnify_image.css").then((url) => {
@@ -904,6 +904,7 @@ export default {
     });
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
+      UfsGlobal.Extension.trackEvent("magnify-image-Ctrl");
       magnifyImage(mouse.x, mouse.y);
     });
     // #endregion

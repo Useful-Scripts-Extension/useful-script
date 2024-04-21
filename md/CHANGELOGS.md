@@ -1,7 +1,7 @@
 ## Change logs
 
 <details>
-  <summary>v1564-hotfix - 08/04/2024</summary>
+  <summary>v1.65-hotfix - 08/04/2024</summary>
 
   Fix các chức năng tự động chạy
 

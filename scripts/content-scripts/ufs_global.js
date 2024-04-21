@@ -60,8 +60,8 @@ UfsGlobal.Extension = {
       options,
     ]);
   },
-  trackingUseScript(scriptId) {
-    return UfsGlobal.Extension.runInBackground("trackingUseScript", [scriptId]);
+  trackEvent(scriptId) {
+    return UfsGlobal.Extension.runInBackground("trackEvent", [scriptId]);
   },
 };
 UfsGlobal.DOM = {

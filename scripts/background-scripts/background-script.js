@@ -3,7 +3,7 @@ import {
   convertBlobToBase64,
   runScriptInTab,
   getAllActiveScriptIds,
-  trackingUseScript,
+  trackEvent,
 } from "../helpers/utils.js";
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
@@ -32,7 +32,7 @@ function runScripts(tabId, event, world) {
 
 const global = {
   log: console.log,
-  trackingUseScript,
+  trackEvent,
   async fetch(url, options) {
     const res = await fetch(url, options);
     let body;
@@ -180,8 +180,7 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
-    global.trackingUseScript("ufs-installed");
-    console.log("installed", version);
+    global.trackEvent("ufs-installed");
 
     chrome.contextMenus.create({
       title: "Magnify this image",
