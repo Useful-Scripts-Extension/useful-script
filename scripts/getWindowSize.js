@@ -11,10 +11,9 @@ export default {
 
   onClick: function () {
     alert(
-      "Window inner dimensions:\n\n   " +
-        document.body.clientWidth +
-        " x " +
-        document.body.clientHeight
+      `Window inner dimensions:\n
+      website: ${window.innerWidth} x ${window.innerHeight}
+      your screen: ${screen.width} x ${screen.height}`
     );
   },
 };

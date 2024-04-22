@@ -96,7 +96,7 @@ const tabs = [
         onClickExtension: () =>
           window.open("https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"),
       },
-      // s.bookmark_exporter,
+      s.bookmark_exporter,
       s.twitter_downloadButton,
       createTitle("--- Photos ---", "--- Ảnh ---"),
       addBadge(
