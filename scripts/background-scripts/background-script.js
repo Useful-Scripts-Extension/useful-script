@@ -11,6 +11,11 @@ const CACHED = {
   activeScriptIds: [],
   path: chrome.runtime.getURL("/scripts/"),
 };
+const GLOBAL = {
+  log: console.log,
+  trackEvent,
+  fetch: customFetch,
+};
 
 function cacheActiveScriptIds() {
   getAllActiveScriptIds().then((ids) => {
@@ -30,10 +35,8 @@ function runScripts(tabId, event, world) {
   });
 }
 
-const global = {
-  log: console.log,
-  trackEvent,
-  async fetch(url, options) {
+async function customFetch(url, options) {
+  try {
     const res = await fetch(url, options);
     let body;
 
@@ -66,8 +69,11 @@ const global = {
     };
     console.log("Response from background script:", data);
     return data;
-  },
-};
+  } catch (e) {
+    console.log("Fetch failed:", e);
+    return null;
+  }
+}
 
 function main() {
   // listen change active scripts
@@ -118,7 +124,7 @@ function main() {
     try {
       if (request.action === "runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
-        let fn = fnPath?.startsWith("chrome") ? chrome : global;
+        let fn = fnPath?.startsWith("chrome") ? chrome : GLOBAL;
         fnPath.split(".").forEach((part) => {
           fn = fn?.[part] || fn;
         });
@@ -146,6 +152,7 @@ function main() {
   chrome.contextMenus.onClicked.addListener((info) => {
     console.log(info);
     if (info.menuItemId == "ufs-magnify-image") {
+      trackEvent("magnify-image-context-menu");
       /*
       {
         "editable": false,
@@ -180,7 +187,7 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
-    global.trackEvent("ufs-installed");
+    GLOBAL.trackEvent("ufs-installed");
 
     chrome.contextMenus.create({
       title: "Magnify this image",
