@@ -44,16 +44,19 @@ export default {
       },
     };
 
-    // https://linkunshorten.com/
-    const linkunshorten = {
-      async getLongUrl(shortURL) {
-        let res = await fetch(
-          "https://linkunshorten.com/api/link?url=" + shortURL
-        );
-        let text = await res.text();
-        return JSON.parse(text || "");
+    const customs = [
+      {
+        name: "shrinkearn.com",
+        fn: (url) => {
+          let u = new URL(url);
+          let host = u.hostname;
+          let url_param = u.searchParams.get("url");
+          if (host == "shrinkearn.com" && url_param) {
+            return atob(url_param);
+          }
+        },
       },
-    };
+    ];
 
     let short_url = prompt("Nhập URL đã rút gọn: ");
     if (short_url) {
@@ -64,24 +67,30 @@ export default {
       //     "&source=chromeextension"
       // );
 
-      const { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
+      const { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");
       try {
         let long_url;
-        try {
+        for (let c of customs) {
+          try {
+            setLoadingText(
+              "Đang giải mã link rút gọn...<br/>Sử dụng " + c.name
+            );
+            long_url = await c.fn(short_url);
+            if (long_url) break;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
+        if (!long_url) {
           setLoadingText(
-            "Đang giải mã link rút gọn...<br/>Sử dụng linkunshorten.com"
-          );
-          long_url = await linkunshorten.getLongUrl(short_url);
-          if (long_url == short_url) throw Error();
-        } catch (e) {
-          setLoadingText(
-            "Đang giải mã link rút gọn...<br/>Sử dụng unshorten.it"
+            "Đang giải mã link rút gọn...<br/>Sử dụng unshorten.com"
           );
           long_url = await unshortenIt.getLongUrl(short_url);
         }
-        long_url
-          ? prompt("Link gốc của " + short_url, long_url)
-          : alert("Không tìm thấy link gốc");
+        if (!long_url || long_url == short_url)
+          alert("Không tìm thấy link gốc");
+        else prompt("Link gốc của " + short_url, long_url);
       } catch (e) {
         prompt(
           "Lỗi: " + e + "\n\nBạn có thể mở trang web bên dưới để thử lại:",
