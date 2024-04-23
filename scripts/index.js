@@ -161,6 +161,7 @@ import auto_redirectLargestImageSrc from "./auto_redirectLargestImageSrc.js";
 import textToQrCode from "./textToQrCode.js";
 import insta_anonymousStoryViewer from "./insta_anonymousStoryViewer.js";
 import removeWebLimit from "./removeWebLimit.js";
+import _ufs_statistic from "./_ufs_statistic.js";
 
 // inject badges
 const allScripts = {
@@ -338,6 +339,7 @@ const allScripts = {
   textToQrCode: addBadge(textToQrCode, BADGES.new),
   insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
   removeWebLimit: addBadge(removeWebLimit, BADGES.hot),
+  _ufs_statistic: _ufs_statistic,
 };
 
 // alert(Object.keys(allScripts).length);

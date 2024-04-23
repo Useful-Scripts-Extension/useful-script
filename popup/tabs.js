@@ -30,6 +30,7 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       s._test,
+      s._ufs_statistic,
       {
         id: "recommend_search_userscript",
         icon: "https://www.userscript.zone/favicon.ico",
