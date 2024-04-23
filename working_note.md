@@ -60,3 +60,5 @@
   - [ ] offscreen clipboard write => Copy selected text on any web?
   - [ ] tabCapture => capture google meet?
   - [ ] webSocket => do something great?
+
+- [ ] Thêm change logs cho từng scripts
