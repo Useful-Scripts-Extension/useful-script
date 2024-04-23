@@ -82,6 +82,12 @@ export default {
               (scriptNameCount.get(scriptName) || 0) + 1
             );
           });
+
+          // sort by values
+          const scriptNameCountSorted = new Map(
+            [...scriptNameCount.entries()].sort((a, b) => b[1] - a[1])
+          );
+
           const canvas2 = document.createElement("canvas");
           canvas2.style.cssText = "max-width: 300px; max-height: 300px;";
           document.body.prepend(canvas2);
@@ -89,10 +95,10 @@ export default {
           const scriptNameChart = new Chart(ctx2, {
             type: "doughnut",
             data: {
-              labels: Array.from(scriptNameCount.keys()),
+              labels: Array.from(scriptNameCountSorted.keys()),
               datasets: [
                 {
-                  data: Array.from(scriptNameCount.values()),
+                  data: Array.from(scriptNameCountSorted.values()),
                   backgroundColor: [
                     "rgb(255, 99, 132)",
                     "rgb(255, 159, 64)",
@@ -110,6 +116,10 @@ export default {
               plugins: {
                 legend: {
                   display: false,
+                },
+                title: {
+                  display: true,
+                  text: `Number of logs per script name (${scriptNameCount.size} scripts)`,
                 },
               },
               responsive: true,
@@ -167,6 +177,13 @@ export default {
               },
             },
           });
+
+          // ======================== Average section ========================
+          const h1 = document.createElement("h1");
+          h1.textContent = `${logData.length} logs,
+          ${scriptNameCount.size} scripts used
+          (~${~~(logData.length / new Date().getHours())} scripts/hour)`;
+          document.body.prepend(h1);
         }
       );
     })();
