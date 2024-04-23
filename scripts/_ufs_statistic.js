@@ -41,7 +41,7 @@ export default {
             logsPerHour[hour]++;
           });
 
-          // ======================== Per script name ========================
+          //#region ======================== Per script name ========================
           const scriptNameCount = new Map();
           logData.forEach((log) => {
             let lastColon = log.lastIndexOf(":");
@@ -95,7 +95,9 @@ export default {
             },
           });
 
-          // ======================== Per script name Per hour ========================
+          // #endregion
+
+          //#region ======================== Per script name Per hour ========================
           //   Stacked Bar Chart for each script
           const scriptNamePerHour_dataset = Array.from(
             scriptNameCount.keys()
@@ -111,7 +113,7 @@ export default {
               }
             });
             return {
-              label: scriptName,
+              label: scriptName + " (" + scriptNameCount.get(scriptName) + ")",
               data,
               backgroundColor: randColor(),
               stack: "combined",
@@ -144,6 +146,16 @@ export default {
             },
           });
 
+          const toggleBtn = document.createElement("button");
+          toggleBtn.textContent = "Show/hide all";
+          toggleBtn.onclick = function () {
+            scriptNamePerHourChart.data.datasets.forEach(function (ds) {
+              ds.hidden = !ds.hidden;
+            });
+            scriptNamePerHourChart.update();
+          };
+          // #endregion
+
           // ======================== Average section ========================
           const h1 = document.createElement("h1");
           h1.textContent = `${logData.length} logs,
@@ -151,7 +163,7 @@ export default {
           (~${~~(logData.length / new Date().getHours())} scripts/hour)`;
 
           // ======================== Append Charts ========================
-          document.body.prepend(h1, canvas, canvas2);
+          document.body.prepend(h1, toggleBtn, canvas, canvas2);
         }
       );
     })();
