@@ -23,8 +23,6 @@ export default {
 
           let logData = document.body.innerText.split("\n");
 
-          // ======================== Per hours ========================
-
           // Function to extract time from log data
           function extractTime(log) {
             let lastColon = log.lastIndexOf(":");
@@ -32,43 +30,15 @@ export default {
             return new Date(time);
           }
 
+          function randColor() {
+            return "#" + Math.floor(Math.random() * 16777215).toString(16);
+          }
+
           // Count logs per hour
           const logsPerHour = Array(24).fill(0);
           logData.forEach((log) => {
             const hour = extractTime(log).getHours();
             logsPerHour[hour]++;
-          });
-
-          // Chart.js code to draw the graph
-          const canvas = document.createElement("canvas");
-          canvas.style.cssText = "max-width: 900px; max-height: 300px;";
-          document.body.prepend(canvas);
-          const ctx = canvas.getContext("2d");
-          const logTimelineChart = new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
-              datasets: [
-                {
-                  label: "Number of Logs",
-                  data: logsPerHour,
-                  borderColor: "rgb(75, 192, 192)",
-                  tension: 0.1,
-                  fill: false,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              interaction: {
-                intersect: false,
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                },
-              },
-            },
           });
 
           // ======================== Per script name ========================
@@ -89,8 +59,7 @@ export default {
           );
 
           const canvas2 = document.createElement("canvas");
-          canvas2.style.cssText = "max-width: 300px; max-height: 300px;";
-          document.body.prepend(canvas2);
+          canvas2.style.cssText = "max-height: 500px;";
           const ctx2 = canvas2.getContext("2d");
           const scriptNameChart = new Chart(ctx2, {
             type: "doughnut",
@@ -144,37 +113,34 @@ export default {
             return {
               label: scriptName,
               data,
-              backgroundColor: `rgb(${Math.floor(
-                Math.random() * 255
-              )},${Math.floor(Math.random() * 255)},${Math.floor(
-                Math.random() * 255
-              )})`,
+              backgroundColor: randColor(),
+              stack: "combined",
+              type: "bar",
             };
           });
 
-          const canvas3 = document.createElement("canvas");
-          canvas3.style.cssText = "max-width: 900px; max-height: 300px;";
-          document.body.prepend(canvas3);
-          const ctx3 = canvas3.getContext("2d");
+          const canvas = document.createElement("canvas");
+          canvas.style.cssText = "max-height: 500px;";
+          const ctx3 = canvas.getContext("2d");
           const scriptNamePerHourChart = new Chart(ctx3, {
-            type: "bar",
+            type: "line",
             data: {
               labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
-              datasets: scriptNamePerHour_dataset,
+              datasets: scriptNamePerHour_dataset.concat({
+                label: "Total",
+                data: logsPerHour,
+                borderColor: "rgb(75, 192, 192)",
+                type: "line",
+                fill: false,
+                tension: 0.5,
+              }),
             },
             options: {
-              interaction: {
-                intersect: false,
+              datalabels: {
+                display: true,
+                formatter: (value) => value > 0,
               },
               responsive: true,
-              scales: {
-                x: {
-                  stacked: true,
-                },
-                y: {
-                  stacked: true,
-                },
-              },
             },
           });
 
@@ -183,7 +149,9 @@ export default {
           h1.textContent = `${logData.length} logs,
           ${scriptNameCount.size} scripts used
           (~${~~(logData.length / new Date().getHours())} scripts/hour)`;
-          document.body.prepend(h1);
+
+          // ======================== Append Charts ========================
+          document.body.prepend(h1, canvas, canvas2);
         }
       );
     })();
