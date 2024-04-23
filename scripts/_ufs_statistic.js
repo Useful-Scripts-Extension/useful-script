@@ -117,6 +117,56 @@ export default {
           });
 
           // ======================== Per script name Per hour ========================
+          //   Stacked Bar Chart for each script
+          const scriptNamePerHour_dataset = Array.from(
+            scriptNameCount.keys()
+          ).map((scriptName) => {
+            const data = Array(24).fill(0);
+            logData.forEach((log) => {
+              let lastColon = log.lastIndexOf(":");
+              let lastArrow = log.lastIndexOf("->");
+              let scriptName_log = log.substring(lastColon + 1, lastArrow - 1);
+              if (scriptName_log === scriptName) {
+                let hour = extractTime(log).getHours();
+                data[hour]++;
+              }
+            });
+            return {
+              label: scriptName,
+              data,
+              backgroundColor: `rgb(${Math.floor(
+                Math.random() * 255
+              )},${Math.floor(Math.random() * 255)},${Math.floor(
+                Math.random() * 255
+              )})`,
+            };
+          });
+
+          const canvas3 = document.createElement("canvas");
+          canvas3.style.cssText = "max-width: 900px; max-height: 300px;";
+          document.body.prepend(canvas3);
+          const ctx3 = canvas3.getContext("2d");
+          const scriptNamePerHourChart = new Chart(ctx3, {
+            type: "bar",
+            data: {
+              labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+              datasets: scriptNamePerHour_dataset,
+            },
+            options: {
+              interaction: {
+                intersect: false,
+              },
+              responsive: true,
+              scales: {
+                x: {
+                  stacked: true,
+                },
+                y: {
+                  stacked: true,
+                },
+              },
+            },
+          });
         }
       );
     })();
