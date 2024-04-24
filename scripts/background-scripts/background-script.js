@@ -1,10 +1,12 @@
-import {
+import * as utils from "../helpers/utils.js";
+
+const {
   runScriptInCurrentTab,
   convertBlobToBase64,
   runScriptInTab,
   getAllActiveScriptIds,
   trackEvent,
-} from "../helpers/utils.js";
+} = utils;
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
 const CACHED = {
@@ -12,6 +14,7 @@ const CACHED = {
   path: chrome.runtime.getURL("/scripts/"),
 };
 const GLOBAL = {
+  utils,
   log: console.log,
   trackEvent,
   fetch: customFetch,
