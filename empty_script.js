@@ -11,6 +11,16 @@ export default {
   },
   infoLink: "",
 
+  changeLogs: [
+    {
+      version: "",
+      date: "",
+      description: {
+        en: "",
+        vi: "",
+      },
+    },
+  ],
   blackList: [],
   whiteList: [],
 

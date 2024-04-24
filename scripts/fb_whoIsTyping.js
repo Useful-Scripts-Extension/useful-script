@@ -11,7 +11,20 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
-    window.ufs_whoIsTyping_Cached = {};
+    const key = "ufs_fb_whoIsTyping";
+    try {
+      window.ufs_fb_whoIsTyping = JSON.parse(localStorage.getItem(key) || "[]");
+    } catch (e) {
+      console.log("ERROR", e);
+      window.ufs_fb_whoIsTyping = [];
+    }
+
+    window.onbeforeunload = () => {
+      if (window.ufs_fb_whoIsTyping)
+        localStorage.setItem(key, JSON.stringify(window.ufs_fb_whoIsTyping));
+    };
+
+    window.ufs_whoIsTyping_users_cache = {};
 
     let textDecoder = new TextDecoder("utf-8");
     const WebSocketOrig = window.WebSocket;
@@ -30,15 +43,24 @@ export default {
           try {
             let isStartTyping = utf8_str.includes(",true");
             let isStopTyping = utf8_str.includes(",false");
-            let uid = /\\\"(\d+)\\\"/g.exec(utf8_str)[1];
+            let uid = utf8_str.match(/(?!\")(\d{3,})/g)?.[1];
 
-            if (!(uid in window.ufs_whoIsTyping_Cached)) {
+            if (!(uid in window.ufs_whoIsTyping_users_cache)) {
               let userData = await UfsGlobal.Facebook.getUserInfoFromUid(uid);
-              window.ufs_whoIsTyping_Cached[uid] = userData;
+              window.ufs_whoIsTyping_users_cache[uid] = userData;
             }
 
-            let { name, avatar } = window.ufs_whoIsTyping_Cached[uid];
+            let { name, avatar } = window.ufs_whoIsTyping_users_cache[uid];
             notifyTypingEvent(uid, name, avatar, isStartTyping);
+            window.ufs_fb_whoIsTyping.push({
+              uid,
+              name,
+              avatar,
+              type: isStartTyping ? "start" : "stop",
+              time: new Date().getTime(),
+            });
+            if (window.ufs_fb_whoIsTyping.length > 1000)
+              window.ufs_fb_whoIsTyping.shift();
           } catch (e) {
             console.log("ERROR: ", e);
           }
