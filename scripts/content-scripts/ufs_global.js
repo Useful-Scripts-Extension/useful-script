@@ -22,13 +22,13 @@ UfsGlobal.Extension = {
   },
   // WARNING: can only transfer serializable data
   runInContentScript(fnPath, params) {
-    return UfsGlobal.Extension.sendToContentScript("runInContentScript", {
+    return UfsGlobal.Extension.sendToContentScript("ufs-runInContentScript", {
       fnPath,
       params,
     });
   },
   runInBackground(fnPath, params) {
-    return UfsGlobal.Extension.sendToContentScript("runInBackground", {
+    return UfsGlobal.Extension.sendToContentScript("ufs-runInBackground", {
       fnPath,
       params,
     });

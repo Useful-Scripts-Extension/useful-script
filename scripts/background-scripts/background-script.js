@@ -122,7 +122,7 @@ function main() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("request", request);
     try {
-      if (request.action === "runInBackground") {
+      if (request.action === "ufs-runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
         let fn = fnPath?.startsWith("chrome") ? chrome : GLOBAL;
         fnPath.split(".").forEach((part) => {

@@ -49,7 +49,7 @@ async function runScript(scriptId, event) {
     let { event, data, uuid } = e?.detail || {};
     try {
       switch (event) {
-        case "runInContentScript":
+        case "ufs-runInContentScript":
           const { params = [], fnPath = "" } = data || {};
           let fn = fnPath?.startsWith?.("chrome") ? chrome : window;
           fnPath.split(".").forEach((part) => {
@@ -58,9 +58,9 @@ async function runScript(scriptId, event) {
           console.log("runInContentScript", fnPath, params);
           sendToPageScript(event, uuid, await fn?.(...params));
           break;
-        case "runInBackground":
+        case "ufs-runInBackground":
           chrome.runtime.sendMessage(
-            { action: "runInBackground", data },
+            { action: "ufs-runInBackground", data },
             function (response) {
               console.log("Response from background script:", response);
               sendToPageScript(event, uuid, response);

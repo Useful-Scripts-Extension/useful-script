@@ -62,3 +62,7 @@
   - [ ] webSocket => do something great?
 
 - [ ] Thêm change logs cho từng scripts
+
+- [ ] chụp ảnh website bằng chrome.tabs.captureVisibleTab
+
+- [ ] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab
