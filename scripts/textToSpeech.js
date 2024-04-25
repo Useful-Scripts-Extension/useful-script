@@ -13,3 +13,11 @@ export default {
     window.open("https://j2team.dev/tools/text-to-speech");
   },
 };
+
+const backup = () => {
+  // https://developer.chrome.com/docs/extensions/reference/api/tts
+  UfsGlobal.Extension.runInBackground("chrome.tts.speak", [
+    "Xin chào tất cả mọi người.",
+    { lang: "vi-VN", rate: 0.1 },
+  ]);
+};
