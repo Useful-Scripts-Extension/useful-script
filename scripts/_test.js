@@ -1,5 +1,3 @@
-import { getCurrentTabId } from "./helpers/utils.js";
-
 export default {
   icon: "",
   name: {
@@ -11,40 +9,89 @@ export default {
     vi: "",
   },
 
-  // whiteList: ["https://www.google.com/*"],
+  // https://github.dev/GoogleChrome/chrome-extensions-samples/api-samples/tabCapture
 
   onClickContentScript: async () => {
+    try {
+      const tab = await UfsGlobal.Extension.runInBackground(
+        "utils.getCurrentTab"
+      );
+
+      const streamId = await UfsGlobal.Extension.runInBackground(
+        "chrome.desktopCapture.chooseDesktopMedia",
+        [["tab", "audio"], tab, "callback"]
+      );
+
+      navigator.webkitGetUserMedia(
+        {
+          audio: {
+            mandatory: {
+              chromeMediaSource: "tab",
+              chromeMediaSourceId: streamId,
+            },
+          },
+        },
+        function (stream) {
+          const context = new AudioContext();
+          const source = context.createMediaStreamSource(stream);
+          const analyser = context.createAnalyser();
+          source.connect(analyser);
+          source.connect(context.destination);
+          analyser.connect(context.destination);
+        },
+        function (error) {
+          alert("no");
+          console.log(error);
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  _onClickContentScript: async () => {
     // https://developer.chrome.com/docs/extensions/reference/api/tabCapture#preserving-system-audio
     // https://github.com/Douile/Chrome-Audio-Visualizer/tree/master
+    // https://stackoverflow.com/questions/66217882/properly-using-chrome-tabcapture-in-a-manifest-v3-extension
+    // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/ffI0iNd79oo
 
     try {
-      const currentTab = await UfsGlobal.Extension.runInBackground(
-        "utils.getCurrentTabId"
+      const tab = await UfsGlobal.Extension.runInBackground(
+        "utils.getCurrentTab"
       );
 
       const streamId = await UfsGlobal.Extension.runInBackground(
         "chrome.tabCapture.getMediaStreamId",
         [
           {
-            consumerTabId: currentTab,
-            targetTabId: currentTab,
+            targetTabId: tab.id,
+            consumerTabId: tab.id,
           },
         ]
       );
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          mandatory: {
-            chromeMediaSource: "tab",
-            chromeMediaSourceId: streamId,
+      navigator.webkitGetUserMedia(
+        {
+          audio: {
+            mandatory: {
+              chromeMediaSource: "tab",
+              chromeMediaSourceId: streamId,
+            },
           },
         },
-      });
-
-      const output = new AudioContext();
-      const source = output.createMediaStreamSource(stream);
-      source.connect(output.destination);
-      console.log(output);
+        function (stream) {
+          const context = new AudioContext();
+          const source = context.createMediaStreamSource(stream);
+          const analyser = context.createAnalyser();
+          source.connect(analyser);
+          source.connect(context.destination);
+          analyser.connect(context.destination);
+        },
+        function (error) {
+          alert("no");
+          console.log(error);
+        }
+      );
     } catch (e) {
       alert(e);
     }
