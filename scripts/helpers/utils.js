@@ -2,6 +2,17 @@
 
 const { version } = chrome.runtime?.getManifest() || {};
 
+export function waitForTabToLoad(tabId) {
+  return new Promise((resolve) => {
+    chrome.tabs.onUpdated.addListener(function listener(_tabId, info) {
+      if (tabId === _tabId && info.status === "complete") {
+        chrome.tabs.onUpdated.removeListener(listener);
+        resolve();
+      }
+    });
+  });
+}
+
 export function runFunc(fnPath = "", params = [], global = {}) {
   return new Promise((resolve) => {
     let fn = fnPath?.startsWith("chrome") ? chrome : global;

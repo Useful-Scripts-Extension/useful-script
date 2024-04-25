@@ -9,100 +9,47 @@ export default {
     vi: "",
   },
 
+  // record audio when have stream: https://stackoverflow.com/a/34919194/23648002
+  // https://www.youtube.com/watch?v=uk96O7N1Yo0
+  // https://www.skilldrick.co.uk/fft/
+  // https://stackoverflow.com/a/61301293/23648002
+  // https://www.renderforest.com/music-visualisations
+  // https://developer.chrome.com/docs/extensions/reference/api/tabCapture#preserving-system-audio
+  // https://github.com/Douile/Chrome-Audio-Visualizer/tree/master
+  // https://stackoverflow.com/questions/66217882/properly-using-chrome-tabcapture-in-a-manifest-v3-extension
+  // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/ffI0iNd79oo
   // https://github.dev/GoogleChrome/chrome-extensions-samples/api-samples/tabCapture
 
   onClickContentScript: async () => {
     try {
-      const tab = await UfsGlobal.Extension.runInBackground(
-        "utils.getCurrentTab"
+      const currentTabId = await UfsGlobal.Extension.runInBackground(
+        "utils.getCurrentTabId"
       );
 
-      const streamId = await UfsGlobal.Extension.runInBackground(
-        "chrome.desktopCapture.chooseDesktopMedia",
-        [["tab", "audio"], tab, "callback"]
+      const url = await UfsGlobal.Extension.getURL("/scripts/_test.html");
+      const { tabs } = await UfsGlobal.Extension.runInBackground(
+        "chrome.windows.create",
+        [{ url, height: 400, width: 800 }]
       );
+      const tab = tabs[0];
 
-      navigator.webkitGetUserMedia(
+      await UfsGlobal.Extension.runInBackground("utils.waitForTabToLoad", [
+        tab.id,
+      ]);
+
+      UfsGlobal.Extension.runInBackground("chrome.tabs.sendMessage", [
+        tab.id,
         {
-          audio: {
-            mandatory: {
-              chromeMediaSource: "tab",
-              chromeMediaSourceId: streamId,
-            },
-          },
+          targetTabId: currentTabId,
+          consumerTabId: tab.id,
         },
-        function (stream) {
-          const context = new AudioContext();
-          const source = context.createMediaStreamSource(stream);
-          const analyser = context.createAnalyser();
-          source.connect(analyser);
-          source.connect(context.destination);
-          analyser.connect(context.destination);
-        },
-        function (error) {
-          alert("no");
-          console.log(error);
-        }
-      );
+      ]);
     } catch (e) {
       console.log(e);
     }
   },
 
-  _onClickContentScript: async () => {
-    // https://developer.chrome.com/docs/extensions/reference/api/tabCapture#preserving-system-audio
-    // https://github.com/Douile/Chrome-Audio-Visualizer/tree/master
-    // https://stackoverflow.com/questions/66217882/properly-using-chrome-tabcapture-in-a-manifest-v3-extension
-    // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/ffI0iNd79oo
-
-    try {
-      const tab = await UfsGlobal.Extension.runInBackground(
-        "utils.getCurrentTab"
-      );
-
-      const streamId = await UfsGlobal.Extension.runInBackground(
-        "chrome.tabCapture.getMediaStreamId",
-        [
-          {
-            targetTabId: tab.id,
-            consumerTabId: tab.id,
-          },
-        ]
-      );
-
-      navigator.webkitGetUserMedia(
-        {
-          audio: {
-            mandatory: {
-              chromeMediaSource: "tab",
-              chromeMediaSourceId: streamId,
-            },
-          },
-        },
-        function (stream) {
-          const context = new AudioContext();
-          const source = context.createMediaStreamSource(stream);
-          const analyser = context.createAnalyser();
-          source.connect(analyser);
-          source.connect(context.destination);
-          analyser.connect(context.destination);
-        },
-        function (error) {
-          alert("no");
-          console.log(error);
-        }
-      );
-    } catch (e) {
-      alert(e);
-    }
-  },
-
   onClick_: async () => {
-    //https://www.youtube.com/watch?v=uk96O7N1Yo0
-    // https://www.skilldrick.co.uk/fft/
-    // https://stackoverflow.com/a/61301293/23648002
-    // https://www.renderforest.com/music-visualisations
-
     javascript: (function () {
       var ctx;
       var width = 1000;
@@ -330,5 +277,3 @@ export default {
     })();
   },
 };
-
-// record audio when have stream: https://stackoverflow.com/a/34919194/23648002
