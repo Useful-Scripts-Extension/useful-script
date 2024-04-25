@@ -1,5 +1,15 @@
+window.onload = () => {
+  let streamId;
+  let interval = setInterval(() => {
+    streamId = localStorage.getItem("streamId");
+    if (streamId) {
+      clearInterval(interval);
+      setStreamId(streamId);
+    }
+  }, 500);
+};
+
 function setStreamId(streamId) {
-  alert(streamId);
   navigator.mediaDevices
     .getUserMedia({
       audio: {

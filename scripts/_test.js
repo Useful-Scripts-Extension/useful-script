@@ -1,4 +1,4 @@
-import { getCurrentTabId, runScriptInTab } from "./helpers/utils.js";
+import { getCurrentTabId } from "./helpers/utils.js";
 
 export default {
   icon: "",
@@ -13,33 +13,40 @@ export default {
 
   // whiteList: ["https://www.google.com/*"],
 
-  onClickExtension: async () => {
+  onClickContentScript: async () => {
     // https://developer.chrome.com/docs/extensions/reference/api/tabCapture#preserving-system-audio
+    // https://github.com/Douile/Chrome-Audio-Visualizer/tree/master
+
     try {
-      const currentTabID = await getCurrentTabId();
-      const newTab = await chrome.windows.create({
-        url: "/scripts/_test.html",
-        type: "popup",
-        width: 800,
-        height: 600,
-      });
+      const currentTab = await UfsGlobal.Extension.runInBackground(
+        "utils.getCurrentTabId"
+      );
 
-      const streamId = await chrome.tabCapture.getMediaStreamId({
-        consumerTabId: newTab.id,
-        targetTabId: currentTabID,
-      });
+      const streamId = await UfsGlobal.Extension.runInBackground(
+        "chrome.tabCapture.getMediaStreamId",
+        [
+          {
+            consumerTabId: currentTab,
+            targetTabId: currentTab,
+          },
+        ]
+      );
 
-      alert(streamId);
-
-      runScriptInTab({
-        func: (streamId) => {
-          window.setStreamId?.(streamId);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          mandatory: {
+            chromeMediaSource: "tab",
+            chromeMediaSourceId: streamId,
+          },
         },
-        args: [streamId],
-        tabId: newTab.id,
       });
+
+      const output = new AudioContext();
+      const source = output.createMediaStreamSource(stream);
+      source.connect(output.destination);
+      console.log(output);
     } catch (e) {
-      console.error(e);
+      alert(e);
     }
   },
 
@@ -104,8 +111,6 @@ export default {
           ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
         );
       }
-
-      function applyLog(fftArray) {}
 
       function smoothFFT(fftArray, smoothingFactor = 0.8) {
         let smoothedFFT = [];
@@ -180,48 +185,6 @@ export default {
         }
 
         canvasCtx.stroke();
-      }
-
-      function drawLinearScale(canvasCtx) {
-        canvasCtx.save();
-        canvasCtx.fillStyle = "black";
-
-        for (var x = 0; x < width; x += 100) {
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(x, fftHeight);
-          canvasCtx.lineTo(x, fftHeight + 4);
-          canvasCtx.stroke();
-          canvasCtx.fillText(
-            Math.floor(((ctx.sampleRate / 2) * x) / width),
-            x,
-            height
-          );
-        }
-
-        canvasCtx.restore();
-      }
-
-      function drawLogarithmicScale(canvasCtx) {
-        canvasCtx.save();
-        canvasCtx.fillStyle = "black";
-
-        var scale = Math.log(frequencyBins - 1) / width;
-        var binWidthInHz = ctx.sampleRate / (frequencyBins * 2);
-        var firstBinWidthInPx = Math.log(2) / scale;
-
-        for (
-          var x = 0, freq = binWidthInHz;
-          x < width;
-          x += firstBinWidthInPx, freq *= 2
-        ) {
-          canvasCtx.beginPath();
-          canvasCtx.moveTo(x, fftHeight);
-          canvasCtx.lineTo(x, fftHeight + 4);
-          canvasCtx.stroke();
-          canvasCtx.fillText(Math.floor(freq), Math.floor(x), height);
-        }
-
-        canvasCtx.restore();
       }
 
       function createAudioContext() {
@@ -322,74 +285,3 @@ export default {
 };
 
 // record audio when have stream: https://stackoverflow.com/a/34919194/23648002
-
-const backup = () => {
-  javascript: (function () {
-    // Create a canvas element
-    var canvas = document.createElement("canvas");
-    canvas.style.cssText =
-      "position: fixed; top: 0; left: 0; z-index: 2147483647;";
-    updateSize();
-    var ctx = canvas.getContext("2d");
-
-    function updateSize() {
-      let w = window.innerWidth;
-      let h = window.innerHeight;
-      let ratio = w / h;
-
-      canvas.width = 600;
-      canvas.height = canvas.width / ratio;
-    }
-
-    window.addEventListener("resize", updateSize);
-
-    // Add the canvas element to the DOM
-    document.body.appendChild(canvas);
-
-    // Variables to store the position of the canvas
-    var offsetX, offsetY;
-    var isDragging = false;
-
-    // Function to handle mouse down event
-    canvas.addEventListener("mousedown", function (event) {
-      isDragging = true;
-      offsetX = event.clientX - canvas.offsetLeft;
-      offsetY = event.clientY - canvas.offsetTop;
-    });
-
-    // Function to handle mouse move event
-    canvas.addEventListener("mousemove", function (event) {
-      if (!isDragging) return;
-      var x = event.clientX - offsetX;
-      var y = event.clientY - offsetY;
-      canvas.style.left = x + "px";
-      canvas.style.top = y + "px";
-    });
-
-    // Function to handle mouse up event
-    canvas.addEventListener("mouseup", function () {
-      isDragging = false;
-    });
-
-    // Function to capture the visible tab and draw it onto the canvas
-    function captureAndDraw() {
-      console.log("captureAndDraw");
-      // Capture the visible tab
-      UfsGlobal.Extension.runInBackground("chrome.tabs.captureVisibleTab", [
-        null,
-        { format: "png" },
-      ]).then(function (dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        img.onload = function () {
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          setTimeout(() => {
-            captureAndDraw();
-          }, 500);
-        };
-      });
-    }
-
-    captureAndDraw();
-  })();
-};

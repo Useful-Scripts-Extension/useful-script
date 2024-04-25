@@ -19,6 +19,7 @@
     "storage",
     "cookies",
     "debugger",
+    "activeTab",
     "downloads",
     "bookmarks",
     "scripting",
@@ -29,7 +30,8 @@
     "unlimitedStorage",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",
-    "declarativeNetRequestWithHostAccess"
+    "declarativeNetRequestWithHostAccess",
+    "*://*/*"
   ],
   "host_permissions": ["<all_urls>"],
   "options_page": "./pages/options/options.html",

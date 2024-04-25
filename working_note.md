@@ -66,3 +66,5 @@
 - [ ] chụp ảnh website bằng chrome.tabs.captureVisibleTab
 
 - [ ] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab
+
+- [ ] screen capture [here](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)
