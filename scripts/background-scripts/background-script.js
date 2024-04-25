@@ -127,23 +127,10 @@ function main() {
     try {
       if (request.action === "ufs-runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
-        let fn = fnPath?.startsWith("chrome") ? chrome : GLOBAL;
-        fnPath.split(".").forEach((part) => {
-          fn = fn?.[part] || fn;
-        });
         console.log("runInBackground", fnPath, params);
-        let res = fn?.(...params);
-
-        if (typeof res?.then === "function") {
-          res.then?.((_res) => {
-            console.log(_res);
-            sendResponse(_res);
-          });
-        } else {
-          console.log(res);
+        utils.runFunc(fnPath, params, GLOBAL).then((res) => {
           sendResponse(res);
-        }
-
+        });
         return true;
       }
     } catch (e) {

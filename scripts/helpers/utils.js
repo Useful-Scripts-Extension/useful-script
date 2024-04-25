@@ -1,11 +1,44 @@
-//  Utils used by popup and background-script
+//  Utils used by popup and background-script (and content-script?)
 
-const { version } = chrome.runtime.getManifest();
+const { version } = chrome.runtime?.getManifest() || {};
+
+export function runFunc(fnPath = "", params = [], global = {}) {
+  return new Promise((resolve) => {
+    let fn = fnPath?.startsWith("chrome") ? chrome : global;
+    fnPath.split(".").forEach((part) => {
+      fn = fn?.[part] || fn;
+    });
+
+    let hasCallback = false;
+    let _params = params.map((p) => {
+      if (p === "callback") {
+        hasCallback = true;
+        return resolve;
+      }
+      return p;
+    });
+    let res = fn?.(..._params);
+
+    if (!hasCallback) {
+      if (typeof res?.then === "function") {
+        res.then?.((_res) => {
+          console.log(_res);
+          resolve(_res);
+        });
+      } else {
+        console.log(res);
+        resolve(res);
+      }
+    }
+  });
+}
 
 export async function trackEvent(scriptId) {
-  console.log("trackEvent", scriptId);
+  console.log("trackEvent", scriptId, version);
+  return;
   try {
     let res = await fetch(
+      // "http://localhost:3000/count",
       "https://useful-script-statistic.glitch.me/count",
       // "https://useful-script-statistic.onrender.com/count",
       {

@@ -162,6 +162,7 @@ import textToQrCode from "./textToQrCode.js";
 import insta_anonymousStoryViewer from "./insta_anonymousStoryViewer.js";
 import removeWebLimit from "./removeWebLimit.js";
 import _ufs_statistic from "./_ufs_statistic.js";
+import pip_fullWebsite from "./pip_fullWebsite.js";
 
 // inject badges
 const allScripts = {
@@ -340,6 +341,7 @@ const allScripts = {
   insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
   removeWebLimit: addBadge(removeWebLimit, BADGES.hot),
   _ufs_statistic: _ufs_statistic,
+  pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

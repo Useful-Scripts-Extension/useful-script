@@ -269,6 +269,7 @@ const tabs = [
       // s.youtube_localDownloader,
       s.youtube_downloadVideo,
       s.pictureInPicture,
+      s.pip_fullWebsite,
       s.youtube_toggleLight,
       s.youtube_viewDislikes,
       s.youtube_nonstop,

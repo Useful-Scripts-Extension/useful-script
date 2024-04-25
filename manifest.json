@@ -14,6 +14,7 @@
     "default_icon": "./assets/icon32.png"
   },
   "permissions": [
+    "tts",
     "power",
     "tabs",
     "storage",
@@ -25,13 +26,13 @@
     "scripting",
     "tabCapture",
     "contextMenus",
+    "desktopCapture",
     "webNavigation",
     "notifications",
     "unlimitedStorage",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",
-    "declarativeNetRequestWithHostAccess",
-    "*://*/*"
+    "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": ["<all_urls>"],
   "options_page": "./pages/options/options.html",

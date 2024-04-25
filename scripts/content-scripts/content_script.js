@@ -1,4 +1,5 @@
-import("./ufs_global.js");
+import("./ufs_global.js"); // to use UfsGlobal inside content-script
+let utils;
 
 // communication between page-script and content-script
 function sendToPageScript(event, uuid, data) {
@@ -26,6 +27,13 @@ async function runScript(scriptId, event) {
 }
 
 (async () => {
+  async function getUtils() {
+    if (!utils) utils = await import("../helpers/utils.js");
+    return utils;
+  }
+
+  getUtils(); // import and save utils
+
   chrome.runtime.onMessage.addListener(function (
     message,
     sender,
@@ -51,12 +59,9 @@ async function runScript(scriptId, event) {
       switch (event) {
         case "ufs-runInContentScript":
           const { params = [], fnPath = "" } = data || {};
-          let fn = fnPath?.startsWith?.("chrome") ? chrome : window;
-          fnPath.split(".").forEach((part) => {
-            fn = fn?.[part] || fn;
-          });
           console.log("runInContentScript", fnPath, params);
-          sendToPageScript(event, uuid, await fn?.(...params));
+          const res = await (await getUtils()).runFunc(fnPath, params);
+          sendToPageScript(event, uuid, res);
           break;
         case "ufs-runInBackground":
           chrome.runtime.sendMessage(
