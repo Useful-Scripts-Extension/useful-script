@@ -1,13 +1,13 @@
 export default {
   name: {
-    en: "Get all images in insta user profile",
-    vi: "Tải tất cả ảnh insta user profile",
+    en: "Get all images in insta user profile (scroll)",
+    vi: "Tải tất cả ảnh insta user profile (scroll)",
   },
   description: {
-    en: "Get all images in instagram user profile",
-    vi: "Tải tất cả ảnh có trong profile của user instagram bất kỳ",
+    en: "Get all images in instagram user profile (manual: auto scroll and query media in user profile page)",
+    vi: "Tải tất cả ảnh có trong profile của user instagram bất kỳ (thủ công: tự scroll trang web và lấy data từ web)",
   },
-  
+
   onClick: async function () {
     const WAIT_FOR_MODAL_IMG_LOAD = 5000;
     const FIND_IMG_IN_MODAL_INTERVAL = 100;

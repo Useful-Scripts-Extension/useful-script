@@ -2,12 +2,12 @@ import { showLoading } from "./helpers/utils.js";
 
 export default {
   name: {
-    en: "Get all media of insta user",
-    vi: "Tải về tất cả media của insta user",
+    en: "Get all media of insta user (API)",
+    vi: "Tải về tất cả media của insta user (API)",
   },
   description: {
-    en: "Get all media of instagram user",
-    vi: "Tải về tất cả ảnh/video của người dùng instagram",
+    en: "Get all media of instagram user (use instagram API)",
+    vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
   },
 
   onClickExtension: async function () {
