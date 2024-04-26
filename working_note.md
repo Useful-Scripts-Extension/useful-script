@@ -63,8 +63,7 @@
 
 - [ ] Thêm change logs cho từng scripts
 
-- [ ] chụp ảnh website bằng chrome.tabs.captureVisibleTab
-
-- [ ] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab
-
-- [ ] screen capture [here](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)
+- [ ] Xem google extension howto [Link](https://developer.chrome.com/docs/extensions/how-to)
+  - [ ] record audio and video from another tab [link](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) => **TIỀM NĂNG làm web visualize music**
+  - [x] chụp ảnh website bằng chrome.tabs.captureVisibleTab => bỏ, không có tiềm năng
+  - [x] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab => phải là 1 page trong extension mới truy cập được => không tiềm năng
