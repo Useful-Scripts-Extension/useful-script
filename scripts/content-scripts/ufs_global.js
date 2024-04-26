@@ -63,6 +63,11 @@ UfsGlobal.Extension = {
   trackEvent(scriptId) {
     return UfsGlobal.Extension.runInBackground("trackEvent", [scriptId]);
   },
+  waitForTabToLoad(tabId) {
+    return UfsGlobal.Extension.runInBackground("utils.waitForTabToLoad", [
+      tabId,
+    ]);
+  },
 };
 UfsGlobal.DOM = {
   addLoadingAnimationAtPos(

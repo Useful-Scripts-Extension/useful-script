@@ -1,3 +1,9 @@
+import {
+  getCurrentTab,
+  runScriptInTab,
+  waitForTabToLoad,
+} from "./helpers/utils.js";
+
 export default {
   icon: "",
   name: {
@@ -20,7 +26,41 @@ export default {
   // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/ffI0iNd79oo
   // https://github.dev/GoogleChrome/chrome-extensions-samples/api-samples/tabCapture
 
-  onClickContentScript: async () => {
+  onClickExtension: async () => {
+    try {
+      // const url = "http://127.0.0.1:5500/public/music-visualizer/index.html";
+      const url = await chrome.runtime.getURL(
+        "/public/music-visualizer/index.html"
+      );
+      const currentTab = await getCurrentTab();
+      const newTab = await chrome.tabs.create({
+        url: url,
+        active: false,
+      });
+      await waitForTabToLoad(newTab.id);
+
+      const streamId = await chrome.tabCapture.getMediaStreamId({
+        targetTabId: currentTab.id,
+        consumerTabId: newTab.id,
+      });
+
+      chrome.tabs.update(newTab.id, {
+        url: url + "?streamId=" + streamId,
+      });
+
+      // runScriptInTab({
+      //   tabId: newTab.id,
+      //   func: (streamId) => {
+      //     start(streamId);
+      //   },
+      //   args: [streamId],
+      // });
+    } catch (e) {
+      alert(e);
+    }
+  },
+
+  _onClickContentScript: async () => {
     try {
       const currentTabId = await UfsGlobal.Extension.runInBackground(
         "utils.getCurrentTabId"
@@ -33,9 +73,7 @@ export default {
       );
       const tab = tabs[0];
 
-      await UfsGlobal.Extension.runInBackground("utils.waitForTabToLoad", [
-        tab.id,
-      ]);
+      await UfsGlobal.Extension.waitForTabToLoad(tab.id);
 
       UfsGlobal.Extension.runInBackground("chrome.tabs.sendMessage", [
         tab.id,

@@ -1,34 +1,30 @@
-chrome.runtime.onMessage.addListener(function (request) {
-  const { targetTabId, consumerTabId } = request;
-  testGetMediaStreamId(targetTabId, consumerTabId);
-});
+window.onload = () => {
+  checkHref(location.href);
+};
 
-function testGetMediaStreamId(targetTabId, consumerTabId) {
-  chrome.tabCapture.getMediaStreamId(
+function checkHref(href) {
+  const streamId = new URL(href).searchParams.get("streamId");
+  if (streamId) {
+    start(streamId);
+  }
+}
+
+function start(streamId) {
+  navigator.webkitGetUserMedia(
     {
-      targetTabId,
-      consumerTabId,
+      audio: {
+        mandatory: {
+          chromeMediaSource: "tab", // The media source must be 'tab' here.
+          chromeMediaSourceId: streamId,
+        },
+      },
+      video: false,
     },
-    function (streamId) {
-      if (!streamId) return;
-
-      navigator.webkitGetUserMedia(
-        {
-          audio: {
-            mandatory: {
-              chromeMediaSource: "tab", // The media source must be 'tab' here.
-              chromeMediaSourceId: streamId,
-            },
-          },
-          video: false,
-        },
-        function (stream) {
-          draw(stream);
-        },
-        function (error) {
-          console.error(error);
-        }
-      );
+    function (stream) {
+      draw(stream);
+    },
+    function (error) {
+      console.error(error);
     }
   );
 }
