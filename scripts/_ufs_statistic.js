@@ -9,6 +9,12 @@ export default {
     vi: "Dev only",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-23": "init",
+    },
+  },
+
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],
 
   onDocumentEnd: async () => {

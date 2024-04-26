@@ -29,8 +29,17 @@ export default {
   onClick: async () => {
     // https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture
     const stream = await navigator.mediaDevices.getDisplayMedia({
-      audio: true,
-      video: true,
+      video: {
+        displaySurface: "browser",
+      },
+      audio: {
+        suppressLocalAudioPlayback: false,
+      },
+      preferCurrentTab: false,
+      selfBrowserSurface: "exclude",
+      systemAudio: "include",
+      surfaceSwitching: "include",
+      monitorTypeSurfaces: "include",
     });
 
     drawVisualizer(stream);

@@ -6,20 +6,15 @@ export default {
   },
   description: {
     en: "Picture in picture mode for full website",
-    vi: "Picture in picture: Xem toàn bộ website (thay vì chỉ video) trong của sổ nhỏ",
+    vi: "Picture in picture: Xem toàn bộ website (thay vì chỉ video) trong của sổ nổi",
     img: "",
   },
 
-  changeLogs: [
-    {
-      version: "1.66",
-      date: "25/04/2024",
-      description: {
-        en: "init",
-        vi: "init",
-      },
+  changeLogs: {
+    1.66: {
+      "2024-04-25": "init",
     },
-  ],
+  },
 
   onClickContentScript: async () => {
     if (!window.ufs_pip_fullWebsite) {

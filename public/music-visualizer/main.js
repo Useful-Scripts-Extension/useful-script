@@ -1,82 +1,102 @@
-window.onload = () => {
-  checkHref(location.href);
-};
+// https://editor.p5js.org/jonfroehlich/sketches/d2euV09i
 
-function checkHref(href) {
-  const streamId = new URL(href).searchParams.get("streamId");
-  if (streamId) {
-    start(streamId);
+let stream,
+  canvas,
+  fps,
+  analyser,
+  fftTemp = [],
+  fft = [],
+  barWidth = 10;
+
+function setup() {
+  canvas = createCanvas(windowWidth, windowHeight);
+
+  colorMode(HSB, 255);
+  textAlign(CENTER, CENTER);
+  frameRate(60);
+  setInterval(() => {
+    fps = frameRate().toFixed(0);
+  }, 1000);
+}
+
+function draw() {
+  if (analyser) {
+    analyser.getByteFrequencyData(fftTemp);
+    fft = smoothFFT(fftTemp);
+  }
+
+  background(30);
+
+  // beginShape();
+  for (let i = 0; i < width; i += barWidth) {
+    let index = floor(map(i, 0, width, 0, fft.length));
+    const barHeight = map(fft[index], 0, 255, 0, height);
+    fill(fft[index], 255, 255);
+    rect(i, height - barHeight, barWidth, barHeight);
+    // vertex(i, height - barHeight);
+  }
+  // stroke(255);
+  // noFill();
+  // endShape();
+
+  let amp = getAmplitute(fftTemp);
+  let size = map(amp, 0, 255, 0, 400);
+  noStroke();
+  fill(255, 200);
+  circle(width / 2, height / 2, size);
+
+  if (!stream) {
+    fill(255);
+    text("Click to listen other tab", width / 2, height / 2);
+  }
+
+  text(fps, 30, 20);
+}
+
+function mousePressed() {
+  if (!stream) {
+    getStreamFromOtherTab()
+      .then((_) => {
+        stream = _;
+        console.log("stream: ", stream);
+        connectStreamToP5(stream);
+      })
+      .catch((e) => {
+        console.log("ERROR: ", e);
+      });
   }
 }
 
-function start(streamId) {
-  navigator.webkitGetUserMedia(
-    {
-      audio: {
-        mandatory: {
-          chromeMediaSource: "tab", // The media source must be 'tab' here.
-          chromeMediaSourceId: streamId,
-        },
-      },
-      video: false,
-    },
-    function (stream) {
-      drawVisualizer(stream);
-    },
-    function (error) {
-      console.error(error);
-    }
-  );
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 
-function drawVisualizer(stream) {
-  // at this point the sound of the tab becomes muted with no way to unmute it
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const source = audioCtx.createMediaStreamSource(stream);
-  const analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 2048;
-  source.connect(analyser);
-  // analyser.connect(audioCtx.destination); // play stream to speaker - we dont need it, original tab already play it
+function getStreamFromOtherTab() {
+  return navigator.mediaDevices.getDisplayMedia({
+    video: {
+      displaySurface: "browser",
+    },
+    audio: {
+      suppressLocalAudioPlayback: false,
+    },
+    preferCurrentTab: false,
+    selfBrowserSurface: "exclude",
+    systemAudio: "include",
+    surfaceSwitching: "include",
+    monitorTypeSurfaces: "include",
+  });
+}
 
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
+// https://stackoverflow.com/a/68326540/23648002
+function connectStreamToP5(stream) {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const mediaSource = audioContext.createMediaStreamSource(stream);
+  analyser = audioContext.createAnalyser();
+  analyser.fftSize = 256;
+  mediaSource.connect(analyser);
 
-  const canvas = document.createElement("canvas");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  window.onresize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  };
-
-  canvas.style.cssText =
-    "position: fixed; top: 0; left: 0; z-index: 2147483647; background: #333a;";
-  document.body.appendChild(canvas);
-  const canvasCtx = canvas.getContext("2d");
-
-  function draw() {
-    analyser.getByteFrequencyData(dataArray);
-    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasCtx.beginPath();
-
-    const data = smoothFFT(dataArray);
-    const barWidth = bufferLength / canvas.width;
-    for (let x = 0; x < canvas.width; x++) {
-      let i = ~~(x * barWidth);
-      let item = data[i];
-      const barHeight = map(item, 0, 255, 0, canvas.height / 2);
-      canvasCtx.lineTo(x, canvas.height / 2 - barHeight);
-    }
-    canvasCtx.strokeStyle = "rgba(255, 255, 255, 0.9)";
-    canvasCtx.stroke();
-    requestAnimationFrame(draw);
-  }
-
-  function map(x, in_min, in_max, out_min, out_max) {
-    return ((x - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
-  }
-
-  requestAnimationFrame(draw);
+  fft = new Uint8Array(analyser.frequencyBinCount);
+  fftTemp = new Uint8Array(analyser.frequencyBinCount);
 }
 
 function smoothFFT(fftArray, smoothingFactor = 0.8) {
@@ -116,4 +136,18 @@ function logScale(fftArray, minDecibels = -60, maxDecibels = 0) {
   };
 
   return fftArray.map((val) => scale(val));
+}
+
+const AmplituteTypes = {
+  max: "max",
+  avg: "avg",
+};
+function getAmplitute(fftArray, type = AmplituteTypes.avg) {
+  switch (type) {
+    case AmplituteTypes.avg:
+      return fftArray.reduce((a, b) => a + b, 0) / fftArray.length;
+    case AmplituteTypes.max:
+      return Math.max(...fftArray);
+    default:
+  }
 }
