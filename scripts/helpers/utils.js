@@ -4,6 +4,13 @@ const { version } = chrome.runtime?.getManifest() || {};
 
 export function waitForTabToLoad(tabId) {
   return new Promise((resolve) => {
+    // check if tab already loaded
+    if (chrome.tabs.get(tabId)?.status === "complete") {
+      resolve();
+      return;
+    }
+
+    // listen for tab load
     chrome.tabs.onUpdated.addListener(function listener(_tabId, info) {
       if (tabId === _tabId && info.status === "complete") {
         chrome.tabs.onUpdated.removeListener(listener);
