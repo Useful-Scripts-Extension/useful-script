@@ -21,6 +21,12 @@ export default {
   },
   infoLink: "https://greasyfork.org/scripts/14146",
 
+  onEnable: () => {
+    alert(`+Có thể ảnh hưởng tới chức năng của 1 vài trang web.
++ Chỉ mở khi cần sử dụng (copy, chuột phải).
++ Tắt ngay khi sử dụng xong.`);
+  },
+
   onDocumentStart: () => {
     // @description:zh    通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
     // @description:zh-CN 通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
