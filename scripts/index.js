@@ -11,20 +11,15 @@ import fb_getAlbumId from "./fb_getAlbumId.js";
 import fb_getAllAlbumIdFromCurrentWebsite from "./fb_getAllAlbumIdFromCurrentWebsite.js";
 import fb_getUidFromUrl from "./fb_getUidFromUrl.js";
 import fb_getAllUidFromFbSearch from "./fb_getAllUidFromFbSearch.js";
-import fb_getAllUidFromFriendsPage from "./fb_getAllUidFromFriendsPage.js";
 import fb_getAllUidOfGroupMembers from "./fb_getAllUidOfGroupMembers.js";
 import fb_getAvatarFromUid from "./fb_getAvatarFromUid.js";
 import fb_downloadAlbumMedia from "./fb_downloadAlbumMedia.js";
 import insta_getUserInfo from "./insta_getUserInfo.js";
 import insta_getAllUserMedia from "./insta_getAllUserMedia.js";
-import insta_getAllImagesInNewFeed from "./insta_getAllImagesInNewFeed.js";
-import insta_getAllImagesInUserProfile from "./insta_getAllImagesInUserProfile.js";
 import pictureInPicture from "./pictureInPicture.js";
 import youtube_toggleLight from "./youtube_toggleLight.js";
 import github_goToAnyCommit from "./github_goToAnyCommit.js";
 import github1s from "./github1s.js";
-import doutube_downloadWatchingVideo from "./doutube_downloadWatchingVideo.js";
-import doutube_getAllVideoInUserProfile from "./doutube_getAllVideoInUserProfile.js";
 import darkModePDF from "./darkModePDF.js";
 import webToPDF from "./webToPDF.js";
 import scrollToVeryEnd from "./scrollToVeryEnd.js";
@@ -177,27 +172,16 @@ const allScripts = {
   fb_getAllAlbumIdFromCurrentWebsite,
   fb_getAllAlbumInformation: fb_getAllAlbumInformation,
   fb_getUidFromUrl: addBadge(fb_getUidFromUrl, BADGES.hot),
-  fb_getAllUidFromFbSearch,
-  fb_getAllUidFromFriendsPage,
-  fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.beta),
+  fb_getAllUidFromFbSearch: addBadge(fb_getAllUidFromFbSearch, BADGES.new),
+  fb_getAllUidOfGroupMembers: addBadge(fb_getAllUidOfGroupMembers, BADGES.new),
   fb_getAvatarFromUid,
   fb_downloadAlbumMedia,
   insta_getUserInfo: insta_getUserInfo,
-  insta_getAllUserMedia,
-  insta_getAllImagesInNewFeed: addBadge(
-    insta_getAllImagesInNewFeed,
-    BADGES.beta
-  ),
-  insta_getAllImagesInUserProfile,
+  insta_getAllUserMedia: addBadge(insta_getAllUserMedia, BADGES.hot),
   pictureInPicture: addBadge(pictureInPicture, BADGES.hot),
   youtube_toggleLight,
   github_goToAnyCommit: addBadge(github_goToAnyCommit, BADGES.hot),
   github1s,
-  doutube_downloadWatchingVideo: addBadge(
-    doutube_downloadWatchingVideo,
-    BADGES.hot
-  ),
-  doutube_getAllVideoInUserProfile,
   darkModePDF: addBadge(darkModePDF, BADGES.hot),
   webToPDF,
   scrollToVeryEnd: addBadge(scrollToVeryEnd, BADGES.hot),
@@ -261,13 +245,19 @@ const allScripts = {
   visualEvent: visualEvent,
   fb_videoDownloader: fb_videoDownloader,
   viewBrowserInfo: viewBrowserInfo,
-  douyin_downloadWachingVideo: douyin_downloadWachingVideo,
-  douyin_downloadAllVideoUser: douyin_downloadAllVideoUser,
+  douyin_downloadWachingVideo: addBadge(
+    douyin_downloadWachingVideo,
+    BADGES.beta
+  ),
+  douyin_downloadAllVideoUser: addBadge(
+    douyin_downloadAllVideoUser,
+    BADGES.beta
+  ),
   showTheVideos: showTheVideos,
   fb_storySaver: fb_storySaver,
   send_shareFiles: send_shareFiles,
   scribd_downloadDocuments: addBadge(scribd_downloadDocuments, BADGES.new),
-  fb_toggleNewFeed: fb_toggleNewFeed,
+  fb_toggleNewFeed: addBadge(fb_toggleNewFeed, BADGES.hot),
   shopee_topVariation: shopee_topVariation,
   ggdrive_downloadVideo: ggdrive_downloadVideo,
   google_downloadAllYourData: google_downloadAllYourData,
@@ -285,11 +275,11 @@ const allScripts = {
   dino_hack: dino_hack,
   google_mirror: google_mirror,
   fb_openSaved: addBadge(fb_openSaved, BADGES.hot),
-  fb_exportSaved: addBadge(fb_exportSaved, BADGES.beta),
+  fb_exportSaved: fb_exportSaved,
   studyphim_unlimited: studyphim_unlimited,
   shopee_totalSpendMoney: shopee_totalSpendMoney,
   tiki_totalSpendMoney: tiki_totalSpendMoney,
-  fb_invisible_message: fb_invisible_message,
+  fb_invisible_message: addBadge(fb_invisible_message, BADGES.beta),
   insta_injectDownloadBtn: insta_injectDownloadBtn,
   studocu_bypassPreview: studocu_bypassPreview,
   fb_revealDeletedMessages: addBadge(fb_revealDeletedMessages, BADGES.hot),
@@ -311,10 +301,10 @@ const allScripts = {
   shopee_totalSpendMoney_excel: shopee_totalSpendMoney_excel,
   download_watchingVideo: download_watchingVideo,
   tiktok_downloadVideo: tiktok_downloadVideo,
-  tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.beta),
+  tiktok_batchDownload: addBadge(tiktok_batchDownload, BADGES.hot),
   douyin_batchDownload: addBadge(douyin_batchDownload, BADGES.beta),
   medium_readFullArticle: medium_readFullArticle,
-  wheelOfNames_hack: addBadge(wheelOfNames_hack, BADGES.new),
+  wheelOfNames_hack: addBadge(wheelOfNames_hack, BADGES.beta),
   saveAllVideo: addBadge(saveAllVideo, BADGES.hot),
   fb_bulkDownload: addBadge(fb_bulkDownload, BADGES.beta),
   fireship_vip: addBadge(fireship_vip, BADGES.new),

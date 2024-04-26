@@ -32,7 +32,8 @@ export default {
       alert("Không tìm thấy video nào.");
     } else {
       setLoadingText("Đang tải video...");
-      downloadURL(src, "douyin_video.mp4");
+      // downloadURL(src, "douyin_video.mp4");
+      window.open(src);
       // const blob = await getBlobFromUrlWithProgress(
       //   src,
       //   ({ loaded, total, speed }) => {

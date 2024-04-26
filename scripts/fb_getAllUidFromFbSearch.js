@@ -1,3 +1,5 @@
+import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
+
 export default {
   name: {
     en: "Get all fb User ID from search page",
@@ -7,22 +9,19 @@ export default {
     en: "Get id of all user from facebook search page",
     vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng facebook",
   },
+
+  changeLogs: {
+    1.66: {
+      "2024-04-27": "x100 faster api",
+    },
+  },
+
   whiteList: ["https://*.facebook.com/*"],
 
-  onClick: function () {
-    const getUid = async (url) => {
-      var response = await fetch(url);
-      if (response.status == 200) {
-        var text = await response.text();
-        let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
-        if (uid?.length) {
-          return uid[0];
-        }
-      }
-      return null;
-    };
-    const main = async () => {
-      alert("Đang lấy thông tin uid, mở console để xem tiến trình...");
+  onClickExtension: async function () {
+    const { closeLoading } = showLoading("Đang tìm user ID...");
+
+    await runScriptInCurrentTab(async () => {
       let list_a = Array.from(
         document.querySelectorAll("a[role='presentation']")
       );
@@ -36,13 +35,14 @@ export default {
           continue;
         }
         let name = l.split("facebook.com/")[1];
-        uid = await getUid(l);
+        uid = await UfsGlobal.Facebook.getUidFromUrl(l);
         uids.push(uid);
         console.log(name, uid);
       }
       console.log(uids);
-      prompt("Tất cả UID: ", uids.join("\n"));
-    };
-    main();
+      prompt(`Tìm được ${uids.length} UID, Copy ngay: `, uids.join("\n"));
+    });
+
+    closeLoading();
   },
 };

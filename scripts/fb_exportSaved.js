@@ -7,9 +7,11 @@ export default {
     vi: "Xuất mục đã lưu trên facebook",
   },
   description: {
-    en: "Export all your saved items on facebook to json file",
-    vi: "Xuất các mục đã lưu của bạn trên facebook ra file json",
+    en: "Export all your saved items on facebook to JSON file",
+    vi: "Xuất các mục đã lưu của bạn trên facebook ra file JSON",
   },
+
+  whiteList: ["https://*.facebook.com/*"],
 
   onClickExtension: async function () {
     const { downloadData } = UfsGlobal.Utils;

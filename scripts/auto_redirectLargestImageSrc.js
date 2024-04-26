@@ -10,6 +10,12 @@ export default {
     img: "/scripts/auto_redirectLargestImageSrc.png",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-16": "init",
+    },
+  },
+
   onDocumentStart: async () => {
     let oldHref = location.href;
     check(oldHref);

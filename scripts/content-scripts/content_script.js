@@ -5,8 +5,8 @@ let utils;
 function sendToPageScript(event, uuid, data) {
   console.log("sendToPageScript", event, uuid, data);
   window.dispatchEvent(
-    new CustomEvent("ufs-contentscript-sendto-pagescript", {
-      detail: { event, uuid, data },
+    new CustomEvent("ufs-contentscript-sendto-pagescript" + uuid, {
+      detail: { event, data },
     })
   );
 }

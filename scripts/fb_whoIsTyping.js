@@ -5,8 +5,12 @@ export default {
     vi: "Facebook - Ai đang nhắn cho bạn?",
   },
   description: {
-    en: "Notify when someone is typing chat to you.",
-    vi: "Thông báo khi có người đang gõ tin nhắn cho bạn.",
+    en:
+      "Notify when someone is typing chat to you.<br/>" +
+      "<h2>WARNING</h2>Not work with end-to-end encryption",
+    vi:
+      "Thông báo khi có người đang gõ tin nhắn cho bạn.<br/>" +
+      "<h2>Chú ý</h2>Không xem được nếu mã hoá đầu cuối",
   },
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 

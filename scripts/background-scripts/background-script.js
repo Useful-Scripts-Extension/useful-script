@@ -40,6 +40,18 @@ function runScripts(tabId, event, world) {
 
 async function customFetch(url, options) {
   try {
+    if (
+      typeof options?.body === "string" &&
+      options.body.startsWith("ufs-formData:")
+    ) {
+      let body = options.body.replace("ufs-formData:", "");
+      body = JSON.parse(body);
+      options.body = new FormData();
+      for (const [key, value] of Object.entries(body)) {
+        options.body.append(key, value);
+      }
+    }
+
     const res = await fetch(url, options);
     let body;
 

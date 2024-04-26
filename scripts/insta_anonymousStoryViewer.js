@@ -11,6 +11,12 @@ export default {
   infoLink:
     "https://greasyfork.org/en/scripts/468385-instagram-anonymous-story-viewer",
 
+  changeLogs: {
+    1.66: {
+      "2024-04-15": "init",
+    },
+  },
+
   whiteList: ["*://www.instagram.com/*"],
 
   onDocumentStart: () => {
@@ -37,5 +43,11 @@ export default {
         }
       };
     })();
+  },
+
+  onDocumentEnd: () => {
+    UfsGlobal.DOM.notify({
+      msg: "Usefull-script: Blocked story view tracking READY",
+    });
   },
 };

@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: "https://www.instagram.com/favicon.ico",
+  icon: "https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png",
   name: {
     en: "Get insta user info (uid, avatar, ...)",
     vi: "Lấy insta thông tin user (uid, avatar, ...)",
@@ -71,7 +71,7 @@ export default {
           "",
           "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=600,top=50,left=50"
         );
-        win.document.title = "Instagram searchh for " + txt;
+        win.document.title = "Instagram search for " + txt;
         win.document.body.innerHTML = /*html*/ `
           <table>
             <tr>

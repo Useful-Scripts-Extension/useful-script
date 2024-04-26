@@ -44,4 +44,5 @@ export default {
 };
 
 // functions/attributes that other scripts can import and use
+// can only use in popup context (onClickExtension)
 export const shared = {};

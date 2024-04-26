@@ -7,43 +7,48 @@ export default {
     en: "Get id of all user from group members facebook",
     vi: "Lấy id của tất cả user từ group facebook",
   },
+
+  changeLogs: {
+    1.66: {
+      "2024-04-27": "fixed - new api",
+    },
+  },
+
   whiteList: ["https://*.facebook.com/*"],
 
   onClick: async function () {
-    // Lấy tất cả id của member trong group
-    // source: https://gist.github.com/thinhbuzz/d8ba04c66f69dc78265b9a9ce5a118c0?fbclid=IwAR37QPDL1zlGWIv_pPq4UydYbFcQKlw7Dio-dP-jtztSJODGPD1RoIGFzZU#file-group-uuid-js-L1
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
 
-    // function sleep(ms) {
-    //   return new Promise((resolve) => setTimeout(resolve, ms));
-    // }
-
-    function getId() {
+    function getGroupId() {
       try {
-        const props = require("CometRouteStore").getRoute(location.pathname)
-          ?.rootView.props;
-        const result = require("GroupsCometMembersPageNewMembersSectionRefetchQuery.graphql");
-        if (!props || !result) {
-          throw new Error("Không phải profile");
-        }
-        return {
-          groupID: props.groupID,
-          docId: result.params.id,
-          method: "ProfileCometAppCollectionPhotosRendererPaginationQuery",
-        };
+        return require("CometRouteStore").getRoute(location.pathname)?.rootView
+          .props?.groupID;
       } catch (e) {
         console.error(e);
       }
-      return { groupID: null, docId: null, method: null };
+      return null;
     }
 
-    function prepareData({ dtsg: fb_dtsg, groupID, docId: doc_id, method }) {
-      const variables = `{"count":10,"cursor":__CURSOR__,"groupID":"${groupID}","recruitingGroupFilterNonCompliant":false,"scale":1,"id":"${groupID}"}`;
+    function prepareData({ dtsg: fb_dtsg, groupID, cursor }) {
+      const variables = JSON.stringify({
+        count: 10,
+        cursor: cursor,
+        groupID: groupID,
+        membershipType: "MEMBER",
+        scale: 1,
+        search: null,
+        statusStaticFilter: null,
+        id: groupID,
+      });
       const data = {
-        doc_id,
+        doc_id: "7539362479514359",
         fb_dtsg,
         variables,
         fb_api_caller_class: "RelayModern",
-        fb_api_req_friendly_name: method,
+        fb_api_req_friendly_name:
+          "GroupsCometPeopleProfilesPaginatedListPaginationQuery",
       };
       const formBody = [];
       for (const property in data) {
@@ -54,13 +59,13 @@ export default {
       return formBody.join("&");
     }
 
-    async function getLinks(method, formBody) {
+    async function getLinks(formBody) {
       return fetch("https://www.facebook.com/api/graphql/", {
         headers: {
           "content-type": "application/x-www-form-urlencoded",
           "user-agent":
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-          "x-fb-friendly-name": method,
+          // "x-fb-friendly-name": method,
         },
         body: formBody,
         method: "POST",
@@ -69,43 +74,38 @@ export default {
         .then(({ data }) => {
           console.log(data);
           return {
-            users: data.node.new_members.edges.map((item) => {
+            users: data.node.people_profiles.edges.map((item) => {
               return {
                 id: item.node.id,
                 name: item.node.name,
                 url: item.node.url,
+                avatar: item.node.profile_picture?.uri,
               };
             }),
-            page: data.node.new_members.page_info,
+            page: data.node.people_profiles.page_info,
           };
         });
     }
 
     try {
-      // window.scrollTo(0, document.body.scrollHeight);
-      // await sleep(1000);
-      let cursor = null;
-      const limit = +prompt("Số UUID tối đa sẽ lấy", "999999") || 999999;
+      const limit = +prompt("Số UUID tối đa sẽ lấy", "999999");
       if (!limit) return;
 
-      const { groupID, docId, method } = getId();
+      const groupID = getGroupId();
       const dtsg = require("DTSG").getCachedToken
         ? require("DTSG").getCachedToken()
         : require("DTSG").getToken();
       window.getAllUidOfGroupMembers_allItems = [];
-      if (!groupID || !docId) {
-        throw new Error("Không tìm thấy token");
-      }
+
       alert(
         "Quá trình lấy uuid sẽ diễn ra trong console.\nNhấn F12 để mở console"
       );
       console.log("%cBắt đầu lấy link", "color: green;");
-      const formBody = prepareData({ dtsg, groupID, docId, method });
+
+      let cursor = null;
       while (true) {
-        let { users, page } = await getLinks(
-          method,
-          formBody.replace("__CURSOR__", cursor ? `"${cursor}"` : "null")
-        );
+        const formBody = prepareData({ dtsg, groupID, cursor });
+        let { users, page } = await getLinks(formBody);
         window.getAllUidOfGroupMembers_allItems.push(...users);
         console.log(
           "%cĐã lấy được %d uuid",
@@ -127,11 +127,77 @@ export default {
         "color: green;font-size: 20px;padding: 10px",
         window.getAllUidOfGroupMembers_allItems.length
       );
-      alert("Đã lấy xong dữ liệu, hiển thị trong console (F12)");
+
+      const types = [
+        {
+          name: "uid",
+          field: "id",
+        },
+        {
+          name: "tên",
+          field: "name",
+        },
+        {
+          name: "avatar",
+          field: "avatar",
+        },
+        {
+          name: "link",
+          field: "url",
+        },
+      ];
+
+      window.ufs_saveFbMemberAgain = () => {
+        let type = prompt(
+          `TỔNG: ${window.getAllUidOfGroupMembers_allItems.length} members
+
+Chọn những dữ liệu muốn lưu:\n
+          ${types.map((_, i) => i + 1 + ": " + _.name).join("\n        ")}
+
+  Ví dụ: muốn lưu uid và link => Nhập 24`,
+          1
+        );
+
+        if (type) {
+          let dataToSave;
+          if (type.length === 1) {
+            dataToSave = window.getAllUidOfGroupMembers_allItems
+              .map((item) => {
+                let index = Math.max(Math.min(+type - 1, 0), types.length - 1);
+                return item[types[index].field];
+              })
+              .join("\n");
+          } else {
+            dataToSave = JSON.stringify(
+              window.getAllUidOfGroupMembers_allItems.map((data) => {
+                let res = {};
+                for (let i = 0; i < types.length; i++) {
+                  if (type.includes(i + 1)) {
+                    res[types[i].name] = data[types[i].field];
+                  }
+                }
+                return res;
+              }),
+              null,
+              4
+            );
+          }
+
+          UfsGlobal.Utils.downloadData(dataToSave, "group_members.txt");
+        }
+
+        prompt(
+          (type ? "Lưu xong" : "Đã huỷ") +
+            ". Nếu muốn lưu lại dữ liệu khác, vui lòng nhập code sau vào Console",
+          "window.ufs_saveFbMemberAgain()"
+        );
+      };
+
+      window.ufs_saveFbMemberAgain();
     } catch (error) {
       console.log(error);
       console.log("Uid tìm được: ", window.getAllUidOfGroupMembers_allItems);
-      alert("Lỗi. Vui lòng tải lại trang và thử lại.");
+      alert("Lỗi. Vui lòng tải lại trang và thử lại." + error);
     }
   },
 };

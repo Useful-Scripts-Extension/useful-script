@@ -4,13 +4,11 @@ UfsGlobal.Extension = {
   // use basic customEvent technique - only communicate within the same document or window context
   sendToContentScript(event, data) {
     return new Promise((resolve, reject) => {
-      let listenerKey = "ufs-contentscript-sendto-pagescript";
       let uuid = Math.random().toString(36);
+      let listenerKey = "ufs-contentscript-sendto-pagescript" + uuid;
       let listener = (evt) => {
-        if (evt.detail.event === event && evt.detail.uuid === uuid) {
-          resolve(evt.detail.data);
-          window.removeEventListener(listenerKey, listener);
-        }
+        resolve(evt.detail.data);
+        window.removeEventListener(listenerKey, listener);
       };
       window.addEventListener(listenerKey, listener);
       window.dispatchEvent(
@@ -33,22 +31,21 @@ UfsGlobal.Extension = {
       params,
     });
   },
-  fetchByPassOrigin(url, options = {}) {
-    return new Promise((resolve, reject) => {
+  async fetchByPassOrigin(url, options = {}) {
+    try {
+      let _url = url;
       let urlObject = new URL(url);
       // https://stackoverflow.com/a/9375786/23648002
       if (location.hostname == urlObject?.hostname) {
-        url = urlObject.pathname;
+        _url = urlObject.pathname;
       }
-      fetch(url, options)
-        .then(resolve)
-        .catch((e) => {
-          console.log("NORMAL FETCH FAIL: ", e);
-          UfsGlobal.Extension.runInBackground("fetch", [url, options])
-            .then(resolve)
-            .catch(reject);
-        });
-    });
+      let res = await fetch(_url, options);
+      return res;
+    } catch (e) {
+      console.log("NORMAL FETCH FAIL: ", e);
+    }
+    let res = await UfsGlobal.Extension.runInBackground("fetch", [url]);
+    return res;
   },
   getURL(filePath) {
     return UfsGlobal.Extension.runInContentScript("chrome.runtime.getURL", [
@@ -70,6 +67,18 @@ UfsGlobal.Extension = {
   },
 };
 UfsGlobal.DOM = {
+  closest(element, selector) {
+    let el = element;
+    while (el !== null) {
+      if (el.matches(selector)) return el;
+
+      let found = el.querySelector(selector);
+      if (found) return found;
+
+      el = el.parentElement;
+    }
+    return el;
+  },
   addLoadingAnimationAtPos(
     x,
     y,
@@ -554,6 +563,39 @@ UfsGlobal.DOM = {
   },
 };
 UfsGlobal.Utils = {
+  async json2xml(json) {
+    if (!window.json2xml) {
+      let url = await UfsGlobal.Extension.getURL(
+        "/scripts/libs/xml-json/json2xml.js"
+      );
+      await UfsGlobal.DOM.injectScriptSrcAsync(url);
+    }
+    return window.json2xml(json);
+  },
+  async xml2json(xml) {
+    if (!window.xml2json) {
+      let url = await UfsGlobal.Extension.getURL(
+        "/scripts/libs/xml-json/xml2json.js"
+      );
+      await UfsGlobal.DOM.injectScriptSrcAsync(url);
+    }
+    return window.xml2json(xml);
+  },
+  getLargestSrcset(srcset) {
+    var srcs = srcset.split(/[xw],/i),
+      largeSize = -1,
+      largeSrc = null;
+    if (!srcs.length) return null;
+    srcs.forEach((srci) => {
+      let srcInfo = srci.trim().split(/(\s+|%20)/),
+        curSize = parseInt(srcInfo[2] || 0);
+      if (srcInfo[0] && curSize > largeSize) {
+        largeSize = curSize;
+        largeSrc = srcInfo[0];
+      }
+    });
+    return largeSrc;
+  },
   svgBase64ToUrl(sgvBase64) {
     try {
       if (!/^data:image\/svg/.test(sgvBase64)) throw new Error("Invalid SVG");
@@ -1903,8 +1945,11 @@ UfsGlobal.Tiktok = {
         const params = Object.keys(parameters)
           .map((key) => `&${key}=${parameters[key]}`)
           .join("");
-        let data = await fetch(api + videoId + "&" + params);
-        let json = await data.json();
+        let data = await UfsGlobal.Extension.runInBackground("fetch", [
+          api + videoId + "&" + params,
+        ]);
+        console.log(data);
+        let json = JSON.parse(data.body);
         console.log(json);
         let item = json.aweme_list.find((a) => a.aweme_id == videoId);
         if (!item) throw Error("Không tìm thấy video");
@@ -1921,35 +1966,60 @@ UfsGlobal.Tiktok = {
   CACHE: {
     snapTikToken: null,
   },
-  downloadTiktokVideoFromUrl: async function (url) {
+  downloadTiktokVideoFromUrl: async function (url, background = false) {
     try {
       let token = UfsGlobal.Tiktok.CACHE.snapTikToken;
       if (!token) {
-        let token = await UfsGlobal.SnapTik.getToken();
+        let token = await UfsGlobal.SnapTik.getToken(background);
         if (!token) throw Error("Không tìm thấy token snaptik");
         UfsGlobal.Tiktok.CACHE.snapTikToken = token;
       }
 
-      let data = new FormData();
-      data.append("url", url);
-      data.append("token", token);
+      let form = new FormData();
+      form.append("url", url);
+      form.append("token", token);
 
-      let res = await fetch("https://snaptik.app/abc2.php", {
-        method: "POST",
-        body: data,
-      });
-      let text = await res.text();
+      let text;
+      if (background) {
+        let res = await UfsGlobal.Extension.runInBackground("fetch", [
+          "https://snaptik.app/abc2.php",
+          {
+            method: "POST",
+            body:
+              "ufs-formData:" +
+              JSON.stringify({
+                url: url,
+                token: token,
+              }),
+          },
+        ]);
+        text = res.body;
+      } else {
+        let res = await fetch("https://snaptik.app/abc2.php", {
+          method: "POST",
+          body: form,
+        });
+        text = await res.text();
+      }
       let result = UfsGlobal.SnapTik.decode(text);
       return result;
     } catch (e) {
-      console.log("ERROR: " + e);
+      console.log("ERROR: ", e);
     }
   },
 };
 UfsGlobal.SnapTik = {
-  getToken: async () => {
-    let res = await fetch("https://snaptik.app/");
-    let text = await res.text();
+  getToken: async (background = false) => {
+    let text;
+    if (background) {
+      let res = await UfsGlobal.Extension.runInBackground("fetch", [
+        "https://snaptik.app/",
+      ]);
+      text = res.body;
+    } else {
+      let res = await fetch("https://snaptik.app/");
+      text = await res.text();
+    }
     let token = text.match(/name="token" value="(.+?)"/)?.[1];
     return token;
   },
@@ -1998,6 +2068,7 @@ UfsGlobal.SnapTik = {
 
     let result = c(...params);
     let jwt = result.match(/d\?token=(.*?)\&dl=1/)?.[1];
+    if (!jwt) return null;
     let payload = UfsGlobal.Utils.parseJwt(jwt);
     return payload?.url;
   },
@@ -2731,11 +2802,27 @@ UfsGlobal.largeImgSiteRules = [
   },
 ];
 
-if (window) window.UfsGlobal = UfsGlobal;
-
 // export if posible
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = UfsGlobal;
-}
+(function (f) {
+  if (typeof exports === "object" && typeof module !== "undefined") {
+    module.exports = f();
+  } else if (typeof define === "function" && define.amd) {
+    define([], f);
+  } else {
+    var g;
+    if (typeof window !== "undefined") {
+      g = window;
+    } else if (typeof global !== "undefined") {
+      g = global;
+    } else if (typeof self !== "undefined") {
+      g = self;
+    } else {
+      g = this;
+    }
+    g.UfsGlobal = f();
+  }
+})(function () {
+  return UfsGlobal;
+});
 
 console.log("UfsGlobal loaded");

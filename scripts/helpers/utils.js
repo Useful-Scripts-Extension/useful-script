@@ -1,6 +1,9 @@
 //  Utils used by popup and background-script (and content-script?)
 
-const { version } = chrome.runtime?.getManifest() || {};
+const { version } =
+  typeof chrome?.runtime?.getManifest === "function"
+    ? chrome.runtime.getManifest()
+    : {};
 
 export function waitForTabToLoad(tabId) {
   return new Promise((resolve) => {
@@ -35,7 +38,10 @@ export function runFunc(fnPath = "", params = [], global = {}) {
       }
       return p;
     });
-    let res = fn?.(..._params);
+
+    if (!(typeof fn === "function")) return resolve(null);
+
+    let res = fn(..._params);
 
     if (!hasCallback) {
       if (typeof res?.then === "function") {
@@ -281,6 +287,7 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
+  await waitForTabToLoad(tab.id);
   let res = await runScriptInTab({ func, tabId: tab.id, args });
   !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
   closeAfterRunScript && closeTab(tab);

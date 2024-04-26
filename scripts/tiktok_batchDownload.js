@@ -7,13 +7,18 @@ export default {
   description: {
     en: "Select and download all tiktok video (user profile, tiktok explore).",
     vi: "Tải hàng loạt video tiktok (trang người dùng, trang tìm kiếm), có giao diện chọn video muốn tải.",
+    img: "/scripts/tiktok_batchDownload.jpg",
+  },
+
+  changeLogs: {
+    1.66: {
+      "2024-04-27": "fix bug - use snaptik",
+    },
   },
 
   whiteList: ["https://www.tiktok.com/*"],
 
-  onDocumentStart: () => {
-    console.log("abc");
-
+  onDocumentIdle: () => {
     let checkboxes = [];
 
     // Setup DOM
@@ -31,7 +36,8 @@ export default {
       "border: 1px solid #eee",
       "color: white",
     ].join(";");
-    document.body.appendChild(container);
+
+    (document.body || document.documentElement).appendChild(container);
 
     let progressDiv = document.createElement("p");
     progressDiv.innerText = "Useful script: Tiktok tải hàng loạt";
@@ -155,12 +161,15 @@ export default {
           console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
           progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
           downloadBtn.innerText = `Đang get link ${progress}...`;
-          let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(
-            getId(queue[0])
+          let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(
+            queue[0],
+            true
           );
 
           if (!link) {
-            link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(queue[0]);
+            link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(
+              getId(queue[0])
+            );
           }
 
           if (link) {
@@ -187,7 +196,7 @@ export default {
       downloadBtn.disabled = false;
       downloadBtn.innerText = "GET LINK 🔗";
 
-      UfsGlobal.Utils.copyToClipboard(links.join("\n"));
+      if (links?.length) UfsGlobal.Utils.copyToClipboard(links.join("\n"));
       console.log(links);
     }
 

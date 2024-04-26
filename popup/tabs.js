@@ -202,7 +202,6 @@ const tabs = [
       s.fb_getAllAlbumIdFromCurrentWebsite,
       s.fb_getUidFromUrl,
       s.fb_getAllUidFromFbSearch,
-      s.fb_getAllUidFromFriendsPage,
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
       {
@@ -259,8 +258,6 @@ const tabs = [
       s.insta_anonymousStoryViewer,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.insta_getAllUserMedia,
-      s.insta_getAllImagesInUserProfile,
-      s.insta_getAllImagesInNewFeed,
     ],
   },
   {
@@ -305,10 +302,6 @@ const tabs = [
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
       // s.douyin_batchDownload,
-      s.saveAllVideo,
-      createTitle("--- Doutu.be ---", "--- Doutu.be ---"),
-      s.doutube_downloadWatchingVideo,
-      s.doutube_getAllVideoInUserProfile,
     ],
   },
   {

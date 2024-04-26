@@ -9,6 +9,12 @@ export default {
     vi: "Hiển thị thêm thời gian chạy lệnh vào trước console.log",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-11": "init",
+    },
+  },
+
   onDocumentStart: () => {
     const origLog = console.log;
     console.log = function () {

@@ -101,8 +101,18 @@ export default {
     vi: "Cuộn trang xuống cuối cùng",
   },
   description: {
-    en: "Scoll to end, then wait for load data, then scroll again... Mouse click to cancel",
-    vi: "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi. Click chuột để huỷ.",
+    en:
+      "Scoll to end, then wait for load data, then scroll again... <b>Mouse click to cancel</b>" +
+      "<br/><h1>Tips</h1>You can press middle mouse button to auto scroll up/down in any website.",
+    vi:
+      "Cuộn tới khi nào không còn data load thêm nữa (trong 5s) thì thôi. <b>Click chuột để huỷ.</b>" +
+      "<br/><h1>Mẹo</h1>Bạn có thể bấm chuột giữa để tự động scroll lên/xuống trên mọi trang web.",
+  },
+
+  changeLogs: {
+    1.66: {
+      "2024-04-27": "add tips",
+    },
   },
 
   onClick: shared.scrollToVeryEnd,

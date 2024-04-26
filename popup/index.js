@@ -294,6 +294,16 @@ function createScriptButton(script, isFavorite = false) {
   if (script.description?.img) {
     tooltip.innerHTML += `<img src="${script.description.img}" style="width:95%" />`;
   }
+  if (script.changeLogs) {
+    let tx = "";
+    for (let ver in script.changeLogs) {
+      let dates = Object.keys(script.changeLogs[ver]).sort().reverse();
+      for (let date of dates) {
+        tx += `<li>${date} - ${script.changeLogs[ver][date]}</li>`;
+      }
+    }
+    tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
+  }
   button.appendChild(tooltip);
 
   buttonContainer.appendChild(button);

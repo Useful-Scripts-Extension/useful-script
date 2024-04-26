@@ -2,9 +2,13 @@
 
 ## 29/03/2024 - 22/04/2024
 
+- [x] tiktok download api lỗi => Dùng snaptik api
+
+- [ ] cào data tiktok/douyin <https://github.com/Evil0ctal/Douyin_TikTok_Download_API>
+
 - [ ] fb_invisible_message có vẻ không hoạt động
 
-- [ ] fb_whoIsTyping có vẻ không hoạt động
+- [x] fb_whoIsTyping có vẻ không hoạt động => chỉ hoạt động nếu ko mã hoá
 
 - [ ] zing mp3 - có api ngon mà chưa dùng hết chức năng
 
@@ -44,7 +48,7 @@
 
 - [ ] Fix hack wheel of names
 
-- [ ] Thêm visualize music vào bất kỳ trang web nào.
+- [x] Thêm visualize music vào bất kỳ trang web nào => repo riêng
 
 - [x] get bigest image: <https://greasyfork.org/scripts/2312> <https://github.com/hoothin/UserScripts/blob/master/Picviewer%20CE%2B/pvcep_rules.js> => check rule r array and s array
 
@@ -61,9 +65,9 @@
   - [ ] tabCapture => capture google meet?
   - [ ] webSocket => do something great?
 
-- [ ] Thêm change logs cho từng scripts
+- [x] Thêm change logs cho từng scripts
 
 - [ ] Xem google extension howto [Link](https://developer.chrome.com/docs/extensions/how-to)
-  - [ ] record audio and video from another tab [link](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) => **TIỀM NĂNG làm web visualize music**
+  - [x] record audio and video from another tab [link](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) => **TIỀM NĂNG làm web visualize music**
   - [x] chụp ảnh website bằng chrome.tabs.captureVisibleTab => bỏ, không có tiềm năng
   - [x] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab => phải là 1 page trong extension mới truy cập được => không tiềm năng

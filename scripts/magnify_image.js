@@ -14,6 +14,12 @@ export default {
     img: "",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-26": "init",
+    },
+  },
+
   onClickExtension: () => {
     window.close(); // close extension popup
   },
@@ -126,19 +132,7 @@ export default {
       let fn = [
         () => {
           if (!ele.srcset) return null;
-          var srcs = ele.srcset.split(/[xw],/i),
-            largeSize = -1,
-            largeSrc = null;
-          if (!srcs.length) return null;
-          srcs.forEach((srci) => {
-            let srcInfo = srci.trim().split(/(\s+|%20)/),
-              curSize = parseInt(srcInfo[2] || 0);
-            if (srcInfo[0] && curSize > largeSize) {
-              largeSize = curSize;
-              largeSrc = srcInfo[0];
-            }
-          });
-          return largeSrc;
+          return UfsGlobal.Utils.getLargestSrcset(ele.srcset);
         },
         () => {
           // if (/img|picture|source|image|a/i.test(ele.tagName))

@@ -16,7 +16,7 @@
     CACHED.path = path;
 
     for (let id of scriptIds.filter((_) => _)) {
-      let scriptPath = `${path}/${id}.js`;
+      let scriptPath = `${path}${id}.js`;
       import(scriptPath)
         .then(({ default: script }) => {
           try {
