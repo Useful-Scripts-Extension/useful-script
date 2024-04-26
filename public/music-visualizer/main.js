@@ -55,16 +55,21 @@ function draw() {
 
 function mousePressed() {
   if (!stream) {
-    getStreamFromOtherTab()
-      .then((_) => {
-        stream = _;
-        console.log("stream: ", stream);
-        connectStreamToP5(stream);
-      })
-      .catch((e) => {
-        console.log("ERROR: ", e);
-      });
+    getStreamAndPlay();
   }
+}
+
+window.ufs_call_init = getStreamAndPlay;
+function getStreamAndPlay() {
+  getStreamFromOtherTab()
+    .then((_) => {
+      stream = _;
+      console.log("stream: ", stream);
+      connectStreamToP5(stream);
+    })
+    .catch((e) => {
+      console.log("ERROR: ", e);
+    });
 }
 
 function windowResized() {

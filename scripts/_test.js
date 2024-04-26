@@ -1,8 +1,4 @@
-import {
-  getCurrentTab,
-  runScriptInTab,
-  waitForTabToLoad,
-} from "./helpers/utils.js";
+import { runScriptInTab, waitForTabToLoad } from "./helpers/utils.js";
 
 export default {
   icon: "",
@@ -25,105 +21,24 @@ export default {
   // https://stackoverflow.com/questions/66217882/properly-using-chrome-tabcapture-in-a-manifest-v3-extension
   // https://groups.google.com/a/chromium.org/g/chromium-extensions/c/ffI0iNd79oo
   // https://github.dev/GoogleChrome/chrome-extensions-samples/api-samples/tabCapture
+  // https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture
 
-  onClick: async () => {
-    // https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      video: {
-        displaySurface: "browser",
-      },
-      audio: {
-        suppressLocalAudioPlayback: false,
-      },
-      preferCurrentTab: false,
-      selfBrowserSurface: "exclude",
-      systemAudio: "include",
-      surfaceSwitching: "include",
-      monitorTypeSurfaces: "include",
+  onClickExtension: async () => {
+    const { tabs } = await chrome.windows.create({
+      url: "http://127.0.0.1:5500/public/music-visualizer/index.html",
+      type: "popup",
+      width: 800,
+      height: 300,
     });
+    const tab = tabs[0];
 
-    drawVisualizer(stream);
+    await waitForTabToLoad(tab.id);
 
-    // const streamId = await UfsGlobal.Extension.runInBackground(
-    //   "chrome.tabCapture.getMediaStreamId"
-    // );
-    // navigator.webkitGetUserMedia(
-    //   {
-    //     audio: {
-    //       mandatory: {
-    //         chromeMediaSource: "tab", // The media source must be 'tab' here.
-    //         chromeMediaSourceId: streamId,
-    //       },
-    //     },
-    //     video: false,
-    //   },
-    //   function (stream) {
-    //     console.log(stream);
-    //   },
-    //   function (error) {
-    //     console.error(error);
-    //   }
-    // );
-  },
-
-  _onClickExtension: async () => {
-    try {
-      // const url = "http://127.0.0.1:5500/public/music-visualizer/index.html";
-      const url = await chrome.runtime.getURL(
-        "/public/music-visualizer/index.html"
-      );
-      const currentTab = await getCurrentTab();
-      const newTab = await chrome.tabs.create({
-        url: url,
-        active: false,
-      });
-      await waitForTabToLoad(newTab.id);
-
-      const streamId = await chrome.tabCapture.getMediaStreamId({
-        targetTabId: currentTab.id,
-        consumerTabId: newTab.id,
-      });
-
-      chrome.tabs.update(newTab.id, {
-        url: url + "?streamId=" + streamId,
-      });
-
-      // runScriptInTab({
-      //   tabId: newTab.id,
-      //   func: (streamId) => {
-      //     start(streamId);
-      //   },
-      //   args: [streamId],
-      // });
-    } catch (e) {
-      alert(e);
-    }
-  },
-
-  _onClickContentScript: async () => {
-    try {
-      const currentTabId = await UfsGlobal.Extension.runInBackground(
-        "utils.getCurrentTabId"
-      );
-
-      const url = await UfsGlobal.Extension.getURL("/scripts/_test.html");
-      const { tabs } = await UfsGlobal.Extension.runInBackground(
-        "chrome.windows.create",
-        [{ url, height: 400, width: 800 }]
-      );
-      const tab = tabs[0];
-
-      await UfsGlobal.Extension.waitForTabToLoad(tab.id);
-
-      UfsGlobal.Extension.runInBackground("chrome.tabs.sendMessage", [
-        tab.id,
-        {
-          targetTabId: currentTabId,
-          consumerTabId: tab.id,
-        },
-      ]);
-    } catch (e) {
-      console.log(e);
-    }
+    runScriptInTab({
+      func: () => {
+        window.ufs_call_init?.();
+      },
+      tabId: tab.id,
+    });
   },
 };
