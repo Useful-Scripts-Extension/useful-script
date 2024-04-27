@@ -195,7 +195,7 @@ function createScriptButton(script, isFavorite = false) {
       const { text, color, backgroundColor } = badge;
       const badgeItem = document.createElement("span");
       badgeItem.classList.add("badge");
-      badgeItem.innerText = t(text);
+      badgeItem.innerHTML = t(text);
       badgeItem.style.color = color;
       badgeItem.style.backgroundColor = backgroundColor;
 

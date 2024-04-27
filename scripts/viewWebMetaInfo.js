@@ -9,12 +9,20 @@ export default {
     vi: "Xem thông tin meta của website trực tiếp trong trang web",
   },
 
-  onClick: function () {
+  onClick: async function () {
     // source code from: https://bookmarklet.vercel.app/
 
     if (window.ouiseo === undefined) {
-      UfsGlobal.DOM.injectScriptSrc(
-        "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js"
+      await UfsGlobal.DOM.injectScriptSrc(
+        "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js",
+        (success, fail) => {
+          if (success) {
+            console.log("ouiseo injected");
+            ouiseo();
+          } else {
+            alert("Inject script failed. Cannot run script in this website");
+          }
+        }
       );
     } else if (!!window.ouiseo && !document.getElementById("ouiseo")) {
       ouiseo();

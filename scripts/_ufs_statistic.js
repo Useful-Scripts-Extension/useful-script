@@ -12,6 +12,7 @@ export default {
   changeLogs: {
     1.66: {
       "2024-04-23": "init",
+      "2024-04-27": "remove empty lines",
     },
   },
 
@@ -27,7 +28,7 @@ export default {
             return;
           }
 
-          let logData = document.body.innerText.split("\n");
+          let logData = document.body.innerText.split("\n").filter((_) => _);
 
           // Function to extract time from log data
           function extractTime(log) {

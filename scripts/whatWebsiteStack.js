@@ -9,41 +9,51 @@ export default {
     vi: "Xem những công nghệ/thư viện trang web đang dùng",
   },
 
-  onClick: function () {
-    var d = document,
-      e = d.getElementById("wappalyzer-container");
-    if (e !== null) {
-      d.body.removeChild(e);
+  onClick: async function () {
+    var doc = document,
+      exist = doc.getElementById("wappalyzer-container");
+    if (exist !== null) {
+      doc.body.removeChild(exist);
     }
-    var u = "https://www.wappalyzer.com/",
-      t = new Date().getTime(),
-      c = d.createElement("div"),
-      p = d.createElement("div"),
-      l = d.createElement("link"),
-      s = d.createElement("script");
-    c.setAttribute("id", "wappalyzer-container");
-    l.setAttribute("rel", "stylesheet");
-    l.setAttribute("href", u + "css/bookmarklet.css");
-    d.head.appendChild(l);
-    p.setAttribute("id", "wappalyzer-pending");
-    p.setAttribute(
+    var url = "https://www.wappalyzer.com/",
+      time = new Date().getTime(),
+      container = doc.createElement("div"),
+      loading = doc.createElement("div"),
+      link = doc.createElement("link");
+
+    container.setAttribute("id", "wappalyzer-container");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("href", url + "css/bookmarklet.css");
+    doc.head.appendChild(link);
+
+    loading.setAttribute("id", "wappalyzer-pending");
+    loading.setAttribute(
       "style",
-      "background-image: url(" + u + "images/spinner.gif) !important"
+      "background-image: url(" + url + "images/spinner.gif) !important"
     );
-    c.appendChild(p);
-    s.setAttribute("src", u + "bookmarklet/wappalyzer.js");
-    s.onload = function () {
+    container.appendChild(loading);
+    doc.body.appendChild(container);
+
+    const { setText, closeAfter } = UfsGlobal.DOM.notify({
+      msg: "Useful-script: Injecting scripts...",
+      align: "center",
+      styleText: "",
+      duration: 9999,
+    });
+
+    try {
+      setText("Injecting wappalyzer.js ...");
+      await UfsGlobal.DOM.injectScriptSrcAsync(
+        url + "bookmarklet/wappalyzer.js"
+      );
       window.wappalyzer = new Wappalyzer();
-      s = d.createElement("script");
-      s.setAttribute("src", u + "bookmarklet/apps.js");
-      s.onload = function () {
-        s = d.createElement("script");
-        s.setAttribute("src", u + "bookmarklet/driver.js");
-        c.appendChild(s);
-      };
-      c.appendChild(s);
-    };
-    c.appendChild(s);
-    d.body.appendChild(c);
+      setText("Injecting apps.js ...");
+      await UfsGlobal.DOM.injectScriptSrcAsync(url + "bookmarklet/apps.js");
+      setText("Injecting driver.js ...");
+      await UfsGlobal.DOM.injectScriptSrcAsync(url + "bookmarklet/driver.js");
+    } catch (e) {
+      alert("Error: Cannot run script: " + JSON.stringify(e));
+      closeAfter(0);
+    }
   },
 };

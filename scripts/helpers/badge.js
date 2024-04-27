@@ -3,7 +3,10 @@ export const addBadge = (script, ...badges) => ({ ...script, badges: badges });
 export const BADGES = {
   hot: {
     id: "hot",
-    text: { en: "hot", vi: "xịn xò" },
+    text: {
+      en: 'hot <i class="fa-solid fa-fire"></i>',
+      vi: 'xịn xò <i class="fa-solid fa-fire"></i>',
+    },
     color: "#fff",
     backgroundColor: "#d40",
   },
@@ -27,8 +30,17 @@ export const BADGES = {
   },
   recommend: {
     id: "recommend",
-    text: { en: "recommend", vi: "khuyên dùng" },
+    text: {
+      en: "suggest",
+      vi: "gợi ý",
+    },
     color: "#fff",
     backgroundColor: "#0a0",
+  },
+  openInNewTab: {
+    id: "openInNewTab",
+    text: "<i class='fa-solid fa-square-up-right'></i>",
+    color: "#eee",
+    backgroundColor: "#6669",
   },
 };

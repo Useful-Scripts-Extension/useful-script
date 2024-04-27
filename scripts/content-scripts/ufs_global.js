@@ -609,10 +609,14 @@ UfsGlobal.Utils = {
       return null;
     }
   },
+  svgToBlobUrl(svg) {
+    let url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    return url;
+  },
   svgToBase64(svg) {
     try {
       return (
-        "data:image/svg+xml;base64," +
+        "data:image/svg+xml;charset=utf-8;base64," +
         window.btoa(new XMLSerializer().serializeToString(svg))
       );
     } catch (e) {

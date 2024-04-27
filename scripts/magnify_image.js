@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-magnifying-glass-plus"></i>',
+  icon: '<i class="fa-solid fa-expand fa-lg"></i>',
   name: {
     en: "Magnify any Image",
     vi: "Phóng to mọi hình ảnh",
@@ -151,7 +151,13 @@ export default {
             return ele.getAttribute("href"); // reddit
           }
           if (/svg/i.test(ele.tagName)) {
-            return UfsGlobal.Utils.svgToBase64(ele);
+            return [
+              UfsGlobal.Utils.svgToBase64(ele),
+              UfsGlobal.Utils.svgToBlobUrl(ele),
+            ];
+          }
+          if (/canvas/i.test(ele.tagName)) {
+            return ele.toDataURL();
           }
         },
       ];

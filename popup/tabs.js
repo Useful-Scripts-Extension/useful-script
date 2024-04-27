@@ -29,28 +29,30 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s._test,
-      s._ufs_statistic,
-      {
-        id: "recommend_search_userscript",
-        icon: "https://www.userscript.zone/favicon.ico",
-        name: {
-          en: "Search Userscripts",
-          vi: "Tìm Userscripts",
-        },
-        description: {
-          en: "Search Userscripts on Usersript.zone",
-          vi: "Tìm Userscripts trên Usersript.zone",
-        },
-
-        onClickExtension: function () {
-          window.open("https://www.userscript.zone/");
-        },
-      },
-      s.whatFont,
+      // s._test,
+      // s._ufs_statistic,
       s.similarWeb,
+      s.similarWeb_bypassLimit,
       s.search_sharedAccount,
-      s.whatWebsiteStack,
+      addBadge(
+        {
+          id: "recommend_wappalyzer",
+          icon: "https://www.wappalyzer.com/favicon.ico",
+          name: {
+            en: "Wappalyzer - view website stacks",
+            vi: "Wappalyzer - Web dùng công nghệ gì?",
+          },
+          description: {
+            en: "Technology that current website is using",
+            vi: "Xem những công nghệ/thư viện trang web đang dùng",
+          },
+
+          onClickExtension: function () {
+            window.open("https://www.wappalyzer.com/apps/");
+          },
+        },
+        BADGES.recommend
+      ),
       s.whois,
       s.viewWebMetaInfo,
       {
@@ -73,6 +75,22 @@ const tabs = [
       s.downDetector,
       s.openWaybackUrl,
       s.archiveToday,
+      {
+        id: "recommend_search_userscript",
+        icon: "https://www.userscript.zone/favicon.ico",
+        name: {
+          en: "Search Userscripts",
+          vi: "Tìm Userscripts",
+        },
+        description: {
+          en: "Search Userscripts on Usersript.zone",
+          vi: "Tìm Userscripts trên Usersript.zone",
+        },
+
+        onClickExtension: function () {
+          window.open("https://www.userscript.zone/");
+        },
+      },
     ],
   },
   {
@@ -82,7 +100,7 @@ const tabs = [
       s.saveAllVideo,
       s.vuiz_getLink,
       s.savevideo_me,
-      {
+      addBadge({
         id: "getLinkLuanxt_newtab",
         icon: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/favicon.ico",
         name: {
@@ -96,17 +114,19 @@ const tabs = [
         infoLink: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/",
         onClickExtension: () =>
           window.open("https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"),
-      },
-      s.bookmark_exporter,
-      s.twitter_downloadButton,
+      }),
       createTitle("--- Photos ---", "--- Ảnh ---"),
+      s.magnify_image,
+      s.auto_redirectLargestImageSrc,
+      s.twitter_downloadButton,
+      s.getFavicon,
       addBadge(
         {
           id: "recommend_picviewer_ce+",
           icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
           name: {
-            en: "Picviewer CE+",
-            vi: "Picviewer CE+",
+            en: "Picviewer CE+ download images",
+            vi: "Picviewer CE+ tải ảnh",
           },
           description: {
             en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
@@ -118,7 +138,39 @@ const tabs = [
         },
         BADGES.recommend
       ),
-      s.getFavicon,
+      addBadge(
+        {
+          id: "recommend_file_converter",
+          icon: "https://file-converter.io/favicon.ico",
+          name: {
+            en: "File-converter.io - change image type",
+            vi: "File-converter.io - chuyển đổi ảnh",
+          },
+          description: {
+            en: "Powerful tool which allows you to convert and compress files using the context menu in windows explorer.",
+            vi: "Công cụ nén ảnh, đổi định dạng ảnh hàng loạt, trực tiếp bằng chuột phải.",
+            img: "https://file-converter.io/images/file-converter-usage.gif",
+          },
+          onClickExtension: () => window.open("https://file-converter.io/"),
+        },
+        BADGES.recommend
+      ),
+      addBadge(
+        {
+          id: "recommend_squoosh_app",
+          icon: "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
+          name: {
+            en: "Squoosh.app - compress images",
+            vi: "Squoosh.app - nén ảnh",
+          },
+          description: {
+            en: "Make images smaller using best-in-class codecs, right in the browser.",
+            vi: "Công cụ nén ảnh mạnh mẽ, giảm kích thước ngay trên trình duyệt",
+          },
+          onClickExtension: () => window.open("https://squoosh.app/"),
+        },
+        BADGES.recommend
+      ),
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.spotify_downloadButton,
       s.soundcloud_downloadMusic,
@@ -130,6 +182,7 @@ const tabs = [
       s.vimeo_downloader,
       s.showTheVideos,
       createTitle("--- Document ---", "--- Tài liệu ---"),
+      s.bookmark_exporter,
       s.tailieu_vn,
       s.docDownloader,
       s.scribd_downloadDocuments,
@@ -308,8 +361,6 @@ const tabs = [
     ...CATEGORY.automation,
     scripts: [
       createTitle("--- Utility ---", "--- Tiện ích ---"),
-      s.magnify_image,
-      s.auto_redirectLargestImageSrc,
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
@@ -442,7 +493,7 @@ const tabs = [
           );
         },
       },
-      {
+      addBadge({
         id: "recommend_leakCheck",
         icon: "https://leakcheck.io/favicon.ico",
         name: {
@@ -458,7 +509,7 @@ const tabs = [
         onClickExtension: () => {
           window.open("https://okela.fun/");
         },
-      },
+      }),
     ],
   },
   {
@@ -487,6 +538,7 @@ const tabs = [
         },
         BADGES.recommend
       ),
+      s.whatFont,
       s.visualEvent,
       s.listAllImagesInWeb,
       s.viewAllLinks,
@@ -724,6 +776,11 @@ function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   return result;
 }
 
+const allScriptInTabs = [
+  ...tabs.map((tab) => tab.scripts),
+  ...recommendTab.scripts,
+].flat();
+
 function refreshSpecialTabs() {
   // add data to special tabs
   let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
@@ -733,12 +790,12 @@ function refreshSpecialTabs() {
   if (favoriteTab) favoriteTab.scripts = favoriteScriptsSaver.get();
 
   let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
-  if (allTab) allTab.scripts = sortScriptsByTab(Object.values(s), tabs);
+  if (allTab) allTab.scripts = sortScriptsByTab(allScriptInTabs, tabs);
 
   let autoTab = specialTabs.find((tab) => tab.id === CATEGORY.autorun.id);
   if (autoTab)
     autoTab.scripts = sortScriptsByTab(
-      Object.values(s).filter((_) => canAutoRun(_)),
+      allScriptInTabs.filter((_) => canAutoRun(_)),
       tabs
     );
 }

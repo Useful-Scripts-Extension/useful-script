@@ -51,7 +51,6 @@ import runStatJs from "./runStatJs.js";
 import search_googleSite from "./search_googleSite.js";
 import similarWeb from "./similarWeb.js";
 import search_totalIndexedPages from "./search_totalIndexedPages.js";
-import whatWebsiteStack from "./whatWebsiteStack.js";
 import youtube_downloadVideo from "./youtube_downloadVideo.js";
 import search_paperWhere from "./search_paperWhere.js";
 import viewCookies from "./viewCookies.js";
@@ -158,6 +157,7 @@ import insta_anonymousStoryViewer from "./insta_anonymousStoryViewer.js";
 import removeWebLimit from "./removeWebLimit.js";
 import _ufs_statistic from "./_ufs_statistic.js";
 import pip_fullWebsite from "./pip_fullWebsite.js";
+import similarWeb_bypassLimit from "./similarWeb_bypassLimit.js";
 
 // inject badges
 const allScripts = {
@@ -188,14 +188,14 @@ const allScripts = {
   passwordGenerator: passwordGenerator,
   search_sharedAccount: addBadge(search_sharedAccount, BADGES.hot),
   // passwordFieldToggle,
-  checkWebDie,
+  checkWebDie: addBadge(checkWebDie, BADGES.hot),
   removeCookies,
   simpleAllowCopy: simpleAllowCopy,
   table_addSortTable,
   table_addNumberColumn,
   table_swapRowAndColumn,
   toggleEditPage: addBadge(toggleEditPage, BADGES.hot),
-  whatFont: addBadge(whatFont, BADGES.hot),
+  whatFont: whatFont,
   performanceAnalyzer: performanceAnalyzer,
   removeColours,
   removeStylesheet,
@@ -214,7 +214,6 @@ const allScripts = {
   search_googleSite,
   similarWeb: addBadge(similarWeb, BADGES.hot),
   search_totalIndexedPages,
-  whatWebsiteStack: addBadge(whatWebsiteStack, BADGES.hot),
   youtube_downloadVideo: addBadge(youtube_downloadVideo, BADGES.hot),
   search_paperWhere,
   viewCookies,
@@ -222,7 +221,7 @@ const allScripts = {
   googleCache: googleCache,
   githubdev: githubdev,
   youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
-  downDetector: downDetector,
+  downDetector: addBadge(downDetector, BADGES.new),
   fb_getTokenFfb: fb_getTokenFfb,
   googleShortcuts: googleShortcuts,
   archiveToday: archiveToday,
@@ -320,8 +319,8 @@ const allScripts = {
   spotify_downloadButton: addBadge(spotify_downloadButton, BADGES.new),
   ggdrive_downloadDoc: addBadge(ggdrive_downloadDoc, BADGES.new),
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
-  duckRace_cheat: addBadge(duckRace_cheat, BADGES.new),
-  magnify_image: addBadge(magnify_image, BADGES.new),
+  duckRace_cheat: addBadge(duckRace_cheat, BADGES.hot, BADGES.new),
+  magnify_image: addBadge(magnify_image, BADGES.hot, BADGES.new),
   consoleLog_withTime: consoleLog_withTime,
   auto_redirectLargestImageSrc: addBadge(
     auto_redirectLargestImageSrc,
@@ -329,9 +328,10 @@ const allScripts = {
   ),
   textToQrCode: addBadge(textToQrCode, BADGES.new),
   insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
-  removeWebLimit: addBadge(removeWebLimit, BADGES.hot),
+  removeWebLimit: addBadge(removeWebLimit, BADGES.hot, BADGES.new),
   _ufs_statistic: _ufs_statistic,
   pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.new),
+  similarWeb_bypassLimit: addBadge(similarWeb_bypassLimit, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
