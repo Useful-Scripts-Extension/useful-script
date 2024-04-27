@@ -40,7 +40,7 @@ function initLanguage() {
     let newLang = toggleLang();
     flagImg.setAttribute("src", getFlag());
 
-    trackEvent("change-language-" + newLang);
+    trackEvent("CHANGE-LANGUAGE-" + newLang);
 
     // reset UI
     createTabs();
@@ -79,6 +79,7 @@ function createTabs() {
       });
 
     tabBtn.onclick = () => {
+      trackEvent("OPEN-TAB-" + tab.id);
       openTab(tab);
     };
 
@@ -245,6 +246,7 @@ function createScriptButton(script, isFavorite = false) {
     infoBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
+      trackEvent(script.id + "-INFO");
       window.open(script.infoLink);
     };
     button.appendChild(infoBtn);
@@ -267,6 +269,7 @@ function createScriptButton(script, isFavorite = false) {
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    trackEvent(script.id + (isFavorite ? "-REMOVE-FAVORITE" : "-ADD-FAVORITE"));
     favoriteScriptsSaver.toggle(script);
     createTabs();
   };
@@ -283,6 +286,7 @@ function createScriptButton(script, isFavorite = false) {
     e.stopPropagation();
     e.preventDefault();
 
+    trackEvent(script.id + "-VIEW-SOURCE");
     viewScriptSource(script);
   };
   button.appendChild(viewSourceBtn);
@@ -403,13 +407,13 @@ function initTracking() {
 
   trackingEles.forEach((ele) => {
     ele.onclick = () => {
-      trackEvent("click_" + ele.getAttribute("data-track"));
+      trackEvent("CLICK_" + ele.getAttribute("data-track"));
     };
   });
 }
 
 (async function () {
-  trackEvent("open-popup");
+  trackEvent("OPEN-POPUP");
 
   initTracking();
   initSearch();

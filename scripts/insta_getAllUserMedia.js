@@ -10,6 +10,12 @@ export default {
     vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-03": "optimize flow",
+    },
+  },
+
   onClickExtension: async function () {
     const { downloadData } = UfsGlobal.Utils;
 

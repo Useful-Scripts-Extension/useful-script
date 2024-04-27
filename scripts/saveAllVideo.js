@@ -13,6 +13,12 @@ export default {
   infoLink: "https://saveallvideo.net",
   // "https://www.facebook.com/groups/j2team.community/posts/2316412945357479/",
 
+  changeLogs: {
+    1.65: {
+      "2024-03-13": "init",
+    },
+  },
+
   onClickExtension: async () => {
     const { closeLoading, setLoadingText } = showLoading(
       "Đang lấy thông tin tab..."

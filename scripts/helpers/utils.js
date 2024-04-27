@@ -5,6 +5,25 @@ const { version } =
     ? chrome.runtime.getManifest()
     : {};
 
+const CACHED = {
+  userID: null,
+};
+
+export async function setUserId(uid = new Date().getTime()) {
+  CACHED.userID = uid;
+  await Storage.set("userId", uid);
+}
+
+export async function getUserId() {
+  if (!CACHED.userID) {
+    CACHED.userID = await Storage.get("userId");
+  }
+  if (!CACHED.userID) {
+    await setUserId();
+  }
+  return CACHED.userID;
+}
+
 export function waitForTabToLoad(tabId) {
   return new Promise((resolve) => {
     // check if tab already loaded
@@ -71,6 +90,7 @@ export async function trackEvent(scriptId) {
         body: JSON.stringify({
           script: scriptId,
           version: version,
+          uid: await getUserId(),
         }),
       }
     );
@@ -91,16 +111,16 @@ export async function sendEventToTab(tabId, data) {
 // #region Storage Utils
 
 // https://developer.chrome.com/docs/extensions/reference/storage/
-// export const localStorage = {
-//   set: async (key, value) => {
-//     await chrome.storage.sync.set({ [key]: value });
-//     return value;
-//   },
-//   get: async (key, defaultValue = "") => {
-//     let result = await chrome.storage.sync.get([key]);
-//     return result[key] || defaultValue;
-//   },
-// };
+export const Storage = {
+  set: async (key, value) => {
+    await chrome.storage.local.set({ [key]: value });
+    return value;
+  },
+  get: async (key, defaultValue = "") => {
+    let result = await chrome.storage.local.get([key]);
+    return result[key] || defaultValue;
+  },
+};
 
 const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {

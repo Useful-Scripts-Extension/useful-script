@@ -6,6 +6,7 @@ const {
   runScriptInTab,
   getAllActiveScriptIds,
   trackEvent,
+  setUserId,
 } = utils;
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
@@ -154,7 +155,7 @@ function main() {
   chrome.contextMenus.onClicked.addListener((info) => {
     console.log(info);
     if (info.menuItemId == "ufs-magnify-image") {
-      trackEvent("magnify-image-context-menu");
+      trackEvent("magnify-image-CONTEXT-MENU");
       /*
       {
         "editable": false,
@@ -189,7 +190,10 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
-    GLOBAL.trackEvent("ufs-installed");
+    GLOBAL.trackEvent("ufs-INSTALLED");
+
+    // create new unique id and save it
+    setUserId();
 
     chrome.contextMenus.create({
       title: "Magnify this image",

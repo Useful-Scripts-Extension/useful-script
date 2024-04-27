@@ -79,8 +79,8 @@ const tabs = [
     ...CATEGORY.download,
     scripts: [
       createTitle("--- All in one ---", "--- Tổng hợp ---"),
-      s.vuiz_getLink,
       s.saveAllVideo,
+      s.vuiz_getLink,
       s.savevideo_me,
       {
         id: "getLinkLuanxt_newtab",

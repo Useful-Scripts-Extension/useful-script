@@ -19,7 +19,7 @@ export async function checkForUpdate() {
         en: "update v" + lastestVer,
       });
       updateBtn.onclick = () => {
-        trackEvent("checkForUpdate");
+        trackEvent("CHECK-FOR-UPDATE");
         window.open(source_code);
       };
     } else {

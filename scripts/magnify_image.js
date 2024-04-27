@@ -898,7 +898,7 @@ export default {
     });
 
     let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
-      UfsGlobal.Extension.trackEvent("magnify-image-Ctrl");
+      UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
       magnifyImage(mouse.x, mouse.y);
     });
     // #endregion

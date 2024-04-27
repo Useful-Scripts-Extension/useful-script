@@ -108,12 +108,12 @@ export default {
         note: "cần API key",
         func: function (url) {
           return new Promise((resolve, reject) => {
-            chrome.storage.sync.get(["cuttlyApiKey"], async function (res) {
+            chrome.storage.local.get(["cuttlyApiKey"], async function (res) {
               let apiKey = res.cuttlyApiKey || "";
               apiKey = prompt("Enter cuttly API key:", apiKey);
 
               if (apiKey) {
-                chrome.storage.sync.set({ cuttlyApiKey: apiKey });
+                chrome.storage.local.set({ cuttlyApiKey: apiKey });
                 try {
                   let longurl = encodeURIComponent(url);
                   let resp = await fetch(
@@ -141,7 +141,7 @@ export default {
         note: "cần API key",
         func: function (url) {
           return new Promise((resolve, reject) => {
-            chrome.storage.sync.get(["bitlyApiKey"], async function (res) {
+            chrome.storage.local.get(["bitlyApiKey"], async function (res) {
               let apiKey = res.bitlyApiKey || "";
               apiKey = prompt("Enter bitly API key:", apiKey);
 
@@ -149,7 +149,7 @@ export default {
                 reject("Invalid API key");
               }
 
-              chrome.storage.sync.set({ bitlyApiKey: apiKey });
+              chrome.storage.local.set({ bitlyApiKey: apiKey });
               try {
                 let longurl = encodeURIComponent(url);
                 let resp = await fetch(
