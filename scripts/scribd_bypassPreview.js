@@ -12,9 +12,9 @@ export default {
   whiteList: ["https://www.scribd.com/*"],
 
   onDocumentIdle: () => {
-    UsefulScriptGlobalPageContext.Extension.getURL(
-      "scripts/scribd_bypassPreview.css"
-    ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
+    UfsGlobal.Extension.getURL("scripts/scribd_bypassPreview.css").then(
+      UfsGlobal.DOM.injectCssFile
+    );
 
     function ufs_bypass_preview() {
       [...document.querySelectorAll(".blurred_page .newpage *")].forEach(

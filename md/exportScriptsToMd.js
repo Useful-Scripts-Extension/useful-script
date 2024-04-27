@@ -12,9 +12,17 @@ function generateMd(lang = "vi") {
           if (isTitle(script)) {
             return "\n" + script.name[lang];
           }
-          return `\n  ${index++}. [${script.name[lang]}](/scripts/${
-            script.id
-          }.js): ${script.description[lang]}`;
+
+          return `<details>
+  <summary>${index++}. ${script.name[lang]}</summary>
+
+  [${lang === "vi" ? "Xem mã nguồn" : "View source"}](/scripts/${script.id}.js)
+
+  <code>${script.description[lang]}</code>
+
+  ${script.description.img ? `![](${script.description.img})` : ""}
+
+</details>`;
         })
         .join("\n");
 

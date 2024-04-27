@@ -11,6 +11,12 @@ export default {
     vi: "Tải video tiktok từ link (không watermark)",
   },
 
+  changeLogs: {
+    1.66: {
+      "2024-04-27": "fix bug - use snaptik",
+    },
+  },
+
   onClickExtension: async function () {
     let url = prompt(
       "Nhập link tiktok video: ",
@@ -43,12 +49,14 @@ export const shared = {
   },
 
   getVideoNoWaterMark: async function (video_url, isVideoId = false) {
-    let videoId = isVideoId
-      ? video_url
-      : shared.getTiktokVideoIdFromUrl(video_url);
-    if (!videoId) throw Error("Video URL không đúng định dạng");
-    return await UsefulScriptGlobalPageContext.Tiktok.downloadTiktokVideoFromId(
-      videoId
-    );
+    let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(video_url);
+    if (!link) {
+      let videoId = isVideoId
+        ? video_url
+        : shared.getTiktokVideoIdFromUrl(video_url);
+      if (!videoId) throw Error("Video URL không đúng định dạng");
+      link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(videoId);
+    }
+    return link;
   },
 };

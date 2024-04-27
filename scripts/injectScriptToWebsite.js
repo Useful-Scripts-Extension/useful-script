@@ -5,8 +5,8 @@ export default {
     vi: "Nhúng script vào trang web",
   },
   description: {
-    en: "",
-    vi: "",
+    en: "Inject script url to current website, eg. jquery, library, etc.",
+    vi: "Nhúng link script vào website, ví dụ nhúng jquery, thư viện js, ...",
   },
   onClick: function () {
     let url = prompt(
@@ -15,16 +15,13 @@ export default {
     );
 
     if (url) {
-      UsefulScriptGlobalPageContext.DOM.injectScriptSrc(
-        url,
-        (success, error) => {
-          if (success) {
-            alert("Inject SUCCESS.\n\n" + url);
-          } else {
-            alert("Inject FAILED.\n\n" + JSON.stringify(error));
-          }
+      UfsGlobal.DOM.injectScriptSrc(url, (success, error) => {
+        if (success) {
+          alert("Inject SUCCESS.\n\n" + url);
+        } else {
+          alert("Inject FAILED.\n\n" + JSON.stringify(error));
         }
-      );
+      });
     }
   },
 };

@@ -1,58 +1,81 @@
-import("./scripts/ufs_global_webpage_context.js");
+import("./ufs_global.js"); // to use UfsGlobal inside content-script
+let utils;
 
 // communication between page-script and content-script
-(() => {
-  function sendToPageScript(event, data) {
-    window.dispatchEvent(
-      new CustomEvent("ufs-contentscript-sendto-pagescript", {
-        detail: { event, data },
-      })
-    );
+function sendToPageScript(event, uuid, data) {
+  console.log("sendToPageScript", event, uuid, data);
+  window.dispatchEvent(
+    new CustomEvent("ufs-contentscript-sendto-pagescript" + uuid, {
+      detail: { event, data },
+    })
+  );
+}
+
+window.runScripts = runScripts;
+function runScripts(scriptIds, event, path) {
+  for (let scriptId of scriptIds) {
+    runScript(scriptId, event);
   }
-  window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
-    let { event, data } = e.detail;
-    switch (event) {
-      case "getURL":
-        sendToPageScript(event, chrome.runtime.getURL(data));
-        break;
-      case "getActiveScripts":
-        const key = "activeScripts";
-        let ids = (await chrome.storage.sync.get([key]))?.[key] || "";
-        let path = chrome.runtime.getURL("/scripts/");
-        sendToPageScript(event, { ids, path });
-        break;
-    }
-  });
-})();
+}
 
-// Run script on user click (if clicked script has onClickContentScript event)
+async function runScript(scriptId, event) {
+  const script = (await import("/scripts/" + scriptId + ".js"))?.default;
+  if (script && typeof script[event] === "function") {
+    script[event]();
+    console.log("> Run script (content-script): " + scriptId);
+  }
+}
+
 (async () => {
-  try {
-    const { MsgType, ClickType } = await import("../helpers/constants.js");
-    const { isFunction } = await import("../helpers/utils.js");
+  async function getUtils() {
+    if (!utils) utils = await import("../helpers/utils.js");
+    return utils;
+  }
 
-    chrome.runtime.onMessage.addListener(async function (
-      message,
-      sender,
-      sendResponse
-    ) {
+  getUtils(); // import and save utils
+
+  chrome.runtime.onMessage.addListener(function (
+    message,
+    sender,
+    sendResponse
+  ) {
+    try {
       console.log("> Received message:", message);
 
       switch (message.type) {
-        case MsgType.runScript:
-          let scriptId = message.scriptId;
-          const script = (
-            await import(chrome.runtime.getURL("/scripts/") + scriptId + ".js")
-          )?.default;
-
-          if (script && isFunction(script[ClickType.onClickContentScript])) {
-            script[ClickType.onClickContentScript]();
-            console.log("> Run script " + scriptId);
-          }
+        case "runScript":
+          runScript(message.scriptId, "onClickContentScript");
           break;
       }
-    });
-  } catch (e) {
-    console.log("ERROR: ", e);
-  }
+    } catch (e) {
+      console.log("ERROR : ", e);
+    }
+  });
+
+  // listen page script (web page, cannot listen iframes ...)
+  window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
+    let { event, data, uuid } = e?.detail || {};
+    try {
+      switch (event) {
+        case "ufs-runInContentScript":
+          const { params = [], fnPath = "" } = data || {};
+          console.log("runInContentScript", fnPath, params);
+          const res = await (await getUtils()).runFunc(fnPath, params);
+          sendToPageScript(event, uuid, res);
+          break;
+        case "ufs-runInBackground":
+          chrome.runtime.sendMessage(
+            { action: "ufs-runInBackground", data },
+            function (response) {
+              console.log("Response from background script:", response);
+              sendToPageScript(event, uuid, response);
+            }
+          );
+          break;
+      }
+    } catch (e) {
+      console.log("ERROR: ", e);
+      sendToPageScript(event, uuid, null);
+    }
+  });
 })();

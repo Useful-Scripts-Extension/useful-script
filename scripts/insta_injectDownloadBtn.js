@@ -1,5 +1,5 @@
 export default {
-  icon: "https://www.instagram.com/favicon.ico",
+  icon: "https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png",
   name: {
     en: "Add Instagram download button",
     vi: "Thêm nút tải cho Instagram",

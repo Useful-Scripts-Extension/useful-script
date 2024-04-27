@@ -5,13 +5,30 @@ export default {
     vi: "Facebook - Ai đang nhắn cho bạn?",
   },
   description: {
-    en: "Notify when someone is typing chat to you.",
-    vi: "Thông báo khi có người đang gõ tin nhắn cho bạn.",
+    en:
+      "Notify when someone is typing chat to you.<br/>" +
+      "<h2>WARNING</h2>Not work with end-to-end encryption",
+    vi:
+      "Thông báo khi có người đang gõ tin nhắn cho bạn.<br/>" +
+      "<h2>Chú ý</h2>Không xem được nếu mã hoá đầu cuối",
   },
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   onDocumentStart: () => {
-    window.ufs_whoIsTyping_Cached = {};
+    const key = "ufs_fb_whoIsTyping";
+    try {
+      window.ufs_fb_whoIsTyping = JSON.parse(localStorage.getItem(key) || "[]");
+    } catch (e) {
+      console.log("ERROR", e);
+      window.ufs_fb_whoIsTyping = [];
+    }
+
+    window.onbeforeunload = () => {
+      if (window.ufs_fb_whoIsTyping)
+        localStorage.setItem(key, JSON.stringify(window.ufs_fb_whoIsTyping));
+    };
+
+    window.ufs_whoIsTyping_users_cache = {};
 
     let textDecoder = new TextDecoder("utf-8");
     const WebSocketOrig = window.WebSocket;
@@ -20,7 +37,7 @@ export default {
       websocket_instant.addEventListener("message", async function (achunk) {
         let utf8_str = textDecoder.decode(achunk.data);
 
-        console.log(utf8_str, achunk);
+        // console.log(utf8_str, achunk);
 
         if (
           utf8_str.startsWith("1") &&
@@ -30,18 +47,24 @@ export default {
           try {
             let isStartTyping = utf8_str.includes(",true");
             let isStopTyping = utf8_str.includes(",false");
-            let uid = /\\\"(\d+)\\\"/g.exec(utf8_str)[1];
+            let uid = utf8_str.match(/(?!\")(\d{3,})/g)?.[1];
 
-            if (!(uid in window.ufs_whoIsTyping_Cached)) {
-              let userData =
-                await UsefulScriptGlobalPageContext.Facebook.getUserInfoFromUid(
-                  uid
-                );
-              window.ufs_whoIsTyping_Cached[uid] = userData;
+            if (!(uid in window.ufs_whoIsTyping_users_cache)) {
+              let userData = await UfsGlobal.Facebook.getUserInfoFromUid(uid);
+              window.ufs_whoIsTyping_users_cache[uid] = userData;
             }
 
-            let { name, avatar } = window.ufs_whoIsTyping_Cached[uid];
+            let { name, avatar } = window.ufs_whoIsTyping_users_cache[uid];
             notifyTypingEvent(uid, name, avatar, isStartTyping);
+            window.ufs_fb_whoIsTyping.push({
+              uid,
+              name,
+              avatar,
+              type: isStartTyping ? "start" : "stop",
+              time: new Date().getTime(),
+            });
+            if (window.ufs_fb_whoIsTyping.length > 1000)
+              window.ufs_fb_whoIsTyping.shift();
           } catch (e) {
             console.log("ERROR: ", e);
           }
@@ -52,9 +75,9 @@ export default {
     window.WebSocket.prototype = WebSocketOrig.prototype;
     window.WebSocket.prototype.constructor = window.WebSocket;
 
-    UsefulScriptGlobalPageContext.Extension.getURL(
-      "scripts/fb_whoIsTyping.css"
-    ).then(UsefulScriptGlobalPageContext.DOM.injectCssFile);
+    UfsGlobal.Extension.getURL("scripts/fb_whoIsTyping.css").then(
+      UfsGlobal.DOM.injectCssFile
+    );
 
     function notifyTypingEvent(uid, name, avatar, isTyping) {
       let divId = "ufs-who-is-typing";

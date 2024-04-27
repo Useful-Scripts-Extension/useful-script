@@ -1,7 +1,112 @@
 ## Change logs
 
 <details>
-  <summary>v1564-hotfix - 08/04/2024</summary>
+  <summary>v1.66 - 27/04/2024</summary>
+
+### CHỨC NĂNG MỚI
+
+- Tự động tìm và xem ảnh lớn nhất (hỗ trợ gần 100 trang web) [source](/scripts/magnify_image.js)
+
+- Phóng to bất kỳ ảnh nào trong bất kỳ trang web nào Kết hợp tự động tìm ảnh lớn nhất để xem. [source](/scripts/auto_redirectLargestImageSrc.js)
+
+- Picture-in-picture toàn trang web (thay vì chỉ video) [source](/scripts/pip_fullWebsite.js)
+
+- Hack duck race [source](/scripts/duckRace_cheat.js), wheel of names [source](/scripts/wheelOfNames_hack.js)
+
+- Copy file google sheet không cho phép tải [source](/scripts/ggdrive_copySheetText.js)
+
+- Tải file google docs không cho phép tải [source](/scripts/ggdrive_downloadDoc.js)
+
+- Chặn "đã xem" trong instagram story [source](/scripts/insta_anonymousStoryViewer.js)
+
+- remove web limit => cho phép copy, chuột phải trong mọi trang web [source](/scripts/removeWebLimit.js)
+
+- bypass limit similarweb.com [source](/scripts/similarWeb_bypassLimit.js)
+
+### SỬA CHỨC NĂNG CŨ
+
+- Fix Tải hàng loạt tiktok [source](/scripts/tiktok_batchDownload.js)
+
+- Fix tải video tiktok đang xem [source](/scripts/tiktok_downloadWatchingVideo.js)
+
+- Xuất bookmarks ra file json [source](/scripts/bookmark_exporter.js)
+
+- Tối ưu downDetector - thống kê sự cố web [source](/scripts/downDetector.js)
+
+- Tối ưu "Lấy tất cả fb uid trong trang fb tìm kiếm" -> nhanh hơn 1000 lần [source](/scripts/fb_getAllUidFromFbSearch.js)
+
+- Fix "Lấy tất cả member uid từ group fb" [source](/scripts/fb_getAllUidOfGroupMembers.js)
+
+- Fix "Xem ai đang nhắn tin cho bạn" -> chỉ dùng được cho cuộc trò chuyện không mã hoá [source](/scripts/fb_whoIsTyping.js)
+
+- fix studocu bypass preview - xoá popup, xoá hiệu ứng làm mờ [source](/scripts/studocu_bypassPreview.js)
+
+- fix tải file doc trên tailieu.vn [source](/scripts/tailieu_vn.js)
+
+- nhúng script vào bất kỳ trang web nào [source](/scripts/injectScriptToWebsite.js)
+
+- optimize tự động scroll tới cuối web [source](/scripts/scrollToVeryEnd.js)
+
+- tối ưu giải mã link rút gọn [source](/scripts/unshorten.js)
+
+- tối ưu shorten URL [source](/scripts/shortenURL.js)
+
+- new "text to QRCode" [source](/scripts/textToQrCode.js)
+
+- Tối ưu whatFont - check font chữ web [source](/scripts/whatFont.js)
+
+### XOÁ CHỨC NĂNG
+
+- tải video comment facebook -> có thể dùng chức năng "tải video fb đang xem" thay thế
+
+- get token m.facebook.com => không còn dùng được
+
+- Tải tất cả ảnh new feed instagram => không ổn định
+
+- Tải tất cả ảnh profile user instagram (scroll) => không ổn định, dùng chức năng tải bằng API thay thế.
+
+- Bật lại menu chuột phải => dùng remove web limit thay thế
+
+- các chức năng doutu.be
+
+- image downloader/show the images -> gợi ý những tool dễ sử dụng hơn
+
+- bypass trang preview của envato - không còn dùng được
+
+- scroll by drag
+
+- fastDoc
+
+- tải story whatapp
+
+### TỐI ƯU KHÁC
+
+- giảm thời gian khởi động
+
+- chon ngôn ngữ
+
+- hình demo từng chức năng
+
+- changelogs từng chức năng
+
+- sắp xếp lại
+
+### NHỮNG CON SỐ BIẾT NÓI
+
+- 30 ngày
+
+- 156 files được thêm/sửa/xoá
+
+- 3.972 dòng code được xoá
+
+- 11.768 dòng code mới
+
+  [Tất cả Chức năng](./LIST_SCRIPTS_VI.md)
+
+</details>
+
+<details>
+  <summary>v1.65-hotfix - 08/04/2024</summary>
 
   Fix các chức năng tự động chạy
 
@@ -151,7 +256,7 @@
   - Loại bỏ tab Hot, tab New, Open extension in popup, runInExtensionContext
   - Thêm **tab Autorun, tab Tất cả**
   - Thêm **infoLink** cho các script (mở trang demo hoặc giới thiệu script)
-  - Thêm **UsefulScriptGlobalPageContext** và **content-script** (dùng cho các chức năng tự động chạy)
+  - Thêm **UfsGlobal** và **content-script** (dùng cho các chức năng tự động chạy)
 
 </details>
 

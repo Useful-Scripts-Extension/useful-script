@@ -18,21 +18,22 @@ export default {
       downloadBlob,
       getBlobFromUrlWithProgress,
       formatSize,
-    } = UsefulScriptGlobalPageContext.Utils;
+    } = UfsGlobal.Utils;
 
     const { closeLoading, setLoadingText } = showLoading(
       "Đang tìm video url..."
     );
 
     const src = await runScriptInCurrentTab(async () => {
-      return await UsefulScriptGlobalPageContext.DOM.getWatchingVideoSrc();
+      return await UfsGlobal.DOM.getWatchingVideoSrc();
     });
 
     if (!src) {
       alert("Không tìm thấy video nào.");
     } else {
       setLoadingText("Đang tải video...");
-      downloadURL(src, "douyin_video.mp4");
+      // downloadURL(src, "douyin_video.mp4");
+      window.open(src);
       // const blob = await getBlobFromUrlWithProgress(
       //   src,
       //   ({ loaded, total, speed }) => {

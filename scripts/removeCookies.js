@@ -9,18 +9,23 @@ export default {
     vi: "Xoá cookies trang hiện tại",
   },
 
-  onClick: function () {
+  onClick: function (silent = false) {
     let clearCookies = () => {
       let C = document.cookie.split("; ");
-      for (d = "." + location.host; d; d = ("" + d).substr(1).match(/\..*$/))
-        for (sl = 0; sl < 2; ++sl)
+      for (
+        let d = "." + location.host;
+        d;
+        d = ("" + d).substr(1).match(/\..*$/)
+      )
+        for (let sl = 0; sl < 2; ++sl)
           for (
-            p = "/" + location.pathname;
+            let p = "/" + location.pathname;
             p;
             p = p.substring(0, p.lastIndexOf("/"))
           )
-            for (i in C)
-              if ((c = C[i])) {
+            for (let i in C) {
+              let c = C[i];
+              if (c) {
                 document.cookie =
                   c +
                   "; domain=" +
@@ -31,7 +36,14 @@ export default {
                   "; expires=" +
                   new Date(new Date().getTime() - 1e11).toGMTString();
               }
+            }
     };
+
+    if (silent) {
+      clearCookies();
+      console.log("Ufs: Cookies removed");
+      return;
+    }
 
     var c = document.cookie.replace(/; /g, "\n");
     if (c == "") {

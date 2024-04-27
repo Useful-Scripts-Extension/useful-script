@@ -5,8 +5,12 @@ export default {
     vi: "Facebook - Xem tin nhắn bị gỡ",
   },
   description: {
-    en: "View deleted messages (since function was turned on) on facebook messenger.",
-    vi: "Xem lại những tin nhắn đã bị đối phương xóa (kể từ khi bật chức năng) trong facebook messenger.",
+    en:
+      "View deleted messages (since function was turned on) on facebook messenger.<br/>" +
+      "<h2>WARNING</h2>Not work with end-to-end encryption",
+    vi:
+      "Xem lại những tin nhắn đã bị đối phương xóa (kể từ khi bật chức năng) trong facebook messenger.<br/>" +
+      "<h2>Chú ý</h2>Không xem được nếu mã hoá đầu cuối",
   },
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1651683238497123/",
@@ -195,6 +199,7 @@ export default {
           ) {
             const have_msg_id = /(?=mid\.\$)(.*?)(?=\\")/.exec(utf8_str);
             if (have_msg_id) {
+              console.log("reveal deleted ", utf8_str);
               let dataStr = utf8_str.slice(utf8_str.indexOf("{"));
               let data = JSON.parse(dataStr);
               let payload = JSON.parse(data?.["payload"]);

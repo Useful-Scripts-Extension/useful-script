@@ -13,9 +13,7 @@ export default {
   onClick: async function () {
     // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 
-    let uid = await UsefulScriptGlobalPageContext.Facebook.getUidFromUrl(
-      location.href
-    );
+    let uid = await UfsGlobal.Facebook.getUidFromUrl(location.href);
     if (uid) return prompt(`USER ID của ${document.title}:`, uid);
 
     const find = (r) => (r ? r[0] : 0);

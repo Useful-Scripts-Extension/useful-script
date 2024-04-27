@@ -1,5 +1,5 @@
-const { formatSize, promiseAllStepN } = UsefulScriptGlobalPageContext.Utils;
-const { injectScriptSrc } = UsefulScriptGlobalPageContext.DOM;
+const { formatSize, promiseAllStepN } = UfsGlobal.Utils;
+const { injectScriptSrc } = UfsGlobal.DOM;
 
 const xhrDownloadUint8Array = async ({ url, contentLength }, progressCb) => {
   if (typeof contentLength === "string")

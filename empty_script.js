@@ -11,6 +11,12 @@ export default {
   },
   infoLink: "",
 
+  changeLogs: {
+    ["version"]: {
+      ["date"]: "description",
+    },
+  },
+
   blackList: [],
   whiteList: [],
 
@@ -20,14 +26,17 @@ export default {
 
   // run (if enable autorun) in web page context
   onDocumentStart: () => {},
-  onDocumentEnd: () => {},
   onDocumentIdle: () => {},
+  onDocumentEnd: () => {},
 
   // run onclick in extension-popup-page context
   onClickExtension: () => {},
 
   // run onclick in content-script context
   onClickContentScript: () => {},
+  onDocumentStartContentScript: () => {},
+  onDocumentIdleContentScript: () => {},
+  onDocumentEndContentScript: () => {},
 
   // run onclick in web page context
   // cannot access to shared or any variable outside of webpage
@@ -35,4 +44,5 @@ export default {
 };
 
 // functions/attributes that other scripts can import and use
+// can only use in popup context (onClickExtension)
 export const shared = {};

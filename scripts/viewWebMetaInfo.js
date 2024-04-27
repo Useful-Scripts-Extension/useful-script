@@ -8,17 +8,22 @@ export default {
     en: "Instantly shows meta information about the current site in an on-page iFrame.",
     vi: "Xem thông tin meta của website trực tiếp trong trang web",
   },
-    
-  onClick: function () {
+
+  onClick: async function () {
     // source code from: https://bookmarklet.vercel.app/
 
     if (window.ouiseo === undefined) {
-      var jsCode = document.createElement("script");
-      jsCode.setAttribute(
-        "src",
-        "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js"
+      await UfsGlobal.DOM.injectScriptSrc(
+        "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js",
+        (success, fail) => {
+          if (success) {
+            console.log("ouiseo injected");
+            ouiseo();
+          } else {
+            alert("Inject script failed. Cannot run script in this website");
+          }
+        }
       );
-      document.body.appendChild(jsCode);
     } else if (!!window.ouiseo && !document.getElementById("ouiseo")) {
       ouiseo();
     } else {

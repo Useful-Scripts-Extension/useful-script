@@ -21,6 +21,21 @@ export default {
     // Source code extracted from https://chrome.google.com/webstore/detail/url-shortener/godoifjoiadanijplaghmhgfeffnblib/related?hl=vi
     const urlShorten = [
       {
+        name: "tinyurl",
+        func: async function (url) {
+          let resp = await fetch(
+            "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(url)
+          );
+          let text = await resp.text();
+
+          if (text.length < 50) {
+            const shorturl = text.replace("http://", "https://");
+            return shorturl;
+          }
+          throw "Unable to find url";
+        },
+      },
+      {
         name: "is.gd",
         func: async function (url) {
           url = encodeURIComponent(url);
@@ -42,21 +57,6 @@ export default {
           if (resp.status !== 200) throw "Unable to find url";
           let json = await resp.json();
           return json.shorturl;
-        },
-      },
-      {
-        name: "tinyurl",
-        func: async function (url) {
-          let resp = await fetch(
-            "https://tinyurl.com/api-create.php?url=" + encodeURIComponent(url)
-          );
-          let text = await resp.text();
-
-          if (text.length < 50) {
-            const shorturl = text.replace("http://", "https://");
-            return shorturl;
-          }
-          throw "Unable to find url";
         },
       },
       {
@@ -89,31 +89,31 @@ export default {
           return json.short;
         },
       },
-      {
-        name: "a.priv.sh",
-        func: async function (url) {
-          let resp = await fetch("https://a.priv.sh", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: url }),
-          });
-          let json = await resp.json();
-          if (json.message !== "success")
-            throw "That URL doesn't quite look right...";
-          return json.url;
-        },
-      },
+      // {
+      //   name: "a.priv.sh",
+      //   func: async function (url) {
+      //     let resp = await fetch("https://a.priv.sh", {
+      //       method: "POST",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ url: url }),
+      //     });
+      //     let json = await resp.json();
+      //     if (json.message !== "success")
+      //       throw "That URL doesn't quite look right...";
+      //     return json.url;
+      //   },
+      // },
       {
         name: "cuttly",
         note: "cần API key",
         func: function (url) {
           return new Promise((resolve, reject) => {
-            chrome.storage.sync.get(["cuttlyApiKey"], async function (res) {
+            chrome.storage.local.get(["cuttlyApiKey"], async function (res) {
               let apiKey = res.cuttlyApiKey || "";
               apiKey = prompt("Enter cuttly API key:", apiKey);
 
               if (apiKey) {
-                chrome.storage.sync.set({ cuttlyApiKey: apiKey });
+                chrome.storage.local.set({ cuttlyApiKey: apiKey });
                 try {
                   let longurl = encodeURIComponent(url);
                   let resp = await fetch(
@@ -141,30 +141,32 @@ export default {
         note: "cần API key",
         func: function (url) {
           return new Promise((resolve, reject) => {
-            chrome.storage.sync.get(["bitlyApiKey"], async function (res) {
+            chrome.storage.local.get(["bitlyApiKey"], async function (res) {
               let apiKey = res.bitlyApiKey || "";
               apiKey = prompt("Enter bitly API key:", apiKey);
 
-              if (apiKey) {
-                chrome.storage.sync.set({ bitlyApiKey: apiKey });
-                try {
-                  let longurl = encodeURIComponent(url);
-                  let resp = await fetch(
-                    "https://api-ssl.bitly.com/v3/shorten?access_token=" +
-                      apiKey +
-                      "&longUrl=" +
-                      longurl +
-                      "&domain=bit.ly&"
-                  );
-                  let text = await resp.text();
-                  let json = JSON.parse(text);
-                  if (json.status_txt === "INVALID_ARG_ACCESS_TOKEN") {
-                    reject("Invalid API key");
-                  }
-                  resolve(json.data.url);
-                } catch (e) {
-                  reject("ERROR: " + e);
+              if (!apiKey) {
+                reject("Invalid API key");
+              }
+
+              chrome.storage.local.set({ bitlyApiKey: apiKey });
+              try {
+                let longurl = encodeURIComponent(url);
+                let resp = await fetch(
+                  "https://api-ssl.bitly.com/v3/shorten?access_token=" +
+                    apiKey +
+                    "&longUrl=" +
+                    longurl +
+                    "&domain=bit.ly&"
+                );
+                let text = await resp.text();
+                let json = JSON.parse(text);
+                if (json.status_txt === "INVALID_ARG_ACCESS_TOKEN") {
+                  reject("Invalid API key");
                 }
+                resolve(json.data.url);
+              } catch (e) {
+                reject("ERROR: " + e);
               }
             });
           });

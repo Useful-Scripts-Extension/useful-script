@@ -20,7 +20,7 @@ export default {
     // Image: https://cf.shopee.vn/file/ecd20c9d39e0c865d53e3f47e6e2e3a7
     // FB POST: https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
-    const { moneyFormat } = UsefulScriptGlobalPageContext.Utils;
+    const { moneyFormat } = UfsGlobal.Utils;
 
     const OrderType = {
       completed: 3,

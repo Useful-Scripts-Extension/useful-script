@@ -9,7 +9,10 @@ export const canClick = (script) =>
 export const canAutoRun = (script) =>
   Events.onDocumentStart in script ||
   Events.onDocumentIdle in script ||
-  Events.onDocumentEnd in script;
+  Events.onDocumentEnd in script ||
+  Events.onDocumentStartContentScript in script ||
+  Events.onDocumentIdleContentScript in script ||
+  Events.onDocumentEndContentScript in script;
 
 export const isTitle = (script) => !(canAutoRun(script) || canClick(script));
 
@@ -21,23 +24,7 @@ export async function viewScriptSource(script) {
     type: "popup",
     height: window.screen.height,
     width: 700,
+    left: window.screen.width / 2 - 350,
+    top: 0,
   });
-}
-
-export async function updateScriptClickCount(scriptId) {
-  try {
-    let res = await fetch(
-      "https://useful-script-statistic.glitch.me/count",
-      // "https://useful-script-statistic.onrender.com/count",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: scriptId }),
-      }
-    );
-    return await res.text();
-  } catch (e) {
-    console.log("ERROR update script click count: ", e);
-    return null;
-  }
 }

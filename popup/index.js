@@ -8,8 +8,8 @@ import {
   runScriptInCurrentTab,
   sendEventToTab,
   toggleActiveScript,
+  trackEvent,
 } from "../scripts/helpers/utils.js";
-import { allScripts } from "../scripts/index.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { openModal } from "./helpers/modal.js";
@@ -22,7 +22,6 @@ import {
   canAutoRun,
   canClick,
   isTitle,
-  updateScriptClickCount,
   viewScriptSource,
 } from "./helpers/utils.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
@@ -38,8 +37,10 @@ function initLanguage() {
   flagImg.setAttribute("src", getFlag());
 
   flagImg.onclick = () => {
-    toggleLang();
+    let newLang = toggleLang();
     flagImg.setAttribute("src", getFlag());
+
+    trackEvent("CHANGE-LANGUAGE-" + newLang);
 
     // reset UI
     createTabs();
@@ -78,6 +79,7 @@ function createTabs() {
       });
 
     tabBtn.onclick = () => {
+      trackEvent("OPEN-TAB-" + tab.id);
       openTab(tab);
     };
 
@@ -157,8 +159,8 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      let newValue = toggleActiveScript(script.id);
-      newValue && updateScriptClickCount(script.id);
+      let newValue = await toggleActiveScript(script.id);
+      trackEvent(script.id + (newValue ? "-ON" : "-OFF"));
       newValue ? script.onEnable?.() : script.onDisable?.();
       updateButtonChecker(script, buttonContainer, newValue);
     };
@@ -193,7 +195,7 @@ function createScriptButton(script, isFavorite = false) {
       const { text, color, backgroundColor } = badge;
       const badgeItem = document.createElement("span");
       badgeItem.classList.add("badge");
-      badgeItem.innerText = t(text);
+      badgeItem.innerHTML = t(text);
       badgeItem.style.color = color;
       badgeItem.style.backgroundColor = backgroundColor;
 
@@ -207,8 +209,10 @@ function createScriptButton(script, isFavorite = false) {
   if (script.icon && typeof script.icon === "string") {
     // image icon
     if (
-      script.icon.indexOf("http://") === 0 ||
-      script.icon.indexOf("https://") === 0
+      script.icon.startsWith("/") ||
+      script.icon.startsWith("http://") ||
+      script.icon.startsWith("https://") ||
+      script.icon.startsWith("data:image")
     ) {
       const icon = document.createElement("img");
       icon.classList.add("icon-img");
@@ -242,6 +246,7 @@ function createScriptButton(script, isFavorite = false) {
     infoBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
+      trackEvent(script.id + "-INFO");
       window.open(script.infoLink);
     };
     button.appendChild(infoBtn);
@@ -264,6 +269,7 @@ function createScriptButton(script, isFavorite = false) {
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    trackEvent(script.id + (isFavorite ? "-REMOVE-FAVORITE" : "-ADD-FAVORITE"));
     favoriteScriptsSaver.toggle(script);
     createTabs();
   };
@@ -280,6 +286,7 @@ function createScriptButton(script, isFavorite = false) {
     e.stopPropagation();
     e.preventDefault();
 
+    trackEvent(script.id + "-VIEW-SOURCE");
     viewScriptSource(script);
   };
   button.appendChild(viewSourceBtn);
@@ -291,16 +298,26 @@ function createScriptButton(script, isFavorite = false) {
   if (script.description?.img) {
     tooltip.innerHTML += `<img src="${script.description.img}" style="width:95%" />`;
   }
+  if (script.changeLogs) {
+    let tx = "";
+    for (let ver in script.changeLogs) {
+      let dates = Object.keys(script.changeLogs[ver]).sort().reverse();
+      for (let date of dates) {
+        tx += `<li>${date} - ${script.changeLogs[ver][date]}</li>`;
+      }
+    }
+    tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
+  }
   button.appendChild(tooltip);
 
   buttonContainer.appendChild(button);
   return buttonContainer;
 }
 
-function updateButtonChecker(script, button, val) {
+async function updateButtonChecker(script, button, val) {
   let checkmark = button.querySelector(".checkmark");
   if (!checkmark) return;
-  if (val ?? isActiveScript(script.id)) {
+  if (val ?? (await isActiveScript(script.id))) {
     checkmark.classList.add("active");
     checkmark.title = t({
       vi: "Tắt tự động chạy",
@@ -321,7 +338,7 @@ async function runScript(script) {
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
-      updateScriptClickCount(script.id);
+      trackEvent(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
       if (isFunction(script.onClick))
         await runScriptInCurrentTab(script.onClick);
@@ -385,8 +402,20 @@ function initSearch() {
   });
 }
 
+function initTracking() {
+  let trackingEles = document.querySelectorAll("[data-track]");
+
+  trackingEles.forEach((ele) => {
+    ele.onclick = () => {
+      trackEvent("CLICK_" + ele.getAttribute("data-track"));
+    };
+  });
+}
+
 (async function () {
-  // initOpenInNewTabBtn();
+  trackEvent("OPEN-POPUP");
+
+  initTracking();
   initSearch();
   initLanguage();
   createTabs();

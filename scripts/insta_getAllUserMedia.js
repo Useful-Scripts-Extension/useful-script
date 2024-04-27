@@ -2,16 +2,22 @@ import { showLoading } from "./helpers/utils.js";
 
 export default {
   name: {
-    en: "Get all media of insta user",
-    vi: "Tải về tất cả media của insta user",
+    en: "Get all media of insta user (API)",
+    vi: "Tải về tất cả media của insta user (API)",
   },
   description: {
-    en: "Get all media of instagram user",
-    vi: "Tải về tất cả ảnh/video của người dùng instagram",
+    en: "Get all media of instagram user (use instagram API)",
+    vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
+  },
+
+  changeLogs: {
+    1.66: {
+      "2024-04-03": "optimize flow",
+    },
   },
 
   onClickExtension: async function () {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     let user_id = prompt("Enter user id:", "");
     if (!user_id) return;

@@ -159,7 +159,7 @@ a:hover {
 .tabcontent {
     padding: 6px;
     border-top: none;
-    padding-bottom: 50px;
+    padding-bottom: 300px;
 }
 
 .tabcontent {
@@ -289,7 +289,7 @@ a:hover {
 }
 
 .content button .badge {
-    padding: 3px 5px;
+    padding: 5px;
 }
 
 /* Go from zero to full opacity */
@@ -315,7 +315,7 @@ a:hover {
     min-width: 120px;
     background-color: rgb(133, 133, 133);
     color: rgb(255, 255, 255);
-    text-align: center;
+    text-align: left;
     border-radius: 6px;
     padding: 5px;
     pointer-events: none;
@@ -347,6 +347,14 @@ a:hover {
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent rgb(133, 133, 133) transparent;
+}
+
+.tooltip .tooltiptext .change-logs {
+    border-top: 1px white solid;
+    color: white;
+    font-style: italic;
+    padding: 5px;
+    margin-top: 5px;
 }
 
 /* --------- Modal ---------- */
@@ -516,6 +524,36 @@ a:hover {
         background-position: 0 50%
     }
 }
+
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: #333;
+    animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
 
 /* --------- scrollbar --------- */
 /* width */

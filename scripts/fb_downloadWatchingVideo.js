@@ -8,8 +8,8 @@ export default {
     vi: "Tải video fb đang xem",
   },
   description: {
-    en: "Download any facebook video that you are watching (watch/story/comment/reel/chat)",
-    vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch/story/comment/reel/chat/bình luận/tin nhắn)",
+    en: "Download any facebook video that you are watching (watch / story / comment / reel / chat)",
+    vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch / story / comment / reel / chat / bình luận / tin nhắn)",
   },
   whiteList: ["https://*.facebook.com/*"],
   infoLink:
@@ -34,10 +34,7 @@ export default {
       );
 
       if (videoUrl) {
-        UsefulScriptGlobalPageContext.Utils.downloadURL(
-          videoUrl,
-          "fb_video.mp4"
-        );
+        UfsGlobal.Utils.downloadURL(videoUrl, "fb_video.mp4");
       } else throw Error("Không tìm được video link");
     } catch (e) {
       alert("ERROR: " + e);
@@ -50,7 +47,7 @@ export default {
 export const shared = {
   getListVideoIdInWebsite: async function () {
     return await runScriptInCurrentTab(() => {
-      const { getOverlapScore } = UsefulScriptGlobalPageContext.DOM;
+      const { getOverlapScore } = UfsGlobal.DOM;
 
       let allVideos = Array.from(document.querySelectorAll("video"));
       let result = [];

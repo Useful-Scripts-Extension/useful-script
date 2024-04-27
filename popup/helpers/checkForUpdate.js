@@ -1,4 +1,5 @@
 import config from "../../config.js";
+import { trackEvent } from "../../scripts/helpers/utils.js";
 import { t } from "./lang.js";
 
 const versionSpan = document.querySelector("#version");
@@ -18,6 +19,7 @@ export async function checkForUpdate() {
         en: "update v" + lastestVer,
       });
       updateBtn.onclick = () => {
+        trackEvent("CHECK-FOR-UPDATE");
         window.open(source_code);
       };
     } else {

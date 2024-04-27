@@ -1,3 +1,106 @@
+//  Utils used by popup and background-script (and content-script?)
+
+const { version } =
+  typeof chrome?.runtime?.getManifest === "function"
+    ? chrome.runtime.getManifest()
+    : {};
+
+const CACHED = {
+  userID: null,
+};
+
+export async function setUserId(uid = new Date().getTime()) {
+  CACHED.userID = uid;
+  await Storage.set("userId", uid);
+}
+
+export async function getUserId() {
+  if (!CACHED.userID) {
+    CACHED.userID = await Storage.get("userId");
+  }
+  if (!CACHED.userID) {
+    await setUserId();
+  }
+  return CACHED.userID;
+}
+
+export function waitForTabToLoad(tabId) {
+  return new Promise((resolve) => {
+    // check if tab already loaded
+    if (chrome.tabs.get(tabId)?.status === "complete") {
+      resolve();
+      return;
+    }
+
+    // listen for tab load
+    chrome.tabs.onUpdated.addListener(function listener(_tabId, info) {
+      if (tabId === _tabId && info.status === "complete") {
+        chrome.tabs.onUpdated.removeListener(listener);
+        resolve();
+      }
+    });
+  });
+}
+
+export function runFunc(fnPath = "", params = [], global = {}) {
+  return new Promise((resolve) => {
+    let fn = fnPath?.startsWith("chrome") ? chrome : global;
+    fnPath.split(".").forEach((part) => {
+      fn = fn?.[part] || fn;
+    });
+
+    let hasCallback = false;
+    let _params = params.map((p) => {
+      if (p === "callback") {
+        hasCallback = true;
+        return resolve;
+      }
+      return p;
+    });
+
+    if (!(typeof fn === "function")) return resolve(null);
+
+    let res = fn(..._params);
+
+    if (!hasCallback) {
+      if (typeof res?.then === "function") {
+        res.then?.((_res) => {
+          console.log(_res);
+          resolve(_res);
+        });
+      } else {
+        console.log(res);
+        resolve(res);
+      }
+    }
+  });
+}
+
+export async function trackEvent(scriptId) {
+  console.log("trackEvent", scriptId, version);
+  // return;
+  try {
+    let res = await fetch(
+      // "http://localhost:3000/count",
+      "https://useful-script-statistic.glitch.me/count",
+      // "https://useful-script-statistic.onrender.com/count",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          script: scriptId,
+          version: version,
+          uid: await getUserId(),
+        }),
+      }
+    );
+    return await res.text();
+  } catch (e) {
+    console.log("ERROR update script click count: ", e);
+    return null;
+  }
+}
+
 export async function sendEventToTab(tabId, data) {
   console.log("... Sending ", data, " to tab...");
   const response = await chrome.tabs.sendMessage(tabId, data);
@@ -8,40 +111,43 @@ export async function sendEventToTab(tabId, data) {
 // #region Storage Utils
 
 // https://developer.chrome.com/docs/extensions/reference/storage/
-// export const localStorage = {
-//   set: async (key, value) => {
-//     await chrome.storage.sync.set({ [key]: value });
-//     return value;
-//   },
-//   get: async (key, defaultValue = "") => {
-//     let result = await chrome.storage.sync.get([key]);
-//     return result[key] || defaultValue;
-//   },
-// };
+export const Storage = {
+  set: async (key, value) => {
+    await chrome.storage.local.set({ [key]: value });
+    return value;
+  },
+  get: async (key, defaultValue = "") => {
+    let result = await chrome.storage.local.get([key]);
+    return result[key] || defaultValue;
+  },
+};
 
 const listActiveScriptsKey = "activeScripts";
-export function setActiveScript(scriptId, isActive = true) {
-  let list = getAllActiveScriptId();
+export async function setActiveScript(scriptId, isActive = true) {
+  let list = await getAllActiveScriptIds();
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
-  let valToSave = list.join(",");
-  localStorage.setItem(listActiveScriptsKey, valToSave);
-  chrome.storage.sync.set({ [listActiveScriptsKey]: valToSave }); // save to storage => content script can access
+  // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
+  chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
   return list;
 }
 
-export function isActiveScript(scriptId) {
-  let currentList = getAllActiveScriptId();
+export async function isActiveScript(scriptId) {
+  let currentList = await getAllActiveScriptIds();
   return currentList.find((_) => _ == scriptId) != null;
 }
 
-export function getAllActiveScriptId() {
-  return (localStorage.getItem(listActiveScriptsKey) || "").split(",");
+export function getAllActiveScriptIds() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get([listActiveScriptsKey], (result) => {
+      resolve(result[listActiveScriptsKey] || []);
+    });
+  });
 }
 
-export function toggleActiveScript(scriptId) {
-  let current = isActiveScript(scriptId);
+export async function toggleActiveScript(scriptId) {
+  let current = await isActiveScript(scriptId);
   let newVal = !current;
   setActiveScript(scriptId, newVal);
   return newVal;
@@ -101,14 +207,19 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScriptInTab = async ({ func, tabId, args = [] }) => {
+export const runScriptInTab = async ({
+  func,
+  tabId,
+  args = [],
+  world = chrome.scripting.ExecutionWorld.MAIN,
+}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
         target: { tabId: tabId },
         func: func,
         args: args,
-        world: chrome.scripting.ExecutionWorld.MAIN,
+        world: world,
         injectImmediately: true,
       },
       (injectionResults) => {
@@ -119,14 +230,19 @@ export const runScriptInTab = async ({ func, tabId, args = [] }) => {
   });
 };
 
-export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
+export const runScriptFile = ({
+  scriptFile,
+  tabId,
+  args = [],
+  world = chrome.scripting.ExecutionWorld.MAIN,
+}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
         target: { tabId: tabId },
         files: [scriptFile],
         args: args,
-        world: chrome.scripting.ExecutionWorld.MAIN,
+        world: world,
         injectImmediately: true,
       },
       (injectionResults) => {
@@ -137,16 +253,16 @@ export const runScriptFile = ({ scriptFile, tabId, args = [] }) => {
   });
 };
 
-export const runScriptInCurrentTab = async (func, args) => {
+export const runScriptInCurrentTab = async (func, args, world) => {
   const tab = await getCurrentTab();
   focusToTab(tab);
-  return await runScriptInTab({ func, args, tabId: tab.id });
+  return await runScriptInTab({ func, args, tabId: tab.id, world });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile, args) => {
+export const runScriptFileInCurrentTab = async (scriptFile, args, world) => {
   const tab = await getCurrentTab();
   focusToTab();
-  return await runScriptFile({ scriptFile, args, tabId: tab.id });
+  return await runScriptFile({ scriptFile, args, tabId: tab.id, world });
 };
 
 export function checkBlackWhiteList(script, url) {
@@ -191,6 +307,7 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
+  await waitForTabToLoad(tab.id);
   let res = await runScriptInTab({ func, tabId: tab.id, args });
   !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
   closeAfterRunScript && closeTab(tab);
@@ -227,12 +344,25 @@ export async function captureVisibleTab(options = {}, willDownload = true) {
     format: options.format || "png",
     quality: options.quality || 100,
   });
-  willDownload &&
-    UsefulScriptGlobalPageContext.Utils.downloadURL(imgData, "img.png");
+  willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
   return imgData;
 }
 
 // #endregion
+
+export const convertBlobToBase64 = (blob) =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
+      resolve(null);
+    };
+  });
 
 // https://gist.github.com/bluzky/b8c205c98ff3318907b30c3e0da4bf3f
 export function removeAccents(str) {
@@ -418,69 +548,12 @@ export function openPopupWithHtml(html, width = 300, height = 300) {
     `scrollbars=yes,width=${width},height=${height}`
   );
   win.document.write(html);
-}
-
-/*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
-    that detects and handles AJAXed content. Forked for use without JQuery.
-    Usage example:
-        waitForKeyElements (
-            "div.comments"
-            , commentCallbackFunction
-        );
-        //--- Page-specific function to do what we want when the node is found.
-        function commentCallbackFunction (element) {
-            element.text ("This comment changed by waitForKeyElements().");
-        }
-
-    IMPORTANT: Without JQuery, this fork does not look into the content of
-    iframes.
-*/
-export function waitForKeyElements(
-  selectorTxt /* Required: The selector string that specifies the desired element(s).*/,
-  actionFunction /* Required: The code to run when elements are found. It is passed a jNode to the matched element.*/,
-  bWaitOnce /* Optional: If false, will continue to scan for new elements even after the first match is found.*/
-) {
-  let targetNodes, btargetsFound;
-  targetNodes = document.querySelectorAll(selectorTxt);
-
-  if (targetNodes && targetNodes.length > 0) {
-    btargetsFound = true;
-    /*--- Found target node(s).  Go through each and act if they are new. */
-    targetNodes.forEach(function (element) {
-      let alreadyFound =
-        element.dataset.found == "alreadyFound" ? "alreadyFound" : false;
-
-      if (!alreadyFound) {
-        //--- Call the payload function.
-        let cancelFound = actionFunction(element);
-        if (cancelFound) btargetsFound = false;
-        else element.dataset.found = "alreadyFound";
-      }
-    });
-  } else {
-    btargetsFound = false;
-  }
-
-  //--- Get the timer-control letiable for this selector.
-  let controlObj = waitForKeyElements.controlObj || {};
-  let controlKey = selectorTxt.replace(/[^\w]/g, "_");
-  let timeControl = controlObj[controlKey];
-
-  //--- Now set or clear the timer as appropriate.
-  if (btargetsFound && bWaitOnce && timeControl) {
-    //--- The only condition where we need to clear the timer.
-    clearInterval(timeControl);
-    delete controlObj[controlKey];
-  } else {
-    //--- Set a timer, if needed.
-    if (!timeControl) {
-      timeControl = setInterval(function () {
-        waitForKeyElements(selectorTxt, actionFunction, bWaitOnce);
-      }, 300);
-      controlObj[controlKey] = timeControl;
-    }
-  }
-  waitForKeyElements.controlObj = controlObj;
+  setTimeout(() => {
+    win.focus();
+  }, 500);
+  return {
+    closePopup: () => win?.close?.(),
+  };
 }
 
 // #endregion

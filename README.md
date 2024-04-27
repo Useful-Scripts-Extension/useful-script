@@ -8,13 +8,24 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 ## Lịch sử cập nhật
 
-Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>v1.4</del> <del>v1.5</del> <del>v1.6</del> <del>v1.64-hotfix</del> **v1.65-hotfix** (08/04/2024)
+Verion hiện tại:
+
+- **v1.66 - big update** (_/2024)
+- <del>v1.65-hotfix (08/04/2024)</del>
+- <del>v1.64-hotfix (07/04/2024)</del>
+- <del>v1.63 (03/04/2024)</del>
+- <del>v1.6 (13/03/2024)</del>
+- <del>v1.5 (12/07/2023)</del>
+- <del>v1.4 (25/12/2024)</del>
+- <del>v1.3 (27/11/2024)</del>
+- <del>v1.2 (08/11/2022)</del>
+- <del>v1.1 (07/11/2022)</del>
 
 [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 ## Giới thiệu
 
-1 extension chứa 1 đống extensions nhỏ.
+1 tiện ích chứa rất nhiều chức năng nhỏ. Giúp cuộc sống dễ dàng hơn.
 
 - Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
 
@@ -30,7 +41,7 @@ Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>v1.4</
 
 ![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
-## Tutorial (Demo)
+## Dành cho dev (Demo)
 
 [Watch on Youtube](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
 

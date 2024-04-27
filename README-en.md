@@ -4,17 +4,28 @@
 
 [Tiếng Việt](./README.md)
 
-Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
+Donate? For better health and ideas <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
 ## Change logs
 
-Verion hiện tại: <del>v1.1</del> <del>v1.2</del> <del>v1.3</del> <del>v1.4</del> <del>v1.5</del> <del>v1.6</del> **v1.64-hotfix** (03/04/2024)
+Versions:
 
-[Change logs](/md/CHANGELOGS.md)
+- **v1.66 - big update** (_/2024)
+- <del>v1.65-hotfix (08/04/2024)</del>
+- <del>v1.64-hotfix (07/04/2024)</del>
+- <del>v1.63 (03/04/2024)</del>
+- <del>v1.6 (13/03/2024)</del>
+- <del>v1.5 (12/07/2023)</del>
+- <del>v1.4 (25/12/2024)</del>
+- <del>v1.3 (27/11/2024)</del>
+- <del>v1.2 (08/11/2022)</del>
+- <del>v1.1 (07/11/2022)</del>
+
+[Full change logs](/md/CHANGELOGS.md)
 
 ## Overview
 
-an extension includes a lot of small extensions.
+An extension includes a lot of small extensions. Make your life easier.
 
 - View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
 
@@ -30,7 +41,7 @@ an extension includes a lot of small extensions.
 
 ![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
-## Tutorial (Demo)
+## For developer (Demo)
 
 [Watch on Youtube](https://www.youtube.com/watch?v=rVbr2dJvVMI&list=PLcZcXUjIE-TS13z4sf1mdzZoc9RHB2djl)
 

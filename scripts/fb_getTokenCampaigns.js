@@ -39,7 +39,7 @@ export default {
             `https://www.facebook.com/adsmanager/manage/campaigns?act=${act}&nav_source=no_referrer`
           );
           let htmlText = await res.text();
-          if (-1 == htmlText.search("EAA")) return resolve("");
+          if (-1 == htmlText.search("EAA")) return "";
           var regex_result = htmlText.match(/EAAB.*?\"/),
             token = regex_result[0] ? regex_result[0].replace(/\W/g, "") : "";
           return token;

@@ -1,7 +1,7 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-regular fa-images"></i>',
+  icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
     en: "Download all photos from posts",
     vi: "Tải tất cả hình trên bài viết",
@@ -12,7 +12,7 @@ export default {
   },
 
   onClickExtension: () => {
-    const { downloadData } = UsefulScriptGlobalPageContext.Utils;
+    const { downloadData } = UfsGlobal.Utils;
 
     const WAIT_BEFORE_NEXT_FETCH = 500;
     const FB_API_HOST = "https://graph.facebook.com/v12.0";

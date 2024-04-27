@@ -7,6 +7,7 @@ export default {
   description: {
     en: "React story Facebook with more emojis",
     vi: "React story Facebook với nhiều loại emoji khác nhau",
+    img: "/scripts/fb_moreReactionStory.png",
   },
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1769666783365434",
@@ -20,7 +21,7 @@ export default {
       try {
         // crawl emoji from https://emojipedia.org https://getemoji.com/
         // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
-        let url = await UsefulScriptGlobalPageContext.Extension.getURL(
+        let url = await UfsGlobal.Extension.getURL(
           "scripts/fb_moreReactionStory.json"
         );
         const emojiJson = await fetch(url);
@@ -37,10 +38,17 @@ export default {
         if (!window.location.href.includes("facebook.com/stories")) return;
         if (!!document.querySelector(".ufs-more-react-story")) return;
 
-        const fb_dtsg =
-          await UsefulScriptGlobalPageContext.Facebook.getFbdtsg();
-        const user_id =
-          await UsefulScriptGlobalPageContext.Facebook.getYourUserId();
+        const fb_dtsg = await UfsGlobal.Facebook.getFbdtsg();
+        const user_id = await UfsGlobal.Facebook.getYourUserId();
+
+        window.ufs_reactStory = async (text) => {
+          const storyId = await UfsGlobal.Facebook.getStoryId();
+          if (!UfsGlobal.Utils.isEmoji(text)) {
+            alert("Must be emoji");
+            return;
+          }
+          return await reactStory(user_id, fb_dtsg, storyId, text);
+        };
 
         /* HTML template
         <div class="ufs-more-react-story">
@@ -92,8 +100,7 @@ export default {
 
               let loading = 0;
               emojiLi.onclick = async function () {
-                const storyId =
-                  UsefulScriptGlobalPageContext.Facebook.getStoryId();
+                const storyId = UfsGlobal.Facebook.getStoryId();
                 try {
                   if (!loading) emojiLi.classList.add("loading");
                   loading++;
@@ -196,9 +203,9 @@ export default {
   },
 
   onDocumentIdle: async () => {
-    let cssFile = await UsefulScriptGlobalPageContext.Extension.getURL(
+    let cssFile = await UfsGlobal.Extension.getURL(
       "scripts/fb_moreReactionStory.css"
     );
-    UsefulScriptGlobalPageContext.DOM.injectCssFile(cssFile);
+    UfsGlobal.DOM.injectCssFile(cssFile);
   },
 };

@@ -1,5 +1,5 @@
 export default {
-  icon: "https://www.youtube.com/s/desktop/accca349/img/favicon_48x48.png",
+  icon: "https://lh3.googleusercontent.com/OS9P4SJOFAg8lhCyaRTJ7y4ADF0TGpqFF904BcpCtdBjJIDBbNb_J8PpgoJ9QvariiG_RzgH8fCSSY_kQu-chQQ0Aw=s0",
   name: {
     en: "Youtube nonstop",
     vi: "Youtube nonstop",
@@ -7,197 +7,36 @@ export default {
   description: {
     en: 'Kiss the annoying "Video paused. Continue watching?" confirmation goodbye!',
     vi: "Phát youtube không còn bị làm phiền bởi popup 'Video đã tạm dừng. Bạn có muốn xem tiếp?' của youtube.",
+    img: "/scripts/youtube_nonstop.png",
   },
-  whiteList: ["*://music.youtube.com/*", "*://www.youtube.com/*"],
+  whiteList: ["*://*.youtube.com/*"],
 
-  onClick: function () {
-    // source code from: https://chrome.google.com/webstore/detail/youtube-nonstop/nlkaejimjacpillmajjnopmpbkbnocid
+  onDocumentStart: function () {
+    // ==UserScript==
+    // @name         YouTube - Stay Active and Play Forever
+    // @namespace    q1k
+    // @version      3.1.1
+    // @description  Tired of Youtube pausing playback asking you to click 'yes' to continue playing? This script will make the popup never appear, music will never stop. Never pause, never inactive, never worry. The script will keep you active and keep playing music FOREVER. Enables playing in background on mobile.
+    // @author       q1k
+    // @match        *://*.youtube.com/*
+    // @run-at       document-start
+    // ==/UserScript==
 
-    try {
-      const tag = "[Youtube NonStop]";
-      const isYoutubeMusic = window.location.hostname === "music.youtube.com";
+    Object.defineProperties(document, {
+      /*'hidden': {value: false},*/ webkitHidden: { value: false },
+      visibilityState: { value: "visible" },
+      webkitVisibilityState: { value: "visible" },
+    });
 
-      const popupEventNodename = isYoutubeMusic
-        ? "YTMUSIC-YOU-THERE-RENDERER"
-        : "YT-CONFIRM-DIALOG-RENDERER";
-
-      const MutationObserver =
-        window.MutationObserver || window.WebKitMutationObserver;
-      let appObserver = null;
-      const appName = isYoutubeMusic ? "ytmusic-app" : "ytd-app";
-      const popupContainer = isYoutubeMusic
-        ? "ytmusic-popup-container"
-        : "ytd-popup-container";
-
-      let pauseRequested = false;
-      let pauseRequestedTimeout;
-      const pauseRequestedTimeoutMillis = 5000;
-      const idleTimeoutMillis = 5000;
-      let lastInteractionTime = new Date().getTime();
-
-      let videoElement = null;
-
-      function log(message) {
-        console.log(`${tag}[${getTimestamp()}] ${message}`);
-      }
-
-      function debug(message) {
-        console.debug(`${tag}[${getTimestamp()}] ${message}`);
-      }
-
-      function asDoubleDigit(value) {
-        return value < 10 ? "0" + value : value;
-      }
-
-      function getTimestamp() {
-        let dt = new Date();
-        let time =
-          asDoubleDigit(dt.getHours()) +
-          ":" +
-          asDoubleDigit(dt.getMinutes()) +
-          ":" +
-          asDoubleDigit(dt.getSeconds());
-        return time;
-      }
-
-      function isIdle() {
-        return getIdleTime() >= idleTimeoutMillis;
-      }
-
-      function getIdleTime() {
-        return new Date().getTime() - lastInteractionTime;
-      }
-
-      function listenForMediaKeys() {
-        if (navigator.mediaSession === undefined) {
-          log(
-            "Your browser doesn't seem to support navigator.mediaSession yet :/"
-          );
-          return;
-        }
-        debug('Listening to "pause" media key...');
-        navigator.mediaSession.setActionHandler("pause", () => {
-          debug("Paused due to [media key pause]");
-          pauseVideo();
-        });
-        navigator.mediaSession.yns_setActionHandler =
-          navigator.mediaSession.setActionHandler;
-        navigator.mediaSession.setActionHandler = (action, fn) => {
-          if (action === "pause") {
-            debug("Blocked attempt to override media key 'pause' action");
-            return;
-          }
-          navigator.mediaSession.yns_setActionHandler(action, fn);
-        };
-      }
-
-      function listenForMouse() {
-        const eventName = window.PointerEvent ? "pointer" : "mouse";
-        debug(`Using ${eventName} events`);
-        document.addEventListener(eventName + "down", (e) => {
-          processInteraction(eventName + "down");
-        });
-
-        document.addEventListener(eventName + "up", (e) => {
-          processInteraction(eventName + "up");
-        });
-      }
-
-      function listenForKeyboard() {
-        document.addEventListener("keydown", (e) => {
-          processInteraction("keydown");
-        });
-
-        document.addEventListener("keyup", (e) => {
-          processInteraction("keyup");
-        });
-      }
-
-      function processInteraction(action) {
-        if (pauseRequested) {
-          debug(`Paused due to [${action}]`);
-          pauseVideo();
-          return;
-        }
-        lastInteractionTime = new Date().getTime();
-      }
-
-      function observeApp() {
-        debug(`Observing ${appName}...`);
-        appObserver = new MutationObserver((mutations, observer) => {
-          overrideVideoPause();
-        });
-
-        appObserver.observe(document.querySelector(appName), {
-          childList: true,
-          subtree: true,
-        });
-      }
-
-      function listenForPopupEvent() {
-        debug("Listening for popup event...");
-        document.addEventListener("yt-popup-opened", (e) => {
-          if (isIdle() && e.detail.nodeName === popupEventNodename) {
-            debug("[closing popup]");
-            document.querySelector(popupContainer).handleClosePopupAction_();
-            pauseVideo();
-            videoElement.play();
-          }
-        });
-      }
-
-      function overrideVideoPause() {
-        if (videoElement?.yns_pause !== undefined) return;
-        if (document.querySelector("video") === null) return;
-
-        videoElement = document.querySelector("video");
-        listenForMediaKeys();
-        debug("Overriding video pause...");
-        videoElement.yns_pause = videoElement.pause;
-        videoElement.pause = () => {
-          debug("Video pause requested");
-          if (!isIdle()) {
-            debug("Paused due to [pause]");
-            pauseVideo();
-            return;
-          }
-          pauseRequested = true;
-          setPauseRequestedTimeout();
-        };
-      }
-
-      function setPauseRequestedTimeout(justClear = false) {
-        clearTimeout(pauseRequestedTimeout);
-        if (justClear) return;
-        pauseRequestedTimeout = setTimeout(() => {
-          pauseRequested = false;
-        }, pauseRequestedTimeoutMillis);
-      }
-
-      function pauseVideo() {
-        videoElement?.yns_pause();
-        pauseRequested = false;
-        setPauseRequestedTimeout(true);
-      }
-
-      listenForMouse();
-      listenForKeyboard();
-
-      listenForPopupEvent();
-      observeApp();
-
-      log(
-        `Monitoring YouTube ${
-          isYoutubeMusic ? "Music " : ""
-        }for 'Confirm watching?' action...`
+    setInterval(function () {
+      document.dispatchEvent(
+        new KeyboardEvent("keyup", {
+          bubbles: true,
+          cancelable: true,
+          keyCode: 143,
+          which: 143,
+        })
       );
-
-      alert("Youtube nonstop ENABLED\n\nĐã bật Youtube nonstop.");
-    } catch (e) {
-      alert(
-        "Cannot enable youtube nonstop\n\n Không thể bật youtube nonstop\n\n Lỗi/Error: " +
-          JSON.stringify(e)
-      );
-    }
+    }, 60000);
   },
 };
