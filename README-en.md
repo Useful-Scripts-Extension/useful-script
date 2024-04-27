@@ -10,7 +10,7 @@ Donate? For better health and ideas <3 [Donate here](https://github.com/HoangTra
 
 Versions:
 
-- **v1.66 - big update** (_/2024)
+- **v1.66 - big update** (27/04/2024)
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>

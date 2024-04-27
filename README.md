@@ -10,7 +10,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 Verion hiện tại:
 
-- **v1.66 - big update** (_/2024)
+- **v1.66 - big update** (27/04/2024)
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>
