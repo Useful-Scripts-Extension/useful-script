@@ -278,6 +278,44 @@ UfsGlobal.DOM = {
     };
     img.src = dataurl;
   },
+  notifyStack(msg) {
+    let id = "ufs_notify_stack";
+    let exist = document.getElementById(id);
+    if (!exist) {
+      exist = document.createElement("div");
+      exist.id = id;
+      (document.body || document.documentElement).appendChild(exist);
+
+      let style = document.createElement("style");
+      style.innerText = `
+        #ufs_notify_stack {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          max-width: 300px;
+          z-index: 16777271;
+        }
+        .ufs-notify-stack-item {
+          background-color: #333;
+          color: #fff;
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          transition: all 0.3s ease;
+        }
+      `;
+      exist.appendChild(style);
+    }
+
+    let notiItem = document.createElement("div");
+    notiItem.classList.add("ufs-notify-stack-item");
+    notiItem.innerText = msg;
+    exist.appendChild(notiItem);
+
+    setTimeout(() => {
+      notiItem.remove();
+    }, 3000);
+  },
   notify({
     msg = "",
     x = window.innerWidth / 2,
@@ -504,7 +542,7 @@ UfsGlobal.DOM = {
       callback?.(false, e);
     };
     script.src = jsSrc; // Assigning the TrustedScriptURL to src
-    document.head.appendChild(script);
+    (document.head || document.documentElement).appendChild(script);
   },
   injectScriptSrcAsync(src) {
     return new Promise((resolve, reject) => {

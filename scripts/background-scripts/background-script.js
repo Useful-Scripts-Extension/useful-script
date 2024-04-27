@@ -29,10 +29,17 @@ function cacheActiveScriptIds() {
 }
 
 function runScripts(tabId, event, world) {
-  runScriptInTab({
+  return runScriptInTab({
     tabId: tabId,
     func: (scriptIds, event, path) => {
-      window.runScripts?.(scriptIds, event, path);
+      (() => {
+        let interval = setInterval(() => {
+          if (typeof window.runScripts === "function") {
+            clearInterval(interval);
+            window.runScripts(scriptIds, event, path);
+          }
+        }, 10);
+      })();
     },
     args: [CACHED.activeScriptIds, event, CACHED.path],
     world,

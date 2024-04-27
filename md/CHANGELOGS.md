@@ -1,6 +1,13 @@
 ## Change logs
 
 <details>
+  <summary>v1.66 - 27/04/2024</summary>
+
+  [Tất cả Chức năng](./LIST_SCRIPTS_VI.md)
+
+</details>
+
+<details>
   <summary>v1.65-hotfix - 08/04/2024</summary>
 
   Fix các chức năng tự động chạy

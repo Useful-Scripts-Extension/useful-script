@@ -16,7 +16,8 @@ export default {
 
   changeLogs: {
     1.66: {
-      "2024-04-26": "init",
+      "2024-04-10": "init",
+      "2024-04-27": "remove error img in gallery",
     },
   },
 
@@ -25,6 +26,13 @@ export default {
   },
 
   onClick: () => {
+    if (!window.ufs_magnify_image_magnifyImage) {
+      alert(
+        "Bạn chưa mở chức năng này. Vui lòng bật chức năng rồi tải lại trang web."
+      );
+      return;
+    }
+
     const { remove, setPosition } = UfsGlobal.DOM.notify({
       msg: "Useful-script: Click any image to magnify",
       duration: 99999,
@@ -417,7 +425,10 @@ export default {
       let container = document.createElement("div");
       container.classList.add("ufs-img-container");
 
-      for (let src of srcs) {
+      let imgs = [];
+      for (let i = 0; i < srcs.length; i++) {
+        let src = srcs[i];
+
         let con = document.createElement("div");
         con.classList.add("ufs-con");
         container.appendChild(con);
@@ -432,6 +443,24 @@ export default {
         img.src = src;
         img.onload = () => {
           size.innerText = `${img.naturalWidth} x ${img.naturalHeight}`;
+          img.setAttribute("loaded", true);
+
+          // auto create preview and close gallery
+          if (imgs.length == 1) {
+            img.click();
+            overlay.click();
+          }
+        };
+        img.onerror = () => {
+          size.remove();
+          img.remove();
+          imgs.splice(i, 1);
+
+          // auto create preview and close gallery
+          if (imgs.length == 1 && imgs[0].getAttribute("loaded")) {
+            imgs[0].click();
+            overlay.click();
+          }
         };
         img.onclick = () => {
           // overlay.remove();
@@ -447,6 +476,7 @@ export default {
             }
           );
         };
+        imgs.push(img);
         con.appendChild(img);
       }
       overlay.appendChild(container);

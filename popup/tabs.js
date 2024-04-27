@@ -183,6 +183,25 @@ const tabs = [
       s.showTheVideos,
       createTitle("--- Document ---", "--- Tài liệu ---"),
       s.bookmark_exporter,
+      addBadge(
+        {
+          id: "recommend_BookmarkSidebar",
+          icon: "https://lh3.googleusercontent.com/4kT7DxtoPSmSLzTit1w2Vbx7b1L2zkASTrqGzEpBW-qs2EwmLYzBTyv0cvlGZo-rD-s732OIrUXX-C33RHPSFvOj=s0",
+          name: {
+            en: "Bookmark Sidebar",
+            vi: "Bookmark Sidebar",
+          },
+          description: {
+            en: "Very good Bookmark manager, find your bookmarks faster.",
+            vi: "Trình quản lý extension ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
+          },
+          onClickExtension: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
+            ),
+        },
+        BADGES.recommend
+      ),
       s.tailieu_vn,
       s.docDownloader,
       s.scribd_downloadDocuments,
@@ -364,6 +383,19 @@ const tabs = [
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
+      addBadge(
+        {
+          id: "recommend_ItTools",
+          icon: "https://it-tools.tech/favicon-32x32.png",
+          name: { en: "IT Tools", vi: "IT Tools" },
+          description: {
+            en: "Handy tools for developers",
+            vi: "Tổng hợp tools hữu ích cho IT",
+          },
+          onClickExtension: () => window.open("https://it-tools.tech/"),
+        },
+        BADGES.recommend
+      ),
       createTitle("--- Automation ---", "--- Tự động ---"),
       s.scrollToVeryEnd,
       s.screenshotFullPage,
@@ -404,6 +436,19 @@ const tabs = [
       s.shopee_totalSpendMoney,
       s.shopee_totalSpendMoney_excel,
       s.tiki_totalSpendMoney,
+      addBadge(
+        {
+          id: "recommend_Beecost",
+          icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
+          name: { en: "Beecost", vi: "Beecost" },
+          description: {
+            en: "Check deals/prices in ecommerce websites",
+            vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
+          },
+          onClickExtension: () => window.open("https://beecost.vn/"),
+        },
+        BADGES.recommend
+      ),
       createTitle("--- PDF ---", "--- PDF ---"),
       {
         id: "recommend_fastDoc",
@@ -515,6 +560,22 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
+      addBadge(
+        {
+          id: "recommend_DarkReader",
+          icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
+          name: { en: "Dark reader", vi: "Dark reader" },
+          description: {
+            en: "Darkmode for every website",
+            vi: "Chế độ tối cho mọi trang web",
+          },
+          onClickExtension: () =>
+            window.open(
+              "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+            ),
+        },
+        BADGES.recommend
+      ),
       s.darkModePDF,
       s.toggleEditPage,
       s.runStatJs,
@@ -607,27 +668,6 @@ const recommendTab = {
       onClickExtension: () =>
         window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
     },
-    { name: { en: "--- Web ---", vi: "--- Web hay ---" } },
-    {
-      id: "recommend_YouCom",
-      icon: "https://you.com/favicon/apple-touch-icon-72x72.png",
-      name: { en: "You.com", vi: "You.com" },
-      description: {
-        en: "The AI Search Engine You Control",
-        vi: "Trình tìm kiếm sử dụng trí tuệ nhân tạo",
-      },
-      onClickExtension: () => window.open("https://you.com/"),
-    },
-    {
-      id: "recommend_ItTools",
-      icon: "https://it-tools.tech/favicon-32x32.png",
-      name: { en: "IT Tools", vi: "IT Tools" },
-      description: {
-        en: "Handy tools for developers",
-        vi: "Tổng hợp tools hữu ích cho IT",
-      },
-      onClickExtension: () => window.open("https://it-tools.tech/"),
-    },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
       id: "recommend_CRXViewer",
@@ -653,19 +693,6 @@ const recommendTab = {
       onClickExtension: () =>
         window.open(
           "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm"
-        ),
-    },
-    {
-      id: "recommend_DarkReader",
-      icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Dark reader", vi: "Dark reader" },
-      description: {
-        en: "Darkmode for every website",
-        vi: "Chế độ tối cho mọi trang web",
-      },
-      onClickExtension: () =>
-        window.open(
-          "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
         ),
     },
     {
@@ -725,32 +752,6 @@ const recommendTab = {
         window.open(
           "https://chromewebstore.google.com/detail/extensity/jjmflmamggggndanpgfnpelongoepncg"
         ),
-    },
-    {
-      id: "recommend_BookmarkSidebar",
-      icon: "https://lh3.googleusercontent.com/4kT7DxtoPSmSLzTit1w2Vbx7b1L2zkASTrqGzEpBW-qs2EwmLYzBTyv0cvlGZo-rD-s732OIrUXX-C33RHPSFvOj=s0",
-      name: {
-        en: "Bookmark Sidebar",
-        vi: "Bookmark Sidebar",
-      },
-      description: {
-        en: "Very good Bookmark manager, find your bookmarks faster.",
-        vi: "Trình quản lý extension ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
-      },
-      onClickExtension: () =>
-        window.open(
-          "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
-        ),
-    },
-    {
-      id: "recommend_Beecost",
-      icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
-      name: { en: "Beecost", vi: "Beecost" },
-      description: {
-        en: "Check deals/prices in ecommerce websites",
-        vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
-      },
-      onClickExtension: () => window.open("https://beecost.vn/"),
     },
   ],
 };

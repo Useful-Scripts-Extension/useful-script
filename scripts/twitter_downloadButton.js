@@ -55,7 +55,7 @@ export default {
             this.storage_obsolete(true);
           } else history = await this.storage();
           // show_sensitive = GM_getValue('show_sensitive', false);
-          document.head.insertAdjacentHTML('beforeend', '<style>' + this.css + (show_sensitive ? this.css_ss : '') + '</style>');
+          (document.head||document.documentElement).insertAdjacentHTML('beforeend', '<style>' + this.css + (show_sensitive ? this.css_ss : '') + '</style>');
           let observer = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(node => this.detect(node))));
           observer.observe(document.body, {childList: true, subtree: true});
         },

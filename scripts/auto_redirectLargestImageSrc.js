@@ -6,8 +6,8 @@ export default {
   },
   description: {
     en: "Auto redirect to largest image, support on some websites",
-    vi: "Tự động chuyển trang sang ảnh lớn nhất, hỗ trợ một vài trang web",
-    img: "/scripts/auto_redirectLargestImageSrc.png",
+    vi: "Tự động chuyển trang sang ảnh lớn nhất, hỗ trợ nhiều trang web",
+    img: "/scripts/auto_redirectLargestImageSrc.jpg",
   },
 
   changeLogs: {

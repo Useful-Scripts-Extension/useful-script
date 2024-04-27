@@ -220,7 +220,7 @@ const allScripts = {
   viewAllLinks,
   googleCache: googleCache,
   githubdev: githubdev,
-  youtube_viewDislikes: addBadge(youtube_viewDislikes, BADGES.hot),
+  youtube_viewDislikes: youtube_viewDislikes,
   downDetector: addBadge(downDetector, BADGES.new),
   fb_getTokenFfb: fb_getTokenFfb,
   googleShortcuts: googleShortcuts,
@@ -330,7 +330,7 @@ const allScripts = {
   insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
   removeWebLimit: addBadge(removeWebLimit, BADGES.hot, BADGES.new),
   _ufs_statistic: _ufs_statistic,
-  pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.new),
+  pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.hot, BADGES.new),
   similarWeb_bypassLimit: addBadge(similarWeb_bypassLimit, BADGES.new),
 };
 
