@@ -1,0 +1,13 @@
+canvas {
+  max-height: 500px;
+}
+
+li:hover {
+  background: #eee;
+  color: red;
+}
+
+.hidden {
+  max-height: 0;
+  overflow: hidden;
+}

@@ -1,6 +1,8 @@
 # WORKING NOTES
 
-## 29/03/2024 - 22/04/2024
+## 29/03/2024 - 28/04/2024
+
+- [ ] Thêm UI cho get all friends fb
 
 - [ ] <https://github.com/lelinhtinh/Userscript>
 
