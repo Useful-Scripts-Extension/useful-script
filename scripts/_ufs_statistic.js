@@ -19,6 +19,12 @@ export default {
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],
 
   onDocumentEnd: async () => {
+    if (document.body.innerText.length < 50) {
+      for (let t of ["Waking up"]) {
+        if (document.body.innerText.includes(t)) return;
+      }
+    }
+
     const logs = document.body.innerText
       .split("\n")
       .filter((_) => _)
