@@ -8,6 +8,5 @@ li:hover {
 }
 
 .hidden {
-  max-height: 0;
-  overflow: hidden;
+  display: none;
 }
