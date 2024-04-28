@@ -2,14 +2,6 @@
 
 ## 29/03/2024 - 28/04/2024
 
-- [ ] Thêm UI cho get all friends fb
-
-- [ ] <https://github.com/lelinhtinh/Userscript>
-
-- [x] tiktok download api lỗi => Dùng snaptik api
-
-- [ ] cào data tiktok/douyin <https://github.com/Evil0ctal/Douyin_TikTok_Download_API>
-
 - [ ] fb_invisible_message có vẻ không hoạt động
 
 - [x] fb_whoIsTyping có vẻ không hoạt động => chỉ hoạt động nếu ko mã hoá
@@ -68,6 +60,7 @@
   - [ ] offscreen clipboard write => Copy selected text on any web?
   - [ ] tabCapture => capture google meet?
   - [ ] webSocket => do something great?
+  - [ ] contentSetting <https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/api-samples/contentSettings/popup.js>
 
 - [x] Thêm change logs cho từng scripts
 
@@ -75,3 +68,11 @@
   - [x] record audio and video from another tab [link](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) => **TIỀM NĂNG làm web visualize music**
   - [x] chụp ảnh website bằng chrome.tabs.captureVisibleTab => bỏ, không có tiềm năng
   - [x] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab => phải là 1 page trong extension mới truy cập được => không tiềm năng
+
+- [ ] Thêm UI cho get all friends fb
+
+- [x] <https://github.com/lelinhtinh/Userscript>
+
+- [x] tiktok download api lỗi => Dùng snaptik api
+
+- [ ] cào data tiktok/douyin <https://github.com/Evil0ctal/Douyin_TikTok_Download_API>

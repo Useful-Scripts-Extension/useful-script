@@ -282,7 +282,9 @@ export default {
           key !== "ufs-INSTALLED" &&
           !key.startsWith("OPEN-") &&
           !key.startsWith("CLICK_") &&
-          !key.includes("-FAVORITE")
+          !key.includes("-INFO") &&
+          !key.includes("-FAVORITE") &&
+          !key.includes("-VIEW-SOURCE")
         ) {
           scriptsUsed.set(key, (scriptsUsed.get(key) || 0) + 1);
         } else {
