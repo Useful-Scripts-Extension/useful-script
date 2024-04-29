@@ -19,12 +19,6 @@ export default {
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],
 
   onDocumentEnd: async () => {
-    if (document.body.innerText.length < 50) {
-      for (let t of ["Waking up"]) {
-        if (document.body.innerText.includes(t)) return;
-      }
-    }
-
     const logs = document.body.innerText
       .split("\n")
       .filter((_) => _)
@@ -84,7 +78,7 @@ export default {
         return new Date(time);
       }
 
-      function extractScriptName(log) {
+      function extractEventName(log) {
         let lastColon = log.lastIndexOf(":");
         let lastArrow = log.lastIndexOf("->");
         let scriptName = log.substring(lastColon + 1, lastArrow - 1).trim();
@@ -105,11 +99,8 @@ export default {
       // #region ======================== Per event name ========================
       const eventNameCount = new Map();
       logData.forEach((log) => {
-        let scriptName = extractScriptName(log);
-        eventNameCount.set(
-          scriptName,
-          (eventNameCount.get(scriptName) || 0) + 1
-        );
+        let name = extractEventName(log);
+        eventNameCount.set(name, (eventNameCount.get(name) || 0) + 1);
       });
 
       // sort by values
@@ -167,17 +158,17 @@ export default {
       // #region ======================== Event name Per hour ========================
       //   Stacked Bar Chart for each script
       const eventNamePerHour_dataset = Array.from(eventNameCount.keys()).map(
-        (scriptName) => {
+        (eventName) => {
           const data = Array(24).fill(0);
           logData.forEach((log) => {
-            let scriptName_log = extractScriptName(log);
-            if (scriptName_log === scriptName) {
+            let eventName_log = extractEventName(log);
+            if (eventName_log === eventName) {
               let hour = extractTime(log).getHours();
               data[hour]++;
             }
           });
           return {
-            label: scriptName + " (" + eventNameCount.get(scriptName) + ")",
+            label: eventName + " (" + eventNameCount.get(eventName) + ")",
             data,
             backgroundColor: randColor(),
             stack: "combined",
@@ -188,7 +179,7 @@ export default {
 
       const canvas_eventPerHour = document.createElement("canvas");
       const ctx3 = canvas_eventPerHour.getContext("2d");
-      const scriptNamePerHourChart = new Chart(ctx3, {
+      const eventNamePerHourChart = new Chart(ctx3, {
         type: "line",
         data: {
           labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
@@ -210,13 +201,13 @@ export default {
         },
       });
 
-      const toggleBtn = document.createElement("button");
-      toggleBtn.textContent = "Show/hide all";
-      toggleBtn.onclick = function () {
-        scriptNamePerHourChart.data.datasets.forEach(function (ds) {
+      const toggleShowHideAllBtn = document.createElement("button");
+      toggleShowHideAllBtn.textContent = "Show/hide all";
+      toggleShowHideAllBtn.onclick = function () {
+        eventNamePerHourChart.data.datasets.forEach(function (ds) {
           ds.hidden = !ds.hidden;
         });
-        scriptNamePerHourChart.update();
+        eventNamePerHourChart.update();
       };
       // #endregion
 
@@ -281,39 +272,72 @@ export default {
 
       // #endregion
 
-      // ======================== Average section ========================
-      let scriptsUsed = new Map();
-      Array.from(eventNameCount.keys()).forEach((key) => {
-        if (
-          key !== "ufs-INSTALLED" &&
-          !key.startsWith("OPEN-") &&
-          !key.startsWith("CLICK_") &&
-          !key.includes("-INFO") &&
-          !key.includes("-FAVORITE") &&
-          !key.includes("-VIEW-SOURCE")
-        ) {
-          scriptsUsed.set(key, (scriptsUsed.get(key) || 0) + 1);
+      // ======================== show scripts only ========================
+      function isScript(log) {
+        return !(
+          log.includes("ufs-INSTALLED") ||
+          log.includes("OPEN-") ||
+          log.includes("CLICK_") ||
+          log.includes("-INFO") ||
+          log.includes("-FAVORITE") ||
+          log.includes("-VIEW-SOURCE")
+        );
+      }
+
+      let scriptOnlyState = false;
+      const scriptOnlyToggle = document.createElement("button");
+      scriptOnlyToggle.textContent = "Show scripts only (OFF)";
+      scriptOnlyToggle.onclick = function () {
+        scriptOnlyState = !scriptOnlyState;
+        scriptOnlyToggle.textContent = scriptOnlyState
+          ? "Show scripts only (ON)"
+          : "Show scripts only (OFF)";
+        if (scriptOnlyState) {
+          scriptOnlyToggle.classList.add("btn-active");
         } else {
-          console.log(key);
+          scriptOnlyToggle.classList.remove("btn-active");
+        }
+
+        all_li.forEach(({ li, log }) => {
+          if (scriptOnlyState && !isScript(log)) {
+            li.classList.add("not-script");
+          } else {
+            li.classList.remove("not-script");
+          }
+        });
+      };
+
+      // ======================== Average section ========================
+      const scriptsUsed = new Map();
+      logData.forEach((log) => {
+        if (isScript(log)) {
+          let scriptName = extractEventName(log);
+          scriptsUsed.set(scriptName, (scriptsUsed.get(scriptName) || 0) + 1);
         }
       });
+
+      let scriptUsedTotalCount = scriptsUsed
+        .values()
+        .reduce((a, b) => a + b, 0);
 
       const h1 = document.createElement("h1");
       let hour = new Date().getHours() + 1;
       let _logsPerHour = ~~(logData.length / hour);
       let _eventsPerHour = ~~(eventNameCount.size / hour);
-      let _scriptsPerHour = ~~(scriptsUsed.size / hour);
+      let _scriptsPerHour = ~~(scriptUsedTotalCount / hour);
       h1.innerHTML = `${logData.length} logs (~${_logsPerHour} logs/hour)<br/>
-          ${eventNameCount.size} events (~${_eventsPerHour} events/hour)<br/>
-          ${scriptsUsed.size} scripts used (~${_scriptsPerHour} scripts/hour)`;
+          ${eventNameCount.size} unique events<br/><br/>
+          ${scriptUsedTotalCount} scripts used (~${_scriptsPerHour} scripts/hour)<br/>
+          ${scriptsUsed.size} unique scripts`;
 
       // ======================== Append Charts ========================
       container.prepend(
         h1,
-        toggleBtn,
+        toggleShowHideAllBtn,
         canvas_eventPerHour,
         canvas_events,
-        canvas_uid
+        canvas_uid,
+        scriptOnlyToggle
       );
       // #endregion
     }
@@ -332,8 +356,16 @@ export default {
       return newDate;
     }
 
+    function dateToString(date) {
+      let day = date.getDate().toString().padStart(2, "0");
+      let month = (date.getMonth() + 1).toString().padStart(2, "0");
+      let year = date.getFullYear();
+      let dateString = `${year}-${month}-${day}`;
+      return dateString;
+    }
+
     function getPath(date) {
-      return `/log/${date.toISOString().split("T")[0]}`;
+      return `/log/${dateToString(date)}`;
     }
 
     const prevDayBtn = document.createElement("button");
