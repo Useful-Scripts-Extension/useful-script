@@ -1,5 +1,11 @@
 # WORKING NOTES
 
+## 28/04/2024 - ~
+
+- [ ] p5 visualize music <https://github.com/therewasaguy/p5-music-viz>
+
+- [ ] lyric generator <https://lrcgenerator.com/>
+
 ## 29/03/2024 - 28/04/2024
 
 - [ ] fb_invisible_message có vẻ không hoạt động

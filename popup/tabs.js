@@ -337,9 +337,10 @@ const tabs = [
     scripts: [
       // s.youtube_localDownloader,
       s.youtube_downloadVideo,
+      s.youtube_toggleLight,
       s.pictureInPicture,
       s.pip_fullWebsite,
-      s.youtube_toggleLight,
+      s.pip_canvas,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
       addBadge(

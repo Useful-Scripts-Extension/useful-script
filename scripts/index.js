@@ -158,6 +158,7 @@ import removeWebLimit from "./removeWebLimit.js";
 import _ufs_statistic from "./_ufs_statistic.js";
 import pip_fullWebsite from "./pip_fullWebsite.js";
 import similarWeb_bypassLimit from "./similarWeb_bypassLimit.js";
+import pip_canvas from "./pip_canvas.js";
 
 // inject badges
 const allScripts = {
@@ -330,8 +331,9 @@ const allScripts = {
   insta_anonymousStoryViewer: addBadge(insta_anonymousStoryViewer, BADGES.new),
   removeWebLimit: addBadge(removeWebLimit, BADGES.hot, BADGES.new),
   _ufs_statistic: _ufs_statistic,
-  pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.hot, BADGES.new),
+  pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.new),
   similarWeb_bypassLimit: addBadge(similarWeb_bypassLimit, BADGES.new),
+  pip_canvas: addBadge(pip_canvas, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
