@@ -12,9 +12,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "optimize, fetch list supported sites",
-    },
+    "2024-04-27": "optimize, fetch list supported sites",
   },
 
   onClickExtension: async function () {

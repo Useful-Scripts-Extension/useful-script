@@ -11,9 +11,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-03": "optimize flow",
-    },
+    "2024-04-03": "optimize flow",
   },
 
   onClickExtension: async function () {

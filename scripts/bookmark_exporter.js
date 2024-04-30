@@ -10,9 +10,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "support download as .json",
-    },
+    "2024-04-27": "support download as .json",
   },
 
   onClickExtension: function () {

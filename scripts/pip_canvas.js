@@ -11,9 +11,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-29": "init",
-    },
+    "2024-04-29": "init",
   },
 
   // https://stackoverflow.com/a/61301293/23648002

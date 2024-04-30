@@ -17,9 +17,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "init",
-    },
+    "2024-04-27": "init",
   },
 
   whiteList: ["https://www.similarweb.com/*"],

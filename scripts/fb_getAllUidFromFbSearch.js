@@ -11,9 +11,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "x100 faster api",
-    },
+    "2024-04-27": "x100 faster api",
   },
 
   whiteList: ["https://*.facebook.com/*"],

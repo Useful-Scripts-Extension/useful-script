@@ -12,9 +12,7 @@ export default {
     "https://greasyfork.org/en/scripts/468385-instagram-anonymous-story-viewer",
 
   changeLogs: {
-    1.66: {
-      "2024-04-15": "init",
-    },
+    "2024-04-15": "init",
   },
 
   whiteList: ["*://www.instagram.com/*"],

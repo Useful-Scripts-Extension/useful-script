@@ -10,10 +10,8 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-23": "init",
-      "2024-04-27": "scripts by uid + date picker",
-    },
+    "2024-04-23": "init",
+    "2024-04-27": "scripts by uid + date picker",
   },
 
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],

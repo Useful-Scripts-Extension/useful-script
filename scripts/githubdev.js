@@ -14,9 +14,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "add tips",
-    },
+    "2024-04-27": "add tips",
   },
 
   whiteList: ["https://github.com/*"],

@@ -15,10 +15,8 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-10": "init",
-      "2024-04-27": "remove error img in gallery",
-    },
+    "2024-04-10": "init",
+    "2024-04-27": "remove error img in gallery",
   },
 
   onClickExtension: () => {

@@ -10,9 +10,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-11": "init",
-    },
+    "2024-04-11": "init",
   },
 
   onDocumentStart: () => {

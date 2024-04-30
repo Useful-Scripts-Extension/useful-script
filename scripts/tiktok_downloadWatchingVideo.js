@@ -13,9 +13,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "fix bug - use snaptik",
-    },
+    "2024-04-27": "fix bug - use snaptik",
   },
 
   whiteList: ["https://www.tiktok.com/*"],

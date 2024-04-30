@@ -12,9 +12,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "remove login2.me",
-    },
+    "2024-04-27": "remove login2.me",
   },
 
   onClickExtension: async function () {

@@ -11,9 +11,7 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-16": "init",
-    },
+    "2024-04-16": "init",
   },
 
   onDocumentStart: async () => {
