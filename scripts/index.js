@@ -159,6 +159,7 @@ import _ufs_statistic from "./_ufs_statistic.js";
 import pip_fullWebsite from "./pip_fullWebsite.js";
 import similarWeb_bypassLimit from "./similarWeb_bypassLimit.js";
 import pip_canvas from "./pip_canvas.js";
+import researchGate_downloader from "./researchGate_downloader.js";
 
 // inject badges
 const allScripts = {
@@ -334,6 +335,7 @@ const allScripts = {
   pip_fullWebsite: addBadge(pip_fullWebsite, BADGES.new),
   similarWeb_bypassLimit: addBadge(similarWeb_bypassLimit, BADGES.new),
   pip_canvas: addBadge(pip_canvas, BADGES.new),
+  researchGate_downloader: addBadge(researchGate_downloader, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

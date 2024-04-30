@@ -36,6 +36,25 @@ const tabs = [
       s.search_sharedAccount,
       addBadge(
         {
+          id: "recommend_archive",
+          icon: "https://archive.org/favicon.ico",
+          name: {
+            en: "Internet archive - Free library",
+            vi: "Internet archive - Thư viện miễn phí",
+          },
+          description: {
+            en: "Non-profit library of millions of free books, movies, software, music, websites, and more.",
+            vi: "Thư viện với hàng triệu sách, báo, phim, phần mềm, nhạc, website, ... miễn phí",
+            img: "/scripts/internet_archive.png",
+          },
+          onClickExtension: function () {
+            window.open("https://archive.org/");
+          },
+        },
+        BADGES.recommend
+      ),
+      addBadge(
+        {
           id: "recommend_wappalyzer",
           icon: "https://www.wappalyzer.com/favicon.ico",
           name: {
@@ -202,6 +221,7 @@ const tabs = [
         },
         BADGES.recommend
       ),
+      // s.researchGate_downloader, // limited
       s.tailieu_vn,
       s.docDownloader,
       s.scribd_downloadDocuments,
