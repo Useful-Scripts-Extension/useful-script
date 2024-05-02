@@ -254,24 +254,15 @@ function createScriptButton(script, isFavorite = false) {
 
   // add to favorite button
   const addFavoriteBtn = document.createElement("i");
-  addFavoriteBtn.className = isFavorite
-    ? "fa-solid fa-star star active"
-    : "fa-regular fa-star star";
-  addFavoriteBtn.title = isFavorite
-    ? t({
-        en: "Remove from favorite",
-        vi: "Xoá khỏi yêu thích",
-      })
-    : t({
-        en: "Add to farovite",
-        vi: "Thêm vào yêu thích",
-      });
+  updateFavBtn(addFavoriteBtn, isFavorite);
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
     trackEvent(script.id + (isFavorite ? "-REMOVE-FAVORITE" : "-ADD-FAVORITE"));
     favoriteScriptsSaver.toggle(script);
-    createTabs();
+    isFavorite = !isFavorite;
+    updateFavBtn(addFavoriteBtn, isFavorite);
+    refreshSpecialTabs();
   };
   button.appendChild(addFavoriteBtn);
 
@@ -310,6 +301,21 @@ function createScriptButton(script, isFavorite = false) {
 
   buttonContainer.appendChild(button);
   return buttonContainer;
+}
+
+function updateFavBtn(btn, isFavorite) {
+  btn.className = isFavorite
+    ? "fa-solid fa-star star active"
+    : "fa-regular fa-star star";
+  btn.title = isFavorite
+    ? t({
+        en: "Remove from favorite",
+        vi: "Xoá khỏi yêu thích",
+      })
+    : t({
+        en: "Add to farovite",
+        vi: "Thêm vào yêu thích",
+      });
 }
 
 async function updateButtonChecker(script, button, val) {
