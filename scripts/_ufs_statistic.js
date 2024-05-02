@@ -64,7 +64,7 @@ export default {
 
       // #region add graphs
       await UfsGlobal.DOM.injectScriptSrcAsync(
-        "https://cdn.jsdelivr.net/npm/chart.js"
+        "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
       );
 
       let logData = logs.map((_) => _.replace(/-\d+/, ""));
