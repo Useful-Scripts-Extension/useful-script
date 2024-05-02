@@ -279,6 +279,7 @@ const tabs = [
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
       s.fb_fetchAllAddedFriends,
+      s.fb_searchPostsForOther,
       createTitle("--- Access Token ---", "--- Access Token ---"),
       s.fb_checkToken,
       s.fb_getTokenFfb,

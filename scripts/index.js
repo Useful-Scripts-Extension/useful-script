@@ -160,6 +160,7 @@ import pip_fullWebsite from "./pip_fullWebsite.js";
 import similarWeb_bypassLimit from "./similarWeb_bypassLimit.js";
 import pip_canvas from "./pip_canvas.js";
 import researchGate_downloader from "./researchGate_downloader.js";
+import fb_searchPostsForOther from "./fb_searchPostsForOther.js";
 
 // inject badges
 const allScripts = {
@@ -336,6 +337,7 @@ const allScripts = {
   similarWeb_bypassLimit: addBadge(similarWeb_bypassLimit, BADGES.new),
   pip_canvas: addBadge(pip_canvas, BADGES.new),
   researchGate_downloader: addBadge(researchGate_downloader, BADGES.new),
+  fb_searchPostsForOther: addBadge(fb_searchPostsForOther, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
