@@ -820,6 +820,31 @@ function refreshSpecialTabs() {
       allScriptInTabs.filter((_) => canAutoRun(_)),
       tabs
     );
+
+  // update sticky favorites
+  tabs.forEach((tab) => {
+    // remove old sticky
+    tab.scripts = tab.scripts.filter((_) => !_.isStickyFavorite);
+
+    // add new sticky
+    let favoriteInTab = tab.scripts.filter(
+      (_) => favoriteScriptsSaver.has(_) && !_.isStickyFavorite
+    );
+    if (favoriteInTab.length) {
+      // add sticky flag
+      favoriteInTab = favoriteInTab.map((script) => {
+        return {
+          ...script,
+          isStickyFavorite: true,
+        };
+      });
+
+      // add block favorite sticky
+      let title = createTitle("--- Your Favorites ---", "--- Bạn đã thích ---");
+      title.isStickyFavorite = true;
+      tab.scripts = [title, ...favoriteInTab, ...tab.scripts];
+    }
+  });
 }
 
 function getAllTabs() {
