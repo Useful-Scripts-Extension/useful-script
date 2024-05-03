@@ -6,6 +6,10 @@ export const CATEGORY = {
       en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Favorite`,
       vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Yêu thích`,
     },
+    placeholder: {
+      vi: `<i class="fa-solid fa-circle-info"></i> Các chức năng bạn yêu thích sẽ xuất hiện ở đây...`,
+      en: `<i class="fa-solid fa-circle-info"></i> Your favorite scripts will be shown here...`,
+    },
   },
   recently: {
     id: "recently",

@@ -106,10 +106,11 @@ async function openTab(tab) {
 async function createTabContent(tab) {
   // search bar
   let scriptsCount = tab.scripts.filter((_) => !isTitle(_)).length;
+  let name = t(tab.name).replace(/<i(.*?)<\/i> /g, "");
   searchInput.value = "";
   searchInput.placeholder = t({
-    vi: "Tìm trong " + scriptsCount + " chức năng...",
-    en: "Search in " + scriptsCount + " scripts...",
+    vi: `Tìm trong ${scriptsCount} chức năng ${name}...`,
+    en: `Search in ${scriptsCount} scripts ${name}...`,
   });
   searchInput.focus?.();
 
@@ -122,10 +123,12 @@ async function createTabContent(tab) {
     const emptyText = document.createElement("h3");
     emptyText.style.padding = "30px 0";
     emptyText.style.color = "#19143b";
-    emptyText.innerHTML = t({
-      en: `<i class="fa-solid fa-circle-info"></i> Nothing here yet...`,
-      vi: `<i class="fa-solid fa-circle-info"></i> Chưa có gì ở đây hết...`,
-    });
+    emptyText.innerHTML = t(
+      tab.placeholder || {
+        en: `<i class="fa-solid fa-circle-info"></i> Nothing here yet...`,
+        vi: `<i class="fa-solid fa-circle-info"></i> Chưa có gì ở đây hết...`,
+      }
+    );
     contentContainer.appendChild(emptyText);
   } else {
     const favoriteScriptIds = favoriteScriptsSaver.getIds();
