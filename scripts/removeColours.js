@@ -23,9 +23,12 @@ export default {
     let style = document.createElement("style");
     style.id = "ufs-remove-colours";
     style.textContent = `
-      * {
-        background: white ! important;
-        color: black !important
+      *, *::before, *::after {
+        background: #ffffff4f ! important;
+        color: black !important;
+      }
+      img, video, canvas, picture, svg, object {
+        filter: grayscale(100%) !important;
       }
       :link, :link * {
         color: #0000EE !important
