@@ -1,10 +1,10 @@
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: "",
+  icon: '<i class="fa-regular fa-newspaper fa-lg"></i>',
   name: {
-    en: "Facebook: Find all posts of your friends",
-    vi: "Facebook: Tìm mọi bài viết của bạn bè",
+    en: "Facebook - Find all posts of your friends",
+    vi: "Facebook - Tìm mọi bài viết của bạn bè",
   },
   description: {
     en: "Search all public posts of your friends on facebook. Include posts in group, page, wall, ...",
