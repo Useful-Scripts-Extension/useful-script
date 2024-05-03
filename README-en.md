@@ -6,6 +6,14 @@
 
 Donate? For better health and ideas <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
+## Overview
+
+An extension includes a lot of small extensions. Make your life easier.
+
+- Please join [FACEBOOK GROUP](https://www.facebook.com/groups/1154059318582088) of this extension
+
+- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
+
 ## Change logs
 
 Versions:
@@ -22,14 +30,6 @@ Versions:
 - <del>v1.1 (07/11/2022)</del>
 
 [Full change logs](/md/CHANGELOGS.md)
-
-## Overview
-
-An extension includes a lot of small extensions. Make your life easier.
-
-- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
-
-- [Group facebook](https://www.facebook.com/groups/1154059318582088) of this extension
 
 ## Install
 

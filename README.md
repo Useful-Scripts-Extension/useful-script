@@ -6,6 +6,14 @@
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
+## Giới thiệu
+
+1 tiện ích chứa rất nhiều chức năng nhỏ. Giúp cuộc sống dễ dàng hơn.
+
+- Hãy tham gia ngay [GROUP FACEBOOK](https://www.facebook.com/groups/1154059318582088) của tiện ích
+
+- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+
 ## Lịch sử cập nhật
 
 Verion hiện tại:
@@ -22,14 +30,6 @@ Verion hiện tại:
 - <del>v1.1 (07/11/2022)</del>
 
 [Lịch sử cập nhật](/md/CHANGELOGS.md)
-
-## Giới thiệu
-
-1 tiện ích chứa rất nhiều chức năng nhỏ. Giúp cuộc sống dễ dàng hơn.
-
-- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
-
-- [Nhóm facebook](https://www.facebook.com/groups/1154059318582088) của extension
 
 ## Cài đặt
 
