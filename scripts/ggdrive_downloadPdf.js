@@ -19,8 +19,8 @@ export default {
     vi: "GG Drive - Tải PDF",
   },
   description: {
-    en: "Download google drive PDF file that dont have download button. Pages will be convert to image, cannot edit.",
-    vi: "Tải file PDF không có nút download trên google drive. Tải về định dạng hình ảnh, không thể sửa nội dung.",
+    en: "Download google drive PDF file that dont have download button.<br/>Pages will be <b>convert to image, cannot edit.</b>",
+    vi: "Tải file PDF không có nút download trên google drive.<br/>Tải về <b>định dạng hình ảnh, không thể sửa nội dung<b>.",
   },
 
   whiteList: ["https://drive.google.com/file/d/*"],
