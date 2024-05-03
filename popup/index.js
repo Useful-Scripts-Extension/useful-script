@@ -9,6 +9,7 @@ import {
   sendEventToTab,
   toggleActiveScript,
   trackEvent,
+  debounce,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
@@ -419,6 +420,30 @@ function initTracking() {
   });
 }
 
+function saveScroll() {
+  const scrollY = document.body.scrollTop;
+  chrome.storage.local.set({ popupScrollY: scrollY }, () => {
+    console.log("Scroll position saved");
+  });
+}
+
+function restoreScroll() {
+  chrome.storage.local.get("popupScrollY", (data) => {
+    const storedScrollY = data.popupScrollY || 0;
+    document.body.scrollTo({
+      top: storedScrollY,
+      // behavior: "smooth",
+    });
+  });
+}
+
+const onScrollEnd = debounce(() => {
+  console.log("Scrolling stopped!");
+  saveScroll();
+}, 100);
+
+window.addEventListener("scroll", onScrollEnd);
+
 (async function () {
   trackEvent("OPEN-POPUP");
 
@@ -426,5 +451,7 @@ function initTracking() {
   initSearch();
   initLanguage();
   createTabs();
+  restoreScroll();
+
   await checkForUpdate();
 })();

@@ -9,6 +9,14 @@ const CACHED = {
   userID: null,
 };
 
+export function debounce(func, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
 export async function setUserId(uid = new Date().getTime()) {
   CACHED.userID = uid;
   await Storage.set("userId", uid);
