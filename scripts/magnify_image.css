@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 16777271;
+  z-index: 16777270;
 }
 
 /* --------------------- Choose image ------------------------- */
@@ -15,7 +15,7 @@
   opacity: 0;
   border-radius: 50%;
   background-color: #000b;
-  z-index: 16777271;
+  z-index: 16777270;
   display: flex;
   justify-content: center;
   align-items: center;

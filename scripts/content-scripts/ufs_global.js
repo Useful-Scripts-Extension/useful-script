@@ -93,7 +93,7 @@ UfsGlobal.DOM = {
       top: ${y - size / 2}px;
       width: ${size}px;
       height: ${size}px;
-      z-index: 999999;
+      z-index: 16777271;
       pointer-events: none;
       user-select: none;
       ${containerStyle}
@@ -339,7 +339,7 @@ UfsGlobal.DOM = {
         background-color: #333;
         color: #fff;
         border-radius: 5px;
-        z-index: 999999;
+        z-index: 16777271;
         transition: all 1s ease-out;
         ${
           align === "right"
