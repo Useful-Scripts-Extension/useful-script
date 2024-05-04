@@ -197,10 +197,10 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(function () {
-    GLOBAL.trackEvent("ufs-INSTALLED");
-
     // create new unique id and save it
     setUserId();
+
+    GLOBAL.trackEvent("ufs-INSTALLED");
 
     chrome.contextMenus.create({
       title: "Magnify this image",
