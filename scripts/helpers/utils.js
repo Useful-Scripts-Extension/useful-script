@@ -17,6 +17,10 @@ export function debounce(func, delay) {
   };
 }
 
+export async function hasUserId() {
+  return !!(await Storage.get("userId"));
+}
+
 export async function setUserId(uid = new Date().getTime()) {
   CACHED.userID = uid;
   await Storage.set("userId", uid);

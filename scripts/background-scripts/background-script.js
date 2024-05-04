@@ -196,9 +196,13 @@ function main() {
     }
   });
 
-  chrome.runtime.onInstalled.addListener(function () {
+  chrome.runtime.onInstalled.addListener(async function () {
+    if (utils.hasUserId()) {
+      await GLOBAL.trackEvent("ufs-RE-INSTALLED");
+    }
+
     // create new unique id and save it
-    setUserId();
+    await setUserId();
 
     GLOBAL.trackEvent("ufs-INSTALLED");
 
