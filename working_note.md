@@ -2,6 +2,14 @@
 
 ## 28/04/2024 - ~
 
+- [ ] theme selector for popup extension
+
+- [x] scroll to top popup extension
+
+- [ ] optimize UfsGlbal
+
+- [ ] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks>
+
 - [ ] call js function from url <https://stackoverflow.com/a/8466513/23648002>
 
 ```

@@ -1,8 +1,116 @@
-const UfsGlobal = {};
+(() => {
+  const UfsGlobal = {
+    Extension: {
+      sendToContentScript,
+      runInContentScript,
+      runInBackground,
+      fetchByPassOrigin,
+      getURL,
+      download,
+      trackEvent,
+      waitForTabToLoad,
+      checkWillRun,
+    },
+    DOM: {
+      checkElementvisibility,
+      closest,
+      addLoadingAnimation,
+      addLoadingAnimationAtPos,
+      enableDragAndZoom,
+      getContentClientRect,
+      dataURLToCanvas,
+      notifyStack,
+      notify,
+      onDoublePress,
+      createFlashTitle,
+      clickASAP,
+      deleteElements,
+      waitForElements,
+      onElementsVisible,
+      injectCssCode,
+      injectCssFile,
+      getTrustedPolicy,
+      createTrustedHtml,
+      injectScriptSrc,
+      injectScriptSrcAsync,
+      isElementInViewport,
+      getOverlapScore,
+      makeUrlValid,
+      getWatchingVideoSrc,
+    },
+    Utils: {
+      domainCheck,
+      sleep,
+      setCookie,
+      delCookie,
+      strBetween,
+      matchOneOfPatterns,
+      json2xml,
+      xml2json,
+      getLargestSrcset,
+      svgBase64ToUrl,
+      svgToBlobUrl,
+      svgToBase64,
+      getResolutionCategory,
+      saveAs,
+      isEmoji,
+      formatTimeToHHMMSSDD,
+      timeoutPromise,
+      getRedirectedUrl,
+      getLargestImageSrc,
+      isImageSrc,
+      findWorkingSrc,
+      canonicalUri,
+      formatSize,
+      promiseAllStepN,
+      hook,
+      parseJwt,
+      copyToClipboard,
+      isEmptyFunction,
+      escapeRegExp,
+      unescapeRegExp,
+      encodeQueryString,
+      moneyFormat,
+      zipAndDownloadBlobs,
+      getBlobFromUrl,
+      getBlobFromUrlWithProgress,
+      downloadBlobUrl,
+      downloadBlob,
+      downloadURL,
+      downloadData,
+    },
+  };
 
-UfsGlobal.Extension = {
+  (function (factory) {
+    if (typeof exports === "object" && typeof module !== "undefined") {
+      module.exports = factory();
+    } else if (typeof define === "function" && define.amd) {
+      define([], factory);
+    } else {
+      var g;
+      if (typeof window !== "undefined") {
+        g = window.top;
+      } else if (typeof global !== "undefined") {
+        g = global;
+      } else if (typeof self !== "undefined") {
+        g = self;
+      } else {
+        g = this;
+      }
+      g.UfsGlobal = factory();
+    }
+  })(function () {
+    return UfsGlobal;
+  });
+
+  console.log("UfsGlobal loaded");
+
+  // store cache for all functions in UfsGlobal
+  const CACHED = {};
+
+  // #region Extension
   // use basic customEvent technique - only communicate within the same document or window context
-  sendToContentScript(event, data) {
+  function sendToContentScript(event, data) {
     return new Promise((resolve, reject) => {
       let uuid = Math.random().toString(36);
       let listenerKey = "ufs-contentscript-sendto-pagescript" + uuid;
@@ -17,21 +125,21 @@ UfsGlobal.Extension = {
         })
       );
     });
-  },
-  // WARNING: can only transfer serializable data
-  runInContentScript(fnPath, params) {
-    return UfsGlobal.Extension.sendToContentScript("ufs-runInContentScript", {
+  }
+  function runInContentScript(fnPath, params) {
+    // WARNING: can only transfer serializable data
+    return sendToContentScript("ufs-runInContentScript", {
       fnPath,
       params,
     });
-  },
-  runInBackground(fnPath, params) {
-    return UfsGlobal.Extension.sendToContentScript("ufs-runInBackground", {
+  }
+  function runInBackground(fnPath, params) {
+    return sendToContentScript("ufs-runInBackground", {
       fnPath,
       params,
     });
-  },
-  async fetchByPassOrigin(url, options = {}) {
+  }
+  function fetchByPassOrigin(url, options = {}) {
     try {
       let _url = url;
       let urlObject = new URL(url);
@@ -39,33 +147,25 @@ UfsGlobal.Extension = {
       if (location.hostname == urlObject?.hostname) {
         _url = urlObject.pathname;
       }
-      let res = await fetch(_url, options);
-      return res;
+      return fetch(_url, options);
     } catch (e) {
       console.log("NORMAL FETCH FAIL: ", e);
     }
-    let res = await UfsGlobal.Extension.runInBackground("fetch", [url]);
-    return res;
-  },
-  getURL(filePath) {
-    return UfsGlobal.Extension.runInContentScript("chrome.runtime.getURL", [
-      filePath,
-    ]);
-  },
-  download(options) {
-    return UfsGlobal.Extension.runInBackground("chrome.downloads.download", [
-      options,
-    ]);
-  },
-  trackEvent(scriptId) {
-    return UfsGlobal.Extension.runInBackground("trackEvent", [scriptId]);
-  },
-  waitForTabToLoad(tabId) {
-    return UfsGlobal.Extension.runInBackground("utils.waitForTabToLoad", [
-      tabId,
-    ]);
-  },
-  checkWillRun(script, url = location?.href) {
+    return runInBackground("fetch", [url]);
+  }
+  function getURL(filePath) {
+    return runInContentScript("chrome.runtime.getURL", [filePath]);
+  }
+  function download(options) {
+    return runInBackground("chrome.downloads.download", [options]);
+  }
+  function trackEvent(scriptId) {
+    return runInBackground("trackEvent", [scriptId]);
+  }
+  function waitForTabToLoad(tabId) {
+    return runInBackground("utils.waitForTabToLoad", [tabId]);
+  }
+  function checkWillRun(script, url = location?.href) {
     if (!url) return false;
     const { matchOneOfPatterns } = UfsGlobal.Utils;
     let hasWhiteList = script.whiteList?.length > 0;
@@ -77,10 +177,20 @@ UfsGlobal.Extension = {
       (hasWhiteList && inWhiteList) ||
       (hasBlackList && !inBlackList)
     );
-  },
-};
-UfsGlobal.DOM = {
-  closest(element, selector) {
+  }
+  // #endregion
+
+  // #region DOM
+  function checkElementvisibility(elem) {
+    if (!elem.offsetHeight && !elem.offsetWidth) {
+      return false;
+    }
+    if (getComputedStyle(elem).visibility === "hidden") {
+      return false;
+    }
+    return true;
+  }
+  function closest(element, selector) {
     let el = element;
     while (el !== null) {
       if (el.matches(selector)) return el;
@@ -91,8 +201,8 @@ UfsGlobal.DOM = {
       el = el.parentElement;
     }
     return el;
-  },
-  addLoadingAnimationAtPos(
+  }
+  function addLoadingAnimationAtPos(
     x,
     y,
     size = 40,
@@ -101,21 +211,21 @@ UfsGlobal.DOM = {
   ) {
     let ele = document.createElement("div");
     ele.style.cssText = `
-      position: fixed;
-      left: ${x - size / 2}px;
-      top: ${y - size / 2}px;
-      width: ${size}px;
-      height: ${size}px;
-      z-index: 16777271;
-      pointer-events: none;
-      user-select: none;
-      ${containerStyle}
-    `;
-    UfsGlobal.DOM.addLoadingAnimation(ele, size, loadingStyle);
+    position: fixed;
+    left: ${x - size / 2}px;
+    top: ${y - size / 2}px;
+    width: ${size}px;
+    height: ${size}px;
+    z-index: 16777271;
+    pointer-events: none;
+    user-select: none;
+    ${containerStyle}
+  `;
+    addLoadingAnimation(ele, size, loadingStyle);
     document.body.appendChild(ele);
     return () => ele.remove();
-  },
-  addLoadingAnimation(
+  }
+  function addLoadingAnimation(
     element,
     size = Math.min(element?.clientWidth, element?.clientHeight) || 0,
     customStyle = ""
@@ -129,51 +239,51 @@ UfsGlobal.DOM = {
     let style = document.createElement("style");
     style.id = "ufs-loading-style-" + id;
     style.textContent = `
-      .ufs-loading-${id}::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: ${size}px;
-        height: ${size}px;
-        margin-top: -${size / 2}px;
-        margin-left: -${size / 2}px;
-        border-radius: 50%;
-        border: ${borderSize}px solid #555 !important;
-        border-top-color: #eee !important;
-        animation: ufs-spin 1s ease-in-out infinite;
-        box-sizing: border-box !important;
-        ${customStyle}
+    .ufs-loading-${id}::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: ${size}px;
+      height: ${size}px;
+      margin-top: -${size / 2}px;
+      margin-left: -${size / 2}px;
+      border-radius: 50%;
+      border: ${borderSize}px solid #555 !important;
+      border-top-color: #eee !important;
+      animation: ufs-spin 1s ease-in-out infinite;
+      box-sizing: border-box !important;
+      ${customStyle}
+    }
+    @keyframes ufs-spin {
+      to {
+        transform: rotate(360deg);
       }
-      @keyframes ufs-spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      `;
+    }
+    `;
     (document.head || document.documentElement).appendChild(style);
 
     return () => {
       if (element) element.classList.remove("ufs-loading-" + id);
     };
-  },
-  enableDragAndZoom(element, container, callback) {
+  }
+  function enableDragAndZoom(element, container, callback) {
     // set style
     element.style.cssText += `
-        cursor: grab;
-        position: relative;
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-        -khtml-user-select: none;
-        max-width: unset !important;
-        max-height: unset !important;
-        min-width: unset !important;
-        min-height: unset !important;
-        -webkit-user-drag: none !important;
-      `;
+      cursor: grab;
+      position: relative;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -khtml-user-select: none;
+      max-width: unset !important;
+      max-height: unset !important;
+      min-width: unset !important;
+      min-height: unset !important;
+      -webkit-user-drag: none !important;
+    `;
 
     // Variables to track the current position
     var lastX = 0;
@@ -255,26 +365,26 @@ UfsGlobal.DOM = {
 
       callback?.({ type: "scale" });
     });
-  },
+  }
   // prettier-ignore
-  getContentClientRect(target) {
-      var rect = target.getBoundingClientRect();
-      var compStyle = window.getComputedStyle(target);
-      var pFloat = parseFloat;
-      var top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
-      var right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
-      var bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
-      var left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
-      return {
-          top : top,
-          right : right,
-          bottom : bottom,
-          left : left,
-          width : right-left,
-          height : bottom-top,
-      };
-    },
-  dataURLToCanvas(dataurl, cb) {
+  function getContentClientRect(target) {
+    var rect = target.getBoundingClientRect();
+    var compStyle = window.getComputedStyle(target);
+    var pFloat = parseFloat;
+    var top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
+    var right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
+    var bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
+    var left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
+    return {
+        top : top,
+        right : right,
+        bottom : bottom,
+        left : left,
+        width : right-left,
+        height : bottom-top,
+    };
+  }
+  function dataURLToCanvas(dataurl, cb) {
     if (!dataurl) return cb(null);
     var ctx = canvas.getContext("2d");
     var img = new Image();
@@ -290,8 +400,9 @@ UfsGlobal.DOM = {
       cb(null);
     };
     img.src = dataurl;
-  },
-  notifyStack(msg) {
+  }
+  // TODO: finish this
+  function notifyStack(msg) {
     let id = "ufs_notify_stack";
     let exist = document.getElementById(id);
     if (!exist) {
@@ -301,22 +412,22 @@ UfsGlobal.DOM = {
 
       let style = document.createElement("style");
       style.innerText = `
-        #ufs_notify_stack {
-          position: fixed;
-          top: 10px;
-          right: 10px;
-          max-width: 300px;
-          z-index: 16777271;
-        }
-        .ufs-notify-stack-item {
-          background-color: #333;
-          color: #fff;
-          padding: 10px;
-          border-radius: 5px;
-          margin-bottom: 10px;
-          transition: all 0.3s ease;
-        }
-      `;
+      #ufs_notify_stack {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        max-width: 300px;
+        z-index: 16777271;
+      }
+      .ufs-notify-stack-item {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+      }
+    `;
       exist.appendChild(style);
     }
 
@@ -328,8 +439,8 @@ UfsGlobal.DOM = {
     setTimeout(() => {
       notiItem.remove();
     }, 3000);
-  },
-  notify({
+  }
+  function notify({
     msg = "",
     x = window.innerWidth / 2,
     y = window.innerHeight - 100,
@@ -345,24 +456,24 @@ UfsGlobal.DOM = {
     let div = document.createElement("div");
     div.id = id;
     div.style.cssText = `
-        position: fixed;
-        left: ${x}px;
-        top: ${y}px;
-        padding: 10px;
-        background-color: #333;
-        color: #fff;
-        border-radius: 5px;
-        z-index: 16777271;
-        transition: all 1s ease-out;
-        ${
-          align === "right"
-            ? "transform: translateX(-100%);"
-            : align === "center"
-            ? "transform: translateX(-50%);"
-            : ""
-        }
-        ${styleText || ""}
-      `;
+      position: fixed;
+      left: ${x}px;
+      top: ${y}px;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+      z-index: 16777271;
+      transition: all 1s ease-out;
+      ${
+        align === "right"
+          ? "transform: translateX(-100%);"
+          : align === "center"
+          ? "transform: translateX(-50%);"
+          : ""
+      }
+      ${styleText || ""}
+    `;
     div.textContent = msg;
     (document.body || document.documentElement).appendChild(div);
 
@@ -410,8 +521,8 @@ UfsGlobal.DOM = {
         return false;
       },
     };
-  },
-  onDoublePress(key, callback, timeout = 500) {
+  }
+  function onDoublePress(key, callback, timeout = 500) {
     let timer = null;
     let clickCount = 0;
 
@@ -437,8 +548,8 @@ UfsGlobal.DOM = {
       clearTimeout(timer);
       document.removeEventListener("keyup", keyup);
     };
-  }, // https://stackoverflow.com/a/3381522
-  createFlashTitle(newMsg, howManyTimes) {
+  } // https://stackoverflow.com/a/3381522
+  function createFlashTitle(newMsg, howManyTimes) {
     var original = document.title;
     var timeout;
 
@@ -461,9 +572,30 @@ UfsGlobal.DOM = {
     }
 
     return cancel;
-  },
-  deleteElements(selector, willReRun) {
-    UfsGlobal.DOM.onElementsVisible(
+  }
+  // click element as soon as possible
+  function clickASAP(selector, sleepTime = 0) {
+    const events = ["mouseover", "mousedown", "mouseup", "click"];
+    const selectors = selector.split(", ");
+    if (selectors.length > 1) {
+      return selectors.forEach(clickASAP);
+    }
+    if (sleepTime > 0) {
+      return sleep(sleepTime * 1000).then(function () {
+        clickASAP(selector, 0);
+      });
+    }
+    waitForElements(selector).then(function (element) {
+      element.removeAttribute("disabled");
+      element.removeAttribute("target");
+      events.forEach((eventName) => {
+        const eventObject = new MouseEvent(eventName, { bubbles: true });
+        element.dispatchEvent(eventObject);
+      });
+    });
+  }
+  function deleteElements(selector, willReRun) {
+    onElementsVisible(
       selector,
       (nodes) => {
         [].forEach.call(nodes, function (node) {
@@ -473,14 +605,15 @@ UfsGlobal.DOM = {
       },
       willReRun
     );
-  },
-  waitForElements(selector) {
+  }
+  function waitForElements(selector) {
     return new Promise((resolve, reject) => {
-      UfsGlobal.DOM.onElementsVisible(selector, resolve, false);
+      onElementsVisible(selector, resolve, false);
     });
-  }, // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
+  }
+  // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
   // https://stackoverflow.com/a/61511955/11898496
-  onElementsVisible: (selector, callback, willReRun) => {
+  function onElementsVisible(selector, callback, willReRun) {
     let nodes = document.querySelectorAll(selector);
     if (nodes?.length) {
       callback(nodes);
@@ -515,21 +648,21 @@ UfsGlobal.DOM = {
 
     // return disconnect function
     return () => observer.disconnect();
-  },
-  injectCssCode(code) {
+  }
+  function injectCssCode(code) {
     var css = document.createElement("style");
     if ("textContent" in css) css.textContent = code;
     else css.innerText = code;
     (document.head || document.documentElement).appendChild(css);
-  },
-  injectCssFile(filePath) {
+  }
+  function injectCssFile(filePath) {
     var css = document.createElement("link");
     css.setAttribute("rel", "stylesheet");
     css.setAttribute("type", "text/css");
     css.setAttribute("href", filePath);
     (document.head || document.documentElement).appendChild(css);
-  },
-  getTrustedPolicy() {
+  }
+  function getTrustedPolicy() {
     let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
     if (!policy) {
       policy = window.trustedTypes.createPolicy("ufsTrustedTypesPolicy", {
@@ -539,13 +672,13 @@ UfsGlobal.DOM = {
       });
     }
     return policy;
-  },
-  createTrustedHtml(html) {
-    let policy = UfsGlobal.DOM.getTrustedPolicy();
+  }
+  function createTrustedHtml(html) {
+    let policy = getTrustedPolicy();
     return policy.createHTML(html);
-  },
-  injectScriptSrc(src, callback) {
-    let policy = UfsGlobal.DOM.getTrustedPolicy();
+  }
+  function injectScriptSrc(src, callback) {
+    let policy = getTrustedPolicy();
     let jsSrc = policy.createScriptURL(src);
     let script = document.createElement("script");
     script.onload = function () {
@@ -556,10 +689,10 @@ UfsGlobal.DOM = {
     };
     script.src = jsSrc; // Assigning the TrustedScriptURL to src
     (document.head || document.documentElement).appendChild(script);
-  },
-  injectScriptSrcAsync(src) {
+  }
+  function injectScriptSrcAsync(src) {
     return new Promise((resolve, reject) => {
-      UfsGlobal.DOM.injectScriptSrc(src, (success, e) => {
+      injectScriptSrc(src, (success, e) => {
         if (success) {
           resolve();
         } else {
@@ -567,8 +700,8 @@ UfsGlobal.DOM = {
         }
       });
     });
-  },
-  isElementInViewport(el) {
+  }
+  function isElementInViewport(el) {
     const rect = el.getBoundingClientRect();
     return (
       rect.bottom > 0 &&
@@ -576,8 +709,8 @@ UfsGlobal.DOM = {
       rect.left < window.innerWidth &&
       rect.top < window.innerHeight
     );
-  },
-  getOverlapScore(el) {
+  }
+  function getOverlapScore(el) {
     var rect = el.getBoundingClientRect();
     return (
       Math.min(
@@ -585,14 +718,14 @@ UfsGlobal.DOM = {
         window.innerHeight || document.documentElement.clientHeight
       ) - Math.max(0, rect.top)
     );
-  },
-  makeUrlValid(url) {
+  }
+  function makeUrlValid(url) {
     if (url.startsWith("//")) {
       url = "https:" + url;
     }
     return url;
-  },
-  async getWatchingVideoSrc() {
+  }
+  async function getWatchingVideoSrc() {
     const { getOverlapScore, isElementInViewport, makeUrlValid } =
       UfsGlobal.DOM;
 
@@ -611,10 +744,41 @@ UfsGlobal.DOM = {
         if (s.src) return makeUrlValid(s.src);
       }
     }
-  },
-};
-UfsGlobal.Utils = {
-  matchOneOfPatterns(url, patterns) {
+  }
+  // #endregion
+
+  // #region Utils
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  function domainCheck(domains) {
+    return new RegExp(domains).test(location.host);
+  }
+  function setCookie(name, value, days) {
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      let expires = "; expires=" + date.toGMTString();
+    } else {
+      var expires = "";
+      document.cookie = name + "=" + value + expires + "; path=/";
+    }
+  }
+  function delCookie(name) {
+    setCookie(name, "", -1);
+  }
+  function strBetween(s, front, back, trim = false) {
+    if (trim) {
+      s = s.replaceAll(" ", "");
+      s = s.trim();
+      s = s.replaceAll("\n", " ");
+    }
+    return s.slice(
+      s.indexOf(front) + front.length,
+      s.indexOf(back, s.indexOf(front) + front.length)
+    );
+  }
+  function matchOneOfPatterns(url, patterns) {
     for (let pattern of patterns) {
       const regex = new RegExp(
         "^" +
@@ -627,26 +791,22 @@ UfsGlobal.Utils = {
       if (regex.test(url)) return true;
     }
     return false;
-  },
-  async json2xml(json) {
+  }
+  async function json2xml(json) {
     if (!window.json2xml) {
-      let url = await UfsGlobal.Extension.getURL(
-        "/scripts/libs/xml-json/json2xml.js"
-      );
-      await UfsGlobal.DOM.injectScriptSrcAsync(url);
+      let url = await getURL("/scripts/libs/xml-json/json2xml.js");
+      await injectScriptSrcAsync(url);
     }
     return window.json2xml(json);
-  },
-  async xml2json(xml) {
+  }
+  async function xml2json(xml) {
     if (!window.xml2json) {
-      let url = await UfsGlobal.Extension.getURL(
-        "/scripts/libs/xml-json/xml2json.js"
-      );
-      await UfsGlobal.DOM.injectScriptSrcAsync(url);
+      let url = await getURL("/scripts/libs/xml-json/xml2json.js");
+      await injectScriptSrcAsync(url);
     }
     return window.xml2json(xml);
-  },
-  getLargestSrcset(srcset) {
+  }
+  function getLargestSrcset(srcset) {
     var srcs = srcset.split(/[xw],/i),
       largeSize = -1,
       largeSrc = null;
@@ -660,8 +820,8 @@ UfsGlobal.Utils = {
       }
     });
     return largeSrc;
-  },
-  svgBase64ToUrl(sgvBase64) {
+  }
+  function svgBase64ToUrl(sgvBase64) {
     try {
       if (!/^data:image\/svg/.test(sgvBase64)) throw new Error("Invalid SVG");
       const svgContent = atob(sgvBase64.split(",")[1]);
@@ -673,12 +833,12 @@ UfsGlobal.Utils = {
       console.log("ERROR: ", e);
       return null;
     }
-  },
-  svgToBlobUrl(svg) {
+  }
+  function svgToBlobUrl(svg) {
     let url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
     return url;
-  },
-  svgToBase64(svg) {
+  }
+  function svgToBase64(svg) {
     try {
       return (
         "data:image/svg+xml;charset=utf-8;base64," +
@@ -688,8 +848,8 @@ UfsGlobal.Utils = {
       console.log("ERROR: ", e);
       return null;
     }
-  },
-  getResolutionCategory(width, height) {
+  }
+  function getResolutionCategory(width, height) {
     let min = Math.min(width, height);
     let max = Math.max(width, height);
 
@@ -707,44 +867,42 @@ UfsGlobal.Utils = {
     if (max <= 10240 && min <= 4320) return "10K (4320p)";
     if (max <= 15360 && min <= 8640) return "16K (8640p)";
     return "> 16K";
-  },
-  async saveAs(url_blob_file, title = "download", options = {}) {
+  }
+  async function saveAs(url_blob_file, title = "download", options = {}) {
     try {
       if (!window.saveAs) {
-        let url = await UfsGlobal.Extension.getURL(
-          "/scripts/libs/file-saver/index.js"
-        );
-        await UfsGlobal.DOM.injectScriptSrcAsync(url);
+        let url = await getURL("/scripts/libs/file-saver/index.js");
+        await injectScriptSrcAsync(url);
       }
 
       window.saveAs(url_blob_file, title, options);
     } catch (e) {
       alert("Error: " + e);
     }
-  },
+  }
   // https://stackoverflow.com/a/67705964/23648002
-  isEmoji(text) {
+  function isEmoji(text) {
     return text?.match(
       /^(\u00a9|\u00ae|[\u25a0-\u27bf]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/
     );
-  },
-  formatTimeToHHMMSSDD(date) {
+  }
+  function formatTimeToHHMMSSDD(date) {
     const hours = ("0" + date.getHours()).slice(-2);
     const minutes = ("0" + date.getMinutes()).slice(-2);
     const seconds = ("0" + date.getSeconds()).slice(-2);
     const milliseconds = ("00" + date.getMilliseconds()).slice(-3);
     return `${hours}:${minutes}:${seconds}:${milliseconds}`;
-  },
-  timeoutPromise(prom, time) {
+  }
+  function timeoutPromise(prom, time) {
     return Promise.race([
       prom,
       new Promise((_r, rej) => setTimeout(() => rej("time out " + time), time)),
     ]);
-  },
-  async getRedirectedUrl(url) {
+  }
+  async function getRedirectedUrl(url) {
     try {
       while (true) {
-        let res = await UfsGlobal.Extension.fetchByPassOrigin(url, {
+        let res = await fetchByPassOrigin(url, {
           method: "HEAD",
         });
         if (res.redirected) {
@@ -758,8 +916,54 @@ UfsGlobal.Utils = {
       console.log("ERROR:", e);
       return url;
     }
-  },
-  async getLargestImageSrc(imgSrc, webUrl) {
+  }
+  function uniqueArray(array) {
+    return Array.from(new Set(array));
+  }
+  function replaceUsingRegex(str, r, s) {
+    var results = [];
+
+    if (!Array.isArray(r) && !Array.isArray(s)) {
+      if (r && r.test && r.test(str)) {
+        results.push(str.replace(r, s));
+      }
+    } else if (!Array.isArray(r) && Array.isArray(s)) {
+      if (r && r.test && r.test(str)) {
+        for (let si = 0; si < s.length; si++) {
+          results.push(str.replace(r, s[si]));
+        }
+      }
+    } else if (Array.isArray(r) && !Array.isArray(s)) {
+      for (let ri = 0; ri < r.length; ri++) {
+        let _r = r[ri];
+        if (_r && _r.test && _r.test(str)) {
+          results.push(str.replace(_r, s));
+        }
+      }
+    } else if (Array.isArray(r) && Array.isArray(s)) {
+      for (let ri = 0; ri < r.length; ri++) {
+        let _r = r[ri];
+        if (_r && _r.test && _r.test(str)) {
+          let _s = Array.isArray(s[ri]) ? s[ri] : [s[ri]];
+          for (let si = 0; si < _s.length; si++) {
+            results.push(str.replace(_r, _s[si]));
+          }
+        }
+      }
+    }
+
+    return uniqueArray(results);
+  }
+  function testRegex(str, regexs) {
+    if (!Array.isArray(regexs)) regexs = [regexs];
+    for (let regex of regexs) {
+      if (regex && regex.test && regex.test(str)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  async function getLargestImageSrc(imgSrc, webUrl) {
     if (/^data:/i.test(imgSrc)) {
       return null;
     }
@@ -767,7 +971,7 @@ UfsGlobal.Utils = {
     console.log(imgSrc);
 
     // bypass redirect
-    let redirectedUrl = await UfsGlobal.Utils.getRedirectedUrl(imgSrc);
+    let redirectedUrl = await getRedirectedUrl(imgSrc);
     if (redirectedUrl) {
       console.log("bypass redirect:", redirectedUrl);
       imgSrc = redirectedUrl;
@@ -797,63 +1001,21 @@ UfsGlobal.Utils = {
       return null;
     }
 
-    function unique(array) {
-      return Array.from(new Set(array));
-    }
-
-    function replace(str, r, s) {
-      var results = [];
-
-      if (!Array.isArray(r) && !Array.isArray(s)) {
-        if (r && r.test && r.test(str)) {
-          results.push(str.replace(r, s));
-        }
-      } else if (!Array.isArray(r) && Array.isArray(s)) {
-        if (r && r.test && r.test(str)) {
-          for (let si = 0; si < s.length; si++) {
-            results.push(str.replace(r, s[si]));
-          }
-        }
-      } else if (Array.isArray(r) && !Array.isArray(s)) {
-        for (let ri = 0; ri < r.length; ri++) {
-          let _r = r[ri];
-          if (_r && _r.test && _r.test(str)) {
-            results.push(str.replace(_r, s));
-          }
-        }
-      } else if (Array.isArray(r) && Array.isArray(s)) {
-        for (let ri = 0; ri < r.length; ri++) {
-          let _r = r[ri];
-          if (_r && _r.test && _r.test(str)) {
-            let _s = Array.isArray(s[ri]) ? s[ri] : [s[ri]];
-            for (let si = 0; si < _s.length; si++) {
-              results.push(str.replace(_r, _s[si]));
-            }
-          }
-        }
+    async function try2() {
+      if (!CACHED.largeImgSiteRules) {
+        let url = await getURL(
+          "/scripts/auto_redirectLargestImageSrc_rules.js"
+        );
+        let s = await import(url);
+        CACHED.largeImgSiteRules = s.default;
       }
-
-      return unique(results);
-    }
-
-    function test(str, regexs) {
-      if (!Array.isArray(regexs)) regexs = [regexs];
-      for (let regex of regexs) {
-        if (regex && regex.test && regex.test(str)) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function try2() {
-      for (let rule of UfsGlobal.largeImgSiteRules) {
-        if (rule.url && !test(webUrl, rule.url)) continue;
-        if (rule.src && !test(imgSrc, rule.src)) continue;
-        if (rule.exclude && test(imgSrc, rule.exclude)) continue;
+      for (let rule of CACHED.largeImgSiteRules) {
+        if (rule.url && !testRegex(webUrl, rule.url)) continue;
+        if (rule.src && !testRegex(imgSrc, rule.src)) continue;
+        if (rule.exclude && testRegex(imgSrc, rule.exclude)) continue;
         if (rule.r) {
           console.log(rule);
-          let newSrc = replace(imgSrc, rule.r, rule.s);
+          let newSrc = replaceUsingRegex(imgSrc, rule.r, rule.s);
           if (newSrc?.length) {
             return newSrc;
           }
@@ -1079,12 +1241,12 @@ UfsGlobal.Utils = {
 
     for (let fn of [try1, try2, try3]) {
       try {
-        let res = await UfsGlobal.Utils.timeoutPromise(fn(), 5000);
+        let res = await timeoutPromise(fn(), 5000);
         console.log("getLargestImageSrc: " + fn.name + " -> ", res);
         if (res && res != imgSrc) {
           if (!Array.isArray(res)) res = [res];
           if (res.length) {
-            let finalSrc = await UfsGlobal.Utils.findWorkingSrc(res, true);
+            let finalSrc = await findWorkingSrc(res, true);
             console.log("final src:", finalSrc);
             if (finalSrc?.length) return finalSrc;
           }
@@ -1095,10 +1257,10 @@ UfsGlobal.Utils = {
     }
 
     return null;
-  },
-  async isImageSrc(src) {
+  }
+  async function isImageSrc(src) {
     try {
-      const res = await UfsGlobal.Extension.fetchByPassOrigin(src, {
+      const res = await fetchByPassOrigin(src, {
         method: "HEAD",
       });
       console.log("isImageSrc: " + src + " -> ", res);
@@ -1119,15 +1281,15 @@ UfsGlobal.Utils = {
       img.onload = () => resolve(true);
       img.onerror = () => resolve(false);
     });
-  },
-  findWorkingSrc(srcs, inOrder = true) {
+  }
+  function findWorkingSrc(srcs, inOrder = true) {
     return new Promise((resolve, reject) => {
       if (!srcs || !Array.isArray(srcs) || srcs.length === 0) {
         reject("srcs is falsy, not an array, or empty");
       } else {
         const checkImage = (src) =>
           // prevent Error: Content Security Policy directive: "connect-src 'self'
-          UfsGlobal.Utils.isImageSrc(src).then((value) => {
+          isImageSrc(src).then((value) => {
             if (inOrder) return value;
             if (value) resolve(src);
             return value;
@@ -1144,9 +1306,9 @@ UfsGlobal.Utils = {
         });
       }
     });
-  },
+  }
   // resolve relative URLs into canonical absolute URLs based on the current location.
-  canonicalUri(src, location = window.location) {
+  function canonicalUri(src, location = window.location) {
     if (src.charAt(0) == "#") return location.href + src;
     if (src.charAt(0) == "?")
       return location.href.replace(/^([^\?#]+).*/, "$1" + src);
@@ -1163,8 +1325,8 @@ UfsGlobal.Utils = {
     return absolute_regex.test(src)
       ? src
       : (src.charAt(0) == "/" ? root_domain : root_page) + src;
-  },
-  formatSize(size, fixed = 0) {
+  }
+  function formatSize(size, fixed = 0) {
     size = Number(size);
     if (!size) return "?";
 
@@ -1175,9 +1337,9 @@ UfsGlobal.Utils = {
       unitIndex++;
     }
     return size.toFixed(fixed) + units[unitIndex];
-  },
+  }
   // modified by chatgpt based on: https://gist.github.com/jcouyang/632709f30e12a7879a73e9e132c0d56b
-  promiseAllStepN(n, list) {
+  function promiseAllStepN(n, list) {
     const head = list.slice(0, n);
     const tail = list.slice(n);
     const resolved = [];
@@ -1207,8 +1369,8 @@ UfsGlobal.Utils = {
         );
       });
     });
-  },
-  hook(obj, name, callback) {
+  }
+  function hook(obj, name, callback) {
     const orig = obj[name];
     obj[name] = function (...args) {
       const result = orig.apply(this, args);
@@ -1223,9 +1385,9 @@ UfsGlobal.Utils = {
       // restore
       obj[name] = orig;
     };
-  },
+  }
   // https://stackoverflow.com/a/38552302/11898496
-  parseJwt(token) {
+  function parseJwt(token) {
     var base64Url = token.split(".")[1];
     var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     var jsonPayload = decodeURIComponent(
@@ -1238,8 +1400,8 @@ UfsGlobal.Utils = {
         .join("")
     );
     return JSON.parse(jsonPayload);
-  },
-  copyToClipboard(text) {
+  }
+  function copyToClipboard(text) {
     // Check if Clipboard API is supported
     if (!navigator.clipboard) {
       alert("Clipboard API not supported, falling back to older method.");
@@ -1264,9 +1426,9 @@ UfsGlobal.Utils = {
       .catch((err) => {
         console.error("Failed to copy text to clipboard:", err);
       });
-  },
+  }
   // https://stackoverflow.com/a/7960435
-  isEmptyFunction(func) {
+  function isEmptyFunction(func) {
     try {
       var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
       return !m.replace(/^\s*\/\/.*$/gm, "");
@@ -1274,24 +1436,24 @@ UfsGlobal.Utils = {
       console.log("Error isEmptyFunction", e);
       return false;
     }
-  },
+  }
   // https://stackoverflow.com/a/9310752
-  escapeRegExp(text) {
+  function escapeRegExp(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-  },
+  }
   // https://stackoverflow.com/q/38849009
-  unescapeRegExp(text) {
+  function unescapeRegExp(text) {
     return text.replace(/\\(.)/g, "$1");
-  },
-  encodeQueryString(obj) {
+  }
+  function encodeQueryString(obj) {
     var str = [];
     for (var p in obj)
       if (obj.hasOwnProperty(p)) {
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
       }
     return str.join("&");
-  },
-  moneyFormat(number, fixed = 0) {
+  }
+  function moneyFormat(number, fixed = 0) {
     if (isNaN(number)) return 0;
     number = number.toFixed(fixed);
     let delimeter = ",";
@@ -1301,14 +1463,18 @@ UfsGlobal.Utils = {
       number = number.replace(rgx, "$1" + delimeter + "$2");
     }
     return number;
-  },
-  zipAndDownloadBlobs(
+  }
+  async function zipAndDownloadBlobs(
     blobList,
     zipFileName,
     progressCallback,
     successCallback
   ) {
-    const zip = new JSZip();
+    if (!window.JSZip) {
+      let url = await getURL("/scripts/libs/jzip/index.js");
+      await injectScriptSrcAsync(url);
+    }
+    const zip = new window.JSZip();
 
     // Add each Blob to the ZIP archive with a unique name
     blobList.forEach(({ blob, fileName }, index) => {
@@ -1327,19 +1493,10 @@ UfsGlobal.Utils = {
       })
       .then((content) => {
         successCallback?.();
-
-        // Create a link to trigger the download
-        const a = document.createElement("a");
-        const url = URL.createObjectURL(content);
-        a.href = url;
-        a.download = zipFileName;
-
-        // Trigger a click event to initiate the download
-        a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        saveAs(content, zipFileName);
       });
-  },
-  async getBlobFromUrl(url) {
+  }
+  async function getBlobFromUrl(url) {
     try {
       const response = await fetch(url);
       const blob = await response.blob();
@@ -1347,8 +1504,8 @@ UfsGlobal.Utils = {
     } catch (error) {
       alert("Error: " + error);
     }
-  },
-  async getBlobFromUrlWithProgress(url, progressCallback) {
+  }
+  async function getBlobFromUrlWithProgress(url, progressCallback) {
     const response = await fetch(url, {});
     if (!response.ok) {
       throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -1378,17 +1535,19 @@ UfsGlobal.Utils = {
     });
 
     return blob;
-  },
-  async downloadBlobUrl(url, title) {
+  }
+
+  // TODO use saveAs instead all of these download functions
+  async function downloadBlobUrl(url, title) {
     try {
       let res = await fetch(url);
       let blob = await res.blob();
-      UfsGlobal.Utils.downloadBlob(blob, title);
+      downloadBlob(blob, title);
     } catch (e) {
       alert("Error: " + e);
     }
-  },
-  downloadBlob(blob, filename) {
+  }
+  function downloadBlob(blob, filename) {
     const blobUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = blobUrl;
@@ -1398,10 +1557,10 @@ UfsGlobal.Utils = {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(blobUrl);
-  },
+  }
   // https://stackoverflow.com/a/15832662/11898496
   // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
-  downloadURL(url, name) {
+  function downloadURL(url, name) {
     var link = document.createElement("a");
     link.target = "_blank";
     link.download = name;
@@ -1409,8 +1568,8 @@ UfsGlobal.Utils = {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  },
-  downloadData(data, filename, type = "text/plain") {
+  }
+  function downloadData(data, filename, type = "text/plain") {
     var file = new Blob([data], { type: type });
     if (window.navigator.msSaveOrOpenBlob)
       window.navigator.msSaveOrOpenBlob(file, filename);
@@ -1426,1471 +1585,827 @@ UfsGlobal.Utils = {
         window.URL.revokeObjectURL(url);
       }, 0);
     }
-  },
-};
-UfsGlobal.Facebook = {
-  // Helpers
-  async fetchGraphQl(str, fb_dtsg) {
-    var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
-    fb_dtsg += str.includes("variables")
-      ? "&" + str
-      : "&q=" + encodeURIComponent(str);
+  }
+  // #endregion
 
-    let res = await fetch("https://www.facebook.com/api/graphql/", {
-      body: fb_dtsg,
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      credentials: "include",
-    });
+  UfsGlobal.Facebook = {
+    // Helpers
+    async fetchGraphQl(str, fb_dtsg) {
+      var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
+      fb_dtsg += str.includes("variables")
+        ? "&" + str
+        : "&q=" + encodeURIComponent(str);
 
-    let json = await res.json();
-    return json;
-  },
-  decodeArrId(arrId) {
-    return arrId[0] * 4294967296 + arrId[1];
-  },
-  async getFbdtsg() {
-    let methods = [
-      () => require("DTSGInitData").token,
-      () => require("DTSG").getToken(),
-      () => {
-        return document.documentElement.innerHTML.match(
-          /"DTSGInitialData",\[],{"token":"(.+?)"/gm
-        )[1];
-      },
-      async () => {
-        let res = await fetch("https://mbasic.facebook.com/photos/upload/");
-        let text = await res.text();
-        return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
-      },
-      () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
-    ];
-    for (let m of methods) {
-      try {
-        let d = await m();
-        if (d) return d;
-      } catch (e) {}
-    }
-    return null;
-  },
-  // User Data
-  getUserAvatarFromUid(uid) {
-    return (
-      "https://graph.facebook.com/" +
-      uid +
-      "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
-    );
-  },
-  async getYourUserId() {
-    let methods = [
-      () => require("CurrentUserInitialData").USER_ID,
-      () => require("RelayAPIConfigDefaults").actorID,
-      () => document.cookie.match(/c_user=(\d+)/)[1],
-      async () =>
-        (
-          await chrome.cookies.get({
-            url: "https://www.facebook.com",
-            name: "c_user",
-          })
-        ).value,
-    ];
-    for (let m of methods) {
-      try {
-        let d = await m();
-        if (d) return d;
-      } catch (e) {}
-    }
-    return null;
-  },
-  async getUserInfoFromUid(uid) {
-    const variables = {
-      userID: uid,
-      shouldDeferProfilePic: false,
-      useVNextHeader: false,
-      scale: 1.5,
-    };
-    let f = new URLSearchParams();
-    f.append("fb_dtsg", await UfsGlobal.Facebook.getFbdtsg());
-    f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
-    f.append("variables", JSON.stringify(variables));
-    f.append("doc_id", "4159355184147969");
-
-    let res = await fetch("https://www.facebook.com/api/graphql/", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: f,
-    });
-
-    let text = await res.text();
-    return {
-      uid: uid,
-      name: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
-        /"name":"(.*?)"/.exec(text)?.[1]
-      ),
-      avatar: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
-        /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1] ||
-          /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1] ||
-          /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1] ||
-          /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1]
-      ),
-      gender: /"gender":"(.*?)"/.exec(text)?.[1],
-      alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
-    };
-  },
-  async getUserInfo(uid, access_token) {
-    var n =
-      "https://graph.facebook.com/" +
-      encodeURIComponent(uid) +
-      "/?fields=name,picture&access_token=" +
-      access_token;
-    const e = await fetch(n);
-    let json = await e.json();
-
-    return {
-      uid: uid,
-      name: json?.name,
-      avatar: json?.picture?.data?.url,
-    };
-  },
-  async getUidFromUrl(url) {
-    let methods = [
-      () => require("CometRouteStore").getRoute(url).rootView.props.userID,
-      async () => {
-        var response = await fetch(url);
-        if (response.status == 200) {
-          var text = await response.text();
-          let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
-          if (uid?.length) {
-            return uid[0];
-          }
-        }
-        return null;
-      },
-    ];
-
-    for (let m of methods) {
-      try {
-        let uid = await m();
-        if (uid) return uid;
-      } catch (e) {}
-    }
-    return null;
-  },
-  // Story
-  getStoryBucketIdFromURL(url) {
-    return url.match(/stories\/(\d+)\//)?.[1];
-  },
-  getStoryId() {
-    const htmlStory = document.getElementsByClassName(
-      "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
-    );
-    return htmlStory[htmlStory.length - 1].getAttribute("data-id");
-  },
-  async getStoryInfo(bucketID, fb_dtsg) {
-    // Source: https://pastebin.com/CNvUxpfc
-    let body = new URLSearchParams();
-    body.append("__a", 1);
-    body.append("fb_dtsg", fb_dtsg);
-    body.append(
-      "variables",
-      JSON.stringify({
-        bucketID: bucketID,
-        initialLoad: false,
-        scale: 1,
-      })
-    );
-    body.append("doc_id", 2586853698032602);
-
-    let res = await fetch("https://www.facebook.com/api/graphql/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: body,
-      credentials: "include",
-    });
-
-    let json = await res.json();
-    console.log(json);
-    let data = json?.data?.bucket;
-
-    if (!data) throw new Error("Không lấy được data");
-    return {
-      storyId: data.id,
-      author: {
-        id: data.owner.id,
-        name: data.owner.name,
-        avatar: data.owner.profile_picture.uri,
-        avatarURL: data.owner.url,
-      },
-      Objects: data.unified_stories.edges.map((_, i) => {
-        return {
-          pictureBlurred:
-            data.unified_stories.edges[i].node.attachments[0].media.blurredImage
-              .uri,
-          picturePreview:
-            data.unified_stories.edges[i].node.attachments[0].media.previewImage
-              .uri,
-          totalReaction:
-            data.unified_stories.edges[i].node.story_card_info.feedback_summary
-              .total_reaction_count,
-          backgroundCss:
-            data.unified_stories.edges[i].node.story_default_background.color,
-          backgroundCss3:
-            data.unified_stories.edges[i].node.story_default_background.gradient
-              .css,
-          ...(data.unified_stories.edges[i].node.attachments[0].media
-            .__typename == "Photo"
-            ? {
-                caption:
-                  data.unified_stories.edges[i].node.attachments[0].media
-                    .accessibility_caption,
-                image:
-                  data.unified_stories.edges[i].node.attachments[0].media.image
-                    .uri,
-              }
-            : data.unified_stories.edges[i].node.attachments[0].media
-                .__typename == "Video"
-            ? {
-                permanlinkUrl:
-                  data.unified_stories.edges[i].node.attachments[0].media
-                    .permalink_url,
-                playableVideo:
-                  data.unified_stories.edges[i].node.attachments[0].media
-                    .playable_url,
-                playableUrlDash:
-                  data.unified_stories.edges[0].node.attachments[0].media
-                    .playable_url_dash,
-                playableUrlHDString:
-                  data.unified_stories.edges[i].node.attachments[0].media
-                    .playableUrlHdString,
-                playableUrlHD:
-                  data.unified_stories.edges[i].node.attachments[0].media
-                    .playable_url_quality_hd,
-              }
-            : null),
-        };
-      }),
-    };
-
-    // let data =
-    //   "__a=1&fb_dtsg=" +
-    //   dtsg +
-    //   "&variables=%7B%22bucketID%22%3A%22" +
-    //   bucketID +
-    //   "%22%2C%22initialLoad%22%3Afalse%2C%22scale%22%3A1%7D&doc_id=2586853698032602";
-
-    // let xhr = new XMLHttpRequest();
-    // xhr.withCredentials = true;
-    // xhr.addEventListener("readystatechange", function () {
-    //   if (this.readyState === 4) {
-
-    //   }
-    // });
-
-    // xhr.open("POST", "https://www.facebook.com/api/graphql/");
-    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // xhr.send(body);
-  },
-  // Friend
-  async removeFriendConfirm(friend_uid, uid, fb_dtsg) {
-    var f = new FormData();
-    f.append("uid", friend_uid),
-      f.append("unref", "bd_friends_tab"),
-      f.append("floc", "friends_tab"),
-      f.append("__user", uid),
-      f.append("__a", 1),
-      f.append("fb_dtsg", fb_dtsg);
-    await fetch(
-      "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
-      {
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        body: fb_dtsg,
         method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         credentials: "include",
-        body: f,
+      });
+
+      let json = await res.json();
+      return json;
+    },
+    decodeArrId(arrId) {
+      return arrId[0] * 4294967296 + arrId[1];
+    },
+    async getFbdtsg() {
+      let methods = [
+        () => require("DTSGInitData").token,
+        () => require("DTSG").getToken(),
+        () => {
+          return document.documentElement.innerHTML.match(
+            /"DTSGInitialData",\[],{"token":"(.+?)"/gm
+          )[1];
+        },
+        async () => {
+          let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+          let text = await res.text();
+          return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
+        },
+        () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
+      ];
+      for (let m of methods) {
+        try {
+          let d = await m();
+          if (d) return d;
+        } catch (e) {}
       }
-    );
-  },
-  async fetchAddedFriends(uid, fb_dtsg, cursor) {
-    let variables = JSON.stringify({
-      count: 8,
-      cursor: cursor ?? null,
-      category_key: "FRIENDS",
-    });
-    const t = new URLSearchParams();
-    t.append("__user", uid),
-      t.append("__a", 1),
-      t.append("dpr", 1),
-      t.append("fb_dtsg", fb_dtsg),
-      t.append("fb_api_caller_class", "RelayModern"),
-      t.append("fb_api_req_friendly_name", "ActivityLogStoriesQuery"),
-      t.append("doc_id", "2761528123917382"),
-      t.append("variables", variables);
+      return null;
+    },
+    // User Data
+    getUserAvatarFromUid(uid) {
+      return (
+        "https://graph.facebook.com/" +
+        uid +
+        "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
+      );
+    },
+    async getYourUserId() {
+      let methods = [
+        () => require("CurrentUserInitialData").USER_ID,
+        () => require("RelayAPIConfigDefaults").actorID,
+        () => document.cookie.match(/c_user=(\d+)/)[1],
+        async () =>
+          (
+            await chrome.cookies.get({
+              url: "https://www.facebook.com",
+              name: "c_user",
+            })
+          ).value,
+      ];
+      for (let m of methods) {
+        try {
+          let d = await m();
+          if (d) return d;
+        } catch (e) {}
+      }
+      return null;
+    },
+    async getUserInfoFromUid(uid) {
+      const variables = {
+        userID: uid,
+        shouldDeferProfilePic: false,
+        useVNextHeader: false,
+        scale: 1.5,
+      };
+      let f = new URLSearchParams();
+      f.append("fb_dtsg", await UfsGlobal.Facebook.getFbdtsg());
+      f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
+      f.append("variables", JSON.stringify(variables));
+      f.append("doc_id", "4159355184147969");
 
-    let res = await fetch("https://www.facebook.com/api/graphql/", {
-      method: "POST",
-      body: t,
-    });
-    let json = await res.json();
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+        body: f,
+      });
 
-    let { edges, page_info } =
-      json.data.viewer.activity_log_actor.activity_log_stories;
+      let text = await res.text();
+      return {
+        uid: uid,
+        name: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+          /"name":"(.*?)"/.exec(text)?.[1]
+        ),
+        avatar: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+          /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1] ||
+            /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1]
+        ),
+        gender: /"gender":"(.*?)"/.exec(text)?.[1],
+        alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
+      };
+    },
+    async getUserInfo(uid, access_token) {
+      var n =
+        "https://graph.facebook.com/" +
+        encodeURIComponent(uid) +
+        "/?fields=name,picture&access_token=" +
+        access_token;
+      const e = await fetch(n);
+      let json = await e.json();
 
-    return {
-      nextCursor: page_info.end_cursor,
-      data: edges
-        .map((e) => {
-          if (
-            "UNFRIEND" === e.curation_options[0] ||
-            e.node.attachments.length
-          ) {
-            return {
-              uid: e.node.attachments[0].target.id,
-              name: e.node.attachments[0].title_with_entities.text,
-              avatar: e.node.attachments[0].media.image.uri,
-              addedTime: 1e3 * e.node.creation_time,
-            };
+      return {
+        uid: uid,
+        name: json?.name,
+        avatar: json?.picture?.data?.url,
+      };
+    },
+    async getUidFromUrl(url) {
+      let methods = [
+        () => require("CometRouteStore").getRoute(url).rootView.props.userID,
+        async () => {
+          var response = await fetch(url);
+          if (response.status == 200) {
+            var text = await response.text();
+            let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
+            if (uid?.length) {
+              return uid[0];
+            }
           }
           return null;
-        })
-        .filter((_) => _),
-    };
-  },
-  async fetchAllAddedFriendsSince(uid, fb_dtsg, since, pageFetchedCallback) {
-    let cursor = "";
-    let allFriends = [];
-    try {
-      while (true) {
-        let { nextCursor, data } = await UfsGlobal.Facebook.fetchAddedFriends(
-          uid,
-          fb_dtsg,
-          cursor
-        );
-        cursor = nextCursor;
-        allFriends = allFriends.concat(data);
-        await pageFetchedCallback?.(data, allFriends);
+        },
+      ];
 
-        if (!nextCursor || (since && nextCursor < since)) break;
+      for (let m of methods) {
+        try {
+          let uid = await m();
+          if (uid) return uid;
+        } catch (e) {}
       }
-    } catch (e) {
-      console.log("ERROR fetch all added friends", e);
-    }
-    return allFriends;
-  },
-  // Messages
-  async messagesCount(fb_dtsg) {
-    return await UfsGlobal.Facebook.fetchGraphQl(
-      "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
-      fb_dtsg
-    );
-  },
-  // Page
-  async unlikePage(pageId, uid, fb_dtsg) {
-    var f = new FormData();
-    f.append("fbpage_id", pageId),
-      f.append("add", false),
-      f.append("reload", false),
-      f.append("fan_origin", "page_timeline"),
-      f.append("__user", uid),
-      f.append("__a", 1),
-      f.append("fb_dtsg", fb_dtsg);
-    await fetch("https://www.facebook.com/ajax/pages/fan_status.php?dpr=1", {
-      method: "POST",
-      credentials: "include",
-      body: f,
-    });
-  },
-  async searchPageForOther(other_uid, cursor, uid, fb_dtsg) {
-    let variables = JSON.stringify({
-      count: 8,
-      scale: 1,
-      cursor: cursor ?? null,
-      id: btoa(`app_collection:${other_uid}:2409997254:96`),
-    });
+      return null;
+    },
+    // Story
+    getStoryBucketIdFromURL(url) {
+      return url.match(/stories\/(\d+)\//)?.[1];
+    },
+    getStoryId() {
+      const htmlStory = document.getElementsByClassName(
+        "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
+      );
+      return htmlStory[htmlStory.length - 1].getAttribute("data-id");
+    },
+    async getStoryInfo(bucketID, fb_dtsg) {
+      // Source: https://pastebin.com/CNvUxpfc
+      let body = new URLSearchParams();
+      body.append("__a", 1);
+      body.append("fb_dtsg", fb_dtsg);
+      body.append(
+        "variables",
+        JSON.stringify({
+          bucketID: bucketID,
+          initialLoad: false,
+          scale: 1,
+        })
+      );
+      body.append("doc_id", 2586853698032602);
 
-    let f = new URLSearchParams();
-    f.append("__user", uid);
-    f.append("__a", 1);
-    f.append("dpr", 1);
-    f.append("fb_dtsg", fb_dtsg);
-    f.append("fb_api_caller_class", "RelayModern");
-    f.append(
-      "fb_api_req_friendly_name",
-      "ProfileCometAppCollectionGridRendererPaginationQuery"
-    );
-    f.append("variables", variables);
-    f.append("doc_id", 2983410188445167);
-
-    try {
       let res = await fetch("https://www.facebook.com/api/graphql/", {
         method: "POST",
-        body: f,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body,
+        credentials: "include",
       });
 
       let json = await res.json();
-      let { items } = json.data.node;
-      return {
-        nextCursor: items.page_info.end_cursor,
-        data: items.edges.map((e) => ({
-          id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
-          name: e.node.title.text,
-          subTitle: e.node.subtitle_text?.text,
-          url: e.node.url,
-          image: e.node.image.uri,
-          cursor: e.cursor,
-        })),
-        totalCount: items.count,
-      };
-    } catch (e) {
-      console.log("ERROR fetch page", e);
-      return {
-        nextCursor: null,
-        data: [],
-        totalCount: 0,
-      };
-    }
-  },
-  async searchAllPageForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
-    let cursor = "";
-    let allPages = [];
-    try {
-      while (true) {
-        let { nextCursor, data, totalCount } =
-          await UfsGlobal.Facebook.searchPageForOther(
-            other_uid,
-            cursor,
-            uid,
-            fb_dtsg
-          );
-        cursor = nextCursor;
-        allPages = allPages.concat(data);
-        await pageFetchedCallback?.(data, allPages, totalCount);
+      console.log(json);
+      let data = json?.data?.bucket;
 
-        if (!cursor) break;
+      if (!data) throw new Error("Không lấy được data");
+      return {
+        storyId: data.id,
+        author: {
+          id: data.owner.id,
+          name: data.owner.name,
+          avatar: data.owner.profile_picture.uri,
+          avatarURL: data.owner.url,
+        },
+        Objects: data.unified_stories.edges.map((_, i) => {
+          return {
+            pictureBlurred:
+              data.unified_stories.edges[i].node.attachments[0].media
+                .blurredImage.uri,
+            picturePreview:
+              data.unified_stories.edges[i].node.attachments[0].media
+                .previewImage.uri,
+            totalReaction:
+              data.unified_stories.edges[i].node.story_card_info
+                .feedback_summary.total_reaction_count,
+            backgroundCss:
+              data.unified_stories.edges[i].node.story_default_background.color,
+            backgroundCss3:
+              data.unified_stories.edges[i].node.story_default_background
+                .gradient.css,
+            ...(data.unified_stories.edges[i].node.attachments[0].media
+              .__typename == "Photo"
+              ? {
+                  caption:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .accessibility_caption,
+                  image:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .image.uri,
+                }
+              : data.unified_stories.edges[i].node.attachments[0].media
+                  .__typename == "Video"
+              ? {
+                  permanlinkUrl:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .permalink_url,
+                  playableVideo:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playable_url,
+                  playableUrlDash:
+                    data.unified_stories.edges[0].node.attachments[0].media
+                      .playable_url_dash,
+                  playableUrlHDString:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playableUrlHdString,
+                  playableUrlHD:
+                    data.unified_stories.edges[i].node.attachments[0].media
+                      .playable_url_quality_hd,
+                }
+              : null),
+          };
+        }),
+      };
+
+      // let data =
+      //   "__a=1&fb_dtsg=" +
+      //   dtsg +
+      //   "&variables=%7B%22bucketID%22%3A%22" +
+      //   bucketID +
+      //   "%22%2C%22initialLoad%22%3Afalse%2C%22scale%22%3A1%7D&doc_id=2586853698032602";
+
+      // let xhr = new XMLHttpRequest();
+      // xhr.withCredentials = true;
+      // xhr.addEventListener("readystatechange", function () {
+      //   if (this.readyState === 4) {
+
+      //   }
+      // });
+
+      // xhr.open("POST", "https://www.facebook.com/api/graphql/");
+      // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      // xhr.send(body);
+    },
+    // Friend
+    async removeFriendConfirm(friend_uid, uid, fb_dtsg) {
+      var f = new FormData();
+      f.append("uid", friend_uid),
+        f.append("unref", "bd_friends_tab"),
+        f.append("floc", "friends_tab"),
+        f.append("__user", uid),
+        f.append("__a", 1),
+        f.append("fb_dtsg", fb_dtsg);
+      await fetch(
+        "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
+        {
+          method: "POST",
+          credentials: "include",
+          body: f,
+        }
+      );
+    },
+    async fetchAddedFriends(uid, fb_dtsg, cursor) {
+      let variables = JSON.stringify({
+        count: 8,
+        cursor: cursor ?? null,
+        category_key: "FRIENDS",
+      });
+      const t = new URLSearchParams();
+      t.append("__user", uid),
+        t.append("__a", 1),
+        t.append("dpr", 1),
+        t.append("fb_dtsg", fb_dtsg),
+        t.append("fb_api_caller_class", "RelayModern"),
+        t.append("fb_api_req_friendly_name", "ActivityLogStoriesQuery"),
+        t.append("doc_id", "2761528123917382"),
+        t.append("variables", variables);
+
+      let res = await fetch("https://www.facebook.com/api/graphql/", {
+        method: "POST",
+        body: t,
+      });
+      let json = await res.json();
+
+      let { edges, page_info } =
+        json.data.viewer.activity_log_actor.activity_log_stories;
+
+      return {
+        nextCursor: page_info.end_cursor,
+        data: edges
+          .map((e) => {
+            if (
+              "UNFRIEND" === e.curation_options[0] ||
+              e.node.attachments.length
+            ) {
+              return {
+                uid: e.node.attachments[0].target.id,
+                name: e.node.attachments[0].title_with_entities.text,
+                avatar: e.node.attachments[0].media.image.uri,
+                addedTime: 1e3 * e.node.creation_time,
+              };
+            }
+            return null;
+          })
+          .filter((_) => _),
+      };
+    },
+    async fetchAllAddedFriendsSince(uid, fb_dtsg, since, pageFetchedCallback) {
+      let cursor = "";
+      let allFriends = [];
+      try {
+        while (true) {
+          let { nextCursor, data } = await UfsGlobal.Facebook.fetchAddedFriends(
+            uid,
+            fb_dtsg,
+            cursor
+          );
+          cursor = nextCursor;
+          allFriends = allFriends.concat(data);
+          await pageFetchedCallback?.(data, allFriends);
+
+          if (!nextCursor || (since && nextCursor < since)) break;
+        }
+      } catch (e) {
+        console.log("ERROR fetch all added friends", e);
       }
-    } catch (e) {
-      console.log("ERROR search all page for other", e);
-    }
-    return allPages;
-  },
-  // Group
-  async leaveGroup(groupId, uid, fb_dtsg) {
-    var f = new FormData();
-    f.append("fb_dtsg", fb_dtsg),
-      f.append("confirmed", 1),
-      f.append("__user", uid),
-      f.append("__a", 1);
-    await fetch(
-      "https://www.facebook.com/ajax/groups/membership/leave.php?group_id=" +
-        groupId +
-        "&dpr=1",
-      {
+      return allFriends;
+    },
+    // Messages
+    async messagesCount(fb_dtsg) {
+      return await UfsGlobal.Facebook.fetchGraphQl(
+        "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
+        fb_dtsg
+      );
+    },
+    // Page
+    async unlikePage(pageId, uid, fb_dtsg) {
+      var f = new FormData();
+      f.append("fbpage_id", pageId),
+        f.append("add", false),
+        f.append("reload", false),
+        f.append("fan_origin", "page_timeline"),
+        f.append("__user", uid),
+        f.append("__a", 1),
+        f.append("fb_dtsg", fb_dtsg);
+      await fetch("https://www.facebook.com/ajax/pages/fan_status.php?dpr=1", {
         method: "POST",
         credentials: "include",
         body: f,
-      }
-    );
-  },
-  async searchGroupForOther(other_uid, cursor, uid, fb_dtsg) {
-    let variables = JSON.stringify({
-      count: 8,
-      cursor: cursor ?? null,
-      id: btoa(`app_collection:${other_uid}:2361831622:66`),
-    });
-
-    let f = new URLSearchParams();
-    f.append("__user", uid);
-    f.append("__a", 1);
-    f.append("dpr", 1);
-    f.append("fb_dtsg", fb_dtsg);
-    f.append("fb_api_caller_class", "RelayModern");
-    f.append(
-      "fb_api_req_friendly_name",
-      "ProfileCometAppCollectionGridRendererPaginationQuery"
-    );
-    f.append("variables", variables);
-    f.append("doc_id", 5244211935648733);
-
-    try {
-      let res = await fetch("https://www.facebook.com/api/graphql/", {
-        method: "POST",
-        body: f,
+      });
+    },
+    async searchPageForOther(other_uid, cursor, uid, fb_dtsg) {
+      let variables = JSON.stringify({
+        count: 8,
+        scale: 1,
+        cursor: cursor ?? null,
+        id: btoa(`app_collection:${other_uid}:2409997254:96`),
       });
 
-      let json = await res.json();
-      let { pageItems } = json.data.node;
-      return {
-        nextCursor: pageItems.page_info.end_cursor,
-        data: pageItems.edges.map((e) => ({
-          id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
-          title: e.node.title.text,
-          subTitle: e.node.subtitle_text?.text,
-          url: e.node.url,
-          visibility: e.node.node.visibility,
-          image: e.node.image.uri,
-          membersCount: Number(
-            // e.node.node.forum_member_profiles.formatted_count_text ||
-            // e.node.node.group_member_profiles.formatted_count_text
-            (e.node.subtitle_text.text.split("\n")?.[0] || "")
-              .match(/\d+/g)
-              .join("") ?? 1
-          ),
-          cursor: e.cursor,
-        })),
-      };
-    } catch (e) {
-      console.log("ERROR fetch page", e);
-      return {
-        nextCursor: null,
-        data: [],
-      };
-    }
-  },
-  async searchAllGroupForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
-    let cursor = "";
-    let allGroups = [];
-    try {
-      while (true) {
-        let { nextCursor, data } = await UfsGlobal.Facebook.searchGroupForOther(
-          other_uid,
-          cursor,
-          uid,
-          fb_dtsg
-        );
-        cursor = nextCursor;
-        allGroups = allGroups.concat(data);
-        await pageFetchedCallback?.(data, allGroups);
+      let f = new URLSearchParams();
+      f.append("__user", uid);
+      f.append("__a", 1);
+      f.append("dpr", 1);
+      f.append("fb_dtsg", fb_dtsg);
+      f.append("fb_api_caller_class", "RelayModern");
+      f.append(
+        "fb_api_req_friendly_name",
+        "ProfileCometAppCollectionGridRendererPaginationQuery"
+      );
+      f.append("variables", variables);
+      f.append("doc_id", 2983410188445167);
 
-        if (!cursor) break;
-      }
-    } catch (e) {
-      console.log("ERROR search all group for other", e);
-    }
-    return allGroups;
-  },
-};
-UfsGlobal.Tiktok = {
-  downloadTiktokVideoFromId: async function (videoId) {
-    for (let api of [
-      "https://api22-normal-c-useast2a.tiktokv.com/aweme/v1/feed/?aweme_id=",
-      "https://api16-normal-useast5.us.tiktokv.com/aweme/v1/feed/?aweme_id=",
-      "https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=",
-      "https://api2.musical.ly/aweme/v1/feed/?aweme_id=",
-    ]) {
       try {
-        const ts = Math.round(Date.now() / 1000);
-        const parameters = {
-          aweme_id: videoId,
-          // version_name: appVersion,
-          // version_code: manifestAppVersion,
-          // build_number: appVersion,
-          // manifest_version_code: manifestAppVersion,
-          // update_version_code: manifestAppVersion,
-          // openudid: UTIL.ranGen("0123456789abcdef", 16),
-          // uuid: UTIL.ranGen("0123456789", 16),
-          _rticket: ts * 1000,
-          ts: ts,
-          device_brand: "Google",
-          device_type: "Pixel 4",
-          device_platform: "android",
-          resolution: "1080*1920",
-          dpi: 420,
-          os_version: "10",
-          os_api: "29",
-          carrier_region: "US",
-          sys_region: "US",
-          region: "US",
-          app_name: "trill",
-          app_language: "en",
-          language: "en",
-          timezone_name: "America/New_York",
-          timezone_offset: "-14400",
-          channel: "googleplay",
-          ac: "wifi",
-          mcc_mnc: "310260",
-          is_my_cn: 0,
-          aid: 1180,
-          ssmix: "a",
-          as: "a1qwert123",
-          cp: "cbfhckdckkde1",
+        let res = await fetch("https://www.facebook.com/api/graphql/", {
+          method: "POST",
+          body: f,
+        });
+
+        let json = await res.json();
+        let { items } = json.data.node;
+        return {
+          nextCursor: items.page_info.end_cursor,
+          data: items.edges.map((e) => ({
+            id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
+            name: e.node.title.text,
+            subTitle: e.node.subtitle_text?.text,
+            url: e.node.url,
+            image: e.node.image.uri,
+            cursor: e.cursor,
+          })),
+          totalCount: items.count,
         };
-        const params = Object.keys(parameters)
-          .map((key) => `&${key}=${parameters[key]}`)
-          .join("");
-        let data = await UfsGlobal.Extension.runInBackground("fetch", [
-          api + videoId + "&" + params,
-        ]);
-        console.log(data);
-        let json = JSON.parse(data.body);
-        console.log(json);
-        let item = json.aweme_list.find((a) => a.aweme_id == videoId);
-        if (!item) throw Error("Không tìm thấy video");
-        let url =
-          item?.video?.play_addr?.url_list?.[0] ||
-          item?.video?.download_addr?.url_list?.[0];
-        if (url) return url;
       } catch (e) {
-        console.log("ERROR: " + e);
+        console.log("ERROR fetch page", e);
+        return {
+          nextCursor: null,
+          data: [],
+          totalCount: 0,
+        };
       }
-    }
-    return null;
-  },
-  CACHE: {
-    snapTikToken: null,
-  },
-  downloadTiktokVideoFromUrl: async function (url, background = false) {
-    try {
-      let token = UfsGlobal.Tiktok.CACHE.snapTikToken;
-      if (!token) {
-        let token = await UfsGlobal.SnapTik.getToken(background);
-        if (!token) throw Error("Không tìm thấy token snaptik");
-        UfsGlobal.Tiktok.CACHE.snapTikToken = token;
+    },
+    async searchAllPageForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
+      let cursor = "";
+      let allPages = [];
+      try {
+        while (true) {
+          let { nextCursor, data, totalCount } =
+            await UfsGlobal.Facebook.searchPageForOther(
+              other_uid,
+              cursor,
+              uid,
+              fb_dtsg
+            );
+          cursor = nextCursor;
+          allPages = allPages.concat(data);
+          await pageFetchedCallback?.(data, allPages, totalCount);
+
+          if (!cursor) break;
+        }
+      } catch (e) {
+        console.log("ERROR search all page for other", e);
       }
+      return allPages;
+    },
+    // Group
+    async leaveGroup(groupId, uid, fb_dtsg) {
+      var f = new FormData();
+      f.append("fb_dtsg", fb_dtsg),
+        f.append("confirmed", 1),
+        f.append("__user", uid),
+        f.append("__a", 1);
+      await fetch(
+        "https://www.facebook.com/ajax/groups/membership/leave.php?group_id=" +
+          groupId +
+          "&dpr=1",
+        {
+          method: "POST",
+          credentials: "include",
+          body: f,
+        }
+      );
+    },
+    async searchGroupForOther(other_uid, cursor, uid, fb_dtsg) {
+      let variables = JSON.stringify({
+        count: 8,
+        cursor: cursor ?? null,
+        id: btoa(`app_collection:${other_uid}:2361831622:66`),
+      });
 
-      let form = new FormData();
-      form.append("url", url);
-      form.append("token", token);
+      let f = new URLSearchParams();
+      f.append("__user", uid);
+      f.append("__a", 1);
+      f.append("dpr", 1);
+      f.append("fb_dtsg", fb_dtsg);
+      f.append("fb_api_caller_class", "RelayModern");
+      f.append(
+        "fb_api_req_friendly_name",
+        "ProfileCometAppCollectionGridRendererPaginationQuery"
+      );
+      f.append("variables", variables);
+      f.append("doc_id", 5244211935648733);
 
+      try {
+        let res = await fetch("https://www.facebook.com/api/graphql/", {
+          method: "POST",
+          body: f,
+        });
+
+        let json = await res.json();
+        let { pageItems } = json.data.node;
+        return {
+          nextCursor: pageItems.page_info.end_cursor,
+          data: pageItems.edges.map((e) => ({
+            id: e.node.node?.id || btoa(e.node.id).split(":").at(-1),
+            title: e.node.title.text,
+            subTitle: e.node.subtitle_text?.text,
+            url: e.node.url,
+            visibility: e.node.node.visibility,
+            image: e.node.image.uri,
+            membersCount: Number(
+              // e.node.node.forum_member_profiles.formatted_count_text ||
+              // e.node.node.group_member_profiles.formatted_count_text
+              (e.node.subtitle_text.text.split("\n")?.[0] || "")
+                .match(/\d+/g)
+                .join("") ?? 1
+            ),
+            cursor: e.cursor,
+          })),
+        };
+      } catch (e) {
+        console.log("ERROR fetch page", e);
+        return {
+          nextCursor: null,
+          data: [],
+        };
+      }
+    },
+    async searchAllGroupForOther(other_uid, uid, fb_dtsg, pageFetchedCallback) {
+      let cursor = "";
+      let allGroups = [];
+      try {
+        while (true) {
+          let { nextCursor, data } =
+            await UfsGlobal.Facebook.searchGroupForOther(
+              other_uid,
+              cursor,
+              uid,
+              fb_dtsg
+            );
+          cursor = nextCursor;
+          allGroups = allGroups.concat(data);
+          await pageFetchedCallback?.(data, allGroups);
+
+          if (!cursor) break;
+        }
+      } catch (e) {
+        console.log("ERROR search all group for other", e);
+      }
+      return allGroups;
+    },
+  };
+  UfsGlobal.Tiktok = {
+    downloadTiktokVideoFromId: async function (videoId) {
+      for (let api of [
+        "https://api22-normal-c-useast2a.tiktokv.com/aweme/v1/feed/?aweme_id=",
+        "https://api16-normal-useast5.us.tiktokv.com/aweme/v1/feed/?aweme_id=",
+        "https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=",
+        "https://api2.musical.ly/aweme/v1/feed/?aweme_id=",
+      ]) {
+        try {
+          const ts = Math.round(Date.now() / 1000);
+          const parameters = {
+            aweme_id: videoId,
+            // version_name: appVersion,
+            // version_code: manifestAppVersion,
+            // build_number: appVersion,
+            // manifest_version_code: manifestAppVersion,
+            // update_version_code: manifestAppVersion,
+            // openudid: UTIL.ranGen("0123456789abcdef", 16),
+            // uuid: UTIL.ranGen("0123456789", 16),
+            _rticket: ts * 1000,
+            ts: ts,
+            device_brand: "Google",
+            device_type: "Pixel 4",
+            device_platform: "android",
+            resolution: "1080*1920",
+            dpi: 420,
+            os_version: "10",
+            os_api: "29",
+            carrier_region: "US",
+            sys_region: "US",
+            region: "US",
+            app_name: "trill",
+            app_language: "en",
+            language: "en",
+            timezone_name: "America/New_York",
+            timezone_offset: "-14400",
+            channel: "googleplay",
+            ac: "wifi",
+            mcc_mnc: "310260",
+            is_my_cn: 0,
+            aid: 1180,
+            ssmix: "a",
+            as: "a1qwert123",
+            cp: "cbfhckdckkde1",
+          };
+          const params = Object.keys(parameters)
+            .map((key) => `&${key}=${parameters[key]}`)
+            .join("");
+          let data = await runInBackground("fetch", [
+            api + videoId + "&" + params,
+          ]);
+          console.log(data);
+          let json = JSON.parse(data.body);
+          console.log(json);
+          let item = json.aweme_list.find((a) => a.aweme_id == videoId);
+          if (!item) throw Error("Không tìm thấy video");
+          let url =
+            item?.video?.play_addr?.url_list?.[0] ||
+            item?.video?.download_addr?.url_list?.[0];
+          if (url) return url;
+        } catch (e) {
+          console.log("ERROR: " + e);
+        }
+      }
+      return null;
+    },
+    CACHE: {
+      snapTikToken: null,
+    },
+    downloadTiktokVideoFromUrl: async function (url, background = false) {
+      try {
+        let token = UfsGlobal.Tiktok.CACHE.snapTikToken;
+        if (!token) {
+          let token = await UfsGlobal.SnapTik.getToken(background);
+          if (!token) throw Error("Không tìm thấy token snaptik");
+          UfsGlobal.Tiktok.CACHE.snapTikToken = token;
+        }
+
+        let form = new FormData();
+        form.append("url", url);
+        form.append("token", token);
+
+        let text;
+        if (background) {
+          let res = await runInBackground("fetch", [
+            "https://snaptik.app/abc2.php",
+            {
+              method: "POST",
+              body:
+                "ufs-formData:" +
+                JSON.stringify({
+                  url: url,
+                  token: token,
+                }),
+            },
+          ]);
+          text = res.body;
+        } else {
+          let res = await fetch("https://snaptik.app/abc2.php", {
+            method: "POST",
+            body: form,
+          });
+          text = await res.text();
+        }
+        let result = UfsGlobal.SnapTik.decode(text);
+        return result;
+      } catch (e) {
+        console.log("ERROR: ", e);
+      }
+    },
+  };
+  UfsGlobal.SnapTik = {
+    getToken: async (background = false) => {
       let text;
       if (background) {
-        let res = await UfsGlobal.Extension.runInBackground("fetch", [
-          "https://snaptik.app/abc2.php",
-          {
-            method: "POST",
-            body:
-              "ufs-formData:" +
-              JSON.stringify({
-                url: url,
-                token: token,
-              }),
-          },
-        ]);
+        let res = await runInBackground("fetch", ["https://snaptik.app/"]);
         text = res.body;
       } else {
-        let res = await fetch("https://snaptik.app/abc2.php", {
-          method: "POST",
-          body: form,
-        });
+        let res = await fetch("https://snaptik.app/");
         text = await res.text();
       }
-      let result = UfsGlobal.SnapTik.decode(text);
-      return result;
-    } catch (e) {
-      console.log("ERROR: ", e);
-    }
-  },
-};
-UfsGlobal.SnapTik = {
-  getToken: async (background = false) => {
-    let text;
-    if (background) {
-      let res = await UfsGlobal.Extension.runInBackground("fetch", [
-        "https://snaptik.app/",
-      ]);
-      text = res.body;
-    } else {
-      let res = await fetch("https://snaptik.app/");
-      text = await res.text();
-    }
-    let token = text.match(/name="token" value="(.+?)"/)?.[1];
-    return token;
-  },
-  decode: (encoded) => {
-    function b(d, e, f) {
-      var g =
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/".split(
-          ""
-        );
-      var h = g.slice(0, e);
-      var i = g.slice(0, f);
-      var j = d
-        .split("")
-        .reverse()
-        .reduce(function (a, b, c) {
-          if (h.indexOf(b) !== -1) return (a += h.indexOf(b) * Math.pow(e, c));
-        }, 0);
-      var k = "";
-      while (j > 0) {
-        k = i[j % f] + k;
-        j = (j - (j % f)) / f;
-      }
-      return k || 0;
-    }
-    function c(h, u, n, t, e, r) {
-      r = "";
-      for (var i = 0, len = h.length; i < len; i++) {
-        var s = "";
-        while (h[i] !== n[e]) {
-          s += h[i];
-          i++;
+      let token = text.match(/name="token" value="(.+?)"/)?.[1];
+      return token;
+    },
+    decode: (encoded) => {
+      function b(d, e, f) {
+        var g =
+          "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/".split(
+            ""
+          );
+        var h = g.slice(0, e);
+        var i = g.slice(0, f);
+        var j = d
+          .split("")
+          .reverse()
+          .reduce(function (a, b, c) {
+            if (h.indexOf(b) !== -1)
+              return (a += h.indexOf(b) * Math.pow(e, c));
+          }, 0);
+        var k = "";
+        while (j > 0) {
+          k = i[j % f] + k;
+          j = (j - (j % f)) / f;
         }
-        for (var j = 0; j < n.length; j++)
-          s = s.replace(new RegExp(n[j], "g"), j);
-        r += String.fromCharCode(b(s, e, 10) - t);
+        return k || 0;
       }
-      return decodeURIComponent(escape(r));
-    }
-
-    let params = encoded.match(/}\((.*?)\)\)/)?.[1];
-    params = params.split(",").map((_) => {
-      if (!isNaN(Number(_))) return Number(_);
-      if (_.startsWith('"')) return _.slice(1, -1);
-      return _;
-    });
-
-    let result = c(...params);
-    let jwt = result.match(/d\?token=(.*?)\&dl=1/)?.[1];
-    if (!jwt) return null;
-    let payload = UfsGlobal.Utils.parseJwt(jwt);
-    return payload?.url;
-  },
-};
-UfsGlobal.DEBUG = {
-  // Có trang web tự động xoá console để ngăn cản người dùng xem kết quả thực thi câu lệnh trong console
-  // Ví dụ: https://beta.nhaccuatui.com/
-  // Hàm này sẽ tắt chức năng tự động clear console đó, giúp hacker dễ hack hơn :)
-  disableAutoConsoleClear() {
-    window.console.clear = () => null;
-    console.log("Auto console.clear DISABLED!");
-  }, // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
-  // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
-  listGlobalVariables() {
-    let browserGlobals = [];
-    const ignoredGlobals = ["UfsGlobal"];
-
-    function collectBrowserGlobals() {
-      const iframe = window.document.createElement("iframe");
-      iframe.src = "about:blank";
-      window.document.body.appendChild(iframe);
-      let globals = Object.keys(iframe.contentWindow);
-      window.document.body.removeChild(iframe);
-      return globals;
-    }
-
-    function getRuntimeGlobals() {
-      if (browserGlobals.length === 0) {
-        browserGlobals = collectBrowserGlobals();
+      function c(h, u, n, t, e, r) {
+        r = "";
+        for (var i = 0, len = h.length; i < len; i++) {
+          var s = "";
+          while (h[i] !== n[e]) {
+            s += h[i];
+            i++;
+          }
+          for (var j = 0; j < n.length; j++)
+            s = s.replace(new RegExp(n[j], "g"), j);
+          r += String.fromCharCode(b(s, e, 10) - t);
+        }
+        return decodeURIComponent(escape(r));
       }
-      const runtimeGlobals = Object.keys(window).filter(
-        (key) => !ignoredGlobals.includes(key) && !browserGlobals.includes(key)
-      );
-      const runtimeGlobalsObj = {};
-      runtimeGlobals.forEach((key, i) => {
-        runtimeGlobalsObj[key] = window[key];
+
+      let params = encoded.match(/}\((.*?)\)\)/)?.[1];
+      params = params.split(",").map((_) => {
+        if (!isNaN(Number(_))) return Number(_);
+        if (_.startsWith('"')) return _.slice(1, -1);
+        return _;
       });
-      return runtimeGlobalsObj;
-    }
 
-    return getRuntimeGlobals();
-  }, // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
-  // Kiểm tra xem function nào đó có bị override hay chưa
-  isNativeFunction(f) {
-    return f.toString().toString().includes("[native code]");
-  }, // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
-  // Làm đầy localStorage
-  fillLocalStorage() {
-    const key = "__filling_localstorage__";
-    let max = 1;
-    let data = "x";
-    try {
-      while (true) {
-        data = data + data;
-        localStorage.setItem(key, data);
-        max <<= 1;
+      let result = c(...params);
+      let jwt = result.match(/d\?token=(.*?)\&dl=1/)?.[1];
+      if (!jwt) return null;
+      let payload = parseJwt(jwt);
+      return payload?.url;
+    },
+  };
+  UfsGlobal.DEBUG = {
+    // Có trang web tự động xoá console để ngăn cản người dùng xem kết quả thực thi câu lệnh trong console
+    // Ví dụ: https://beta.nhaccuatui.com/
+    // Hàm này sẽ tắt chức năng tự động clear console đó, giúp hacker dễ hack hơn :)
+    disableAutoConsoleClear() {
+      window.console.clear = () => null;
+      console.log("Auto console.clear DISABLED!");
+    }, // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
+    // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
+    listGlobalVariables() {
+      let browserGlobals = [];
+      const ignoredGlobals = ["UfsGlobal"];
+
+      function collectBrowserGlobals() {
+        const iframe = window.document.createElement("iframe");
+        iframe.src = "about:blank";
+        window.document.body.appendChild(iframe);
+        let globals = Object.keys(iframe.contentWindow);
+        window.document.body.removeChild(iframe);
+        return globals;
       }
-    } catch {}
-    for (let bit = max >> 1; bit > 0; bit >>= 1) {
+
+      function getRuntimeGlobals() {
+        if (browserGlobals.length === 0) {
+          browserGlobals = collectBrowserGlobals();
+        }
+        const runtimeGlobals = Object.keys(window).filter(
+          (key) =>
+            !ignoredGlobals.includes(key) && !browserGlobals.includes(key)
+        );
+        const runtimeGlobalsObj = {};
+        runtimeGlobals.forEach((key, i) => {
+          runtimeGlobalsObj[key] = window[key];
+        });
+        return runtimeGlobalsObj;
+      }
+
+      return getRuntimeGlobals();
+    }, // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
+    // Kiểm tra xem function nào đó có bị override hay chưa
+    isNativeFunction(f) {
+      return f.toString().toString().includes("[native code]");
+    }, // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
+    // Làm đầy localStorage
+    fillLocalStorage() {
+      const key = "__filling_localstorage__";
+      let max = 1;
+      let data = "x";
       try {
-        localStorage.setItem(key, data.substring(0, max | bit));
-        max |= bit;
-      } catch {
-        console.success("Storage is now completely full 🍟");
+        while (true) {
+          data = data + data;
+          localStorage.setItem(key, data);
+          max <<= 1;
+        }
+      } catch {}
+      for (let bit = max >> 1; bit > 0; bit >>= 1) {
+        try {
+          localStorage.setItem(key, data.substring(0, max | bit));
+          max |= bit;
+        } catch {
+          console.success("Storage is now completely full 🍟");
+        }
       }
-    }
-    return function cleanup() {
-      localStorage.removeItem(key);
-      console.success("Storage is cleaned");
-    };
-  }, // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
-  globalsDebugger(varName = "") {
-    // https://stackoverflow.com/a/56933091/11898496
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("globalsToInspect", varName);
-    window.location.search = urlParams.toString();
-  }, // Tìm chuỗi xung quanh chuỗi bất kỳ
-  // Ví dụ fullString = "abcd1234567890abcd" targetString = "6" bound = 3
-  // => Kết quả around = 3456789
-  getTextAround(fullString, targetString, bound = 10) {
-    let curIndex = 0;
-    let arounds = [];
-    let limit = 100;
+      return function cleanup() {
+        localStorage.removeItem(key);
+        console.success("Storage is cleaned");
+      };
+    }, // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
+    // Tìm chuỗi xung quanh chuỗi bất kỳ
+    // Ví dụ fullString = "abcd1234567890abcd" targetString = "6" bound = 3
+    // => Kết quả around = 3456789
+    getTextAround(fullString, targetString, bound = 10) {
+      let curIndex = 0;
+      let arounds = [];
+      let limit = 100;
 
-    while (limit) {
-      let index = fullString.indexOf(targetString, curIndex);
-      if (index === -1) break;
+      while (limit) {
+        let index = fullString.indexOf(targetString, curIndex);
+        if (index === -1) break;
 
-      let around = fullString.slice(
-        Math.max(index - Math.floor(bound / 2) - 1, 0),
-        Math.min(
-          index + targetString.length + Math.floor(bound / 2),
-          fullString.length
-        )
+        let around = fullString.slice(
+          Math.max(index - Math.floor(bound / 2) - 1, 0),
+          Math.min(
+            index + targetString.length + Math.floor(bound / 2),
+            fullString.length
+          )
+        );
+        arounds.push({ index, around });
+        curIndex = index + (targetString.length || 1);
+        limit--;
+      }
+      return arounds;
+    }, // https://stackoverflow.com/a/40410744/11898496
+    // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
+    decodeEscapedUnicodeString(str) {
+      if (!str) return "";
+      return decodeURIComponent(
+        JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
       );
-      arounds.push({ index, around });
-      curIndex = index + (targetString.length || 1);
-      limit--;
-    }
-    return arounds;
-  }, // https://stackoverflow.com/a/40410744/11898496
-  // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
-  decodeEscapedUnicodeString(str) {
-    if (!str) return "";
-    return decodeURIComponent(
-      JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
-    );
-  }, // https://stackoverflow.com/a/8649003
-  searchParamsToObject(search) {
-    // let d = {};
-    // decodeURI(search)
-    //   .split("&")
-    //   .map((_) => _.split("="))
-    //   .forEach((_) => (d[_[0]] = _[1]));
-    // return d;
-
-    search = search || location.search.substring(1);
-    return JSON.parse(
-      '{"' + search.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
-      function (key, value) {
-        return key === "" ? value : decodeURIComponent(value);
-      }
-    );
-  },
-  downloadData: UfsGlobal.Utils.downloadData,
-};
-UfsGlobal.largeImgSiteRules = [
-  {
-    // https://i1.sndcdn.com/avatars-IMMW4scIEiCxzOrR-hbX1hw-t240x240.jpg
-    name: "soundcloud",
-    src: /sndcdn\.com/,
-    r: /-t\d+x\d+\./,
-    s: ["-t500x500.", "-t240x240."],
-  },
-  {
-    // https://styles.redditmedia.com/t5_c5295/styles/profileIcon_snooe729749b-a6a5-4ef0-bacf-f4a5c8331627-headshot.png?width=64&height=64&frame=1&auto=webp&crop=64:64,smart&s=cb449c2601606d921ba6d2cc6074e5c0d20ddb67
-    name: "reddit",
-    src: /redditmedia/,
-    r: /\?.*/,
-    s: "",
-  },
-  {
-    // https://cdn.britannica.com/52/241752-050-39026C33/display-resolution-television-tv-screen.jpg?w=400&h=300&c=crop
-    name: "britannica",
-    src: /britannica\.com/,
-    r: /\?.*/,
-    s: "",
-  },
-  {
-    // https://cdn.akamai.steamstatic.com/steam/apps/2357570/ss_d5acf4945c1f8db3b0bf048c08ba13fd04685ba0.600x338.jpg
-    name: "steam static",
-    src: /steamstatic\.com\/steam\/apps/,
-    r: /(_|\.)\d{2,}x\d{2,}\./,
-    s: ".",
-  },
-  {
-    // https://images.pexels.com/users/avatars/822138648/th-vinh-flute-776.jpg?auto=compress&fit=crop&h=40&w=40&dpr=2
-    name: "pexels",
-    src: [/pexels\.com\/users\/avatars/, /images\.pexels\.com\/photos/],
-    r: /\?.*/,
-    s: "",
-  },
-  {
-    // https://cdn.maze.guru/image/1F2B7646370A63B28C1F99B1E447C1C5.png?x-image-process=image/resize,w_400/quality,q_75/format,webp
-    name: "maze.guru",
-    src: /maze(\.|-)guru(.*?)\/image\//,
-    r: /\?x-image-process.*/,
-    s: "",
-  },
-  {
-    // https://images-ng.pixai.art/images/orig/9ec30200-baaa-4cd0-8cc8-04002496adda
-    name: "pixai",
-    src: /pixai\.art\/images\//,
-    r: /\/stillThumb\//,
-    s: "/orig/",
-  },
-  {
-    // https://yt3.googleusercontent.com/Qiekx-HxQTiX332zq-LyypoWshtuDptDQYab3zqqPVwkZ2AA1FgXveeb9Vi-7-b822g_e5hxmw=s160-c-k-c0x00ffffff-no-rj
-    name: "googleusercontent",
-    src: /\.googleusercontent\./i,
-    r: /\=s\d+.*/i,
-    s: "=s0",
-  },
-  {
-    name: "gitlab",
-    src: /gitlab\.(.*?)\/uploads\//i,
-    r: /\?width=\d+/i,
-    s: "",
-  },
-  {
-    name: "font gstatic",
-    src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
-    r: /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)/,
-    s: "$1/512.$2",
-  },
-  {
-    name: "artstation",
-    url: /artstation\.com/,
-    r: [
-      /\/(avatars\/+\/)?medium\//i,
-      /\/(\d{14}\/)?smaller_square\//i,
-      /\/(\d{14}\/)?thumbnail\//i,
-    ],
-    s: "/large/",
-  },
-  {
-    name: "123rf",
-    url: /123rf\.com/,
-    r: /us\.123rf\.com\/\d+wm\//i,
-    s: "previews.123rf.com/images/",
-  },
-  {
-    name: "wikipedia",
-    url: /^https?:\/\/.+\.(wikipedia|wikimedia)\.org\//i,
-    src: /^https?:\/\/.+\.wikimedia\.org\//i,
-    r: /(https?:\/\/.*)\/thumb(\/.*)\/\d+px-.*/i,
-    s: "$1$2",
-  },
-  {
-    name: "trakt.tv",
-    url: /^http:\/\/trakt\.tv\//i,
-    example: "http://trakt.tv/shows",
-    r: /(.*\/images\/posters\/\d+)-(?:300|138)\.jpg\?(\d+)$/i,
-    s: "$1.jpg?$2",
-  },
-  {
-    name: "Steampowered",
-    url: /\.steampowered\.com/,
-    r: /\.\d+x\d+\.jpg/i,
-    s: ".jpg",
-  },
-  {
-    name: "Steamcommunity",
-    url: /steamcommunity\.com/,
-    r: /output\-quality=\d+&fit=inside\|\d+\:\d+/i,
-    s: "output-quality=100&fit=inside|0:0",
-  },
-  {
-    name: "500px",
-    url: /500px\./,
-    r: [
-      /\/w%3D\d+_h%3D\d+\/v2.*/i,
-      /^((?:(?:pp?cdn|s\\d\\.amazonaws\\.com\/photos|gp\\d+\\.wac\\.edgecastcdn\\.net\/806614\/photos\/photos)\\.500px|djlhggipcyllo\\.cloudfront)\\.(?:net|org)\/\\d+\/[\\da-f]{40}\/)\\d+\\./,
-    ],
-    s: ["/m%3D2048_k%3D1_of%3D1/v2", "$12048.jpg"],
-  },
-  {
-    name: "Nyaa",
-    url: /nyaa\.se/,
-    r: /upload\/small\//i,
-    s: "upload/big/",
-  },
-  {
-    name: "itunes",
-    url: /itunes\.apple\.com/,
-    r: /\d+x\d+bb\./i,
-    s: "1400x1400bb.",
-  },
-  {
-    name: "dribbble",
-    url: /dribbble\.com/,
-    r: [/_teaser(.[^\.]+)$/i, /_1x\./i, /\?compress=.*/],
-    s: ["$1", ".", ""],
-  },
-  {
-    name: "Tumblr",
-    url: /tumblr\.com/,
-    exclude: /\/avatar_/i,
-    r: [
-      /[^\/]*(media\.tumblr\.com.*_)\d+(\.[^\.]+)$/i,
-      /(media\.tumblr\.com.*_)[^_]+(\.[^\.]+)$/i,
-    ],
-    s: ["$1raw$2", "$1512$2"],
-  },
-  // {
-  //   name: "Tumblr",
-  //   url: /tumblr\.com/,
-  //   src: /\/avatar_/i,
-  //   r: /(media\.tumblr\.com.*_)[^_]+(\.[^\.]+)$/i,
-  //   s: "$1512$2",
-  // },
-  {
-    name: "Pixiv",
-    url: /pixiv\.net|pximg\.net/,
-    src: /pximg\.net\/c\/\d+x\d+/i,
-    r: /pximg\.net\/c\/\d+x\d+.*\/img\/(.*)_.*$/i,
-    s: [
-      "pximg.net/img-original/img/$1.jpg",
-      "pximg.net/img-original/img/$1.png",
-    ],
-  },
-  {
-    name: "moegirl",
-    url: /(moegirl|mengniang)\.org/,
-    r: /(common)\/thumb(.*)\/[^\/]+/i,
-    s: "$1$2",
-  },
-  {
-    name: "fanfou",
-    url: /fanfou\.com/,
-    r: /@.+/i,
-    s: "",
-  },
-  {
-    name: "meitudata",
-    url: /meipai\.com/,
-    r: /!thumb.+/i,
-    s: "",
-  },
-  {
-    name: "mafengwo",
-    url: /mafengwo\.cn/,
-    r: /\?imageMogr.*/i,
-    s: "",
-  },
-  {
-    name: "discordapp",
-    url: /(discordapp\.|discord\.)(com|net)/,
-    r: /\?width=\d+&height=\d+$/i,
-    s: "",
-  },
-  {
-    name: "Fandom",
-    url: /fandom\.com/,
-    r: [/scale\-to\-width\-down\/\d+/i, /smart\/width\/\d+\/height\/\d+/i],
-    s: ["", ""],
-  },
-  {
-    name: "Zhisheji",
-    url: /zhisheji\.com/,
-    r: /thumbnail\/.*/i,
-    s: "",
-  },
-  {
-    name: "imgbox",
-    src: /imgbox\.com/,
-    r: /thumbs(\d\.imgbox.*)_t\./i,
-    s: "images$1_o.",
-  },
-  {
-    name: "Reddit",
-    url: /reddit\.com|redd\.it/,
-    r: /https?:\/\/preview\.redd.it\/([^\?]+)?.*/i,
-    s: "https://i.redd.it/$1",
-  },
-  {
-    name: "Rule34hentai",
-    url: /rule34hentai\.net/,
-    r: "/_thumbs/",
-    s: "/_images/",
-  },
-  {
-    name: "Rule34",
-    url: /rule34\.xxx/,
-    src: /\/(thumbnails|samples)\/(.*)\/(thumbnail|sample)_/i,
-    r: /\/(thumbnails|samples)\/(.*)\/(thumbnail|sample)_(.*)\..*/i,
-    s: ["/images/$2/$4.jpeg", "/images/$2/$4.png", "/images/$2/$4.jpg"],
-  },
-  {
-    name: "Photosight",
-    url: /photosight\.ru/,
-    r: /(cdny\.de.*\/)t\//i,
-    s: "$1x/",
-  },
-  {
-    name: "588ku",
-    url: /588ku\.com/,
-    r: /!\/fw.*/,
-    s: "",
-  },
-  {
-    name: "gelbooru",
-    url: /gelbooru\.com/,
-    src: /(thumbnails|samples)\/(.*)\/(thumbnail|sample)_/i,
-    r: /.*\/(thumbnails|samples)\/(.*)\/(thumbnail|sample)_(.*)\..*/i,
-    s: [
-      "https://img3.gelbooru.com/images/$2/$4.png",
-      "https://img3.gelbooru.com/images/$2/$4.jpg",
-      "https://img3.gelbooru.com/images/$2/$4.gif",
-    ],
-  },
-  {
-    name: "donmai",
-    url: /donmai\.us/,
-    src: /(thumbnails|sample)\/(.*)\/(thumbnail|sample)_|\/\d+x\d+\//i,
-    r: [
-      /\/(thumbnails|sample)\/(.*)\/(thumbnail|sample)_(.*)/i,
-      /\/\d+x\d+\//i,
-      /\/\d+x\d+\/(.*)\.(.*)/i,
-    ], // TODO: array of r??
-    s: [
-      "/original/$2/$4",
-      "/original/",
-      ["/original/$1.jpg", "/original/$1.png", "/original/$1.gif"],
-    ],
-  },
-  {
-    name: "erosberry",
-    url: /erosberry\.com/,
-    r: /(\/\d+\/)tn_(\d+\.[^\/]+)$/i,
-    s: "$1$2",
-  },
-  {
-    name: "javdb",
-    url: /javdb/,
-    r: "/thumbs/",
-    s: "/covers/",
-  },
-  {
-    name: "javbus",
-    url: /javbus\.|busjav\./,
-    r: /\/thumbs?(\/\w+)\.jpg$/i,
-    s: "/cover$1_b.jpg",
-  },
-  {
-    name: "avmoo",
-    url: /avmoo\./,
-    r: "ps.jpg",
-    s: "pl.jpg",
-  },
-  {
-    name: "asiansister",
-    url: /asiansister\.com/,
-    r: "_t.",
-    s: ".",
-  },
-  {
-    name: "jianshu",
-    url: /jianshu\.com/,
-    r: /(upload-images\.jianshu\.io\/.*)\?.*/i,
-    s: "$1",
-  },
-  {
-    name: "wikiart",
-    url: /wikiart\.org/,
-    r: /!.*/i,
-    s: "",
-  },
-  // {
-  //   name: "discuz",
-  //   r: [
-  //     /(.+\/attachments?\/.+)\.thumb\.\w{2,5}$/i,
-  //     /((wp-content|moecdn\.org)\/uploads\/.*)\-\d+x\d+(-c)?/i,
-  //     /.*(?:url|src)=(https?:\/\/.*\.(?:jpg|jpeg|png|gif|bmp)).*/i,
-  //     /.*thumb\.php\?src=([^&]*).*/i,
-  //   ],
-  //   s: "$1",
-  // },
-  {
-    name: "weibo",
-    url: /sinaimg/,
-    r: [
-      /(\.sinaimg\.(cn|com)\/)(?:bmiddle|orj360|mw\d+)/i,
-      /(\.sinaimg\.(cn|com)\/)(?:square|thumbnail)/i,
-      /(\.sinaimg\.(cn|com)\/\d+)\/50\//i,
-      /k\.sinaimg\.cn\/n\/(.*)\/(w\d+)?h\d+[^\/]+$/,
-      /thumb\d+/,
-    ],
-    s: ["$1large", "$1mw1024", "$1/180/", "n.sinaimg.cn/$1", "mw690"],
-  },
-  {
-    name: "gravatar",
-    src: /gravatar\.com\/avatar\/|\/gravatar\//i,
-    r: /(avatar\/.*[\?&]s=)\d+(.*)/,
-    s: "$19999$2",
-  },
-  {
-    name: "ucServerAvatar",
-    src: /uc_server\/avatar\.php/i,
-    r: /(uc_server\/avatar\.php\?uid=\d+&size=).*/,
-    s: "$1big",
-  },
-  {
-    name: "md",
-    src: /\.md\./i,
-    r: /\.md(\.[^\.]+)$/i,
-    s: "$1",
-  },
-  {
-    name: "ytimg",
-    src: /i\.ytimg\.com/i,
-    exclude: /mqdefault_6s/i,
-    r: /(.*?)(\w+)(\.\w+)(\?.+)?$/i,
-    s: ["$1maxresdefault$3", "$1hqdefault$3"],
-  },
-  {
-    name: "meituan",
-    url: /\.meituan\.net/i,
-    r: /\/avatar\/\w{2}/i,
-    s: "/avatar/o0",
-  },
-  {
-    name: "hdslb",
-    src: /hdslb\.com\//i,
-    r: /@.*/i,
-    s: "",
-  },
-  {
-    name: "coolapk",
-    url: /\.coolapk\.com\//i,
-    r: /\.s\.\w+$/i,
-    s: "",
-  },
-  {
-    name: "aicdn",
-    src: /\.aicdn\.com\//i,
-    r: /_fw\d+$/i,
-    s: "",
-  },
-  {
-    name: "duitang",
-    url: /duitang\.com\//i,
-    r: /.thumb.(\d+_)?\d*(_c)?\./i,
-    s: ".",
-  },
-  {
-    name: "imgur",
-    src: /imgur\.com\//i,
-    r: [/h(\.[^\/]+)$/i, /maxwidth=\d+/i, /s=\d+/],
-    s: ["$1", "maxwidth=99999", ""],
-  },
-  {
-    name: "dmm",
-    src: /pics\.dmm\.co\.jp/i,
-    r: "ps.jpg",
-    s: "pl.jpg",
-  },
-  {
-    name: "whd",
-    src: /\/w\/\d+\/h\/\d+($|\/|\?)/i,
-    r: /\/w\/\d+\/h\/\d+/i,
-    s: "",
-  },
-  {
-    name: "百度图片、贴吧等",
-    src: /(hiphotos|imgsrc)\.baidu\.com/i,
-    r: /(hiphotos|imgsrc)\.baidu\.com\/(.+?)\/.+?([0-9a-f]{40})/i,
-    s: "$1.baidu.com/$2/pic/item/$3",
-  },
-  {
-    name: "pixiv",
-    src: /pixiv\.net/i,
-    r: /(pixiv.net\/img\d+\/img\/.+\/\d+)_[ms]\.(\w{2,5})$/i,
-    s: "$1.$2",
-  },
-  {
-    name: "taobaocdn",
-    src: /(taobaocdn|alicdn)\.com/i,
-    r: [
-      /.*((?:img\d\d\.taobaocdn|img(?:[^.]*\.?){1,2}?\.alicdn)\.com\/)(?:img\/|tps\/http:\/\/img\d\d+\.taobaocdn\.com\/)?((?:imgextra|bao\/uploaded)\/.+\.(?:jpe?g|png|gif|bmp))_.+\.jpg$/i,
-      /(.*\.alicdn\.com\/.*?)((.jpg|.png)(\.|_)\d+x\d+.*)\.jpg(_\.webp)?$/i,
-      /(.*\.alicdn\.com\/.*?)((\.|_)\d+x\d+.*|\.search|\.summ)\.jpg(_\.webp)?$/i,
-    ],
-    s: ["http://$1$2", "$1$3", "$1.jpg"],
-  },
-  {
-    name: "yihaodianimg",
-    url: /yhd\.com/i,
-    src: /yihaodianimg\.com/i,
-    r: /(.*\.yihaodianimg\.com\/.*)_\d+x\d+\.jpg$/i,
-    s: "$1.jpg",
-  },
-  {
-    name: "jd",
-    url: /jd\.com/i,
-    src: /360buyimg\.com/i,
-    r: [
-      /(.*360buyimg\.com\/)n\d\/.+?\_(.*)/i,
-      /(.*360buyimg\.com\/)n\d\/(.*)/i,
-      /(.*360buyimg\.com\/.*)s\d+x\d+_(.*)/i,
-    ],
-    s: ["$1imgzone/$2", "$1n0/$2", "$1$2"],
-  },
-  {
-    name: "dangdang",
-    url: /dangdang\.com/i,
-    src: /ddimg\.cn/i,
-    r: /(.*ddimg.cn\/.*?)_[bw]_(\d+\.jpg$)/i,
-    s: "$1_e_$2",
-  },
-  {
-    name: "duokan",
-    url: /duokan\.com/i,
-    r: /(cover.read.duokan.com.*?\.jpg)!\w+$/i,
-    s: "$1",
-  },
-  {
-    name: "yyets",
-    url: /yyets\.com/i,
-    r: /^(res\.yyets\.com.*?\/ftp\/(?:attachment\/)?\d+\/\d+)\/[ms]_(.*)/i,
-    s: "http://$1/$2",
-  },
-  {
-    name: "mozilla",
-    url: /addons\.mozilla\.org/i,
-    r: "addons.cdn.mozilla.net/user-media/previews/thumbs/",
-    s: "/thumbs/full/",
-  },
-  {
-    name: "firefox",
-    url: /firefox\.net\.cn/i,
-    r: "www.firefox.net.cn/attachment/thumb/",
-    s: "www.firefox.net.cn/attachment/",
-  },
-  {
-    name: "crsky",
-    url: /\.crsky\.com/i,
-    r: /pic\.crsky\.com.*_s\.gif$/i,
-    s: "/_s././",
-    example: "http://www.crsky.com/soft/5357.html",
-  },
-  {
-    name: "zol",
-    url: /\.zol\.com/i,
-    r: /(\w+\.zol-img\.com\.cn\/product\/\d+)_\d+x\d+\/(.*\.jpg)/i,
-    s: "$1/$2",
-    example: "http://detail.zol.com.cn/240/239857/pic.shtml",
-  },
-  {
-    name: "yesky",
-    url: /\.yesky\.com/i,
-    r: /_\d+x\d+\.([a-z]+)$/i,
-    s: ".$1",
-    example: "http://game.yesky.com/tupian/165/37968665.shtml",
-  },
-  {
-    name: "巴哈姆特",
-    url: /^https:\/\/\w+\.gamer\.com\.tw/,
-    src: /bahamut\.com\.tw/,
-    r: "/S/",
-    s: "/B/",
-  },
-  {
-    name: "sgamer",
-    url: /\.sgamer\.com/i,
-    r: /\/s([^\.\/]+\.[a-z]+$)/i,
-    s: "/$1",
-    example: "http://dota2.sgamer.com/albums/201407/8263_330866.html",
-  },
-  {
-    name: "nhentai",
-    url: /nhentai\.net/i,
-    r: /\/\/\w+(\..*\/)(\d+)t(\.[a-z]+)$/i,
-    s: "//i$1$2$3",
-    example: "http://nhentai.net/g/113475/",
-  },
-  {
-    name: "GithubAvatars",
-    url: /github\.com/i,
-    r: /(avatars\d*\.githubusercontent\.com.*)\?.*$/i,
-    s: "$1",
-    example: "https://avatars2.githubusercontent.com/u/3233275/",
-  },
-  {
-    name: "ggpht",
-    src: /ggpht\.com/i,
-    r: /=s\d+.*/i,
-    s: "=s0",
-  },
-  {
-    name: "kodansha",
-    url: /kodansha\.co\.jp/i,
-    src: /kodansha\.co\.jp/i,
-    r: "t_og_image_center",
-    s: "c_limit",
-  },
-  {
-    name: "fanseven",
-    url: /fanseven\.com/i,
-    src: /fanseven\.com/i,
-    r: /w=\d+&h=\d+/i,
-    s: "w=9999&h=9999",
-  },
-  {
-    name: "hentai-cosplays",
-    url: /^https:\/\/(.*\.)?(hentai\-cosplays|porn\-images\-xxx)\.com/,
-    r: /\/p=[\dx]+(\/\d+\.\w+)$/i,
-    s: "$1",
-  },
-  {
-    name: "imdb",
-    url: /^https?:\/\/www\.imdb\.com/,
-    src: /media\-amazon/,
-    r: /@.*(\.\w)/i,
-    s: "@$1",
-  },
-  {
-    name: "雪球",
-    url: /^https?:\/\/xueqiu\.com\//,
-    src: /^https?:\/\/xqimg\.imedao\.com\//i,
-    r: /!\d+(x\d+[a-z]?)?\.\w+$/,
-    s: "",
-  },
-  {
-    name: "小众论坛",
-    url: /^https?:\/\/meta\.appinn\.net/,
-    src: /meta\-cdn/,
-    r: /\/optimized\/(.*)_\d+_\d+x\d+(\.\w+)$/,
-    s: "/original/$1$2",
-  },
-  {
-    name: "诱惑福利图",
-    url: /www\.yhflt\.com/,
-    src: /imgs\.yhflt\.com/,
-    r: /imgs(\..*\/)q/,
-    s: "pic$1",
-  },
-  {
-    name: "blogger",
-    src: /blogger\.googleusercontent\.com\/img/,
-    r: /\/[sw]\d+\/.*/,
-    s: "/s0",
-  },
-  {
-    name: "煎蛋",
-    url: /^https:\/\/jandan\.net\//,
-    r: [/\/(thumb\d+|mw\d+)\//, /!square/],
-    s: ["/large/", ""],
-  },
-  {
-    name: "辉夜白兔",
-    url: /47\.101\.137\.235/,
-    r: "thumb",
-    s: "regular",
-  },
-  {
-    name: "Civitai",
-    url: /^https:\/\/civitai\.com\//,
-    r: /\/width=\d+\//,
-    s: "/",
-  },
-];
-
-(function (factory) {
-  if (typeof exports === "object" && typeof module !== "undefined") {
-    module.exports = factory();
-  } else if (typeof define === "function" && define.amd) {
-    define([], factory);
-  } else {
-    var g;
-    if (typeof window !== "undefined") {
-      g = window.top;
-    } else if (typeof global !== "undefined") {
-      g = global;
-    } else if (typeof self !== "undefined") {
-      g = self;
-    } else {
-      g = this;
-    }
-    g.UfsGlobal = factory();
-  }
-})(function () {
-  return UfsGlobal;
-});
-
-console.log("UfsGlobal loaded");
+    }, // https://stackoverflow.com/a/8649003
+    searchParamsToObject(search = window.location.search) {
+      const params = new URLSearchParams(search);
+      const searchObject = Object.fromEntries(params);
+      return searchObject;
+    },
+  };
+})();

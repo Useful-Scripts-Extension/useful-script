@@ -22,9 +22,14 @@ export default {
     },
   },
   pageScript: {
-    // onDocumentStart: () => {
-    //   console.log("page script onDocumentStart");
-    // },
+    onDocumentStart: () => {
+      // if (location.href.includes("anonyviet.com/tieptucdentrangmoi/")) {
+      //   let url = new URL(location.href).searchParams.get("url");
+      //   if (url) {
+      //     window.open(url, "_self");
+      //   }
+      // }
+    },
     // onDocumentIdle: () => {
     //   console.log("page script onDocumentIdle");
     // },

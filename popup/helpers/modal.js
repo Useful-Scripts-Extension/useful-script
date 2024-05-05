@@ -1,7 +1,7 @@
 const modal = document.querySelector("#myModal");
-const closeModalBtn = modal.querySelector(".modal-close");
-const modalTitle = modal.querySelector(".modal-title");
-const modalBody = modal.querySelector(".modal-body");
+const closeModalBtn = modal.querySelector(".close");
+const modalTitle = modal.querySelector(".title");
+const modalBody = modal.querySelector(".body");
 
 function initModal() {
   // When the user clicks on <span> (x), close the modal

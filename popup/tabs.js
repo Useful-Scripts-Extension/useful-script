@@ -29,7 +29,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
+      s._test,
       // s._ufs_statistic,
       s.similarWeb,
       s.similarWeb_bypassLimit,
@@ -427,21 +427,6 @@ const tabs = [
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
-      addBadge(
-        {
-          id: "recommend_ItTools",
-          icon: "https://it-tools.tech/favicon-32x32.png",
-          name: { en: "IT Tools", vi: "IT Tools" },
-          description: {
-            en: "Handy tools for developers",
-            vi: "Tổng hợp tools hữu ích cho IT",
-          },
-          popupScript: {
-            onClick: () => window.open("https://it-tools.tech/"),
-          },
-        },
-        BADGES.recommend
-      ),
       createTitle("--- Automation ---", "--- Tự động ---"),
       s.scrollToVeryEnd,
       s.screenshotFullPage,
@@ -455,6 +440,76 @@ const tabs = [
       s.vuiz_createLogo,
       s.changeAudioOutput,
       s.performanceAnalyzer,
+      addBadge(
+        {
+          id: "recommend_ItTools",
+          icon: "https://it-tools.tech/favicon-32x32.png",
+          name: { en: "IT Tools", vi: "IT Tools" },
+          description: {
+            en: "Handy tools for developers (open source)",
+            vi: "Tổng hợp tools hữu ích cho IT (mã nguồn mở)",
+          },
+          popupScript: {
+            onClick: () => window.open("https://it-tools.tech/"),
+          },
+        },
+        BADGES.recommend
+      ),
+      addBadge(
+        {
+          id: "recommend_cssportal",
+          icon: "https://www.cssportal.com/favicon.ico",
+          name: { en: "CSS Portal", vi: "CSS Portal" },
+          description: {
+            en: "Empowered your CSS skills with hundreds of CSS tools.",
+            vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
+          },
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://www.cssportal.com/css-animated-text-generator/"
+              ),
+          },
+        },
+        BADGES.recommend
+      ),
+      addBadge(
+        {
+          id: "recommend_beautifytools",
+          icon: "https://beautifytools.com/img/favicon.ico",
+          name: { en: "Beautify Tools", vi: "Beautify Tools" },
+          description: {
+            en: `Handy tools for developers
+            <ol>
+              <li>Beautifiers And Minifiers</li>
+              <li>CSS Preprocessors</li>
+              <li>Converters</li>
+              <li>String Utilities</li>
+              <li>SEO Tools</li>
+              <li>IP Tools</li>
+              <li>Code Validators</li>
+              <li>Cryptography</li>
+              <li>Code Editors</li>
+            </ol>`,
+            vi: `Tổng hợp tools hữu ích cho IT
+            <ol>
+              <li>Beautifiers And Minifiers</li>
+              <li>CSS Preprocessors</li>
+              <li>Converters</li>
+              <li>String Utilities</li>
+              <li>SEO Tools</li>
+              <li>IP Tools</li>
+              <li>Code Validators</li>
+              <li>Cryptography</li>
+              <li>Code Editors</li>
+            </ol>`,
+          },
+          popupScript: {
+            onClick: () => window.open("https://beautifytools.com/"),
+          },
+        },
+        BADGES.recommend
+      ),
       createTitle("--- Github ---", "--- Github ---"),
       s.github_goToAnyCommit,
       s.githubdev,

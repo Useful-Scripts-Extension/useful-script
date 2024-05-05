@@ -25,6 +25,7 @@ import {
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
+const cssTag = document.querySelector("link#style");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
@@ -32,21 +33,10 @@ const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 const scrollToTopBtn = document.querySelector("#scroll-to-top");
 
-function initLanguage() {
-  flagImg.setAttribute("src", getFlag());
-
-  flagImg.onclick = () => {
-    let newLang = toggleLang();
-    flagImg.setAttribute("src", getFlag());
-
-    trackEvent("CHANGE-LANGUAGE-" + newLang);
-
-    // reset UI
-    createTabs();
-    checkForUpdate();
-  };
-}
-
+// ========================================================
+// ========================= Tabs =========================
+// ========================================================
+// #region tabs
 function createTabs() {
   // prepare tabs
   refreshSpecialTabs();
@@ -185,13 +175,13 @@ function createScriptButton(script, isFavorite = false) {
         })
       );
   } else {
-    // button.onclick = () =>
-    alert(
-      t({
-        vi: "Chức năng chưa hoàn thành " + script.id,
-        en: "Coming soon " + script.id,
-      })
-    );
+    button.onclick = () =>
+      alert(
+        t({
+          vi: "Chức năng chưa hoàn thành " + script.id,
+          en: "Coming soon " + script.id,
+        })
+      );
   }
 
   // script badges
@@ -260,6 +250,9 @@ function createScriptButton(script, isFavorite = false) {
     button.appendChild(infoBtn);
   }
 
+  const more = document.createElement("span");
+  more.classList.add("more");
+
   // add to favorite button
   const addFavoriteBtn = document.createElement("i");
   updateFavBtn(addFavoriteBtn, isFavorite);
@@ -272,7 +265,7 @@ function createScriptButton(script, isFavorite = false) {
     updateFavBtn(addFavoriteBtn, isFavorite);
     refreshSpecialTabs();
   };
-  button.appendChild(addFavoriteBtn);
+  more.appendChild(addFavoriteBtn);
 
   // view source button
   const viewSourceBtn = document.createElement("i");
@@ -288,14 +281,14 @@ function createScriptButton(script, isFavorite = false) {
     trackEvent(script.id + "-VIEW-SOURCE");
     viewScriptSource(script);
   };
-  button.appendChild(viewSourceBtn);
+  more.appendChild(viewSourceBtn);
 
   // tooltip
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
   tooltip.innerHTML = t(script.description);
   if (script.description?.img) {
-    tooltip.innerHTML += `<img src="${script.description.img}" style="width:95%" />`;
+    tooltip.innerHTML += `<img src="${script.description.img}" style="width:80vw" />`;
   }
   if (script.changeLogs) {
     let tx = "";
@@ -305,7 +298,8 @@ function createScriptButton(script, isFavorite = false) {
     }
     tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
   }
-  button.appendChild(tooltip);
+  more.appendChild(tooltip);
+  button.appendChild(more);
 
   buttonContainer.appendChild(button);
   return buttonContainer;
@@ -387,14 +381,34 @@ async function runScript(script) {
     );
   }
 }
+// #endregion
+
+// ========================================================
+// ======================== Others ========================
+// ========================================================
+// #region others
+function initLanguage() {
+  flagImg.setAttribute("src", getFlag());
+
+  flagImg.onclick = () => {
+    let newLang = toggleLang();
+    flagImg.setAttribute("src", getFlag());
+
+    trackEvent("CHANGE-LANGUAGE-" + newLang);
+
+    // reset UI
+    createTabs();
+    checkForUpdate();
+  };
+}
+
+function initChangeTheme() {}
 
 function initSearch() {
   searchInput.addEventListener("input", (event) => {
     let keyword = event.target.value;
     let found = 0;
-    let childrens = document
-      .querySelector(".tabcontent")
-      .querySelectorAll(".buttonContainer");
+    let childrens = document.querySelectorAll(".tabcontent .buttonContainer");
 
     childrens.forEach((child) => {
       let willShow = true;
@@ -410,7 +424,7 @@ function initSearch() {
           break;
         }
       }
-      child.style.display = willShow ? "block" : "none";
+      child.classList.toggle("hide", !willShow);
       if (willShow) found++;
     });
     searchFound.innerText = keyword
@@ -438,8 +452,7 @@ function initScrollToTop() {
   });
 
   window.addEventListener("scroll", () => {
-    scrollToTopBtn.style.right =
-      document.body.scrollTop > 200 ? "10px" : "-100px";
+    scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
   });
 }
 
@@ -466,6 +479,7 @@ const onScrollEnd = debounce(() => {
 }, 100);
 
 window.addEventListener("scroll", onScrollEnd);
+// #endregion
 
 (async function () {
   trackEvent("OPEN-POPUP");
@@ -477,5 +491,5 @@ window.addEventListener("scroll", onScrollEnd);
   createTabs();
   restoreScroll();
 
-  await checkForUpdate();
+  checkForUpdate();
 })();
