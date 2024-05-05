@@ -256,7 +256,7 @@ export default {
   },
 
   onClick: () => {
-    let len = window.ufs_rvdfm_all_msgs.length;
+    let len = Object.entries(window.ufs_rvdfm_all_msgs).length;
     if (!len) alert("Chức năng chưa lưu được tin nhắn nào.");
     else if (
       confirm(
@@ -267,7 +267,7 @@ export default {
           `   thì bạn sẽ ko biết được nội dung tin nhắn.`
       )
     ) {
-      window.ufs_rvdfm_all_msgs = [];
+      window.ufs_rvdfm_all_msgs = {};
       alert("Đã xóa " + len + " tin nhắn khỏi bộ nhớ.");
     }
   },
