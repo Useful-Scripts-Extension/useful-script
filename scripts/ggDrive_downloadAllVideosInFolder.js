@@ -17,7 +17,9 @@ export default {
     vi: "Tải tất cả video trong thư mục google drive (tải được video không cho phép tải)",
   },
 
-  pageScript: {
+  whiteList: ["https://drive.google.com/drive*folders/*"],
+
+  popupScript: {
     onClick: async function () {
       // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
 
@@ -27,10 +29,12 @@ export default {
       try {
         // =========== Prepare data: Query all docid from website ===========
         let allDocs = await runScriptInCurrentTab(() =>
-          Array.from(document.querySelectorAll(".iZmuQc .WYuW0e")).map((_) => ({
-            id: _.dataset.id,
-            name: _.innerText,
-          }))
+          Array.from(document.querySelectorAll("[role='main'] [data-id]")).map(
+            (_) => ({
+              id: _.dataset.id,
+              name: _.querySelector(".KL4NAf")?.innerText || _.innerText,
+            })
+          )
         );
         if (!allDocs?.length) throw Error("Không tìm được video nào.");
 
@@ -73,7 +77,7 @@ export default {
 
             return `<tr>
           <td>${i + 1}</td>
-          <td><a target="_blank" href="${link}">${name}</a></td>
+          <td><a download href="${link}">${name}</a></td>
           <td>${videosColumn}</td>
         </tr>`;
           })

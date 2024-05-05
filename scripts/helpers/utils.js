@@ -90,7 +90,7 @@ export function runFunc(fnPath = "", params = [], global = {}) {
 
 export async function trackEvent(scriptId) {
   console.log("trackEvent", scriptId, version);
-  // return;
+  return;
   try {
     let res = await fetch(
       // "http://localhost:3000/count",
@@ -265,48 +265,15 @@ export const runScriptFile = ({
 
 export const runScriptInCurrentTab = async (func, args, world) => {
   const tab = await getCurrentTab();
-  focusToTab(tab);
+  // focusToTab(tab);
   return await runScriptInTab({ func, args, tabId: tab.id, world });
 };
 
 export const runScriptFileInCurrentTab = async (scriptFile, world) => {
   const tab = await getCurrentTab();
-  focusToTab();
+  // focusToTab();
   return await runScriptFile({ scriptFile, tabId: tab.id, world });
 };
-
-export function checkBlackWhiteList(script, url) {
-  if (!url) return false;
-
-  let w = script.whiteList || [],
-    b = script.blackList || [],
-    hasWhiteList = w.length > 0,
-    hasBlackList = b.length > 0,
-    inWhiteList = matchOneOfPatterns(url, w) ?? true,
-    inBlackList = matchOneOfPatterns(url, b) ?? false;
-
-  let willRun =
-    (!hasWhiteList && !hasBlackList) ||
-    (hasWhiteList && inWhiteList) ||
-    (hasBlackList && !inBlackList);
-
-  return willRun;
-}
-
-function matchOneOfPatterns(url, patterns) {
-  for (let pattern of patterns) {
-    const regex = new RegExp(
-      "^" +
-        pattern
-          .split("*")
-          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-          .join(".*") +
-        "$"
-    );
-    if (regex.test(url)) return true;
-  }
-  return false;
-}
 
 // https://stackoverflow.com/a/68634884/11898496
 export async function openWebAndRunScript({

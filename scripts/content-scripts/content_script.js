@@ -74,8 +74,8 @@
     }
   });
 
-  function checkWillRun(script) {
-    let url = location.href;
+  function checkWillRun(script, url = location?.href) {
+    if (!url) return false;
     let hasWhiteList = script.whiteList?.length > 0;
     let hasBlackList = script.blackList?.length > 0;
     let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);

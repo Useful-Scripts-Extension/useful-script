@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   name: {
     en: "Get fb User ID from url",
@@ -10,7 +8,7 @@ export default {
     vi: "Lấy id của facebook user từ URL truyền vào",
   },
 
-  pageScript: {
+  popupScript: {
     onClick: function () {
       // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
       const url = prompt("Nhập url của user fb:", "");

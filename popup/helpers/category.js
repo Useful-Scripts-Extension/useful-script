@@ -1,7 +1,6 @@
 export const CATEGORY = {
   favorite: {
     id: "favorite",
-    style: { textDecoration: "underline" },
     name: {
       en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Favorite`,
       vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Yêu thích`,
@@ -13,7 +12,6 @@ export const CATEGORY = {
   },
   recently: {
     id: "recently",
-    style: { textDecoration: "underline" },
     name: {
       en: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Recently`,
       vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Gần đây`,
@@ -21,7 +19,6 @@ export const CATEGORY = {
   },
   all: {
     id: "all",
-    style: { textDecoration: "underline" },
     name: {
       en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
       vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
@@ -30,7 +27,6 @@ export const CATEGORY = {
   autorun: {
     id: "autorun",
     // showCount: true,
-    style: { textDecoration: "underline" },
     name: {
       en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Autorun`,
       vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
@@ -108,7 +104,6 @@ export const CATEGORY = {
   },
   recommend: {
     id: "recommend",
-    style: { textDecoration: "underline" },
     name: {
       en: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Recommend`,
       vi: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Khuyên dùng`,

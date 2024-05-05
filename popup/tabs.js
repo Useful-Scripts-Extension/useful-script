@@ -47,8 +47,8 @@ const tabs = [
             vi: "Thư viện với hàng triệu sách, báo, phim, phần mềm, nhạc, website, ... miễn phí",
             img: "/scripts/internet_archive.png",
           },
-          onClickExtension: function () {
-            window.open("https://archive.org/");
+          popupScript: {
+            onClick: () => window.open("https://archive.org/"),
           },
         },
         BADGES.recommend
@@ -66,8 +66,8 @@ const tabs = [
             vi: "Xem những công nghệ/thư viện trang web đang dùng",
           },
 
-          onClickExtension: function () {
-            window.open("https://www.wappalyzer.com/apps/");
+          popupScript: {
+            onClick: () => window.open("https://www.wappalyzer.com/apps/"),
           },
         },
         BADGES.recommend
@@ -85,8 +85,10 @@ const tabs = [
           en: "The web to find all kinds of music-related data.",
           vi: "Trang web thống kê top trending âm nhạc toàn cầu.",
         },
-        onClickExtension: () =>
-          window.open("https://kworb.net/youtube/trending_music.html"),
+        popupScript: {
+          onClick: () =>
+            window.open("https://kworb.net/youtube/trending_music.html"),
+        },
       },
       s.search_paperWhere,
       s.search_hopamchuan,
@@ -106,8 +108,8 @@ const tabs = [
           vi: "Tìm Userscripts trên Usersript.zone",
         },
 
-        onClickExtension: function () {
-          window.open("https://www.userscript.zone/");
+        popupScript: {
+          onClick: () => window.open("https://www.userscript.zone/"),
         },
       },
     ],
@@ -131,8 +133,12 @@ const tabs = [
           vi: "Sử dụng API của luanxt.com. Tải Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
         },
         infoLink: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/",
-        onClickExtension: () =>
-          window.open("https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"),
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"
+            ),
+        },
       }),
       createTitle("--- Photos ---", "--- Ảnh ---"),
       s.magnify_image,
@@ -152,8 +158,12 @@ const tabs = [
             vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
             img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
           },
-          onClickExtension: () =>
-            window.open("https://greasyfork.org/en/scripts/24204-picviewer-ce"),
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://greasyfork.org/en/scripts/24204-picviewer-ce"
+              ),
+          },
         },
         BADGES.recommend
       ),
@@ -170,7 +180,9 @@ const tabs = [
             vi: "Công cụ nén ảnh, đổi định dạng ảnh hàng loạt, trực tiếp bằng chuột phải.",
             img: "https://file-converter.io/images/file-converter-usage.gif",
           },
-          onClickExtension: () => window.open("https://file-converter.io/"),
+          popupScript: {
+            onClick: () => window.open("https://file-converter.io/"),
+          },
         },
         BADGES.recommend
       ),
@@ -186,7 +198,9 @@ const tabs = [
             en: "Make images smaller using best-in-class codecs, right in the browser.",
             vi: "Công cụ nén ảnh mạnh mẽ, giảm kích thước ngay trên trình duyệt",
           },
-          onClickExtension: () => window.open("https://squoosh.app/"),
+          popupScript: {
+            onClick: () => window.open("https://squoosh.app/"),
+          },
         },
         BADGES.recommend
       ),
@@ -214,10 +228,12 @@ const tabs = [
             en: "Very good Bookmark manager, find your bookmarks faster.",
             vi: "Trình quản lý extension ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
           },
-          onClickExtension: () =>
-            window.open(
-              "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
-            ),
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
+              ),
+          },
         },
         BADGES.recommend
       ),
@@ -308,8 +324,9 @@ const tabs = [
           en: "View your memories on facebook",
           vi: "Xem kỷ niệm (memories) của bạn trên facebook",
         },
-        onClickExtension: () =>
-          window.open("https://www.facebook.com/memories/"),
+        popupScript: {
+          onClick: () => window.open("https://www.facebook.com/memories/"),
+        },
       },
       {
         id: "fb_openAdsActivities",
@@ -322,8 +339,9 @@ const tabs = [
           en: "View ads you have seen on facebook",
           vi: "Xem các quảng cáo bạn đã xem trên facebook",
         },
-        onClickExtension: () =>
-          window.open("https://www.facebook.com/ads/activity"),
+        popupScript: {
+          onClick: () => window.open("https://www.facebook.com/ads/activity"),
+        },
       },
       {
         id: "fb_openAllActivities",
@@ -336,10 +354,12 @@ const tabs = [
           en: "Check all your activities on facebook",
           vi: "Kiểm tra nhật ký hoạt động của bạn trên facebook",
         },
-        onClickExtension: () =>
-          window.open(
-            "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
-          ),
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
+            ),
+        },
       },
     ],
   },
@@ -376,10 +396,12 @@ const tabs = [
             en: "Make YouTube more beautiful, faster, and more useful!",
             vi: "Làm cho YouTube gọn gàng+thông minh!",
           },
-          onClickExtension: () =>
-            window.open(
-              "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
-            ),
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
+              ),
+          },
         },
         BADGES.recommend
       ),
@@ -414,7 +436,9 @@ const tabs = [
             en: "Handy tools for developers",
             vi: "Tổng hợp tools hữu ích cho IT",
           },
-          onClickExtension: () => window.open("https://it-tools.tech/"),
+          popupScript: {
+            onClick: () => window.open("https://it-tools.tech/"),
+          },
         },
         BADGES.recommend
       ),
@@ -448,8 +472,12 @@ const tabs = [
             vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
             img: "/scripts/recommend_cloc.png",
           },
-          onClickExtension: () =>
-            window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://github.com/AlDanial/cloc?tab=readme-ov-file"
+              ),
+          },
         },
         BADGES.recommend
       ),
@@ -467,7 +495,9 @@ const tabs = [
             en: "Check deals/prices in ecommerce websites",
             vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
           },
-          onClickExtension: () => window.open("https://beecost.vn/"),
+          popupScript: {
+            onClick: () => window.open("https://beecost.vn/"),
+          },
         },
         BADGES.recommend
       ),
@@ -483,7 +513,9 @@ const tabs = [
           en: "Convert Photos & PDF to Excel, Word, Searchable PDF for free",
           vi: "Chuyển đổi hình ảnh và pdf sang Excel, Word, Searchable PDF miễn phí",
         },
-        onClickExtension: () => window.open("https://fastdoc.vn/"),
+        popupScript: {
+          onClick: () => window.open("https://fastdoc.vn/"),
+        },
       },
       {
         id: "recommend_smartPDF",
@@ -496,8 +528,9 @@ const tabs = [
           en: "Compress PDF, PDF Converter, PPT to PDF, PDF to PPT, JPG to PDF, PDF to JPG, Excel to PDF, PDF to Excel, Edit PDF, PDF Reader, Number Pages, Delete PDF Pages, Rotate PDF, Word to PDF, PDF to Word, Merge PDF, Split PDF, eSign PDF, Unlock PDF, Protect PDF, PDF Scanner",
           vi: "Giảm dung lượng PDF, Chuyển đổi PDF, PPT sang PDF, PDF sang PPT, JPG sang PDF, PDF sang JPG, Excel sang PDF, PDF sang Excel, Chỉnh sửa PDF, Trình đọc PDF, Số trang, Xóa các trang PDF, Xoay PDF, Word sang PDF, PDF sang Word, Ghép PDF, Cắt PDF, Ký tên PDF, Mở khóa PDF, Bảo vệ PDF, Máy quét PDF",
         },
-        onClickExtension: () =>
-          window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
+        popupScript: {
+          onClick: () => window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
+        },
       },
       {
         id: "recommend_pdfstuffs",
@@ -510,7 +543,9 @@ const tabs = [
           en: "Free PDF converter online service: Merge PDF, Split PDF, Compress PDF, PDF to Word, PDF to PPT, PDF to Excel, Word to PDF, Excel to PDF, PPT to PDF, PDF to JPG, JPG to PDF, PDF to HTML, HTML to PDF, Unlock PDF, Protect PDF, Rotate PDF, Crop PDF, Delete pages, Add page numbers, Watermark PDF",
           vi: "Công cụ chuyển đổi PDF online miễn phí: Ghép file PDF, Tách file PDF, Nén file PDF, PDF sang Word, PDF sang PPT, PDF sang Excel, Word sang PDF, Excel sang PDF, PPT sang PDF, PDF sang JPG, JPG sang PDF, PDF sang HTML, HTML sang PDF, Mở khóa PDF, Khóa file PDF, Xoay file PDF,  Cắt file PDF, Xóa trang PDF, Đánh số trang PDF, Chèn watermark",
         },
-        onClickExtension: () => window.open("https://pdfstuff.com/"),
+        popupScript: {
+          onClick: () => window.open("https://pdfstuff.com/"),
+        },
       },
     ],
   },
@@ -549,15 +584,17 @@ const tabs = [
         infoLink:
           "https://www.facebook.com/groups/j2team.community/posts/2328915024107271/",
 
-        onClickExtension: () => {
-          prompt(
-            `File danh sách mật khẩu Wifi sẽ lưu ở:
+        popupScript: {
+          onClick: () => {
+            prompt(
+              `File danh sách mật khẩu Wifi sẽ lưu ở:
       "C:\\WifiPasswords\\listWifiPasswords.txt"
       có dạng: [Tên Wifi]:[Mật khẩu]
 
       Mở Powershell và chạy lệnh sau:`,
-            `irm https://tinyurl.com/GetListWifiPasswords | iex`
-          );
+              `irm https://tinyurl.com/GetListWifiPasswords | iex`
+            );
+          },
         },
       },
       addBadge({
@@ -573,8 +610,10 @@ const tabs = [
         },
         infoLink:
           "https://www.facebook.com/groups/j2team.community/posts/2329878560677584/",
-        onClickExtension: () => {
-          window.open("https://okela.fun/");
+        popupScript: {
+          onClick: () => {
+            window.open("https://okela.fun/");
+          },
         },
       }),
     ],
@@ -592,10 +631,12 @@ const tabs = [
             en: "Darkmode for every website",
             vi: "Chế độ tối cho mọi trang web",
           },
-          onClickExtension: () =>
-            window.open(
-              "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
-            ),
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+              ),
+          },
         },
         BADGES.recommend
       ),
@@ -616,8 +657,10 @@ const tabs = [
             en: "Improve browser displaying, font rewriting, smoothing, scaling, stroke, shadow, special style elements, custom monospaced, etc",
             vi: "Cải thiện font chữ web, giúp lướt web dễ chịu hơn.",
           },
-          onClickExtension: () => {
-            window.open("https://greasyfork.org/scripts/416688");
+          popupScript: {
+            onClick: () => {
+              window.open("https://greasyfork.org/scripts/416688");
+            },
           },
         },
         BADGES.recommend
@@ -664,8 +707,9 @@ const recommendTab = {
         vi: "Chơi Liên minh huyền thoại ngay trên trình duyệt",
         img: "https://raw.githubusercontent.com/HoangTran0410/LOL2D/main/assets/images/screenshots/Screenshot_4.jpg",
       },
-      onClickExtension: () =>
-        window.open("https://github.com/HoangTran0410/LOL2D"),
+      popupScript: {
+        onClick: () => window.open("https://github.com/HoangTran0410/LOL2D"),
+      },
     },
     {
       id: "recommend_RevealDeletedFBMessage",
@@ -678,8 +722,12 @@ const recommendTab = {
         en: "Know what your friends have sent you",
         vi: "Xem bạn bè đã gửi gì cho bạn",
       },
-      onClickExtension: () =>
-        window.open("https://github.com/HoangTran0410/RevealDeletedFBMessages"),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://github.com/HoangTran0410/RevealDeletedFBMessages"
+          ),
+      },
     },
     {
       id: "recommend_FBMediaDownloader",
@@ -689,8 +737,10 @@ const recommendTab = {
         en: "Tool download media from facebook automatic",
         vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
       },
-      onClickExtension: () =>
-        window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
+      popupScript: {
+        onClick: () =>
+          window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
+      },
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
@@ -701,10 +751,12 @@ const recommendTab = {
         en: "View/Download source code of any extension",
         vi: "Xem/Tải source code của mọi extension",
       },
-      onClickExtension: () =>
-        window.open(
-          "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin"
-        ),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://chrome.google.com/webstore/detail/chrome-extension-source-v/jifpbeccnghkjeaalbbjmodiffmgedin"
+          ),
+      },
     },
     {
       id: "recommend_uBlockOrigin",
@@ -714,10 +766,12 @@ const recommendTab = {
         en: "Block advertisements for all website",
         vi: "Chặn quảng cáo cho mọi website",
       },
-      onClickExtension: () =>
-        window.open(
-          "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm"
-        ),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm"
+          ),
+      },
     },
     {
       id: "recommend_GoogleTranslate",
@@ -727,10 +781,12 @@ const recommendTab = {
         en: "Instant translation for all website",
         vi: "Dịch nhanh, trực tiếp trong mọi website",
       },
-      onClickExtension: () =>
-        window.open(
-          "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb"
-        ),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb"
+          ),
+      },
     },
     {
       id: "recommend_NSFWFilter",
@@ -743,10 +799,12 @@ const recommendTab = {
         en: "Hide NSFW content from websites using this extension powered by AI",
         vi: "Ẩn mọi nội dung 18+ trên website, sử dụng trí tuệ nhân tạo",
       },
-      onClickExtension: () =>
-        window.open(
-          "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh"
-        ),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://chrome.google.com/webstore/detail/nsfw-filter/kmgagnlkckiamnenbpigfaljmanlbbhh"
+          ),
+      },
     },
     {
       id: "recommend_Violentmonkey",
@@ -759,7 +817,9 @@ const recommendTab = {
         en: "An open source userscript manager.",
         vi: "Trình quản lý userscript tốt.",
       },
-      onClickExtension: () => window.open("https://violentmonkey.github.io/"),
+      popupScript: {
+        onClick: () => window.open("https://violentmonkey.github.io/"),
+      },
     },
     {
       id: "recommend_Extensity",
@@ -772,10 +832,12 @@ const recommendTab = {
         en: "Extension manager - Quickly enable/disable browser extensions",
         vi: "Trình quản lý extension - Nhanh chóng tắt/mở extension của trình duyệt",
       },
-      onClickExtension: () =>
-        window.open(
-          "https://chromewebstore.google.com/detail/extensity/jjmflmamggggndanpgfnpelongoepncg"
-        ),
+      popupScript: {
+        onClick: () =>
+          window.open(
+            "https://chromewebstore.google.com/detail/extensity/jjmflmamggggndanpgfnpelongoepncg"
+          ),
+      },
     },
   ],
 };

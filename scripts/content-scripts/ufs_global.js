@@ -65,9 +65,9 @@ UfsGlobal.Extension = {
       tabId,
     ]);
   },
-  checkWillRun(script) {
+  checkWillRun(script, url = location?.href) {
+    if (!url) return false;
     const { matchOneOfPatterns } = UfsGlobal.Utils;
-    let url = location.href;
     let hasWhiteList = script.whiteList?.length > 0;
     let hasBlackList = script.blackList?.length > 0;
     let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);

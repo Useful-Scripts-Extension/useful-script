@@ -102,6 +102,31 @@ a:hover {
     background-color: #00c200;
 }
 
+#scroll-to-top {
+    position: fixed;
+    bottom: 10px;
+    /* default is hidden */
+    right: -100px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 50%;
+    color: #eee;
+    background-color: #9c9c9c;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .2s ease;
+    z-index: 4;
+}
+
+#scroll-to-top:hover {
+    background-color: #bbb;
+    transform: scale(1.1);
+}
+
 /* ---------- Tab button ---------- */
 .tab {
     background-color: #cccccc;
@@ -116,6 +141,8 @@ a:hover {
     cursor: pointer;
     padding: 10px 12px;
     transition: 0.3s;
+    width: 33%;
+    text-align: left;
 }
 
 .tab button:hover {

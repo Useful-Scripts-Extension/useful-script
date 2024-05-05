@@ -1,5 +1,4 @@
 import {
-  checkBlackWhiteList,
   isActiveScript,
   getCurrentTab,
   isFunction,
@@ -31,6 +30,7 @@ const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
+const scrollToTopBtn = document.querySelector("#scroll-to-top");
 
 function initLanguage() {
   flagImg.setAttribute("src", getFlag());
@@ -346,7 +346,7 @@ async function updateButtonChecker(script, button, val) {
 
 async function runScript(script) {
   let tab = await getCurrentTab();
-  let willRun = checkBlackWhiteList(script, tab.url);
+  let willRun = UfsGlobal.Extension.checkWillRun(script, tab.url);
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
@@ -429,6 +429,20 @@ function initTracking() {
   });
 }
 
+function initScrollToTop() {
+  scrollToTopBtn.addEventListener("click", () => {
+    document.body.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+
+  window.addEventListener("scroll", () => {
+    scrollToTopBtn.style.right =
+      document.body.scrollTop > 200 ? "10px" : "-100px";
+  });
+}
+
 function saveScroll() {
   const scrollY = document.body.scrollTop;
   chrome.storage.local.set({ popupScrollY: scrollY }, () => {
@@ -459,6 +473,7 @@ window.addEventListener("scroll", onScrollEnd);
   initTracking();
   initSearch();
   initLanguage();
+  initScrollToTop();
   createTabs();
   restoreScroll();
 
