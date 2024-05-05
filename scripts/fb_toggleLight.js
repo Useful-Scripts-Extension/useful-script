@@ -10,25 +10,27 @@ export default {
   },
   whiteList: ["https://*.facebook.com/*"],
 
-  onDocumentIdle: () => {
-    [
-      document.querySelectorAll('[role="navigation"]')?.[2],
-      document.querySelectorAll('[role="complementary"]')?.[0],
-    ].forEach((el) => {
-      if (el) {
-        el.style.display = "none";
-      } else console.log("ERROR: Cannot find element");
-    });
-  },
+  pageScript: {
+    onDocumentIdle: () => {
+      [
+        document.querySelectorAll('[role="navigation"]')?.[2],
+        document.querySelectorAll('[role="complementary"]')?.[0],
+      ].forEach((el) => {
+        if (el) {
+          el.style.display = "none";
+        } else console.log("ERROR: Cannot find element");
+      });
+    },
 
-  onClick: function () {
-    [
-      document.querySelectorAll('[role="navigation"]')?.[2],
-      document.querySelectorAll('[role="complementary"]')?.[0],
-    ].forEach((el) => {
-      if (el) {
-        el.style.display = el.style.display != "none" ? "none" : "";
-      } else console.log("ERROR: Cannot find element");
-    });
+    onClick: function () {
+      [
+        document.querySelectorAll('[role="navigation"]')?.[2],
+        document.querySelectorAll('[role="complementary"]')?.[0],
+      ].forEach((el) => {
+        if (el) {
+          el.style.display = el.style.display != "none" ? "none" : "";
+        } else console.log("ERROR: Cannot find element");
+      });
+    },
   },
 };

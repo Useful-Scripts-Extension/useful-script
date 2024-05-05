@@ -11,26 +11,28 @@ export default {
     vi: "Lấy facebook token EAAG từ business.facebook.com",
   },
 
-  onClickExtension: function () {
-    // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
+  popupScript: {
+    onClick: function () {
+      // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 
-    const { closeLoading } = showLoading("Đang lấy access token...");
-    fetch("https://business.facebook.com/business_locations")
-      .then((res) => res.text())
-      .then((htmlText) => {
-        let regex = htmlText.match(/(EAAG\w+)/);
-        if (null !== regex) {
-          let accesstoken = regex[1];
-          prompt("Access Token: ", accesstoken);
-        } else {
-          prompt(
-            "Không thấy token. Hãy chắc rằng bạn đã đăng nhập vào",
-            "https://business.facebook.com/business_locations"
-          );
-        }
-      })
-      .catch((e) => alert("Error: " + e))
-      .finally(closeLoading);
+      const { closeLoading } = showLoading("Đang lấy access token...");
+      fetch("https://business.facebook.com/business_locations")
+        .then((res) => res.text())
+        .then((htmlText) => {
+          let regex = htmlText.match(/(EAAG\w+)/);
+          if (null !== regex) {
+            let accesstoken = regex[1];
+            prompt("Access Token: ", accesstoken);
+          } else {
+            prompt(
+              "Không thấy token. Hãy chắc rằng bạn đã đăng nhập vào",
+              "https://business.facebook.com/business_locations"
+            );
+          }
+        })
+        .catch((e) => alert("Error: " + e))
+        .finally(closeLoading);
+    },
   },
 };
 

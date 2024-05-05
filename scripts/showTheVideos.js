@@ -9,28 +9,29 @@ export default {
     vi: "Tải video dễ dàng hơn",
   },
 
-  onClick: function () {
-    let videos = Array.from(document.querySelectorAll("video"));
+  pageScript: {
+    onClick: function () {
+      let videos = Array.from(document.querySelectorAll("video"));
 
-    if (!videos.length) {
-      alert("Không tìm thấy video nào.");
-      return;
-    }
-
-    function getSrc(video) {
-      if (video.src) {
-        return video.src;
+      if (!videos.length) {
+        alert("Không tìm thấy video nào.");
+        return;
       }
-      let sources = Array.from(video.querySelectorAll("source"));
-      if (sources.length) {
-        return sources[0].src;
+
+      function getSrc(video) {
+        if (video.src) {
+          return video.src;
+        }
+        let sources = Array.from(video.querySelectorAll("source"));
+        if (sources.length) {
+          return sources[0].src;
+        }
+        return null;
       }
-      return null;
-    }
 
-    videos.forEach((video) => (video.controls = "controls"));
+      videos.forEach((video) => (video.controls = "controls"));
 
-    let html = /*html*/ `
+      let html = /*html*/ `
         <div style="display:flex;align-items:center;justify-content:center;position:fixed;top:0;left:0;right:0;bottom:0;background:#000e;z-index:9999999">
             <div style="margin:auto;background:#eee;position:relative;padding:20px;overflow:auto;max-height:90vh;padding-top:100px">
             ${videos
@@ -51,8 +52,9 @@ export default {
             </div>
         </div>`;
 
-    let div = document.createElement("div");
-    div.innerHTML = html;
-    document.body.appendChild(div);
+      let div = document.createElement("div");
+      div.innerHTML = html;
+      document.body.appendChild(div);
+    },
   },
 };

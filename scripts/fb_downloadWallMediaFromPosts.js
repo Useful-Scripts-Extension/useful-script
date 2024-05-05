@@ -11,44 +11,45 @@ export default {
     vi: "Lấy tất cả hình trên các bài viết (post) của group/page/user",
   },
 
-  onClickExtension: () => {
-    const { downloadData } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: () => {
+      const { downloadData } = UfsGlobal.Utils;
 
-    const WAIT_BEFORE_NEXT_FETCH = 500;
-    const FB_API_HOST = "https://graph.facebook.com/v12.0";
-    const MEDIA_TYPE = {
-      PHOTO: "photo",
-      VIDEO: "video",
-    };
-    let ACCESS_TOKEN = prompt("Nhập access token của bạn vào đây");
-    if (!ACCESS_TOKEN) return;
+      const WAIT_BEFORE_NEXT_FETCH = 500;
+      const FB_API_HOST = "https://graph.facebook.com/v12.0";
+      const MEDIA_TYPE = {
+        PHOTO: "photo",
+        VIDEO: "video",
+      };
+      let ACCESS_TOKEN = prompt("Nhập access token của bạn vào đây");
+      if (!ACCESS_TOKEN) return;
 
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    const myFetch = async (_url) => {
-      try {
-        const response = await fetch(_url);
-        const json = await response.json();
-        if (json.error) {
-          console.log("[!] ERROR", JSON.stringify(json, null, 4));
+      const myFetch = async (_url) => {
+        try {
+          const response = await fetch(_url);
+          const json = await response.json();
+          if (json.error) {
+            console.log("[!] ERROR", JSON.stringify(json, null, 4));
+            return null;
+          }
+          return json;
+        } catch (e) {
+          console.log("[!] ERROR", e.toString());
           return null;
         }
-        return json;
-      } catch (e) {
-        console.log("[!] ERROR", e.toString());
-        return null;
-      }
-    };
+      };
 
-    const getMediaFromAttachment = (attachment) => {
-      const filtered_media = [];
+      const getMediaFromAttachment = (attachment) => {
+        const filtered_media = [];
 
-      let id = attachment?.target?.id;
-      let type = attachment?.type;
+        let id = attachment?.target?.id;
+        let type = attachment?.type;
 
-      if (!id || !type) return filtered_media;
+        if (!id || !type) return filtered_media;
 
-      /*
+        /*
           Attachment LOẠI PHOTO có cấu trúc như sau
           {
               "media": {
@@ -65,15 +66,15 @@ export default {
               "type": "photo",
               "url": "https://www.facebook.com/photo.php?fbid=582887366210935&set=gm.1020873538672374&type=3"
           }*/
-      if (type === "photo") {
-        filtered_media.push({
-          type: MEDIA_TYPE.PHOTO,
-          id: id,
-          url: attachment.media.image.src,
-        });
-      }
+        if (type === "photo") {
+          filtered_media.push({
+            type: MEDIA_TYPE.PHOTO,
+            id: id,
+            url: attachment.media.image.src,
+          });
+        }
 
-      /*
+        /*
           Attachment LOẠI VIDEO_AUTOPLAY, VIDEO_INLINE, VIDEO có định dạng như sau
           {
               "media": {
@@ -91,19 +92,19 @@ export default {
               "type": "video_autoplay",
               "url": "https://www.facebook.com/groups/j2team.community.girls/permalink/1045907852835609/"
           } */
-      if (
-        type === "video_autoplay" ||
-        type === "video_inline" ||
-        type === "video"
-      ) {
-        filtered_media.push({
-          type: MEDIA_TYPE.VIDEO,
-          id: id,
-          url: attachment.media.source,
-        });
-      }
+        if (
+          type === "video_autoplay" ||
+          type === "video_inline" ||
+          type === "video"
+        ) {
+          filtered_media.push({
+            type: MEDIA_TYPE.VIDEO,
+            id: id,
+            url: attachment.media.source,
+          });
+        }
 
-      /*
+        /*
           Attachment LOẠI ALBUM có định dạng như sau
           {
               "media": {
@@ -128,93 +129,94 @@ export default {
               "type": "album",
               "url": "https://www.facebook.com/media/set/?set=pcb.1020873538672374&type=1"
           } */
-      if (type === "album") {
-        // GỌI ĐỆ QUY VỚI TỪNG SUB_ATTACHMENT
-        attachment?.subattachments?.data?.forEach((sub) => {
-          filtered_media.push(...getMediaFromAttachment(sub));
-        });
-      }
-
-      return filtered_media;
-    };
-
-    // fetch tất cả bài post (feed) trong wall của 1 target (user, group, page), và lấy ra các media (ảnh, video, ..) trong các bài post đó (NẾU CÓ)
-    // Trả về danh sách chứa {id, url} của từng media
-    const fetchWallMedia = async ({
-      targetId,
-      pageLimit = Infinity, // Số lần fetch, mỗi lần fetch được khoảng 25 bài post (?)
-      pageFetchedCallback = () => {},
-    }) => {
-      const all_media = []; // store all media {id, url, type}
-      let page = 1;
-      let url = `${FB_API_HOST}/${targetId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
-
-      while (url && page <= pageLimit) {
-        console.log("fetching", url);
-        const fetchData = await myFetch(url);
-        page++;
-
-        if (fetchData?.data) {
-          // Get all media from each attachment
-          const media = [];
-          fetchData.data.forEach((feedData) => {
-            feedData.attachments?.data.forEach((at) => {
-              media.push(...getMediaFromAttachment(at));
-            });
+        if (type === "album") {
+          // GỌI ĐỆ QUY VỚI TỪNG SUB_ATTACHMENT
+          attachment?.subattachments?.data?.forEach((sub) => {
+            filtered_media.push(...getMediaFromAttachment(sub));
           });
-
-          all_media.push(...media);
-          console.log("media: " + all_media.length, all_media);
-
-          // callback when each page fetched
-          await pageFetchedCallback(media, all_media);
-
-          // get next paging
-          url = fetchData?.paging?.next;
-
-          // wait for next fetch - if needed
-          if (WAIT_BEFORE_NEXT_FETCH) {
-            await sleep(WAIT_BEFORE_NEXT_FETCH);
-          }
-        } else {
-          break;
         }
+
+        return filtered_media;
+      };
+
+      // fetch tất cả bài post (feed) trong wall của 1 target (user, group, page), và lấy ra các media (ảnh, video, ..) trong các bài post đó (NẾU CÓ)
+      // Trả về danh sách chứa {id, url} của từng media
+      const fetchWallMedia = async ({
+        targetId,
+        pageLimit = Infinity, // Số lần fetch, mỗi lần fetch được khoảng 25 bài post (?)
+        pageFetchedCallback = () => {},
+      }) => {
+        const all_media = []; // store all media {id, url, type}
+        let page = 1;
+        let url = `${FB_API_HOST}/${targetId}/feed?fields=attachments{media,type,subattachments,target}&access_token=${ACCESS_TOKEN}`;
+
+        while (url && page <= pageLimit) {
+          console.log("fetching", url);
+          const fetchData = await myFetch(url);
+          page++;
+
+          if (fetchData?.data) {
+            // Get all media from each attachment
+            const media = [];
+            fetchData.data.forEach((feedData) => {
+              feedData.attachments?.data.forEach((at) => {
+                media.push(...getMediaFromAttachment(at));
+              });
+            });
+
+            all_media.push(...media);
+            console.log("media: " + all_media.length, all_media);
+
+            // callback when each page fetched
+            await pageFetchedCallback(media, all_media);
+
+            // get next paging
+            url = fetchData?.paging?.next;
+
+            // wait for next fetch - if needed
+            if (WAIT_BEFORE_NEXT_FETCH) {
+              await sleep(WAIT_BEFORE_NEXT_FETCH);
+            }
+          } else {
+            break;
+          }
+        }
+
+        return all_media;
+      };
+
+      let id = prompt("Nhập ID của user, group, page cần lấy media", "");
+      if (id) {
+        alert(
+          "Quá trình lấy link ảnh sắp diễn ra.\nVui lòng không tắt popup extension trong quá trình này.\nThông tin chi tiết sẽ được hiển thị ở console của extension."
+        );
+
+        let { setLoadingText, closeLoading } = showLoading("Prepairing...");
+        fetchWallMedia({
+          targetId: id,
+          pageFetchedCallback: (media, all_media) => {
+            setLoadingText(`Tải được ${all_media.length} ảnh/video...`);
+          },
+        })
+          .then((all_media) => {
+            let urls = Array.from(new Set(all_media.map((_) => _.url))).join(
+              "\n"
+            );
+            console.log(urls);
+            setLoadingText(`Đang lưu ${urls.length} links vào file...`);
+            alert(
+              "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
+            );
+            downloadData(urls, "urls.txt");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Có lỗi xảy ra: " + err);
+          })
+          .finally(() => {
+            closeLoading();
+          });
       }
-
-      return all_media;
-    };
-
-    let id = prompt("Nhập ID của user, group, page cần lấy media", "");
-    if (id) {
-      alert(
-        "Quá trình lấy link ảnh sắp diễn ra.\nVui lòng không tắt popup extension trong quá trình này.\nThông tin chi tiết sẽ được hiển thị ở console của extension."
-      );
-
-      let { setLoadingText, closeLoading } = showLoading("Prepairing...");
-      fetchWallMedia({
-        targetId: id,
-        pageFetchedCallback: (media, all_media) => {
-          setLoadingText(`Tải được ${all_media.length} ảnh/video...`);
-        },
-      })
-        .then((all_media) => {
-          let urls = Array.from(new Set(all_media.map((_) => _.url))).join(
-            "\n"
-          );
-          console.log(urls);
-          setLoadingText(`Đang lưu ${urls.length} links vào file...`);
-          alert(
-            "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
-          );
-          downloadData(urls, "urls.txt");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("Có lỗi xảy ra: " + err);
-        })
-        .finally(() => {
-          closeLoading();
-        });
-    }
+    },
   },
 };

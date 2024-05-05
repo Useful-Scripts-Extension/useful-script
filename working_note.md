@@ -2,6 +2,18 @@
 
 ## 28/04/2024 - ~
 
+- [ ] call js function from url <https://stackoverflow.com/a/8466513/23648002>
+
+```
+chrome.tabs.update(tabId, {url: 'javascript:functionNameHere()'});
+```
+
+- [x] auto update extension <https://developer.chrome.com/docs/extensions/how-to/distribute/host-on-linux> => không cài được luôn do trình duyệt nói nguồn gốc không rõ
+
+```
+openssl rsa -in useful-script.pem -pubout > public_key.pem
+```
+
 - [ ] p5 visualize music <https://github.com/therewasaguy/p5-music-viz>
 
 - [ ] lyric generator <https://lrcgenerator.com/>

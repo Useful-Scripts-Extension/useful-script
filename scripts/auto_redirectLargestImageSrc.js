@@ -14,40 +14,42 @@ export default {
     "2024-04-16": "init",
   },
 
-  onDocumentStart: async () => {
-    let oldHref = location.href;
-    check(oldHref);
+  pageScript: {
+    onDocumentStart: async () => {
+      let oldHref = location.href;
+      check(oldHref);
 
-    window.onload = () => {
-      // listen location href change
-      var bodyList = document.querySelector("body");
-      var observer = new MutationObserver(function (mutations) {
-        if (oldHref != document.location.href) {
-          oldHref = document.location.href;
-          check(oldHref);
-        }
-      });
-      var config = {
-        childList: true,
-        subtree: true,
+      window.onload = () => {
+        // listen location href change
+        var bodyList = document.querySelector("body");
+        var observer = new MutationObserver(function (mutations) {
+          if (oldHref != document.location.href) {
+            oldHref = document.location.href;
+            check(oldHref);
+          }
+        });
+        var config = {
+          childList: true,
+          subtree: true,
+        };
+        observer.observe(bodyList, config);
       };
-      observer.observe(bodyList, config);
-    };
 
-    async function check(href) {
-      let url = await UfsGlobal.Utils.getLargestImageSrc(href, href);
-      console.log(url === href, url);
+      async function check(href) {
+        let url = await UfsGlobal.Utils.getLargestImageSrc(href, href);
+        console.log(url === href, url);
 
-      if (url && url != href) {
-        if (
-          confirm(
-            "Found bigger image. Redirect to that now?\n\nTìm thấy ảnh lớn hơn. Chuyển trang ngay?\n\n" +
-              url
-          )
-        ) {
-          location.href = url;
+        if (url && url != href) {
+          if (
+            confirm(
+              "Found bigger image. Redirect to that now?\n\nTìm thấy ảnh lớn hơn. Chuyển trang ngay?\n\n" +
+                url
+            )
+          ) {
+            location.href = url;
+          }
         }
       }
-    }
+    },
   },
 };

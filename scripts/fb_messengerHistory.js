@@ -9,7 +9,9 @@ export default {
     vi: "Xem tin nhắn đầu tiên với bạn bè trong facebook messenger",
   },
 
-  onClickExtension: async () => {
-    window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
+  popupScript: {
+    onClick: async () => {
+      window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
+    },
   },
 };

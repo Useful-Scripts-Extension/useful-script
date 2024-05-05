@@ -10,7 +10,7 @@
     runScripts(CACHED.activeScriptIds, detail.event, CACHED.path);
   });
 
-  window.runScripts = runScripts;
+  window.ufs_runScripts = runScripts;
   function runScripts(scriptIds, event, path) {
     CACHED.activeScriptIds = scriptIds;
     CACHED.path = path;
@@ -21,48 +21,21 @@
         .then(({ default: script }) => {
           try {
             if (
-              event in script &&
-              typeof script[event] === "function" &&
-              checkWillRun(script)
+              typeof script?.["pageScript"]?.[event] === "function" &&
+              UfsGlobal.Extension.checkWillRun(script)
             ) {
-              console.log("> Useful-script: Run script " + id + " " + event);
-              script[event]();
+              console.log(
+                "> Useful-script: Run page-script " + id + " " + event
+              );
+              script["pageScript"][event]();
             }
           } catch (e) {
-            console.log("ERROR run script " + id + " " + event, e);
+            console.log("ERROR run page-script " + id + " " + event, e);
           }
         })
         .catch((e) => {
-          console.log("ERROR import script ", e);
+          console.log("ERROR import page-script ", e);
         });
     }
-  }
-
-  function checkWillRun(script) {
-    let url = location.href;
-    let hasWhiteList = script.whiteList?.length > 0;
-    let hasBlackList = script.blackList?.length > 0;
-    let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
-    let inBlackList = matchOneOfPatterns(url, script.blackList || []);
-    return (
-      (!hasWhiteList && !hasBlackList) ||
-      (hasWhiteList && inWhiteList) ||
-      (hasBlackList && !inBlackList)
-    );
-  }
-
-  function matchOneOfPatterns(url, patterns) {
-    for (let pattern of patterns) {
-      const regex = new RegExp(
-        "^" +
-          pattern
-            .split("*")
-            .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-            .join(".*") +
-          "$"
-      );
-      if (regex.test(url)) return true;
-    }
-    return false;
   }
 })();

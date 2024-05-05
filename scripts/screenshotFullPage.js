@@ -17,40 +17,44 @@ export default {
     vi: "Tạo ảnh chụp màn hình toàn bộ website",
   },
 
-  onClickExtension: async function () {
-    const { downloadURL } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: async function () {
+      const { downloadURL } = UfsGlobal.Utils;
 
-    const { setLoadingText, closeLoading } = showLoading(
-      "Đang lấy kích thước trang..."
-    );
-    try {
-      let tab = await getCurrentTab();
-      await attachDebugger(tab);
-      let res = await sendDevtoolCommand(tab, "Page.getLayoutMetrics", {});
-      const { x, y, width, height } = res.cssContentSize;
+      const { setLoadingText, closeLoading } = showLoading(
+        "Đang lấy kích thước trang..."
+      );
+      try {
+        let tab = await getCurrentTab();
+        await attachDebugger(tab);
+        let res = await sendDevtoolCommand(tab, "Page.getLayoutMetrics", {});
+        const { x, y, width, height } = res.cssContentSize;
 
-      if (confirm(`Kích thước trang: ${width} x ${height}\n Bấm OK để chụp`)) {
-        setLoadingText("Đang tạo ảnh chụp màn hình...");
-        let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
-          format: "png",
-          quality: 100,
-          fromSurface: true,
-          captureBeyondViewport: true,
-          clip: { x: 0, y: 0, width, height, scale: 1 },
-        });
-        await detachDebugger(tab);
-        console.log(img);
+        if (
+          confirm(`Kích thước trang: ${width} x ${height}\n Bấm OK để chụp`)
+        ) {
+          setLoadingText("Đang tạo ảnh chụp màn hình...");
+          let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
+            format: "png",
+            quality: 100,
+            fromSurface: true,
+            captureBeyondViewport: true,
+            clip: { x: 0, y: 0, width, height, scale: 1 },
+          });
+          await detachDebugger(tab);
+          console.log(img);
 
-        setLoadingText("Đang lưu ảnh...");
-        downloadURL("data:image/png;base64," + img.data, "fullpage.png");
-      } else {
-        await detachDebugger(tab);
+          setLoadingText("Đang lưu ảnh...");
+          downloadURL("data:image/png;base64," + img.data, "fullpage.png");
+        } else {
+          await detachDebugger(tab);
+        }
+      } catch (e) {
+        alert("Lỗi: " + e);
+      } finally {
+        closeLoading();
       }
-    } catch (e) {
-      alert("Lỗi: " + e);
-    } finally {
-      closeLoading();
-    }
+    },
   },
 };
 

@@ -17,40 +17,42 @@ export default {
     Có thể ảnh hưởng tới chức năng của 1 vài trang web.<br/>
     Chỉ mở khi cần sử dụng (copy, chuột phải).<br/>
     Tắt ngay khi sử dụng xong.`,
-    img: "",
   },
   infoLink: "https://greasyfork.org/scripts/14146",
 
-  onEnable: () => {
-    alert(`+Có thể ảnh hưởng tới chức năng của 1 vài trang web.
+  popupScript: {
+    onEnable: () => {
+      alert(`+Có thể ảnh hưởng tới chức năng của 1 vài trang web.
 + Chỉ mở khi cần sử dụng (copy, chuột phải).
 + Tắt ngay khi sử dụng xong.`);
+    },
   },
 
-  onDocumentStart: () => {
-    // @description:zh    通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
-    // @description:zh-CN 通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
-    // @description:zh-TW 通殺大部分網站，可以解除禁止復制、剪切、選擇文本、右鍵菜單的限制。
-    // @description:ja    サイトのほとんどを殺すために渡し、あなたは、コピー切り取り、テキスト、右クリックメニューを選択することは禁止の制限を解除することができます。
+  pageScript: {
+    onDocumentStart: () => {
+      // @description:zh    通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
+      // @description:zh-CN 通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
+      // @description:zh-TW 通殺大部分網站，可以解除禁止復制、剪切、選擇文本、右鍵菜單的限制。
+      // @description:ja    サイトのほとんどを殺すために渡し、あなたは、コピー切り取り、テキスト、右クリックメニューを選択することは禁止の制限を解除することができます。
 
-    // @homepageURL       https://cat7373.github.io/remove-web-limits/
-    // @supportURL        https://github.com/Cat7373/remove-web-limits/issues/
+      // @homepageURL       https://cat7373.github.io/remove-web-limits/
+      // @supportURL        https://github.com/Cat7373/remove-web-limits/issues/
 
-    // @author            Cat73
-    // @version           1.3
-    // @license           LGPLv3
+      // @author            Cat73
+      // @version           1.3
+      // @license           LGPLv3
 
-    // @compatible        chrome Chrome_46.0.2490.86 + TamperMonkey + 脚本_1.3 测试通过
-    // @compatible        firefox Firefox_42.0 + GreaseMonkey + 脚本_1.2.1 测试通过
-    // @compatible        opera Opera_33.0.1990.115 + TamperMonkey + 脚本_1.1.3 测试通过
-    // @compatible        safari 未测试
+      // @compatible        chrome Chrome_46.0.2490.86 + TamperMonkey + 脚本_1.3 测试通过
+      // @compatible        firefox Firefox_42.0 + GreaseMonkey + 脚本_1.2.1 测试通过
+      // @compatible        opera Opera_33.0.1990.115 + TamperMonkey + 脚本_1.1.3 测试通过
+      // @compatible        safari 未测试
 
-    // @match             *://*/*
-    // @grant             none
-    // @run-at            document-start
-    // ==/UserScript==
-    // prettier-ignore
-    (function() {
+      // @match             *://*/*
+      // @grant             none
+      // @run-at            document-start
+      // ==/UserScript==
+      // prettier-ignore
+      (function() {
 
       // 域名规则列表
       var rules = {
@@ -275,5 +277,6 @@ export default {
 
       init();
     })();
+    },
   },
 };

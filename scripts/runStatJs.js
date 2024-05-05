@@ -9,21 +9,23 @@ export default {
     vi: "Tính toán FPS website",
   },
 
-  onClick: function () {
-    UfsGlobal.DOM.injectScriptSrc(
-      "//mrdoob.github.io/stats.js/build/stats.min.js",
-      (success, error) => {
-        if (success) {
-          var stats = new Stats();
-          document.body.appendChild(stats.dom);
-          requestAnimationFrame(function loop() {
-            stats.update();
-            requestAnimationFrame(loop);
-          });
-        } else {
-          alert("Inject FAILED. " + error);
+  pageScript: {
+    onClick: function () {
+      UfsGlobal.DOM.injectScriptSrc(
+        "//mrdoob.github.io/stats.js/build/stats.min.js",
+        (success, error) => {
+          if (success) {
+            var stats = new Stats();
+            document.body.appendChild(stats.dom);
+            requestAnimationFrame(function loop() {
+              stats.update();
+              requestAnimationFrame(loop);
+            });
+          } else {
+            alert("Inject FAILED. " + error);
+          }
         }
-      }
-    );
+      );
+    },
   },
 };

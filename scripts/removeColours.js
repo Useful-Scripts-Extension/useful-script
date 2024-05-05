@@ -13,16 +13,17 @@ export default {
     "2024-05-01": "fix cors + undo",
   },
 
-  onClick: function () {
-    const ufs_remove_colours_id = "ufs-remove-colours";
-    let exist = document.getElementById(ufs_remove_colours_id);
-    if (exist) {
-      exist.remove();
-      return;
-    }
-    let style = document.createElement("style");
-    style.id = "ufs-remove-colours";
-    style.textContent = `
+  pageScript: {
+    onClick: function () {
+      const ufs_remove_colours_id = "ufs-remove-colours";
+      let exist = document.getElementById(ufs_remove_colours_id);
+      if (exist) {
+        exist.remove();
+        return;
+      }
+      let style = document.createElement("style");
+      style.id = "ufs-remove-colours";
+      style.textContent = `
       *, *::before, *::after {
         background: #ffffff4f ! important;
         color: black !important;
@@ -36,6 +37,7 @@ export default {
       :visited, :visited * {
         color: #551A8B !important
       }`;
-    document.head.appendChild(style);
+      document.head.appendChild(style);
+    },
   },
 };

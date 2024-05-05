@@ -9,11 +9,13 @@ export default {
     vi: "đơn vị pixels",
   },
 
-  onClick: function () {
-    alert(
-      `Window inner dimensions:\n
+  pageScript: {
+    onClick: function () {
+      alert(
+        `Window inner dimensions:\n
       website: ${window.innerWidth} x ${window.innerHeight}
       your screen: ${screen.width} x ${screen.height}`
-    );
+      );
+    },
   },
 };

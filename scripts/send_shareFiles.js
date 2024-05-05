@@ -11,12 +11,14 @@ export default {
     vi: "Mở send.zcyph.cc - chia sẻ file lớn lên tới 20Gb",
   },
 
-  onClickExtension: function () {
-    popupCenter({
-      url: "https://send.zcyph.cc/",
-      title: "Send",
-      w: 500,
-      h: 700,
-    });
+  popupScript: {
+    onClick: function () {
+      popupCenter({
+        url: "https://send.zcyph.cc/",
+        title: "Send",
+        w: 500,
+        h: 700,
+      });
+    },
   },
 };

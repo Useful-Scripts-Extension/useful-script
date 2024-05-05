@@ -11,12 +11,14 @@ export default {
     vi: "Tải PDF document trên Studocu.com miễn phí",
   },
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Nhập link studocu document:", tab.url);
-    if (url == null) return;
-    url = new URL(url);
-    url.hostname = "www.downstudocu.com";
-    window.open(url);
+  popupScript: {
+    onClick: async function () {
+      let tab = await getCurrentTab();
+      let url = prompt("Nhập link studocu document:", tab.url);
+      if (url == null) return;
+      url = new URL(url);
+      url.hostname = "www.downstudocu.com";
+      window.open(url);
+    },
   },
 };

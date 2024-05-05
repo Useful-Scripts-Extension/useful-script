@@ -22,5 +22,7 @@ export default {
 
   whiteList: ["https://www.similarweb.com/*"],
 
-  onDocumentEnd: () => removeCookies.onClick(true),
+  pageScript: {
+    onDocumentEnd: () => removeCookies.onClick(true),
+  },
 };

@@ -13,14 +13,16 @@ export default {
     "2024-04-11": "init",
   },
 
-  onDocumentStart: () => {
-    const origLog = console.log;
-    console.log = function () {
-      // add time to console.log
-      origLog(
-        `${UfsGlobal.Utils.formatTimeToHHMMSSDD(new Date())} | `,
-        ...arguments
-      );
-    };
+  pageScript: {
+    onDocumentStart: () => {
+      const origLog = console.log;
+      console.log = function () {
+        // add time to console.log
+        origLog(
+          `${UfsGlobal.Utils.formatTimeToHHMMSSDD(new Date())} | `,
+          ...arguments
+        );
+      };
+    },
   },
 };

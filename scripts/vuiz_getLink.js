@@ -8,5 +8,8 @@ export default {
     en: "Support youtube, facebook, tiktok, zing tv, zing mp3, xVideo, nhac.vn, mixcloud, soundcloud, keeng.vn, chiasenhac, nhaccuatui, mediafire, ggdrive, dropbox, ondrive",
     vi: "Hỗ trợ youtube, facebook, tiktok, zing tv, zing mp3, xVideo, nhac.vn, mixcloud, soundcloud, keeng.vn, chiasenhac, nhaccuatui, mediafire, ggdrive, dropbox, ondrive",
   },
-  onClickExtension: () => window.open("https://m.vuiz.net/"),
+
+  popupScript: {
+    onClick: () => window.open("https://m.vuiz.net/"),
+  },
 };

@@ -9,24 +9,26 @@ export default {
     vi: "Visual Event - Hiển thị tất cả javascript events xuất hiện trong trang web",
   },
 
-  onClick: function () {
-    // http://www.sprymedia.co.uk/article/Visual+Event+2
+  pageScript: {
+    onClick: function () {
+      // http://www.sprymedia.co.uk/article/Visual+Event+2
 
-    var protocol = window.location.protocol === "file:" ? "http:" : "";
-    var url =
-      protocol + "//www.sprymedia.co.uk/VisualEvent/VisualEvent_Loader.js";
-    if (typeof VisualEvent != "undefined") {
-      if (VisualEvent.instance !== null) {
-        VisualEvent.close();
+      var protocol = window.location.protocol === "file:" ? "http:" : "";
+      var url =
+        protocol + "//www.sprymedia.co.uk/VisualEvent/VisualEvent_Loader.js";
+      if (typeof VisualEvent != "undefined") {
+        if (VisualEvent.instance !== null) {
+          VisualEvent.close();
+        } else {
+          new VisualEvent();
+        }
       } else {
-        new VisualEvent();
+        var n = document.createElement("script");
+        n.setAttribute("language", "JavaScript");
+        n.setAttribute("src", url + "?rand=" + new Date().getTime());
+        document.body.appendChild(n);
       }
-    } else {
-      var n = document.createElement("script");
-      n.setAttribute("language", "JavaScript");
-      n.setAttribute("src", url + "?rand=" + new Date().getTime());
-      document.body.appendChild(n);
-    }
+    },
   },
 };
 

@@ -9,27 +9,28 @@ export default {
     vi: "Hiển thị tất cả tag audio/âm thanh trong trang web, giúp dễ dàng tải xuống/lấy link.",
   },
 
-  onClick: function () {
-    function getSrc(audio) {
-      let src = audio.getAttribute("src");
-      if (src) return src;
-      else {
-        let source = audio.querySelector("source");
-        if (source) return source.getAttribute("src");
-        else return null;
+  pageScript: {
+    onClick: function () {
+      function getSrc(audio) {
+        let src = audio.getAttribute("src");
+        if (src) return src;
+        else {
+          let source = audio.querySelector("source");
+          if (source) return source.getAttribute("src");
+          else return null;
+        }
       }
-    }
 
-    let audios = Array.from(document.querySelectorAll("audio") || []);
-    audios = audios?.filter((_) => !!getSrc(_));
+      let audios = Array.from(document.querySelectorAll("audio") || []);
+      audios = audios?.filter((_) => !!getSrc(_));
 
-    if (!audios?.length) {
-      alert(
-        "Audio src not found.\n\nKhông tìm thấy âm thanh audio nào có thể tải trong trang web."
-      );
-    } else {
-      let div = document.createElement("div");
-      div.innerHTML = /*html*/ `
+      if (!audios?.length) {
+        alert(
+          "Audio src not found.\n\nKhông tìm thấy âm thanh audio nào có thể tải trong trang web."
+        );
+      } else {
+        let div = document.createElement("div");
+        div.innerHTML = /*html*/ `
       <div style="position:fixed;bottom:0;left:0;bottom:0;background:#000d;padding:10px;z-index:999999999;">
         <button onclick="this.parentElement.remove()" style="position:absolute;top:-20px;right:-20px;padding:5px 10px;background:red;cursor:pointer;color:white;">
           Close
@@ -47,7 +48,8 @@ export default {
 
       </div>
       `;
-      document.body.appendChild(div);
-    }
+        document.body.appendChild(div);
+      }
+    },
   },
 };

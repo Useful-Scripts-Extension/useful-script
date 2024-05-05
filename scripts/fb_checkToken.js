@@ -9,16 +9,18 @@ export default {
     vi: "Kiểm tra loại, quyền, ngày tạo, ngày hết hạn, ... của facebook access token",
   },
 
-  onClickExtension: function () {
-    let token = prompt(
-      "Enter accesstoken want to check\nNhập access token muốn kiểm tra:",
-      ""
-    );
-    if (token) {
-      window.open(
-        "https://developers.facebook.com/tools/debug/accesstoken/?access_token=" +
-          token
+  popupScript: {
+    onClick: function () {
+      let token = prompt(
+        "Enter accesstoken want to check\nNhập access token muốn kiểm tra:",
+        ""
       );
-    }
+      if (token) {
+        window.open(
+          "https://developers.facebook.com/tools/debug/accesstoken/?access_token=" +
+            token
+        );
+      }
+    },
   },
 };

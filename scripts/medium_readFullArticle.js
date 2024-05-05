@@ -15,12 +15,14 @@ export default {
 
   // whiteList: ["https://medium.com/*"],
 
-  onClickExtension: async () => {
-    let url = await getCurrentTabUrl();
-    url = prompt("Nhập link medium:", url);
+  popupScript: {
+    onClick: async () => {
+      let url = await getCurrentTabUrl();
+      url = prompt("Nhập link medium:", url);
 
-    if (url) {
-      window.open("https://freedium.cfd/" + url);
-    }
+      if (url) {
+        window.open("https://freedium.cfd/" + url);
+      }
+    },
   },
 };

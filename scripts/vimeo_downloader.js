@@ -11,11 +11,13 @@ export default {
     vi: "Tải video trên vimeo",
   },
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Enter vimeo video url: ", tab.url);
-    if (url == null) return;
+  popupScript: {
+    onClick: async function () {
+      let tab = await getCurrentTab();
+      let url = prompt("Enter vimeo video url: ", tab.url);
+      if (url == null) return;
 
-    window.open("https://www.savethevideo.com/vimeo-downloader?url=" + url);
+      window.open("https://www.savethevideo.com/vimeo-downloader?url=" + url);
+    },
   },
 };

@@ -9,19 +9,21 @@ export default {
     vi: "Kiểm tra xem từng phần tử trong web dùng font chữ gì",
   },
 
-  onClick: function () {
-    // https://www.typewolf.com/type-sample
+  pageScript: {
+    onClick: function () {
+      // https://www.typewolf.com/type-sample
 
-    UfsGlobal.DOM.injectScriptSrc(
-      "https://www.typesample.com/assets/typesample.js?r=" +
-        Math.random() * 99999999,
-      (success, fail) => {
-        if (success) {
-          alert("Script loaded, now use can use WhatFont.");
-        } else {
-          alert("Inject failed, Cannot run script in this website");
+      UfsGlobal.DOM.injectScriptSrc(
+        "https://www.typesample.com/assets/typesample.js?r=" +
+          Math.random() * 99999999,
+        (success, fail) => {
+          if (success) {
+            alert("Script loaded, now use can use WhatFont.");
+          } else {
+            alert("Inject failed, Cannot run script in this website");
+          }
         }
-      }
-    );
+      );
+    },
   },
 };

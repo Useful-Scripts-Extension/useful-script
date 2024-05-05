@@ -18,26 +18,27 @@ export default {
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
 
-  onClickExtension: async function () {
-    let { closeLoading } = showLoading("Đang tìm link video...");
-    try {
-      let docid = await shared.getDocIdFromWebsite();
+  popupScript: {
+    onClick: async function () {
+      let { closeLoading } = showLoading("Đang tìm link video...");
+      try {
+        let docid = await shared.getDocIdFromWebsite();
 
-      if (!docid) {
-        let tab = await getCurrentTab();
-        let url = prompt("Nhập link google drive video: ", tab.url);
-        if (url == null) return;
-        docid = shared.getDocIdFromUrl(url);
-        if (!docid)
-          throw Error("Link không hợp lệ. Không tìm thấy id trong link.");
-      }
+        if (!docid) {
+          let tab = await getCurrentTab();
+          let url = prompt("Nhập link google drive video: ", tab.url);
+          if (url == null) return;
+          docid = shared.getDocIdFromUrl(url);
+          if (!docid)
+            throw Error("Link không hợp lệ. Không tìm thấy id trong link.");
+        }
 
-      let res = await shared.getLinkVideoGDriveFromDocId(docid);
-      if (!res?.length) throw Error("Không tìm được link video.");
-      console.log(res);
+        let res = await shared.getLinkVideoGDriveFromDocId(docid);
+        if (!res?.length) throw Error("Không tìm được link video.");
+        console.log(res);
 
-      openPopupWithHtml(
-        `<h1>${res[0].name}</h1>
+        openPopupWithHtml(
+          `<h1>${res[0].name}</h1>
         ${res
           .map((_) => {
             let name = _.name.replace(/ /g, "_");
@@ -47,14 +48,15 @@ export default {
             </div>`;
           })
           .join("<br/>")}`,
-        700,
-        700
-      );
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+          700,
+          700
+        );
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 

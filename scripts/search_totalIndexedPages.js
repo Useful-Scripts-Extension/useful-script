@@ -9,9 +9,12 @@ export default {
     vi: "Biết có bao nhiêu trang con của website hiện tại đã được quét bởi Google",
   },
 
-  onClick: function () {
-    window.open(
-      "http://www.google.com/search?num=100&q=site:" + escape(location.hostname)
-    );
+  pageScript: {
+    onClick: function () {
+      window.open(
+        "http://www.google.com/search?num=100&q=site:" +
+          escape(location.hostname)
+      );
+    },
   },
 };

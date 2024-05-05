@@ -1,4 +1,3 @@
-import { MsgType } from "../scripts/helpers/constants.js";
 import {
   checkBlackWhiteList,
   isActiveScript,
@@ -6,7 +5,6 @@ import {
   isFunction,
   removeAccents,
   runScriptInCurrentTab,
-  sendEventToTab,
   toggleActiveScript,
   trackEvent,
   debounce,
@@ -187,7 +185,13 @@ function createScriptButton(script, isFavorite = false) {
         })
       );
   } else {
-    alert(t({ vi: "Chức năng chưa hoàn thành", en: "Coming soon" }));
+    // button.onclick = () =>
+    alert(
+      t({
+        vi: "Chức năng chưa hoàn thành " + script.id,
+        en: "Coming soon " + script.id,
+      })
+    );
   }
 
   // script badges
@@ -347,20 +351,25 @@ async function runScript(script) {
     try {
       recentScriptsSaver.add(script);
       trackEvent(script.id);
-      if (isFunction(script.onClickExtension)) await script.onClickExtension();
-      if (isFunction(script.onClick))
-        await runScriptInCurrentTab(script.onClick);
-      if (isFunction(script.onClickContentScript))
-        await sendEventToTab(tab.id, {
-          type: MsgType.runScript,
-          scriptId: script.id,
-        });
+
+      if (isFunction(script.popupScript?.onClick))
+        await script.popupScript.onClick();
+
+      if (isFunction(script.pageScript?.onClick))
+        await runScriptInCurrentTab(script.pageScript?.onClick, null, "MAIN");
+
+      if (isFunction(script.contentScript?.onClick))
+        await runScriptInCurrentTab(
+          script.contentScript?.onClick,
+          null,
+          "ISOLATED"
+        );
     } catch (e) {
-      console.log("ERROR: run script", e);
+      alert("ERROR: run script " + e);
     }
   } else {
-    let w = script?.whiteList?.join(", ");
-    let b = script?.blackList?.join(", ");
+    let w = script?.whiteList?.join("<br/>");
+    let b = script?.blackList?.join("<br/>");
 
     openModal(
       t({

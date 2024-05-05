@@ -11,8 +11,10 @@ export default {
   infoLink:
     "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM",
 
-  onDocumentIdle: detectZeroWidthCharacters,
-  onClick: detectZeroWidthCharacters,
+  pageScript: {
+    onDocumentIdle: detectZeroWidthCharacters,
+    onClick: detectZeroWidthCharacters,
+  },
 };
 
 // Code extracted from https://chrome.google.com/webstore/detail/detect-zero-width-charact/icibkhaehdofmcbfjfpppogioidkilib

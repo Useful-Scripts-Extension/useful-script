@@ -37,7 +37,7 @@
   "host_permissions": ["<all_urls>"],
   "options_page": "./pages/options/options.html",
   "background": {
-    "service_worker": "scripts/background-scripts/background-script.js",
+    "service_worker": "scripts/background-scripts/background_script.js",
     "type": "module"
   },
   "content_scripts": [

@@ -11,14 +11,15 @@ export default {
     vi: "Lấy instagram uid, avatar, tên, ...",
   },
 
-  onClickExtension: async function () {
-    function renderUser(user, index) {
-      //prettier-ignore
-      let { pk, username, full_name, is_private, is_verified, pk_id, profile_pic_url, friendship_status, social_context } = user;
-      //prettier-ignore
-      const {following, incoming_request, outgoing_request, is_bestie, is_restricted, is_feed_favorite} = friendship_status;
+  popupScript: {
+    onClick: async function () {
+      function renderUser(user, index) {
+        //prettier-ignore
+        let { pk, username, full_name, is_private, is_verified, pk_id, profile_pic_url, friendship_status, social_context } = user;
+        //prettier-ignore
+        const {following, incoming_request, outgoing_request, is_bestie, is_restricted, is_feed_favorite} = friendship_status;
 
-      return /*html*/ `<tr>
+        return /*html*/ `<tr>
         <td>${index}</td>
         <td>
           <a href="${profile_pic_url}" target="_blank">
@@ -47,32 +48,33 @@ export default {
         <td><span>${social_context || ""}<span></td>
       </tr>
       `;
-    }
+      }
 
-    let txt = prompt("Nhập username của người muốn xem thông tin:");
-    if (txt) {
-      const { setLoadingText, closeLoading } = showLoading(
-        "Đang lấy thông tin của " + txt
-      );
-      try {
-        // https://stackoverflow.com/a/52808289/11898496
-        let res = await fetch(
-          "https://www.instagram.com/web/search/topsearch/?query=" + txt
+      let txt = prompt("Nhập username của người muốn xem thông tin:");
+      if (txt) {
+        const { setLoadingText, closeLoading } = showLoading(
+          "Đang lấy thông tin của " + txt
         );
-        let json = await res.json();
-        if (json.status != "ok") throw Error("Server trả về lỗi");
-        console.log(json);
+        try {
+          // https://stackoverflow.com/a/52808289/11898496
+          let res = await fetch(
+            "https://www.instagram.com/web/search/topsearch/?query=" + txt
+          );
+          let json = await res.json();
+          if (json.status != "ok") throw Error("Server trả về lỗi");
+          console.log(json);
 
-        const { users, places, hashtags } = json;
-        if (!users?.length) return alert("Không tìm thấy user với tên " + txt);
+          const { users, places, hashtags } = json;
+          if (!users?.length)
+            return alert("Không tìm thấy user với tên " + txt);
 
-        let win = window.open(
-          "",
-          "",
-          "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=600,top=50,left=50"
-        );
-        win.document.title = "Instagram search for " + txt;
-        win.document.body.innerHTML = /*html*/ `
+          let win = window.open(
+            "",
+            "",
+            "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=600,top=50,left=50"
+          );
+          win.document.title = "Instagram search for " + txt;
+          win.document.body.innerHTML = /*html*/ `
           <table>
             <tr>
               <th>#</th>
@@ -119,12 +121,13 @@ export default {
             }
           </style>
         `;
-      } catch (e) {
-        alert("Lỗi " + e);
-      } finally {
-        closeLoading();
+        } catch (e) {
+          alert("Lỗi " + e);
+        } finally {
+          closeLoading();
+        }
       }
-    }
+    },
   },
 };
 

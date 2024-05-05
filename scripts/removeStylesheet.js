@@ -12,8 +12,10 @@ export default {
     "2024-05-01": "can undo",
   },
 
-  onClick: function () {
-    var i, x;
-    for (i = 0; (x = document.styleSheets[i]); ++i) x.disabled = !x.disabled;
+  pageScript: {
+    onClick: function () {
+      var i, x;
+      for (i = 0; (x = document.styleSheets[i]); ++i) x.disabled = !x.disabled;
+    },
   },
 };

@@ -12,40 +12,44 @@ export default {
     vi: "Tải danh sách avatar từ danh sách user id facebook",
   },
 
-  onClickExtension: async function () {
-    const { downloadData } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: async function () {
+      const { downloadData } = UfsGlobal.Utils;
 
-    let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
-    if (!uids) return;
+      let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
+      if (!uids) return;
 
-    const { closeLoading, setLoadingText } = showLoading();
-    try {
-      uids = uids.split("\n");
-      let urls = [];
-      for (let uid of uids) {
-        setLoadingText("Đang lấy avatar của " + uid + "...");
-        let url = await shared.getAvatarFromUid(uid);
-        if (url) {
-          urls.push(url);
+      const { closeLoading, setLoadingText } = showLoading();
+      try {
+        uids = uids.split("\n");
+        let urls = [];
+        for (let uid of uids) {
+          setLoadingText("Đang lấy avatar của " + uid + "...");
+          let url = await shared.getAvatarFromUid(uid);
+          if (url) {
+            urls.push(url);
+          }
         }
-      }
 
-      if (urls.length === 0) alert("Không tìm được avatar nào!");
-      else if (urls.length === 1) window.open(urls[0]);
-      else {
-        if (
-          confirm("Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống.")
-        )
-          downloadData(
-            urls.join("\n"),
-            `uid-${new Date().toLocaleString()}.txt`
-          );
+        if (urls.length === 0) alert("Không tìm được avatar nào!");
+        else if (urls.length === 1) window.open(urls[0]);
+        else {
+          if (
+            confirm(
+              "Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống."
+            )
+          )
+            downloadData(
+              urls.join("\n"),
+              `uid-${new Date().toLocaleString()}.txt`
+            );
+        }
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
       }
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+    },
   },
 };
 

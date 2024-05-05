@@ -13,14 +13,16 @@ export default {
     "2024-04-27": "support download as .json",
   },
 
-  onClickExtension: function () {
-    chrome.bookmarks.getTree((tree) => {
-      console.log(tree);
+  popupScript: {
+    onClick: function () {
+      chrome.bookmarks.getTree((tree) => {
+        console.log(tree);
 
-      UfsGlobal.Utils.downloadData(
-        JSON.stringify(tree, null, 4),
-        "bookmarks.json"
-      );
-    });
+        UfsGlobal.Utils.downloadData(
+          JSON.stringify(tree, null, 4),
+          "bookmarks.json"
+        );
+      });
+    },
   },
 };

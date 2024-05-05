@@ -113,5 +113,7 @@ export default {
     "2024-04-27": "add tips",
   },
 
-  onClick: shared.scrollToVeryEnd,
+  pageScript: {
+    onClick: shared.scrollToVeryEnd,
+  },
 };

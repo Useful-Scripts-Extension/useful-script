@@ -18,52 +18,56 @@ export default {
 
   whiteList: ["https://www.tiktok.com/*"],
 
-  onClickExtension: async function () {
-    const { closeLoading, setLoadingText } = showLoading("Đang lấy video id..");
+  popupScript: {
+    onClick: async function () {
+      const { closeLoading, setLoadingText } = showLoading(
+        "Đang lấy video id.."
+      );
 
-    let title = "tiktok_video";
+      let title = "tiktok_video";
 
-    const getLinkFuncs = [
-      async () => {
-        setLoadingText("Đang tìm videoid...");
-        const videos = await shared.getListVideoIdInWebsite();
-        if (videos.length) {
-          let video = videos[0];
-          title = video?.title?.split?.("#")?.[0] || video.id || title;
-          setLoadingText(`Đang tìm link tải video ${title}...`);
+      const getLinkFuncs = [
+        async () => {
+          setLoadingText("Đang tìm videoid...");
+          const videos = await shared.getListVideoIdInWebsite();
+          if (videos.length) {
+            let video = videos[0];
+            title = video?.title?.split?.("#")?.[0] || video.id || title;
+            setLoadingText(`Đang tìm link tải video ${title}...`);
 
-          let res = await tiktok_downloadVideo.getVideoNoWaterMark(
-            shared.genTiktokUrl(video.author, video.id)
+            let res = await tiktok_downloadVideo.getVideoNoWaterMark(
+              shared.genTiktokUrl(video.author, video.id)
+            );
+            return res;
+          }
+        },
+
+        async () => {
+          setLoadingText("Đang tìm video url từ DOM...");
+          return await runScriptInCurrentTab(
+            async () => await UfsGlobal.DOM.getWatchingVideoSrc()
           );
-          return res;
+        },
+      ];
+
+      let link;
+      for (let func of getLinkFuncs) {
+        try {
+          link = await func();
+          if (link) break;
+        } catch (e) {
+          alert("lol");
         }
-      },
-
-      async () => {
-        setLoadingText("Đang tìm video url từ DOM...");
-        return await runScriptInCurrentTab(
-          async () => await UfsGlobal.DOM.getWatchingVideoSrc()
-        );
-      },
-    ];
-
-    let link;
-    for (let func of getLinkFuncs) {
-      try {
-        link = await func();
-        if (link) break;
-      } catch (e) {
-        alert("lol");
       }
-    }
 
-    if (!link) alert("Không tìm được link video");
-    else {
-      setLoadingText("Đang tải video...");
-      await UfsGlobal.Utils.downloadBlobUrl(link, title + ".mp4");
-    }
+      if (!link) alert("Không tìm được link video");
+      else {
+        setLoadingText("Đang tải video...");
+        await UfsGlobal.Utils.downloadBlobUrl(link, title + ".mp4");
+      }
 
-    closeLoading();
+      closeLoading();
+    },
   },
 };
 

@@ -13,20 +13,21 @@ export default {
 
   whiteList: ["*://open.spotify.com/*"],
 
-  onDocumentIdle: () => {
-    // ==UserScript==
-    // @name         Spotify Downloader - Download Spotify songs, playlists, and albums
-    // @namespace    http://tampermonkey.net/
-    // @version      0.5
-    // @description  Downloads Spotify songs, playlists, and albums as 320kbps MP3. Can also download full playlist or album as ZIP.
-    // @author       Zertalious (Zert)
-    // @match        *://open.spotify.com/*
-    // @icon         https://www.google.com/s2/favicons?sz=64&domain=spotify.com
-    // @grant        none
-    // ==/UserScript==
+  pageScript: {
+    onDocumentIdle: () => {
+      // ==UserScript==
+      // @name         Spotify Downloader - Download Spotify songs, playlists, and albums
+      // @namespace    http://tampermonkey.net/
+      // @version      0.5
+      // @description  Downloads Spotify songs, playlists, and albums as 320kbps MP3. Can also download full playlist or album as ZIP.
+      // @author       Zertalious (Zert)
+      // @match        *://open.spotify.com/*
+      // @icon         https://www.google.com/s2/favicons?sz=64&domain=spotify.com
+      // @grant        none
+      // ==/UserScript==
 
-    const style = document.createElement("style");
-    style.innerText = `
+      const style = document.createElement("style");
+      style.innerText = `
 [role='grid'] {
 	margin-left: 50px;
 }
@@ -66,57 +67,60 @@ export default {
 
 `;
 
-    document.body.appendChild(style);
+      document.body.appendChild(style);
 
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
 
-    function animate() {
-      const tracks = document.querySelectorAll('[data-testid="tracklist-row"]');
-      for (const track of tracks) {
-        if (!track.hasButton) {
-          addButton(track).onclick = async function () {
-            const btn = track.querySelector('[data-testid="more-button"]');
-            btn.click();
-            await sleep(10);
+      function animate() {
+        const tracks = document.querySelectorAll(
+          '[data-testid="tracklist-row"]'
+        );
+        for (const track of tracks) {
+          if (!track.hasButton) {
+            addButton(track).onclick = async function () {
+              const btn = track.querySelector('[data-testid="more-button"]');
+              btn.click();
+              await sleep(10);
 
-            const highlight = document
-              .querySelector('#context-menu a[href*="highlight"]')
-              .href.match(/highlight=(.+)/)[1];
-            document.dispatchEvent(new MouseEvent("mousedown"));
+              const highlight = document
+                .querySelector('#context-menu a[href*="highlight"]')
+                .href.match(/highlight=(.+)/)[1];
+              document.dispatchEvent(new MouseEvent("mousedown"));
 
-            const url =
-              "https://open." +
-              highlight.replace(":", ".com/").replace(":", "/");
-            download(url);
+              const url =
+                "https://open." +
+                highlight.replace(":", ".com/").replace(":", "/");
+              download(url);
+            };
+          }
+        }
+
+        const actionBarRow = document.querySelector(
+          '[data-testid="action-bar-row"]:last-of-type'
+        );
+
+        if (actionBarRow && !actionBarRow.hasButton) {
+          addButton(actionBarRow).onclick = function () {
+            download(window.location.href);
           };
         }
       }
 
-      const actionBarRow = document.querySelector(
-        '[data-testid="action-bar-row"]:last-of-type'
-      );
-
-      if (actionBarRow && !actionBarRow.hasButton) {
-        addButton(actionBarRow).onclick = function () {
-          download(window.location.href);
-        };
+      function download(link) {
+        window.open("https://spotify-downloader.com/?link=" + link, "_blank");
       }
-    }
 
-    function download(link) {
-      window.open("https://spotify-downloader.com/?link=" + link, "_blank");
-    }
+      function addButton(el) {
+        const button = document.createElement("button");
+        button.className = "btn";
+        el.appendChild(button);
+        el.hasButton = true;
+        return button;
+      }
 
-    function addButton(el) {
-      const button = document.createElement("button");
-      button.className = "btn";
-      el.appendChild(button);
-      el.hasButton = true;
-      return button;
-    }
-
-    setInterval(animate, 1000);
+      setInterval(animate, 1000);
+    },
   },
 };

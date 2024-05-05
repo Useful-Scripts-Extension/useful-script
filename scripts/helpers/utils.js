@@ -245,7 +245,6 @@ export const runScriptInTab = async ({
 export const runScriptFile = ({
   scriptFile,
   tabId,
-  args = [],
   world = chrome.scripting.ExecutionWorld.MAIN,
 }) => {
   return new Promise((resolve, reject) => {
@@ -253,7 +252,6 @@ export const runScriptFile = ({
       {
         target: { tabId: tabId },
         files: [scriptFile],
-        args: args,
         world: world,
         injectImmediately: true,
       },
@@ -271,10 +269,10 @@ export const runScriptInCurrentTab = async (func, args, world) => {
   return await runScriptInTab({ func, args, tabId: tab.id, world });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile, args, world) => {
+export const runScriptFileInCurrentTab = async (scriptFile, world) => {
   const tab = await getCurrentTab();
   focusToTab();
-  return await runScriptFile({ scriptFile, args, tabId: tab.id, world });
+  return await runScriptFile({ scriptFile, tabId: tab.id, world });
 };
 
 export function checkBlackWhiteList(script, url) {

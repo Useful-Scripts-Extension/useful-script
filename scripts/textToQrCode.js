@@ -11,16 +11,18 @@ export default {
     vi: "Chuyển chữ/link sang QRCode",
   },
 
-  onClickExtension: async () => {
-    const tab = await getCurrentTab();
+  popupScript: {
+    onClick: async () => {
+      const tab = await getCurrentTab();
 
-    let text = prompt("Nhập text/url: ", tab.url);
-    if (text) {
-      window.open(
-        "https://hoothin.com/qrcode/#" + text,
-        "",
-        "scrollbars=no,width=700,height=700"
-      );
-    }
+      let text = prompt("Nhập text/url: ", tab.url);
+      if (text) {
+        window.open(
+          "https://hoothin.com/qrcode/#" + text,
+          "",
+          "scrollbars=no,width=700,height=700"
+        );
+      }
+    },
   },
 };

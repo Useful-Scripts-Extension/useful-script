@@ -11,15 +11,17 @@ export default {
     vi: "Dùng bên thứ 3 để kiểm tra xem website có bị die thật không",
   },
 
-  onClickExtension: async function () {
-    let { url } = await getCurrentTab();
-    if (url) {
-      let url_to_check = prompt("Enter web url to check", url);
-      if (url_to_check) {
-        window.open("https://downforeveryoneorjustme.com/" + url_to_check);
+  pageScript: {
+    onClick: async function () {
+      let { url } = await getCurrentTab();
+      if (url) {
+        let url_to_check = prompt("Enter web url to check", url);
+        if (url_to_check) {
+          window.open("https://downforeveryoneorjustme.com/" + url_to_check);
+        }
+      } else {
+        alert("Không tìm thấy url web hiện tại");
       }
-    } else {
-      alert("Không tìm thấy url web hiện tại");
-    }
+    },
   },
 };

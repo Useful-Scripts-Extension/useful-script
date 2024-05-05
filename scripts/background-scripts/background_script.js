@@ -1,4 +1,7 @@
 import * as utils from "../helpers/utils.js";
+import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/62806068/23648002
+
+console.log(UfsGlobal);
 
 const {
   runScriptInCurrentTab,
@@ -16,6 +19,7 @@ const CACHED = {
 };
 const GLOBAL = {
   utils,
+  UfsGlobal,
   log: console.log,
   trackEvent,
   fetch: customFetch,
@@ -24,7 +28,7 @@ const GLOBAL = {
 function cacheActiveScriptIds() {
   getAllActiveScriptIds().then((ids) => {
     CACHED.activeScriptIds = ids;
-    console.log("active scritps", ids);
+    console.log("active scripts", ids);
   });
 }
 
@@ -34,9 +38,9 @@ function runScripts(tabId, event, world) {
     func: (scriptIds, event, path) => {
       (() => {
         let interval = setInterval(() => {
-          if (typeof window.runScripts === "function") {
+          if (typeof window.ufs_runScripts === "function") {
             clearInterval(interval);
-            window.runScripts(scriptIds, event, path);
+            window.ufs_runScripts(scriptIds, event, path);
           }
         }, 10);
       })();
@@ -110,7 +114,7 @@ function main() {
     try {
       if (details.frameType == "outermost_frame") {
         runScripts(details.tabId, "onDocumentStart", MAIN);
-        runScripts(details.tabId, "onDocumentStartContentScript", ISOLATED);
+        runScripts(details.tabId, "onDocumentStart", ISOLATED);
       }
     } catch (e) {
       console.log("ERROR:", e);
@@ -122,7 +126,9 @@ function main() {
     try {
       if (details.frameType == "outermost_frame") {
         runScripts(details.tabId, "onDocumentIdle", MAIN);
-        runScripts(details.tabId, "onDocumentIdleContentScript", ISOLATED);
+        runScripts(details.tabId, "onDocumentIdle", ISOLATED);
+
+        CACHED.activeScriptIds.forEach((id) => {});
       }
     } catch (e) {
       console.log("ERROR:", e);
@@ -134,7 +140,7 @@ function main() {
     try {
       if (details.frameType == "outermost_frame") {
         runScripts(details.tabId, "onDocumentEnd", MAIN);
-        runScripts(details.tabId, "onDocumentEndContentScript", ISOLATED);
+        runScripts(details.tabId, "onDocumentEnd", ISOLATED);
       }
     } catch (e) {
       console.log("ERROR:", e);
@@ -219,3 +225,5 @@ try {
 } catch (e) {
   console.log("ERROR:", e);
 }
+
+// https://developer.chrome.com/docs/extensions/develop/migrate/blocking-web-requests

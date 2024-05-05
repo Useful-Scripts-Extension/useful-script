@@ -9,13 +9,14 @@ export default {
     vi: "Tải bài nhạc / lời bài hát đang nghe trên Nhaccuatui",
   },
 
-  onClick: function () {
-    const renderSongInfo = (songInfos, tableId = "") => {
-      if (!songInfos?.length) return `<p>Không có gì hết.</p>`;
+  pageScript: {
+    onClick: function () {
+      const renderSongInfo = (songInfos, tableId = "") => {
+        if (!songInfos?.length) return `<p>Không có gì hết.</p>`;
 
-      let tableBody = songInfos
-        .map((songInfo, index) => {
-          /*{
+        let tableBody = songInfos
+          .map((songInfo, index) => {
+            /*{
           "title": "\n        Tất Cả Đứng Im\n    ",
           "key": "vFWHcoOiGW3c",
           "info": "\n        https://www.nhaccuatui.com/bai-hat/tat-ca-dung-im-ngo-kien-huy-ft-hieuthuhai.vFWHcoOiGW3c.html\n    ",
@@ -45,20 +46,20 @@ export default {
           "timePlayedCheck": true,
           "curPlayInde": 1
       } */
-          //prettier-ignore
-          const {title,key,info,location,highquality,kbit,avatar,lyric,creator,newtab} = songInfo;
+            //prettier-ignore
+            const {title,key,info,location,highquality,kbit,avatar,lyric,creator,newtab} = songInfo;
 
-          let action =
-            (location
-              ? /*html*/ `<a href="${
-                  highquality || location
-                }" target="_blank">Tải nhạc (${kbit}kbit)</a>`
-              : "_") +
-            (lyric
-              ? /*html*/ `<a href="${lyric}" target="_blank">Tải lyric</a>`
-              : "_");
+            let action =
+              (location
+                ? /*html*/ `<a href="${
+                    highquality || location
+                  }" target="_blank">Tải nhạc (${kbit}kbit)</a>`
+                : "_") +
+              (lyric
+                ? /*html*/ `<a href="${lyric}" target="_blank">Tải lyric</a>`
+                : "_");
 
-          return /*html*/ `<tr>
+            return /*html*/ `<tr>
             <td><p>${index + 1}</p></td>
             <td><a href="${avatar}" target="_blank"><img src="${avatar}" style="width:60px" /></a></td>
             <td><a href="${info}" target="_blank">${title}</a></td>
@@ -66,10 +67,10 @@ export default {
             <td>${key}</td>
             <td>${action}</td>
           </tr>`;
-        })
-        .join("");
+          })
+          .join("");
 
-      return /*html */ `<table id="${tableId}">
+        return /*html */ `<table id="${tableId}">
         <tr>
           <th>#</th>
           <th>Hình</th>
@@ -81,17 +82,17 @@ export default {
 
         ${tableBody}
       </table>`;
-    };
+      };
 
-    let { listMp3, item } = window.player?.nctPlayerMp3?.streamingMp3 || {};
-    console.log(listMp3);
+      let { listMp3, item } = window.player?.nctPlayerMp3?.streamingMp3 || {};
+      console.log(listMp3);
 
-    if (!listMp3?.length) {
-      alert("Không tìm thấy bài hát nào");
-    } else {
-      let tableId = "useful-scripts-table-allsong";
-      let div = document.createElement("div");
-      div.innerHTML = /*html*/ `
+      if (!listMp3?.length) {
+        alert("Không tìm thấy bài hát nào");
+      } else {
+        let tableId = "useful-scripts-table-allsong";
+        let div = document.createElement("div");
+        div.innerHTML = /*html*/ `
       <div id="useful-scripts-overlay">
         <button onclick="this.parentElement.parentElement.remove()" class="close-btn">Đóng</button>
 
@@ -165,42 +166,43 @@ export default {
           color: white;
         }
       </style>`;
-      document.body.appendChild(div);
+        document.body.appendChild(div);
 
-      // https://www.w3schools.com/howto/howto_js_filter_table.asp
-      window.filterTable = function () {
-        // Declare variables
-        var input, filter, table, tr, tds, i, txtValue, check;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById(tableId);
-        tr = table.getElementsByTagName("tr");
+        // https://www.w3schools.com/howto/howto_js_filter_table.asp
+        window.filterTable = function () {
+          // Declare variables
+          var input, filter, table, tr, tds, i, txtValue, check;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById(tableId);
+          tr = table.getElementsByTagName("tr");
 
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-          tds = Array.from(tr[i].getElementsByTagName("td"));
-          if (tds?.length) {
-            check = false;
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            tds = Array.from(tr[i].getElementsByTagName("td"));
+            if (tds?.length) {
+              check = false;
 
-            for (let _td of [
-              tds[0], // stt
-              tds[2], // tên bài hát
-              tds[3], // tên ca six
-            ]) {
-              txtValue = _td.textContent || _td.innerText || _td.innerHTML;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                check = true;
+              for (let _td of [
+                tds[0], // stt
+                tds[2], // tên bài hát
+                tds[3], // tên ca six
+              ]) {
+                txtValue = _td.textContent || _td.innerText || _td.innerHTML;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  check = true;
+                }
+              }
+
+              if (check) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
               }
             }
-
-            if (check) {
-              tr[i].style.display = "";
-            } else {
-              tr[i].style.display = "none";
-            }
           }
-        }
-      };
-    }
+        };
+      }
+    },
   },
 };

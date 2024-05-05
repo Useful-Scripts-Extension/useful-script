@@ -15,26 +15,28 @@ export default {
     "2024-04-27": "fix bug - use snaptik",
   },
 
-  onClickExtension: async function () {
-    let url = prompt(
-      "Nhập link tiktok video: ",
-      await runScriptInCurrentTab(() => location.href)
-    );
-    if (url == null) return;
+  popupScript: {
+    onClick: async function () {
+      let url = prompt(
+        "Nhập link tiktok video: ",
+        await runScriptInCurrentTab(() => location.href)
+      );
+      if (url == null) return;
 
-    let { closeLoading } = showLoading(
-      "Đang lấy link video không watermark..."
-    );
-    try {
-      let link = "";
-      link = await shared.getVideoNoWaterMark(url);
-      if (link) window.open(link);
-      else throw Error("Không tìm được video không watermark");
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+      let { closeLoading } = showLoading(
+        "Đang lấy link video không watermark..."
+      );
+      try {
+        let link = "";
+        link = await shared.getVideoNoWaterMark(url);
+        if (link) window.open(link);
+        else throw Error("Không tìm được video không watermark");
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 

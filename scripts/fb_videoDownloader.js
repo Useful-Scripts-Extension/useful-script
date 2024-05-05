@@ -16,29 +16,31 @@ export default {
   },
   whiteList: ["https://*.facebook.com/*"],
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Nhập link video/reel/watch:", tab.url);
-    let videoId = shared.extractFbVideoIdFromUrl(url);
-    if (!videoId) {
-      alert(
-        "Link không đúng định dạng, không tìm thấy video/reel/watch id trong link."
-      );
-      return;
-    }
+  popupScript: {
+    onClick: async function () {
+      let tab = await getCurrentTab();
+      let url = prompt("Nhập link video/reel/watch:", tab.url);
+      let videoId = shared.extractFbVideoIdFromUrl(url);
+      if (!videoId) {
+        alert(
+          "Link không đúng định dạng, không tìm thấy video/reel/watch id trong link."
+        );
+        return;
+      }
 
-    let { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
-    try {
-      let dtsg = await shared.getDtsg();
-      setLoadingText("Đang get link video...");
-      let link = await shared.getLinkFbVideo(videoId, dtsg);
-      if (link) window.open(link);
-      else throw Error("Không tìm thấy link");
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+      let { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
+      try {
+        let dtsg = await shared.getDtsg();
+        setLoadingText("Đang get link video...");
+        let link = await shared.getLinkFbVideo(videoId, dtsg);
+        if (link) window.open(link);
+        else throw Error("Không tìm thấy link");
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 

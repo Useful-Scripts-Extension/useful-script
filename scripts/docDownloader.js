@@ -10,11 +10,14 @@ export default {
     en: "Download document on Scribd, Issuu, Slideshare, Academia",
     vi: "Tải document từ Scribd, Issuu, Slideshare, Academia",
   },
-  onClickExtension: async () => {
-    let tab = await getCurrentTab();
-    let url = prompt("Nhập document URL:", tab.url);
-    if (url == null) return;
 
-    window.open("https://docdownloader.com/?url=" + url);
+  popupScript: {
+    onClick: async () => {
+      let tab = await getCurrentTab();
+      let url = prompt("Nhập document URL:", tab.url);
+      if (url == null) return;
+
+      window.open("https://docdownloader.com/?url=" + url);
+    },
   },
 };

@@ -9,8 +9,10 @@ export default {
     vi: "",
   },
 
-  onClickExtension: () => {
-    window.open(chrome.runtime.getURL("scripts/fb_bulkDownload.html"));
+  popupScript: {
+    onClick: () => {
+      window.open(chrome.runtime.getURL("scripts/fb_bulkDownload.html"));
+    },
   },
 };
 

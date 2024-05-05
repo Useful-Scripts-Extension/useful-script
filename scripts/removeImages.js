@@ -12,23 +12,25 @@ export default {
     "2024-05-01": "can undo",
   },
 
-  onClick: function () {
-    var images,
-      img,
-      key = "data-ufs-remove-image";
-    images = Array.from(
-      document.querySelectorAll("img, picture, image, source")
-    );
-    for (var i = 0; i < images.length; ++i) {
-      img = images[i];
-      if (img.style.display == "none" && img.hasAttribute(key)) {
-        img.style.display = img.getAttribute(key);
-        img.removeAttribute(key);
-      } else {
-        let oldDisplay = img.style.display || "";
-        img.setAttribute(key, oldDisplay);
-        img.style.display = "none";
+  pageScript: {
+    onClick: function () {
+      var images,
+        img,
+        key = "data-ufs-remove-image";
+      images = Array.from(
+        document.querySelectorAll("img, picture, image, source")
+      );
+      for (var i = 0; i < images.length; ++i) {
+        img = images[i];
+        if (img.style.display == "none" && img.hasAttribute(key)) {
+          img.style.display = img.getAttribute(key);
+          img.removeAttribute(key);
+        } else {
+          let oldDisplay = img.style.display || "";
+          img.setAttribute(key, oldDisplay);
+          img.style.display = "none";
+        }
       }
-    }
+    },
   },
 };

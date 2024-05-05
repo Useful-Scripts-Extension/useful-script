@@ -65,6 +65,19 @@ UfsGlobal.Extension = {
       tabId,
     ]);
   },
+  checkWillRun(script) {
+    const { matchOneOfPatterns } = UfsGlobal.Utils;
+    let url = location.href;
+    let hasWhiteList = script.whiteList?.length > 0;
+    let hasBlackList = script.blackList?.length > 0;
+    let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+    let inBlackList = matchOneOfPatterns(url, script.blackList || []);
+    return (
+      (!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList)
+    );
+  },
 };
 UfsGlobal.DOM = {
   closest(element, selector) {
@@ -601,6 +614,20 @@ UfsGlobal.DOM = {
   },
 };
 UfsGlobal.Utils = {
+  matchOneOfPatterns(url, patterns) {
+    for (let pattern of patterns) {
+      const regex = new RegExp(
+        "^" +
+          pattern
+            .split("*")
+            .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+            .join(".*") +
+          "$"
+      );
+      if (regex.test(url)) return true;
+    }
+    return false;
+  },
   async json2xml(json) {
     if (!window.json2xml) {
       let url = await UfsGlobal.Extension.getURL(
@@ -2844,16 +2871,15 @@ UfsGlobal.largeImgSiteRules = [
   },
 ];
 
-// export if posible
-(function (f) {
+(function (factory) {
   if (typeof exports === "object" && typeof module !== "undefined") {
-    module.exports = f();
+    module.exports = factory();
   } else if (typeof define === "function" && define.amd) {
-    define([], f);
+    define([], factory);
   } else {
     var g;
     if (typeof window !== "undefined") {
-      g = window;
+      g = window.top;
     } else if (typeof global !== "undefined") {
       g = global;
     } else if (typeof self !== "undefined") {
@@ -2861,7 +2887,7 @@ UfsGlobal.largeImgSiteRules = [
     } else {
       g = this;
     }
-    g.UfsGlobal = f();
+    g.UfsGlobal = factory();
   }
 })(function () {
   return UfsGlobal;

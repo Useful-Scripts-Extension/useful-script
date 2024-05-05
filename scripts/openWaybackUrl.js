@@ -11,11 +11,13 @@ export default {
     vi: "Giúp xem nội dung website trong quá khứ",
   },
 
-  onClickExtension: async function () {
-    let { url } = await getCurrentTab();
-    let url_to_check = prompt("Nhập URL muốn xem: ", url);
-    if (url_to_check) {
-      window.open("https://web.archive.org/web/*/" + url_to_check);
-    }
+  popupScript: {
+    onClick: async function () {
+      let { url } = await getCurrentTab();
+      let url_to_check = prompt("Nhập URL muốn xem: ", url);
+      if (url_to_check) {
+        window.open("https://web.archive.org/web/*/" + url_to_check);
+      }
+    },
   },
 };

@@ -8,5 +8,8 @@ export default {
     en: "Search guitar chords",
     vi: "Tra cứu hợp âm chuẩn dành cho người chơi guitar",
   },
-  onClickExtension: () => window.open("https://hopamchuan.com/"),
+
+  popupScript: {
+    onClick: () => window.open("https://hopamchuan.com/"),
+  },
 };

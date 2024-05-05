@@ -8,8 +8,10 @@ export default {
     en: "Want to find out who owns a domain? Click on this!",
     vi: "Muốn biết ai đang giữ domain này? Click ngay!",
   },
-  
-  onClick: function () {
-    window.open("http://who.is/whois/" + document.domain);
+
+  pageScript: {
+    onClick: function () {
+      window.open("http://who.is/whois/" + document.domain);
+    },
   },
 };

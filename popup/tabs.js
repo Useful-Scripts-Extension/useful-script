@@ -582,6 +582,7 @@ const tabs = [
   {
     ...CATEGORY.webUI,
     scripts: [
+      createTitle("--- Hot ---", "--- Nổi bật ---"),
       addBadge(
         {
           id: "recommend_DarkReader",
@@ -601,8 +602,8 @@ const tabs = [
       s.darkModePDF,
       s.toggleEditPage,
       s.runStatJs,
+      s.toggle_passwordField,
       createTitle("--- View ---", "--- Xem ---"),
-      s.consoleLog_withTime,
       addBadge(
         {
           id: "recommend_fontRendering",
@@ -629,6 +630,7 @@ const tabs = [
       s.viewStylesUsed,
       s.cssSelectorViewer,
       s.viewPartialSource,
+      s.consoleLog_withTime,
       createTitle("--- Remove ---", "--- Xoá ---"),
       s.removeColours,
       s.removeStylesheet,

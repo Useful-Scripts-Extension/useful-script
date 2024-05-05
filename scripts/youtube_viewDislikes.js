@@ -8,43 +8,45 @@ export default {
     en: "Know how many dislike does youtube video have",
     vi: "Biết số lượt dislikes (không thích) video youtube",
   },
-    whiteList: ["*://*.youtube.com/*"],
+  whiteList: ["*://*.youtube.com/*"],
 
-  onClick: async function () {
-    // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
+  pageScript: {
+    onClick: async function () {
+      // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
 
-    function getVideoId(url) {
-      const urlObject = new URL(url);
-      const pathname = urlObject.pathname;
-      if (pathname.startsWith("/clip")) {
-        return document.querySelector("meta[itemprop='videoId']").content;
-      } else {
-        if (pathname.startsWith("/shorts")) {
-          return pathname.slice(8);
+      function getVideoId(url) {
+        const urlObject = new URL(url);
+        const pathname = urlObject.pathname;
+        if (pathname.startsWith("/clip")) {
+          return document.querySelector("meta[itemprop='videoId']").content;
+        } else {
+          if (pathname.startsWith("/shorts")) {
+            return pathname.slice(8);
+          }
+          return urlObject.searchParams.get("v");
         }
-        return urlObject.searchParams.get("v");
       }
-    }
 
-    const apiUrl = "https://returnyoutubedislikeapi.com";
-    let videoId = getVideoId(location.href);
-    let response = await fetch(
-      `${apiUrl}/votes?videoId=${videoId}&likeCount=`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    )
-      .then((response) => {
-        if (!response.ok) alert("Error: " + response.error);
-        return response;
-      })
-      .then((response) => response.json())
-      .catch((e) => alert("ERROR: " + e));
+      const apiUrl = "https://returnyoutubedislikeapi.com";
+      let videoId = getVideoId(location.href);
+      let response = await fetch(
+        `${apiUrl}/votes?videoId=${videoId}&likeCount=`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.ok) alert("Error: " + response.error);
+          return response;
+        })
+        .then((response) => response.json())
+        .catch((e) => alert("ERROR: " + e));
 
-    console.log(response);
-    alert("Youtube Dislikes:\n" + JSON.stringify(response, null, 4));
+      console.log(response);
+      alert("Youtube Dislikes:\n" + JSON.stringify(response, null, 4));
+    },
   },
 };

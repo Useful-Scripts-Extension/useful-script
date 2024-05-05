@@ -19,7 +19,9 @@ export default {
 
   whiteList: ["https://github.com/*"],
 
-  onClick: function () {
-    window.open("https://github.dev" + location.pathname);
+  pageScript: {
+    onClick: function () {
+      window.open("https://github.dev" + location.pathname);
+    },
   },
 };

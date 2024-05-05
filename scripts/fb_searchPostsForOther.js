@@ -17,23 +17,25 @@ export default {
     "2024-05-02": "init",
   },
 
-  onClickExtension: async () => {
-    let friendUrl = prompt("Nhập link fb bạn bè: ");
+  popupScript: {
+    onClick: async () => {
+      let friendUrl = prompt("Nhập link fb bạn bè: ");
 
-    if (friendUrl) {
-      let keyword = prompt("Nhập từ khoá tìm kiếm: ");
-      if (keyword == null) return;
+      if (friendUrl) {
+        let keyword = prompt("Nhập từ khoá tìm kiếm: ");
+        if (keyword == null) return;
 
-      const { closeLoading } = showLoading("Đang tìm uid...");
-      let uid = await UfsGlobal.Facebook.getUidFromUrl(friendUrl);
-      closeLoading();
+        const { closeLoading } = showLoading("Đang tìm uid...");
+        let uid = await UfsGlobal.Facebook.getUidFromUrl(friendUrl);
+        closeLoading();
 
-      let str = `{"rp_author:0":"{\\"name\\":\\"author\\",\\"args\\":\\"${uid}\\"}"}`;
-      let base64 = btoa(str);
-      let url = `https://www.facebook.com/search/posts/?q=${encodeURI(
-        keyword
-      )}&filters=${encodeURI(base64)}`;
-      window.open(url);
-    }
+        let str = `{"rp_author:0":"{\\"name\\":\\"author\\",\\"args\\":\\"${uid}\\"}"}`;
+        let base64 = btoa(str);
+        let url = `https://www.facebook.com/search/posts/?q=${encodeURI(
+          keyword
+        )}&filters=${encodeURI(base64)}`;
+        window.open(url);
+      }
+    },
   },
 };

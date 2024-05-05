@@ -18,29 +18,62 @@ export default {
   blackList: [],
   whiteList: [],
 
-  // run when event enable/disable script. Run in extension-popup-page context
-  onEnable: () => {},
-  onDisable: () => {},
+  // run in extension popup context
+  // - CANNOT autorun - only executed when user click
+  // - can use chrome extension APIs
+  // - can use imported functions (utils, shared)
+  //    + can access/modify DOM/variables in webpage/content-script context (via utils.runScriptInCurrentTab)
+  // - can use UfsGlobal
+  //    + can run scripts in background-context (limited - via UseGlobal.Extension)
+  popupScript: {
+    // run when enable/disable autorun script
+    onEnable: () => {},
+    onDisable: () => {},
 
-  // run (if enable autorun) in web page context
-  onDocumentStart: () => {},
-  onDocumentIdle: () => {},
-  onDocumentEnd: () => {},
+    onClick: () => {},
+  },
 
-  // run onclick in extension-popup-page context
-  onClickExtension: () => {},
+  // run in content-script context (ISOLATED/SANDBOX world)
+  // - can autorun
+  // - can use chrome extension APIs (limited)
+  // - CANNOT use imported functions (utils, shared)
+  // - can access/modify DOM
+  // - CANNOT access/modify variables in page context (different world)
+  // - can use UfsGlobal
+  //    + can run scripts in background-context (limited - via UseGlobal.Extension)
+  contentScript: {
+    // run (if enable autorun) in content-script context
+    onDocumentStart: () => {},
+    onDocumentIdle: () => {},
+    onDocumentEnd: () => {},
 
-  // run onclick in content-script context
-  onClickContentScript: () => {},
-  onDocumentStartContentScript: () => {},
-  onDocumentIdleContentScript: () => {},
-  onDocumentEndContentScript: () => {},
+    onClick: () => {},
+  },
 
-  // run onclick in web page context
-  // cannot access to shared or any variable outside of webpage
-  onClick: () => {},
+  // run in webpage context (MAIN world)
+  // - can autorun
+  // - CANNOT use chrome extension APIs
+  // - CANNOT use imported functions (utils, shared)
+  // - can access/modify DOM/variables -> can override default behaviors
+  // - can use UfsGlobal
+  //    + can run scripts in background-context (limited - via UseGlobal.Extension)
+  pageScript: {
+    // run (if enable autorun) in webpage context
+    onDocumentStart: () => {},
+    onDocumentIdle: () => {},
+    onDocumentEnd: () => {},
+
+    onClick: () => {},
+  },
+
+  // run in extension's background context (service-worker)
+  backgroundScript: {
+    webNavigation: {
+      onBeforeNavigate: () => {},
+      onCommitted: () => {},
+    },
+  },
 };
 
 // functions/attributes that other scripts can import and use
-// can only use in popup context (onClickExtension)
 export const shared = {};

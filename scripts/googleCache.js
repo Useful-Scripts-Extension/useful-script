@@ -12,19 +12,21 @@ export default {
     vi: "Phù hơp để xem các trang web bị block",
   },
 
-  onClickExtension: async function () {
-    // https://cachedviews.com/
+  popupScript: {
+    onClick: async function () {
+      // https://cachedviews.com/
 
-    let { url } = await getCurrentTab();
-    let url_to_check = prompt(
-      "Nhập URL muốn xem cache: ",
-      url.replace(/^http\:\/\/(.*)$/, "$1")
-    );
-    if (url_to_check != null) {
-      window.open(
-        "http://www.google.com/search?q=cache:" +
-          encodeURIComponent(url_to_check)
+      let { url } = await getCurrentTab();
+      let url_to_check = prompt(
+        "Nhập URL muốn xem cache: ",
+        url.replace(/^http\:\/\/(.*)$/, "$1")
       );
-    }
+      if (url_to_check != null) {
+        window.open(
+          "http://www.google.com/search?q=cache:" +
+            encodeURIComponent(url_to_check)
+        );
+      }
+    },
   },
 };

@@ -10,7 +10,9 @@ export default {
   },
   whiteList: ["https://github.com/*"],
 
-  onClick: function () {
-    window.open("https://www.github1s.com" + location.pathname);
+  pageScript: {
+    onClick: function () {
+      window.open("https://www.github1s.com" + location.pathname);
+    },
   },
 };

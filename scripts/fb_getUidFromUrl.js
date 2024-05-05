@@ -10,16 +10,18 @@ export default {
     vi: "Lấy id của facebook user từ URL truyền vào",
   },
 
-  onClick: function () {
-    // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
-    const url = prompt("Nhập url của user fb:", "");
-    if (url) {
-      UfsGlobal.Facebook.getUidFromUrl(url)
-        .then((uid) => {
-          if (uid) prompt(`UID của user ${url}:`, uid);
-          else alert("Không tìm thấy uid của user!");
-        })
-        .catch((err) => alert("Lỗi: " + err.message));
-    }
+  pageScript: {
+    onClick: function () {
+      // Lấy UID từ url của user fb. Ví dụ: https://www.facebook.com/99.hoangtran
+      const url = prompt("Nhập url của user fb:", "");
+      if (url) {
+        UfsGlobal.Facebook.getUidFromUrl(url)
+          .then((uid) => {
+            if (uid) prompt(`UID của user ${url}:`, uid);
+            else alert("Không tìm thấy uid của user!");
+          })
+          .catch((err) => alert("Lỗi: " + err.message));
+      }
+    },
   },
 };

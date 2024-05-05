@@ -16,31 +16,33 @@ export default {
 
   whiteList: ["https://*.facebook.com/*"],
 
-  onClickExtension: async function () {
-    const { closeLoading } = showLoading("Đang tìm user ID...");
+  popupScript: {
+    onClick: async function () {
+      const { closeLoading } = showLoading("Đang tìm user ID...");
 
-    await runScriptInCurrentTab(async () => {
-      let list_a = Array.from(
-        document.querySelectorAll("a[role='presentation']")
-      );
-      let uids = [];
-      for (let a of list_a) {
-        let l = a.href;
-        let uid = l.split("profile.php?id=")[1];
-        if (uid) {
+      await runScriptInCurrentTab(async () => {
+        let list_a = Array.from(
+          document.querySelectorAll("a[role='presentation']")
+        );
+        let uids = [];
+        for (let a of list_a) {
+          let l = a.href;
+          let uid = l.split("profile.php?id=")[1];
+          if (uid) {
+            uids.push(uid);
+            console.log(uid);
+            continue;
+          }
+          let name = l.split("facebook.com/")[1];
+          uid = await UfsGlobal.Facebook.getUidFromUrl(l);
           uids.push(uid);
-          console.log(uid);
-          continue;
+          console.log(name, uid);
         }
-        let name = l.split("facebook.com/")[1];
-        uid = await UfsGlobal.Facebook.getUidFromUrl(l);
-        uids.push(uid);
-        console.log(name, uid);
-      }
-      console.log(uids);
-      prompt(`Tìm được ${uids.length} UID, Copy ngay: `, uids.join("\n"));
-    });
+        console.log(uids);
+        prompt(`Tìm được ${uids.length} UID, Copy ngay: `, uids.join("\n"));
+      });
 
-    closeLoading();
+      closeLoading();
+    },
   },
 };

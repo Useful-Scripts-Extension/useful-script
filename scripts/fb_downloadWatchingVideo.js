@@ -15,32 +15,34 @@ export default {
   infoLink:
     "https://greasyfork.org/en/scripts/477748-facebook-video-downloader",
 
-  onClickExtension: async function () {
-    let { closeLoading, setLoadingText } = showLoading(
-      "Đang lấy videoId từ trang web..."
-    );
-    try {
-      let listVideoId = await shared.getListVideoIdInWebsite();
-      let watchingVideoId = listVideoId?.[0];
-      if (!watchingVideoId) throw Error("Không tìm thấy video nào");
-
-      setLoadingText("Đang lấy token dtsg...");
-      let dtsg = await fb_videoDownloader.getDtsg();
-
-      setLoadingText("Đang tìm video url...");
-      let videoUrl = await fb_videoDownloader.getLinkFbVideo(
-        watchingVideoId,
-        dtsg
+  popupScript: {
+    onClick: async function () {
+      let { closeLoading, setLoadingText } = showLoading(
+        "Đang lấy videoId từ trang web..."
       );
+      try {
+        let listVideoId = await shared.getListVideoIdInWebsite();
+        let watchingVideoId = listVideoId?.[0];
+        if (!watchingVideoId) throw Error("Không tìm thấy video nào");
 
-      if (videoUrl) {
-        UfsGlobal.Utils.downloadURL(videoUrl, "fb_video.mp4");
-      } else throw Error("Không tìm được video link");
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+        setLoadingText("Đang lấy token dtsg...");
+        let dtsg = await fb_videoDownloader.getDtsg();
+
+        setLoadingText("Đang tìm video url...");
+        let videoUrl = await fb_videoDownloader.getLinkFbVideo(
+          watchingVideoId,
+          dtsg
+        );
+
+        if (videoUrl) {
+          UfsGlobal.Utils.downloadURL(videoUrl, "fb_video.mp4");
+        } else throw Error("Không tìm được video link");
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 

@@ -1,20 +1,29 @@
-import { ClickType, Events } from "../../scripts/helpers/constants.js";
 import { isFunction } from "../../scripts/helpers/utils.js";
 
-export const canClick = (script) =>
-  isFunction(script[ClickType.onClick]) ||
-  isFunction(script[ClickType.onClickExtension]) ||
-  isFunction(script[ClickType.onClickContentScript]);
+export const canClick = (script) => {
+  for (let s of ["popupScript", "contentScript", "pageScript"]) {
+    if (isFunction(script[s]?.onClick)) return true;
+  }
+  return false;
+};
 
-export const canAutoRun = (script) =>
-  Events.onDocumentStart in script ||
-  Events.onDocumentIdle in script ||
-  Events.onDocumentEnd in script ||
-  Events.onDocumentStartContentScript in script ||
-  Events.onDocumentIdleContentScript in script ||
-  Events.onDocumentEndContentScript in script;
+export const canAutoRun = (script) => {
+  for (let s of ["popupScript", "contentScript", "pageScript"]) {
+    for (let e of ["onDocumentStart", "onDocumentIdle", "onDocumentEnd"]) {
+      if (isFunction(script[s]?.[e])) return true;
+    }
+  }
+  // TODO background scripts
+  return false;
+};
 
-export const isTitle = (script) => !(canAutoRun(script) || canClick(script));
+export const isTitle = (script) =>
+  !(
+    script.popupScript ||
+    script.contentScript ||
+    script.pageScript ||
+    script.backgroundScript
+  );
 
 export async function viewScriptSource(script) {
   localStorage.viewScriptSource_sharedData = script.id;

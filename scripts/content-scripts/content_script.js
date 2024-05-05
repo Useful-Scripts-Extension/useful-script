@@ -1,56 +1,51 @@
-import("./ufs_global.js"); // to use UfsGlobal inside content-script
-let utils;
+(() => {
+  // to use UfsGlobal in isolated world.
+  // I dont know why inject in manifest.json is not working
+  // It seem like we can only inject each file once, no matter which world (MAIN/ISOLATED) it is in
+  import("./ufs_global.js");
 
-// communication between page-script and content-script
-function sendToPageScript(event, uuid, data) {
-  console.log("sendToPageScript", event, uuid, data);
-  window.dispatchEvent(
-    new CustomEvent("ufs-contentscript-sendto-pagescript" + uuid, {
-      detail: { event, data },
-    })
-  );
-}
+  let utils;
 
-window.runScripts = runScripts;
-function runScripts(scriptIds, event, path) {
-  for (let scriptId of scriptIds) {
-    runScript(scriptId, event);
+  // communication between page-script and content-script
+  function sendToPageScript(event, uuid, data) {
+    console.log("sendToPageScript", event, uuid, data);
+    window.dispatchEvent(
+      new CustomEvent("ufs-contentscript-sendto-pagescript" + uuid, {
+        detail: { event, data },
+      })
+    );
   }
-}
 
-async function runScript(scriptId, event) {
-  const script = (await import("/scripts/" + scriptId + ".js"))?.default;
-  if (script && typeof script[event] === "function") {
-    script[event]();
-    console.log("> Run script (content-script): " + scriptId);
+  window.ufs_runScripts = runScripts;
+  function runScripts(scriptIds, event, path) {
+    for (let scriptId of scriptIds) {
+      runScript(scriptId, event);
+    }
   }
-}
 
-(async () => {
+  async function runScript(scriptId, event) {
+    const script = (await import("/scripts/" + scriptId + ".js"))?.default;
+    if (
+      typeof script?.["contentScript"]?.[event] === "function" &&
+      checkWillRun(script)
+    ) {
+      try {
+        console.log(
+          "> Useful-script: Run content-script: " + scriptId + " " + event
+        );
+        script["contentScript"][event]();
+      } catch (e) {
+        console.log("ERROR run content-script " + scriptId + " " + event, e);
+      }
+    }
+  }
+
   async function getUtils() {
     if (!utils) utils = await import("../helpers/utils.js");
     return utils;
   }
 
   getUtils(); // import and save utils
-
-  chrome.runtime.onMessage.addListener(function (
-    message,
-    sender,
-    sendResponse
-  ) {
-    try {
-      console.log("> Received message:", message);
-
-      switch (message.type) {
-        case "runScript":
-          runScript(message.scriptId, "onClickContentScript");
-          break;
-      }
-    } catch (e) {
-      console.log("ERROR : ", e);
-    }
-  });
 
   // listen page script (web page, cannot listen iframes ...)
   window.addEventListener("ufs-pagescript-sendto-contentscript", async (e) => {
@@ -78,4 +73,32 @@ async function runScript(scriptId, event) {
       sendToPageScript(event, uuid, null);
     }
   });
+
+  function checkWillRun(script) {
+    let url = location.href;
+    let hasWhiteList = script.whiteList?.length > 0;
+    let hasBlackList = script.blackList?.length > 0;
+    let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+    let inBlackList = matchOneOfPatterns(url, script.blackList || []);
+    return (
+      (!hasWhiteList && !hasBlackList) ||
+      (hasWhiteList && inWhiteList) ||
+      (hasBlackList && !inBlackList)
+    );
+  }
+
+  function matchOneOfPatterns(url, patterns) {
+    for (let pattern of patterns) {
+      const regex = new RegExp(
+        "^" +
+          pattern
+            .split("*")
+            .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+            .join(".*") +
+          "$"
+      );
+      if (regex.test(url)) return true;
+    }
+    return false;
+  }
 })();

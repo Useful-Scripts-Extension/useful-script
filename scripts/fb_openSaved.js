@@ -8,5 +8,8 @@ export default {
     en: "View saved contents on Facebook",
     vi: "Xem nội dung bạn đã lưu trên Facebook",
   },
-  onClickExtension: () => window.open("https://www.facebook.com/saved"),
+
+  popupScript: {
+    onClick: () => window.open("https://www.facebook.com/saved"),
+  },
 };
