@@ -5,11 +5,7 @@ const createVariableSaver = (key, defaultValue = null) => ({
     localStorage.setItem(key, JSON.stringify(data));
   },
   get: (_defaultValue) => {
-    return (
-      JSON.parse(localStorage.getItem(key) || "null") ??
-      _defaultValue ??
-      defaultValue
-    );
+    return JSON.parse(localStorage.getItem(key) || "null") ?? _defaultValue ?? defaultValue;
   },
 });
 
@@ -50,10 +46,6 @@ const createScriptsSaver = (key, addToHead = true) => {
 };
 
 export const langSaver = createVariableSaver("useful-scripts-lang");
-export const activeTabIdSaver = createVariableSaver(
-  "useful-scripts-activeTabId"
-);
+export const activeTabIdSaver = createVariableSaver("useful-scripts-activeTabId");
 export const recentScriptsSaver = createScriptsSaver("useful-scripts-recently");
-export const favoriteScriptsSaver = createScriptsSaver(
-  "useful-scripts-favorite"
-);
+export const favoriteScriptsSaver = createScriptsSaver("useful-scripts-favorite");

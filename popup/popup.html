@@ -1,68 +1,66 @@
 <html>
-
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="styles/style.css">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
 
     <script src="libs/jszip.min.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Useful Scripts</h1>
+    
     <h3>
-        <a data-track="donate" target="_blank"
-            href="https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md">
-            <i class="fa-solid fa-mug-saucer"></i> donate
-        </a>
-        <a data-track="github" target="_blank" href="https://github.com/HoangTran0410/useful-script">
-            <i class="fa-solid fa-code"></i> source code
-        </a>
-        <a data-track="fanpage" target="_blank" href="https://www.facebook.com/groups/1154059318582088">
-            <b><i class="fa-solid fa-arrow-up-right-from-square"></i> Fanpage</b>
-        </a>
-        <br />
-        <span id="version"></span>
-        <button id="update-btn">(update)</button>
-        <p>Make with <i class="fa-solid fa-heart fa-beat" style="color:#ff0000a3"></i>
-            by <a data-track="author" target="_blank" href="https://github.com/HoangTran0410">Hoang Tran</a>
-        </p>
+      <a data-track="donate" target="_blank" href="https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md" class="badge badge-danger">
+        <i class="fa-solid fa-mug-saucer"></i> donate
+      </a>
+      <a data-track="github" target="_blank" href="https://github.com/HoangTran0410/useful-script" class="badge badge-primary">
+        <i class="fa-solid fa-code"></i> source code
+      </a>
+      <a data-track="fanpage" target="_blank" href="https://www.facebook.com/groups/1154059318582088" class="badge badge-warning">
+        <b><i class="fa-solid fa-arrow-up-right-from-square"></i> Fanpage</b>
+      </a>
+      <br />
+      <span id="version"></span>
+      <button id="update-btn">(update)</button>
     </h3>
+    
 
     <!-- Tab links -->
-    <div class="tab">
-    </div>
+    <div class="tab"></div>
 
     <!-- Tab search -->
     <div class="search">
-        <input type="text" placeholder="Search..." />
-        <span class="searchFound"></span>
+      <input type="text" placeholder="Search..." />
+      <span class="searchFound">scripts</span>
     </div>
 
     <!-- Tab content -->
-    <div class="content">
-    </div>
+    <div class="content"></div>
 
     <!-- language flag -->
-    <img id="flag" src="" alt="" title="Change language">
+    <img id="flag" src="" alt="" title="Change language" />
 
     <!-- modal -->
     <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3 class="modal-title">Modal Title</h3>
-            <div class="modal-body">Some text in the Modal..</div>
-        </div>
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3 class="modal-title">Modal Title</h3>
+        <div class="modal-body">Some text in the Modal..</div>
+      </div>
     </div>
 
     <!-- loading fullscreen -->
     <div id="loading-fullscreen" class="loading-container">
-        <div class="loader"></div>
+      <div class="loader"></div>
     </div>
 
     <script src="main.js"></script>
-</body>
-
+  </body>
 </html>

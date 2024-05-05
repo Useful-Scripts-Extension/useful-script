@@ -1,35 +1,35 @@
 export const CATEGORY = {
   favorite: {
     id: "favorite",
-    style: { textDecoration: "underline" },
+    style: { textDecoration: "none" },
     name: {
-      en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Favorite`,
-      vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Yêu thích`,
+      en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:white"></i> Favorite`,
+      vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:white"></i> Yêu thích`,
     },
   },
   recently: {
     id: "recently",
-    style: { textDecoration: "underline" },
+    style: { textDecoration: "none" },
     name: {
-      en: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Recently`,
-      vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:#1F51FF"></i> Gần đây`,
+      en: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:white"></i> Recently`,
+      vi: `<i class="fa-solid fa-clock fa-spin-pulse" style="color:white"></i> Gần đây`,
     },
   },
   all: {
     id: "all",
-    style: { textDecoration: "underline" },
+    style: { textDecoration: "none" },
     name: {
-      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
-      vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
+      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:white"></i> All scripts`,
+      vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:white"></i> Tất cả`,
     },
   },
   autorun: {
     id: "autorun",
     // showCount: true,
-    style: { textDecoration: "underline" },
+    style: { textDecoration: "none" },
     name: {
-      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Autorun`,
-      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
+      en: `<i class="fa-solid fa-play fa-beat-fade" style="color:white"></i> Autorun`,
+      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:white"></i> Tự động chạy`,
     },
   },
   search: {
@@ -104,10 +104,10 @@ export const CATEGORY = {
   },
   recommend: {
     id: "recommend",
-    style: { textDecoration: "underline" },
+    style: { textDecoration: "none" },
     name: {
-      en: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Recommend`,
-      vi: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:#1F51FF"></i> Khuyên dùng`,
+      en: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:white"></i> Recommend`,
+      vi: `<i class="fa-solid fa-thumbs-up fa-bounce" style="color:white"></i> Khuyên dùng`,
     },
   },
 };

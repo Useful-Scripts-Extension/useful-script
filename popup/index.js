@@ -13,17 +13,8 @@ import {
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { getFlag, t, toggleLang } from "./helpers/lang.js";
 import { openModal } from "./helpers/modal.js";
-import {
-  activeTabIdSaver,
-  favoriteScriptsSaver,
-  recentScriptsSaver,
-} from "./helpers/storage.js";
-import {
-  canAutoRun,
-  canClick,
-  isTitle,
-  viewScriptSource,
-} from "./helpers/utils.js";
+import { activeTabIdSaver, favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+import { canAutoRun, canClick, isTitle, viewScriptSource } from "./helpers/utils.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
@@ -32,6 +23,8 @@ const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
+// let scriptsCount = tab.scripts.filter((_) => !isTitle(_)).length;
+// searchFound.value = scriptsCount + "scripts"
 
 function initLanguage() {
   flagImg.setAttribute("src", getFlag());
@@ -98,18 +91,21 @@ async function openTab(tab) {
   Array.from(document.querySelectorAll(".tablinks")).forEach((_) => {
     _.classList.remove("active");
   });
-  document
-    .querySelector('.tablinks[content-id="' + tab.id + '"]')
-    .classList.add("active");
+  document.querySelector('.tablinks[content-id="' + tab.id + '"]').classList.add("active");
 }
 
 async function createTabContent(tab) {
   // search bar
   let scriptsCount = tab.scripts.filter((_) => !isTitle(_)).length;
+  searchFound.innerText =t({
+    vi:  "Tổng " +  scriptsCount + " chức năng",
+    en: "Total " +  scriptsCount + " scripts",
+  });
   searchInput.value = "";
+  searchFound.value = scriptsCount + " scripts...";
   searchInput.placeholder = t({
-    vi: "Tìm trong " + scriptsCount + " chức năng...",
-    en: "Search in " + scriptsCount + " scripts...",
+    vi: "Tìm chức năng...",
+    en: "Search scripts...",
   });
   searchInput.focus?.();
 
@@ -144,9 +140,21 @@ function createScriptButton(script, isFavorite = false) {
   // Section title
   if (isTitle(script)) {
     const title = document.createElement("h3");
-    title.innerHTML = t(script.name);
-    title.classList.add("section-title");
+    const scriptName = t(script.name);
+    console.log(scriptName);
+    title.innerHTML = scriptName;
+  
+    // Regular expression to check if the script name contains <i> elements
+    const containsIcon = /<i[^>]*>/.test(scriptName);
+  
+    if (!containsIcon) {
+      title.classList.add("section-title");
+    }
 
+    if (containsIcon) {
+      title.classList.add("re-section-title");
+    }
+  
     return title;
   }
 
@@ -340,8 +348,7 @@ async function runScript(script) {
       recentScriptsSaver.add(script);
       trackEvent(script.id);
       if (isFunction(script.onClickExtension)) await script.onClickExtension();
-      if (isFunction(script.onClick))
-        await runScriptInCurrentTab(script.onClick);
+      if (isFunction(script.onClick)) await runScriptInCurrentTab(script.onClick);
       if (isFunction(script.onClickContentScript))
         await sendEventToTab(tab.id, {
           type: MsgType.runScript,
@@ -360,24 +367,21 @@ async function runScript(script) {
         vi: `Script không hỗ trợ website hiện tại (${tab.url})`,
       }),
       t({
-        en:
-          `${w ? `+ Only run at:  ${w}` : ""}<br />` +
-          `${b ? `+ Not run at:  ${b}` : ""}`,
-        vi:
-          `${w ? `+ Chỉ chạy tại:  ${w}` : ""}<br />` +
-          `${b ? `+ Không chạy tại:  ${b}` : ""}`,
+        en: `${w ? `+ Only run at:  ${w}` : ""}<br />` + `${b ? `+ Not run at:  ${b}` : ""}`,
+        vi: `${w ? `+ Chỉ chạy tại:  ${w}` : ""}<br />` + `${b ? `+ Không chạy tại:  ${b}` : ""}`,
       })
     );
   }
 }
 
 function initSearch() {
+  // let scriptsCount = tab.scripts.filter((_) => !isTitle(_)).length;
+  searchFound.innerText =  + "xx"
+
   searchInput.addEventListener("input", (event) => {
     let keyword = event.target.value;
     let found = 0;
-    let childrens = document
-      .querySelector(".tabcontent")
-      .querySelectorAll(".buttonContainer");
+    let childrens = document.querySelector(".tabcontent").querySelectorAll(".buttonContainer");
 
     childrens.forEach((child) => {
       let willShow = true;
@@ -396,9 +400,7 @@ function initSearch() {
       child.style.display = willShow ? "block" : "none";
       if (willShow) found++;
     });
-    searchFound.innerText = keyword
-      ? `${found}/${childrens.length} scripts`
-      : "";
+    searchFound.innerText = keyword ? `${found}/${childrens.length} scripts` : "";
   });
 }
 

@@ -66,8 +66,7 @@ const tabs = [
           en: "The web to find all kinds of music-related data.",
           vi: "Trang web thống kê top trending âm nhạc toàn cầu.",
         },
-        onClickExtension: () =>
-          window.open("https://kworb.net/youtube/trending_music.html"),
+        onClickExtension: () => window.open("https://kworb.net/youtube/trending_music.html"),
       },
       s.search_paperWhere,
       s.search_hopamchuan,
@@ -96,7 +95,7 @@ const tabs = [
   {
     ...CATEGORY.download,
     scripts: [
-      createTitle("--- All in one ---", "--- Tổng hợp ---"),
+      createTitle(" All in one ", " Tổng hợp "),
       s.saveAllVideo,
       s.vuiz_getLink,
       s.savevideo_me,
@@ -115,7 +114,7 @@ const tabs = [
         onClickExtension: () =>
           window.open("https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"),
       }),
-      createTitle("--- Photos ---", "--- Ảnh ---"),
+      createTitle(" Photos ", " Ảnh "),
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
       s.twitter_downloadButton,
@@ -171,17 +170,17 @@ const tabs = [
         },
         BADGES.recommend
       ),
-      createTitle("--- Music ---", "--- Nhạc ---"),
+      createTitle(" Music ", " Nhạc "),
       s.spotify_downloadButton,
       s.soundcloud_downloadMusic,
       s.nhaccuatui_downloader,
       s.zingmp3_downloadMusic,
       s.showTheAudios,
-      createTitle("--- Videos ---", "--- Video ---"),
+      createTitle(" Videos ", " Video "),
       s.download_watchingVideo,
       s.vimeo_downloader,
       s.showTheVideos,
-      createTitle("--- Document ---", "--- Tài liệu ---"),
+      createTitle(" Document ", " Tài liệu "),
       s.bookmark_exporter,
       addBadge(
         {
@@ -212,7 +211,7 @@ const tabs = [
   {
     ...CATEGORY.google,
     scripts: [
-      createTitle("--- Download ---", "--- Tải xuống ---"),
+      createTitle(" Download ", " Tải xuống "),
       s.ggdrive_generateDirectLink,
       s.ggdrive_downloadPdf,
       s.ggdrive_downloadPresentation,
@@ -220,9 +219,9 @@ const tabs = [
       s.ggdrive_copySheetText,
       s.ggdrive_downloadVideo,
       s.google_downloadAllYourData,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      createTitle(" Bulk Download ", " Tải hàng loạt "),
       s.ggDrive_downloadAllVideosInFolder,
-      createTitle("--- More ---", "--- Khác ---"),
+      createTitle(" More ", " Khác "),
       s.search_totalIndexedPages,
       s.search_googleSite,
       s.googleShortcuts,
@@ -233,19 +232,19 @@ const tabs = [
   {
     ...CATEGORY.facebook,
     scripts: [
-      createTitle("--- Download ---", "--- Tải xuống ---"),
+      createTitle(" Download ", " Tải xuống "),
       s.fb_downloadWatchingVideo,
       s.fb_storySaver,
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      createTitle(" Bulk Download ", " Tải hàng loạt "),
       // s.fb_bulkDownload,
       s.fb_downloadAlbumMedia,
       s.fb_downloadWallMediaFromPosts,
       s.fb_getAllAlbumInformation,
       s.fb_openSaved,
       s.fb_exportSaved,
-      createTitle("--- Hot ---", "--- Nổi bật ---"),
+      createTitle(" Hot ", " Nổi bật "),
       s.fb_revealDeletedMessages,
       s.fb_invisible_message,
       s.fb_moreReactionStory,
@@ -253,20 +252,20 @@ const tabs = [
       // s.fb_removeFbclid,
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
-      createTitle("--- Statistic ---", "--- Thống kê ---"),
+      createTitle(" Statistic ", " Thống kê "),
       s.fb_messengerHistory,
       s.fb_messengerCount,
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
       s.fb_fetchAllAddedFriends,
-      createTitle("--- Access Token ---", "--- Access Token ---"),
+      createTitle(" Access Token ", " Access Token "),
       s.fb_checkToken,
       s.fb_getTokenFfb,
       s.fb_getTokenFacebook,
       s.fb_getTokenBussinessLocation,
       // s.fb_getTokenBusinessStudio,
       s.fb_getTokenCampaigns,
-      createTitle("--- Get ID ---", "--- Lấy ID ---"),
+      createTitle(" Get ID ", " Lấy ID "),
       s.fb_getUid,
       s.fb_getPageId,
       s.fb_getGroupId,
@@ -275,7 +274,7 @@ const tabs = [
       s.fb_getUidFromUrl,
       s.fb_getAllUidFromFbSearch,
       s.fb_getAllUidOfGroupMembers,
-      createTitle("--- Shortcut ---", "--- Phím tắt ---"),
+      createTitle(" Shortcut ", " Phím tắt "),
       {
         id: "fb_openMemories",
         icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',
@@ -287,8 +286,7 @@ const tabs = [
           en: "View your memories on facebook",
           vi: "Xem kỷ niệm (memories) của bạn trên facebook",
         },
-        onClickExtension: () =>
-          window.open("https://www.facebook.com/memories/"),
+        onClickExtension: () => window.open("https://www.facebook.com/memories/"),
       },
       {
         id: "fb_openAdsActivities",
@@ -301,8 +299,7 @@ const tabs = [
           en: "View ads you have seen on facebook",
           vi: "Xem các quảng cáo bạn đã xem trên facebook",
         },
-        onClickExtension: () =>
-          window.open("https://www.facebook.com/ads/activity"),
+        onClickExtension: () => window.open("https://www.facebook.com/ads/activity"),
       },
       {
         id: "fb_openAllActivities",
@@ -328,7 +325,7 @@ const tabs = [
       s.insta_getUserInfo,
       s.insta_injectDownloadBtn,
       s.insta_anonymousStoryViewer,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      createTitle(" Bulk Download ", " Tải hàng loạt "),
       s.insta_getAllUserMedia,
     ],
   },
@@ -366,11 +363,11 @@ const tabs = [
   {
     ...CATEGORY.tiktok,
     scripts: [
-      createTitle("--- Tiktok ---", "--- Tiktok ---"),
+      createTitle(" Tiktok ", " Tiktok "),
       s.tiktok_downloadWatchingVideo,
       s.tiktok_downloadVideo,
       s.tiktok_batchDownload,
-      createTitle("--- Douyin ---", "--- Douyin ---"),
+      createTitle(" Douyin ", " Douyin "),
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
       // s.douyin_batchDownload,
@@ -379,7 +376,7 @@ const tabs = [
   {
     ...CATEGORY.automation,
     scripts: [
-      createTitle("--- Utility ---", "--- Tiện ích ---"),
+      createTitle(" Utility ", " Tiện ích "),
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
@@ -396,20 +393,20 @@ const tabs = [
         },
         BADGES.recommend
       ),
-      createTitle("--- Automation ---", "--- Tự động ---"),
+      createTitle(" Automation ", " Tự động "),
       s.scrollToVeryEnd,
       s.screenshotFullPage,
       s.webToPDF,
       s.getAllEmailsInWeb,
       s.dino_hack,
       s.passwordGenerator,
-      createTitle("--- Tools ---", "--- Công cụ ---"),
+      createTitle(" Tools ", " Công cụ "),
       s.send_shareFiles,
       s.textToSpeech,
       s.vuiz_createLogo,
       s.changeAudioOutput,
       s.performanceAnalyzer,
-      createTitle("--- Github ---", "--- Github ---"),
+      createTitle(" Github ", " Github "),
       s.github_goToAnyCommit,
       s.githubdev,
       s.github1s,
@@ -431,7 +428,7 @@ const tabs = [
         },
         BADGES.recommend
       ),
-      createTitle("--- Shopping ---", "--- Mua sắm ---"),
+      createTitle(" Shopping ", " Mua sắm "),
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
       s.shopee_totalSpendMoney_excel,
@@ -449,7 +446,7 @@ const tabs = [
         },
         BADGES.recommend
       ),
-      createTitle("--- PDF ---", "--- PDF ---"),
+      createTitle(" PDF ", " PDF "),
       {
         id: "recommend_fastDoc",
         icon: "https://fastdoc.vn/favicon.png",
@@ -474,8 +471,7 @@ const tabs = [
           en: "Compress PDF, PDF Converter, PPT to PDF, PDF to PPT, JPG to PDF, PDF to JPG, Excel to PDF, PDF to Excel, Edit PDF, PDF Reader, Number Pages, Delete PDF Pages, Rotate PDF, Word to PDF, PDF to Word, Merge PDF, Split PDF, eSign PDF, Unlock PDF, Protect PDF, PDF Scanner",
           vi: "Giảm dung lượng PDF, Chuyển đổi PDF, PPT sang PDF, PDF sang PPT, JPG sang PDF, PDF sang JPG, Excel sang PDF, PDF sang Excel, Chỉnh sửa PDF, Trình đọc PDF, Số trang, Xóa các trang PDF, Xoay PDF, Word sang PDF, PDF sang Word, Ghép PDF, Cắt PDF, Ký tên PDF, Mở khóa PDF, Bảo vệ PDF, Máy quét PDF",
         },
-        onClickExtension: () =>
-          window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
+        onClickExtension: () => window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
       },
       {
         id: "recommend_pdfstuffs",
@@ -495,7 +491,7 @@ const tabs = [
   {
     ...CATEGORY.unlock,
     scripts: [
-      createTitle("--- Unlock web ---", "--- Mở khoá web ---"),
+      createTitle(" Unlock web ", " Mở khoá web "),
       s.removeWebLimit,
       s.duckRace_cheat,
       s.wheelOfNames_hack,
@@ -504,7 +500,7 @@ const tabs = [
       s.scribd_bypassPreview,
       s.studocu_bypassPreview,
       s.studyphim_unlimited,
-      createTitle("--- Unlock function ---", "--- Mở khoá chức năng ---"),
+      createTitle(" Unlock function ", " Mở khoá chức năng "),
       s.detect_zeroWidthCharacters,
       s.injectScriptToWebsite,
       s.simpleAllowCopy,
@@ -512,7 +508,7 @@ const tabs = [
       s.viewCookies,
       s.removeCookies,
       s.viewBrowserInfo,
-      createTitle("--- Other ---", "--- Khác ---"),
+      createTitle(" Other ", " Khác "),
       {
         id: "recommend_viewSavedWifiPass",
         icon: '<i class="fa-solid fa-wifi"></i>',
@@ -524,8 +520,7 @@ const tabs = [
           en: "PowerShell script to view saved wifi passwords on your computer",
           vi: "Powershell script giúp xem mật khẩu wifi đã lưu trên máy tính",
         },
-        infoLink:
-          "https://www.facebook.com/groups/j2team.community/posts/2328915024107271/",
+        infoLink: "https://www.facebook.com/groups/j2team.community/posts/2328915024107271/",
 
         onClickExtension: () => {
           prompt(
@@ -549,8 +544,7 @@ const tabs = [
           en: "Check your password has been leaked on internet or not",
           vi: "Kiểm tra xem mật khẩu email/username của bạn có bị phát tán trên mạng hay không",
         },
-        infoLink:
-          "https://www.facebook.com/groups/j2team.community/posts/2329878560677584/",
+        infoLink: "https://www.facebook.com/groups/j2team.community/posts/2329878560677584/",
         onClickExtension: () => {
           window.open("https://okela.fun/");
         },
@@ -579,7 +573,7 @@ const tabs = [
       s.darkModePDF,
       s.toggleEditPage,
       s.runStatJs,
-      createTitle("--- View ---", "--- Xem ---"),
+      createTitle(" View ", " Xem "),
       s.consoleLog_withTime,
       addBadge(
         {
@@ -607,16 +601,16 @@ const tabs = [
       s.viewStylesUsed,
       s.cssSelectorViewer,
       s.viewPartialSource,
-      createTitle("--- Remove ---", "--- Xoá ---"),
+      createTitle(" Remove ", " Xoá "),
       s.removeColours,
       s.removeStylesheet,
       s.removeImages,
       s.removeBloat,
-      createTitle("--- Table ---", "--- Bảng ---"),
+      createTitle(" Table ", " Bảng "),
       s.table_addSortTable,
       s.table_addNumberColumn,
       s.table_swapRowAndColumn,
-      createTitle("--- More ---", "--- Khác ---"),
+      createTitle(" More ", " Khác "),
       s.internalOrExternalLink,
       s.getWindowSize,
       s.letItSnow,
@@ -627,7 +621,7 @@ const tabs = [
 const recommendTab = {
   ...CATEGORY.recommend,
   scripts: [
-    { name: { en: "--- Same author ---", vi: "--- Cùng tác giả ---" } },
+    { name: { en: " Same author ", vi: " Cùng tác giả " } },
     {
       id: "recommend_LOL2D",
       icon: "https://hoangtran0410.github.io/LOL2D/favicon/apple-touch-icon.png",
@@ -640,8 +634,7 @@ const recommendTab = {
         vi: "Chơi Liên minh huyền thoại ngay trên trình duyệt",
         img: "https://raw.githubusercontent.com/HoangTran0410/LOL2D/main/assets/images/screenshots/Screenshot_4.jpg",
       },
-      onClickExtension: () =>
-        window.open("https://github.com/HoangTran0410/LOL2D"),
+      onClickExtension: () => window.open("https://github.com/HoangTran0410/LOL2D"),
     },
     {
       id: "recommend_RevealDeletedFBMessage",
@@ -665,10 +658,9 @@ const recommendTab = {
         en: "Tool download media from facebook automatic",
         vi: "Công cụ tải ảnh/video từ facebook tự động cực nhanh",
       },
-      onClickExtension: () =>
-        window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
+      onClickExtension: () => window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
     },
-    { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
+    { name: { en: " Extensions ", vi: " Extensions hay " } },
     {
       id: "recommend_CRXViewer",
       icon: "https://lh3.googleusercontent.com/fD5QA80tZj1up43xmnxnxiqKNEq7515-HNtLfjoZlz_I626zxXmjlhKaQPUme_evpCEnN5-U7VnG3VfOcnTPzv_i=w128-h128-e365-rj-sc0x00ffffff",
@@ -777,10 +769,7 @@ function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
   return result;
 }
 
-const allScriptInTabs = [
-  ...tabs.map((tab) => tab.scripts),
-  ...recommendTab.scripts,
-].flat();
+const allScriptInTabs = [...tabs.map((tab) => tab.scripts), ...recommendTab.scripts].flat();
 
 function refreshSpecialTabs() {
   // add data to special tabs
