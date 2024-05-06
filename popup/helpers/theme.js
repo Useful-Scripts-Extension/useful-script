@@ -4,8 +4,12 @@ const cssTag = document.querySelector("link[rel='stylesheet/less']");
 
 export const THEME = {
   default: {
-    vi: "Mặc định",
-    en: "Default",
+    vi: "Sáng",
+    en: "Light",
+  },
+  default_dark: {
+    vi: "Tối",
+    en: "Dark",
   },
   xtr98: "xtr98",
 };

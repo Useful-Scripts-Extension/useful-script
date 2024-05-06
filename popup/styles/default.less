@@ -31,52 +31,6 @@
 @border_color_1: transparent transparent rgb(133, 133, 133) transparent;
 @border_top_color_1: #333;
 
-@keyframes fadeEffect {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes border-fancy {
-    0% {
-        background-position: 0 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    to {
-        background-position: 0 50%;
-    }
-}
-
-@keyframes loading {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-
-
 * {
     font-family: @font_family_1;
     padding: 0;
@@ -84,14 +38,9 @@
     box-sizing: border-box;
 }
 
-html {
-    background-color: @background_color_1;
-    min-width: 370px;
-    min-height: 600px;
-}
-
 body {
     background-color: @background_color_1;
+    color: @color_3;
     min-width: 370px;
     min-height: 600px;
 }
@@ -461,7 +410,7 @@ a {
 
 .modal {
     &.hide {
-        display: none;
+        top: -100vh;
     }
 
     display: block;
@@ -471,17 +420,17 @@ a {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: @background_color_18;
     background-color: @background_color_19;
-    -webkit-backdrop-filter: blur(.1rem);
-    backdrop-filter: blur(.1rem);
+    -webkit-backdrop-filter: blur(.3rem);
+    backdrop-filter: blur(.3rem);
+    transition: all .2s ease;
 
     .content {
         position: relative;
         background-color: @background_color_20;
         margin: 15% auto;
         padding: 20px;
-        border: 1px solid #888;
+        border-radius: 7px;
         width: 90%;
         max-height: 90%;
 
@@ -631,6 +580,49 @@ a {
     }
 }
 
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes border-fancy {
+    0% {
+        background-position: 0 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    to {
+        background-position: 0 50%;
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
 
 &::-webkit-scrollbar {
     width: 7px;

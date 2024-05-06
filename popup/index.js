@@ -376,14 +376,16 @@ async function runScript(script) {
 
     openModal(
       t({
-        en: `Script not supported in current website (${tab.url})`,
-        vi: `Script không hỗ trợ website hiện tại (${tab.url})`,
+        en: `Script not supported in current website`,
+        vi: `Script không hỗ trợ website hiện tại`,
       }),
       t({
         en:
+          `+ Current website:  ${tab.url}<br /><br />` +
           `${w ? `+ Only run at:  ${w}` : ""}<br />` +
           `${b ? `+ Not run at:  ${b}` : ""}`,
         vi:
+          `+ Website hiện tại:  ${tab.url}<br /><br />` +
           `${w ? `+ Chỉ chạy tại:  ${w}` : ""}<br />` +
           `${b ? `+ Không chạy tại:  ${b}` : ""}`,
       })
