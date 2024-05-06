@@ -242,6 +242,9 @@ function createScriptButton(script, isFavorite = false) {
   title.innerHTML = t(script.name);
   button.appendChild(title);
 
+  const more = document.createElement("span");
+  more.classList.add("more");
+
   // what this? button
   if (typeof script.infoLink === "string") {
     const infoBtn = document.createElement("i");
@@ -256,11 +259,8 @@ function createScriptButton(script, isFavorite = false) {
       trackEvent(script.id + "-INFO");
       window.open(script.infoLink);
     };
-    button.appendChild(infoBtn);
+    more.appendChild(infoBtn);
   }
-
-  const more = document.createElement("span");
-  more.classList.add("more");
 
   // add to favorite button
   const addFavoriteBtn = document.createElement("i");
