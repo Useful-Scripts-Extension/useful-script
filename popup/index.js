@@ -26,6 +26,8 @@ import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const cssTag = document.querySelector("link#style");
+const settingsBtn = document.querySelector(".settings");
+const settingsModal = document.querySelector(".settings-modal");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const flagImg = document.querySelector("img#flag");
@@ -402,7 +404,11 @@ function initLanguage() {
   };
 }
 
-function initChangeTheme() {}
+function initSettings() {
+  settingsBtn.onclick = () => {
+    trackEvent("CLICK_SETTINGS");
+  };
+}
 
 function initSearch() {
   searchInput.addEventListener("input", (event) => {
@@ -486,7 +492,8 @@ window.addEventListener("scroll", onScrollEnd);
 
   initTracking();
   initSearch();
-  initLanguage();
+  // initLanguage();
+  initSettings();
   initScrollToTop();
   createTabs();
   restoreScroll();

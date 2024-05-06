@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <!-- <link id="style" rel="stylesheet" href="styles/xtr98.css"> -->
     <link rel="stylesheet/less" type="text/css" href="styles/default.less" />
     <script src="libs/less.js"></script>
 </head>
@@ -49,7 +48,43 @@
     </div>
 
     <!-- language flag -->
-    <img id="flag" src="" alt="" title="Change language">
+    <!-- <img id="flag" src="" alt="" title="Change language"> -->
+
+    <div class="settings" title="Settings">
+        <i class="fa-solid fa-gear fa-lg"></i>
+    </div>
+
+    <div class="modal settings-modal">
+        <div class="content">
+            <h3 class="title">Settings</h3>
+            <div class="body">
+                <span class="close">&times;</span>
+
+                <!-- change language -->
+                <div class="row">
+                    <div class="label">
+                        <i class="fa-solid fa-language fa-lg"></i> Language
+                    </div>
+                    <div class="content">
+                        <img class="flag" src="" alt="" title="Change language" />
+                    </div>
+                </div>
+
+                <!-- change theme -->
+                <div class="row">
+                    <div class="label">
+                        <i class="fa-solid fa-palette fa-lg"></i> Theme
+                    </div>
+                    <div class="content">
+                        <select class="theme">
+                            <option value="default">Default</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- modal -->
     <div id="myModal" class="modal">
@@ -66,6 +101,7 @@
         <div class="loader"></div>
     </div>
 
+    <!-- scroll to top -->
     <div id="scroll-to-top" title="Scroll to top">
         <i class="fa-solid fa-arrow-up fa-lg"></i>
     </div>
