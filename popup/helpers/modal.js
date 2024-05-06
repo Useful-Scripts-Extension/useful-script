@@ -6,13 +6,13 @@ const modalBody = modal.querySelector(".body");
 function initModal() {
   // When the user clicks on <span> (x), close the modal
   closeModalBtn.onclick = function () {
-    modal.classList.toggle("show", false);
+    modal.classList.toggle("hide", true);
   };
 
   // When the user clicks anywhere outside of the modal, close it
   window.addEventListener("click", function (event) {
     if (event.target == modal) {
-      modal.classList.toggle("show", false);
+      modal.classList.toggle("hide", true);
     }
   });
 }
@@ -25,7 +25,7 @@ export function openModal(title, body) {
     modalBody.innerHTML = "";
     modalBody.appendChild(body);
   }
-  modal.classList.toggle("show", true);
+  modal.classList.toggle("hide", false);
 }
 
 (() => {

@@ -49,6 +49,7 @@ const createScriptsSaver = (key, addToHead = true) => {
   return { add, remove, has, toggle, clear, getIds, get };
 };
 
+export const themeSaver = createVariableSaver("useful-scripts-theme");
 export const langSaver = createVariableSaver("useful-scripts-lang");
 export const activeTabIdSaver = createVariableSaver(
   "useful-scripts-activeTabId"

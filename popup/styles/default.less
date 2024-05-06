@@ -136,20 +136,32 @@ a {
     }
 }
 
-.settings-modal {
-    &.hide {
-        display: none;
-    }
+.settings-body {
+    .row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    display: flex;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: max-content;
-    background-color: white;
-    z-index: 5;
+        .label {
+            flex-grow: 1;
+        }
+
+        .right-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                width: 40px;
+                margin: 0 5px;
+            }
+        }
+
+        select {
+            padding: 5px;
+        }
+
+    }
 }
 
 #update-btn {
@@ -190,10 +202,10 @@ a {
         background-color: @background_color_3;
         transform: scale(1.1);
     }
-}
 
-#scroll-to-top.hide {
-    right: -100px;
+    &.hide {
+        right: -100px;
+    }
 }
 
 .popup-header {
@@ -283,10 +295,10 @@ a {
     .buttonContainer {
         display: flex;
         align-items: center;
-    }
 
-    .buttonContainer.hide {
-        display: none;
+        &.hide {
+            display: none;
+        }
     }
 
     button {
@@ -372,24 +384,24 @@ a {
         &:hover {
             background-color: @background_color_15;
         }
-    }
 
-    .checkmark.active {
-        background-color: @background_color_16;
+        &.active {
+            background-color: @background_color_16;
 
-        &:after {
-            content: "";
-            position: absolute;
-            display: block;
-            left: 8px;
-            top: 4px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 3px 3px 0;
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
+            &:after {
+                content: "";
+                position: absolute;
+                display: block;
+                left: 8px;
+                top: 4px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 3px 3px 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+            }
         }
     }
 }
@@ -448,7 +460,11 @@ a {
 }
 
 .modal {
-    display: none;
+    &.hide {
+        display: none;
+    }
+
+    display: block;
     position: fixed;
     z-index: 4;
     left: 0;
@@ -459,11 +475,6 @@ a {
     background-color: @background_color_19;
     -webkit-backdrop-filter: blur(.1rem);
     backdrop-filter: blur(.1rem);
-
-
-    &.show {
-        display: block;
-    }
 
     .content {
         position: relative;

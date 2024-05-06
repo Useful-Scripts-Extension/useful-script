@@ -9,13 +9,21 @@ import {
   debounce,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
-import { getFlag, t, toggleLang } from "./helpers/lang.js";
+import {
+  LANG,
+  LANG_KEY,
+  getFlag,
+  getLang,
+  setLang,
+  t,
+} from "./helpers/lang.js";
 import { openModal } from "./helpers/modal.js";
 import {
   activeTabIdSaver,
   favoriteScriptsSaver,
   recentScriptsSaver,
 } from "./helpers/storage.js";
+import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
 import {
   canAutoRun,
   canClick,
@@ -30,7 +38,6 @@ const settingsBtn = document.querySelector(".settings");
 const settingsModal = document.querySelector(".settings-modal");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
-const flagImg = document.querySelector("img#flag");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 const scrollToTopBtn = document.querySelector("#scroll-to-top");
@@ -389,24 +396,80 @@ async function runScript(script) {
 // ======================== Others ========================
 // ========================================================
 // #region others
-function initLanguage() {
-  flagImg.setAttribute("src", getFlag());
-
-  flagImg.onclick = () => {
-    let newLang = toggleLang();
-    flagImg.setAttribute("src", getFlag());
-
-    trackEvent("CHANGE-LANGUAGE-" + newLang);
-
-    // reset UI
-    createTabs();
-    checkForUpdate();
-  };
-}
 
 function initSettings() {
   settingsBtn.onclick = () => {
     trackEvent("CLICK_SETTINGS");
+
+    const body = document.createElement("div");
+    body.classList.add("settings-body");
+
+    // select language
+    const langRow = document.createElement("div");
+    const curLang = getLang();
+    langRow.innerHTML = `
+      <div class="row">
+        <div class="label">${t({ en: "Language", vi: "Ngôn ngữ" })}</div>
+        <div class="right-container">
+          <img src="${getFlag(curLang)}" />
+          <select class="select">
+          ${LANG_KEY.map(
+            (key) =>
+              `<option value="${key}" ${key === curLang ? "selected" : ""}>
+                  ${LANG[key]}
+                </option>`
+          ).join("")}
+          </select>
+        </div>
+      </div>
+    `;
+    const select = langRow.querySelector(".select");
+    const flag = langRow.querySelector("img");
+    select.onchange = (event) => {
+      let newLang = event.target.value;
+      trackEvent("CHANGE-LANGUAGE-" + newLang);
+      setLang(newLang);
+
+      // reset UI
+      flag.setAttribute("src", getFlag());
+      createTabs();
+      checkForUpdate();
+    };
+    body.appendChild(langRow);
+
+    // select themes
+    let curTheme = getTheme();
+    const themeRow = document.createElement("div");
+    themeRow.innerHTML = `
+      <div class="row">
+        <div class="label">${t({ en: "Theme", vi: "Chủ đề" })}</div>
+        <div class="right-container">
+          <select class="select">
+            ${THEME_KEY.map((key) => {
+              let selected = key === curTheme ? "selected" : "";
+              return `<option value="${key}" ${selected}>
+                ${t(THEME[key])}
+              </option>`;
+            })}
+          </select>
+        </div>
+      </div>
+    `;
+    const selectTheme = themeRow.querySelector(".select");
+    selectTheme.onchange = (event) => {
+      let newTheme = event.target.value;
+      trackEvent("CHANGE-THEME-" + newTheme);
+      setTheme(newTheme);
+    };
+    body.appendChild(themeRow);
+
+    openModal(
+      t({
+        en: "Settings",
+        vi: "Cài đặt",
+      }),
+      body
+    );
   };
 }
 

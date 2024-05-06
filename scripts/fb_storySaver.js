@@ -1,12 +1,12 @@
 export default {
   icon: "https://lh3.googleusercontent.com/e8gqesNOLhN-0xivFcaAlwGaoftfxEJcZXcXJ1F2bhoqrozs3mCYgLhPC0qJ9izdGYRnHwfXegimH9fjj3IBwlby9ZA=w128-h128-e365-rj-sc0x00ffffff",
   name: {
-    en: "Download watching fb Story",
-    vi: "Tải Story fb đang xem",
+    en: "Download watching fb Story/Comment",
+    vi: "Tải Story/Comment fb đang xem",
   },
   description: {
-    en: "Download facebook story that you are watching",
-    vi: "Tải facebook story bạn đang xem",
+    en: "Download facebook story / comment video that you are watching",
+    vi: "Tải facebook story / video bình luận bạn đang xem",
   },
 
   pageScript: {
