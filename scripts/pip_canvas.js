@@ -33,7 +33,7 @@ export default {
       }
 
       function leavePIP() {
-        document.exitPictureInPicture();
+        if (document.pictureInPictureElement) document.exitPictureInPicture();
         window.ufs_pip_fullWebsite.isPIP = false;
         window.ufs_pip_fullWebsite.video?.remove?.();
         window.ufs_pip_fullWebsite.stream
