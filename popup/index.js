@@ -381,13 +381,11 @@ async function runScript(script) {
       }),
       t({
         en:
-          `+ Current website:  ${tab.url}<br /><br />` +
-          `${w ? `+ Only run at:  ${w}` : ""}<br />` +
-          `${b ? `+ Not run at:  ${b}` : ""}`,
+          `${w ? `+ Only run at:  <i>${w}</i>` : ""}<br />` +
+          `${b ? `+ Not run at:  <i>${b}</i>` : ""}`,
         vi:
-          `+ Website hiện tại:  ${tab.url}<br /><br />` +
-          `${w ? `+ Chỉ chạy tại:  ${w}` : ""}<br />` +
-          `${b ? `+ Không chạy tại:  ${b}` : ""}`,
+          `${w ? `+ Chỉ chạy tại:  <i>${w}</i>` : ""}<br />` +
+          `${b ? `+ Không chạy tại:  <i>${b}</i>` : ""}`,
       })
     );
   }
@@ -426,29 +424,40 @@ function initSettings() {
       </div>
     `;
     const select = langRow.querySelector(".select");
-    const flag = langRow.querySelector("img");
     select.onchange = (event) => {
       let newLang = event.target.value;
       trackEvent("CHANGE-LANGUAGE-" + newLang);
       setLang(newLang);
 
       // reset UI
-      flag.setAttribute("src", getFlag());
       createTabs();
       checkForUpdate();
+
+      // re-open setting modal
+      settingsBtn.click();
     };
     body.appendChild(langRow);
 
     // select themes
-    let curTheme = getTheme();
+    let curThemeKey = getTheme();
+    let curThem = THEME[curThemeKey];
     const themeRow = document.createElement("div");
+    const author = curThem?.author
+      ? `<a target="_blank" href="${curThem.author.link}" title="${t({
+          vi: "Tác giả",
+          en: "Author",
+        })}">
+        <img src="${curThem.author.avatar}" class="avatar" />
+      </a>`
+      : "";
     themeRow.innerHTML = `
       <div class="row">
         <div class="label">${t({ en: "Theme", vi: "Chủ đề" })}</div>
         <div class="right-container">
+          ${author}
           <select class="select">
             ${THEME_KEY.map((key) => {
-              let selected = key === curTheme ? "selected" : "";
+              let selected = key === curThemeKey ? "selected" : "";
               return `<option value="${key}" ${selected}>
                 ${t(THEME[key])}
               </option>`;
@@ -462,6 +471,9 @@ function initSettings() {
       let newTheme = event.target.value;
       trackEvent("CHANGE-THEME-" + newTheme);
       setTheme(newTheme);
+
+      // re-open setting modal
+      settingsBtn.click();
     };
     body.appendChild(themeRow);
 
@@ -522,15 +534,15 @@ function initScrollToTop() {
     });
   });
 
-  window.addEventListener("scroll", () => {
-    scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
-  });
+  // window.addEventListener("scroll", () => {
+  //   scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
+  // });
 }
 
 function saveScroll() {
   const scrollY = document.body.scrollTop;
   chrome.storage.local.set({ popupScrollY: scrollY }, () => {
-    console.log("Scroll position saved");
+    // console.log("Scroll position saved");
   });
 }
 
@@ -545,8 +557,8 @@ function restoreScroll() {
 }
 
 const onScrollEnd = debounce(() => {
-  console.log("Scrolling stopped!");
   saveScroll();
+  scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
 }, 100);
 
 window.addEventListener("scroll", onScrollEnd);
@@ -557,7 +569,6 @@ window.addEventListener("scroll", onScrollEnd);
 
   initTracking();
   initSearch();
-  // initLanguage();
   initSettings();
   initScrollToTop();
   createTabs();
