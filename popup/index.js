@@ -176,13 +176,24 @@ function createScriptButton(script, isFavorite = false) {
   if (canClick(script)) {
     button.onclick = () => runScript(script);
   } else if (canAutoRun(script)) {
-    button.onclick = () =>
-      alert(
+    button.onclick = () => {
+      openModal(
         t({
-          vi: "Chức năng này tự động chạy.\nTắt/Mở tự chạy bằng nút bên trái.\nSau đó tải lại trang web.",
-          en: "This function is Autorun.\nTurn on/off autorun by click the left checkmark.\nThen reload the webpage.",
+          vi: "Chức năng này Tự động chạy",
+          en: "This function is Autorun",
+        }),
+        t({
+          vi: `<ul>
+            <li>- Tắt/Mở tự chạy bằng cách tích chọn ô bên trái. </li>
+            <li>- Sau đó tải lại trang web. </li>
+          </ul>`,
+          en: `<ul>
+            <li>- Turn on/off autorun by click the left checkmark. </li>
+            <li>- Then reload the webpage. </li>
+          `,
         })
       );
+    };
   } else {
     button.onclick = () =>
       alert(

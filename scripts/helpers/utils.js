@@ -495,29 +495,6 @@ export function showLoading(text = "") {
   };
 }
 
-export function showPopup(title = "", innerHTML = "") {
-  let html = /*html*/ `<div class="popup-container">
-    <div class="popup-inner-container">
-        <button class="close-btn">X</button>
-        <h2 style="text-align: center; margin-bottom:10px">${title}</h2>
-        ${innerHTML}
-    </div>
-  </div>`;
-  let div = document.createElement("div");
-  div.innerHTML = html;
-  document.body.appendChild(div);
-
-  document
-    .querySelector(".popup-container .close-btn")
-    ?.addEventListener?.("click", () => {
-      div?.remove?.();
-    });
-
-  return {
-    closePopup: () => div?.remove?.(),
-  };
-}
-
 export function openPopupWithHtml(html, width = 300, height = 300) {
   let win = window.open(
     "",

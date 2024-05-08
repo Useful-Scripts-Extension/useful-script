@@ -80,7 +80,6 @@ import unshorten from "./unshorten.js";
 import screenshotFullPage from "./screenshotFullPage.js";
 import visualEvent from "./visualEvent.js";
 import fb_videoDownloader from "./fb_videoDownloader.js";
-import viewBrowserInfo from "./viewBrowserInfo.js";
 import douyin_downloadWachingVideo from "./douyin_downloadWachingVideo.js";
 import douyin_downloadAllVideoUser from "./douyin_downloadAllVideoUser.js";
 import showTheVideos from "./showTheVideos.js";
@@ -247,7 +246,6 @@ const allScripts = {
   screenshotFullPage: screenshotFullPage,
   visualEvent: visualEvent,
   fb_videoDownloader: fb_videoDownloader,
-  viewBrowserInfo: viewBrowserInfo,
   douyin_downloadWachingVideo: addBadge(
     douyin_downloadWachingVideo,
     BADGES.beta

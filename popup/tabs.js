@@ -623,7 +623,6 @@ const tabs = [
       s.showHiddenFields,
       s.viewCookies,
       s.removeCookies,
-      s.viewBrowserInfo,
       createTitle("--- Other ---", "--- Khác ---"),
       {
         id: "recommend_viewSavedWifiPass",
