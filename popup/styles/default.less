@@ -2,7 +2,6 @@
 @bg_body: #e6e6e6;
 @color_body: #333;
 @color_highlight: #0048ad;
-@color_loading_text: white;
 @color_modal_close_btn: #aaa;
 @color_modal_close_btn_hover: black;
 @bg_link: #ddd;
@@ -10,6 +9,7 @@
 @bg_update: #009e00;
 @bg_update_hover: #00c200;
 @bg_scrolltop: #9c9c9c;
+@color_scrolltop: #fff;
 @bg_tab: #cccccc;
 @bg_tab_btn: #cccccc;
 @bg_tab_btn_hover: #9e9e9e;
@@ -30,7 +30,8 @@
 @bg_modal: #fefefe;
 @border_tooltip: transparent transparent rgb(133, 133, 133) transparent;
 @border_change_logs: white;
-@bg_loading_fullscreen: #e8e8e8db;
+@bg_loading_fullscreen: #444444a6;
+@color_loading_text: #eee;
 @border_loading: #3498db;
 @border_loading_bg: white;
 @bg_scrollbar: #888;
@@ -38,7 +39,6 @@
 
 * {
     font-family: @font_family_1;
-    padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
@@ -162,12 +162,15 @@ option {
     align-items: center;
     border: none;
     border-radius: 50%;
-    color: @bg_body;
     background-color: @bg_scrolltop;
     font-weight: bold;
     cursor: pointer;
     transition: all .2s ease;
     z-index: 4;
+
+    i {
+        color: @color_scrolltop;
+    }
 
     &:hover {
         background-color: @bg_link_hover;
@@ -206,6 +209,7 @@ option {
         transition: 0.3s;
         width: 33%;
         text-align: left;
+        border-radius: 5px;
 
         &:hover {
             background-color: @bg_tab_btn_hover;
@@ -231,6 +235,7 @@ option {
         text-align: center;
         background-color: @bg_inp_search;
         width: 100%;
+        border-radius: 5px;
     }
 
     .searchFound {
@@ -279,6 +284,10 @@ option {
         padding: 0.75em 1em;
         background-color: @bg_script_btn;
         transition: all 200ms;
+        width: 100%;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
 
         &:hover {
             background-color: @bg_script_btn_hover;
@@ -313,6 +322,7 @@ option {
 
         .btn-title {
             vertical-align: middle;
+            flex: 1;
         }
 
         .icon-img {
@@ -331,8 +341,8 @@ option {
         .badgeContainer {
             position: absolute;
             top: 0;
-            right: 0;
-            transform: translateX(50%) translateY(-40%);
+            right: 5px;
+            transform: translateY(-40%);
             border-radius: 3px;
             overflow: hidden;
         }
@@ -420,6 +430,10 @@ option {
             font-style: italic;
             padding: 5px;
             margin-top: 5px;
+
+            li {
+                color: inherit;
+            }
         }
     }
 
@@ -506,8 +520,8 @@ option {
     justify-content: center;
     align-items: center;
     z-index: 5;
-    -webkit-backdrop-filter: blur(.1rem);
-    backdrop-filter: blur(.1rem);
+    -webkit-backdrop-filter: blur(.4rem);
+    backdrop-filter: blur(.4rem);
 
     .text {
         color: @color_loading_text;
