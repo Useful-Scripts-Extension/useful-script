@@ -311,7 +311,7 @@ export default {
             "style",
             "cursor: pointer;margin-left: " +
               marginLeft +
-              ";margin-top: 8px;z-index: 999;"
+              ";margin-top: 8px;z-index: 999;position: relative;"
           );
           newBtn.onclick = onClickHandler;
           if (hoverToFetchAndAttachLink) newBtn.onmouseenter = onMouseInHandler;

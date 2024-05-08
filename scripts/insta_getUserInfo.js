@@ -1,4 +1,5 @@
 import { showLoading } from "./helpers/utils.js";
+import { t } from "../popup/helpers/lang.js";
 
 export default {
   icon: "https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png",
@@ -50,23 +51,29 @@ export default {
       `;
       }
 
-      let txt = prompt("Nhập username của người muốn xem thông tin:");
+      let txt = prompt(
+        t({
+          vi: "Nhập username của người muốn xem thông tin:",
+          en: "Enter username to get user info:",
+        })
+      );
       if (txt) {
         const { setLoadingText, closeLoading } = showLoading(
-          "Đang lấy thông tin của " + txt
+          t({
+            vi: "Đang lấy thông tin của " + txt,
+            en: "Getting user info of " + txt,
+          })
         );
         try {
-          // https://stackoverflow.com/a/52808289/11898496
-          let res = await fetch(
-            "https://www.instagram.com/web/search/topsearch/?query=" + txt
-          );
-          let json = await res.json();
-          if (json.status != "ok") throw Error("Server trả về lỗi");
-          console.log(json);
-
+          const json = await UfsGlobal.Instagram.getInstaUserInfo(txt);
           const { users, places, hashtags } = json;
           if (!users?.length)
-            return alert("Không tìm thấy user với tên " + txt);
+            return alert(
+              t({
+                vi: "Không tìm thấy user với tên " + txt,
+                en: "User not found with name " + txt,
+              })
+            );
 
           let win = window.open(
             "",
@@ -122,7 +129,7 @@ export default {
           </style>
         `;
         } catch (e) {
-          alert("Lỗi " + e);
+          alert("Error " + e);
         } finally {
           closeLoading();
         }
@@ -132,6 +139,18 @@ export default {
 };
 
 function backup() {
+  // fetch(
+  //   "https://i.instagram.com/api/v1/users/web_profile_info/?username=hoangtran_hihi",
+  //   {
+  //     headers: {
+  //       "x-asbd-id": "198387",
+  //       "x-ig-app-id": "936619743392459",
+  //     },
+  //   }
+  // )
+  //   .then((res) => res.json())
+  //   .then(console.log);
+
   // https://stackoverflow.com/a/38209893/11898496
   const { fbid, id, full_name, usename, profile_pic_url, profile_pic_url_hd } =
     window._sharedData.config.viewer;

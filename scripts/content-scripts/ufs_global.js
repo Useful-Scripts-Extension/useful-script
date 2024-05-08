@@ -1615,7 +1615,7 @@
         () => require("DTSG").getToken(),
         () => {
           return document.documentElement.innerHTML.match(
-            /"DTSGInitialData",\[],{"token":"(.+?)"/gm
+            /"DTSGInitialData",\[],{"token":"(.+?)"/
           )[1];
         },
         async () => {
@@ -2125,6 +2125,111 @@
         console.log("ERROR search all group for other", e);
       }
       return allGroups;
+    },
+  };
+  UfsGlobal.Instagram = {
+    async getInstaUserInfo(username) {
+      let res = await fetch(
+        "https://www.instagram.com/web/search/topsearch/?query=" + username
+      );
+      let json = await res.json();
+      if (json.status != "ok")
+        throw Error(
+          t({ vi: "Server trả về lỗi", en: "Server response error" })
+        );
+      console.log(json);
+      return json;
+    },
+    async getUidFromUsername(username) {
+      let json = await UfsGlobal.Instagram.getInstaUserInfo(username);
+      console.log(json);
+      let firstUser = json?.users[0]?.user || {};
+      if (firstUser.username != username) return null;
+      return firstUser.pk;
+    },
+    getCrftoken() {
+      try {
+        return document.cookie
+          .split("; ")
+          .find((_) => _.startsWith("csrftoken"))
+          .split("=")[1];
+      } catch (e) {
+        console.log("ERROR getCrftoken: ", e);
+        return null;
+      }
+    },
+    CACHED: {
+      followers: {
+        hash: "37479f2b8209594dde7facb0d904896a",
+        edge: "edge_followed_by",
+      },
+      following: {
+        hash: "58712303d941c6855d4e888c5f0cd22f",
+        edge: "edge_follow",
+      },
+    },
+    async getAllFollow({ type, uid, csrftoken, progressCallback, limit = 0 }) {
+      if (!(type in UfsGlobal.Instagram.CACHED))
+        throw Error(`Invalid type: ${type}`);
+
+      async function _getFollow(uid, end_cursor) {
+        let url = new URL("https://www.instagram.com/graphql/query/");
+        Object.entries({
+          query_hash: UfsGlobal.Instagram.CACHED[type].hash,
+          variables: JSON.stringify({
+            id: uid,
+            after: end_cursor || "",
+            first: 50,
+          }),
+        }).forEach(([k, v]) => url.searchParams.append(k, v));
+
+        let res = await fetch(url, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": csrftoken,
+            "x-requested-with": "XMLHttpRequest",
+            "x-instagram-ajax": 1,
+          },
+        });
+        return await res.json();
+      }
+
+      let cursor = "";
+      let total = 0;
+      let users = [];
+      while (true) {
+        try {
+          let json = await _getFollow(uid, cursor);
+          let {
+            edges = [],
+            count = 0,
+            page_info,
+          } = json?.data?.user?.[UfsGlobal.Instagram.CACHED[type].edge] || {};
+
+          if (!total) total = limit <= 0 ? count : Math.min(count, limit);
+
+          edges.forEach((e) => users.push(e.node));
+
+          progressCallback?.({
+            total,
+            current: users.length,
+            data: users,
+          });
+
+          if (
+            !page_info?.has_next_page ||
+            !edges.length ||
+            (limit > 0 && users.length >= limit)
+          )
+            break;
+          cursor = page_info?.end_cursor || "";
+        } catch (e) {
+          console.log("ERROR", e);
+          break;
+        }
+      }
+
+      return users;
     },
   };
   UfsGlobal.Tiktok = {

@@ -161,6 +161,7 @@ import pip_canvas from "./pip_canvas.js";
 import researchGate_downloader from "./researchGate_downloader.js";
 import fb_searchPostsForOther from "./fb_searchPostsForOther.js";
 import toggle_passwordField from "./toggle_passwordField.js";
+import insta_getFollowForOther from "./insta_getFollowForOther.js";
 
 // inject badges
 const allScripts = {
@@ -338,6 +339,7 @@ const allScripts = {
   researchGate_downloader: addBadge(researchGate_downloader, BADGES.new),
   fb_searchPostsForOther: addBadge(fb_searchPostsForOther, BADGES.new),
   toggle_passwordField: addBadge(toggle_passwordField, BADGES.new),
+  insta_getFollowForOther: addBadge(insta_getFollowForOther, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

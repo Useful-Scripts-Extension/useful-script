@@ -371,6 +371,7 @@ const tabs = [
       s.insta_anonymousStoryViewer,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.insta_getAllUserMedia,
+      s.insta_getFollowForOther,
     ],
   },
   {

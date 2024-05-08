@@ -186,12 +186,12 @@ function createScriptButton(script, isFavorite = false) {
         }),
         t({
           vi: `<ul>
-            <li>- Tắt/Mở tự chạy bằng cách tích chọn ô bên trái. </li>
-            <li>- Sau đó tải lại trang web. </li>
+            <li>Tắt/Mở tự chạy bằng cách tích chọn ô bên trái. </li>
+            <li>Sau đó tải lại trang web. </li>
           </ul>`,
           en: `<ul>
-            <li>- Turn on/off autorun by click the left checkmark. </li>
-            <li>- Then reload the webpage. </li>
+            <li>Turn on/off autorun by click the left checkmark. </li>
+            <li>Then reload the webpage. </li>
           `,
         })
       );
@@ -320,8 +320,8 @@ function createScriptButton(script, isFavorite = false) {
     }
     tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
   }
-  more.appendChild(tooltip);
   button.appendChild(more);
+  button.appendChild(tooltip);
 
   buttonContainer.appendChild(button);
   return buttonContainer;
