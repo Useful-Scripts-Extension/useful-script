@@ -339,6 +339,10 @@ option {
 
         .badge {
             padding: 5px;
+
+            i {
+                color: inherit;
+            }
         }
     }
 
@@ -434,7 +438,9 @@ option {
         top: -100vh;
     }
 
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 4;
     left: 0;
