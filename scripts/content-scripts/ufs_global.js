@@ -1937,7 +1937,35 @@
     // Messages
     async messagesCount(fb_dtsg) {
       return await UfsGlobal.Facebook.fetchGraphQl(
-        "viewer(){message_threads{count,nodes{customization_info{emoji,outgoing_bubble_color,participant_customizations{participant_id,nickname}},all_participants{nodes{messaging_actor{name,id,profile_picture}}},thread_type,name,messages_count,image,id}}}",
+        `viewer(){
+          message_threads {
+            count,
+            nodes {
+              customization_info {
+                emoji,
+                outgoing_bubble_color,
+                participant_customizations {
+                  participant_id,
+                  nickname
+                }
+              },
+              all_participants {
+                nodes {
+                  messaging_actor {
+                    name,
+                    id,
+                    profile_picture
+                  }
+                }
+              },
+              thread_type,
+              name,
+              messages_count,
+              image,
+              id
+            }
+          }
+        }`.replace(/\s+/g, ""),
         fb_dtsg
       );
     },
