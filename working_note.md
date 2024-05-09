@@ -2,13 +2,15 @@
 
 ## 28/04/2024 - ~
 
-- [ ] theme selector for popup extension
+- [ ] Tự động kết bạn <https://chromewebstore.google.com/detail/hifb-auto-k%E1%BA%BFt-b%E1%BA%A1n-%C4%91%E1%BB%8Ba-ph%C6%B0/mjgfhahcmnbbmolopombeaklmdnakmml>
+
+- [x] theme selector for popup extension
 
 - [x] scroll to top popup extension
 
 - [ ] optimize UfsGlbal
 
-- [ ] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks>
+- [x] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks> => Not interested
 
 - [ ] call js function from url <https://stackoverflow.com/a/8466513/23648002>
 

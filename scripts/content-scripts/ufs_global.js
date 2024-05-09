@@ -1698,18 +1698,32 @@
       };
     },
     async getUserInfo(uid, access_token) {
-      var n =
-        "https://graph.facebook.com/" +
-        encodeURIComponent(uid) +
-        "/?fields=name,picture&access_token=" +
-        access_token;
+      let fields = [
+        "birthday",
+        "age_range",
+        "email",
+        "gender",
+        "hometown",
+        "languages",
+        "last_name",
+        "first_name",
+        "location",
+        "link",
+        "middle_name",
+        "name",
+        "short_name",
+        "picture",
+      ].join(",");
+      var n = `https://graph.facebook.com/${uid}/?fields=${fields}&access_token=${access_token}`;
       const e = await fetch(n);
       let json = await e.json();
+      console.log(json);
 
       return {
         uid: uid,
         name: json?.name,
         avatar: json?.picture?.data?.url,
+        gender: json?.gender,
       };
     },
     async getUidFromUrl(url) {
@@ -2156,6 +2170,68 @@
     },
   };
   UfsGlobal.Instagram = {
+    CACHED: {
+      followers: {
+        hash: "37479f2b8209594dde7facb0d904896a",
+        edge: "edge_followed_by",
+      },
+      following: {
+        hash: "58712303d941c6855d4e888c5f0cd22f",
+        edge: "edge_follow",
+      },
+    },
+    getBiggestMediaFromNode(node) {
+      if (node.is_video) {
+        return UfsGlobal.Instagram.getUniversalCdnUrl(node.video_url);
+      } else {
+        let r = node.display_resources;
+        return r[r.length - 1]?.src;
+      }
+    },
+    getUniversalCdnUrl(cdnLink) {
+      const cdn = new URL(cdnLink);
+      cdn.host = "scontent.cdninstagram.com";
+      return cdn.href;
+    },
+    async getAllMedia({ uid, progressCallback, limit = 0 }) {
+      let all_urls = [];
+      let after = "";
+      while (true) {
+        let data = await fetch(
+          `https://www.instagram.com/graphql/query/?query_hash=396983faee97f4b49ccbe105b4daf7a0&variables={"id":"${uid}","first":50,"after":"${after}"}`
+        );
+        let json = await data.json();
+        console.log(json);
+        let edges = json?.data?.user?.edge_owner_to_timeline_media?.edges || [];
+
+        let urls = [];
+        edges.forEach((e) => {
+          let childs = e.node?.edge_sidecar_to_children?.edges;
+          if (childs) {
+            urls.push(
+              ...childs.map((c) =>
+                UfsGlobal.Instagram.getBiggestMediaFromNode(c.node)
+              )
+            );
+          } else {
+            urls.push(UfsGlobal.Instagram.getBiggestMediaFromNode(e.node));
+          }
+        });
+        all_urls.push(...urls);
+        progressCallback?.({
+          current: all_urls.length,
+          data: all_urls,
+        });
+
+        let pageInfo =
+          json?.data?.user?.edge_owner_to_timeline_media?.page_info;
+        if (!pageInfo?.has_next_page || (limit > 0 && all_urls.length >= limit))
+          break;
+        after = pageInfo?.end_cursor;
+      }
+
+      return all_urls;
+    },
     async getInstaUserInfo(username) {
       let res = await fetch(
         "https://www.instagram.com/web/search/topsearch/?query=" + username
@@ -2185,16 +2261,6 @@
         console.log("ERROR getCrftoken: ", e);
         return null;
       }
-    },
-    CACHED: {
-      followers: {
-        hash: "37479f2b8209594dde7facb0d904896a",
-        edge: "edge_followed_by",
-      },
-      following: {
-        hash: "58712303d941c6855d4e888c5f0cd22f",
-        edge: "edge_follow",
-      },
     },
     async getAllFollow({ type, uid, csrftoken, progressCallback, limit = 0 }) {
       if (!(type in UfsGlobal.Instagram.CACHED))

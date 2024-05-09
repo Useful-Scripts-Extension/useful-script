@@ -44,6 +44,9 @@ export default {
             }
           }
         };
+        xhr.onerror = function () {
+          alert("Failed to Get Access Token.");
+        };
         xhr.send(params);
       } catch (e) {
         alert("ERROR: " + e);

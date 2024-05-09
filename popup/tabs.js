@@ -345,7 +345,7 @@ const tabs = [
       },
       {
         id: "fb_openAllActivities",
-        icon: '<i class="fa-solid fa-eye"></i>',
+        icon: '<i class="fa-solid fa-eye fa-lg"></i>',
         name: {
           en: "Check your activities on Facebook",
           vi: "Xem nhật ký hoạt động trên facebook",
@@ -359,6 +359,22 @@ const tabs = [
             window.open(
               "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
             ),
+        },
+      },
+      {
+        id: "fb_changeLanguage",
+        icon: '<i class="fa-solid fa-language fa-lg"></i>',
+        name: {
+          en: "Change language Facebook",
+          vi: "Đổi ngôn ngữ Facebook",
+        },
+        description: {
+          en: "Change display language on facebook",
+          vi: "Đổi ngôn ngữ hiển thị trên facebook",
+        },
+        popupScript: {
+          onClick: () =>
+            window.open("https://www.facebook.com/settings/?tab=language"),
         },
       },
     ],
