@@ -275,7 +275,7 @@ const tabs = [
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
-      // s.fb_bulkDownload,
+      s.fb_bulkDownload,
       s.fb_downloadAlbumMedia,
       s.fb_downloadWallMediaFromPosts,
       s.fb_getAllAlbumInformation,
