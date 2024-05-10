@@ -65,14 +65,6 @@ export default {
 
     onClick: () => {},
   },
-
-  // run in extension's background context (service-worker)
-  backgroundScript: {
-    webNavigation: {
-      onBeforeNavigate: () => {},
-      onCommitted: () => {},
-    },
-  },
 };
 
 // functions/attributes that other scripts can import and use

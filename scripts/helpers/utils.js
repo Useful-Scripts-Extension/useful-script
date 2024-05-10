@@ -141,7 +141,7 @@ export async function setActiveScript(scriptId, isActive = true) {
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
   // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
-  chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
+  Storage.set(listActiveScriptsKey, list); // save to storage => content script can access
   return list;
 }
 
@@ -150,12 +150,8 @@ export async function isActiveScript(scriptId) {
   return currentList.find((_) => _ == scriptId) != null;
 }
 
-export function getAllActiveScriptIds() {
-  return new Promise((resolve) => {
-    chrome.storage.local.get([listActiveScriptsKey], (result) => {
-      resolve(result[listActiveScriptsKey] || []);
-    });
-  });
+export async function getAllActiveScriptIds() {
+  return await Storage.get(listActiveScriptsKey, []);
 }
 
 export async function toggleActiveScript(scriptId) {

@@ -444,6 +444,7 @@ const tabs = [
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
+      s.web_timer,
       createTitle("--- Automation ---", "--- Tự động ---"),
       s.scrollToVeryEnd,
       s.screenshotFullPage,

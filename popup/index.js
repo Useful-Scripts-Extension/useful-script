@@ -7,6 +7,7 @@ import {
   toggleActiveScript,
   trackEvent,
   debounce,
+  Storage,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import {
@@ -554,16 +555,13 @@ function initScrollToTop() {
 
 function saveScroll() {
   const scrollY = document.body.scrollTop;
-  chrome.storage.local.set({ popupScrollY: scrollY }, () => {
-    // console.log("Scroll position saved");
-  });
+  Storage.set("popupScrollY", scrollY);
 }
 
 function restoreScroll() {
-  chrome.storage.local.get("popupScrollY", (data) => {
-    const storedScrollY = data.popupScrollY || 0;
+  Storage.get("popupScrollY", 0).then((value) => {
     document.body.scrollTo({
-      top: storedScrollY,
+      top: value,
       // behavior: "smooth",
     });
   });

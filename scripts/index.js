@@ -162,6 +162,7 @@ import researchGate_downloader from "./researchGate_downloader.js";
 import fb_searchPostsForOther from "./fb_searchPostsForOther.js";
 import toggle_passwordField from "./toggle_passwordField.js";
 import insta_getFollowForOther from "./insta_getFollowForOther.js";
+import web_timer from "./web_timer.js";
 
 // inject badges
 const allScripts = {
@@ -340,6 +341,7 @@ const allScripts = {
   fb_searchPostsForOther: addBadge(fb_searchPostsForOther, BADGES.new),
   toggle_passwordField: addBadge(toggle_passwordField, BADGES.new),
   insta_getFollowForOther: addBadge(insta_getFollowForOther, BADGES.new),
+  web_timer: addBadge(web_timer, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

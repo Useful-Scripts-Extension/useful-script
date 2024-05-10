@@ -291,12 +291,7 @@ export default {
           scriptOnlyToggle.textContent = scriptOnlyState
             ? "Show scripts only (ON)"
             : "Show scripts only (OFF)";
-          if (scriptOnlyState) {
-            scriptOnlyToggle.classList.add("btn-active");
-          } else {
-            scriptOnlyToggle.classList.remove("btn-active");
-          }
-
+          scriptOnlyToggle.classList.toggle("btn-active", scriptOnlyState);
           all_li.forEach(({ li, log }) => {
             if (scriptOnlyState && !isScript(log)) {
               li.classList.add("not-script");
