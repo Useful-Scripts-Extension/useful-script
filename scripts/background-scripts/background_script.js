@@ -28,7 +28,6 @@ const GLOBAL = {
 function cacheActiveScriptIds() {
   getAllActiveScriptIds().then((ids) => {
     CACHED.activeScriptIds = ids;
-    console.log("active scripts", ids);
   });
 }
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Timer - Useful script</title>
+
+  <link rel="stylesheet/less" type="text/css" href="./web_timer.less" />
+  <script src="../popup/libs/less.js"></script>
+</head>
+
+<body>
+  <h1>Webtimer - Useful scripts</h1>
+  <div id="chart"></div>
+  <div id="controller">
+    <div>
+      <button id="prev-date">◀</button>
+      <span class="datepicker">
+        <span id="current-date"></span>
+        <input type="date" id="date-picker">
+      </span>
+      <button id="next-date">▶</button>
+    </div>
+    <div>
+      <button id="daily-average">Daily average</button>
+      <button id="all-time">All time</button>
+    </div>
+  </div>
+  <div id="guide">Hello world</div>
+  <div id="timer-data"></div>
+
+  <script src="./content-scripts/ufs_global.js"></script>
+  <script type="module" src="./web_timer_main.js"></script>
+</body>
+
+</html>

@@ -478,7 +478,10 @@ const tabs = [
         {
           id: "recommend_ItTools",
           icon: "https://it-tools.tech/favicon-32x32.png",
-          name: { en: "IT Tools", vi: "IT Tools" },
+          name: {
+            en: "IT Tools - All for Developers",
+            vi: "IT Tools - Vì tương lai Developer",
+          },
           description: {
             en: "Handy tools for developers (open source)",
             vi: "Tổng hợp tools hữu ích cho IT (mã nguồn mở)",
@@ -493,7 +496,10 @@ const tabs = [
         {
           id: "recommend_cssportal",
           icon: "https://www.cssportal.com/favicon.ico",
-          name: { en: "CSS Portal", vi: "CSS Portal" },
+          name: {
+            en: "CSS Portal - Empowered your CSS skills",
+            vi: "CSS Portal - Nâng trình CSS",
+          },
           description: {
             en: "Empowered your CSS skills with hundreds of CSS tools.",
             vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
@@ -503,6 +509,26 @@ const tabs = [
               window.open(
                 "https://www.cssportal.com/css-animated-text-generator/"
               ),
+          },
+        },
+        BADGES.recommend
+      ),
+      addBadge(
+        // https://copyicon.com/generator/svg-chart
+        {
+          id: "recommend_copyicon",
+          icon: "https://copyicon.com/favicon.ico",
+          name: {
+            en: "CopyIcon - FREE emoji, icon, generator",
+            vi: "CopyIcon - emoji, icon, svg miễn phí",
+          },
+          description: {
+            en: "285,000 free Icons, Emoji, SVG generator, and more...",
+            vi: "285,000 Icons, Emiji, trình tạo SVG, và hơn thế nữa...",
+          },
+          popupScript: {
+            onClick: () =>
+              window.open("https://copyicon.com/generator/svg-chart"),
           },
         },
         BADGES.recommend
