@@ -215,6 +215,27 @@ const tabs = [
       s.vimeo_downloader,
       s.showTheVideos,
       createTitle("--- Document ---", "--- Tài liệu ---"),
+      s.studocu_downs,
+      s.scribd_downloadDocuments,
+      s.tailieu_vn,
+      addBadge(
+        {
+          id: "recommend_docsdownloader",
+          icon: "https://docsdownloader.com/assets/img/android-icon-192x192.png",
+          name: {
+            en: "DocDownloader - Download document",
+            vi: "DocDownloader - Tải document",
+          },
+          description: {
+            en: "Download document on Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
+            vi: "Tải document từ Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
+          },
+          popupScript: {
+            onClick: () => window.open("https://docdownloader.com/"),
+          },
+        },
+        BADGES.recommend
+      ),
       s.bookmark_exporter,
       addBadge(
         {
@@ -238,11 +259,6 @@ const tabs = [
         BADGES.recommend
       ),
       // s.researchGate_downloader, // limited
-      s.tailieu_vn,
-      s.docDownloader,
-      s.scribd_downloadDocuments,
-      s.studocu_dl,
-      s.studocu_downs,
     ],
   },
   {

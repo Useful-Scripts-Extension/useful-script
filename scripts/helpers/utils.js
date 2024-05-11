@@ -276,14 +276,21 @@ export async function openWebAndRunScript({
   url,
   func,
   args,
+  world,
+  waitUntilLoadEnd = true,
   focusAfterRunScript = true,
   closeAfterRunScript = false,
+  focusImmediately = false,
 }) {
   let tab = await chrome.tabs.create({ active: false, url: url });
-  await waitForTabToLoad(tab.id);
-  let res = await runScriptInTab({ func, tabId: tab.id, args });
-  !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
-  closeAfterRunScript && closeTab(tab);
+  if (waitUntilLoadEnd) await waitForTabToLoad(tab.id);
+  if (focusImmediately) focusToTab(tab);
+  let res = await runScriptInTab({ func, tabId: tab.id, args, world });
+  if (closeAfterRunScript) {
+    closeTab(tab);
+  } else if (focusAfterRunScript) {
+    focusToTab(tab);
+  }
   return res;
 }
 

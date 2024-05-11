@@ -100,7 +100,6 @@ import bookmark_exporter from "./bookmark_exporter.js";
 import search_hopamchuan from "./search_hopamchuan.js";
 import ggdrive_generateDirectLink from "./ggdrive_generateDirectLink.js";
 import soundcloud_downloadMusic from "./soundcloud_downloadMusic.js";
-import studocu_dl from "./studocu_dl.js";
 import dino_hack from "./dino_hack.js";
 import google_mirror from "./google_mirror.js";
 import fb_openSaved from "./fb_openSaved.js";
@@ -116,7 +115,6 @@ import fb_whoIsTyping from "./fb_whoIsTyping.js";
 import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
 import fb_moreReactionStory from "./fb_moreReactionStory.js";
 import changeAudioOutput from "./changeAudioOutput.js";
-import docDownloader from "./docDownloader.js";
 import scribd_bypassPreview from "./scribd_bypassPreview.js";
 // import fb_removeFbclid from "./fb_removeFbclid.js";
 import fb_messengerHistory from "./fb_messengerHistory.js";
@@ -267,14 +265,13 @@ const allScripts = {
   tiktok_downloadWatchingVideo: tiktok_downloadWatchingVideo,
   ggDrive_downloadAllVideosInFolder: ggDrive_downloadAllVideosInFolder,
   fb_downloadWatchingVideo: addBadge(fb_downloadWatchingVideo, BADGES.hot),
-  studocu_downs: studocu_downs,
+  studocu_downs: addBadge(studocu_downs, BADGES.new),
   vimeo_downloader: vimeo_downloader,
   savevideo_me: savevideo_me,
   bookmark_exporter: addBadge(bookmark_exporter, BADGES.beta),
   search_hopamchuan: search_hopamchuan,
   ggdrive_generateDirectLink: ggdrive_generateDirectLink,
   soundcloud_downloadMusic: addBadge(soundcloud_downloadMusic, BADGES.new),
-  studocu_dl: studocu_dl,
   dino_hack: dino_hack,
   google_mirror: google_mirror,
   fb_openSaved: addBadge(fb_openSaved, BADGES.hot),
@@ -290,7 +287,6 @@ const allScripts = {
   detect_zeroWidthCharacters: detect_zeroWidthCharacters,
   fb_moreReactionStory: fb_moreReactionStory,
   changeAudioOutput: changeAudioOutput,
-  docDownloader: docDownloader,
   scribd_bypassPreview: scribd_bypassPreview,
   // fb_removeFbclid: fb_removeFbclid,
   fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.beta),

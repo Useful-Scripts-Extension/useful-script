@@ -1,7 +1,7 @@
 import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
-  icon: "https://documents-downloader.pages.dev/apple-icon-57x57.png",
+  icon: "https://www.scribd.com/favicon.ico",
   name: {
     en: "Scribd - Download documents",
     vi: "Scribd - Tải documents",
