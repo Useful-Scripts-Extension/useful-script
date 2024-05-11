@@ -51,10 +51,12 @@ function init() {
     showData(date);
   });
 
+  dailyAverageBtn.innerHTML = t({ vi: "Trung bình", en: "Daily Average" });
   dailyAverageBtn.addEventListener("click", () => {
     showData("daily-average");
   });
 
+  allTimeBtn.innerHTML = t({ vi: "Tất cả", en: "All Time" });
   allTimeBtn.addEventListener("click", () => {
     showData("all-time");
   });
@@ -166,6 +168,7 @@ function getData(type) {
   }
 
   if (type === "daily-average") {
+    allData = [];
     for (let website in web) {
       let average = web[website] / totalDays;
       if (average > 0) allData.push([website, average]);

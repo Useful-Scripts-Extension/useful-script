@@ -158,4 +158,8 @@ const backup = () => {
       console.log(result);
     });
   })();
+
+  (() => {
+    chrome.storage.local.set({ web_timer });
+  })();
 };

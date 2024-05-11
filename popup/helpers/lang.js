@@ -7,7 +7,7 @@ export const LANG = {
 
 export const LANG_KEY = Object.keys(LANG);
 
-let currentLangKey = langSaver.get() || LANG.vi;
+let currentLangKey = langSaver.get() || "vi";
 
 export function setLang(key) {
   if (key in LANG) {
