@@ -457,10 +457,10 @@ const tabs = [
     ...CATEGORY.automation,
     scripts: [
       createTitle("--- Utility ---", "--- Tiện ích ---"),
+      s.web_timer,
       s.textToQrCode,
       s.shortenURL,
       s.unshorten,
-      s.web_timer,
       createTitle("--- Automation ---", "--- Tự động ---"),
       s.scrollToVeryEnd,
       s.screenshotFullPage,

@@ -1,12 +1,12 @@
 export default {
-  icon: '<i class="fa-solid fa-hourglass-half fa-lg"></i>',
+  icon: '<i class="fa-solid fa-hourglass-half fa-lg fa-spin-pulse"></i>',
   name: {
     en: "Web timer",
     vi: "Thời gian lướt web",
   },
   description: {
-    en: "Keep track of how you spend your time on the web.<br/>=> CLICK TO OPEN HISTORY.",
-    vi: "Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/>=> BẤM ĐỂ XEM LỊCH SỬ.",
+    en: "Keep track of how you spend your time on the web.<br/><h3>CLICK TO OPEN HISTORY.</h3>",
+    vi: "Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/><h3>BẤM ĐỂ XEM LỊCH SỬ.</h3>",
   },
 
   changeLogs: {

@@ -9,7 +9,6 @@ html {
 }
 
 body {
-  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,6 +16,39 @@ body {
   background-color: #223;
   color: #eee;
   font-size: 14px;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+#new-tab,
+#back {
+  position: absolute;
+  display: block;
+  top: 5px;
+  right: 5px;
+  width: 35px;
+  height: 35px;
+  text-decoration: none;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 24px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    font-size: 28px;
+  }
+}
+
+#back {
+  left: 5px;
+  right: auto;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 svg {

@@ -1,5 +1,5 @@
 export default {
-  icon: '<i class="fa-solid fa-expand fa-lg"></i>',
+  icon: '<i class="fa-solid fa-expand fa-lg fa-bounce"></i>',
   name: {
     en: "Magnify any Image",
     vi: "Phóng to mọi hình ảnh",

@@ -1,5 +1,6 @@
 import { t } from "../popup/helpers/lang.js";
 
+const backBtn = document.querySelector("#back");
 const chartContainer = document.querySelector("#chart");
 const controllerContainer = document.querySelector("#controller");
 const preDateBtn = document.querySelector("#prev-date");
@@ -25,6 +26,10 @@ chrome.storage.local.get("web_timer", function (result) {
 });
 
 function init() {
+  backBtn.addEventListener("click", () => {
+    window.history.back();
+  });
+
   preDateBtn.addEventListener("click", () => {
     let preDate = new Date(curDate);
     preDate.setDate(preDate.getDate() - 1);
@@ -126,7 +131,7 @@ function getData(type) {
     }
 
     curDate = date;
-    inputDate.value = date;
+    inputDate.value = dateKey;
     curDateSpan.innerHTML = formatDate(date);
 
     allData = Object.entries(web_timer[dateKey]).filter((_) => _[1] > 0);

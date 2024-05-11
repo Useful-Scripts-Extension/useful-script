@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Timer - Useful script</title>
 
+  <style>
+    html {
+      min-width: 400px;
+    }
+  </style>
   <link rel="stylesheet/less" type="text/css" href="./web_timer.less" />
   <script src="../popup/libs/less.js"></script>
 </head>
@@ -27,8 +32,11 @@
       <button id="all-time">All time</button>
     </div>
   </div>
-  <div id="guide">Hello world</div>
+  <div id="guide">No data</div>
   <div id="timer-data"></div>
+
+  <button id="back" title="Go Back">🔙</button>
+  <a href="/scripts/web_timer.html" target="_blank" title="Open in new tab" id="new-tab">🔝</a>
 
   <script src="./content-scripts/ufs_global.js"></script>
   <script type="module" src="./web_timer_main.js"></script>
