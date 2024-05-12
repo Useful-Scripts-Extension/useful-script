@@ -2499,7 +2499,9 @@
     disableAutoConsoleClear() {
       window.console.clear = () => null;
       console.log("Auto console.clear DISABLED!");
-    }, // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
+    },
+
+    // Hiển thị tất cả các biến toàn cục được tạo ra trong trang web
     // https://mmazzarolo.com/blog/2022-02-14-find-what-javascript-variables-are-leaking-into-the-global-scope/
     listGlobalVariables() {
       let browserGlobals = [];
@@ -2530,11 +2532,34 @@
       }
 
       return getRuntimeGlobals();
-    }, // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
+    },
+
+    // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
+    addGlobalToInspect(globalName) {
+      function onGlobalDeclaration(globalName) {
+        console.trace();
+        debugger;
+      }
+
+      Object.defineProperty(window, globalName, {
+        set: function (value) {
+          onGlobalDeclaration(globalName);
+          window[`__globals-debugger-proxy-for-${globalName}__`] = value;
+        },
+        get: function () {
+          return window[`__globals-debugger-proxy-for-${globalName}__`];
+        },
+        configurable: true,
+      });
+    },
+
+    // https://mmazzarolo.com/blog/2022-07-30-checking-if-a-javascript-native-function-was-monkey-patched/
     // Kiểm tra xem function nào đó có bị override hay chưa
     isNativeFunction(f) {
       return f.toString().toString().includes("[native code]");
-    }, // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
+    },
+
+    // https://mmazzarolo.com/blog/2022-06-26-filling-local-storage-programmatically/
     // Làm đầy localStorage
     fillLocalStorage() {
       const key = "__filling_localstorage__";
@@ -2559,7 +2584,9 @@
         localStorage.removeItem(key);
         console.success("Storage is cleaned");
       };
-    }, // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
+    },
+
+    // https://mmazzarolo.com/blog/2022-02-16-track-down-the-javascript-code-responsible-for-polluting-the-global-scope/
     // Tìm chuỗi xung quanh chuỗi bất kỳ
     // Ví dụ fullString = "abcd1234567890abcd" targetString = "6" bound = 3
     // => Kết quả around = 3456789
@@ -2584,14 +2611,18 @@
         limit--;
       }
       return arounds;
-    }, // https://stackoverflow.com/a/40410744/11898496
+    },
+
+    // https://stackoverflow.com/a/40410744/11898496
     // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
     decodeEscapedUnicodeString(str) {
       if (!str) return "";
       return decodeURIComponent(
         JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
       );
-    }, // https://stackoverflow.com/a/8649003
+    },
+
+    // https://stackoverflow.com/a/8649003
     searchParamsToObject(search = window.location.search) {
       const params = new URLSearchParams(search);
       const searchObject = Object.fromEntries(params);

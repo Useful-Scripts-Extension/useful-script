@@ -34,9 +34,7 @@ import {
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
-const cssTag = document.querySelector("link#style");
 const settingsBtn = document.querySelector(".settings");
-const settingsModal = document.querySelector(".settings-modal");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const searchInput = document.querySelector(".search input");

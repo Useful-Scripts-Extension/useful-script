@@ -23,7 +23,7 @@ export default {
     onDocumentStart: async () => {
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 5;
-      const IDLE_TIME = 5;
+      const IDLE_TIME = 30;
 
       const invisible = "\u200b";
       let originalTitle = document.title;
@@ -117,17 +117,16 @@ export default {
         for (let media of allMedia) {
           if (!media.paused) return false;
         }
+        return performance.now() - lastActive > IDLE_TIME * 1000;
 
-        return new Date() - lastActive > IDLE_TIME * 1000;
-
-        if (IDLE_TIME > 0) {
-          let state = await UfsGlobal.Extension.runInBackground(
-            "chrome.idle.queryState",
-            [IDLE_TIME]
-          );
-          return state !== "active";
-        }
-        return false;
+        // if (IDLE_TIME > 0) {
+        //   let state = await UfsGlobal.Extension.runInBackground(
+        //     "chrome.idle.queryState",
+        //     [IDLE_TIME]
+        //   );
+        //   return state !== "active";
+        // }
+        // return false;
       }
 
       async function saveTimer() {

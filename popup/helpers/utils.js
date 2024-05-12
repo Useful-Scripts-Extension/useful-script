@@ -9,7 +9,12 @@ export const canClick = (script) => {
 
 export const canAutoRun = (script) => {
   for (let s of ["popupScript", "contentScript", "pageScript"]) {
-    for (let e of ["onDocumentStart", "onDocumentIdle", "onDocumentEnd"]) {
+    for (let e of [
+      "onBeforeNavigate",
+      "onDocumentStart",
+      "onDocumentIdle",
+      "onDocumentEnd",
+    ]) {
       if (isFunction(script[s]?.[e])) return true;
     }
   }

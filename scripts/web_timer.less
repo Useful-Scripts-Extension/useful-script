@@ -23,6 +23,18 @@ h1 {
   margin-top: 20px;
 }
 
+select {
+  background-color: #223;
+  color: #eee;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
 #new-tab,
 #back {
   position: absolute;
@@ -122,29 +134,27 @@ svg {
       // transform: scale(1.1);
     }
   }
+
+  .vertical {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-#current-date {
+#date-picker-container {
+  margin-top: 5px;
+}
+
+.date-selector {
   cursor: pointer;
   padding: 5px 10px;
   transition: all 0.2s ease;
   font-family: monospace;
   font-size: 1.2em;
+  user-select: none;
 
   &:hover {
     background-color: #555556;
-  }
-}
-
-.datepicker {
-  position: relative;
-
-  input[type="date"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: -1;
   }
 }
 

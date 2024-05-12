@@ -302,7 +302,7 @@ const tabs = [
       s.fb_invisible_message,
       s.fb_moreReactionStory,
       s.fb_whoIsTyping,
-      // s.fb_removeFbclid,
+      s.fb_removeFbclid,
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
       createTitle("--- Statistic ---", "--- Thống kê ---"),

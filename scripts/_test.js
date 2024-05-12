@@ -9,6 +9,28 @@ export default {
     vi: "",
   },
 
+  pageScript: {
+    onDocumentStart: () => {
+      // CometNewsFeedPaginationQuery
+      const originalParse = JSON.parse;
+      console.log("json parse");
+
+      JSON.parse = function (string, reviver) {
+        let json = originalParse(string, reviver);
+        console.log(json);
+        return json;
+      };
+
+      // window.$crisp = {
+      //   push: (...data) => {
+      //     console.log(data);
+      //     if (data?.[0]?.[0] === "set" && data?.[0]?.[1] === "session:data")
+      //       debugger;
+      //   },
+      // };
+    },
+  },
+
   contentScript: {
     onClick: () => {
       let video = document.querySelector("video");
@@ -51,4 +73,46 @@ export default {
       }, 500);
     },
   },
+};
+
+const backup = () => {
+  (() => {
+    const originalFetch = fetch;
+    fetch = function (...args) {
+      console.log("fetch", ...args);
+      return originalFetch(...args).then(async (res) => {
+        try {
+          console.log("res ne", res);
+          let clone = res.clone();
+          let json = await clone.json();
+          console.log("json", json);
+
+          json = {
+            success: true,
+            data: {},
+          };
+          console.log("modifiedJson", json);
+
+          let modifiedResponse = new Response(JSON.stringify(json));
+          [
+            "headers",
+            "ok",
+            "redirected",
+            "status",
+            "statusText",
+            "type",
+            "url",
+          ].forEach((key) => {
+            modifiedResponse[key] = res[key];
+          });
+
+          console.log("modifiedResponse", modifiedResponse);
+          return modifiedResponse;
+        } catch (e) {
+          console.log("error", e);
+          return res;
+        }
+      });
+    };
+  })();
 };

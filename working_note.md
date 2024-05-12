@@ -2,6 +2,10 @@
 
 ## 28/04/2024 - ~
 
+- [ ] onBeforeNavigate event
+
+- [ ] finish webTimer
+
 - [ ] Tự động kết bạn <https://chromewebstore.google.com/detail/hifb-auto-k%E1%BA%BFt-b%E1%BA%A1n-%C4%91%E1%BB%8Ba-ph%C6%B0/mjgfhahcmnbbmolopombeaklmdnakmml>
 
 - [x] theme selector for popup extension

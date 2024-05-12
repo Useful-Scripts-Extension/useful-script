@@ -20,23 +20,18 @@
   <h1>Webtimer - Useful scripts</h1>
   <div id="chart"></div>
   <div id="controller">
-    <div>
-      <button id="prev-date">◀</button>
-      <span class="datepicker">
-        <span id="current-date"></span>
-        <input type="date" id="date-picker">
-      </span>
-      <button id="next-date">▶</button>
+    <div class="vertical">
+      <select id="date-type"></select>
+      <div id="date-picker-container"></div>
     </div>
     <div>
-      <button id="daily-average">Daily average</button>
-      <button id="all-time">All time</button>
+      <select id="display-type"></select>
     </div>
   </div>
   <div id="guide">No data</div>
   <div id="timer-data"></div>
 
-  <button id="back" title="Go Back">🔙</button>
+  <button type="button" id="back" title="Go Back">🔙</button>
   <a href="/scripts/web_timer.html" target="_blank" title="Open in new tab" id="new-tab">🔝</a>
 
   <script src="./content-scripts/ufs_global.js"></script>

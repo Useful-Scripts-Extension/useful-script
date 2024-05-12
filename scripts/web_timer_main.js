@@ -3,20 +3,28 @@ import { t } from "../popup/helpers/lang.js";
 const backBtn = document.querySelector("#back");
 const chartContainer = document.querySelector("#chart");
 const controllerContainer = document.querySelector("#controller");
-const preDateBtn = document.querySelector("#prev-date");
-const nextDateBtn = document.querySelector("#next-date");
-const curDateSpan = document.querySelector("#current-date");
-const inputDate = document.querySelector("#date-picker");
+
+const dateTypeSelect = document.querySelector("#date-type");
+const datePickerContainer = document.querySelector("#date-picker-container");
+const displayTypeSelect = document.querySelector("#display-type");
 const guide = document.querySelector("#guide");
-const dailyAverageBtn = document.querySelector("#daily-average");
-const allTimeBtn = document.querySelector("#all-time");
 
 const dataContainer = document.querySelector("#timer-data");
 
-init();
-
-let web_timer, curDate;
+let web_timer;
+let curDate = new Date();
 const FormatCache = new Map();
+const DATE_TYPE = {
+  DAY: "day",
+  RANGE: "range",
+  ALL: "all",
+};
+const DISPLAY_TYPE = {
+  AVERAGE: "average",
+  TOTAL: "total",
+};
+
+init();
 
 chrome.storage.local.get("web_timer", function (result) {
   web_timer = result.web_timer;
@@ -29,7 +37,7 @@ chrome.storage.local.get("web_timer", function (result) {
   });
   // }
 
-  showData(new Date());
+  showData({ fromDate: new Date() });
 });
 
 function init() {
@@ -37,41 +45,143 @@ function init() {
     window.history.back();
   });
 
-  preDateBtn.addEventListener("click", () => {
-    let preDate = new Date(curDate);
-    preDate.setDate(preDate.getDate() - 1);
-    showData(preDate);
+  // date type
+  let group = document.createElement("optgroup");
+  group.label = t({ vi: "Lấy dữ liệu theo:", en: "Analyze by" });
+  dateTypeSelect.appendChild(group);
+  [
+    {
+      value: DATE_TYPE.DAY,
+      name: t({ vi: "Ngày", en: "Day" }),
+    },
+    {
+      value: DATE_TYPE.RANGE,
+      name: t({ vi: "Khoảng ngày", en: "Range" }),
+    },
+    {
+      value: DATE_TYPE.ALL,
+      name: t({ vi: "Tất cả", en: "All" }),
+    },
+  ].forEach((o) => {
+    dateTypeSelect.options.add(new Option(o.name, o.value));
   });
 
-  nextDateBtn.addEventListener("click", () => {
-    let nextDate = new Date(curDate);
-    nextDate.setDate(nextDate.getDate() + 1);
-    showData(nextDate);
-  });
+  dateTypeSelect.addEventListener("change", (e) => {
+    let type = e.target.value;
+    switch (type) {
+      case "day":
+        datePickerContainer.innerHTML = `
+          <button type="button">◀</button>
+          <button class="date-selector"></button>
+          <button type="button">▶</button>`;
 
-  curDateSpan.addEventListener("click", () => {
-    inputDate.showPicker();
-  });
+        const [preBtn, dateBtn, nextBtn] =
+          datePickerContainer.querySelectorAll("button");
 
-  inputDate.addEventListener("change", (e) => {
-    let date = new Date(e.target.value);
-    showData(date);
-  });
+        dateBtn.innerText = formatDate(curDate);
+        dateBtn.addEventListener("click", (e) => {
+          let x = dateBtn.offsetLeft - document.documentElement.scrollLeft;
+          let y = dateBtn.offsetTop - document.documentElement.scrollTop;
+          openDatePicker(x, y, curDate).then((selectedDate) => {
+            if (selectedDate) {
+              let success = showData({ fromDate: selectedDate });
+              if (success) {
+                curDate = selectedDate;
+                dateBtn.innerText = formatDate(curDate);
+              }
+            }
+          });
+        });
+        preBtn.addEventListener("click", () => {
+          let preDate = new Date(curDate);
+          preDate.setDate(preDate.getDate() - 1);
+          let success = showData({ fromDate: preDate });
+          if (success) {
+            curDate = preDate;
+            dateBtn.innerText = formatDate(curDate);
+          }
+        });
+        nextBtn.addEventListener("click", () => {
+          let nextDate = new Date(curDate);
+          nextDate.setDate(nextDate.getDate() + 1);
+          let success = showData({ fromDate: nextDate });
+          if (success) {
+            curDate = nextDate;
+            dateBtn.innerText = formatDate(curDate);
+          }
+        });
 
-  dailyAverageBtn.innerHTML = t({ vi: "Trung bình", en: "Daily Average" });
-  dailyAverageBtn.addEventListener("click", () => {
-    showData("daily-average");
+        break;
+      case "range":
+        datePickerContainer.innerHTML = `
+          <button class="date-selector"></button>
+          <button class="date-selector"></button>`;
+        const [fromDate, toDate] =
+          datePickerContainer.querySelectorAll("button");
+        break;
+      case "all":
+        datePickerContainer.innerHTML = "";
+        showData({ type: DISPLAY_TYPE.TOTAL });
+        break;
+    }
   });
+  dateTypeSelect.dispatchEvent(new Event("change"));
 
-  allTimeBtn.innerHTML = t({ vi: "Tất cả", en: "All Time" });
-  allTimeBtn.addEventListener("click", () => {
-    showData("all-time");
+  // display type
+  group = document.createElement("optgroup");
+  group.label = t({ vi: "Kiểu hiển thị:", en: "Display type:" });
+  displayTypeSelect.appendChild(group);
+  displayTypeSelect.addEventListener("change", (e) => {
+    let type = e.target.value;
+    showData(type);
+  });
+  [
+    {
+      value: DISPLAY_TYPE.AVERAGE,
+      name: t({ vi: "Trung bình", en: "Average" }),
+    },
+    {
+      value: DISPLAY_TYPE.TOTAL,
+      name: t({ vi: "Tổng cộng", en: "Total" }),
+    },
+  ].forEach((o) => {
+    displayTypeSelect.options.add(new Option(o.name, o.value));
   });
 }
 
-function showData(type) {
-  const { chartData, allData } = getData(type) || {};
-  if (!allData?.length) return;
+function openDatePicker(x, y, date = new Date()) {
+  return new Promise((resolve) => {
+    let input = document.createElement("input");
+    input.type = "date";
+    input.value = formatDate(date);
+    input.style = `position: fixed; top: ${y}px; left: ${x}px; visibility: hidden;`;
+    input.addEventListener("change", (e) => {
+      let selectedDate = new Date(e.target.value);
+      input.remove();
+      resolve(selectedDate);
+    });
+    document.body.appendChild(input);
+    setTimeout(() => {
+      input.showPicker();
+      function remove() {
+        resolve(null);
+        input.remove();
+        document.removeEventListener("click", remove);
+      }
+      document.addEventListener("click", remove);
+    }, 10);
+  });
+}
+
+function showData({
+  fromDate = new Date(),
+  endDate,
+  dateType = DATE_TYPE.DAY,
+  displayType = DISPLAY_TYPE.TOTAL,
+}) {
+  const { chartData, allData } =
+    getData({ fromDate, endDate, dateType, displayType }) || {};
+  if (!allData?.length) return false;
 
   // draw chart
   let chart = Donut(280, chartData, 50, 2);
@@ -120,19 +230,27 @@ function showData(type) {
     </div>
   `;
   dataContainer.appendChild(totalRow);
+
+  return true;
 }
 
 function creatWebsiteeDetail(website, allData) {}
 
-function getData(type) {
+function getData({
+  fromDate = new Date(),
+  endDate,
+  dateType = DATE_TYPE.DAY,
+  displayType = DISPLAY_TYPE.TOTAL,
+}) {
   let allData = [],
     chartData = [];
 
-  if (type instanceof Date) {
-    let date = type;
+  // single day
+  if (dateType === DATE_TYPE.DAY) {
+    console.log(fromDate);
+    let date = fromDate;
     let dateKey = formatDate(date);
     if (!web_timer[dateKey]) {
-      inputDate.value = curDate;
       alert(
         t({
           vi: "không có dữ liệu cho ngày " + formatDate(date),
@@ -141,24 +259,19 @@ function getData(type) {
       );
       return null;
     }
-
-    curDate = date;
-    inputDate.value = dateKey;
-    curDateSpan.innerHTML = formatDate(date);
-
     allData = Object.entries(web_timer[dateKey]).filter((_) => _[1] > 0);
-
     guide.innerText = t({
       vi: `Dữ liệu ngày ${dateKey} (${allData.length} websites)`,
       en: `Data for ${dateKey} (${allData.length} websites)`,
     });
   }
 
-  let web = {},
-    oldestDate = formatDate(new Date()),
-    totalDays = 0;
+  // all days
+  if (dateType === DATE_TYPE.ALL) {
+    let web = {},
+      oldestDate = formatDate(new Date()),
+      totalDays = 0;
 
-  if (type === "all-time" || type === "daily-average") {
     for (let date in web_timer) {
       totalDays++;
       if (date < oldestDate) oldestDate = date;
@@ -177,20 +290,19 @@ function getData(type) {
     });
   }
 
-  if (type === "daily-average") {
-    allData = [];
-    for (let website in web) {
-      let average = web[website] / totalDays;
-      if (average > 0) allData.push([website, average]);
+  // calc average
+  if (displayType === DISPLAY_TYPE.AVERAGE) {
+    for (let d of allData) {
+      d[1] /= totalDays;
     }
-
     guide.innerText = t({
       vi: `Trung bình hằng ngày từ ${oldestDate} (${totalDays} ngày)`,
       en: `Daily averages since ${oldestDate} (${totalDays} days)`,
     });
   }
 
-  if (allData.length || chartData.length) {
+  // data structure
+  if (allData.length) {
     let totalTime = allData.reduce((acc, curr) => acc + curr[1], 0);
 
     allData = allData

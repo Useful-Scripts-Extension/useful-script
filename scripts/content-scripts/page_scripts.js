@@ -11,7 +11,7 @@
   });
 
   window.ufs_runScripts = runScripts;
-  function runScripts(scriptIds, event, path) {
+  function runScripts(scriptIds, event, path, data) {
     CACHED.activeScriptIds = scriptIds;
     CACHED.path = path;
 
@@ -27,7 +27,7 @@
               console.log(
                 "> Useful-script: Run page-script " + id + " " + event
               );
-              script["pageScript"][event]();
+              script["pageScript"][event](data);
             }
           } catch (e) {
             console.log("ERROR run page-script " + id + " " + event, e);

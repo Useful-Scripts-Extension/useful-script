@@ -116,7 +116,7 @@ import detect_zeroWidthCharacters from "./detect_zeroWidthCharacters.js";
 import fb_moreReactionStory from "./fb_moreReactionStory.js";
 import changeAudioOutput from "./changeAudioOutput.js";
 import scribd_bypassPreview from "./scribd_bypassPreview.js";
-// import fb_removeFbclid from "./fb_removeFbclid.js";
+import fb_removeFbclid from "./fb_removeFbclid.js";
 import fb_messengerHistory from "./fb_messengerHistory.js";
 import fb_messengerCount from "./fb_messengerCount.js";
 import fb_searchGroupForOther from "./fb_searchGroupForOther.js";
@@ -288,7 +288,7 @@ const allScripts = {
   fb_moreReactionStory: fb_moreReactionStory,
   changeAudioOutput: changeAudioOutput,
   scribd_bypassPreview: scribd_bypassPreview,
-  // fb_removeFbclid: fb_removeFbclid,
+  fb_removeFbclid: addBadge(fb_removeFbclid, BADGES.new),
   fb_messengerHistory: addBadge(fb_messengerHistory, BADGES.beta),
   fb_messengerCount: addBadge(fb_messengerCount, BADGES.hot),
   fb_searchGroupForOther: addBadge(fb_searchGroupForOther, BADGES.hot),

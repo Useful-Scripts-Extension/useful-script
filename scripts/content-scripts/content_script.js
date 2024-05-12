@@ -17,13 +17,13 @@
   }
 
   window.ufs_runScripts = runScripts;
-  function runScripts(scriptIds, event, path) {
+  function runScripts(scriptIds, event, path, data) {
     for (let scriptId of scriptIds) {
-      runScript(scriptId, event);
+      runScript(scriptId, event, data);
     }
   }
 
-  async function runScript(scriptId, event) {
+  async function runScript(scriptId, event, data) {
     const script = (await import("/scripts/" + scriptId + ".js"))?.default;
     if (
       typeof script?.["contentScript"]?.[event] === "function" &&
@@ -33,7 +33,7 @@
         console.log(
           "> Useful-script: Run content-script: " + scriptId + " " + event
         );
-        script["contentScript"][event]();
+        script["contentScript"][event](data);
       } catch (e) {
         console.log("ERROR run content-script " + scriptId + " " + event, e);
       }

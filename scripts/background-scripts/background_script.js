@@ -31,22 +31,31 @@ function cacheActiveScriptIds() {
   });
 }
 
-function runScripts(tabId, event, world) {
+function runScriptsTab(tabId, event, world, data = "") {
   return runScriptInTab({
     tabId: tabId,
-    func: (scriptIds, event, path) => {
+    func: (scriptIds, event, path, data) => {
       (() => {
         let interval = setInterval(() => {
           if (typeof window.ufs_runScripts === "function") {
             clearInterval(interval);
-            window.ufs_runScripts(scriptIds, event, path);
+            window.ufs_runScripts(scriptIds, event, path, data);
           }
         }, 10);
       })();
     },
-    args: [CACHED.activeScriptIds, event, CACHED.path],
+    args: [CACHED.activeScriptIds, event, CACHED.path, data],
     world,
   });
+}
+
+function runScripts(event, data) {
+  for (let scriptId of CACHED.activeScriptIds) {
+    let fn = allScripts?.[scriptId]?.["backgroudScript"]?.[event];
+    if (typeof fn === "function") {
+      fn(data);
+    }
+  }
 }
 
 async function customFetch(url, options) {
@@ -108,12 +117,26 @@ function main() {
     cacheActiveScriptIds();
   });
 
+  // on before navigation
+  chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+    console.log(details);
+    try {
+      if (details.frameType == "outermost_frame") {
+        runScriptsTab(details.tabId, "onBeforeNavigate", MAIN, details.url);
+        runScriptsTab(details.tabId, "onBeforeNavigate", ISOLATED, details.url);
+        runScripts("onBeforeNavigate", details.url);
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
+    }
+  });
+
   // listen documentStart
   chrome.webNavigation.onCommitted.addListener((details) => {
     try {
       if (details.frameType == "outermost_frame") {
-        runScripts(details.tabId, "onDocumentStart", MAIN);
-        runScripts(details.tabId, "onDocumentStart", ISOLATED);
+        runScriptsTab(details.tabId, "onDocumentStart", MAIN);
+        runScriptsTab(details.tabId, "onDocumentStart", ISOLATED);
       }
     } catch (e) {
       console.log("ERROR:", e);
@@ -124,8 +147,8 @@ function main() {
   chrome.webNavigation.onDOMContentLoaded.addListener((details) => {
     try {
       if (details.frameType == "outermost_frame") {
-        runScripts(details.tabId, "onDocumentIdle", MAIN);
-        runScripts(details.tabId, "onDocumentIdle", ISOLATED);
+        runScriptsTab(details.tabId, "onDocumentIdle", MAIN);
+        runScriptsTab(details.tabId, "onDocumentIdle", ISOLATED);
 
         CACHED.activeScriptIds.forEach((id) => {});
       }
@@ -138,8 +161,8 @@ function main() {
   chrome.webNavigation.onCompleted.addListener((details) => {
     try {
       if (details.frameType == "outermost_frame") {
-        runScripts(details.tabId, "onDocumentEnd", MAIN);
-        runScripts(details.tabId, "onDocumentEnd", ISOLATED);
+        runScriptsTab(details.tabId, "onDocumentEnd", MAIN);
+        runScriptsTab(details.tabId, "onDocumentEnd", ISOLATED);
       }
     } catch (e) {
       console.log("ERROR:", e);
