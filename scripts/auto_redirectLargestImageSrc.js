@@ -37,8 +37,6 @@ export default {
 
       async function check(href) {
         let url = await UfsGlobal.Utils.getLargestImageSrc(href, href);
-        console.log(url === href, url);
-
         if (url && url != href) {
           if (
             confirm(

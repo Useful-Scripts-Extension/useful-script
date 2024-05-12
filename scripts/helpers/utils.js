@@ -81,7 +81,6 @@ export function runFunc(fnPath = "", params = [], global = {}) {
           resolve(_res);
         });
       } else {
-        console.log(res);
         resolve(res);
       }
     }

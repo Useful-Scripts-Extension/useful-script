@@ -93,7 +93,7 @@ async function customFetch(url, options) {
       url: res.url,
       body: body,
     };
-    console.log("Response from background script:", data);
+    // console.log("Response from background script:", data);
     return data;
   } catch (e) {
     console.log("Fetch failed:", e);
@@ -148,11 +148,11 @@ function main() {
 
   // listen content script message
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("request", request);
+    // console.log("request", request);
     try {
       if (request.action === "ufs-runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
-        console.log("runInBackground", fnPath, params);
+        // console.log("runInBackground", fnPath, params);
         utils.runFunc(fnPath, params, GLOBAL).then((res) => {
           sendResponse(res);
         });
@@ -165,7 +165,7 @@ function main() {
   });
 
   chrome.contextMenus.onClicked.addListener((info) => {
-    console.log(info);
+    // console.log(info);
     if (info.menuItemId == "ufs-magnify-image") {
       trackEvent("magnify-image-CONTEXT-MENU");
       /*

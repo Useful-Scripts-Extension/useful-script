@@ -22,6 +22,13 @@ chrome.storage.local.get("web_timer", function (result) {
   web_timer = result.web_timer;
   console.log(web_timer);
 
+  // if (!web_timer || !Object.keys(web_timer).length) {
+  guide.innerHTML = t({
+    vi: "Không có dữ liệu<br/>Vui lòng bật chức năng<br/>Sau đó tải lại các trang web để bắt đầu quá trình đếm.",
+    en: "No data<br/>Please enable this script<br/>Then reload all your websites to start the timer.",
+  });
+  // }
+
   showData(new Date());
 });
 
@@ -62,8 +69,8 @@ function init() {
   });
 }
 
-function showData(date) {
-  const { chartData, allData } = getData(date) || {};
+function showData(type) {
+  const { chartData, allData } = getData(type) || {};
   if (!allData?.length) return;
 
   // draw chart
@@ -71,7 +78,7 @@ function showData(date) {
   chartContainer.innerHTML = "";
   chartContainer.appendChild(chart);
 
-  // draw controller: date selector, type selector: date / average / all time
+  // draw controller
   dataContainer.innerHTML = "";
   allData.forEach((d) => {
     let row = document.createElement("div");
@@ -80,7 +87,7 @@ function showData(date) {
     row.innerHTML = `
       <div>
         <div class="color" style="background-color: ${d.color}"></div>
-        <a class="label" href='https://${d.website}'>${d.website}</a>
+        <div class="label" >${d.website}</div>
       </div>
       <div>
         <div class="percentage">${d.percentage} %</div>
@@ -95,6 +102,7 @@ function showData(date) {
         .querySelector("g[ufs-website='" + d.website + "']")
         ?.dispatchEvent(new Event("mouseover", { bubbles: true }));
     });
+    row.addEventListener("click", () => {});
     dataContainer.appendChild(row);
   });
 
@@ -113,6 +121,8 @@ function showData(date) {
   `;
   dataContainer.appendChild(totalRow);
 }
+
+function creatWebsiteeDetail(website, allData) {}
 
 function getData(type) {
   let allData = [],
@@ -139,7 +149,7 @@ function getData(type) {
     allData = Object.entries(web_timer[dateKey]).filter((_) => _[1] > 0);
 
     guide.innerText = t({
-      vi: `Dữ liệu ngày ${dateKey} (${allData.length} trang web)`,
+      vi: `Dữ liệu ngày ${dateKey} (${allData.length} websites)`,
       en: `Data for ${dateKey} (${allData.length} websites)`,
     });
   }
@@ -375,10 +385,10 @@ function Donut(diameter, data, strokeWidth = 50, gap = 0, wedgeWidth = 4) {
         ?.classList.toggle("active", true);
     });
 
-    g.addEventListener("click", (e) => {
-      let website = g.getAttribute("ufs-website");
-      window.open("https://" + website, "_blank");
-    });
+    // g.addEventListener("click", (e) => {
+    //   let website = g.getAttribute("ufs-website");
+    //   window.open("https://" + website, "_blank");
+    // });
   });
 
   allG[0]?.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
@@ -393,3 +403,7 @@ function calculatePoint(cx, cy, radius, degrees) {
     y: cy + radius * Math.sin(radians),
   };
 }
+
+function BarDateRange() {}
+
+function BarWeek() {}

@@ -8,7 +8,7 @@
 
   // communication between page-script and content-script
   function sendToPageScript(event, uuid, data) {
-    console.log("sendToPageScript", event, uuid, data);
+    // console.log("sendToPageScript", event, uuid, data);
     window.dispatchEvent(
       new CustomEvent("ufs-contentscript-sendto-pagescript" + uuid, {
         detail: { event, data },
@@ -54,7 +54,7 @@
       switch (event) {
         case "ufs-runInContentScript":
           const { params = [], fnPath = "" } = data || {};
-          console.log("runInContentScript", fnPath, params);
+          // console.log("runInContentScript", fnPath, params);
           const res = await (await getUtils()).runFunc(fnPath, params);
           sendToPageScript(event, uuid, res);
           break;
@@ -62,7 +62,7 @@
           chrome.runtime.sendMessage(
             { action: "ufs-runInBackground", data },
             function (response) {
-              console.log("Response from background script:", response);
+              // console.log("Response from background script:", response);
               sendToPageScript(event, uuid, response);
             }
           );

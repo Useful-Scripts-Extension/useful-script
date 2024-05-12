@@ -103,8 +103,6 @@
     return UfsGlobal;
   });
 
-  console.log("UfsGlobal loaded");
-
   // store cache for all functions in UfsGlobal
   const CACHED = {};
 
@@ -968,12 +966,9 @@
       return null;
     }
 
-    console.log(imgSrc);
-
     // bypass redirect
     let redirectedUrl = await getRedirectedUrl(imgSrc);
     if (redirectedUrl) {
-      console.log("bypass redirect:", redirectedUrl);
       imgSrc = redirectedUrl;
     }
 
@@ -1014,7 +1009,6 @@
         if (rule.src && !testRegex(imgSrc, rule.src)) continue;
         if (rule.exclude && testRegex(imgSrc, rule.exclude)) continue;
         if (rule.r) {
-          console.log(rule);
           let newSrc = replaceUsingRegex(imgSrc, rule.r, rule.s);
           if (newSrc?.length) {
             return newSrc;
@@ -1242,12 +1236,10 @@
     for (let fn of [try1, try2, try3]) {
       try {
         let res = await timeoutPromise(fn(), 5000);
-        console.log("getLargestImageSrc: " + fn.name + " -> ", res);
         if (res && res != imgSrc) {
           if (!Array.isArray(res)) res = [res];
           if (res.length) {
             let finalSrc = await findWorkingSrc(res, true);
-            console.log("final src:", finalSrc);
             if (finalSrc?.length) return finalSrc;
           }
         }
@@ -1263,7 +1255,6 @@
       const res = await fetchByPassOrigin(src, {
         method: "HEAD",
       });
-      console.log("isImageSrc: " + src + " -> ", res);
       if (res.ok) {
         // const type = res.headers.get("content-type");
         const type = res.headers?.["content-type"];

@@ -21,6 +21,10 @@ export default {
 
   contentScript: {
     onDocumentStart: async () => {
+      const INTERVAL_UPDATE = 1;
+      const INTERVAL_SAVE = 5;
+      const IDLE_TIME = 5;
+
       const invisible = "\u200b";
       let originalTitle = document.title;
       let titleCache = originalTitle;
@@ -52,13 +56,25 @@ export default {
         savedTimerValue = todayTimer.value;
       });
 
-      setInterval(() => {
-        if (!document.hidden) {
+      let lastActive;
+      updateLastActive();
+      window.addEventListener("load", updateLastActive);
+
+      setInterval(async () => {
+        let idle = await isIdle();
+
+        if (idle) {
+          UfsGlobal.DOM.notify({
+            msg: "Useful script - Webtimer - IDLE state",
+            duration: 2000,
+          });
+        }
+
+        if (!(document.hidden || idle)) {
           focusTimerValue++;
           currentTimerValue = savedTimerValue + focusTimerValue;
           makeTitle();
         }
-        let now = new Date();
         let isMidnight =
           (now.getHours() === 23 &&
             now.getMinutes() === 59 &&
@@ -70,14 +86,48 @@ export default {
         if (isMidnight) {
           saveTimer();
         }
-      }, 1e3);
+      }, INTERVAL_UPDATE * 1000);
 
       setInterval(() => {
         saveTimer();
-      }, 1e4);
+      }, INTERVAL_SAVE * 1000);
+
       window.addEventListener("beforeunload", saveTimer);
 
+      ["mousemove", "mousedown", "keydown", "touchstart", "wheel"].forEach(
+        (event) => {
+          document.addEventListener(event, updateLastActive);
+        }
+      );
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          updateLastActive();
+        }
+      });
+
       // functions
+      function updateLastActive() {
+        lastActive = performance.now();
+      }
+      async function isIdle() {
+        // check if no audio or video is playing in website
+        let allMedia = document.querySelectorAll("video, audio");
+        for (let media of allMedia) {
+          if (!media.paused) return false;
+        }
+
+        return new Date() - lastActive > IDLE_TIME * 1000;
+
+        if (IDLE_TIME > 0) {
+          let state = await UfsGlobal.Extension.runInBackground(
+            "chrome.idle.queryState",
+            [IDLE_TIME]
+          );
+          return state !== "active";
+        }
+        return false;
+      }
+
       async function saveTimer() {
         let { web_timer, host, today, value } = await getTodayTimer();
         let newValue = value + focusTimerValue;
