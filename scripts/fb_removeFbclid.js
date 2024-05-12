@@ -15,7 +15,7 @@ export default {
 
   pageScript: {
     onBeforeNavigate: (url) => {
-      window.stop();
+      // window.stop();
       console.log(url);
     },
 
