@@ -75,6 +75,8 @@ export default {
           currentTimerValue = savedTimerValue + focusTimerValue;
           makeTitle();
         }
+
+        let now = new Date();
         let isMidnight =
           (now.getHours() === 23 &&
             now.getMinutes() === 59 &&
