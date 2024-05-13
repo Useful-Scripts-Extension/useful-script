@@ -2,9 +2,11 @@
 
 ## 28/04/2024 - ~
 
-- [ ] onBeforeNavigate event
+- [ ] dynamic rules editor
 
-- [ ] finish webTimer
+- [ ] onBeforeNavigate event => use declarativeNetRequest
+
+- [ ] finish webTimer + add block website
 
 - [ ] Tự động kết bạn <https://chromewebstore.google.com/detail/hifb-auto-k%E1%BA%BFt-b%E1%BA%A1n-%C4%91%E1%BB%8Ba-ph%C6%B0/mjgfhahcmnbbmolopombeaklmdnakmml>
 

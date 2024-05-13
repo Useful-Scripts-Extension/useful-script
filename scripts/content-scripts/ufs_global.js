@@ -214,7 +214,7 @@
     top: ${y - size / 2}px;
     width: ${size}px;
     height: ${size}px;
-    z-index: 16777271;
+    z-index: 2147483647;
     pointer-events: none;
     user-select: none;
     ${containerStyle}
@@ -415,7 +415,7 @@
         top: 10px;
         right: 10px;
         max-width: 300px;
-        z-index: 16777271;
+        z-index: 2147483647;
       }
       .ufs-notify-stack-item {
         background-color: #333;
@@ -461,7 +461,7 @@
       background-color: #333;
       color: #fff;
       border-radius: 5px;
-      z-index: 16777271;
+      z-index: 2147483647;
       transition: all 1s ease-out;
       ${
         align === "right"

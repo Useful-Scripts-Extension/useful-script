@@ -141,8 +141,6 @@ const tabs = [
         },
       }),
       createTitle("--- Photos ---", "--- Ảnh ---"),
-      s.magnify_image,
-      s.auto_redirectLargestImageSrc,
       s.twitter_downloadButton,
       s.getFavicon,
       addBadge(
@@ -302,7 +300,6 @@ const tabs = [
       s.fb_invisible_message,
       s.fb_moreReactionStory,
       s.fb_whoIsTyping,
-      s.fb_removeFbclid,
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
       createTitle("--- Statistic ---", "--- Thống kê ---"),
@@ -458,7 +455,9 @@ const tabs = [
     scripts: [
       createTitle("--- Utility ---", "--- Tiện ích ---"),
       s.web_timer,
-      s.textToQrCode,
+      s.magnify_image,
+      s.auto_redirectLargestImageSrc,
+      s.remove_tracking_in_url,
       s.shortenURL,
       s.unshorten,
       createTitle("--- Automation ---", "--- Tự động ---"),
@@ -469,10 +468,11 @@ const tabs = [
       s.dino_hack,
       s.passwordGenerator,
       createTitle("--- Tools ---", "--- Công cụ ---"),
-      s.send_shareFiles,
+      s.textToQrCode,
       s.textToSpeech,
-      s.vuiz_createLogo,
       s.changeAudioOutput,
+      s.send_shareFiles,
+      s.vuiz_createLogo,
       s.performanceAnalyzer,
       addBadge(
         {

@@ -28,6 +28,11 @@ export default {
       const invisible = "\u200b";
       let originalTitle = document.title;
       let titleCache = originalTitle;
+      let windowLoaded = false;
+      window.addEventListener("load", () => {
+        windowLoaded = true;
+        originalTitle = document.title;
+      });
 
       // listen title change
       UfsGlobal.DOM.waitForElements("title").then(function (element) {
@@ -61,16 +66,18 @@ export default {
       window.addEventListener("load", updateLastActive);
 
       setInterval(async () => {
-        let idle = await isIdle();
+        let idleState = await getIdleState();
 
-        if (idle) {
+        if (idleState.isIdle) {
           UfsGlobal.DOM.notify({
             msg: "Useful script - Webtimer - IDLE state",
             duration: 2000,
           });
+        } else {
+          // console.log("not idle: ", idleState.reason);
         }
 
-        if (!(document.hidden || idle)) {
+        if (!(document.hidden || idleState.isIdle)) {
           focusTimerValue++;
           currentTimerValue = savedTimerValue + focusTimerValue;
           makeTitle();
@@ -111,22 +118,56 @@ export default {
       function updateLastActive() {
         lastActive = performance.now();
       }
-      async function isIdle() {
-        // check if no audio or video is playing in website
+
+      async function getIdleState() {
+        // if not enough time passed since last active? => not idle
+        let timePassed = ~~(performance.now() - lastActive);
+        if (timePassed < IDLE_TIME * 1000)
+          return {
+            isIdle: false,
+            reason: "not enough time passed since last active " + timePassed,
+          };
+
+        // if any video / audio playing? => not idle
         let allMedia = document.querySelectorAll("video, audio");
         for (let media of allMedia) {
-          if (!media.paused) return false;
+          if (media.duration > 0 && !media.paused)
+            return {
+              isIdle: false,
+              reason: "video / audio playing",
+            };
         }
-        return performance.now() - lastActive > IDLE_TIME * 1000;
 
-        // if (IDLE_TIME > 0) {
-        //   let state = await UfsGlobal.Extension.runInBackground(
-        //     "chrome.idle.queryState",
-        //     [IDLE_TIME]
-        //   );
-        //   return state !== "active";
-        // }
-        // return false;
+        // if this tab audible? => not idle
+        let tabs = await UfsGlobal.Extension.runInBackground(
+          "chrome.tabs.query",
+          [
+            {
+              active: true,
+              audible: true,
+              url: location.href,
+            },
+          ]
+        );
+        let hasAudioPlaying = tabs.some((tab) => tab.audible);
+        if (hasAudioPlaying)
+          return {
+            isIdle: false,
+            reason: "this tab is audible ",
+          };
+
+        // if chrome.idle.queryState == active? => not idle
+        let state = await UfsGlobal.Extension.runInBackground(
+          "chrome.idle.queryState",
+          [IDLE_TIME]
+        );
+        if (state == "active")
+          return {
+            isIdle: false,
+            reason: "chrome.idle.queryState == active",
+          };
+
+        return true;
       }
 
       async function saveTimer() {
@@ -178,11 +219,6 @@ export default {
         return `${hours}${minutes}${seconds}`;
       }
 
-      let windowLoaded = false;
-      window.addEventListener("load", () => {
-        windowLoaded = true;
-        originalTitle = document.title;
-      });
       function makeTitle() {
         titleCache =
           `${secondsToTime(currentTimerValue)} ${invisible}` + originalTitle;

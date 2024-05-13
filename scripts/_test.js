@@ -9,18 +9,53 @@ export default {
     vi: "",
   },
 
+  popupScript: {
+    onEnable: () => {
+      let blockUrls = ["https://*.facebook.com/*"];
+      let ids = [];
+      blockUrls.forEach((domain, index) => {
+        let id = index + 1;
+        ids.push(id);
+        chrome.declarativeNetRequest.updateDynamicRules({
+          addRules: [
+            {
+              id: id,
+              priority: 1,
+              action: { type: "block" },
+              condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+            },
+          ],
+          removeRuleIds: [id],
+        });
+      });
+      localStorage.setItem("block-ids", JSON.stringify(ids));
+    },
+    onDisable: () => {
+      let ids = JSON.parse(localStorage.getItem("block-ids"));
+      chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: ids,
+      });
+    },
+
+    onClick: () => {
+      chrome.runtime
+        .getURL("/scripts/net-request-rules/dynamicRulesEditor/index.html")
+        .then((url) => {
+          window.open(url, "_self");
+        });
+    },
+  },
+
   pageScript: {
     onDocumentStart: () => {
       // CometNewsFeedPaginationQuery
-      const originalParse = JSON.parse;
-      console.log("json parse");
-
-      JSON.parse = function (string, reviver) {
-        let json = originalParse(string, reviver);
-        console.log(json);
-        return json;
-      };
-
+      // const originalParse = JSON.parse;
+      // console.log("json parse");
+      // JSON.parse = function (string, reviver) {
+      //   let json = originalParse(string, reviver);
+      //   console.log(json);
+      //   return json;
+      // };
       // window.$crisp = {
       //   push: (...data) => {
       //     console.log(data);
