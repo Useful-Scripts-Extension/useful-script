@@ -10,7 +10,10 @@ export default {
     Auto find large version of image to show.`,
     vi: `Nhấn Ctrl 2 lần (hoặc chuột phải) lên bất kỳ hình ảnh nào để xem nó trong cửa sổ phóng đại
     <br/><br/>
-    Tự động tìm ảnh có kích thước lớn nhất để hiển thị.`,
+    <ul>
+      <li>Tự động hiển thị ảnh có kích thước lớn nhất</li>
+      <li>Không còn phải căng mắt lên để xem ảnh nữa</li>
+    </ul>`,
     img: "",
   },
 

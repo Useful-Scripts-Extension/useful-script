@@ -5,8 +5,9 @@ export default {
     vi: "Thời gian lướt web",
   },
   description: {
-    en: "Keep track of how you spend your time on the web.<br/><h3>CLICK TO OPEN HISTORY.</h3>",
-    vi: "Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/><h3>BẤM ĐỂ XEM LỊCH SỬ.</h3>",
+    en: "Keep track of how you spend your time on the web.<br/><h3>CLICK TO OPEN GRAPH.</h3>",
+    vi: "Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/><h3>BẤM ĐỂ XEM BIỂU ĐỒ.</h3>",
+    img: "/scripts/web_timer.png",
   },
 
   changeLogs: {
