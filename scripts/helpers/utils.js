@@ -72,17 +72,22 @@ export function runFunc(fnPath = "", params = [], global = {}) {
 
     if (!(typeof fn === "function")) return resolve(null);
 
-    let res = fn(..._params);
+    try {
+      let res = fn(..._params);
 
-    if (!hasCallback) {
-      if (typeof res?.then === "function") {
-        res.then?.((_res) => {
-          console.log(_res);
-          resolve(_res);
-        });
-      } else {
-        resolve(res);
+      if (!hasCallback) {
+        if (typeof res?.then === "function") {
+          res.then?.((_res) => {
+            console.log(_res);
+            resolve(_res);
+          });
+        } else {
+          resolve(res);
+        }
       }
+    } catch (e) {
+      console.log("ERROR runFunc: ", e);
+      resolve(null);
     }
   });
 }
