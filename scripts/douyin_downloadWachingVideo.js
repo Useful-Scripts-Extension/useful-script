@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.douyin.com/favicon.ico",
   name: {
@@ -14,6 +12,10 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
+
       const {
         downloadURL,
         downloadBlob,

@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-user-group fa-lg"></i>',
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { showLoading } = await import("./helpers/utils.js");
       let { setLoadingText, closeLoading } = showLoading("Đang chuẩn bị...");
       try {
         let {

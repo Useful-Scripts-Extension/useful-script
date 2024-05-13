@@ -1,6 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-import { shared as fb_videoDownloader } from "./fb_videoDownloader.js";
-
 export default {
   icon: "https://www.facebook.com/favicon.ico",
   name: {
@@ -17,6 +14,10 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
+      const { shared: fb_videoDownloader } = await import(
+        "./fb_videoDownloader.js"
+      );
       let { closeLoading, setLoadingText } = showLoading(
         "Đang lấy videoId từ trang web..."
       );
@@ -48,6 +49,7 @@ export default {
 
 export const shared = {
   getListVideoIdInWebsite: async function () {
+    const { runScriptInCurrentTab } = await import("./helpers/utils.js");
     return await runScriptInCurrentTab(() => {
       const { getOverlapScore } = UfsGlobal.DOM;
 

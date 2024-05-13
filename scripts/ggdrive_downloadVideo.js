@@ -1,10 +1,3 @@
-import {
-  getCurrentTab,
-  openPopupWithHtml,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: "https://drive-thirdparty.googleusercontent.com/32/type/video/mp4",
   name: {
@@ -20,6 +13,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab, openPopupWithHtml, showLoading } = await import(
+        "./helpers/utils.js"
+      );
       let { closeLoading } = showLoading("Đang tìm link video...");
       try {
         let docid = await shared.getDocIdFromWebsite();
@@ -67,6 +63,7 @@ export const shared = {
   },
 
   getDocIdFromWebsite: async function () {
+    const { runScriptInCurrentTab } = await import("./helpers/utils.js");
     return await runScriptInCurrentTab(() => {
       return window?.viewerData?.config?.id;
     });

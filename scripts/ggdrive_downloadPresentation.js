@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.presentationml.presentation",
   name: {
@@ -15,6 +13,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       let tab = await getCurrentTab();
       let { url, title } = tab;
 

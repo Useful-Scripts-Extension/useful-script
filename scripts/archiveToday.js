@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: `https://archive.ph/favicon.ico`,
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       let { url } = await getCurrentTab();
 
       var a = prompt(

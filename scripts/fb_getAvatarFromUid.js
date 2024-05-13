@@ -1,6 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-import { AccessToken } from "./helpers/constants.js";
-
 export default {
   icon: '<i class="fa-solid fa-user fa-lg"></i>',
   name: {
@@ -14,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
       const { downloadData } = UfsGlobal.Utils;
 
       let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
@@ -25,7 +23,9 @@ export default {
         let urls = [];
         for (let uid of uids) {
           setLoadingText("Đang lấy avatar của " + uid + "...");
-          let url = await shared.getAvatarFromUid(uid);
+          let url = UfsGlobal.Facebook.getUserAvatarFromUid(uid);
+          let res = await fetch(uid);
+          url = res.url;
           if (url) {
             urls.push(url);
           }
@@ -50,13 +50,5 @@ export default {
         closeLoading();
       }
     },
-  },
-};
-
-export const shared = {
-  getAvatarFromUid: async (uid) => {
-    let url = `https://graph.facebook.com/${uid}/picture?height=500&access_token=${AccessToken.FacebookIphone}`;
-    let data = await fetch(url);
-    return data.url;
   },
 };

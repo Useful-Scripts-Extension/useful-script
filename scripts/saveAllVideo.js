@@ -1,5 +1,3 @@
-import { getCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://saveallvideo.net/assets/img/favicon.png",
   name: {
@@ -19,6 +17,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       const { closeLoading, setLoadingText } = showLoading(
         "Đang lấy thông tin tab..."
       );

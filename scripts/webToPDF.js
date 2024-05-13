@@ -1,11 +1,3 @@
-import {
-  attachDebugger,
-  detachDebugger,
-  getCurrentTab,
-  sendDevtoolCommand,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: `https://lh3.googleusercontent.com/qz7_-nogEpLsoxevV_IQbz0UesDFWsbmKyv_vOGUhMRSu6pEYAJCUM50QkTBvw8saVNSmwB0DBpLSBZgfpmAYL3bgh4=w128-h128-e365-rj-sc0x00ffffff`,
   name: {
@@ -19,6 +11,13 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const {
+        attachDebugger,
+        detachDebugger,
+        getCurrentTab,
+        sendDevtoolCommand,
+        showLoading,
+      } = await import("./helpers/utils.js");
       const { downloadURL } = UfsGlobal.Utils;
 
       const { setLoadingText, closeLoading } = showLoading("Đang tạo PDF...");

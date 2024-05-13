@@ -1,6 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-import { t } from "../popup/helpers/lang.js";
-
 export default {
   icon: '<i class="fa-solid fa-user-secret fa-lg"></i>',
   name: {
@@ -16,6 +13,11 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading, runScriptInCurrentTab } = await import(
+        "./helpers/utils.js"
+      );
+      const { t } = await import("../popup/helpers/lang.js");
+
       let username = prompt(t({ vi: "Nhập username", en: "Enter username" }));
       if (!username) return;
 

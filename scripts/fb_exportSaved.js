@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-file-export fa-lg"></i>',
   name: {
@@ -15,6 +13,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
       const { downloadData } = UfsGlobal.Utils;
 
       const c = (e) => {

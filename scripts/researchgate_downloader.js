@@ -1,5 +1,3 @@
-import { getCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.researchgate.net/favicon.ico",
   name: {
@@ -18,6 +16,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       const { closeLoading, setLoadingText } = showLoading("Đang lấy url...");
 
       try {

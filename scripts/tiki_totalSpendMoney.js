@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://tiki.vn/favicon.ico",
   name: {
@@ -14,6 +12,8 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { showLoading } = await import("./helpers/utils.js");
+
       // https://www.facebook.com/groups/j2team.community/permalink/1169967376668714/
 
       const { moneyFormat } = UfsGlobal.Utils;

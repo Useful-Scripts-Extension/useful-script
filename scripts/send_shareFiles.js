@@ -1,5 +1,3 @@
-import { popupCenter } from "./helpers/utils.js";
-
 export default {
   icon: "https://send.zcyph.cc/favicon-32x32.c470c36d.png",
   name: {
@@ -12,7 +10,8 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { popupCenter } = await import("./helpers/utils.js");
       popupCenter({
         url: "https://send.zcyph.cc/",
         title: "Send",

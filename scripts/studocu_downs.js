@@ -1,5 +1,3 @@
-import { getCurrentTab, openWebAndRunScript } from "./helpers/utils.js";
-
 export default {
   icon: "https://d20ohkaloyme4g.cloudfront.net/img/favicon.ico",
   name: {
@@ -17,6 +15,10 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab, openWebAndRunScript } = await import(
+        "./helpers/utils.js"
+      );
+
       let funcs = {
         "dlstudocu.com": async (url) => {
           openWebAndRunScript({

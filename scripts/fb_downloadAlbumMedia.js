@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -13,7 +11,8 @@ export default {
   // whiteList: ["https://graph.facebook.com/*"],
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
       const { downloadData } = UfsGlobal.Utils;
 
       const accessToken = prompt("Nhập access token:", "");

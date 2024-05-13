@@ -1,6 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-import { t } from "../popup/helpers/lang.js";
-
 export default {
   icon: "https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png",
   name: {
@@ -14,6 +11,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
+      const { t } = await import("../popup/helpers/lang.js");
+
       function renderUser(user, index) {
         //prettier-ignore
         let { pk, username, full_name, is_private, is_verified, pk_id, profile_pic_url, friendship_status, social_context } = user;

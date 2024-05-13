@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://lh3.googleusercontent.com/xwarvPJ490JDNBNlB4_nVOE3KEs-A6xI07luVNP--iQ7kipstjiSHf-S1rofE-ji9E0clqa_vkivURh42UOA3uXsmHw=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -13,6 +11,8 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
+
       // Để script này hoạt động được, cần thêm rule modify header referer
       // Chi tiết xem trong file rules.json
 

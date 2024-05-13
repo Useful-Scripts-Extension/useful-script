@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-qrcode fa-lg"></i>',
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       const tab = await getCurrentTab();
 
       let text = prompt("Nhập text/url: ", tab.url);

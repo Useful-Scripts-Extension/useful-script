@@ -1,11 +1,3 @@
-import {
-  openPopupWithHtml,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
-import { getTableStyle } from "./helpers/predefined_css.js";
-import { shared as ggdrive_downloadVideo } from "./ggdrive_downloadVideo.js";
-
 export default {
   icon: "https://drive.google.com/favicon.ico",
   name: {
@@ -21,6 +13,13 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getTableStyle } = await import("./helpers/predefined_css.js");
+      const { openPopupWithHtml, runScriptInCurrentTab, showLoading } =
+        await import("./helpers/utils.js");
+      const { shared: ggdrive_downloadVideo } = await import(
+        "./ggdrive_downloadVideo.js"
+      );
+
       // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
 
       let { closeLoading, setLoadingText } = showLoading(

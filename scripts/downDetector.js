@@ -1,5 +1,3 @@
-import { getCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://cdn2.downdetector.com/dc31f7f27fda396/images/v2/problem.svg",
   name: {
@@ -17,6 +15,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       const { setLoadingText, closeLoading } = showLoading("Đang lấy url...");
 
       let { url } = await getCurrentTab();

@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -12,7 +10,8 @@ export default {
   },
 
   popupScript: {
-    onClick: () => {
+    onClick: async () => {
+      const { showLoading } = await import("./helpers/utils.js");
       const { downloadData } = UfsGlobal.Utils;
 
       const WAIT_BEFORE_NEXT_FETCH = 500;

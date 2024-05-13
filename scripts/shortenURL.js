@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://lh3.googleusercontent.com/jm2UEmhuC3c6L5zWae0zuefgl-Azjz541WpEwvNtXwaJl7H8I9U0zRRmDRdnbvmdZ6UYhTGQJ0QVCrZXvkGIy14HFA=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -12,7 +10,8 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
       // https://hyperhost.ua/tools/en/surli
       // https://www.shorturl.at/shortener.php
       // https://tinyurl.com/app

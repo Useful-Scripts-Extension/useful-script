@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
@@ -12,7 +10,8 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
       // Get token using cookies https://github.com/dz-id/fb_get_token_from_cookie/blob/main/main.py
 
       const { closeLoading } = showLoading("Đang lấy access token...");

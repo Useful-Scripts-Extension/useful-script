@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://archive.org/images/glogo.jpg",
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       let { url } = await getCurrentTab();
       let url_to_check = prompt("Nhập URL muốn xem: ", url);
       if (url_to_check) {

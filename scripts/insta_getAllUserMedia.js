@@ -1,6 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-import { t } from "../popup/helpers/lang.js";
-
 export default {
   icon: '<i class="fa-solid fa-download fa-lg"></i>',
   name: {
@@ -18,6 +15,8 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
+      const { t } = await import("../popup/helpers/lang.js");
       let username = prompt(
         t({
           en: "Enter insta username (eg. woohye0n):",

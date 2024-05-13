@@ -1,9 +1,3 @@
-import {
-  getCurrentTab,
-  openPopupWithHtml,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: `https://savevideo.me/favicon.ico`,
   name: {
@@ -17,6 +11,10 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab, openPopupWithHtml, showLoading } = await import(
+        "./helpers/utils.js"
+      );
+
       // https://savevideo.me/en/
 
       let { closeLoading } = showLoading("Đang get link video...");

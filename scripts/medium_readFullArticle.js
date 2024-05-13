@@ -1,7 +1,5 @@
 // javascript:window.open("https://freedium.cfd/"+encodeURIComponent(window.location))
 
-import { getCurrentTabUrl } from "./helpers/utils.js";
-
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain=freedium.cfd",
   name: {
@@ -17,6 +15,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTabUrl } = await import("./helpers/utils.js");
       let url = await getCurrentTabUrl();
       url = prompt("Nhập link medium:", url);
 

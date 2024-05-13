@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-regular fa-newspaper fa-lg"></i>',
   name: {
@@ -19,6 +17,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { showLoading } = await import("./helpers/utils.js");
       let friendUrl = prompt("Nhập link fb bạn bè: ");
 
       if (friendUrl) {

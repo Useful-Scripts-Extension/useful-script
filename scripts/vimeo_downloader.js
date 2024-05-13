@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://vimeo.com/favicon.ico",
   name: {
@@ -13,6 +11,8 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
+
       let tab = await getCurrentTab();
       let url = prompt("Enter vimeo video url: ", tab.url);
       if (url == null) return;

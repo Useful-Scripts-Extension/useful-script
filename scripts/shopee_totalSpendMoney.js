@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://shopee.vn/favicon.ico",
   name: {
@@ -13,6 +11,8 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { showLoading } = await import("./helpers/utils.js");
+
       // Order&Checkout List: https://shopee.vn/api/v4/order/get_all_order_and_checkout_list?limit=5&offset=0
       // Order Detail: https://shopee.vn/api/v4/order/get_order_detail?order_id=124388457229298
       // Order List: https://shopee.vn/api/v4/order/get_order_list?limit=5&list_type=4&offset=0

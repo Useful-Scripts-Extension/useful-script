@@ -1,11 +1,3 @@
-import {
-  attachDebugger,
-  detachDebugger,
-  getCurrentTab,
-  sendDevtoolCommand,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: "https://gofullpage.com/favicon.ico",
   name: {
@@ -19,6 +11,14 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const {
+        attachDebugger,
+        detachDebugger,
+        getCurrentTab,
+        sendDevtoolCommand,
+        showLoading,
+      } = await import("./helpers/utils.js");
+
       const { downloadURL } = UfsGlobal.Utils;
 
       const { setLoadingText, closeLoading } = showLoading(

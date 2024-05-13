@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: `https://s2.googleusercontent.com/s2/favicons?domain=downforeveryoneorjustme.com`,
   name: {
@@ -13,6 +11,7 @@ export default {
 
   pageScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       let { url } = await getCurrentTab();
       if (url) {
         let url_to_check = prompt("Enter web url to check", url);

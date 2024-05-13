@@ -1,6 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-import { shared as ggdrive_downloadVideo } from "./ggdrive_downloadVideo.js";
-
 export default {
   icon: "https://drive.google.com/favicon.ico",
   name: {
@@ -14,12 +11,13 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
       try {
         let tab = await getCurrentTab();
         let url = prompt("Nhập link google drive: ", tab.url);
         if (url == null) return;
 
-        let directLink = shared.generateDirectLinkFromUrl(url);
+        let directLink = await shared.generateDirectLinkFromUrl(url);
         if (directLink) window.open(directLink);
       } catch (e) {
         alert("ERROR: " + e);
@@ -29,7 +27,10 @@ export default {
 };
 
 export const shared = {
-  generateDirectLinkFromUrl: function (url) {
+  generateDirectLinkFromUrl: async function (url) {
+    const { shared: ggdrive_downloadVideo } = await import(
+      "./ggdrive_downloadVideo.js"
+    );
     let docId = ggdrive_downloadVideo.getDocIdFromUrl(url);
     if (!docId)
       throw Error("Link không hợp lệ. Không tìm được docId trong link.");

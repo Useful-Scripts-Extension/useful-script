@@ -1,5 +1,3 @@
-import { getCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: `<i class="fa-solid fa-code-branch fa-lg"></i>`,
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       let { closeLoading, setLoadingText } = showLoading(
         "Đang chờ nhập url..."
       );

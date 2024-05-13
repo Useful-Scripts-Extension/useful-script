@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
@@ -12,7 +10,8 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
       // Source code extracted from https://chrome.google.com/webstore/detail/get-token-cookie/naciaagbkifhpnoodlkhbejjldaiffcm/related
 
       async function getToken() {

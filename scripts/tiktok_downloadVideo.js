@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
@@ -17,6 +15,10 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
+
       let url = prompt(
         "Nhập link tiktok video: ",
         await runScriptInCurrentTab(() => location.href)

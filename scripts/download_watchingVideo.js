@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "<i class='fa-solid fa-video fa-lg'></i>",
   name: {
@@ -13,6 +11,9 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
       let src = await runScriptInCurrentTab(async () => {
         return await UfsGlobal.DOM.getWatchingVideoSrc();
       });

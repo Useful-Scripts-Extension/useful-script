@@ -1,5 +1,3 @@
-import { getCookie, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://ffb.vn/assets/img/illustrations/favicon.png",
   name: {
@@ -13,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCookie, showLoading } = await import("./helpers/utils.js");
       const { closeLoading, setLoadingText } =
         showLoading("Đang lấy cookie...");
       let cookie = await getCookie("facebook.com");

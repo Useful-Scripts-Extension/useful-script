@@ -1,9 +1,3 @@
-import {
-  getCurrentTab,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-video fa-lg"></i>',
   name: {
@@ -18,6 +12,8 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
+
       let tab = await getCurrentTab();
       let url = prompt("Nhập link video/reel/watch:", tab.url);
       let videoId = shared.extractFbVideoIdFromUrl(url);
@@ -50,6 +46,7 @@ export const shared = {
   },
 
   getDtsg: async function () {
+    const { runScriptInCurrentTab } = await import("./helpers/utils.js");
     return await runScriptInCurrentTab(() => {
       return require("DTSGInitialData").token;
     });

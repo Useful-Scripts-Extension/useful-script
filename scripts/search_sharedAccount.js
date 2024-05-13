@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: `http://bugmenot.com/favicon.ico`,
   name: {
@@ -17,6 +15,8 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
+
       const providers = [
         {
           name: "bugmenot.com",

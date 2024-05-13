@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   name: {
     en: "Get all fb User ID from search page",
@@ -18,6 +16,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
       const { closeLoading } = showLoading("Đang tìm user ID...");
 
       await runScriptInCurrentTab(async () => {

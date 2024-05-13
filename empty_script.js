@@ -1,3 +1,5 @@
+// WARNING: avoid importing anything here, use dynamic imports instead
+
 export default {
   icon: "",
   name: {

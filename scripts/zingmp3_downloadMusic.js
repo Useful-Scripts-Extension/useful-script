@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.64/static/media/icon_zing_mp3_60.f6b51045.svg",
   name: {
@@ -12,7 +10,9 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
+
       // Idea: https://viblo.asia/p/zing-mp3-toi-da-khai-thac-api-nhu-the-nao-L4x5xvdaZBM
 
       const URL_API = "https://zingmp3.vn";
