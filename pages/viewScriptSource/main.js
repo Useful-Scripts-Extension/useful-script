@@ -1,6 +1,6 @@
 window.onload = async () => {
   try {
-    let id = localStorage.viewScriptSource_sharedData;
+    let id = new URL(location.href).searchParams.get("file");
     let source = await getScriptSource(id);
 
     if (source) {
@@ -16,7 +16,6 @@ window.onload = async () => {
       hljs.initLineNumbersOnLoad();
     }
   } catch (e) {}
-  // delete localStorage.viewScriptSource_sharedData;
 };
 
 function copy(text) {
