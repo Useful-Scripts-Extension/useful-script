@@ -1,3 +1,8 @@
+// NOTE: có thể sử dụng ublock origin, sẽ chặn được nhiều loại tracking hơn
+// Sử dụng rules dưới đây:
+// Adguard: https://github.com/AdguardTeam/AdguardFilters/tree/master/TrackParamFilter/sections
+// https://github.com/DandelionSprout/adfilt/blob/master/LegitimateURLShortener.txt
+
 let company = "Facebook, Google, Tiktok, Twitter";
 let ul = `<ul>
 <li>fbclid</li>
