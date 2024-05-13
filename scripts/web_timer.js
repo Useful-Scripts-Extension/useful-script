@@ -22,13 +22,14 @@ export default {
   contentScript: {
     onDocumentStart: async () => {
       const INTERVAL_UPDATE = 1;
-      const INTERVAL_SAVE = 5;
+      const INTERVAL_SAVE = 30;
       const IDLE_TIME = 30;
 
       const invisible = "\u200b";
       let originalTitle = document.title;
       let titleCache = originalTitle;
       let windowLoaded = false;
+      let needUpdateLastActive = true;
       window.addEventListener("load", () => {
         windowLoaded = true;
         originalTitle = document.title;
@@ -61,23 +62,25 @@ export default {
         savedTimerValue = todayTimer.value;
       });
 
-      let lastActive;
-      updateLastActive();
+      let lastActive = 0;
       window.addEventListener("load", updateLastActive);
 
       setInterval(async () => {
+        if (needUpdateLastActive) {
+          lastActive = performance.now();
+          needUpdateLastActive = false;
+        }
+
         let idleState = await getIdleState();
 
         if (idleState.isIdle) {
           UfsGlobal.DOM.notify({
-            msg: "Useful script - Webtimer - IDLE state",
+            msg: `Useful script - Webtimer - IDLE state (${idleState.reason})`,
             duration: 2000,
           });
-        } else {
-          // console.log("not idle: ", idleState.reason);
         }
 
-        if (!(document.hidden || idleState.isIdle)) {
+        if (!document.hidden && !idleState.isIdle) {
           focusTimerValue++;
           currentTimerValue = savedTimerValue + focusTimerValue;
           makeTitle();
@@ -103,11 +106,40 @@ export default {
 
       window.addEventListener("beforeunload", saveTimer);
 
-      ["mousemove", "mousedown", "keydown", "touchstart", "wheel"].forEach(
-        (event) => {
-          document.addEventListener(event, updateLastActive);
-        }
-      );
+      [
+        "mouseout",
+        "mouseenter",
+        "mousemove",
+        "mousedown",
+        "mouseover",
+        "mouseleave",
+
+        "pointerover",
+        "pointerenter",
+        "pointerdown",
+        "pointermove",
+        "pointerup",
+        "pointerleave",
+
+        "click",
+        "contextmenu",
+        "touchstart",
+        "touchmove",
+        "touchend",
+
+        "keydown",
+        "keyup",
+        "keypress",
+
+        "wheel",
+        "scroll",
+
+        "blur",
+        "focusin",
+        "focusout",
+      ].forEach((event) => {
+        window.addEventListener(event, updateLastActive);
+      });
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {
           updateLastActive();
@@ -116,7 +148,7 @@ export default {
 
       // functions
       function updateLastActive() {
-        lastActive = performance.now();
+        needUpdateLastActive = true;
       }
 
       async function getIdleState() {
@@ -149,7 +181,7 @@ export default {
             },
           ]
         );
-        let hasAudioPlaying = tabs.some((tab) => tab.audible);
+        let hasAudioPlaying = tabs?.length > 0;
         if (hasAudioPlaying)
           return {
             isIdle: false,
@@ -157,17 +189,21 @@ export default {
           };
 
         // if chrome.idle.queryState == active? => not idle
+        let t = Math.max(15, IDLE_TIME);
         let state = await UfsGlobal.Extension.runInBackground(
           "chrome.idle.queryState",
-          [IDLE_TIME]
+          [t]
         );
-        if (state == "active")
+        if (state != "active")
           return {
-            isIdle: false,
-            reason: "chrome.idle.queryState == active",
+            isIdle: true,
+            reason: "no system events in " + t + " secs",
           };
 
-        return true;
+        return {
+          isIdle: true,
+          reason: "no active events in " + IDLE_TIME + " secs",
+        };
       }
 
       async function saveTimer() {
