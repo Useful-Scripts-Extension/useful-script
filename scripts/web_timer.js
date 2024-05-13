@@ -25,12 +25,17 @@ export default {
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 30;
       const IDLE_TIME = 30;
+      const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
       let originalTitle = document.title;
       let titleCache = originalTitle;
       let windowLoaded = false;
       let needUpdateLastActive = true;
+      let savedTimerValue = 0,
+        currentTimerValue = 0,
+        focusTimerValue = 0;
+
       window.addEventListener("load", () => {
         windowLoaded = true;
         originalTitle = document.title;
@@ -53,11 +58,6 @@ export default {
         });
       });
 
-      // variables
-      let savedTimerValue = 0,
-        currentTimerValue = 0,
-        focusTimerValue = 0;
-
       // get saved timer
       getTodayTimer().then((todayTimer) => {
         savedTimerValue = todayTimer.value;
@@ -65,6 +65,22 @@ export default {
 
       let lastActive = 0;
       window.addEventListener("load", updateLastActive);
+
+      const overlay = document.createElement("div");
+      overlay.style.cssText = `
+        position: fixed;
+        top: -100vh;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2147483647;
+        transition: top 0.5s ease;
+      `;
+      (document.body || document.documentElement).appendChild(overlay);
+      ["mouseenter", "mousemove", "touchstart"].forEach((event) => {
+        overlay.addEventListener(event, updateLastActive);
+      });
 
       setInterval(async () => {
         if (needUpdateLastActive) {
@@ -79,6 +95,9 @@ export default {
             msg: `Useful script - Webtimer - IDLE state (${idleState.reason})`,
             duration: 2000,
           });
+          if (SHOW_OVERLAY && !document.hidden) overlay.style.top = "0";
+        } else {
+          overlay.style.top = "-100vh";
         }
 
         if (!document.hidden && !idleState.isIdle) {
