@@ -28,7 +28,7 @@ export default {
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
-      let originalTitle = document.title;
+      let originalTitle = document.title || location.hostname;
       let titleCache = originalTitle;
       let windowLoaded = false;
       let needUpdateLastActive = true;
@@ -38,7 +38,7 @@ export default {
 
       window.addEventListener("load", () => {
         windowLoaded = true;
-        originalTitle = document.title;
+        originalTitle = document.title || location.hostname;
       });
 
       // listen title change
