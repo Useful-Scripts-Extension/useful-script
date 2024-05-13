@@ -258,7 +258,7 @@ function createScriptButton(script, isFavorite = false) {
   more.classList.add("more");
 
   // what this? button
-  if (typeof script.infoLink === "string") {
+  if (script.infoLink) {
     const infoBtn = document.createElement("i");
     infoBtn.className = "fa-regular fa-circle-question";
     infoBtn.title = t({
@@ -269,7 +269,8 @@ function createScriptButton(script, isFavorite = false) {
       e.stopPropagation();
       e.preventDefault();
       trackEvent(script.id + "-INFO");
-      window.open(script.infoLink);
+      if (typeof script.infoLink === "string") window.open(script.infoLink);
+      if (typeof script.infoLink === "function") script.infoLink();
     };
     more.appendChild(infoBtn);
   }

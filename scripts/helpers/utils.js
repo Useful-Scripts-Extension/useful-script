@@ -9,6 +9,24 @@ const CACHED = {
   userID: null,
 };
 
+export async function getNextDynamicRuleIds(count = 1) {
+  const ruleList = await chrome.declarativeNetRequest.getDynamicRules();
+  const ids = new Set(ruleList.map((rule) => rule.id));
+
+  const result = [];
+  let nextAvailableId = 1;
+
+  for (let i = 0; i < count; i++) {
+    while (ids.has(nextAvailableId)) {
+      nextAvailableId++;
+    }
+    result.push(nextAvailableId);
+    ids.add(nextAvailableId);
+  }
+
+  return count === 1 ? result[0] : result;
+}
+
 export function debounce(func, delay) {
   let timeout;
   return (...args) => {
@@ -78,7 +96,6 @@ export function runFunc(fnPath = "", params = [], global = {}) {
       if (!hasCallback) {
         if (typeof res?.then === "function") {
           res.then?.((_res) => {
-            console.log(_res);
             resolve(_res);
           });
         } else {
@@ -138,7 +155,7 @@ export const Storage = {
   },
 };
 
-const listActiveScriptsKey = "activeScripts";
+export const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {
   let list = await getAllActiveScriptIds();
   if (isActive) list.push(scriptId);

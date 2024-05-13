@@ -10,6 +10,8 @@ export const canClick = (script) => {
 export const canAutoRun = (script) => {
   for (let s of ["popupScript", "contentScript", "pageScript"]) {
     for (let e of [
+      "onEnable",
+      "onDisable",
       "onBeforeNavigate",
       "onDocumentStart",
       "onDocumentIdle",
@@ -31,10 +33,10 @@ export const isTitle = (script) =>
   );
 
 export async function viewScriptSource(script) {
-  localStorage.viewScriptSource_sharedData = script.id;
-
   chrome.windows.create({
-    url: chrome.runtime.getURL("pages/viewScriptSource/index.html"),
+    url: chrome.runtime.getURL(
+      "pages/viewScriptSource/index.html?file=" + script.id
+    ),
     type: "popup",
     height: window.screen.height,
     width: 700,

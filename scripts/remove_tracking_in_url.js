@@ -1,3 +1,11 @@
+let company = "Facebook, Google, Tiktok, Twitter";
+let ul = `<ul>
+<li>fbclid</li>
+<li>ttclid</li>
+<li>utm_*</li>
+<li>...</li>
+</ul>`;
+
 export default {
   icon: "<i class='fa-solid fa-link-slash fa-lg'></i>",
   name: {
@@ -5,131 +13,180 @@ export default {
     vi: "Xoá theo dõi trong url",
   },
   description: {
-    en: `Remove tracking parameters from url, prevent tracking from Facebook, Tiktok, etc.
-    <br/>
-    <ul>
-      <li>fbclid</li>
-      <li>ttclid</li>
-      <li>utm_source</li>
-      <li>utm_medium</li>
-      <li>utm_campaign</li>
-      <li>utm_term</li>
-      <li>utm_content</li>
-      <li>...</li>
-    </ul>
+    en: `Remove tracking parameters from url, prevent tracking from ${company} etc.
+    <br/>${ul}
     <b>Click ? for more info</b>
     `,
-    vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ Facebook, Tiktok, ...
-    <br/>
-    <ul>
-      <li>fbclid</li>
-      <li>ttclid</li>
-      <li>utm_source</li>
-      <li>utm_medium</li>
-      <li>utm_campaign</li>
-      <li>utm_term</li>
-      <li>utm_content</li>
-      <li>...</li>
-    </ul>
+    vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...
+    <br/>${ul}
     <b>Bấm ? để xem chi tiết</b>`,
   },
 
-  infoLink:
-    "https://www.justuno.com/blog/understanding-utms-fbclids-how-to-build-a-better-audience",
+  infoLink: () => {
+    window.open(
+      chrome?.runtime?.getURL?.("/pages/viewScriptSource/index.html") +
+        "?file=remove_tracking_in_url_rules_simplified"
+    );
+  },
 
   changeLogs: {
-    ["2024-05-13"]: "init",
+    ["2024-05-14"]: "init",
   },
 
-  pageScript: {
-    onBeforeNavigate: (url) => {
-      // window.stop();
-      console.log(url);
-    },
+  popupScript: {
+    onEnable: async () => {
+      const { getNextDynamicRuleIds, Storage } = await import(
+        "./helpers/utils.js"
+      );
+      const { simplifiedRules } = await import(
+        "./remove_tracking_in_url_rules_simplified.js"
+      );
 
-    onDocumentStart: () => {
-      let url = new URL(window.top.location.href);
-      let removed = [];
-
-      // https://chromewebstore.google.com/detail/remove-fbclid-and-utm/ehkdoijaaigomfliimepliikhjkoipob
-      const trackingParams = [
-        "icid",
-        "ef_id",
-        "s_kwcid",
-        "_bta_tid",
-        "_bta_c",
-        "dm_i",
-        "fb_action_ids",
-        "fb_action_types",
-        "fb_source",
-        "fbclid",
-        "_ga",
-        "gclid",
-        "campaignid",
-        "adgroupid",
-        "adid",
-        "_gl",
-        "gclsrc",
-        "gdfms",
-        "gdftrk",
-        "gdffi",
-        "_ke",
-        "trk_contact",
-        "trk_msg",
-        "trk_module",
-        "trk_sid",
-        "mc_cid",
-        "mc_eid",
-        "mkwid",
-        "pcrid",
-        "mtm_source",
-        "mtm_medium",
-        "mtm_campaign",
-        "mtm_keyword",
-        "mtm_cid",
-        "mtm_content",
-        "msclkid",
-        "epik",
-        "pp",
-        "pk_source",
-        "pk_medium",
-        "pk_campaign",
-        "pk_keyword",
-        "pk_cid",
-        "pk_content",
-        "redirect_log_mongo_id",
-        "redirect_mongo_id",
-        "sb_referer_host",
-
-        // my
-        "ttclid",
-        "utm_*",
-        "ref_*",
-        "ig_*",
-      ];
-      // if (url.searchParams.has(key)) {
-      //   url.searchParams.delete(key);
-      //   removed.push(key);
-      // }
-
-      // check regex for each search param
-      for (const param of url.searchParams.keys()) {
-        for (const trackingParam of trackingParams) {
-          if (new RegExp(trackingParam).test(param)) {
-            url.searchParams.delete(param);
-            removed.push(param);
-          }
+      // check if str is regex like somthing_(a|b|c) => split to somthing_a something_b something_c
+      function expandRegexString(str) {
+        const regex = /\((.*?)\)/;
+        const match = str.match(regex);
+        if (match) {
+          const options = match[1].split("|");
+          const prefix = str.split("(")[0];
+          return options.map((option) => prefix + option.trim());
+        } else {
+          return [str];
         }
       }
-      if (removed.length) {
-        // update url without reload, using pushState
-        history.pushState(null, null, url.href);
-        console.log(location.href);
 
-        UfsGlobal.DOM.notify({
-          msg: "Useful-script: Removed tracking params: " + removed.join(", "),
+      const ids = await getNextDynamicRuleIds(
+        Object.keys(simplifiedRules).length
+      );
+      let i = 0;
+      let rules = [];
+      for (let group in simplifiedRules) {
+        let id = ids[i++];
+        let { domains = [], params } = simplifiedRules[group];
+        domains = domains?.filter(Boolean) || [];
+
+        rules.push({
+          id: id,
+          priority: 1,
+          action: {
+            // type: "block",
+            type: "redirect",
+            redirect: {
+              transform: {
+                queryTransform: {
+                  removeParams: params.map((_) => expandRegexString(_)).flat(),
+                },
+              },
+            },
+          },
+          condition: {
+            isUrlFilterCaseSensitive: true,
+            regexFilter: `[?&](${params.join("|")})=`,
+            resourceTypes: ["main_frame"],
+            ...(domains.length > 0 ? { requestDomains: domains } : {}),
+          },
         });
       }
+
+      console.log(rules);
+
+      chrome.declarativeNetRequest.updateDynamicRules(
+        {
+          addRules: rules,
+          removeRuleIds: ids,
+        },
+        () => {
+          Storage.set("remove_tracking_in_url", ids);
+        }
+      );
+    },
+    onDisable: async () => {
+      const { Storage } = await import("./helpers/utils.js");
+      const ids = await Storage.get("remove_tracking_in_url", []);
+      chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: ids,
+      });
+    },
+
+    onClick: () => {
+      window.open(
+        chrome.runtime.getURL(
+          "scripts/net-request-rules/dynamicRulesEditor/index.html"
+        )
+      );
     },
   },
+};
+
+const backup = () => {
+  // Convert orriginal rules to simplify rules
+  /**
+   ORIGINAL:
+   {
+      "id": 1,
+      "group": "Urchin Tracking Modules",
+      "priority": 1,
+      "action": {
+        "type": "redirect",
+        "redirect": {
+          "transform": {
+            "queryTransform": {
+              "removeParams": [
+                "utm_source"
+              ]
+            }
+          }
+        }
+      },
+      "condition": {
+        "isUrlFilterCaseSensitive": true,
+        "regexFilter": "[?&]utm_source=",
+        "resourceTypes": [
+          "main_frame"
+        ],
+        "requestDomains": [
+          "..."
+        ]
+      }
+    }
+
+    SIMPLIFY:
+    {
+      "Urchin Tracking Modules": {
+        "domains": ["all"],
+        "params": [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_term",
+          "utm_content",
+          "utm_name",
+          "utm_id"
+        ]
+      }
+    }
+
+   */
+  (() => {
+    let result = {};
+    rules.forEach((_) => {
+      let group = _.group;
+      if (!result[group])
+        result[group] = {
+          domains: [],
+          params: [],
+        };
+
+      result[group].params.push(
+        _.action.redirect.transform.queryTransform.removeParams[0]
+      );
+
+      let domains = _.condition.requestDomains || [];
+      for (let domain of domains) {
+        if (result[group].domains.indexOf(domain) < 0)
+          result[group].domain.push(domain);
+      }
+    });
+    console.log(result);
+  })();
 };

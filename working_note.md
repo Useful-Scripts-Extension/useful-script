@@ -1,10 +1,12 @@
 # WORKING NOTES
 
-## 28/04/2024 - ~
+## 28/04/2024 - 14/05/2024
+
+- [ ] <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
 
 - [ ] dynamic rules editor
 
-- [ ] onBeforeNavigate event => use declarativeNetRequest
+- [x] onBeforeNavigate event => use declarativeNetRequest
 
 - [ ] finish webTimer + add block website
 

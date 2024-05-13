@@ -10,6 +10,7 @@ const {
   getAllActiveScriptIds,
   trackEvent,
   setUserId,
+  listActiveScriptsKey,
 } = utils;
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
@@ -47,15 +48,6 @@ function runScriptsTab(tabId, event, world, data = "") {
     args: [CACHED.activeScriptIds, event, CACHED.path, data],
     world,
   });
-}
-
-function runScripts(event, data) {
-  for (let scriptId of CACHED.activeScriptIds) {
-    let fn = allScripts?.[scriptId]?.["backgroudScript"]?.[event];
-    if (typeof fn === "function") {
-      fn(data);
-    }
-  }
 }
 
 async function customFetch(url, options) {
@@ -113,8 +105,10 @@ async function customFetch(url, options) {
 function main() {
   // listen change active scripts
   cacheActiveScriptIds();
-  chrome.storage.onChanged.addListener(() => {
-    cacheActiveScriptIds();
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    // areaName = "local" / "sync" / "managed" / "session" ...
+    console.log(changes, areaName);
+    if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
   });
 
   // on before navigation
@@ -122,9 +116,8 @@ function main() {
     console.log(details);
     try {
       if (details.frameType == "outermost_frame") {
-        runScriptsTab(details.tabId, "onBeforeNavigate", MAIN, details.url);
-        runScriptsTab(details.tabId, "onBeforeNavigate", ISOLATED, details.url);
-        runScripts("onBeforeNavigate", details.url);
+        runScriptsTab(details.tabId, "onBeforeNavigate", MAIN, details);
+        runScriptsTab(details.tabId, "onBeforeNavigate", ISOLATED, details);
       }
     } catch (e) {
       console.log("ERROR:", e);
