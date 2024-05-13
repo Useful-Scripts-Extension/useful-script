@@ -28,7 +28,7 @@ export default {
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
-      let originalTitle = document.title || location.hostname;
+      let originalTitle = "";
       let titleCache = originalTitle;
       let windowLoaded = false;
       let needUpdateLastActive = true;
