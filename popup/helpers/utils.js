@@ -8,23 +8,28 @@ export const canClick = (script) => {
 };
 
 export const canAutoRun = (script) => {
-  for (let s of [
-    "popupScript",
-    "contentScript",
-    "pageScript",
-    "backgroundScript",
-  ]) {
-    for (let e of [
-      "onEnable",
-      "onDisable",
-      "onBeforeNavigate",
-      "onDocumentStart",
-      "onDocumentIdle",
-      "onDocumentEnd",
-    ]) {
-      if (isFunction(script[s]?.[e])) return true;
-    }
+  for (let [s, e] of [
+    "popupScript.onEnable",
+    "popupScript.onDisable",
+
+    "contentScript.onBeforeNavigate",
+    "contentScript.onDocumentStart",
+    "contentScript.onDocumentIdle",
+    "contentScript.onDocumentEnd",
+
+    "pageScript.onBeforeNavigate",
+    "pageScript.onDocumentStart",
+    "pageScript.onDocumentIdle",
+    "pageScript.onDocumentEnd",
+
+    "backgroundScript.onBeforeNavigate",
+    "backgroundScript.onDocumentStart",
+    "backgroundScript.onDocumentIdle",
+    "backgroundScript.onDocumentEnd",
+  ].map((_) => _.split("."))) {
+    if (isFunction(script[s]?.[e])) return true;
   }
+
   return false;
 };
 
