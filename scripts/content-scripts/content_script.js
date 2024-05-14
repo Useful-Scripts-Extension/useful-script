@@ -2,7 +2,7 @@
   // to use UfsGlobal in isolated world.
   // I dont know why inject in manifest.json is not working
   // It seem like we can only inject each file once, no matter which world (MAIN/ISOLATED) it is in
-  import("./ufs_global.js");
+  // import("./ufs_global.js");
 
   let utils;
 

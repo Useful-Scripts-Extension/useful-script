@@ -244,12 +244,13 @@ export const runScriptInTab = async ({
   func,
   tabId,
   args = [],
+  allFrames = false,
   world = chrome.scripting.ExecutionWorld.MAIN,
 }) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
-        target: { tabId: tabId },
+        target: { tabId, allFrames },
         func: func,
         args: args,
         world: world,
@@ -266,12 +267,13 @@ export const runScriptInTab = async ({
 export const runScriptFile = ({
   scriptFile,
   tabId,
+  allFrames = false,
   world = chrome.scripting.ExecutionWorld.MAIN,
 }) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
-        target: { tabId: tabId },
+        target: { tabId, allFrames },
         files: [scriptFile],
         world: world,
         injectImmediately: true,

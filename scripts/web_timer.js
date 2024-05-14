@@ -21,17 +21,76 @@ export default {
   },
 
   contentScript: {
-    onDocumentStart: async () => {
+    onDocumentStart: async (details) => {
+      // track user events: mouse, keyboard, touch, ...
+      let needUpdateLastActive = true;
+      function ufs_webtimer_updateLastActive(e) {
+        needUpdateLastActive = true;
+      }
+      window.ufs_webtimer_updateLastActive = ufs_webtimer_updateLastActive;
+      [
+        "mouseout",
+        "mouseenter",
+        "mousemove",
+        "mousedown",
+        "mouseover",
+        "mouseleave",
+
+        "pointerover",
+        "pointerenter",
+        "pointerdown",
+        "pointermove",
+        "pointerup",
+        "pointerleave",
+
+        "click",
+        "contextmenu",
+        "touchstart",
+        "touchmove",
+        "touchend",
+
+        "keydown",
+        "keyup",
+        "keypress",
+
+        "wheel",
+        "scroll",
+
+        "blur",
+        "focusin",
+        "focusout",
+      ].forEach((event) => {
+        window.addEventListener(event, () => {
+          if (window !== window.top) {
+            console.log("iframe event");
+          }
+          window.top.ufs_webtimer_updateLastActive?.(event);
+        });
+      });
+
+      // if is subframe, iframe => only call updateLastActive of outermost windows
+      // AND not run anything else
+      if (details.frameType !== "outermost_frame") {
+        return;
+      }
+
+      // only check visibilityChange for outermost windows
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          ufs_webtimer_updateLastActive();
+        }
+      });
+
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 30;
-      const IDLE_TIME = 60;
+      const IDLE_TIME = 3;
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
       let originalTitle = "";
       let titleCache = originalTitle;
       let windowLoaded = false;
-      let needUpdateLastActive = true;
+
       let savedTimerValue = 0,
         currentTimerValue = 0,
         focusTimerValue = 0;
@@ -64,7 +123,7 @@ export default {
       });
 
       let lastActive = 0;
-      window.addEventListener("load", updateLastActive);
+      window.addEventListener("load", ufs_webtimer_updateLastActive);
 
       const overlay = document.createElement("div");
       overlay.style.cssText = `
@@ -135,50 +194,7 @@ export default {
 
       window.addEventListener("beforeunload", saveTimer);
 
-      [
-        "mouseout",
-        "mouseenter",
-        "mousemove",
-        "mousedown",
-        "mouseover",
-        "mouseleave",
-
-        "pointerover",
-        "pointerenter",
-        "pointerdown",
-        "pointermove",
-        "pointerup",
-        "pointerleave",
-
-        "click",
-        "contextmenu",
-        "touchstart",
-        "touchmove",
-        "touchend",
-
-        "keydown",
-        "keyup",
-        "keypress",
-
-        "wheel",
-        "scroll",
-
-        "blur",
-        "focusin",
-        "focusout",
-      ].forEach((event) => {
-        window.addEventListener(event, updateLastActive);
-      });
-      document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) {
-          updateLastActive();
-        }
-      });
-
       // functions
-      function updateLastActive(e) {
-        needUpdateLastActive = true;
-      }
 
       async function getIdleState() {
         // if not enough time passed since last active? => not idle
@@ -290,6 +306,7 @@ export default {
         if (windowLoaded) document.title = titleCache;
       }
     },
+    runInAllFrames: true, // to able to tracking user events in all frames
   },
 };
 

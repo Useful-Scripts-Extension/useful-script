@@ -141,6 +141,25 @@ function main() {
     chrome.webNavigation[navEvent].addListener((details) => {
       console.log(details);
       try {
+        // inject ufsglobal, contentscript, pagescript before run any scripts
+        if (
+          event === "onDocumentStart" &&
+          details.frameType === "outermost_frame"
+        ) {
+          [
+            { file: "ufs_global.js", world: "ISOLATED" },
+            { file: "content_script.js", world: "ISOLATED" },
+            { file: "ufs_global.js", world: "MAIN" },
+            { file: "page_script.js", world: "MAIN" },
+          ].forEach(({ file, world }) => {
+            utils.runScriptFile({
+              scriptFile: "/scripts/content-scripts/" + file,
+              tabId: details.tabId,
+              world: world,
+              allFrames: true,
+            });
+          });
+        }
         runScriptsTab(details.tabId, event, MAIN, details);
         runScriptsTab(details.tabId, event, ISOLATED, details);
         runScripts(event, details);
