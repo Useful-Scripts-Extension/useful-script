@@ -78,7 +78,7 @@ export default {
         transition: top 0.5s ease;
       `;
       (document.body || document.documentElement).appendChild(overlay);
-      ["mouseenter", "mousemove", "touchstart"].forEach((event) => {
+      ["click", "mousemove", "touchstart"].forEach((event) => {
         overlay.addEventListener(event, updateLastActive);
       });
 
