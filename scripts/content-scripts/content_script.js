@@ -17,26 +17,29 @@
   }
 
   window.ufs_runScripts = runScripts;
-  function runScripts(scriptIds, event, path, data) {
+  function runScripts(scriptIds, event, path, details) {
     for (let scriptId of scriptIds) {
-      runScript(scriptId, event, data);
+      runScript(scriptId, event, details);
     }
   }
 
-  async function runScript(scriptId, event, data) {
-    const script = (await import("/scripts/" + scriptId + ".js"))?.default;
-    if (
-      typeof script?.["contentScript"]?.[event] === "function" &&
-      checkWillRun(script)
-    ) {
-      try {
+  async function runScript(scriptId, event, details) {
+    try {
+      const { default: script } = await import("/scripts/" + scriptId + ".js");
+      const s = script?.contentScript;
+      const fn = s?.[event];
+      if (
+        typeof fn === "function" &&
+        (s.runInAllFrames || details.frameType == "outermost_frame") &&
+        checkWillRun(script)
+      ) {
         console.log(
           "> Useful-script: Run content-script: " + scriptId + " " + event
         );
-        script["contentScript"][event](data);
-      } catch (e) {
-        console.log("ERROR run content-script " + scriptId + " " + event, e);
+        fn(details);
       }
+    } catch (e) {
+      console.log("ERROR run content-script " + scriptId + " " + event, e);
     }
   }
 
@@ -74,6 +77,8 @@
     }
   });
 
+  // import UfsGlobal take time => but we want onDocumentStart run ASAP
+  // So just duplicate this code here until find a better solution.
   function checkWillRun(script, url = location?.href) {
     if (!url) return false;
     let hasWhiteList = script.whiteList?.length > 0;

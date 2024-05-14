@@ -9,6 +9,10 @@ const CACHED = {
   userID: null,
 };
 
+export function getExtensionId() {
+  return chrome.runtime.id;
+}
+
 export async function getNextDynamicRuleIds(count = 1) {
   const ruleList = await chrome.declarativeNetRequest.getDynamicRules();
   const ids = new Set(ruleList.map((rule) => rule.id));

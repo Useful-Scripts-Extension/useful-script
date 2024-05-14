@@ -9,45 +9,8 @@ export default {
     vi: "",
   },
 
-  popupScript: {
-    onEnable: () => {
-      let blockUrls = ["https://*.facebook.com/*"];
-      let ids = [];
-      blockUrls.forEach((domain, index) => {
-        let id = index + 1;
-        ids.push(id);
-        chrome.declarativeNetRequest.updateDynamicRules({
-          addRules: [
-            {
-              id: id,
-              priority: 1,
-              action: { type: "block" },
-              condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
-            },
-          ],
-          removeRuleIds: [id],
-        });
-      });
-      localStorage.setItem("block-ids", JSON.stringify(ids));
-    },
-    onDisable: () => {
-      let ids = JSON.parse(localStorage.getItem("block-ids"));
-      chrome.declarativeNetRequest.updateDynamicRules({
-        removeRuleIds: ids,
-      });
-    },
-
-    onClick: () => {
-      chrome.runtime
-        .getURL("/scripts/net-request-rules/dynamicRulesEditor/index.html")
-        .then((url) => {
-          window.open(url, "_self");
-        });
-    },
-  },
-
   pageScript: {
-    onDocumentStart: () => {
+    onDocumentStart: (details) => {
       // CometNewsFeedPaginationQuery
       // const originalParse = JSON.parse;
       // console.log("json parse");
@@ -63,11 +26,14 @@ export default {
       //       debugger;
       //   },
       // };
+      console.log(details);
     },
+    runInAllFrames: true,
   },
 
   contentScript: {
-    onClick: () => {
+    // render video in document.title
+    _onClick: () => {
       let video = document.querySelector("video");
 
       if (!video) {
@@ -107,6 +73,22 @@ export default {
         updateFavicon();
       }, 500);
     },
+  },
+
+  backgroundScript: {
+    onBeforeNavigate: () => {
+      console.log("onBeforeNavigate");
+    },
+    onDocumentStart: () => {
+      console.log("onDocumentStart");
+    },
+    onDocumentIdle: () => {
+      console.log("onDocumentIdle");
+    },
+    onDocumentEnd: () => {
+      console.log("onDocumentEnd");
+    },
+    runInAllFrames: false,
   },
 };
 

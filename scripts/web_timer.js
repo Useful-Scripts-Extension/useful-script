@@ -24,7 +24,7 @@ export default {
     onDocumentStart: async () => {
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 30;
-      const IDLE_TIME = 30;
+      const IDLE_TIME = 60;
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
@@ -73,14 +73,23 @@ export default {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.35);
         z-index: 2147483647;
         transition: top 0.5s ease;
       `;
       (document.body || document.documentElement).appendChild(overlay);
-      ["click", "mousemove", "touchstart"].forEach((event) => {
-        overlay.addEventListener(event, updateLastActive);
-      });
+
+      function setShowOverlay(show) {
+        if (show) {
+          overlay.style.pointerEvents = "none !important";
+          overlay.style.top = "0";
+          setTimeout(() => {
+            overlay.style.pointerEvents = "auto"; // wait for animation done
+          }, 600);
+        } else {
+          overlay.style.top = "-100vh";
+        }
+      }
 
       setInterval(async () => {
         if (needUpdateLastActive) {
@@ -95,9 +104,9 @@ export default {
             msg: `Useful script - Webtimer - IDLE state (${idleState.reason})`,
             duration: 2000,
           });
-          if (SHOW_OVERLAY && !document.hidden) overlay.style.top = "0";
+          if (SHOW_OVERLAY && !document.hidden) setShowOverlay(true);
         } else {
-          overlay.style.top = "-100vh";
+          setShowOverlay(false);
         }
 
         if (!document.hidden && !idleState.isIdle) {
@@ -167,7 +176,7 @@ export default {
       });
 
       // functions
-      function updateLastActive() {
+      function updateLastActive(e) {
         needUpdateLastActive = true;
       }
 

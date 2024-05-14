@@ -1,4 +1,5 @@
 import * as utils from "../helpers/utils.js";
+import { allScripts } from "../index.js";
 import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/62806068/23648002
 
 console.log(UfsGlobal);
@@ -32,22 +33,41 @@ function cacheActiveScriptIds() {
   });
 }
 
-function runScriptsTab(tabId, event, world, data = "") {
+function runScriptsTab(tabId, event, world, details) {
+  // make details serializable
+  let _details = {
+    ...details,
+  };
   return runScriptInTab({
     tabId: tabId,
-    func: (scriptIds, event, path, data) => {
+    func: (scriptIds, event, path, details) => {
       (() => {
         let interval = setInterval(() => {
           if (typeof window.ufs_runScripts === "function") {
             clearInterval(interval);
-            window.ufs_runScripts(scriptIds, event, path, data);
+            window.ufs_runScripts(scriptIds, event, path, details);
           }
         }, 10);
       })();
     },
-    args: [CACHED.activeScriptIds, event, CACHED.path, data],
+    args: [CACHED.activeScriptIds, event, CACHED.path, _details],
     world,
   });
+}
+
+function runScripts(event, details) {
+  for (let scriptId of CACHED.activeScriptIds) {
+    const script = allScripts[scriptId];
+    const s = script?.backgroundScript;
+    const fn = s?.[event];
+    if (
+      typeof fn === "function" &&
+      (s.runInAllFrames || details.frameType == "outermost_frame") &&
+      UfsGlobal?.Extension?.checkWillRun?.(script, details.url)
+    ) {
+      fn();
+    }
+  }
 }
 
 async function customFetch(url, options) {
@@ -111,55 +131,23 @@ function main() {
     if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
   });
 
-  // on before navigation
-  chrome.webNavigation.onBeforeNavigate.addListener((details) => {
-    console.log(details);
-    try {
-      if (details.frameType == "outermost_frame") {
-        runScriptsTab(details.tabId, "onBeforeNavigate", MAIN, details);
-        runScriptsTab(details.tabId, "onBeforeNavigate", ISOLATED, details);
+  // listen web navigation
+  Object.entries({
+    onBeforeNavigate: "onBeforeNavigate",
+    onCommitted: "onDocumentStart",
+    onDOMContentLoaded: "onDocumentIdle",
+    onCompleted: "onDocumentEnd",
+  }).forEach(([navEvent, event]) => {
+    chrome.webNavigation[navEvent].addListener((details) => {
+      console.log(details);
+      try {
+        runScriptsTab(details.tabId, event, MAIN, details);
+        runScriptsTab(details.tabId, event, ISOLATED, details);
+        runScripts(event, details);
+      } catch (e) {
+        console.log("ERROR:", e);
       }
-    } catch (e) {
-      console.log("ERROR:", e);
-    }
-  });
-
-  // listen documentStart
-  chrome.webNavigation.onCommitted.addListener((details) => {
-    try {
-      if (details.frameType == "outermost_frame") {
-        runScriptsTab(details.tabId, "onDocumentStart", MAIN);
-        runScriptsTab(details.tabId, "onDocumentStart", ISOLATED);
-      }
-    } catch (e) {
-      console.log("ERROR:", e);
-    }
-  });
-
-  // listen documentIdle
-  chrome.webNavigation.onDOMContentLoaded.addListener((details) => {
-    try {
-      if (details.frameType == "outermost_frame") {
-        runScriptsTab(details.tabId, "onDocumentIdle", MAIN);
-        runScriptsTab(details.tabId, "onDocumentIdle", ISOLATED);
-
-        CACHED.activeScriptIds.forEach((id) => {});
-      }
-    } catch (e) {
-      console.log("ERROR:", e);
-    }
-  });
-
-  // listen documentEnd
-  chrome.webNavigation.onCompleted.addListener((details) => {
-    try {
-      if (details.frameType == "outermost_frame") {
-        runScriptsTab(details.tabId, "onDocumentEnd", MAIN);
-        runScriptsTab(details.tabId, "onDocumentEnd", ISOLATED);
-      }
-    } catch (e) {
-      console.log("ERROR:", e);
-    }
+    });
   });
 
   // listen content script message

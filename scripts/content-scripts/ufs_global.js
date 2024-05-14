@@ -107,10 +107,13 @@
   const CACHED = {};
 
   // #region Extension
+
+  // TODO sentToPageScript
+
   // use basic customEvent technique - only communicate within the same document or window context
   function sendToContentScript(event, data) {
     return new Promise((resolve, reject) => {
-      let uuid = Math.random().toString(36);
+      let uuid = Math.random().toString(36); // uuid to distinguish events
       let listenerKey = "ufs-contentscript-sendto-pagescript" + uuid;
       let listener = (evt) => {
         resolve(evt.detail.data);

@@ -4,14 +4,8 @@
     path: "",
   };
 
-  // run script on receive event
-  window.addEventListener("ufs-run-page-scripts", async ({ detail }) => {
-    console.log("ufs-run-page-scripts", detail);
-    runScripts(CACHED.activeScriptIds, detail.event, CACHED.path);
-  });
-
   window.ufs_runScripts = runScripts;
-  function runScripts(scriptIds, event, path, data) {
+  function runScripts(scriptIds, event, path, details) {
     CACHED.activeScriptIds = scriptIds;
     CACHED.path = path;
 
@@ -20,14 +14,17 @@
       import(scriptPath)
         .then(({ default: script }) => {
           try {
+            const s = script?.pageScript;
+            const fn = s?.[event];
             if (
-              typeof script?.["pageScript"]?.[event] === "function" &&
+              typeof fn === "function" &&
+              (s.runInAllFrames || details.frameType == "outermost_frame") &&
               UfsGlobal.Extension.checkWillRun(script)
             ) {
               console.log(
                 "> Useful-script: Run page-script " + id + " " + event
               );
-              script["pageScript"][event](data);
+              fn(details);
             }
           } catch (e) {
             console.log("ERROR run page-script " + id + " " + event, e);

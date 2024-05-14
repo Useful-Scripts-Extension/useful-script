@@ -8,7 +8,12 @@ export const canClick = (script) => {
 };
 
 export const canAutoRun = (script) => {
-  for (let s of ["popupScript", "contentScript", "pageScript"]) {
+  for (let s of [
+    "popupScript",
+    "contentScript",
+    "pageScript",
+    "backgroundScript",
+  ]) {
     for (let e of [
       "onEnable",
       "onDisable",
@@ -20,7 +25,6 @@ export const canAutoRun = (script) => {
       if (isFunction(script[s]?.[e])) return true;
     }
   }
-  // TODO background scripts
   return false;
 };
 

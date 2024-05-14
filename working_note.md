@@ -2,7 +2,19 @@
 
 ## 28/04/2024 - 14/05/2024
 
-- [ ] <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
+- [ ] add option to run script in allframes
+
+- [x] consistent extension id => publish draft to store to get public key => add to manifest => DONE
+
+- [x] Oauth to google <https://stackoverflow.com/a/25046173/23648002> <https://console.cloud.google.com/apis/credentials/consent?authuser=1&project=useful-scripts-423305&supportedpurview=project> => This API is not supported on Microsoft Edge
+
+- [ ] @@extension_id <https://developer.chrome.com/docs/extensions/reference/api/i18n#overview-predefined>
+
+- [ ] extends chrome devtools <https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools>
+
+- [ ] Render video in document.title
+
+- [ ] setTimeout is awsome <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
 
 - [ ] dynamic rules editor
 

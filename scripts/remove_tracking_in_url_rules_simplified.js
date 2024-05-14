@@ -23,6 +23,7 @@ export const simplifiedRules = {
       "ei",
       "iflsig",
       "gs_lp",
+      "gs_lcrp",
       "sclient",
       "ved",
       "uact",

@@ -12,19 +12,55 @@
             height: 100vh;
             background-color: #333;
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        a {
-            color: #eee;
-            text-decoration: none;
+        @keyframes disable-pointer-events {
+
+            0%,
+            99% {
+                visibility: hidden;
+            }
+
+            100% {
+                visibility: visible;
+            }
+        }
+
+        #abc {
+            width: 200px;
+            height: 200px;
+            background-color: #666;
+            transition: all 1s;
+            position: fixed;
+            top: 0;
+            left: 50%;
+        }
+
+        #abc:hover {
+            animation: disable-pointer-events 1s;
         }
     </style>
+
 </head>
 
 <body>
-    <a href="https://www.google.com?fbclid=123">Current tab</a>
-    <br />
-    <a href="https://www.google.com?fbclid=123" target="_blank">New tab</a>
+    <div id="abc"></div>
+
+    <script>
+        let div = document.querySelector('#abc');
+        div.addEventListener('mouseenter', (e) => {
+            console.log('enter');
+        });
+
+        let down = true;
+        setInterval(() => {
+            div.style.top = down ? '0px' : '200px';
+            down = !down;
+        }, 2000)
+    </script>
 </body>
 
 </html>

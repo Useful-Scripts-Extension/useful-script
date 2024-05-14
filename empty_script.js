@@ -45,9 +45,11 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   contentScript: {
     // run (if enable autorun) in content-script context
-    onDocumentStart: () => {},
-    onDocumentIdle: () => {},
-    onDocumentEnd: () => {},
+    onBeforeNavigate: (details) => {},
+    onDocumentStart: (details) => {},
+    onDocumentIdle: (details) => {},
+    onDocumentEnd: (details) => {},
+    runInAllFrames: false, // false => only outermost_frame, true => all frames (including sub-frames, iframes)
 
     onClick: () => {},
   },
@@ -61,11 +63,26 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   pageScript: {
     // run (if enable autorun) in webpage context
-    onDocumentStart: () => {},
-    onDocumentIdle: () => {},
-    onDocumentEnd: () => {},
+    onBeforeNavigate: (details) => {},
+    onDocumentStart: (details) => {},
+    onDocumentIdle: (details) => {},
+    onDocumentEnd: (details) => {},
+    runInAllFrames: false,
 
     onClick: () => {},
+  },
+
+  // run in background (service worker) context
+  // - can autorun
+  // - can use chrome extension APIs
+  // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
+  // - can use UfsGlobal
+  backgroundScript: {
+    onBeforeNavigate: (details) => {},
+    onDocumentStart: (details) => {},
+    onDocumentIdle: (details) => {},
+    onDocumentEnd: (details) => {},
+    runInAllFrames: false,
   },
 };
 
