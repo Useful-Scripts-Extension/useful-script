@@ -128,12 +128,13 @@ export default {
       UfsGlobal.DOM.waitForElements("title").then(function (element) {
         new MutationObserver(function (mutations) {
           let title = mutations[0].target.textContent;
-          if (title === titleCache) return;
+          if (title === titleCache || !title) return;
           if (title?.includes(invisible)) {
             originalTitle = title?.split(invisible)?.[1] || originalTitle;
           } else {
             originalTitle = title;
           }
+          makeTitle();
         }).observe(document.querySelector("title"), {
           subtree: true,
           characterData: true,
