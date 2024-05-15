@@ -38,8 +38,12 @@ function runScriptsTab(tabId, event, world, details) {
   let _details = {
     ...details,
   };
+  console.log(details.frameId);
   return runScriptInTab({
-    tabId: tabId,
+    target: {
+      tabId,
+      frameId: details.frameId,
+    },
     func: (scriptIds, event, path, details) => {
       (() => {
         let interval = setInterval(() => {
@@ -65,7 +69,7 @@ function runScripts(event, details) {
       (s.runInAllFrames || details.frameType == "outermost_frame") &&
       UfsGlobal?.Extension?.checkWillRun?.(script, details.url)
     ) {
-      fn();
+      return fn();
     }
   }
 }
@@ -133,30 +137,34 @@ function main() {
 
   // listen web navigation
   Object.entries({
+    onCreatedNavigationTarget: "onCreatedNavigationTarget",
     onBeforeNavigate: "onBeforeNavigate",
     onCommitted: "onDocumentStart",
     onDOMContentLoaded: "onDocumentIdle",
     onCompleted: "onDocumentEnd",
+
+    // optional
+    // onErrorOccurred: "onErrorOccurred",
+    // onHistoryStateUpdated: "onHistoryStateUpdated",
+    // onReferenceFragmentUpdated: "onReferenceFragmentUpdated",
+    // onTabReplaced: "onTabReplaced",
   }).forEach(([navEvent, event]) => {
     chrome.webNavigation[navEvent].addListener((details) => {
-      console.log(details);
       try {
         // inject ufsglobal, contentscript, pagescript before run any scripts
-        if (
-          event === "onDocumentStart" &&
-          details.frameType === "outermost_frame"
-        ) {
+        if (event === "onDocumentStart") {
           [
-            { file: "ufs_global.js", world: "ISOLATED" },
-            { file: "content_script.js", world: "ISOLATED" },
-            { file: "ufs_global.js", world: "MAIN" },
-            { file: "page_script.js", world: "MAIN" },
+            { file: "ufs_global.js", world: ISOLATED },
+            { file: "content_script.js", world: ISOLATED },
+            { file: "ufs_global.js", world: MAIN },
+            { file: "page_script.js", world: MAIN },
           ].forEach(({ file, world }) => {
             utils.runScriptFile({
-              scriptFile: "/scripts/content-scripts/" + file,
-              tabId: details.tabId,
+              files: ["/scripts/content-scripts/" + file],
+              target: {
+                tabId: details.tabId,
+              },
               world: world,
-              allFrames: true,
             });
           });
         }

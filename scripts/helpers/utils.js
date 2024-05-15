@@ -240,21 +240,20 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScriptInTab = async ({
-  func,
-  tabId,
-  args = [],
-  allFrames = false,
-  world = chrome.scripting.ExecutionWorld.MAIN,
-}) => {
+export const runScriptInTab = async (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
-        target: { tabId, allFrames },
-        func: func,
-        args: args,
-        world: world,
+        // target: {
+        //   tabId,
+        //   allFrames,
+        //   frameId,
+        // },
+        // func: func,
+        // args: args,
+        world: chrome.scripting.ExecutionWorld.MAIN,
         injectImmediately: true,
+        ...config,
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
@@ -264,19 +263,13 @@ export const runScriptInTab = async ({
   });
 };
 
-export const runScriptFile = ({
-  scriptFile,
-  tabId,
-  allFrames = false,
-  world = chrome.scripting.ExecutionWorld.MAIN,
-}) => {
+export const runScriptFile = (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
       {
-        target: { tabId, allFrames },
-        files: [scriptFile],
-        world: world,
+        world: chrome.scripting.ExecutionWorld.MAIN,
         injectImmediately: true,
+        ...config,
       },
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
@@ -289,13 +282,17 @@ export const runScriptFile = ({
 export const runScriptInCurrentTab = async (func, args, world) => {
   const tab = await getCurrentTab();
   // focusToTab(tab);
-  return await runScriptInTab({ func, args, tabId: tab.id, world });
+  return await runScriptInTab({ func, args, target: { tabId: tab.id }, world });
 };
 
 export const runScriptFileInCurrentTab = async (scriptFile, world) => {
   const tab = await getCurrentTab();
   // focusToTab();
-  return await runScriptFile({ scriptFile, tabId: tab.id, world });
+  return await runScriptFile({
+    files: [scriptFile],
+    world,
+    target: { tabId: tab.id },
+  });
 };
 
 // https://stackoverflow.com/a/68634884/11898496
@@ -312,7 +309,12 @@ export async function openWebAndRunScript({
   let tab = await chrome.tabs.create({ active: false, url: url });
   if (waitUntilLoadEnd) await waitForTabToLoad(tab.id);
   if (focusImmediately) focusToTab(tab);
-  let res = await runScriptInTab({ func, tabId: tab.id, args, world });
+  let res = await runScriptInTab({
+    func,
+    target: { tabId: tab.id },
+    args,
+    world,
+  });
   if (closeAfterRunScript) {
     closeTab(tab);
   } else if (focusAfterRunScript) {

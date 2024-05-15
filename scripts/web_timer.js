@@ -22,13 +22,17 @@ export default {
 
   contentScript: {
     onDocumentStart: async (details) => {
+      const { frameId, frameType } = details;
+      const isMainFrame = frameType === "outermost_frame";
+      console.log("isMainFrame", isMainFrame, location.href, frameType);
+
       // track user events: mouse, keyboard, touch, ...
       let needUpdateLastActive = true;
-      function ufs_webtimer_updateLastActive(e) {
+      function updateLastActive(e) {
         needUpdateLastActive = true;
       }
-      window.ufs_webtimer_updateLastActive = ufs_webtimer_updateLastActive;
-      [
+
+      const allEvents = [
         "mouseout",
         "mouseenter",
         "mousemove",
@@ -59,25 +63,45 @@ export default {
         "blur",
         "focusin",
         "focusout",
-      ].forEach((event) => {
-        window.addEventListener(event, () => {
-          if (window !== window.top) {
-            console.log("iframe event");
-          }
-          window.top.ufs_webtimer_updateLastActive?.(event);
-        });
+      ];
+
+      allEvents.forEach((event) => {
+        // main frame => update last active directly
+        if (isMainFrame) {
+          window.addEventListener(event, () => {
+            updateLastActive?.(event);
+          });
+        } else {
+          // iframes / subframes => postMessage to main frame
+          window.addEventListener(event, () => {
+            window.postMessage({
+              type: "ufs_web_timer_updateLastActive",
+              frameId: frameId,
+            });
+          });
+        }
       });
 
-      // if is subframe, iframe => only call updateLastActive of outermost windows
-      // AND not run anything else
-      if (details.frameType !== "outermost_frame") {
-        return;
-      }
+      // iframe / subframe WILL NOT RUN THE CODE BELOW
+      if (!isMainFrame) return;
+
+      // ======================================================
+      // ===================== MAIN FRAME =====================
+      // ======================================================
+      window.addEventListener("message", (e) => {
+        console.log("message");
+        if (
+          e.data?.type === "ufs_web_timer_updateLastActive" &&
+          e.data?.frameId !== frameId
+        ) {
+          updateLastActive();
+        }
+      });
 
       // only check visibilityChange for outermost windows
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden) {
-          ufs_webtimer_updateLastActive();
+          updateLastActive();
         }
       });
 
@@ -123,7 +147,7 @@ export default {
       });
 
       let lastActive = 0;
-      window.addEventListener("load", ufs_webtimer_updateLastActive);
+      window.addEventListener("load", updateLastActive);
 
       const overlay = document.createElement("div");
       overlay.style.cssText = `

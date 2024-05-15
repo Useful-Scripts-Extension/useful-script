@@ -16,51 +16,13 @@
             justify-content: center;
             align-items: center;
         }
-
-        @keyframes disable-pointer-events {
-
-            0%,
-            99% {
-                visibility: hidden;
-            }
-
-            100% {
-                visibility: visible;
-            }
-        }
-
-        #abc {
-            width: 200px;
-            height: 200px;
-            background-color: #666;
-            transition: all 1s;
-            position: fixed;
-            top: 0;
-            left: 50%;
-        }
-
-        #abc:hover {
-            animation: disable-pointer-events 1s;
-        }
     </style>
 
 </head>
 
 <body>
-    <div id="abc"></div>
 
-    <script>
-        let div = document.querySelector('#abc');
-        div.addEventListener('mouseenter', (e) => {
-            console.log('enter');
-        });
-
-        let down = true;
-        setInterval(() => {
-            div.style.top = down ? '0px' : '200px';
-            down = !down;
-        }, 2000)
-    </script>
+    <iframe src="https://example.com" frameborder="0" width="400" height="400"></iframe>
 </body>
 
 </html>

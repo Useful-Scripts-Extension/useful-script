@@ -87,7 +87,7 @@ export default {
           condition: {
             isUrlFilterCaseSensitive: true,
             regexFilter: `[?&](${params.join("|")})=`,
-            resourceTypes: ["main_frame"],
+            resourceTypes: ["main_frame", "sub_frame"],
             ...(domains.length > 0 ? { requestDomains: domains } : {}),
           },
         });

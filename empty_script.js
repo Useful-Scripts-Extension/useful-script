@@ -45,6 +45,7 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   contentScript: {
     // run (if enable autorun) in content-script context
+    onCreatedNavigationTarget: (details) => {},
     onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
@@ -63,6 +64,7 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   pageScript: {
     // run (if enable autorun) in webpage context
+    onCreatedNavigationTarget: (details) => {},
     onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
@@ -78,13 +80,14 @@ export default {
   // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
   // - can use UfsGlobal
   backgroundScript: {
+    onCreatedNavigationTarget: (details) => {},
     onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
-    runInAllFrames: false,
   },
 };
 
 // functions/attributes that other scripts can import and use
+// can only used by popupScript, backgroundScript
 export const shared = {};

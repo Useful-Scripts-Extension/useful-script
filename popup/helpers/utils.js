@@ -8,38 +8,25 @@ export const canClick = (script) => {
 };
 
 export const canAutoRun = (script) => {
-  for (let [s, e] of [
-    "popupScript.onEnable",
-    "popupScript.onDisable",
+  if (isFunction(script.popupScript?.onEnable)) return true;
+  if (isFunction(script.popupScript?.onDisable)) return true;
 
-    "contentScript.onBeforeNavigate",
-    "contentScript.onDocumentStart",
-    "contentScript.onDocumentIdle",
-    "contentScript.onDocumentEnd",
-
-    "pageScript.onBeforeNavigate",
-    "pageScript.onDocumentStart",
-    "pageScript.onDocumentIdle",
-    "pageScript.onDocumentEnd",
-
-    "backgroundScript.onBeforeNavigate",
-    "backgroundScript.onDocumentStart",
-    "backgroundScript.onDocumentIdle",
-    "backgroundScript.onDocumentEnd",
-  ].map((_) => _.split("."))) {
-    if (isFunction(script[s]?.[e])) return true;
+  for (let s of ["contentScript", "pageScript", "backgroundScript"]) {
+    for (let e of [
+      "onCreatedNavigationTarget",
+      "onBeforeNavigate",
+      "onDocumentStart",
+      "onDocumentIdle",
+      "onDocumentEnd",
+    ]) {
+      if (isFunction(script[s]?.[e])) return true;
+    }
   }
 
   return false;
 };
 
-export const isTitle = (script) =>
-  !(
-    script.popupScript ||
-    script.contentScript ||
-    script.pageScript ||
-    script.backgroundScript
-  );
+export const isTitle = (script) => !(canClick(script) || canAutoRun(script));
 
 export async function viewScriptSource(script) {
   chrome.windows.create({

@@ -10,6 +10,9 @@ export default {
   },
 
   pageScript: {
+    onCreatedNavigationTarget: (details) => {
+      console.log("onCreatedNavigationTarget", details);
+    },
     onDocumentStart: (details) => {
       // CometNewsFeedPaginationQuery
       // const originalParse = JSON.parse;
@@ -19,14 +22,20 @@ export default {
       //   console.log(json);
       //   return json;
       // };
-      // window.$crisp = {
-      //   push: (...data) => {
-      //     console.log(data);
-      //     if (data?.[0]?.[0] === "set" && data?.[0]?.[1] === "session:data")
-      //       debugger;
-      //   },
-      // };
       console.log(details);
+
+      if (details.frameType == "outermost_frame") {
+        console.log("message listener");
+        window.addEventListener("message", (event) => {
+          if (event.data?.type == "abcd") console.log(event.data);
+        });
+      } else {
+        console.log("mouse move listener");
+        console.log(window === window.top);
+        document.addEventListener("mousemove", (event) => {
+          window.postMessage({ type: "abcd", x: event.x, y: event.y }, "*");
+        });
+      }
     },
     runInAllFrames: true,
   },
@@ -73,22 +82,6 @@ export default {
         updateFavicon();
       }, 500);
     },
-  },
-
-  backgroundScript: {
-    onBeforeNavigate: () => {
-      console.log("onBeforeNavigate");
-    },
-    onDocumentStart: () => {
-      console.log("onDocumentStart");
-    },
-    onDocumentIdle: () => {
-      console.log("onDocumentIdle");
-    },
-    onDocumentEnd: () => {
-      console.log("onDocumentEnd");
-    },
-    runInAllFrames: false,
   },
 };
 
