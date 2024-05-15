@@ -208,24 +208,19 @@ function main() {
         "srcUrl": "https://wixmp-70a14ff54af6225c7974eec7.wixmp.com/offers-assets/94f22a36-bb47-4836-8bce-fea45f844aa4.gif"
     } */
       runScriptInCurrentTab(
-        (_data) => {
+        (imgUrl) => {
           let fn = window.top?.ufs_magnify_image_createPreview;
           if (typeof fn === "function") {
-            fn(
-              _data?.srcUrl,
-              window.top.innerWidth / 2,
-              window.top.innerHeight / 2
-            );
+            fn(imgUrl, window.top.innerWidth / 2, window.top.innerHeight / 2);
           } else {
-            alert(`Useful-script:
-
-    Vui lòng bật chức năng 'Tự động hoá' > 'Phóng to mọi hình ảnh' trước.
-
-    Please enable 'Automation' > 'Magnify any Image' first.
-            `);
+            alert(
+              "Useful-script:\n\n" +
+                "Vui lòng bật chức năng 'Tự động hoá' > 'Phóng to mọi hình ảnh' trước.\n\n" +
+                "Please enable 'Automation' > 'Magnify any Image' first."
+            );
           }
         },
-        [info]
+        [info.srcUrl]
       );
     }
   });

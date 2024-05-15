@@ -59,6 +59,8 @@ export default {
           left: 0;
           width: 100vw;
           height: 100vh;
+          margin: 0;
+          padding: 0;
           background-color: #112;
           z-index: 2147483647;
           opacity: 0;

@@ -9,6 +9,16 @@ export default {
     vi: "",
   },
 
+  popupScript: {
+    onClick: async () => {
+      const { runScriptInCurrentTab } = await import("./helpers/utils.js");
+
+      runScriptInCurrentTab(() => {
+        alert("popup");
+      });
+    },
+  },
+
   pageScript: {
     onCreatedNavigationTarget: (details) => {
       console.log("onCreatedNavigationTarget", details);
@@ -23,19 +33,6 @@ export default {
       //   return json;
       // };
       console.log(details);
-
-      if (details.frameType == "outermost_frame") {
-        console.log("message listener");
-        window.addEventListener("message", (event) => {
-          if (event.data?.type == "abcd") console.log(event.data);
-        });
-      } else {
-        console.log("mouse move listener");
-        console.log(window === window.top);
-        document.addEventListener("mousemove", (event) => {
-          window.postMessage({ type: "abcd", x: event.x, y: event.y }, "*");
-        });
-      }
     },
     runInAllFrames: true,
   },

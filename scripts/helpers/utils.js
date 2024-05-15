@@ -214,6 +214,13 @@ export async function toggleActiveScript(scriptId) {
 //   { windowTypes: ["normal"] }
 // );
 
+export const mergeObject = (...objs) => {
+  // merge without null value
+  let res = {};
+  for (let obj of objs) for (let key in obj) if (obj[key]) res[key] = obj[key];
+  return res;
+};
+
 // Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
   let tabs = await chrome.tabs.query({
@@ -243,18 +250,13 @@ export function closeTab(tab) {
 export const runScriptInTab = async (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
-      {
-        // target: {
-        //   tabId,
-        //   allFrames,
-        //   frameIds,
-        // },
-        // func: func,
-        // args: args,
-        world: chrome.scripting.ExecutionWorld.MAIN,
-        injectImmediately: true,
-        ...config,
-      },
+      mergeObject(
+        {
+          world: "MAIN",
+          injectImmediately: true,
+        },
+        config
+      ),
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
         resolve(injectionResults?.find?.((_) => _.result)?.result);
@@ -266,11 +268,13 @@ export const runScriptInTab = async (config = {}) => {
 export const runScriptFile = (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
-      {
-        world: chrome.scripting.ExecutionWorld.MAIN,
-        injectImmediately: true,
-        ...config,
-      },
+      mergeObject(
+        {
+          world: "MAIN",
+          injectImmediately: true,
+        },
+        config
+      ),
       (injectionResults) => {
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
         resolve(injectionResults?.find?.((_) => _.result)?.result);
@@ -279,19 +283,19 @@ export const runScriptFile = (config = {}) => {
   });
 };
 
-export const runScriptInCurrentTab = async (func, args, world) => {
+export const runScriptInCurrentTab = async (func, args, world = "MAIN") => {
   const tab = await getCurrentTab();
   // focusToTab(tab);
   return await runScriptInTab({ func, args, target: { tabId: tab.id }, world });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile, world) => {
+export const runScriptFileInCurrentTab = async (scriptFile, world = "MAIN") => {
   const tab = await getCurrentTab();
   // focusToTab();
   return await runScriptFile({
+    target: { tabId: tab.id },
     files: [scriptFile],
     world,
-    target: { tabId: tab.id },
   });
 };
 
