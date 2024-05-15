@@ -33,16 +33,15 @@ function cacheActiveScriptIds() {
   });
 }
 
-function runScriptsTab(tabId, event, world, details) {
+function runScriptsTab(event, world, details) {
   // make details serializable
   let _details = {
     ...details,
   };
-  console.log(details.frameId);
   return runScriptInTab({
     target: {
-      tabId,
-      frameId: details.frameId,
+      tabId: details.tabId,
+      frameIds: [details.frameId],
     },
     func: (scriptIds, event, path, details) => {
       (() => {
@@ -131,11 +130,10 @@ function main() {
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
     // areaName = "local" / "sync" / "managed" / "session" ...
-    console.log(changes, areaName);
     if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
   });
 
-  // listen web navigation
+  // listen web navigation - occur in all frames of all tabs
   Object.entries({
     onCreatedNavigationTarget: "onCreatedNavigationTarget",
     onBeforeNavigate: "onBeforeNavigate",
@@ -154,22 +152,21 @@ function main() {
         // inject ufsglobal, contentscript, pagescript before run any scripts
         if (event === "onDocumentStart") {
           [
-            { file: "ufs_global.js", world: ISOLATED },
-            { file: "content_script.js", world: ISOLATED },
-            { file: "ufs_global.js", world: MAIN },
-            { file: "page_script.js", world: MAIN },
-          ].forEach(({ file, world }) => {
+            { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
+            { files: ["ufs_global.js", "page_script.js"], world: MAIN },
+          ].forEach(({ files, world }) => {
             utils.runScriptFile({
-              files: ["/scripts/content-scripts/" + file],
+              files: files.map((file) => "/scripts/content-scripts/" + file),
               target: {
                 tabId: details.tabId,
+                frameIds: [details.frameId],
               },
               world: world,
             });
           });
         }
-        runScriptsTab(details.tabId, event, MAIN, details);
-        runScriptsTab(details.tabId, event, ISOLATED, details);
+        runScriptsTab(event, MAIN, details);
+        runScriptsTab(event, ISOLATED, details);
         runScripts(event, details);
       } catch (e) {
         console.log("ERROR:", e);

@@ -24,22 +24,16 @@ export default {
     onDocumentStart: async (details) => {
       const { frameId, frameType } = details;
       const isMainFrame = frameType === "outermost_frame";
-      console.log("isMainFrame", isMainFrame, location.href, frameType);
 
       // track user events: mouse, keyboard, touch, ...
       let needUpdateLastActive = true;
-      function updateLastActive(e) {
+      let updateLastActive = UfsGlobal.Utils.throttle(function (e) {
         needUpdateLastActive = true;
-      }
+      }, 1000 / 24);
+      window.updateLastActive = updateLastActive;
 
       const allEvents = [
-        "mouseout",
-        "mouseenter",
-        "mousemove",
-        "mousedown",
-        "mouseover",
-        "mouseleave",
-
+        // https://javascript.info/pointer-events
         "pointerover",
         "pointerenter",
         "pointerdown",
@@ -65,38 +59,49 @@ export default {
         "focusout",
       ];
 
+      const overlayId = "ufs-web-timer-overlay";
       allEvents.forEach((event) => {
         // main frame => update last active directly
         if (isMainFrame) {
-          window.addEventListener(event, () => {
-            updateLastActive?.(event);
+          window.addEventListener(event, (e) => {
+            if (e.target?.id == overlayId) return;
+            updateLastActive?.(e);
           });
         } else {
           // iframes / subframes => postMessage to main frame
-          window.addEventListener(event, () => {
-            window.postMessage({
-              type: "ufs_web_timer_updateLastActive",
-              frameId: frameId,
-            });
-          });
+          window.addEventListener(
+            event,
+            UfsGlobal.Utils.throttle((e) => {
+              // iframe's content_script cannot call window.top in mainframe's content_script
+              // SO only solution is use postMessage
+              window.top.postMessage(
+                {
+                  type: "ufs_web_timer_updateLastActive",
+                  frameId: frameId,
+                  event: event,
+                },
+                "*"
+              );
+            }, 1000 / 24)
+          );
         }
       });
 
-      // iframe / subframe WILL NOT RUN THE CODE BELOW
+      // iframe / subframe stop here, all logic below are for main frame
       if (!isMainFrame) return;
 
       // ======================================================
       // ===================== MAIN FRAME =====================
       // ======================================================
-      window.addEventListener("message", (e) => {
-        console.log("message");
-        if (
-          e.data?.type === "ufs_web_timer_updateLastActive" &&
-          e.data?.frameId !== frameId
-        ) {
-          updateLastActive();
-        }
-      });
+      window.addEventListener(
+        "message",
+        (e) => {
+          if (e.data?.type === "ufs_web_timer_updateLastActive") {
+            updateLastActive(e.data?.event);
+          }
+        },
+        false
+      );
 
       // only check visibilityChange for outermost windows
       document.addEventListener("visibilitychange", () => {
@@ -107,22 +112,17 @@ export default {
 
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 30;
-      const IDLE_TIME = 3;
+      const IDLE_TIME = 60;
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
       let originalTitle = "";
       let titleCache = originalTitle;
       let windowLoaded = false;
-
+      let lastActive = 0;
       let savedTimerValue = 0,
         currentTimerValue = 0,
         focusTimerValue = 0;
-
-      window.addEventListener("load", () => {
-        windowLoaded = true;
-        originalTitle = document.title || location.hostname;
-      });
 
       // listen title change
       UfsGlobal.DOM.waitForElements("title").then(function (element) {
@@ -146,10 +146,8 @@ export default {
         savedTimerValue = todayTimer.value;
       });
 
-      let lastActive = 0;
-      window.addEventListener("load", updateLastActive);
-
       const overlay = document.createElement("div");
+      overlay.id = overlayId;
       overlay.style.cssText = `
         position: fixed;
         top: -100vh;
@@ -160,15 +158,22 @@ export default {
         z-index: 2147483647;
         transition: top 0.5s ease;
       `;
-      (document.body || document.documentElement).appendChild(overlay);
+      ["mousemove", "click", "touchstart"].forEach((event) => {
+        overlay.addEventListener(event, updateLastActive);
+      });
+
+      window.addEventListener("load", () => {
+        windowLoaded = true;
+        originalTitle = document.title || location.hostname;
+        updateLastActive();
+      });
 
       function setShowOverlay(show) {
         if (show) {
-          overlay.style.pointerEvents = "none !important";
+          if (!document.body.contains(overlay)) {
+            document.body.appendChild(overlay);
+          }
           overlay.style.top = "0";
-          setTimeout(() => {
-            overlay.style.pointerEvents = "auto"; // wait for animation done
-          }, 600);
         } else {
           overlay.style.top = "-100vh";
         }

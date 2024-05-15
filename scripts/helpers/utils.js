@@ -247,7 +247,7 @@ export const runScriptInTab = async (config = {}) => {
         // target: {
         //   tabId,
         //   allFrames,
-        //   frameId,
+        //   frameIds,
         // },
         // func: func,
         // args: args,

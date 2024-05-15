@@ -30,7 +30,7 @@ const tabs = [
     ...CATEGORY.search,
     scripts: [
       s._test,
-      // s._ufs_statistic,
+      s._ufs_statistic,
       s.similarWeb,
       s.similarWeb_bypassLimit,
       s.search_sharedAccount,
