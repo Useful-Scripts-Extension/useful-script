@@ -2,7 +2,11 @@
 
 ## 28/04/2024 - 14/05/2024
 
-- [ ] add option to run script in allframes
+- [ ] Fix magnify image on right click
+
+- [ ] Auto lock websites
+
+- [x] add option to run script in allframes
 
 - [x] consistent extension id => publish draft to store to get public key => add to manifest => DONE
 

@@ -861,7 +861,7 @@
     try {
       return (
         "data:image/svg+xml;charset=utf-8;base64," +
-        window.btoa(new XMLSerializer().serializeToString(svg))
+        btoa(new XMLSerializer().serializeToString(svg))
       );
     } catch (e) {
       console.log("ERROR: ", e);
@@ -1403,8 +1403,7 @@
     var base64Url = token.split(".")[1];
     var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     var jsonPayload = decodeURIComponent(
-      window
-        .atob(base64)
+      atob(base64)
         .split("")
         .map(function (c) {
           return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
@@ -2518,7 +2517,7 @@
     // Ví dụ: https://beta.nhaccuatui.com/
     // Hàm này sẽ tắt chức năng tự động clear console đó, giúp hacker dễ hack hơn :)
     disableAutoConsoleClear() {
-      window.console.clear = () => null;
+      console.clear = () => null;
       console.log("Auto console.clear DISABLED!");
     },
 
@@ -2529,11 +2528,11 @@
       const ignoredGlobals = ["UfsGlobal"];
 
       function collectBrowserGlobals() {
-        const iframe = window.document.createElement("iframe");
+        const iframe = document.createElement("iframe");
         iframe.src = "about:blank";
-        window.document.body.appendChild(iframe);
+        document.body.appendChild(iframe);
         let globals = Object.keys(iframe.contentWindow);
-        window.document.body.removeChild(iframe);
+        document.body.removeChild(iframe);
         return globals;
       }
 
@@ -2644,7 +2643,7 @@
     },
 
     // https://stackoverflow.com/a/8649003
-    searchParamsToObject(search = window.location.search) {
+    searchParamsToObject(search = location.search) {
       const params = new URLSearchParams(search);
       const searchObject = Object.fromEntries(params);
       return searchObject;

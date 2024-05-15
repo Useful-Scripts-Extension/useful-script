@@ -14,7 +14,7 @@ export default {
   infoLink: "",
 
   changeLogs: {
-    ["date"]: "description",
+    date: "description",
   },
 
   blackList: [],

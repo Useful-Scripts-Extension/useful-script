@@ -161,6 +161,7 @@ import toggle_passwordField from "./toggle_passwordField.js";
 import insta_getFollowForOther from "./insta_getFollowForOther.js";
 import web_timer from "./web_timer.js";
 import remove_tracking_in_url from "./remove_tracking_in_url.js";
+import auto_lockWebsite from "./auto_lockWebsite.js";
 
 // inject badges
 const allScripts = {
@@ -338,6 +339,7 @@ const allScripts = {
   insta_getFollowForOther: addBadge(insta_getFollowForOther, BADGES.new),
   web_timer: addBadge(web_timer, BADGES.hot, BADGES.new),
   remove_tracking_in_url: addBadge(remove_tracking_in_url, BADGES.new),
+  auto_lockWebsite: addBadge(auto_lockWebsite, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

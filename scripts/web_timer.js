@@ -156,7 +156,7 @@ export default {
         width: 100vw;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.35);
-        z-index: 2147483647;
+        z-index: 2147483646;
         transition: top 0.5s ease;
       `;
       ["mousemove", "click", "touchstart"].forEach((event) => {

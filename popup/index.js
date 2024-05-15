@@ -309,6 +309,16 @@ function createScriptButton(script, isFavorite = false) {
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
   tooltip.innerHTML = t(script.description);
+
+  // if (script.infoLink) {
+  //   tooltip.innerHTML +=
+  //     "<br/><br/>" +
+  //     t({
+  //       vi: "<b>Bấm ? để xem chi tiết<b/>",
+  //       en: "<b>Click ? for more details<b/>",
+  //     });
+  // }
+
   if (script.description?.img) {
     tooltip.innerHTML += `<img src="${script.description.img}" style="width:80vw" />`;
   }

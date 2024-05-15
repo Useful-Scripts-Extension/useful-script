@@ -193,7 +193,7 @@ function main() {
   });
 
   chrome.contextMenus.onClicked.addListener((info) => {
-    // console.log(info);
+    console.log(info);
     if (info.menuItemId == "ufs-magnify-image") {
       trackEvent("magnify-image-CONTEXT-MENU");
       /*
@@ -209,11 +209,12 @@ function main() {
     } */
       runScriptInCurrentTab(
         (_data) => {
-          if (typeof window.ufs_magnify_image_createPreview === "function") {
-            window.ufs_magnify_image_createPreview(
+          let fn = window.top?.ufs_magnify_image_createPreview;
+          if (typeof fn === "function") {
+            fn(
               _data?.srcUrl,
-              window.innerWidth / 2,
-              window.innerHeight / 2
+              window.top.innerWidth / 2,
+              window.top.innerHeight / 2
             );
           } else {
             alert(`Useful-script:

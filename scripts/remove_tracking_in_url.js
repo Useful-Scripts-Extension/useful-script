@@ -18,13 +18,8 @@ export default {
     vi: "Xoá theo dõi trong url",
   },
   description: {
-    en: `Remove tracking parameters from url, prevent tracking from ${company} etc.
-    <br/>${ul}
-    <b>Click ? for more info</b>
-    `,
-    vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...
-    <br/>${ul}
-    <b>Bấm ? để xem chi tiết</b>`,
+    en: `Remove tracking parameters from url, prevent tracking from ${company} etc.<br/>${ul}`,
+    vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...<br/>${ul}`,
   },
 
   infoLink: () => {
