@@ -95,8 +95,9 @@ function checkWillRun(scriptId, context, event, details) {
   const fn = s?.[event];
   if (
     typeof fn === "function" &&
-    (s.runInAllFrames || details.frameType == "outermost_frame") &&
-    utils.checkWillRun(script, details.url)
+    (!details ||
+      ((s.runInAllFrames || details.frameType == "outermost_frame") &&
+        utils.checkWillRun(script, details.url)))
   )
     return fn;
 
@@ -255,7 +256,13 @@ function main() {
     }
   });
 
+  chrome.runtime.onStartup.addListener(async function () {
+    runScripts("onStartup");
+  });
+
   chrome.runtime.onInstalled.addListener(async function () {
+    runScripts("onInstalled");
+
     if (utils.hasUserId()) {
       await GLOBAL.trackEvent("ufs-RE-INSTALLED");
     }

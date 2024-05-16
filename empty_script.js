@@ -80,6 +80,9 @@ export default {
   // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
   // - can use UfsGlobal
   backgroundScript: {
+    onInstalled: () => {},
+    onStartup: () => {},
+
     onCreatedNavigationTarget: (details) => {},
     onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},

@@ -11,6 +11,9 @@ export const canAutoRun = (script) => {
   if (isFunction(script.popupScript?.onEnable)) return true;
   if (isFunction(script.popupScript?.onDisable)) return true;
 
+  if (isFunction(script.backgroundScript?.onInstalled)) return true;
+  if (isFunction(script.backgroundScript?.onStartup)) return true;
+
   for (let s of ["contentScript", "pageScript", "backgroundScript"]) {
     for (let e of [
       "onCreatedNavigationTarget",
