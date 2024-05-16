@@ -12,6 +12,7 @@ export default {
 
   changeLogs: {
     "2024-04-27": "fix bug - use snaptik",
+    "2024-05-16": "fix style",
   },
 
   whiteList: ["https://www.tiktok.com/*"],
@@ -30,20 +31,36 @@ export default {
       let checkboxes = [];
 
       // Setup DOM
+      let id = "ufs-tiktok-batch-download";
       let container = document.createElement("div");
-      container.style = [
-        "position: fixed",
-        "bottom: 20px",
-        "left: 50%",
-        "transform: translateX(-50%)",
-        "background: #333e",
-        "min-height: 50px",
-        "padding: 15px",
-        "z-index: 6",
-        "border-radius: 5px",
-        "border: 1px solid #eee",
-        "color: white",
-      ].join(";");
+      container.id = id;
+
+      const style = document.createElement("style");
+      style.textContent = `
+        #${id} {
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #333e;
+          color: white;
+          min-height: 50px;
+          padding: 15px;
+          z-index: 6;
+          border-radius: 5px;
+          border: 1px solid #eee;
+        }
+        #${id} button {
+          padding: 5px 10px;
+          background: #444;
+          color: white !important;
+          border: none;
+        }
+        #${id} button:hover {
+          background: #666;
+        }
+      `;
+      container.appendChild(style);
 
       (document.body || document.documentElement).appendChild(container);
 

@@ -322,7 +322,7 @@ function getData({
     chartData = allData.slice(0, indexToSlice);
     if (allData.length > indexToSlice) {
       let totalOther = allData
-        .slice(indexToSlice - 1)
+        .slice(indexToSlice)
         .reduce((acc, curr) => acc + curr.value, 0);
 
       chartData.push({

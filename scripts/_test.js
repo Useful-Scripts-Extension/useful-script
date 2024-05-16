@@ -134,13 +134,17 @@ export default {
     onInstalled: () => {
       console.log("test installed");
 
-      fetch("https://api.chongluadao.vn/v2/blacklist")
-        .then((res) => res.json())
-        .then(console.log)
-        .catch(console.error);
+      // fetch("https://api.chongluadao.vn/v2/blacklist")
+      //   .then((res) => res.json())
+      //   .then(console.log)
+      //   .catch(console.error);
     },
     onStartup: () => {
       console.log("test startup");
+    },
+
+    onCreatedNavigationTarget: (details) => {
+      console.log(details);
     },
   },
 };

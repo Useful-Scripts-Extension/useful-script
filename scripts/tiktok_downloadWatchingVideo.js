@@ -11,12 +11,14 @@ export default {
 
   changeLogs: {
     "2024-04-27": "fix bug - use snaptik",
+    "2024-05-16": "fix title + show download speed",
   },
 
   whiteList: ["https://www.tiktok.com/*"],
 
   popupScript: {
     onClick: async function () {
+      const { t } = await import("../popup/helpers/lang.js");
       const { showLoading, runScriptInCurrentTab } = await import(
         "./helpers/utils.js"
       );
@@ -25,19 +27,26 @@ export default {
       );
 
       const { closeLoading, setLoadingText } = showLoading(
-        "Đang lấy video id.."
+        t({ vi: "Đang tìm video id..", en: "Finding video id..." })
       );
 
       let title = "tiktok_video";
 
       const getLinkFuncs = [
         async () => {
-          setLoadingText("Đang tìm videoid...");
+          setLoadingText(
+            t({ vi: "Đang lấy video id..", en: "Finding video id..." })
+          );
           const videos = await shared.getListVideoIdInWebsite();
           if (videos.length) {
             let video = videos[0];
             title = video?.title?.split?.("#")?.[0] || video.id || title;
-            setLoadingText(`Đang tìm link tải video ${title}...`);
+            setLoadingText(
+              t({
+                vi: `Đang tìm link tải video ${title}...`,
+                en: `Fetching download link of ${title}...`,
+              })
+            );
 
             let res = await tiktok_downloadVideo.getVideoNoWaterMark(
               shared.genTiktokUrl(video.author, video.id)
@@ -47,7 +56,12 @@ export default {
         },
 
         async () => {
-          setLoadingText("Đang tìm video url từ DOM...");
+          setLoadingText(
+            t({
+              vi: "Đang tìm video url từ DOM...",
+              en: "Finding video url from DOM..",
+            })
+          );
           return await runScriptInCurrentTab(
             async () => await UfsGlobal.DOM.getWatchingVideoSrc()
           );
@@ -60,14 +74,38 @@ export default {
           link = await func();
           if (link) break;
         } catch (e) {
-          alert("lol");
+          alert("ERROR: " + e);
         }
       }
 
-      if (!link) alert("Không tìm được link video");
+      if (!link)
+        alert(
+          t({ vi: "Không tìm được link video", en: "Cannot find video link" })
+        );
       else {
-        setLoadingText("Đang tải video...");
-        await UfsGlobal.Utils.downloadBlobUrl(link, title + ".mp4");
+        setLoadingText(
+          t({ vi: `Đang tải video ${title}...`, en: `Downloading ${title}...` })
+        );
+        const { formatSize, downloadBlob } = UfsGlobal.Utils;
+        const blob = await UfsGlobal.Utils.getBlobFromUrlWithProgress(
+          link,
+          ({ loaded, total, speed }) => {
+            let desc =
+              formatSize(loaded, 1) +
+              " / " +
+              formatSize(total, 1) +
+              " (" +
+              formatSize(speed, 1) +
+              "/s)";
+            setLoadingText(
+              t({
+                vi: `Đang tải ${desc}...<br/>${title}`,
+                en: `Downloading ${desc}...<br/>${title}`,
+              })
+            );
+          }
+        );
+        downloadBlob(blob, title + ".mp4");
       }
 
       closeLoading();
@@ -91,8 +129,12 @@ export const shared = {
           result.push({
             overlapScore: getOverlapScore(video),
             id: video.parentElement.id.split("-").at(-1),
-            title: closest(video, '[data-e2e="video-desc"]')?.textContent,
-            author: closest(video, '[data-e2e="video-author-avatar"]')?.href,
+            title:
+              closest(video, '[data-e2e="browse-video-desc"]')?.textContent ||
+              closest(video, '[data-e2e="video-desc"]')?.textContent,
+            author:
+              closest(video, '[data-e2e="browse-user-avatar"]')?.href ||
+              closest(video, '[data-e2e="video-author-avatar"]')?.href,
           });
         } catch (e) {
           console.log("ERROR on get: ", e);

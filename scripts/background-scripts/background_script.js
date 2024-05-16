@@ -34,8 +34,36 @@ function cacheActiveScriptIds() {
 }
 
 function runScriptsTab(event, world, details) {
-  if (details.frameId == null || !details.tabId) {
-    console.log("Invalid details", details);
+  /*
+  onCreatedNavigationTarget:
+  {
+    "sourceFrameId": 0,
+    "sourceProcessId": 26,
+    "sourceTabId": 84866565,
+    "tabId": 84866833,
+    "timeStamp": 1715869017808.223,
+    "url": "https://www.google.com/imghp?hl=en&authuser=0&ogbl"
+  }
+
+  other navigation event:
+  {
+    "documentId": "BF8A5B9EAB9736CEF224E6DC75E6A2B7",
+    "documentLifecycle": "active",
+    "frameId": 0,
+    "frameType": "outermost_frame",
+    "parentFrameId": -1,
+    "processId": 26,
+    "tabId": 84866565,
+    "timeStamp": 1715869322353.945,
+    "url": "https://www.google.com/"
+  }
+*/
+
+  if (
+    (details.sourceTabId == null || details.sourceFrameId == null) &&
+    (details.tabId == null || details.frameId == null)
+  ) {
+    console.log("Invalid details", event, world, details);
     return;
   }
   // make details serializable
@@ -47,8 +75,8 @@ function runScriptsTab(event, world, details) {
 
   return runScriptInTab({
     target: {
-      tabId: details.tabId,
-      frameIds: [details.frameId],
+      tabId: details.sourceTabId ?? details.tabId,
+      frameIds: [details.sourceFrameId ?? details.frameId],
     },
     func: (scriptPaths, context, event, details) => {
       for (let path of scriptPaths) {
@@ -61,7 +89,8 @@ function runScriptsTab(event, world, details) {
                 `> Useful-script: Run SUCCESS`,
                 scriptId,
                 context,
-                event
+                event,
+                details
               );
               fn(details);
             }
@@ -72,6 +101,7 @@ function runScriptsTab(event, world, details) {
               scriptId,
               context,
               event,
+              details,
               e
             );
           });
@@ -179,6 +209,7 @@ function main() {
     // onTabReplaced: "onTabReplaced",
   }).forEach(([navEvent, event]) => {
     chrome.webNavigation[navEvent].addListener((details) => {
+      // console.log(navEvent, details);
       try {
         // inject ufsglobal, contentscript, pagescript before run any scripts
         if (event === "onDocumentStart") {
