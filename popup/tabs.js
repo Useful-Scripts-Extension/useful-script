@@ -1,6 +1,7 @@
 import { BADGES, addBadge } from "../scripts/helpers/badge.js";
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
+import { getLang } from "./helpers/lang.js";
 import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 import { canAutoRun } from "./helpers/utils.js";
 
@@ -273,6 +274,29 @@ const tabs = [
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.ggDrive_downloadAllVideosInFolder,
       createTitle("--- More ---", "--- Khác ---"),
+      addBadge(
+        {
+          id: "recommend_googleAdvanced",
+          icon: "https://www.google.com/favicon.ico",
+          name: {
+            en: "Google search advanced",
+            vi: "Google tìm kiếm nâng cao",
+          },
+          description: {
+            en: "Search google with a lot of advanced features",
+            vi: "Tìm kiếm google với nhiều tuỳ chọn nâng cao",
+          },
+          popupScript: {
+            onClick: () =>
+              window.open(
+                "https://www.google.com/advanced_search?hl=" +
+                  getLang() +
+                  "&fg=1"
+              ),
+          },
+        },
+        BADGES.recommend
+      ),
       s.search_totalIndexedPages,
       s.search_googleSite,
       s.googleShortcuts,
