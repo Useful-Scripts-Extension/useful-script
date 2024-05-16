@@ -34,43 +34,73 @@ function cacheActiveScriptIds() {
 }
 
 function runScriptsTab(event, world, details) {
+  if (details.frameId == null || !details.tabId) {
+    console.log("Invalid details", details);
+    return;
+  }
   // make details serializable
-  let _details = {
-    ...details,
-  };
+  const _details = { ...details };
+  const context = world === "MAIN" ? "pageScript" : "contentScript";
+  const scriptPaths = CACHED.activeScriptIds
+    .filter((id) => checkWillRun(id, context, event, details))
+    .map((id) => `${CACHED.path}${id}.js`);
+
   return runScriptInTab({
     target: {
       tabId: details.tabId,
       frameIds: [details.frameId],
     },
-    func: (scriptIds, event, path, details) => {
-      (() => {
-        let interval = setInterval(() => {
-          if (typeof window.ufs_runScripts === "function") {
-            clearInterval(interval);
-            window.ufs_runScripts(scriptIds, event, path, details);
-          }
-        }, 10);
-      })();
+    func: (scriptPaths, context, event, details) => {
+      for (let path of scriptPaths) {
+        let scriptId = path.split("/").pop().split(".")[0];
+        import(path)
+          .then(({ default: script }) => {
+            const fn = script?.[context]?.[event];
+            if (typeof fn === "function") {
+              console.log(
+                `> Useful-script: Run SUCCESS`,
+                scriptId,
+                context,
+                event
+              );
+              fn(details);
+            }
+          })
+          .catch((e) => {
+            console.log(
+              `> Useful-script: Run FAILED`,
+              scriptId,
+              context,
+              event,
+              e
+            );
+          });
+      }
     },
-    args: [CACHED.activeScriptIds, event, CACHED.path, _details],
+    args: [scriptPaths, context, event, _details],
     world,
   });
 }
 
 function runScripts(event, details) {
   for (let scriptId of CACHED.activeScriptIds) {
-    const script = allScripts[scriptId];
-    const s = script?.backgroundScript;
-    const fn = s?.[event];
-    if (
-      typeof fn === "function" &&
-      (s.runInAllFrames || details.frameType == "outermost_frame") &&
-      UfsGlobal?.Extension?.checkWillRun?.(script, details.url)
-    ) {
-      return fn();
-    }
+    const fn = checkWillRun(scriptId, "backgroundScript", event, details);
+    if (fn) return fn();
   }
+}
+
+function checkWillRun(scriptId, context, event, details) {
+  const script = allScripts[scriptId];
+  const s = script?.[context];
+  const fn = s?.[event];
+  if (
+    typeof fn === "function" &&
+    (s.runInAllFrames || details.frameType == "outermost_frame") &&
+    utils.checkWillRun(script, details.url)
+  )
+    return fn;
+
+  return false;
 }
 
 async function customFetch(url, options) {
@@ -153,7 +183,7 @@ function main() {
         if (event === "onDocumentStart") {
           [
             { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
-            { files: ["ufs_global.js", "page_script.js"], world: MAIN },
+            { files: ["ufs_global.js"], world: MAIN },
           ].forEach(({ files, world }) => {
             utils.runScriptFile({
               files: files.map((file) => "/scripts/content-scripts/" + file),

@@ -9,7 +9,6 @@
       download,
       trackEvent,
       waitForTabToLoad,
-      checkWillRun,
     },
     DOM: {
       checkElementvisibility,
@@ -45,7 +44,6 @@
       setCookie,
       delCookie,
       strBetween,
-      matchOneOfPatterns,
       json2xml,
       xml2json,
       getLargestSrcset,
@@ -166,19 +164,6 @@
   }
   function waitForTabToLoad(tabId) {
     return runInBackground("utils.waitForTabToLoad", [tabId]);
-  }
-  function checkWillRun(script, url = location?.href) {
-    if (!url) return false;
-    const { matchOneOfPatterns } = UfsGlobal.Utils;
-    let hasWhiteList = script.whiteList?.length > 0;
-    let hasBlackList = script.blackList?.length > 0;
-    let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
-    let inBlackList = matchOneOfPatterns(url, script.blackList || []);
-    return (
-      (!hasWhiteList && !hasBlackList) ||
-      (hasWhiteList && inWhiteList) ||
-      (hasBlackList && !inBlackList)
-    );
   }
   // #endregion
 
@@ -796,20 +781,6 @@
       s.indexOf(front) + front.length,
       s.indexOf(back, s.indexOf(front) + front.length)
     );
-  }
-  function matchOneOfPatterns(url, patterns) {
-    for (let pattern of patterns) {
-      const regex = new RegExp(
-        "^" +
-          pattern
-            .split("*")
-            .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-            .join(".*") +
-          "$"
-      );
-      if (regex.test(url)) return true;
-    }
-    return false;
   }
   async function json2xml(json) {
     if (!window.json2xml) {

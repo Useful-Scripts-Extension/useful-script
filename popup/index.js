@@ -8,6 +8,7 @@ import {
   trackEvent,
   debounce,
   Storage,
+  checkWillRun,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import {
@@ -372,7 +373,7 @@ async function updateButtonChecker(script, button, val) {
 
 async function runScript(script) {
   let tab = await getCurrentTab();
-  let willRun = UfsGlobal.Extension.checkWillRun(script, tab.url);
+  let willRun = checkWillRun(script, tab.url);
   if (willRun) {
     try {
       recentScriptsSaver.add(script);

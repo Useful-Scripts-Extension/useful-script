@@ -9,6 +9,34 @@ const CACHED = {
   userID: null,
 };
 
+export function checkWillRun(script, url = location?.href) {
+  if (!url) return false;
+  let hasWhiteList = script.whiteList?.length > 0;
+  let hasBlackList = script.blackList?.length > 0;
+  let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+  let inBlackList = matchOneOfPatterns(url, script.blackList || []);
+  return (
+    (!hasWhiteList && !hasBlackList) ||
+    (hasWhiteList && inWhiteList) ||
+    (hasBlackList && !inBlackList)
+  );
+}
+
+export function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
+    );
+    if (regex.test(url)) return true;
+  }
+  return false;
+}
+
 export function getExtensionId() {
   return chrome.runtime.id;
 }
