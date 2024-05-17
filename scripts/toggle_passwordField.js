@@ -11,13 +11,15 @@ export default {
   },
 
   changeLogs: {
-    ["2024-05-04"]: "init",
+    ["2024-05-18"]: "init",
   },
 
   pageScript: {
     onClick: () => {
       let inpPass = Array.from(
-        document.querySelectorAll('input[type="password"]')
+        document.querySelectorAll(
+          'input[type="password"], input[ufs-toggle-pass="true"]'
+        )
       );
 
       if (!inpPass.length) {
@@ -25,16 +27,9 @@ export default {
         return;
       }
 
-      if (window.ufs_togglePasswordField) {
-        for (let i = 0; i < inpPass.length; i++) {
-          inpPass[i].type = "password";
-        }
-        window.ufs_togglePasswordField = false;
-      } else {
-        for (let i = 0; i < inpPass.length; i++) {
-          inpPass[i].type = "text";
-        }
-        window.ufs_togglePasswordField = true;
+      for (let inp of inpPass) {
+        inp.type = inp.type == "password" ? "text" : "password";
+        inp.setAttribute("ufs-toggle-pass", "true");
       }
     },
   },
