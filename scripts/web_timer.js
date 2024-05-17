@@ -113,6 +113,7 @@ export default {
       const INTERVAL_UPDATE = 1;
       const INTERVAL_SAVE = 30;
       const IDLE_TIME = 60;
+      const IDLE_TIME_IF_BLUR = 10;
       const SHOW_OVERLAY = true;
 
       const invisible = "\u200b";
@@ -180,6 +181,14 @@ export default {
         }
       }
 
+      let focused = true;
+      window.addEventListener("blur", () => {
+        focused = false;
+      });
+      window.addEventListener("focus", () => {
+        focused = true;
+      });
+
       setInterval(async () => {
         if (needUpdateLastActive) {
           lastActive = performance.now();
@@ -229,7 +238,7 @@ export default {
       async function getIdleState() {
         // if not enough time passed since last active? => not idle
         let timePassed = ~~(performance.now() - lastActive);
-        if (timePassed < IDLE_TIME * 1000)
+        if (timePassed < (focused ? IDLE_TIME : IDLE_TIME_IF_BLUR) * 1000)
           return {
             isIdle: false,
             reason: "not enough time passed since last active " + timePassed,
