@@ -66,56 +66,78 @@ function runScriptsTab(event, world, details) {
     console.log("Invalid details", event, world, details);
     return;
   }
+  const context = world === "MAIN" ? "pageScript" : "contentScript";
+  const scriptIds = CACHED.activeScriptIds.filter((id) =>
+    checkWillRun(id, context, event, details)
+  );
+
+  if (scriptIds.length === 0) return;
+
   // make details serializable
   const _details = { ...details };
-  const context = world === "MAIN" ? "pageScript" : "contentScript";
-  const scriptPaths = CACHED.activeScriptIds
-    .filter((id) => checkWillRun(id, context, event, details))
-    .map((id) => `${CACHED.path}${id}.js`);
+  // const frameId = details.sourceFrameId ?? details.frameId;
+  const tabId = details.sourceTabId ?? details.tabId;
 
-  return runScriptInTab({
-    target: {
-      tabId: details.sourceTabId ?? details.tabId,
-      frameIds: [details.sourceFrameId ?? details.frameId],
-    },
-    func: (scriptPaths, context, event, details) => {
-      for (let path of scriptPaths) {
-        let scriptId = path.split("/").pop().split(".")[0];
-        import(path)
-          .then(({ default: script }) => {
-            const fn = script?.[context]?.[event];
-            if (typeof fn === "function") {
+  const allFrameScriptIds = [];
+  const outermostFrameScriptIds = [];
+
+  for (let id of scriptIds) {
+    let runInAllFrames = allScripts[id]?.[context]?.runInAllFrames;
+    if (runInAllFrames) allFrameScriptIds.push(id);
+    else outermostFrameScriptIds.push(id);
+  }
+
+  [
+    [allFrameScriptIds, true],
+    [outermostFrameScriptIds, false],
+  ].forEach(([ids, allFrames]) => {
+    if (ids.length === 0) return;
+    const scriptPaths = ids.map((id) => `${CACHED.path}${id}.js`);
+
+    runScriptInTab({
+      target: {
+        tabId: tabId,
+        allFrames: allFrames,
+      },
+      func: (scriptPaths, context, event, details) => {
+        for (let path of scriptPaths) {
+          let scriptId = path.split("/").pop().split(".")[0];
+          import(path)
+            .then(({ default: script }) => {
+              const fn = script?.[context]?.[event];
+              if (typeof fn === "function") {
+                console.log(
+                  `> Useful-script: Run SUCCESS`,
+                  scriptId + "\n",
+                  context,
+                  event,
+                  details
+                );
+                fn(details);
+              }
+            })
+            .catch((e) => {
               console.log(
-                `> Useful-script: Run SUCCESS`,
-                scriptId,
+                `> Useful-script: Run FAILED`,
+                scriptId + "\n",
                 context,
                 event,
-                details
+                details,
+                e
               );
-              fn(details);
-            }
-          })
-          .catch((e) => {
-            console.log(
-              `> Useful-script: Run FAILED`,
-              scriptId,
-              context,
-              event,
-              details,
-              e
-            );
-          });
-      }
-    },
-    args: [scriptPaths, context, event, _details],
-    world,
+            });
+        }
+      },
+      args: [scriptPaths, context, event, _details],
+      world,
+    });
   });
 }
 
-function runScripts(event, details) {
+function runScripts(event, details, data) {
   for (let scriptId of CACHED.activeScriptIds) {
     const fn = checkWillRun(scriptId, "backgroundScript", event, details);
-    if (fn) return fn();
+    if (fn) return fn(data);
   }
 }
 
@@ -209,6 +231,8 @@ function main() {
     // onTabReplaced: "onTabReplaced",
   }).forEach(([navEvent, event]) => {
     chrome.webNavigation[navEvent].addListener((details) => {
+      if (details.frameId !== 0) return; // only run in outermost frame
+
       // console.log(navEvent, details);
       try {
         // inject ufsglobal, contentscript, pagescript before run any scripts
@@ -221,7 +245,7 @@ function main() {
               files: files.map((file) => "/scripts/content-scripts/" + file),
               target: {
                 tabId: details.tabId,
-                frameIds: [details.frameId],
+                allFrames: true,
               },
               world: world,
             });
@@ -292,15 +316,11 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(async function () {
-    runScripts("onInstalled");
-
     if (utils.hasUserId()) {
       await GLOBAL.trackEvent("ufs-RE-INSTALLED");
     }
-
     // create new unique id and save it
     await setUserId();
-
     GLOBAL.trackEvent("ufs-INSTALLED");
 
     chrome.contextMenus.create({
@@ -308,6 +328,8 @@ function main() {
       contexts: ["image"],
       id: "ufs-magnify-image",
     });
+
+    runScripts("onInstalled", null);
   });
 }
 

@@ -1,3 +1,8 @@
+/* This UsfGlobal can be used anywhere
+content-script / page-script / popup-script / background-script
+Call UseGlobal directly, no need to import
+*/
+
 (() => {
   const UfsGlobal = {
     Extension: {
