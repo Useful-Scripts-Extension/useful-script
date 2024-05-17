@@ -2,6 +2,10 @@
 
 ## 28/04/2024 - 14/05/2024
 
+- [ ] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
+
+- [ ] CSS hay <https://codepen.io/magnificode/pen/JedJPO>
+
 - [x] thêm event onInstalled, onStartup cho background script
 
 - [ ] Kiểm tra trang web an toàn <https://chongluadao.vn/> <https://api.chongluadao.vn/v2/blacklist> <https://api.chongluadao.vn/v2/whitelist>

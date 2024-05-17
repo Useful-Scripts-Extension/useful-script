@@ -24,13 +24,13 @@ export default {
     onDocumentStart: async (details) => {
       const { frameId, frameType } = details;
       const isMainFrame = frameType === "outermost_frame";
+      console.log(details);
 
       // track user events: mouse, keyboard, touch, ...
       let needUpdateLastActive = true;
-      let updateLastActive = UfsGlobal.Utils.throttle(function (e) {
+      let updateLastActive = UfsGlobal.Utils.throttle(function (e, mainframe) {
         needUpdateLastActive = true;
       }, 1000 / 24);
-      window.updateLastActive = updateLastActive;
 
       const allEvents = [
         // https://javascript.info/pointer-events
@@ -55,8 +55,9 @@ export default {
         "scroll",
 
         "blur",
-        "focusin",
-        "focusout",
+        // "focusin",
+        // "focusout",
+        "focus",
       ];
 
       const overlayId = "ufs-web-timer-overlay";
@@ -65,7 +66,7 @@ export default {
         if (isMainFrame) {
           window.addEventListener(event, (e) => {
             if (e.target?.id == overlayId) return;
-            updateLastActive?.(e);
+            updateLastActive?.(event, true);
           });
         } else {
           // iframes / subframes => postMessage to main frame
@@ -87,6 +88,20 @@ export default {
         }
       });
 
+      const checkFocusMsg = "ufs_web_timer_isFocused";
+      window.addEventListener("message", (e) => {
+        if (e.data?.type === checkFocusMsg) {
+          window.top.postMessage(
+            {
+              type: checkFocusMsg + "result",
+              uuid: e.data?.uuid,
+              focused: document.hasFocus(),
+            },
+            "*"
+          );
+        }
+      });
+
       // iframe / subframe stop here, all logic below are for main frame
       if (!isMainFrame) return;
 
@@ -97,7 +112,7 @@ export default {
         "message",
         (e) => {
           if (e.data?.type === "ufs_web_timer_updateLastActive") {
-            updateLastActive(e.data?.event);
+            updateLastActive(e.data?.event, false);
           }
         },
         false
@@ -181,14 +196,6 @@ export default {
         }
       }
 
-      let focused = true;
-      window.addEventListener("blur", () => {
-        focused = false;
-      });
-      window.addEventListener("focus", () => {
-        focused = true;
-      });
-
       setInterval(async () => {
         if (needUpdateLastActive) {
           lastActive = performance.now();
@@ -234,11 +241,51 @@ export default {
       window.addEventListener("beforeunload", saveTimer);
 
       // functions
+      function isFocused() {
+        // main frame focus
+        if (document.hasFocus()) return true;
+
+        // check iframes focus
+        let iframes = Array.from(document.querySelectorAll("iframe"));
+        if (!iframes.length) return false;
+
+        return new Promise((resolve) => {
+          let uuid = Math.random().toString(36);
+
+          setTimeout(() => {
+            resolve(false);
+          }, 500);
+
+          // post message to all iframes to check
+          window.postMessage({ type: checkFocusMsg, uuid }, "*");
+          window.addEventListener("message", onReceiveMsg);
+
+          let msgReceivedCount = 0;
+          function onReceiveMsg(e) {
+            if (
+              e.data?.type === checkFocusMsg + "result" &&
+              e.data?.uuid === uuid
+            ) {
+              console.log("checkFocusMsg", e.data);
+              if (e.data?.focused === true) {
+                window.removeEventListener("message", onReceiveMsg);
+                resolve(true);
+              }
+              msgReceivedCount++;
+              if (msgReceivedCount >= iframes.length) {
+                resolve(false);
+              }
+            }
+          }
+        });
+      }
 
       async function getIdleState() {
+        let timeToCheck = (await isFocused()) ? IDLE_TIME : IDLE_TIME_IF_BLUR;
+
         // if not enough time passed since last active? => not idle
         let timePassed = ~~(performance.now() - lastActive);
-        if (timePassed < (focused ? IDLE_TIME : IDLE_TIME_IF_BLUR) * 1000)
+        if (timePassed < timeToCheck * 1000)
           return {
             isIdle: false,
             reason: "not enough time passed since last active " + timePassed,
@@ -286,7 +333,7 @@ export default {
 
         return {
           isIdle: true,
-          reason: "no active events in " + IDLE_TIME + " secs",
+          reason: "no active events in " + timeToCheck + " secs",
         };
       }
 

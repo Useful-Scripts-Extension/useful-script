@@ -92,17 +92,15 @@ function runScriptsTab(event, world, details) {
     [outermostFrameScriptIds, false],
   ].forEach(([ids, allFrames]) => {
     if (ids.length === 0) return;
-    const scriptPaths = ids.map((id) => `${CACHED.path}${id}.js`);
-
     runScriptInTab({
       target: {
         tabId: tabId,
         allFrames: allFrames,
       },
-      func: (scriptPaths, context, event, details) => {
-        for (let path of scriptPaths) {
-          let scriptId = path.split("/").pop().split(".")[0];
-          import(path)
+      func: (scriptIds, path, context, event, details) => {
+        for (let scriptId of scriptIds) {
+          const url = `${path}${id}.js`;
+          import(url)
             .then(({ default: script }) => {
               const fn = script?.[context]?.[event];
               if (typeof fn === "function") {
@@ -128,7 +126,7 @@ function runScriptsTab(event, world, details) {
             });
         }
       },
-      args: [scriptPaths, context, event, _details],
+      args: [scriptIds, CACHED.path, context, event, _details],
       world,
     });
   });
