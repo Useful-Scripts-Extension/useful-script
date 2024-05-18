@@ -279,7 +279,6 @@ export default {
               e.data?.type === checkFocusMsg + "result" &&
               e.data?.uuid === uuid
             ) {
-              console.log("checkFocusMsg", e.data.focused);
               if (e.data?.focused === true) {
                 window.removeEventListener("message", onReceiveMsg);
                 resolve(true);
