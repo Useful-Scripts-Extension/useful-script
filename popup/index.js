@@ -65,7 +65,7 @@ async function createTabs() {
     tabBtn.setAttribute("content-id", tab.id);
 
     // show scripts count
-    if (tab.showCount) {
+    if (tab.customCount || tab.showCount) {
       let avaiCount =
         tab.customCount ||
         tab.scripts.filter((script) => !isTitle(script)).length;
