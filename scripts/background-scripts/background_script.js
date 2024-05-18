@@ -16,8 +16,9 @@ const {
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
 const CACHED = {
-  activeScriptIds: [],
   path: chrome.runtime.getURL("/scripts/"),
+  activeScriptIds: [],
+  badges: {},
 };
 const GLOBAL = {
   utils,
@@ -25,7 +26,12 @@ const GLOBAL = {
   log: console.log,
   trackEvent,
   fetch: customFetch,
+  getCached,
 };
+
+function getCached() {
+  return CACHED;
+}
 
 function cacheActiveScriptIds() {
   getAllActiveScriptIds().then((ids) => {
@@ -33,116 +39,121 @@ function cacheActiveScriptIds() {
   });
 }
 
-function runScriptsTab(event, world, details) {
-  /*
-  onCreatedNavigationTarget:
-  {
-    "sourceFrameId": 0,
-    "sourceProcessId": 26,
-    "sourceTabId": 84866565,
-    "tabId": 84866833,
-    "timeStamp": 1715869017808.223,
-    "url": "https://www.google.com/imghp?hl=en&authuser=0&ogbl"
-  }
-
-  other navigation event:
-  {
-    "documentId": "BF8A5B9EAB9736CEF224E6DC75E6A2B7",
-    "documentLifecycle": "active",
-    "frameId": 0,
-    "frameType": "outermost_frame",
-    "parentFrameId": -1,
-    "processId": 26,
-    "tabId": 84866565,
-    "timeStamp": 1715869322353.945,
-    "url": "https://www.google.com/"
-  }
-*/
-
+async function runScriptsTab(eventChain, world, details, silent = false) {
   if (
     (details.sourceTabId == null || details.sourceFrameId == null) &&
     (details.tabId == null || details.frameId == null)
   ) {
-    console.log("Invalid details", event, world, details);
+    console.log("Invalid details", eventChain, world, details);
     return;
   }
   const context = world === "MAIN" ? "pageScript" : "contentScript";
   const scriptIds = CACHED.activeScriptIds.filter((id) =>
-    checkWillRun(id, context, event, details)
+    checkWillRun(id, context, eventChain, details)
   );
 
   if (scriptIds.length === 0) return;
 
   // make details serializable
   const _details = { ...details };
-  // const frameId = details.sourceFrameId ?? details.frameId;
-  const tabId = details.sourceTabId ?? details.tabId;
+  const { frameId, tabId } = getDetailIds(details);
 
-  const allFrameScriptIds = [];
-  const outermostFrameScriptIds = [];
-
-  for (let id of scriptIds) {
-    let runInAllFrames = allScripts[id]?.[context]?.runInAllFrames;
-    if (runInAllFrames) allFrameScriptIds.push(id);
-    else outermostFrameScriptIds.push(id);
-  }
-
-  [
-    [allFrameScriptIds, true],
-    [outermostFrameScriptIds, false],
-  ].forEach(([ids, allFrames]) => {
-    if (ids.length === 0) return;
-    runScriptInTab({
-      target: {
-        tabId: tabId,
-        allFrames: allFrames,
-      },
-      func: (scriptIds, path, context, event, details) => {
-        for (let scriptId of scriptIds) {
-          const url = `${path}${id}.js`;
+  let successScripts = await runScriptInTab({
+    target: {
+      tabId: tabId,
+      frameIds: [frameId],
+    },
+    func: async (scriptIds, path, context, eventChain, details, silent) => {
+      const promises = [];
+      for (let scriptId of scriptIds) {
+        const url = `${path}${scriptId}.js`;
+        promises.push(
           import(url)
             .then(({ default: script }) => {
-              const fn = script?.[context]?.[event];
+              let fn = script?.[context];
+              eventChain.split(".").forEach((e) => {
+                fn = fn?.[e];
+              });
               if (typeof fn === "function") {
-                console.log(
-                  `> Useful-script: Run SUCCESS`,
-                  scriptId + "\n",
-                  context,
-                  event,
-                  details
-                );
+                if (!silent)
+                  console.log(
+                    `> Useful-script: Run SUCCESS`,
+                    scriptId + "\n",
+                    context,
+                    eventChain,
+                    details
+                  );
                 fn(details);
+                return scriptId;
               }
+              return false;
             })
             .catch((e) => {
               console.log(
                 `> Useful-script: Run FAILED`,
                 scriptId + "\n",
                 context,
-                event,
+                eventChain,
                 details,
                 e
               );
-            });
-        }
-      },
-      args: [scriptIds, CACHED.path, context, event, _details],
-      world,
-    });
+              return false;
+            })
+        );
+      }
+      let res = await Promise.all(promises);
+      let successScripts = res.filter(Boolean);
+      return successScripts;
+    },
+    args: [scriptIds, CACHED.path, context, eventChain, _details, silent],
+    world,
   });
-}
 
-function runScripts(event, details, data) {
-  for (let scriptId of CACHED.activeScriptIds) {
-    const fn = checkWillRun(scriptId, "backgroundScript", event, details);
-    if (fn) return fn(data);
+  console.log(successScripts);
+  if (frameId === 0 && successScripts?.length) {
+    CACHED.badges[tabId].push(...successScripts);
+    console.log("badge", tabId, CACHED.badges[tabId]);
+    let badge = CACHED.badges[tabId]?.length + "";
+    chrome.action.setBadgeText({
+      tabId: tabId,
+      text: badge,
+    });
+    chrome.action.setTitle({
+      tabId: tabId,
+      title: "Useful Scripts " + (badge ? "(" + badge + ")" : ""),
+    });
   }
 }
 
-function checkWillRun(scriptId, context, event, details) {
+function getDetailIds(details) {
+  return {
+    tabId: details.sourceTabId ?? details.tabId,
+    frameId: details.sourceFrameId ?? details.frameId,
+  };
+}
+
+function runScripts(eventChain, details, data) {
+  let allResponse;
+  for (let scriptId of CACHED.activeScriptIds) {
+    const fn = checkWillRun(scriptId, "backgroundScript", eventChain, details);
+    if (fn) {
+      let res = fn(data ?? details);
+      if (res) {
+        if (!allResponse) allResponse = {};
+        allResponse[scriptId] = res;
+      }
+    }
+  }
+  return allResponse;
+}
+
+function checkWillRun(scriptId, context, eventChain, details) {
   const script = allScripts[scriptId];
   const s = script?.[context];
-  const fn = s?.[event];
+  let fn = s;
+  eventChain.split(".").forEach((e) => {
+    fn = fn?.[e];
+  });
   if (
     typeof fn === "function" &&
     (!details ||
@@ -206,35 +217,90 @@ async function customFetch(url, options) {
   }
 }
 
-function main() {
-  // listen change active scripts
-  cacheActiveScriptIds();
-  chrome.storage.onChanged.addListener((changes, areaName) => {
-    // areaName = "local" / "sync" / "managed" / "session" ...
-    if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
-  });
+function listenWebRequest() {
+  Object.entries({
+    onBeforeRedirect: [
+      "webRequest.onBeforeRedirect",
+      ["responseHeaders", "extraHeaders"],
+    ],
+    onBeforeRequest: [
+      "webRequest.onBeforeRequest",
+      ["requestBody", "extraHeaders"],
+    ],
+    onBeforeSendHeaders: [
+      "webRequest.onBeforeSendHeaders",
+      ["requestHeaders", "extraHeaders"],
+    ],
+    onCompleted: [
+      "webRequest.onCompleted",
+      ["responseHeaders", "extraHeaders"],
+    ],
+    onErrorOccurred: ["webRequest.onErrorOccurred", ["extraHeaders"]],
+    onHeadersReceived: [
+      "webRequest.onHeadersReceived",
+      ["responseHeaders", "extraHeaders"],
+    ],
+    onResponseStarted: [
+      "webRequest.onResponseStarted",
+      ["responseHeaders", "extraHeaders"],
+    ],
+    onSendHeaders: [
+      "webRequest.onSendHeaders",
+      ["requestHeaders", "extraHeaders"],
+    ],
+  }).forEach(([rqEvent, [eventChain, extraInfoSpec]]) => {
+    chrome.webRequest[rqEvent].addListener(
+      function (details) {
+        if (details.initiator?.startsWith("chrome-extension://")) return;
 
+        // console.log("details ne", rqEvent, details);
+        let allData = runScripts(eventChain, details);
+
+        let modifiedDetails = {
+          ...details,
+          ufsModifiedWebRequest: allData,
+        };
+        runScriptsTab(eventChain, ISOLATED, modifiedDetails, true);
+        runScriptsTab(eventChain, MAIN, modifiedDetails, true);
+
+        let keys = Object.keys(allData || {});
+        if (allData && keys.length > 0) {
+          // WARNING: only first script's response is returned to webRequestHandler
+          // Other scripts' responses will be lost
+          console.log("return", allData, allData[keys[0]]);
+          return allData[keys[0]];
+        }
+      },
+      { urls: ["<all_urls>"] },
+      extraInfoSpec
+    );
+  });
+}
+
+function listenNavigation() {
   // listen web navigation - occur in all frames of all tabs
   Object.entries({
-    onCreatedNavigationTarget: "onCreatedNavigationTarget",
-    onBeforeNavigate: "onBeforeNavigate",
     onCommitted: "onDocumentStart",
     onDOMContentLoaded: "onDocumentIdle",
     onCompleted: "onDocumentEnd",
 
+    onCreatedNavigationTarget: "webNavigation.onCreatedNavigationTarget",
+    onHistoryStateUpdated: "webNavigation.onHistoryStateUpdated",
+    onBeforeNavigate: "webNavigation.onBeforeNavigate",
     // optional
-    // onErrorOccurred: "onErrorOccurred",
-    // onHistoryStateUpdated: "onHistoryStateUpdated",
-    // onReferenceFragmentUpdated: "onReferenceFragmentUpdated",
     // onTabReplaced: "onTabReplaced",
-  }).forEach(([navEvent, event]) => {
+    // onErrorOccurred: "onErrorOccurred",
+    // onReferenceFragmentUpdated: "onReferenceFragmentUpdated",
+  }).forEach(([navEvent, eventChain]) => {
     chrome.webNavigation[navEvent].addListener((details) => {
-      if (details.frameId !== 0) return; // only run in outermost frame
-
       // console.log(navEvent, details);
       try {
+        const { tabId, frameId } = getDetailIds(details);
+
         // inject ufsglobal, contentscript, pagescript before run any scripts
-        if (event === "onDocumentStart") {
+        if (eventChain === "onDocumentStart") {
+          // clear badge cache on main frame
+          if (details.frameId === 0) CACHED.badges[tabId] = [];
           [
             { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
             { files: ["ufs_global.js"], world: MAIN },
@@ -242,25 +308,44 @@ function main() {
             utils.runScriptFile({
               files: files.map((file) => "/scripts/content-scripts/" + file),
               target: {
-                tabId: details.tabId,
-                allFrames: true,
+                tabId: tabId,
+                frameIds: [frameId],
               },
               world: world,
             });
           });
         }
-        runScriptsTab(event, MAIN, details);
-        runScriptsTab(event, ISOLATED, details);
-        runScripts(event, details);
+        runScriptsTab(eventChain, MAIN, details);
+        runScriptsTab(eventChain, ISOLATED, details);
+        runScripts(eventChain, details);
       } catch (e) {
         console.log("ERROR:", e);
       }
     });
   });
+}
 
-  // listen content script message
+function listenTabs() {
+  [
+    "onActivated",
+    "onAttached",
+    "onCreated",
+    "onDetached",
+    "onHighlighted",
+    "onMoved",
+    "onRemoved",
+    "onReplaced",
+    "onUpdated",
+    // "onZoomChange",
+  ].forEach((event) => {
+    chrome.tabs[event].addListener((details) => {
+      runScripts("tabs." + event, details);
+    });
+  });
+}
+
+function listenMessage() {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    // console.log("request", request);
     try {
       if (request.action === "ufs-runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
@@ -269,12 +354,42 @@ function main() {
           sendResponse(res);
         });
         return true;
+      } else {
+        let sended = false;
+        let internalSendEvent = (data) => {
+          sended = true;
+          sendResponse(data);
+        };
+        runScripts(
+          "runtime.onMessage",
+          null,
+          // {
+          //   tabId: sender.tab.id,
+          //   frameIds: [sender.frameId],
+          // },
+          { request, sender, sendResponse: internalSendEvent }
+        );
+        return sended ? false : true;
       }
     } catch (e) {
       console.log("ERROR:", e);
       sendResponse({ error: e.message });
     }
   });
+}
+
+function main() {
+  // listen change active scripts
+  cacheActiveScriptIds();
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    // areaName = "local" / "sync" / "managed" / "session" ...
+    if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
+  });
+
+  // listenWebRequest();
+  listenNavigation();
+  listenTabs();
+  listenMessage();
 
   chrome.contextMenus.onClicked.addListener((info) => {
     console.log(info);
@@ -310,10 +425,10 @@ function main() {
   });
 
   chrome.runtime.onStartup.addListener(async function () {
-    runScripts("onStartup");
+    runScripts("runtime.onStartup");
   });
 
-  chrome.runtime.onInstalled.addListener(async function () {
+  chrome.runtime.onInstalled.addListener(async function (reason) {
     if (utils.hasUserId()) {
       await GLOBAL.trackEvent("ufs-RE-INSTALLED");
     }
@@ -327,8 +442,11 @@ function main() {
       id: "ufs-magnify-image",
     });
 
-    runScripts("onInstalled", null);
+    runScripts("runtime.onInstalled", null, reason);
   });
+
+  chrome.action.setBadgeBackgroundColor({ color: "#666" });
+  chrome.action.setBadgeTextColor({ color: "#fff" });
 }
 
 try {

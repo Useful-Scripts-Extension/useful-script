@@ -1,6 +1,7 @@
 export const CATEGORY = {
   favorite: {
     id: "favorite",
+    showCount: true,
     name: {
       en: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Favorite`,
       vi: `<i class="fa-solid fa-star fa-beat" style="--fa-beat-scale: 1.5;color:#1F51FF"></i> Yêu thích`,
@@ -19,6 +20,7 @@ export const CATEGORY = {
   },
   all: {
     id: "all",
+    showCount: true,
     name: {
       en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
       vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
@@ -26,10 +28,9 @@ export const CATEGORY = {
   },
   autorun: {
     id: "autorun",
-    // showCount: true,
     name: {
       en: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Autorun`,
-      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự động chạy`,
+      vi: `<i class="fa-solid fa-play fa-beat-fade" style="color:#1F51FF"></i> Tự chạy`,
     },
   },
   search: {
@@ -85,7 +86,7 @@ export const CATEGORY = {
     id: "automation",
     name: {
       en: `<i class="fa-solid fa-robot"></i> Automation`,
-      vi: `<i class="fa-solid fa-robot"></i> Tự động hoá`,
+      vi: `<i class="fa-solid fa-robot"></i> Tự động`,
     },
   },
   unlock: {

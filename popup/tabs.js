@@ -1,4 +1,5 @@
 import { BADGES, addBadge } from "../scripts/helpers/badge.js";
+import { getCurrentTab } from "../scripts/helpers/utils.js";
 import { allScripts as s } from "../scripts/index.js";
 import { CATEGORY } from "./helpers/category.js";
 import { getLang } from "./helpers/lang.js";
@@ -1007,7 +1008,7 @@ const allScriptInTabs = [
   ...recommendTab.scripts,
 ].flat();
 
-function refreshSpecialTabs() {
+async function refreshSpecialTabs() {
   // add data to special tabs
   let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
   if (recentTab) recentTab.scripts = recentScriptsSaver.get();
@@ -1049,6 +1050,25 @@ function refreshSpecialTabs() {
       tab.scripts = [title, ...favoriteInTab, ...tab.scripts];
     }
   });
+
+  // add auto runned scripts
+  let currentTab = await getCurrentTab();
+  let bgCached = await chrome.runtime.sendMessage({
+    action: "ufs-runInBackground",
+    data: { fnPath: "getCached" },
+  });
+  let runnedScriptIds = bgCached?.badges?.[currentTab.id];
+  if (runnedScriptIds?.length) {
+    let scripts = allScriptInTabs.filter((_) => runnedScriptIds.includes(_.id));
+    let hostname = new URL(currentTab.url).hostname;
+    let title = createTitle(
+      "--- Run in this page (" + scripts.length + ") ---<br/>" + hostname,
+      "--- Chạy trong trang này (" + scripts.length + ") ---<br/>" + hostname
+    );
+    console.log(scripts, title);
+    autoTab.customCount = `${scripts.length}/${autoTab.scripts.length}`;
+    autoTab.scripts = [title, ...scripts, ...autoTab.scripts];
+  }
 }
 
 function getAllTabs() {

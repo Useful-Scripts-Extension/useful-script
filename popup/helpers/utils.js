@@ -1,31 +1,33 @@
-import { isFunction } from "../../scripts/helpers/utils.js";
+const CONTEXTS = [
+  "popupScript",
+  "contentScript",
+  "pageScript",
+  "backgroundScript",
+];
 
 export const canClick = (script) => {
-  for (let s of ["popupScript", "contentScript", "pageScript"]) {
-    if (isFunction(script[s]?.onClick)) return true;
+  for (let s of CONTEXTS) {
+    if (typeof script[s]?.onClick === "function") return true;
   }
   return false;
 };
 
-export const canAutoRun = (script) => {
-  if (isFunction(script.popupScript?.onEnable)) return true;
-  if (isFunction(script.popupScript?.onDisable)) return true;
-
-  if (isFunction(script.backgroundScript?.onInstalled)) return true;
-  if (isFunction(script.backgroundScript?.onStartup)) return true;
-
-  for (let s of ["contentScript", "pageScript", "backgroundScript"]) {
-    for (let e of [
-      "onCreatedNavigationTarget",
-      "onBeforeNavigate",
-      "onDocumentStart",
-      "onDocumentIdle",
-      "onDocumentEnd",
-    ]) {
-      if (isFunction(script[s]?.[e])) return true;
-    }
+function hasChildFunction(object, excludedNamesSet = new Set()) {
+  for (let key in object) {
+    if (!object[key]) continue;
+    if (excludedNamesSet.has(key)) continue;
+    if (typeof object[key] === "function") return true;
+    if (typeof object[key] !== "object") continue;
+    if (hasChildFunction(object[key], excludedNamesSet)) return true;
   }
+  return false;
+}
 
+export const canAutoRun = (script) => {
+  let excludedNamesSet = new Set(["onClick", "onInstalled", "onStartup"]);
+  for (let context of CONTEXTS) {
+    if (hasChildFunction(script[context], excludedNamesSet)) return true;
+  }
   return false;
 };
 

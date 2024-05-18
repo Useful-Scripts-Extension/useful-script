@@ -2,7 +2,7 @@
 
 ## 28/04/2024 - 14/05/2024
 
-- [ ] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
+- [x] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
 
 - [ ] CSS hay <https://codepen.io/magnificode/pen/JedJPO>
 

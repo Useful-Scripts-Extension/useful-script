@@ -9,36 +9,8 @@ export default {
     vi: "",
   },
 
-  popupScript: {
-    _onClick: async () => {
-      const { runScriptInCurrentTab } = await import("./helpers/utils.js");
-
-      runScriptInCurrentTab(() => {
-        alert("popup");
-      });
-    },
-  },
-
-  pageScript: {
-    onCreatedNavigationTarget: (details) => {
-      console.log("onCreatedNavigationTarget", details);
-    },
-    onDocumentStart: (details) => {
-      // CometNewsFeedPaginationQuery
-      // const originalParse = JSON.parse;
-      // console.log("json parse");
-      // JSON.parse = function (string, reviver) {
-      //   let json = originalParse(string, reviver);
-      //   console.log(json);
-      //   return json;
-      // };
-      console.log(details);
-    },
-    runInAllFrames: true,
-  },
-
   contentScript: {
-    onClick: () => {
+    _onClick: () => {
       function analyzeWebpage() {
         const href = window.location.href,
           hostname = window.location.hostname,
@@ -128,23 +100,35 @@ export default {
         updateFavicon();
       }, 500);
     },
+    runInAllFrames: true,
+  },
+
+  pageScript: {
+    onClick: async () => {
+      console.log("send");
+      let res = await UfsGlobal.Extension.runInContentScript(
+        "chrome.runtime.sendMessage",
+        [{ action: "test" }, "callback"]
+      );
+      console.log(res);
+    },
   },
 
   backgroundScript: {
-    onInstalled: () => {
-      console.log("test installed");
-
-      // fetch("https://api.chongluadao.vn/v2/blacklist")
-      //   .then((res) => res.json())
-      //   .then(console.log)
-      //   .catch(console.error);
-    },
-    onStartup: () => {
-      console.log("test startup");
-    },
-
-    onCreatedNavigationTarget: (details) => {
-      console.log(details);
+    runtime: {
+      onInstalled: () => {
+        console.log("installed");
+      },
+      onStartup: () => {
+        console.log("startup");
+      },
+      onMessage: ({ request, sender, sendResponse }) => {
+        console.log(request, sender, sendResponse);
+        if (request.action === "test") {
+          sendResponse({ data: "result test" });
+        }
+        return null;
+      },
     },
   },
 };

@@ -45,14 +45,29 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   contentScript: {
     // run (if enable autorun) in content-script context
-    onCreatedNavigationTarget: (details) => {},
-    onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
     runInAllFrames: false, // false => only outermost_frame, true => all frames (including sub-frames, iframes)
 
     onClick: () => {},
+
+    // advanced
+    webNavigation: {
+      onCreatedNavigationTarget: (details) => {},
+      onHistoryStateUpdated: (details) => {},
+      onBeforeNavigate: (details) => {},
+    },
+    webRequest: {
+      onBeforeRedirect: (details) => {},
+      onBeforeRequest: (details) => {},
+      onBeforeSendHeaders: (details) => {},
+      onCompleted: (details) => {},
+      onErrorOccurred: (details) => {},
+      onHeadersReceived: (details) => {},
+      onResponseStarted: (details) => {},
+      onSendHeaders: (details) => {},
+    },
   },
 
   // run in webpage context (MAIN world)
@@ -64,14 +79,29 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   pageScript: {
     // run (if enable autorun) in webpage context
-    onCreatedNavigationTarget: (details) => {},
-    onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
     runInAllFrames: false,
 
     onClick: () => {},
+
+    // advanced
+    webNavigation: {
+      onCreatedNavigationTarget: (details) => {},
+      onHistoryStateUpdated: (details) => {},
+      onBeforeNavigate: (details) => {},
+    },
+    webRequest: {
+      onBeforeRedirect: (details) => {},
+      onBeforeRequest: (details) => {},
+      onBeforeSendHeaders: (details) => {},
+      onCompleted: (details) => {},
+      onErrorOccurred: (details) => {},
+      onHeadersReceived: (details) => {},
+      onResponseStarted: (details) => {},
+      onSendHeaders: (details) => {},
+    },
   },
 
   // run in background (service worker) context
@@ -80,14 +110,45 @@ export default {
   // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
   // - can use UfsGlobal
   backgroundScript: {
-    onInstalled: () => {},
-    onStartup: () => {},
-
-    onCreatedNavigationTarget: (details) => {},
-    onBeforeNavigate: (details) => {},
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
+
+    // advanced
+    runtime: {
+      onInstalled: () => {},
+      onStartup: () => {},
+      onMessage: ({ request, sender, sendResponse }) => {},
+    },
+    webNavigation: {
+      onCreatedNavigationTarget: (details) => {},
+      onHistoryStateUpdated: (details) => {},
+      onBeforeNavigate: (details) => {},
+    },
+    webRequest: {
+      // Can only modify requestHeaders (onBeforeSendHeaders) AND responseHeaders (onHeadersReceived)
+      // Don't use async await for these two events if you want to return modified values
+      onBeforeRedirect: (details) => {},
+      onBeforeRequest: (details) => {},
+      onBeforeSendHeaders: (details) => {},
+      onCompleted: (details) => {},
+      onErrorOccurred: (details) => {},
+      onHeadersReceived: (details) => {},
+      onResponseStarted: (details) => {},
+      onSendHeaders: (details) => {},
+    },
+    tabs: {
+      onActivated: (details) => {},
+      onAttached: (details) => {},
+      onCreated: (details) => {},
+      onDetached: (details) => {},
+      onHighlighted: (details) => {},
+      onMoved: (details) => {},
+      onRemoved: (details) => {},
+      onReplaced: (details) => {},
+      onUpdated: (details) => {},
+      onZoomChange: (details) => {},
+    },
   },
 };
 

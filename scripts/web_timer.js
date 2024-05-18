@@ -60,6 +60,7 @@ export default {
         "focus",
       ];
 
+      const updateLastActiveMsg = "ufs_web_timer_updateLastActive";
       const overlayId = "ufs-web-timer-overlay";
       allEvents.forEach((event) => {
         // main frame => update last active directly
@@ -77,7 +78,7 @@ export default {
               // SO only solution is use postMessage
               window.top.postMessage(
                 {
-                  type: "ufs_web_timer_updateLastActive",
+                  type: updateLastActiveMsg,
                   frameId: frameId,
                   event: event,
                 },
@@ -88,19 +89,21 @@ export default {
         }
       });
 
-      const checkFocusMsg = "ufs_web_timer_isFocused";
-      window.addEventListener("message", (e) => {
-        if (e.data?.type === checkFocusMsg) {
-          window.top.postMessage(
-            {
-              type: checkFocusMsg + "result",
-              uuid: e.data?.uuid,
-              focused: document.hasFocus(),
-            },
-            "*"
-          );
-        }
-      });
+      const checkFocusMsg = "ufs_web_timer_checkFocus";
+      if (!isMainFrame) {
+        window.addEventListener("message", (e) => {
+          if (e.data?.type === checkFocusMsg) {
+            window.top.postMessage(
+              {
+                type: checkFocusMsg + "result",
+                uuid: e.data?.uuid,
+                focused: document.hasFocus(),
+              },
+              "*"
+            );
+          }
+        });
+      }
 
       // iframe / subframe stop here, all logic below are for main frame
       if (!isMainFrame) return;
@@ -111,7 +114,7 @@ export default {
       window.addEventListener(
         "message",
         (e) => {
-          if (e.data?.type === "ufs_web_timer_updateLastActive") {
+          if (e.data?.type === updateLastActiveMsg) {
             updateLastActive(e.data?.event, false);
           }
         },
@@ -253,11 +256,21 @@ export default {
           let uuid = Math.random().toString(36);
 
           setTimeout(() => {
+            window.removeEventListener("message", onReceiveMsg);
             resolve(false);
           }, 500);
 
           // post message to all iframes to check
-          window.postMessage({ type: checkFocusMsg, uuid }, "*");
+          iframes.forEach((iframe) => {
+            iframe.contentWindow.postMessage(
+              {
+                type: checkFocusMsg,
+                uuid,
+              },
+              "*"
+            );
+          });
+          // window.postMessage({ type: checkFocusMsg, uuid }, "*");
           window.addEventListener("message", onReceiveMsg);
 
           let msgReceivedCount = 0;
@@ -266,13 +279,14 @@ export default {
               e.data?.type === checkFocusMsg + "result" &&
               e.data?.uuid === uuid
             ) {
-              console.log("checkFocusMsg", e.data);
+              console.log("checkFocusMsg", e.data.focused);
               if (e.data?.focused === true) {
                 window.removeEventListener("message", onReceiveMsg);
                 resolve(true);
               }
               msgReceivedCount++;
               if (msgReceivedCount >= iframes.length) {
+                window.removeEventListener("message", onReceiveMsg);
                 resolve(false);
               }
             }

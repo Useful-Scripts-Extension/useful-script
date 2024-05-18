@@ -213,6 +213,9 @@ option {
 .tab {
     background-color: @bg_tab;
     overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
     button {
         background-color: @bg_tab_btn;
@@ -222,7 +225,7 @@ option {
         cursor: pointer;
         padding: 10px 12px;
         transition: 0.3s;
-        width: 33%;
+        min-width: 33%;
         text-align: left;
         border-radius: 5px;
 

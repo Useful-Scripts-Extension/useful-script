@@ -46,9 +46,9 @@ const scrollToTopBtn = document.querySelector("#scroll-to-top");
 // ========================= Tabs =========================
 // ========================================================
 // #region tabs
-function createTabs() {
+async function createTabs() {
   // prepare tabs
-  refreshSpecialTabs();
+  await refreshSpecialTabs();
 
   // clear UI
   tabDiv.innerHTML = "";
@@ -66,8 +66,10 @@ function createTabs() {
 
     // show scripts count
     if (tab.showCount) {
-      let avaiCount = tab.scripts.filter((script) => !isTitle(script)).length;
-      tabBtn.innerHTML += ` (${avaiCount})`;
+      let avaiCount =
+        tab.customCount ||
+        tab.scripts.filter((script) => !isTitle(script)).length;
+      if (avaiCount) tabBtn.innerHTML += ` (${avaiCount})`;
     }
 
     // custom style
