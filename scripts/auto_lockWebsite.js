@@ -1,4 +1,5 @@
 const passStorageKey = "auto_lock_website_manager_password";
+const lockedWebsiteKey = "auto_lock_website_lockedWebsites";
 
 async function initPassword() {
   const { t } = await import("../popup/helpers/lang.js");
@@ -112,6 +113,7 @@ export default {
       let res = await checkPass();
       if (res === true) {
         await Storage.remove(passStorageKey);
+        await Storage.remove(lockedWebsiteKey);
         return true;
       }
       return false;
