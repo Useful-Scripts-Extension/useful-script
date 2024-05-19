@@ -130,6 +130,11 @@ export default {
         return null;
       },
     },
+    storage: {
+      onChanged: (details) => {
+        console.log("on Storage changed", details);
+      },
+    },
   },
 };
 

@@ -1,7 +1,7 @@
 // javascript:window.open("https://freedium.cfd/"+encodeURIComponent(window.location))
 
 export default {
-  icon: "https://s2.googleusercontent.com/s2/favicons?domain=freedium.cfd",
+  icon: "https://cdn-icons-png.flaticon.com/512/5968/5968906.png",
   name: {
     en: "Read full medium article",
     vi: "Đọc bài viết medium full",

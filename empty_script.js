@@ -1,4 +1,4 @@
-// WARNING: avoid importing anything here, use dynamic imports instead
+// WARNING: avoid import anything here, use dynamic imports instead
 
 export default {
   icon: "",
@@ -148,6 +148,9 @@ export default {
       onReplaced: (details) => {},
       onUpdated: (details) => {},
       onZoomChange: (details) => {},
+    },
+    storage: {
+      onChanged: (details) => {},
     },
   },
 };

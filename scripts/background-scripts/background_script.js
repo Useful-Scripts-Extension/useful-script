@@ -109,10 +109,8 @@ async function runScriptsTab(eventChain, world, details, silent = false) {
     world,
   });
 
-  console.log(successScripts);
   if (frameId === 0 && successScripts?.length) {
     CACHED.badges[tabId].push(...successScripts);
-    console.log("badge", tabId, CACHED.badges[tabId]);
     let badge = CACHED.badges[tabId]?.length + "";
     chrome.action.setBadgeText({
       tabId: tabId,
@@ -382,6 +380,8 @@ function main() {
   // listen change active scripts
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
+    runScripts("storage.onChanged", null, { changes, areaName });
+
     // areaName = "local" / "sync" / "managed" / "session" ...
     if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
   });

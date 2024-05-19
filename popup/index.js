@@ -594,8 +594,7 @@ window.addEventListener("scroll", onScrollEnd);
   initSearch();
   initSettings();
   initScrollToTop();
-  createTabs();
-  restoreScroll();
+  createTabs().then(restoreScroll);
 
   checkForUpdate();
 })();
