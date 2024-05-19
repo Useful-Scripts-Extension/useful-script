@@ -24,7 +24,6 @@ export default {
     onDocumentStart: async (details) => {
       const { frameId, frameType } = details;
       const isMainFrame = frameType === "outermost_frame";
-      console.log(details);
 
       // track user events: mouse, keyboard, touch, ...
       let needUpdateLastActive = true;

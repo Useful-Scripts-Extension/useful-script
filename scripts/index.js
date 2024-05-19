@@ -47,7 +47,7 @@ import viewScriptsUsed from "./viewScriptsUsed.js";
 import viewStylesUsed from "./viewStylesUsed.js";
 import viewPartialSource from "./viewPartialSource.js";
 import openWaybackUrl from "./openWaybackUrl.js";
-import runStatJs from "./runStatJs.js";
+import showFPS from "./showFPS.js";
 import search_googleSite from "./search_googleSite.js";
 import similarWeb from "./similarWeb.js";
 import search_totalIndexedPages from "./search_totalIndexedPages.js";
@@ -162,6 +162,7 @@ import insta_getFollowForOther from "./insta_getFollowForOther.js";
 import web_timer from "./web_timer.js";
 import remove_tracking_in_url from "./remove_tracking_in_url.js";
 import auto_lockWebsite from "./auto_lockWebsite.js";
+import showFps_v2 from "./showFps_v2.js";
 
 // inject badges
 const allScripts = {
@@ -214,7 +215,7 @@ const allScripts = {
   viewStylesUsed,
   viewPartialSource,
   openWaybackUrl,
-  runStatJs,
+  showFPS,
   search_googleSite,
   similarWeb: addBadge(similarWeb, BADGES.hot),
   search_totalIndexedPages,
@@ -340,6 +341,7 @@ const allScripts = {
   web_timer: addBadge(web_timer, BADGES.hot, BADGES.new),
   remove_tracking_in_url: addBadge(remove_tracking_in_url, BADGES.new),
   auto_lockWebsite: addBadge(auto_lockWebsite, BADGES.new),
+  showFps_v2: addBadge(showFps_v2, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

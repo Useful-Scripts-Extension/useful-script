@@ -41,14 +41,12 @@ export default {
             captureBeyondViewport: true,
             clip: { x: 0, y: 0, width, height, scale: 1 },
           });
-          await detachDebugger(tab);
           console.log(img);
 
           setLoadingText("Đang lưu ảnh...");
           downloadURL("data:image/png;base64," + img.data, "fullpage.png");
-        } else {
-          await detachDebugger(tab);
         }
+        await detachDebugger(tab);
       } catch (e) {
         alert("Lỗi: " + e);
       } finally {

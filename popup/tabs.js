@@ -782,7 +782,8 @@ const tabs = [
       ),
       s.darkModePDF,
       s.toggleEditPage,
-      s.runStatJs,
+      s.showFPS,
+      s.showFps_v2,
       s.toggle_passwordField,
       createTitle("--- View ---", "--- Xem ---"),
       addBadge(
@@ -1058,6 +1059,7 @@ async function refreshSpecialTabs() {
     data: { fnPath: "getCached" },
   });
   let runnedScriptIds = bgCached?.badges?.[currentTab.id];
+  console.log(bgCached, currentTab.id, runnedScriptIds);
   if (runnedScriptIds?.length) {
     let scripts = allScriptInTabs.filter((_) => runnedScriptIds.includes(_.id));
     let hostname = new URL(currentTab.url).hostname;

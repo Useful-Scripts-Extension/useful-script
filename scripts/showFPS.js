@@ -1,12 +1,12 @@
 export default {
-  icon: '<i class="fa-solid fa-gauge-high"></i>',
+  icon: '<i class="fa-solid fa-gauge-high fa-lg"></i>',
   name: {
-    en: "Run Stat.js",
-    vi: "Chạy stats.js",
+    en: "Show FPS",
+    vi: "Hiện thị FPS",
   },
   description: {
-    en: "Run stat.js in current website",
-    vi: "Tính toán FPS website",
+    en: "Show frames per second of current website (inject stat.js library)",
+    vi: "Hiện thị tốc độ khung hình của trang web hiện tại (sử dụng thư viện stat.js)",
   },
 
   pageScript: {
