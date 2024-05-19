@@ -9,6 +9,133 @@ export default {
     vi: "",
   },
 
+  popupScript: {
+    _onClick: async () => {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
+      const tab = await getCurrentTab();
+
+      const blob = await chrome.pageCapture.saveAsMHTML({
+        tabId: tab.id,
+      });
+
+      chrome.downloads.download({
+        url: URL.createObjectURL(blob),
+        filename: "web.mhtml",
+      });
+    },
+    _onClick: async () => {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
+
+      const { setLoadingText, closeLoading } = showLoading(
+        "Đang lấy thông tin web..."
+      );
+
+      const tab = await getCurrentTab();
+
+      setLoadingText("Đang lấy lịch sử duyệt web...");
+      let hostname = new URL(tab.url).hostname;
+      let today = new Date();
+      let weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const histories = await chrome.history.search({
+        text: hostname,
+        maxResults: 10000,
+        startTime: weekAgo.getTime(),
+      });
+
+      if (
+        confirm(
+          "Tìm thấy " +
+            histories?.length +
+            " lịch sử duyệt web của " +
+            hostname +
+            "\n\nXác nhận xoá?"
+        )
+      ) {
+        for (let i = 0; i < histories.length; i++) {
+          let his = histories[i];
+          setLoadingText(`Đang xoá ${i}/${histories.length}...`);
+          try {
+            await chrome.history.deleteUrl({ url: his.url });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
+      closeLoading();
+
+      /*
+      [
+        {
+            "id": "16571",
+            "isLocal": true,
+            "referringVisitId": "0",
+            "transition": "link",
+            "visitId": "41240",
+            "visitTime": 1714833166516.668
+        },
+        {
+            "id": "16571",
+            "isLocal": true,
+            "referringVisitId": "0",
+            "transition": "link",
+            "visitId": "41241",
+            "visitTime": 1714833168457.202
+        }
+      ]
+    */
+    },
+    _onClick: async () => {
+      // const {
+      //   attachDebugger,
+      //   detachDebugger,
+      //   sendDevtoolCommand,
+      //   getCurrentTab,
+      // } = await import("./helpers/utils.js");
+      // let blobId = prompt("Enter blob id: ");
+      // if (blobId) {
+      //   const tab = await getCurrentTab();
+      //   await attachDebugger(tab);
+      //   let res = await sendDevtoolCommand(tab, "IO.resolveBlob", {
+      //     objectId: blobId,
+      //   });
+      //   console.log(res);
+      //   await detachDebugger(tab);
+      // }
+      // try {
+      //   const tab = await getCurrentTab();
+      //   await attachDebugger(tab);
+      //   let res = await sendDevtoolCommand(tab, "Input.dispatchKeyEvent", {
+      //     type: "rawKeyDown",
+      //     modifiers: 2,
+      //     code: "KeyQ",
+      //   });
+      //   console.log(res);
+      //   await detachDebugger(tab);
+      // } catch (e) {
+      //   alert(e);
+      // }
+      // const tab = await getCurrentTab();
+      // chrome.debugger.attach({ tabId: tab.id }, "1.2", function () {
+      //   chrome.debugger.sendCommand(
+      //     { tabId: tab.id },
+      //     "Network.enable",
+      //     {},
+      //     function () {
+      //       if (chrome.runtime.lastError) {
+      //         console.error(chrome.runtime.lastError);
+      //       }
+      //     }
+      //   );
+      // });
+      // chrome.debugger.onEvent.addListener(function (source, method, params) {
+      //   if (method === "Network.responseReceived") {
+      //     console.log("Response received:", params.response);
+      //     // Perform your desired action with the response data
+      //   }
+      // });
+    },
+  },
+
   contentScript: {
     _onClick: () => {
       function analyzeWebpage() {
@@ -100,11 +227,10 @@ export default {
         updateFavicon();
       }, 500);
     },
-    runInAllFrames: true,
   },
 
   pageScript: {
-    onClick: async () => {
+    _onClick: async () => {
       console.log("send");
       let res = await UfsGlobal.Extension.runInContentScript(
         "chrome.runtime.sendMessage",

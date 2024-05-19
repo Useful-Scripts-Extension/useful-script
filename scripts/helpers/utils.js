@@ -185,6 +185,9 @@ export const Storage = {
     let result = await chrome.storage.local.get([key]);
     return result[key] || defaultValue;
   },
+  remove: async (key) => {
+    return await chrome.storage.local.remove(key);
+  },
 };
 
 export const listActiveScriptsKey = "activeScripts";

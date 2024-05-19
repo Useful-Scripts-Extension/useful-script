@@ -17,8 +17,9 @@
   "permissions": [
     "idle",
     "tts",
-    "power",
     "tabs",
+    "power",
+    "history",
     "storage",
     "cookies",
     "debugger",
@@ -28,6 +29,7 @@
     "scripting",
     "webRequest",
     "tabCapture",
+    "pageCapture",
     "contextMenus",
     "desktopCapture",
     "webNavigation",

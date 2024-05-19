@@ -4,7 +4,7 @@ import {
   isFunction,
   removeAccents,
   runScriptInCurrentTab,
-  toggleActiveScript,
+  setActiveScript,
   trackEvent,
   debounce,
   Storage,
@@ -162,12 +162,18 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark tooltip";
     checkmark.onclick = async (e) => {
-      let newValue = await toggleActiveScript(script.id);
-      trackEvent(script.id + (newValue ? "-ON" : "-OFF"));
-      newValue
-        ? script.popupScript?.onEnable?.()
-        : script.popupScript?.onDisable?.();
-      updateButtonChecker(script, buttonContainer, newValue);
+      let oldVal = await isActiveScript(script.id);
+      let newVal = !oldVal;
+
+      if (
+        (newVal && (await script.popupScript?.onEnable?.()) === false) ||
+        (!newVal && (await script.popupScript?.onDisable?.()) === false)
+      )
+        return;
+
+      setActiveScript(script.id, newVal);
+      trackEvent(script.id + (newVal ? "-ON" : "-OFF"));
+      updateButtonChecker(script, buttonContainer, newVal);
     };
 
     buttonContainer.appendChild(checkmark);

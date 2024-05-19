@@ -2,6 +2,12 @@
 
 ## 28/04/2024 - 14/05/2024
 
+- [ ] Switch to Swal
+
+- [ ] Clear browser histories for specific website.
+
+- [ ] Export all data, and restore when re-install extension
+
 - [x] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
 
 - [ ] CSS hay <https://codepen.io/magnificode/pen/JedJPO>
@@ -22,7 +28,7 @@
 
 - [ ] @@extension_id <https://developer.chrome.com/docs/extensions/reference/api/i18n#overview-predefined>
 
-- [ ] extends chrome devtools <https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools>
+- [x] extends chrome devtools <https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools> => Chưa dùng tới
 
 - [ ] Render video in document.title
 
@@ -96,7 +102,7 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 - [x] duck race - input list of values
 
-- [ ] fb_getAllUidOfGroupMembers đang lỗi
+- [x] fb_getAllUidOfGroupMembers đang lỗi
 
 - [x] text to qrcode <https://hoothin.com/qrcode/>
 
