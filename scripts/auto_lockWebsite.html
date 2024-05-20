@@ -6,12 +6,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Useful Scripts - Auto lock websites</title>
 
+
+  <link rel="stylesheet" href="../popup/libs/swal2.dark.css">
+  <script src="../popup/libs/swal2.min.js"></script>
+
   <style>
+    html {
+      display: flex;
+      justify-content: center;
+      width: 400px;
+      height: 500px;
+    }
+
     body {
       width: 400px;
       height: 500px;
       background-color: #333;
       color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .sites-container {
+      width: 100%;
+    }
+
+    .site {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
   </style>
 </head>

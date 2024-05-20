@@ -5,7 +5,7 @@ async function initPassword() {
   const { t } = await import("../popup/helpers/lang.js");
   const { Storage } = await import("./helpers/utils.js");
 
-  let pass = await Storage.get(passStorageKey);
+  let pass = await getCurPass();
   if (pass) return true;
 
   const { value: newPass } = await Swal.fire({
@@ -29,20 +29,28 @@ async function initPassword() {
   return false;
 }
 
-async function checkPass() {
-  const { t } = await import("../popup/helpers/lang.js");
+async function getCurPass() {
   const { Storage } = await import("./helpers/utils.js");
+  let curPass = await Storage.get(passStorageKey);
+  return curPass;
+}
 
-  let passToOpenManager = await Storage.get(passStorageKey);
-  if (passToOpenManager == null) return "not init";
+export async function checkPass(reason) {
+  const { t } = await import("../popup/helpers/lang.js");
+
+  let curPass = await getCurPass();
+  if (curPass == null) return "not init";
 
   const { value: pass } = await Swal.fire({
     title: t({
+      vi: "Nhập mật khẩu" + t(reason),
+      en: "Enter password" + t(reason),
+    }),
+    input: "password",
+    inputPlaceholder: t({
       vi: "Nhập mật khẩu",
       en: "Enter password",
     }),
-    input: "password",
-    inputPlaceholder: t({ vi: "Nhập mật khẩu", en: "Enter your password" }),
     inputAttributes: {
       autocapitalize: "off",
       autocorrect: "off",
@@ -58,7 +66,7 @@ async function checkPass() {
     },
   });
 
-  if (pass === passToOpenManager) return true;
+  if (pass === curPass) return true;
   if (pass != null) {
     await Swal.fire(
       t({ vi: "Sai mật khẩu", en: "Wrong password!" }),
@@ -93,13 +101,12 @@ export default {
   },
 
   infoLink: async function openManager() {
-    let res = await checkPass();
-    if (res === "not init") {
-      res = await initPassword();
+    let curPass = await getCurPass();
+    if (curPass == null) {
+      curPass = await initPassword();
     }
-
-    if (res) {
-      window.open("/scripts/auto_lockWebsite.html", "_blank");
+    if (curPass) {
+      window.open("/scripts/auto_lockWebsite.html", "_self");
     }
   },
 
@@ -110,7 +117,10 @@ export default {
     },
     onDisable: async () => {
       const { Storage } = await import("./helpers/utils.js");
-      let res = await checkPass();
+      let res = await checkPass({
+        vi: " để tắt chức năng",
+        en: " to disable feature",
+      });
       if (res === true) {
         await Storage.remove(passStorageKey);
         await Storage.remove(lockedWebsiteKey);
