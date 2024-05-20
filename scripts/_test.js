@@ -266,6 +266,7 @@ export default {
 
 const backup = () => {
   (() => {
+    // modify window.fetch
     const originalFetch = fetch;
     fetch = function (...args) {
       console.log("fetch", ...args);

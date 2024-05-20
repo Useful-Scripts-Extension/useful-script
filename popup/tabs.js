@@ -484,6 +484,7 @@ const tabs = [
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
       s.remove_tracking_in_url,
+      s.chongLuaDao,
       s.shortenURL,
       s.unshorten,
       createTitle("--- Automation ---", "--- Tự động ---"),
