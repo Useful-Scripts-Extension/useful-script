@@ -81,7 +81,7 @@ export async function checkPass(reason) {
 }
 
 export default {
-  icon: '<i class="fa-solid fa-fingerprint fa-lg"></i>',
+  icon: '<i class="fa-solid fa-fingerprint fa-lg fa-beat-fade"></i>',
   name: {
     en: "Auto lock websites",
     vi: "Tự động khoá trang web",
