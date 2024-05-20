@@ -11,16 +11,17 @@ export default {
 
   popupScript: {
     onClick: async () => {
-      const { getCurrentTab } = await import("./helpers/utils.js");
+      const { getCurrentTab, popupCenter } = await import("./helpers/utils.js");
       const tab = await getCurrentTab();
 
       let text = prompt("Nhập text/url: ", tab.url);
       if (text) {
-        window.open(
-          "https://hoothin.com/qrcode/#" + text,
-          "",
-          "scrollbars=no,width=700,height=700"
-        );
+        popupCenter({
+          url: "/scripts/textToQrCode.html#" + text,
+          title: "Text to QRCode",
+          w: 400,
+          h: 500,
+        });
       }
     },
   },

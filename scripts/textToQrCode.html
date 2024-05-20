@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to QRCode</title>
+
+  <script src="./libs/qrcode/index.js"></script>
+  <script src="./textToQrCode_main.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Useful Scripts</h2>
+  <h1>Text to QRCode</h1>
+  <input id="inp-text" type="text" placeholder="Enter text...">
+  <div id="qrcode"></div>
+</body>
+
+</html>
