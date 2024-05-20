@@ -7,7 +7,6 @@ console.log(UfsGlobal);
 const {
   runScriptInCurrentTab,
   convertBlobToBase64,
-  runScriptInTab,
   getAllActiveScriptIds,
   trackEvent,
   setUserId,
@@ -16,7 +15,6 @@ const {
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
 const CACHED = {
-  path: chrome.runtime.getURL("/scripts/"),
   activeScriptIds: [],
   badges: {},
 };
@@ -58,59 +56,21 @@ async function runScriptsTab(eventChain, world, details, silent = false) {
   const _details = { ...details };
   const { frameId, tabId } = getDetailIds(details);
 
-  let successScripts = await runScriptInTab({
+  let successScripts = await utils.runScriptInTabWithEventChain({
     target: {
       tabId: tabId,
       frameIds: [frameId],
     },
-    func: async (scriptIds, path, context, eventChain, details, silent) => {
-      const promises = [];
-      for (let scriptId of scriptIds) {
-        const url = `${path}${scriptId}.js`;
-        promises.push(
-          import(url)
-            .then(({ default: script }) => {
-              let fn = script?.[context];
-              eventChain.split(".").forEach((e) => {
-                fn = fn?.[e];
-              });
-              if (typeof fn === "function") {
-                if (!silent)
-                  console.log(
-                    `> Useful-script: Run SUCCESS`,
-                    scriptId + "\n",
-                    context,
-                    eventChain,
-                    details
-                  );
-                fn(details);
-                return scriptId;
-              }
-              return false;
-            })
-            .catch((e) => {
-              console.log(
-                `> Useful-script: Run FAILED`,
-                scriptId + "\n",
-                context,
-                eventChain,
-                details,
-                e
-              );
-              return false;
-            })
-        );
-      }
-      let res = await Promise.all(promises);
-      let successScripts = res.filter(Boolean);
-      return successScripts;
-    },
-    args: [scriptIds, CACHED.path, context, eventChain, _details, silent],
+    scriptIds,
+    eventChain: context + "." + eventChain,
+    details: _details,
     world,
+    silent,
   });
 
   if (frameId === 0 && successScripts?.length) {
     CACHED.badges[tabId].push(...successScripts);
+    CACHED.badges[tabId] = [...new Set(CACHED.badges[tabId])];
     let badge = CACHED.badges[tabId]?.length + "";
     chrome.action.setBadgeText({
       tabId: tabId,

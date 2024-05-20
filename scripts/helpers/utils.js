@@ -278,6 +278,62 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
+export const runScriptInTabWithEventChain = ({
+  target,
+  scriptIds,
+  path = chrome.runtime.getURL("/scripts/"),
+  world = "MAIN",
+  details = {},
+  eventChain,
+  silent = false,
+}) => {
+  return runScriptInTab({
+    target,
+    func: async (scriptIds, path, eventChain, details, silent) => {
+      const promises = [];
+      for (let scriptId of scriptIds) {
+        const url = `${path}${scriptId}.js`;
+        promises.push(
+          import(url)
+            .then(({ default: script }) => {
+              let fn = script;
+              eventChain.split(".").forEach((e) => {
+                fn = fn?.[e];
+              });
+              if (typeof fn === "function") {
+                if (!silent)
+                  console.log(
+                    `> Useful-script: Run SUCCESS`,
+                    scriptId + "\n",
+                    eventChain,
+                    details
+                  );
+                fn(details);
+                return scriptId;
+              }
+              return false;
+            })
+            .catch((e) => {
+              console.log(
+                `> Useful-script: Run FAILED`,
+                scriptId + "\n",
+                eventChain,
+                details,
+                e
+              );
+              return false;
+            })
+        );
+      }
+      let res = await Promise.all(promises);
+      let successScripts = res.filter(Boolean);
+      return successScripts;
+    },
+    args: [scriptIds, path, eventChain, details, silent],
+    world,
+  });
+};
+
 export const runScriptInTab = async (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(

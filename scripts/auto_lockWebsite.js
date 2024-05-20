@@ -80,6 +80,168 @@ export async function checkPass(reason) {
   return false;
 }
 
+const locker = {
+  getLockedWebsites: async () => {
+    let key = lockedWebsiteKey;
+    let data = await chrome.storage.local.get([key]);
+    let sites = data?.[key] || [];
+    return sites;
+  },
+  addLockedWebsite: async (site) => {
+    let key = lockedWebsiteKey;
+    let currentSites = await locker.getLockedWebsites();
+    if (currentSites.includes(site)) return false;
+    currentSites.push(site);
+    await chrome.storage.local.set({ [key]: currentSites });
+    return true;
+  },
+  removeLockedWebsite: async (site) => {
+    let key = lockedWebsiteKey;
+    let currentSites = await locker.getLockedWebsites();
+    if (!currentSites.includes(site)) return false;
+    currentSites = currentSites.filter((s) => s !== site);
+    await chrome.storage.local.set({ [key]: currentSites });
+    return true;
+  },
+  getPass: async () => {
+    let key = passStorageKey;
+    let data = await chrome.storage.local.get([key]);
+    let pass = data?.[key];
+    return pass;
+  },
+  lock: (pass) => {
+    const id = "ufs_auto_lock_website_overlay";
+    const idStyle = id + "-style";
+
+    function remove() {
+      document.querySelector(`#${id}`)?.remove?.();
+      document.querySelector(`#${idStyle}`)?.remove?.();
+    }
+
+    function lockAgain() {
+      let overlay = document.querySelector(`#${id}`);
+      let style = document.querySelector(`#${idStyle}`);
+      if (!overlay || !style) return;
+      overlay.style.top = "0";
+      style.disabled = false;
+    }
+
+    const exist = document.getElementById(id);
+    if (exist) {
+      lockAgain();
+      return;
+    }
+
+    const style = document.createElement("style");
+    style.id = idStyle;
+    style.textContent = /*css*/ `
+      * :not(#${id}, #${id} *) {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    const overlay = document.createElement("div");
+    overlay.id = id;
+    overlay.innerHTML = /* html */ `
+      <h1>This websites has been Locked</h1>
+      <input id="password" type="password" placeholder="Enter password to unlock.." autocomplete="new-password" />
+      <div id="unlock-temporarly-container" title="Enable to unlock temporarly => will lock again if website reload">
+        <input id="unlock-temporarly" type="checkbox" />
+        <label for="unlock-temporarly" >Unlock temporarly</label>
+      </div>
+      <style>
+        #${id} {
+          position: fixed;
+          top: -100vh;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          background-color: #112;
+          z-index: 2147483647;
+          opacity: 0;
+          transition: all 0.3s ease;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        #${id} > h1 {
+          color: #ddd;
+          font-size: 30px;
+          text-align: center;
+          font-family: monospace;
+        }
+        #${id} #unlock-temporarly-container {
+          color: #ccc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        #${id} #unlock-temporarly {
+          width: 20px;
+          height: 20px;
+          padding: 0;
+          margin: 0px;
+          border: 1px solid #999;
+          background-color: #e6e6e6;
+          margin-right: 10px;
+        }
+        #${id} #unlock-temporarly:hover {
+          background-color: #ccc;
+        }
+        #${id} #unlock-temporarly:active {
+          background-color: #04aa6d;
+        }
+        #${id} > input {
+          letter-spacing: normal;
+          margin-top: 20px;
+          font-size: 20px;
+          padding: 10px;
+          border-radius: 5px;
+          border: none;
+          outline: none;
+          text-align: center;
+          color: #ddd;
+          background-color: #282828de;
+          width: 400px;
+        }
+        #${id} > input:focus {
+          background-color: #282828;
+          box-shadow: 0px 5px 5px #555;
+        }
+        #${id} label {
+          color: #ccc !important;
+          background-color: transparent !important;
+        }
+      </style>
+    `;
+    setTimeout(() => {
+      overlay.style.opacity = "1";
+      overlay.style.top = "0px";
+    }, 0);
+    document.documentElement.appendChild(overlay);
+
+    const unlockTemporarly = overlay.querySelector("input#unlock-temporarly");
+    const inputPass = overlay.querySelector("input#password");
+    inputPass.addEventListener("input", (e) => {
+      if (e.target.value == pass) {
+        // remove();
+        overlay.style.top = "-100vh";
+        style.disabled = true;
+        inputPass.value = "";
+
+        if (!unlockTemporarly.checked) {
+          locker.removeLockedWebsite(location.hostname);
+        }
+      }
+    });
+  },
+};
+
 export default {
   icon: '<i class="fa-solid fa-fingerprint fa-lg fa-beat-fade"></i>',
   name: {
@@ -131,182 +293,10 @@ export default {
       }
       return false;
     },
-
-    onClick: () => {},
   },
 
   contentScript: {
     onDocumentStart: () => {
-      const locker = {
-        KEYS: {
-          pass: "auto_lock_website_manager_password",
-          sites: "auto_lock_website_lockedWebsites",
-        },
-        getLockedWebsites: async () => {
-          let key = locker.KEYS.sites;
-          let data = await chrome.storage.local.get([key]);
-          let sites = data?.[key] || [];
-          return sites;
-        },
-        addLockedWebsite: async (site) => {
-          let key = locker.KEYS.sites;
-          let currentSites = await locker.getLockedWebsites();
-          if (currentSites.includes(site)) return false;
-          currentSites.push(site);
-          await chrome.storage.local.set({ [key]: currentSites });
-          return true;
-        },
-        removeLockedWebsite: async (site) => {
-          let key = locker.KEYS.sites;
-          let currentSites = await locker.getLockedWebsites();
-          if (!currentSites.includes(site)) return false;
-          currentSites = currentSites.filter((s) => s !== site);
-          await chrome.storage.local.set({ [key]: currentSites });
-          return true;
-        },
-        getPass: async () => {
-          let key = locker.KEYS.pass;
-          let data = await chrome.storage.local.get([key]);
-          let pass = data?.[key];
-          return pass;
-        },
-        lock: (pass) => {
-          const id = "ufs_auto_lock_website_overlay";
-          const idStyle = id + "-style";
-
-          function remove() {
-            document.querySelector(`#${id}`)?.remove?.();
-            document.querySelector(`#${idStyle}`)?.remove?.();
-          }
-
-          function lockAgain() {
-            let overlay = document.querySelector(`#${id}`);
-            let style = document.querySelector(`#${idStyle}`);
-            if (!overlay || !style) return;
-            overlay.style.top = "0";
-            style.disabled = false;
-          }
-
-          const exist = document.getElementById(id);
-          if (exist) {
-            lockAgain();
-            return;
-          }
-
-          const style = document.createElement("style");
-          style.id = idStyle;
-          style.textContent = /*css*/ `
-            * :not(#${id}, #${id} *) {
-              display: none !important;
-            }
-          `;
-          document.head.appendChild(style);
-
-          const overlay = document.createElement("div");
-          overlay.id = id;
-          overlay.innerHTML = /* html */ `
-            <h1>This websites has been Locked</h1>
-            <input id="password" type="password" placeholder="Enter password to unlock.." autocomplete="new-password" />
-            <div id="unlock-temporarly-container" title="Enable to unlock temporarly => will lock again if website reload">
-              <input id="unlock-temporarly" type="checkbox" />
-              <label for="unlock-temporarly" >Unlock temporarly</label>
-            </div>
-            <style>
-              #${id} {
-                position: fixed;
-                top: -100vh;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                margin: 0;
-                padding: 0;
-                background-color: #112;
-                z-index: 2147483647;
-                opacity: 0;
-                transition: all 0.3s ease;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-              }
-              #${id} > h1 {
-                color: #ddd;
-                font-size: 30px;
-                text-align: center;
-                font-family: monospace;
-              }
-              #${id} #unlock-temporarly-container {
-                color: #ccc;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-top: 10px;
-              }
-              #${id} #unlock-temporarly {
-                width: 20px;
-                height: 20px;
-                padding: 0;
-                margin: 0px;
-                border: 1px solid #999;
-                background-color: #e6e6e6;
-                margin-right: 10px;
-              }
-              #${id} #unlock-temporarly:hover {
-                background-color: #ccc;
-              }
-              #${id} #unlock-temporarly:active {
-                background-color: #04aa6d;
-              }
-              #${id} > input {
-                letter-spacing: normal;
-                margin-top: 20px;
-                font-size: 20px;
-                padding: 10px;
-                border-radius: 5px;
-                border: none;
-                outline: none;
-                text-align: center;
-                color: #ddd;
-                background-color: #282828de;
-                width: 400px;
-              }
-              #${id} > input:focus {
-                background-color: #282828;
-                box-shadow: 0px 5px 5px #555;
-              }
-              #${id} label {
-                color: #ccc !important;
-                background-color: transparent !important;
-              }
-            </style>
-          `;
-          setTimeout(() => {
-            overlay.style.opacity = "1";
-            overlay.style.top = "0px";
-          }, 0);
-          document.documentElement.appendChild(overlay);
-
-          const unlockTemporarly = overlay.querySelector(
-            "input#unlock-temporarly"
-          );
-          const inputPass = overlay.querySelector("input#password");
-          inputPass.addEventListener("input", (e) => {
-            if (e.target.value == pass) {
-              // remove();
-              overlay.style.top = "-100vh";
-              style.disabled = true;
-              inputPass.value = "";
-
-              if (!unlockTemporarly.checked) {
-                locker.removeLockedWebsite(location.hostname);
-              }
-            }
-          });
-        },
-      };
-
-      window.ufs_auto_lock_website = locker;
-
       locker.getPass().then((pass) => {
         if (pass != null) {
           locker.getLockedWebsites().then((websites) => {
@@ -319,23 +309,19 @@ export default {
       });
     },
     onClick: async () => {
-      if (!window.ufs_auto_lock_website) {
-        alert(
-          "Chưa bật chức năng\n\n" +
-            "Vui lòng bật chức năng và tải lại trang web trước."
-        );
-        return;
+      try {
+        let password = await locker.getPass();
+        if (password == null) {
+          alert(
+            "Bạn chưa tạo mật khẩu, Vui lòng bật chức năng và tạo mật khẩu trước"
+          );
+          return;
+        }
+        locker.lock(password);
+        locker.addLockedWebsite(location.hostname);
+      } catch (e) {
+        console.error(e);
       }
-
-      let password = await window.ufs_auto_lock_website.getPass();
-      if (password == null) {
-        alert(
-          "Bạn chưa tạo mật khẩu, Vui lòng bật chức năng và tạo mật khẩu trước"
-        );
-        return;
-      }
-      window.ufs_auto_lock_website.lock(password);
-      window.ufs_auto_lock_website.addLockedWebsite(location.hostname);
     },
   },
 };

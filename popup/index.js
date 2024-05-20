@@ -3,12 +3,12 @@ import {
   getCurrentTab,
   isFunction,
   removeAccents,
-  runScriptInCurrentTab,
   setActiveScript,
   trackEvent,
   debounce,
   Storage,
   checkWillRun,
+  runScriptInTabWithEventChain,
 } from "../scripts/helpers/utils.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import {
@@ -270,10 +270,12 @@ function createScriptButton(script, isFavorite = false) {
   if (script.infoLink) {
     const infoBtn = document.createElement("i");
     infoBtn.className = "fa-regular fa-circle-question";
-    infoBtn.title = t({
-      en: "View info/demo",
-      vi: "Xem giới thiệu/demo",
-    });
+    if (typeof script.infoLink === "string") {
+      infoBtn.title = t({
+        en: "View info/demo",
+        vi: "Xem giới thiệu/demo",
+      });
+    }
     infoBtn.onclick = (e) => {
       e.stopPropagation();
       e.preventDefault();
@@ -391,14 +393,24 @@ async function runScript(script) {
         await script.popupScript.onClick();
 
       if (isFunction(script.pageScript?.onClick))
-        await runScriptInCurrentTab(script.pageScript?.onClick, null, "MAIN");
+        await runScriptInTabWithEventChain({
+          target: {
+            tabId: tab.id,
+          },
+          scriptIds: [script.id],
+          eventChain: "pageScript.onClick",
+          world: "MAIN",
+        });
 
       if (isFunction(script.contentScript?.onClick))
-        await runScriptInCurrentTab(
-          script.contentScript?.onClick,
-          null,
-          "ISOLATED"
-        );
+        await runScriptInTabWithEventChain({
+          target: {
+            tabId: tab.id,
+          },
+          scriptIds: [script.id],
+          eventChain: "contentScript.onClick",
+          world: "ISOLATED",
+        });
     } catch (e) {
       alert("ERROR: run script " + e);
     }
