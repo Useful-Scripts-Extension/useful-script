@@ -6,46 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Useful Scripts - Auto lock websites</title>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <link rel="stylesheet" href="../popup/styles/scrollbar.css">
   <link rel="stylesheet" href="../popup/libs/swal2.dark.css">
+  <link rel="stylesheet" href="./auto_lockWebsite.css">
   <script src="../popup/libs/swal2.min.js"></script>
-
-  <style>
-    html {
-      display: flex;
-      justify-content: center;
-      width: 400px;
-      height: 500px;
-    }
-
-    body {
-      width: 400px;
-      height: 500px;
-      background-color: #333;
-      color: #eee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .sites-container {
-      width: 100%;
-    }
-
-    .site {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-  </style>
 </head>
 
 <body>
 
   <h1>Auto lock websites</h1>
+
+  <button class="button" id="change-pass"></button>
+  <button class="button" id="add-site"></button>
+  <button type="button" id="back" title="Go Back">⬅️</button>
 
   <script type="module" src="./auto_lockWebsite_main.js"></script>
 </body>

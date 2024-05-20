@@ -1,12 +1,14 @@
-const passStorageKey = "auto_lock_website_manager_password";
-const lockedWebsiteKey = "auto_lock_website_lockedWebsites";
+export const passStorageKey = "auto_lock_website_manager_password";
+export const lockedWebsiteKey = "auto_lock_website_lockedWebsites";
 
-async function initPassword() {
+export async function initPassword(createNew = false) {
   const { t } = await import("../popup/helpers/lang.js");
   const { Storage } = await import("./helpers/utils.js");
 
-  let pass = await getCurPass();
-  if (pass) return true;
+  if (!createNew) {
+    let pass = await getCurPass();
+    if (pass) return true;
+  }
 
   const { value: newPass } = await Swal.fire({
     title: t({ vi: "Tạo mật khẩu mới", en: "Create new password" }),
@@ -42,6 +44,7 @@ export async function checkPass(reason) {
   if (curPass == null) return "not init";
 
   const { value: pass } = await Swal.fire({
+    icon: "info",
     title: t({
       vi: "Nhập mật khẩu" + t(reason),
       en: "Enter password" + t(reason),
@@ -179,7 +182,6 @@ export default {
           function lockAgain() {
             let overlay = document.querySelector(`#${id}`);
             let style = document.querySelector(`#${idStyle}`);
-
             if (!overlay || !style) return;
             overlay.style.top = "0";
             style.disabled = false;
@@ -203,7 +205,7 @@ export default {
           const overlay = document.createElement("div");
           overlay.id = id;
           overlay.innerHTML = /* html */ `
-            <h1>Useful Script - Auto lock websites</h1>
+            <h1>This websites has been Locked</h1>
             <input id="password" type="password" placeholder="Enter password to unlock.." autocomplete="new-password" />
             <div id="unlock-temporarly-container" title="Enable to unlock temporarly => will lock again if website reload">
               <input id="unlock-temporarly" type="checkbox" />
@@ -256,6 +258,7 @@ export default {
                 background-color: #04aa6d;
               }
               #${id} > input {
+                letter-spacing: normal;
                 margin-top: 20px;
                 font-size: 20px;
                 padding: 10px;
@@ -270,6 +273,10 @@ export default {
               #${id} > input:focus {
                 background-color: #282828;
                 box-shadow: 0px 5px 5px #555;
+              }
+              #${id} label {
+                color: #ccc !important;
+                background-color: transparent !important;
               }
             </style>
           `;
