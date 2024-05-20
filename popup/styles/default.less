@@ -1,3 +1,5 @@
+@import "./scrollbar.css";
+
 @font_family_1: "Roboto", sans-serif;
 @bg_body: #e6e6e6;
 @color_body: #333;
@@ -47,9 +49,6 @@
 @color_loading_text: #eee;
 @border_loading: #3498db;
 @border_loading_bg: white;
-
-@bg_scrollbar: #888;
-@bg_scrollbar_hover: #555;
 
 
 * {
@@ -577,23 +576,6 @@ option {
 
     100% {
         transform: rotate(360deg);
-    }
-}
-
-&::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-&::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-&::-webkit-scrollbar-thumb {
-    background: @bg_scrollbar;
-
-    &:hover {
-        background: @bg_scrollbar_hover;
     }
 }
 
