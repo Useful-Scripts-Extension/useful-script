@@ -80,6 +80,19 @@ export async function checkPass(reason) {
   return false;
 }
 
+function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      pattern
+        .split("*")
+        .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        .join(".*")
+    );
+    if (regex.test(url)) return pattern;
+  }
+  return false;
+}
+
 const locker = {
   getLockedWebsites: async () => {
     let key = lockedWebsiteKey;
@@ -109,7 +122,7 @@ const locker = {
     let pass = data?.[key];
     return pass;
   },
-  lock: (pass) => {
+  lock: (pass, matchedPattern) => {
     const id = "ufs_auto_lock_website_overlay";
     const idStyle = id + "-style";
 
@@ -235,7 +248,7 @@ const locker = {
         inputPass.value = "";
 
         if (!unlockTemporarly.checked) {
-          locker.removeLockedWebsite(location.hostname);
+          locker.removeLockedWebsite(matchedPattern);
         }
       }
     });
@@ -301,9 +314,8 @@ export default {
         if (pass != null) {
           locker.getLockedWebsites().then((websites) => {
             let hostname = location.hostname;
-            if (websites.includes(hostname)) {
-              locker.lock(pass);
-            }
+            let matchedPattern = matchOneOfPatterns(hostname, websites);
+            if (matchedPattern) locker.lock(pass, matchedPattern);
           });
         }
       });

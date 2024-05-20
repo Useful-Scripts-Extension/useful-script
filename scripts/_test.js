@@ -10,6 +10,19 @@ export default {
   },
 
   popupScript: {
+    onClick: async () => {
+      const { openWebAndRunScript } = await import("./helpers/utils.js");
+      openWebAndRunScript({
+        url: "https://www.whitescreen.online/blue-screen-of-death-windows/",
+        func: () => {
+          setTimeout(() => {
+            document.querySelector(".full-screen").click();
+          }, 1000);
+        },
+        focusImmediately: true,
+        waitUntilLoadEnd: true,
+      });
+    },
     _onClick: async () => {
       const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       const tab = await getCurrentTab();

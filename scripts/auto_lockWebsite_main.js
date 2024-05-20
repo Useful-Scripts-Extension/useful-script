@@ -76,8 +76,8 @@ function initAddSite() {
     Swal.fire({
       title: t({ vi: "Khoá trang web", en: "Lock website" }),
       inputLabel: t({
-        vi: "Nhập link trang web muốn khoá",
-        en: "Enter website url want to lock",
+        vi: "Nhập link/tên trang web muốn khoá\nVí dụ:\n+ facebook\n+ *.facebook.com\n+ https://www.facebook.com",
+        en: "Enter website url/name want to lock\nE.g:\n+ facebook\n+ *.facebook.com\n+ https://www.facebook.com",
       }),
       input: "text",
       inputAttributes: {
@@ -99,12 +99,12 @@ function initAddSite() {
       if (!isConfirmed) return;
 
       let hostname = value;
-      try {
-        let url = new URL(value);
-        hostname = url.hostname;
-      } catch (error) {
-        console.log(error);
-      }
+      // try {
+      //   let url = new URL(value);
+      //   hostname = url.hostname;
+      // } catch (error) {
+      //   console.log(error);
+      // }
       addSite(hostname);
     });
   });

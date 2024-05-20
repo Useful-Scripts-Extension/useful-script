@@ -390,8 +390,8 @@ export const runScriptFileInCurrentTab = async (scriptFile, world = "MAIN") => {
 export async function openWebAndRunScript({
   url,
   func,
-  args,
-  world,
+  args = [],
+  world = "MAIN",
   waitUntilLoadEnd = true,
   focusAfterRunScript = true,
   closeAfterRunScript = false,
