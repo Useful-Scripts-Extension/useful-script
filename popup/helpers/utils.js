@@ -14,6 +14,7 @@ export const canClick = (script) => {
 
 function hasChildFunction(object, excludedNamesSet = new Set()) {
   for (let key in object) {
+    if (key.startsWith("_")) continue;
     if (!object[key]) continue;
     if (excludedNamesSet.has(key)) continue;
     if (typeof object[key] === "function") return true;

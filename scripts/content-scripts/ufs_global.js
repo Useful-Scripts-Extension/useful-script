@@ -16,6 +16,7 @@ Call UseGlobal directly, no need to import
       waitForTabToLoad,
     },
     DOM: {
+      getMousePos,
       isInCrossOriginFrame,
       isInIframe,
       checkElementvisibility,
@@ -111,7 +112,24 @@ Call UseGlobal directly, no need to import
   });
 
   // store cache for all functions in UfsGlobal
-  const CACHED = {};
+  const CACHED = {
+    mouse: {
+      x: 0,
+      y: 0,
+    },
+  };
+
+  if (typeof window !== "undefined") {
+    if (typeof window?.addEventListener === "function") {
+      window.addEventListener("mousemove", (e) => {
+        CACHED.mouse.x = e.clientX;
+        CACHED.mouse.y = e.clientY;
+      });
+    }
+  }
+  function getMousePos() {
+    return CACHED.mouse;
+  }
 
   // #region Extension
 
@@ -664,11 +682,12 @@ Call UseGlobal directly, no need to import
     else css.innerText = code;
     (document.head || document.documentElement).appendChild(css);
   }
-  function injectCssFile(filePath) {
+  function injectCssFile(filePath, id) {
     var css = document.createElement("link");
     css.setAttribute("rel", "stylesheet");
     css.setAttribute("type", "text/css");
     css.setAttribute("href", filePath);
+    if (id) css.setAttribute("id", id);
     (document.head || document.documentElement).appendChild(css);
   }
   function getTrustedPolicy() {
@@ -939,7 +958,7 @@ Call UseGlobal directly, no need to import
         let res = await fetchByPassOrigin(url, {
           method: "HEAD",
         });
-        if (res.redirected) {
+        if (res?.redirected) {
           console.log("redirected:", url, "->", res.url);
           url = res.url;
         } else {

@@ -351,7 +351,7 @@ function main() {
   listenTabs();
   listenMessage();
 
-  chrome.contextMenus.onClicked.addListener((info) => {
+  chrome.contextMenus.onClicked.addListener(async (info) => {
     console.log(info);
     if (info.menuItemId == "ufs-magnify-image") {
       trackEvent("magnify-image-CONTEXT-MENU");
@@ -366,21 +366,17 @@ function main() {
         "pageUrl": "https://www.deviantart.com/kat-zaphire/art/Deep-in-the-forest-989494503",
         "srcUrl": "https://wixmp-70a14ff54af6225c7974eec7.wixmp.com/offers-assets/94f22a36-bb47-4836-8bce-fea45f844aa4.gif"
     } */
-      runScriptInCurrentTab(
-        (imgUrl) => {
-          let fn = window.top?.ufs_magnify_image_createPreview;
-          if (typeof fn === "function") {
-            fn(imgUrl, window.top.innerWidth / 2, window.top.innerHeight / 2);
-          } else {
-            alert(
-              "Useful-script:\n\n" +
-                "Vui lòng bật chức năng 'Tự động hoá' > 'Phóng to mọi hình ảnh' trước.\n\n" +
-                "Please enable 'Automation' > 'Magnify any Image' first."
-            );
-          }
+      let tab = await utils.getCurrentTab();
+      utils.runScriptInTabWithEventChain({
+        target: {
+          tabId: tab.id,
+          frameIds: [0],
         },
-        [info.srcUrl]
-      );
+        scriptIds: ["magnify_image"],
+        eventChain: "contentScript._createPreview",
+        details: info,
+        world: "ISOLATED",
+      });
     }
   });
 

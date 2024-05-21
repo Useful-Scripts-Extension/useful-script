@@ -150,7 +150,10 @@ export default {
   },
 
   contentScript: {
-    onClick: () => {
+    onClick() {
+      console.log(UfsGlobal.DOM.getMousePos());
+    },
+    _onClick: () => {
       function formatSize(size, fixed = 0) {
         size = Number(size);
         if (!size) return "?";
@@ -287,29 +290,6 @@ export default {
         [{ action: "test" }, "callback"]
       );
       console.log(res);
-    },
-  },
-
-  backgroundScript: {
-    runtime: {
-      onInstalled: () => {
-        console.log("installed");
-      },
-      onStartup: () => {
-        console.log("startup");
-      },
-      onMessage: ({ request, sender, sendResponse }) => {
-        console.log(request, sender, sendResponse);
-        if (request.action === "test") {
-          sendResponse({ data: "result test" });
-        }
-        return null;
-      },
-    },
-    storage: {
-      onChanged: (details) => {
-        console.log("on Storage changed", details);
-      },
     },
   },
 };
