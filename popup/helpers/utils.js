@@ -25,7 +25,12 @@ function hasChildFunction(object, excludedNamesSet = new Set()) {
 }
 
 export const canAutoRun = (script) => {
-  let excludedNamesSet = new Set(["onClick", "onInstalled", "onStartup"]);
+  let excludedNamesSet = new Set([
+    "onClick",
+    "onInstalled",
+    "onStartup",
+    "contextMenus",
+  ]);
   for (let context of CONTEXTS) {
     if (hasChildFunction(script[context], excludedNamesSet)) return true;
   }

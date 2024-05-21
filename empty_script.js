@@ -109,48 +109,49 @@ export default {
   // - can use chrome extension APIs
   // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
   // - can use UfsGlobal
+  // - context => background context => can access GLOBAL in background_script.js
   backgroundScript: {
-    onDocumentStart: (details) => {},
-    onDocumentIdle: (details) => {},
-    onDocumentEnd: (details) => {},
+    onDocumentStart: (details, context) => {},
+    onDocumentIdle: (details, context) => {},
+    onDocumentEnd: (details, context) => {},
 
     // advanced
     runtime: {
-      onInstalled: () => {},
-      onStartup: () => {},
-      onMessage: ({ request, sender, sendResponse }) => {},
+      onInstalled: (reason, context) => {},
+      onStartup: (nil, context) => {},
+      onMessage: ({ request, sender, sendResponse }, context) => {},
     },
     webNavigation: {
-      onCreatedNavigationTarget: (details) => {},
-      onHistoryStateUpdated: (details) => {},
-      onBeforeNavigate: (details) => {},
+      onCreatedNavigationTarget: (details, context) => {},
+      onHistoryStateUpdated: (details, context) => {},
+      onBeforeNavigate: (details, context) => {},
     },
     webRequest: {
       // Can only modify requestHeaders (onBeforeSendHeaders) AND responseHeaders (onHeadersReceived)
       // Don't use async await for these two events if you want to return modified values
-      onBeforeRedirect: (details) => {},
-      onBeforeRequest: (details) => {},
-      onBeforeSendHeaders: (details) => {},
-      onCompleted: (details) => {},
-      onErrorOccurred: (details) => {},
-      onHeadersReceived: (details) => {},
-      onResponseStarted: (details) => {},
-      onSendHeaders: (details) => {},
+      onBeforeRedirect: (details, context) => {},
+      onBeforeRequest: (details, context) => {},
+      onBeforeSendHeaders: (details, context) => {},
+      onCompleted: (details, context) => {},
+      onErrorOccurred: (details, context) => {},
+      onHeadersReceived: (details, context) => {},
+      onResponseStarted: (details, context) => {},
+      onSendHeaders: (details, context) => {},
     },
     tabs: {
-      onActivated: (details) => {},
-      onAttached: (details) => {},
-      onCreated: (details) => {},
-      onDetached: (details) => {},
-      onHighlighted: (details) => {},
-      onMoved: (details) => {},
-      onRemoved: (details) => {},
-      onReplaced: (details) => {},
-      onUpdated: (details) => {},
-      onZoomChange: (details) => {},
+      onActivated: (details, context) => {},
+      onAttached: (details, context) => {},
+      onCreated: (details, context) => {},
+      onDetached: (details, context) => {},
+      onHighlighted: (details, context) => {},
+      onMoved: (details, context) => {},
+      onRemoved: (details, context) => {},
+      onReplaced: (details, context) => {},
+      onUpdated: (details, context) => {},
+      onZoomChange: (details, context) => {},
     },
     storage: {
-      onChanged: (details) => {},
+      onChanged: (details, context) => {},
     },
   },
 };

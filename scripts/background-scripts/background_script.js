@@ -5,7 +5,6 @@ import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/628060
 console.log(UfsGlobal);
 
 const {
-  runScriptInCurrentTab,
   convertBlobToBase64,
   getAllActiveScriptIds,
   trackEvent,
@@ -25,6 +24,9 @@ const GLOBAL = {
   trackEvent,
   fetch: customFetch,
   getCached,
+  runScriptsTab,
+  runScriptsBackground,
+  checkWillRun,
 };
 
 function getCached() {
@@ -90,15 +92,30 @@ function getDetailIds(details) {
   };
 }
 
-function runScripts(eventChain, details, data) {
+function runScriptsBackground(
+  eventChain,
+  details,
+  data,
+  runAllScripts = false
+) {
   let allResponse;
-  for (let scriptId of CACHED.activeScriptIds) {
+  let scriptIds = runAllScripts
+    ? Object.keys(allScripts)
+    : CACHED.activeScriptIds;
+
+  for (let scriptId of scriptIds) {
     const fn = checkWillRun(scriptId, "backgroundScript", eventChain, details);
     if (fn) {
-      let res = fn(data ?? details);
-      if (res) {
-        if (!allResponse) allResponse = {};
-        allResponse[scriptId] = res;
+      try {
+        // inject background context (GLOBAL) to func
+        let res = fn(data ?? details, GLOBAL);
+        console.log("runScriptsBackground", scriptId, eventChain, res);
+        if (res) {
+          if (!allResponse) allResponse = {};
+          allResponse[scriptId] = res;
+        }
+      } catch (e) {
+        console.log("runScriptsBackground ERROR", scriptId, eventChain, e);
       }
     }
   }
@@ -212,7 +229,7 @@ function listenWebRequest() {
         if (details.initiator?.startsWith("chrome-extension://")) return;
 
         // console.log("details ne", rqEvent, details);
-        let allData = runScripts(eventChain, details);
+        let allData = runScriptsBackground(eventChain, details);
 
         let modifiedDetails = {
           ...details,
@@ -275,7 +292,7 @@ function listenNavigation() {
         }
         runScriptsTab(eventChain, MAIN, details);
         runScriptsTab(eventChain, ISOLATED, details);
-        runScripts(eventChain, details);
+        runScriptsBackground(eventChain, details);
       } catch (e) {
         console.log("ERROR:", e);
       }
@@ -297,7 +314,7 @@ function listenTabs() {
     // "onZoomChange",
   ].forEach((event) => {
     chrome.tabs[event].addListener((details) => {
-      runScripts("tabs." + event, details);
+      runScriptsBackground("tabs." + event, details);
     });
   });
 }
@@ -318,7 +335,7 @@ function listenMessage() {
           sended = true;
           sendResponse(data);
         };
-        runScripts(
+        runScriptsBackground(
           "runtime.onMessage",
           null,
           // {
@@ -340,7 +357,7 @@ function main() {
   // listen change active scripts
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
-    runScripts("storage.onChanged", null, { changes, areaName });
+    runScriptsBackground("storage.onChanged", null, { changes, areaName });
 
     // areaName = "local" / "sync" / "managed" / "session" ...
     if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
@@ -352,53 +369,22 @@ function main() {
   listenMessage();
 
   chrome.contextMenus.onClicked.addListener(async (info) => {
-    console.log(info);
-    if (info.menuItemId == "ufs-magnify-image") {
-      trackEvent("magnify-image-CONTEXT-MENU");
-      /*
-      {
-        "editable": false,
-        "frameId": 2491,
-        "frameUrl": "https://www.deviantart.com/_nsfgfb/?realEstateId=166926a9-15ab-458d-b424-4385d5c9acde&theme=dark&biClientId=fdb7b474-671d-686c-7ebc-7027eecd49f0&biClientIdSigned=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJiaUNsaWVudElkIjoiZmRiN2I0NzQtNjcxZC02ODZjLTdlYmMtNzAyN2VlY2Q0OWYwIiwidHMiOjE3MTM0NjgyNTAsInVzZXJVdWlkIjoiZmRiN2I0NzQtNjcxZC02ODZjLTdlYmMtNzAyN2VlY2Q0OWYwIn0.z98X9tXSYMaUubtwGGG08NsikaoZ7iODsn_aWaeiGD0&newApi=2&platform=desktop",
-        "linkUrl": "https://www.deviantart.com/join?referer=https%3A%2F%2Fwww.deviantart.com%2Fdreamup%3Fda_dealer_footer=1",
-        "mediaType": "image",
-        "menuItemId": "ufs-magnify-image",
-        "pageUrl": "https://www.deviantart.com/kat-zaphire/art/Deep-in-the-forest-989494503",
-        "srcUrl": "https://wixmp-70a14ff54af6225c7974eec7.wixmp.com/offers-assets/94f22a36-bb47-4836-8bce-fea45f844aa4.gif"
-    } */
-      let tab = await utils.getCurrentTab();
-      utils.runScriptInTabWithEventChain({
-        target: {
-          tabId: tab.id,
-          frameIds: [0],
-        },
-        scriptIds: ["magnify_image"],
-        eventChain: "contentScript._createPreview",
-        details: info,
-        world: "ISOLATED",
-      });
-    }
+    runScriptsBackground("contextMenus.onClicked", null, info, true);
   });
 
   chrome.runtime.onStartup.addListener(async function () {
-    runScripts("runtime.onStartup");
+    runScriptsBackground("runtime.onStartup", null, null, true);
   });
 
   chrome.runtime.onInstalled.addListener(async function (reason) {
     if (utils.hasUserId()) {
-      await GLOBAL.trackEvent("ufs-RE-INSTALLED");
+      await trackEvent("ufs-RE-INSTALLED");
     }
     // create new unique id and save it
     await setUserId();
-    GLOBAL.trackEvent("ufs-INSTALLED");
+    trackEvent("ufs-INSTALLED");
 
-    chrome.contextMenus.create({
-      title: "Magnify this image",
-      contexts: ["image"],
-      id: "ufs-magnify-image",
-    });
-
-    runScripts("runtime.onInstalled", null, reason);
+    runScriptsBackground("runtime.onInstalled", null, reason, true);
   });
 
   chrome.action.setBadgeBackgroundColor({ color: "#666" });
