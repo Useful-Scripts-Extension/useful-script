@@ -10,7 +10,7 @@ export default {
   },
 
   popupScript: {
-    onClick: async () => {
+    _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
       openWebAndRunScript({
         url: "https://www.whitescreen.online/blue-screen-of-death-windows/",
@@ -150,6 +150,43 @@ export default {
   },
 
   contentScript: {
+    onClick: () => {
+      function formatSize(size, fixed = 0) {
+        size = Number(size);
+        if (!size) return "?";
+
+        const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+        let unitIndex = 0;
+        while (size >= 1024 && unitIndex < units.length - 1) {
+          size /= 1024;
+          unitIndex++;
+        }
+        return size.toFixed(fixed) + units[unitIndex];
+      }
+
+      // https://stackoverflow.com/a/23329386
+      function byteLength(str) {
+        // returns the byte length of an utf8 string
+        var s = str.length;
+        for (var i = str.length - 1; i >= 0; i--) {
+          var code = str.charCodeAt(i);
+          if (code > 0x7f && code <= 0x7ff) s++;
+          else if (code > 0x7ff && code <= 0xffff) s += 2;
+          if (code >= 0xdc00 && code <= 0xdfff) i--; //trail surrogate
+        }
+        return s;
+      }
+
+      try {
+        let text = document.body.innerText;
+        let len = text.length;
+        let size = byteLength(text);
+        size = formatSize(size, 1);
+        alert("Text in this website: " + len + " characters (" + size + ")");
+      } catch (e) {
+        alert(e);
+      }
+    },
     _onClick: () => {
       function analyzeWebpage() {
         const href = window.location.href,

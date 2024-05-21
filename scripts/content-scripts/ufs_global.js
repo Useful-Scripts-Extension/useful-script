@@ -16,6 +16,8 @@ Call UseGlobal directly, no need to import
       waitForTabToLoad,
     },
     DOM: {
+      isInCrossOriginFrame,
+      isInIframe,
       checkElementvisibility,
       closest,
       addLoadingAnimation,
@@ -43,6 +45,7 @@ Call UseGlobal directly, no need to import
       getWatchingVideoSrc,
     },
     Utils: {
+      deepClone,
       throttle,
       domainCheck,
       sleep,
@@ -173,6 +176,20 @@ Call UseGlobal directly, no need to import
   // #endregion
 
   // #region DOM
+  function isInCrossOriginFrame() {
+    let result = true;
+    try {
+      if (window.top.localStorage || window.top.location.href) {
+        result = false;
+      }
+    } catch (e) {
+      result = true;
+    }
+    return result;
+  }
+  function isInIframe() {
+    return window !== window.top;
+  }
   function checkElementvisibility(elem) {
     if (!elem.offsetHeight && !elem.offsetWidth) {
       return false;
@@ -741,6 +758,28 @@ Call UseGlobal directly, no need to import
 
   // #region Utils
 
+  /**
+   * Make a deep copy of an object
+   * @source - required (Object|Array) the object or array to be copied
+   */
+  function deepClone(source) {
+    var result = {};
+
+    if (typeof source !== "object") {
+      return source;
+    }
+    if (Object.prototype.toString.call(source) === "[object Array]") {
+      result = [];
+    }
+    if (Object.prototype.toString.call(source) === "[object Null]") {
+      result = null;
+    }
+    for (var key in source) {
+      result[key] =
+        typeof source[key] === "object" ? deepClone(source[key]) : source[key];
+    }
+    return result;
+  }
   // https://dev.to/jeetvora331/throttling-in-javascript-easiest-explanation-1081
   function throttle(mainFunction, delay) {
     let timerFlag = null; // Variable to keep track of the timer

@@ -1,3 +1,12 @@
+const KEYS = {
+  blackList: "chongLuaDao_blackList",
+  whiteList: "chongLuaDao_whiteList",
+};
+
+function getStorage(key) {
+  return chrome.storage.local.get([key]).then((data) => data?.[key] || []);
+}
+
 export default {
   icon: "https://chongluadao.vn/wp-content/uploads/2021/04/cropped-favicon-150x150.png",
   name: {
@@ -25,43 +34,24 @@ export default {
     onEnable: onEnable,
     onDisable: async () => {
       const { Storage } = await import("./helpers/utils.js");
-      Storage.remove("chongLuaDao_blackList");
-      Storage.remove("chongLuaDao_whiteList");
+      Storage.remove(KEYS.blackList);
+      Storage.remove(KEYS.whiteList);
     },
   },
 
   contentScript: {
     onDocumentStart: async (details) => {
-      function matchOneOfPatterns(url, patterns) {
-        for (let pattern of patterns) {
-          const regex = new RegExp(
-            "^" +
-              pattern
-                .split("*")
-                .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-                .join(".*")
-          );
-          if (regex.test(url)) return pattern;
-        }
-        return false;
-      }
-
       try {
-        const { chongLuaDao_blackList = [] } =
-          (await chrome.storage.local.get(["chongLuaDao_blackList"])) || {};
-        const { chongLuaDao_whiteList = [] } =
-          (await chrome.storage.local.get(["chongLuaDao_whiteList"])) || {};
+        const blackList = await getStorage(KEYS.blackList);
+        const whiteList = await getStorage(KEYS.whiteList);
 
-        let whiteListed = matchOneOfPatterns(
-          details.url,
-          chongLuaDao_whiteList
-        );
+        let whiteListed = matchOneOfPatterns(details.url, whiteList);
         if (whiteListed) {
           console.log("WhiteListed: " + whiteListed);
           return;
         }
 
-        let blocked = matchOneOfPatterns(details.url, chongLuaDao_blackList);
+        let blocked = matchOneOfPatterns(details.url, blackList);
         if (blocked) {
           if (details.frameType === "outermost_frame") {
             if (
@@ -130,7 +120,7 @@ async function onEnable() {
 
     blackList = Array.from(new Set(data.map((e) => e.url)));
     blackList.sort();
-    Storage.set("chongLuaDao_blackList", blackList);
+    Storage.set(KEYS.blackList, blackList);
   } catch (error) {
     alert("Error: " + error);
     console.log(error);
@@ -152,7 +142,7 @@ async function onEnable() {
 
     whiteList = Array.from(new Set(data.map((e) => e.url)));
     whiteList.sort();
-    Storage.set("chongLuaDao_whiteList", whiteList);
+    Storage.set(KEYS.whiteList, whiteList);
   } catch (error) {
     alert("Error: " + error);
     console.log(error);
@@ -176,182 +166,6 @@ async function onEnable() {
   });
 
   return true;
-}
-
-function getAbsoluteUrl(url) {
-  return new URL(url, window.location.href).href;
-}
-
-function isSameOrigin(url) {
-  return new URL(url, window.location.href).origin === window.location.origin;
-}
-
-function showResult({ features, isSafe, legitimatePercents }) {
-  const id = "ufs-chongLuaDao";
-  let exist = document.getElementById(id);
-  if (exist) exist.remove();
-
-  const size = 100,
-    color = isSafe ? "#28a745" : "#cc0000",
-    text = isSafe
-      ? "Website này có thể an toàn"
-      : "Website này có thể KHÔNG AN TOÀN";
-
-  const featureDiv = Object.keys(features)
-    .map((key) => {
-      let val = features[key].value;
-      let desc = features[key].desc;
-      let color = val == -1 ? "#28a745" : val == 0 ? "#f0ad4e" : "#cc0000";
-      return /* html */ `
-    <span class="feature" title="${desc.vi}" data-value="${val}" style="background: ${color};color: white;">
-      ${key}
-    </span>
-  `;
-    })
-    .join("");
-
-  let resultDiv = document.createElement("div");
-  resultDiv.id = id;
-  resultDiv.innerHTML = /* html */ `
-  <p class="text">Useful Scripts - Chống Lừa Đảo</p>
-  <div class="progress-container">
-    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" class="ufs-circular-progress" style="--progress: ${legitimatePercents}">
-      <circle class="bg"></circle>
-      <circle class="fg"></circle>
-    </svg>
-    <p class="progress-value">${legitimatePercents.toFixed(0)}%</p>
-  </div>
-  <p class="text" style="color: ${color}">${text}</p>
-  <div class="feature-container">${featureDiv}</div>
-  <br/>
-  <p id="ufs-description"></p>
-  <button id="ufs-close">X</button>
-  <style>
-    #${id} #ufs-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      margin: 0;
-      background: #54545463;
-      border-radius: 5px;
-      border: none;
-      color: white;
-      font-size: 20px;
-      text-align: center;
-      cursor: pointer;
-    }
-    #${id} #ufs-close:hover {
-      background: red;
-    }
-    #${id} {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 99999999;
-      background: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 5px;
-      max-width: 400px;
-    }
-    #${id} .text {
-      font-family: sans-serif;
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      margin: 10px 0;
-      color: #333;
-    }
-    #${id} .feature-container {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 5px;
-    }
-    #${id} .feature {
-      margin: 0;
-      padding: 5px 10px;
-      border-radius: 15px;
-      transition: all 0.1s ease;
-    }
-    #${id} .feature:hover {
-      transform: scale(1.1);
-    }
-    #${id} #ufs-description {
-      font-family: sans-serif;
-      text-align: center;
-      font-size: 14px;
-      margin: 0;
-      color: #333;
-    }
-    #${id} .progress-container {
-      position: relative;
-      text-align: center;
-    }
-    #${id} .progress-value {
-      color: ${color};
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      margin: 0;
-      font-family: monospace;
-    }
-    .ufs-circular-progress {
-      --size: ${size}px;
-      --half-size: calc(var(--size) / 2);
-      --stroke-width: 15px;
-      --radius: calc((var(--size) - var(--stroke-width)) / 2);
-      --circumference: calc(var(--radius) * pi * 2);
-      --dash: calc((var(--progress) * var(--circumference)) / 100);
-    }
-    .ufs-circular-progress circle {
-      cx: var(--half-size);
-      cy: var(--half-size);
-      r: var(--radius);
-      stroke-width: var(--stroke-width);
-      fill: none;
-      stroke-linecap: round;
-    }
-    .ufs-circular-progress circle.bg {
-        stroke: #ddd;
-    }
-    .ufs-circular-progress circle.fg {
-      transform: rotate(-90deg);
-      transform-origin: var(--half-size) var(--half-size);
-      stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
-      transition: stroke-dasharray 0.3s linear 0s;
-      stroke: ${color};
-    }
-  </style>
-`;
-  document.body.appendChild(resultDiv);
-
-  const closeBtn = document.querySelector(`#${id} #ufs-close`);
-  closeBtn?.addEventListener("click", () => {
-    resultDiv.remove();
-  });
-
-  const description = document.querySelector(`#${id} #ufs-description`);
-  const featuresDiv = document.querySelectorAll(`#${id} .feature`);
-  featuresDiv.forEach((feature) => {
-    feature.addEventListener("mouseenter", () => {
-      let value = feature.getAttribute("data-value");
-      description.innerHTML =
-        value == 1
-          ? `<b>Không an toàn:</b> ${feature.getAttribute("title")}`
-          : `<b>An toàn:</b> <strike>
-        ${feature.getAttribute("title")}</strike>`;
-    });
-  });
 }
 
 async function analyzeWeb(onlyShowUIIfNotSafe = false) {
@@ -599,10 +413,208 @@ async function analyzeWeb(onlyShowUIIfNotSafe = false) {
 
   const legitimatePercents =
     (safeCount / (safeCount + normalCount + dangerCount)) * 100;
-  const isSafe = legitimatePercents >= 65;
+  let isSafe = legitimatePercents >= 62;
 
   console.log("Legitimate Percent:", legitimatePercents);
 
+  if (!isSafe) {
+    const whiteList = await getStorage("chongLuaDao_whiteList");
+    let whiteListed = matchOneOfPatterns(href, whiteList);
+    if (whiteListed) isSafe = true;
+    else console.log("Not whiteListed: " + href);
+  }
+
   if (onlyShowUIIfNotSafe && isSafe) return;
   showResult({ features, legitimatePercents, isSafe });
+}
+
+function showResult({ features, isSafe, legitimatePercents }) {
+  const id = "ufs-chongLuaDao";
+  let exist = document.getElementById(id);
+  if (exist) exist.remove();
+
+  const size = 100,
+    color = isSafe ? "#28a745" : "#cc0000",
+    text = isSafe
+      ? "Website này có thể an toàn"
+      : "Website này có thể KHÔNG AN TOÀN";
+
+  const featureDiv = Object.keys(features)
+    .map((key) => {
+      let val = features[key].value;
+      let desc = features[key].desc;
+      let color = val == -1 ? "#28a745" : val == 0 ? "#f0ad4e" : "#cc0000";
+      return /* html */ `
+    <span class="feature" title="${desc.vi}" data-value="${val}" style="background: ${color};color: white;">
+      ${key}
+    </span>
+  `;
+    })
+    .join("");
+
+  let resultDiv = document.createElement("div");
+  resultDiv.id = id;
+  resultDiv.innerHTML = /* html */ `
+  <p class="text">Useful Scripts - Chống Lừa Đảo</p>
+  <div class="progress-container">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" class="ufs-circular-progress" style="--progress: ${legitimatePercents}">
+      <circle class="bg"></circle>
+      <circle class="fg"></circle>
+    </svg>
+    <p class="progress-value">${legitimatePercents.toFixed(0)}%</p>
+  </div>
+  <p class="text" style="color: ${color}">${text}</p>
+  <div class="feature-container">${featureDiv}</div>
+  <br/>
+  <p id="ufs-description"></p>
+  <button id="ufs-close">X</button>
+  <style>
+    #${id} #ufs-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      margin: 0;
+      background: #54545463;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    #${id} #ufs-close:hover {
+      background: red;
+    }
+    #${id} {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 99999999;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 400px;
+    }
+    #${id} .text {
+      font-family: sans-serif;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #333;
+    }
+    #${id} .feature-container {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+    #${id} .feature {
+      margin: 0;
+      padding: 5px 10px;
+      border-radius: 15px;
+      transition: all 0.1s ease;
+    }
+    #${id} .feature:hover {
+      transform: scale(1.1);
+    }
+    #${id} #ufs-description {
+      font-family: sans-serif;
+      text-align: center;
+      font-size: 14px;
+      margin: 0;
+      color: #333;
+    }
+    #${id} .progress-container {
+      position: relative;
+      text-align: center;
+    }
+    #${id} .progress-value {
+      color: ${color};
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      font-family: monospace;
+    }
+    .ufs-circular-progress {
+      --size: ${size}px;
+      --half-size: calc(var(--size) / 2);
+      --stroke-width: 15px;
+      --radius: calc((var(--size) - var(--stroke-width)) / 2);
+      --circumference: calc(var(--radius) * pi * 2);
+      --dash: calc((var(--progress) * var(--circumference)) / 100);
+    }
+    .ufs-circular-progress circle {
+      cx: var(--half-size);
+      cy: var(--half-size);
+      r: var(--radius);
+      stroke-width: var(--stroke-width);
+      fill: none;
+      stroke-linecap: round;
+    }
+    .ufs-circular-progress circle.bg {
+        stroke: #ddd;
+    }
+    .ufs-circular-progress circle.fg {
+      transform: rotate(-90deg);
+      transform-origin: var(--half-size) var(--half-size);
+      stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
+      transition: stroke-dasharray 0.3s linear 0s;
+      stroke: ${color};
+    }
+  </style>
+`;
+  document.body.appendChild(resultDiv);
+
+  const closeBtn = document.querySelector(`#${id} #ufs-close`);
+  closeBtn?.addEventListener("click", () => {
+    resultDiv.remove();
+  });
+
+  const description = document.querySelector(`#${id} #ufs-description`);
+  const featuresDiv = document.querySelectorAll(`#${id} .feature`);
+  featuresDiv.forEach((feature) => {
+    feature.addEventListener("mouseenter", () => {
+      let value = feature.getAttribute("data-value");
+      description.innerHTML =
+        value == 1
+          ? `<b>Không an toàn:</b> ${feature.getAttribute("title")}`
+          : `<b>An toàn:</b> <strike>
+        ${feature.getAttribute("title")}</strike>`;
+    });
+  });
+}
+
+function getAbsoluteUrl(url) {
+  return new URL(url, window.location.href).href;
+}
+
+function isSameOrigin(url) {
+  return new URL(url, window.location.href).origin === window.location.origin;
+}
+
+function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*")
+          .replace("http://", "http(s?)://")
+    );
+    if (regex.test(url)) return pattern;
+  }
+  return false;
 }
