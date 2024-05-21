@@ -190,7 +190,7 @@ export default {
       function setShowOverlay(show) {
         if (show) {
           if (!document.body.contains(overlay)) {
-            document.body.appendChild(overlay);
+            // document.body.appendChild(overlay);
           }
           overlay.style.top = "0";
         } else {
