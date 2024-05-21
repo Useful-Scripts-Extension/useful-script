@@ -1057,9 +1057,9 @@ async function refreshSpecialTabs() {
   let currentTab = await getCurrentTab();
   let bgCached = await chrome.runtime.sendMessage({
     action: "ufs-runInBackground",
-    data: { fnPath: "getCached" },
+    data: { fnPath: "getCache", params: ["badges"] },
   });
-  let runnedScriptIds = bgCached?.badges?.[currentTab.id];
+  let runnedScriptIds = bgCached?.[currentTab.id];
   console.log(bgCached, currentTab.id, runnedScriptIds);
   if (runnedScriptIds?.length) {
     let scripts = allScriptInTabs.filter((_) => runnedScriptIds.includes(_.id));

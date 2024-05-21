@@ -23,14 +23,29 @@ const GLOBAL = {
   log: console.log,
   trackEvent,
   fetch: customFetch,
-  getCached,
   runScriptsTab,
   runScriptsBackground,
   checkWillRun,
+  getAllCache,
+  getCache,
+  addCache,
+  removeCache,
 };
 
-function getCached() {
+function getAllCache() {
   return CACHED;
+}
+
+function getCache(key) {
+  return CACHED[key];
+}
+
+function addCache(key, value) {
+  CACHED[key] = value;
+}
+
+function removeCache(key) {
+  delete CACHED[key];
 }
 
 function cacheActiveScriptIds() {
@@ -109,13 +124,27 @@ function runScriptsBackground(
       try {
         // inject background context (GLOBAL) to func
         let res = fn(data ?? details, GLOBAL);
-        console.log("runScriptsBackground", scriptId, eventChain, res);
+        console.log(
+          "runScriptsBackground",
+          scriptId,
+          eventChain,
+          details,
+          data,
+          res
+        );
         if (res) {
           if (!allResponse) allResponse = {};
           allResponse[scriptId] = res;
         }
       } catch (e) {
-        console.log("runScriptsBackground ERROR", scriptId, eventChain, e);
+        console.log(
+          "runScriptsBackground ERROR",
+          scriptId,
+          eventChain,
+          details,
+          data,
+          e
+        );
       }
     }
   }
@@ -357,10 +386,9 @@ function main() {
   // listen change active scripts
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
-    runScriptsBackground("storage.onChanged", null, { changes, areaName });
-
     // areaName = "local" / "sync" / "managed" / "session" ...
     if (changes?.[listActiveScriptsKey]) cacheActiveScriptIds();
+    runScriptsBackground("storage.onChanged", null, { changes, areaName });
   });
 
   // listenWebRequest();

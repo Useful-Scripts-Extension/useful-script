@@ -1,12 +1,3 @@
-const KEYS = {
-  blackList: "chongLuaDao_blackList",
-  whiteList: "chongLuaDao_whiteList",
-};
-
-function getStorage(key) {
-  return chrome.storage.local.get([key]).then((data) => data?.[key] || []);
-}
-
 export default {
   icon: "https://chongluadao.vn/wp-content/uploads/2021/04/cropped-favicon-150x150.png",
   name: {
@@ -36,59 +27,116 @@ export default {
       const { Storage } = await import("./helpers/utils.js");
       Storage.remove(KEYS.blackList);
       Storage.remove(KEYS.whiteList);
+
+      chrome.runtime.sendMessage({ action: KEYS.clearCache });
     },
   },
 
   contentScript: {
-    onDocumentStart: async (details) => {
-      try {
-        const blackList = await getStorage(KEYS.blackList);
-        const whiteList = await getStorage(KEYS.whiteList);
-
-        let whiteListed = matchOneOfPatterns(details.url, whiteList);
-        if (whiteListed) {
-          console.log("WhiteListed: " + whiteListed);
-          return;
-        }
-
-        let blocked = matchOneOfPatterns(details.url, blackList);
-        if (blocked) {
-          if (details.frameType === "outermost_frame") {
-            if (
-              confirm(
-                "Useful Script - Chống Lừa Đảo\n\n" +
-                  blocked +
-                  "\n\n" +
-                  "Website bạn đang truy cập được ghi nhận là lừa đảo\n" +
-                  "Khuyên bạn không nên tiếp tục truy cập trang web này\n\n" +
-                  "Bấm ok để tắt trang web\n" +
-                  "Bấm cancel để tiếp tục truy cập trang web"
-              )
-            )
-              window.close();
-          } else {
-            prompt(
-              "Useful Script - Chống Lừa Đảo\n\n" +
-                "Website bạn đang truy cập đã load thêm 1 iframe\n" +
-                "Iframe này được ghi nhận là lừa đảo\n\n" +
-                "HÃY CẨN THẬN!!\n\n" +
-                "Link iframe:",
-              details.url
-            );
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    },
     onDocumentIdle: (details) => {
       if (details.frameType === "outermost_frame") analyzeWeb(true);
     },
-    runInAllFrames: true,
 
     onClick: () => analyzeWeb(false),
   },
+
+  backgroundScript: {
+    onDocumentStart: async (details, context) => {
+      let cached = context.getCache("chongLuaDao");
+      if (!cached) {
+        cached = await saveBgCache(context);
+      }
+
+      let whiteListed = matchOneOfPatterns(details.url, cached.whiteList);
+      if (whiteListed) {
+        console.log("WhiteListed: " + whiteListed);
+        return;
+      }
+
+      let blocked = matchOneOfPatterns(details.url, cached.blackList);
+      if (blocked) {
+        context.utils.runScriptInTab({
+          target: {
+            tabId: details.tabId,
+          },
+          func: (details, blocked) => {
+            if (details.frameType === "outermost_frame") {
+              if (
+                confirm(
+                  "Useful Script - Chống Lừa Đảo\n\n" +
+                    blocked +
+                    "\n\n" +
+                    "Website bạn đang truy cập được ghi nhận là lừa đảo\n" +
+                    "Khuyên bạn không nên tiếp tục truy cập trang web này\n\n" +
+                    "Bấm ok để tắt trang web\n" +
+                    "Bấm cancel để tiếp tục truy cập trang web"
+                )
+              )
+                window.close();
+            } else {
+              prompt(
+                "Useful Script - Chống Lừa Đảo\n\n" +
+                  "Website bạn đang truy cập đã load thêm 1 iframe\n" +
+                  "Iframe này được ghi nhận là lừa đảo\n\n" +
+                  "HÃY CẨN THẬN!!\n\n" +
+                  "Link iframe:",
+                details.url
+              );
+            }
+          },
+          args: [details, blocked],
+        });
+      }
+    },
+    runInAllFrames: true,
+
+    runtime: {
+      onInStalled: (reason, context) => {
+        saveBgCache(context);
+      },
+      onStartup: (nil, context) => {
+        saveBgCache(context);
+      },
+      onMessage: ({ request, sender, sendResponse }, context) => {
+        if (request.action === KEYS.saveCache) {
+          saveBgCache(context);
+        } else if ((request.action = KEYS.clearCache)) {
+          clearBgCache(context);
+        }
+      },
+    },
+  },
 };
+
+const KEYS = {
+  blackList: "chongLuaDao_blackList",
+  whiteList: "chongLuaDao_whiteList",
+  saveCache: "ufs-chongLuaDao-saveCache",
+  clearCache: "ufs-chongLuaDao-clearCache",
+};
+
+function getStorage(key) {
+  return chrome.storage.local.get([key]).then((data) => data?.[key] || []);
+}
+
+async function saveBgCache(context) {
+  try {
+    const cached = {
+      blackList: await context.utils.Storage.get(KEYS.blackList, []),
+      whiteList: await context.utils.Storage.get(KEYS.whiteList, []),
+    };
+    console.log("cached chongLuaDao", cached);
+    context.addCache("chongLuaDao", cached);
+    return cached;
+  } catch (e) {
+    console.log("cache chongLuaDao FAIL ", e);
+  }
+  return null;
+}
+
+function clearBgCache(context) {
+  context.removeCache("chongLuaDao");
+}
 
 async function onEnable() {
   const { t } = await import("../popup/helpers/lang.js");
@@ -148,6 +196,8 @@ async function onEnable() {
     console.log(error);
   }
   closeLoading();
+
+  chrome.runtime.sendMessage({ action: KEYS.saveCache });
 
   await Swal.fire({
     icon: "success",

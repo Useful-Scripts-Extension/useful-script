@@ -114,6 +114,7 @@ export default {
     onDocumentStart: (details, context) => {},
     onDocumentIdle: (details, context) => {},
     onDocumentEnd: (details, context) => {},
+    runInAllFrames: false,
 
     // advanced
     runtime: {

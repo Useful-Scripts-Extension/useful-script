@@ -1,20 +1,8 @@
 import { t } from "../popup/helpers/lang.js";
-import { Storage } from "./helpers/utils.js";
-import {
-  checkPass,
-  initPassword,
-  lockedWebsiteKey,
-} from "./auto_lockWebsite.js";
-
-async function addSite(site) {
-  let sites = await Storage.get(lockedWebsiteKey, []);
-  if (sites.includes(site)) return;
-  sites.unshift(site);
-  await Storage.set(lockedWebsiteKey, sites);
-}
+import { checkPass, initPassword, locker } from "./auto_lockWebsite.js";
 
 async function renderSites() {
-  let sites = await Storage.get(lockedWebsiteKey, []);
+  let sites = await locker.sites.get();
 
   const containerClass = "sites-container";
   const exist = document.querySelector("." + containerClass);
@@ -52,9 +40,8 @@ async function renderSites() {
         cancelButtonText: t({ vi: "Huỷ", en: "Cancel" }),
       }).then(({ isConfirmed }) => {
         if (isConfirmed) {
-          let index = sites.indexOf(site);
-          sites.splice(index, 1);
-          Storage.set(lockedWebsiteKey, sites);
+          locker.sites.remove(site);
+
           // listener will trigger and re-draw all
           // div.remove();
         }
@@ -76,8 +63,18 @@ function initAddSite() {
     Swal.fire({
       title: t({ vi: "Khoá trang web", en: "Lock website" }),
       inputLabel: t({
-        vi: "Nhập link/tên trang web muốn khoá\nVí dụ:\n+ facebook\n+ *.facebook.com\n+ https://www.facebook.com",
-        en: "Enter website url/name want to lock\nE.g:\n+ facebook\n+ *.facebook.com\n+ https://www.facebook.com",
+        vi:
+          "Nhập link/tên trang web muốn khoá\n" +
+          "Ví dụ:\n" +
+          "  facebook\n" +
+          "  *.facebook.com\n" +
+          "  https://www.facebook.com",
+        en:
+          "Enter website url/name want to lock\n" +
+          "Example:\n" +
+          "  facebook\n" +
+          "  *.facebook.com\n" +
+          "  https://www.facebook.com",
       }),
       input: "text",
       inputAttributes: {
@@ -105,7 +102,7 @@ function initAddSite() {
       // } catch (error) {
       //   console.log(error);
       // }
-      addSite(hostname);
+      locker.sites.add(hostname);
     });
   });
 }
@@ -154,6 +151,6 @@ checkPass({
   renderSites();
   document.querySelector("#back").addEventListener("click", goBack);
   chrome.storage.onChanged.addListener((changes, areaName) => {
-    if (changes?.[lockedWebsiteKey]) renderSites();
+    if (changes?.[locker.sites.storageKey]) renderSites();
   });
 });
