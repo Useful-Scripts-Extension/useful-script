@@ -5,14 +5,26 @@ export default {
     vi: "Phóng to mọi hình ảnh",
   },
   description: {
-    en: `Press Ctrl twice (or right click) to any image to open it in magnified window
-    <br/><br/>
-    Auto find large version of image to show.`,
-    vi: `Nhấn Ctrl 2 lần (hoặc chuột phải) lên bất kỳ hình ảnh nào để xem nó trong cửa sổ phóng đại
-    <br/><br/>
+    en: `View any images in magnified window<br/>
+    Where you are able to zoom in/out, rotate, drag, and more.<br/>
+    Auto find large version of image to show.
+    <br/></br>
+    <p style="color:yellow">3 ways to use:</p>
     <ul>
-      <li>Tự động hiển thị ảnh có kích thước lớn nhất</li>
-      <li>Không còn phải căng mắt lên để xem ảnh nữa</li>
+      <li>Right click any image</li>
+      <li>Left click this feature and choose image</li>
+      <li>Double Ctrl on any image (require enable)<li>
+    </ul>
+    `,
+    vi: `Xem bất kỳ hình ảnh nào trong cửa sổ phóng đại<br/>
+    Nơi bạn có thể phóng to/thu nhỏ, xoay, kéo thả, ...<br/>
+    Tự động tìm ảnh chất lượng cao để hiển thị.
+    <br/></br>
+    <p style="color:yellow">3 cách sử dụng:</p>
+    <ul>
+      <li>Chuột phải vào ảnh</li>
+      <li>Click chức năng và click chọn ảnh</li>
+      <li>Ctrl 2 lần vào ảnh (cần mở tự động chạy)</li>
     </ul>`,
     img: "",
   },
@@ -20,7 +32,7 @@ export default {
   changeLogs: {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",
-    "2024-05-21": "not reqire for enable to use",
+    "2024-05-21": "not reqire autorun",
   },
 
   popupScript: {

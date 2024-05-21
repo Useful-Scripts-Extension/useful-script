@@ -335,7 +335,7 @@ function createScriptButton(script, isFavorite = false) {
   }
   if (script.changeLogs) {
     let tx = "";
-    let dates = Object.keys(script.changeLogs).sort().reverse();
+    let dates = Object.keys(script.changeLogs).sort();
     for (let date of dates) {
       tx += `<li>${date} - ${script.changeLogs[date]}</li>`;
     }
