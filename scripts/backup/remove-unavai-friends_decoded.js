@@ -68,11 +68,11 @@ let delayTime = 3,
               // }
               if (unfriendLockedUser) {
                 let count = 1;
-                console.log("\u27A1 Bắt đầu hủy kết bạn...");
+                console.log("➡ Bắt đầu hủy kết bạn...");
                 for (const acc of lockedAccounts) {
                   await unfriend(acc.id);
                   console.log(
-                    "\uD83D\uDC49 Đã hủy kết bạn với " +
+                    "👉 Đã hủy kết bạn với " +
                       acc.name +
                       ". " +
                       (lockedAccounts.length - count) +
@@ -87,12 +87,12 @@ let delayTime = 3,
               if (unfriendDeactivatedUser) {
                 let count = 1;
                 console.log(
-                  "\u27A1 Bắt đầu hủy kết bạn với nhữn người đã khóa tài khoản..."
+                  "➡ Bắt đầu hủy kết bạn với nhữn người đã khóa tài khoản..."
                 );
                 for (const acc of hiddenAccounts) {
                   await unfriend(acc.id);
                   console.log(
-                    "\uD83D\uDC49 Đã hủy kết bạn với " +
+                    "👉 Đã hủy kết bạn với " +
                       acc.name +
                       ". " +
                       (hiddenAccounts.length - count) +
@@ -131,8 +131,8 @@ function loadFriendsList(cursor = "", count = 8) {
         try {
           let items = JSON.parse(res).data.node.pageItems;
           resolve(items);
-        } catch (_0x521e19) {
-          reject(_0x521e19);
+        } catch (e) {
+          reject(e);
         }
       })
       .catch(reject);
