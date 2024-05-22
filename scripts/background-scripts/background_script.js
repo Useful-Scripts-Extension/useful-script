@@ -388,7 +388,8 @@ function listenMessage() {
           //   tabId: sender.tab.id,
           //   frameIds: [sender.frameId],
           // },
-          { request, sender, sendResponse: internalSendEvent }
+          { request, sender, sendResponse: internalSendEvent },
+          true
         );
         return sended ? false : true;
       }

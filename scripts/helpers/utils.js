@@ -278,6 +278,10 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
+export function pinTab(tab, pinned = true) {
+  return chrome.tabs.update(tab.id, { pinned: pinned });
+}
+
 export const runScriptInTabWithEventChain = ({
   target,
   scriptIds,
@@ -387,6 +391,8 @@ export const runScriptFileInCurrentTab = async (scriptFile, world = "MAIN") => {
 };
 
 // https://stackoverflow.com/a/68634884/11898496
+// WARNING: should be run in backgound script
+// If use this in popup script, when tab is focus, popup page will be closed => script not finish
 export async function openWebAndRunScript({
   url,
   func,
@@ -397,9 +403,8 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
   focusImmediately = false,
 }) {
-  let tab = await chrome.tabs.create({ active: false, url: url });
+  let tab = await chrome.tabs.create({ active: focusImmediately, url: url });
   if (waitUntilLoadEnd) await waitForTabToLoad(tab.id);
-  if (focusImmediately) focusToTab(tab);
   let res = await runScriptInTab({
     func,
     target: { tabId: tab.id },

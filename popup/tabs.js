@@ -247,7 +247,7 @@ const tabs = [
           },
           description: {
             en: "Very good Bookmark manager, find your bookmarks faster.",
-            vi: "Trình quản lý extension ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
+            vi: "Trình quản lý bookmark ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
           },
           popupScript: {
             onClick: () =>

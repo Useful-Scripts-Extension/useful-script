@@ -29,6 +29,7 @@ export const canAutoRun = (script) => {
     "onClick",
     "onInstalled",
     "onStartup",
+    "onMessage",
     "contextMenus",
   ]);
   for (let context of CONTEXTS) {

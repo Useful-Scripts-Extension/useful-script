@@ -6,11 +6,9 @@ export default {
   },
   description: {
     en: `Prevent closing of Browser after close the last tab<br/>
-    Auto create new empty tab if no tab left<br/>
-    (only if last tab is not empty tab)`,
+    Auto create new empty tab if no tab left`,
     vi: `Không tắt trình duyệt khi tắt tab cuối cùng<br/>
-    Tự động mở tab mới khi bạn tắt tab cuối cùng<br/>
-    (chỉ chạy nếu tab cuối cùng bạn tắt không phải tab trống)`,
+    Tự động mở tab mới khi bạn tắt tab cuối cùng`,
     img: "",
   },
 
