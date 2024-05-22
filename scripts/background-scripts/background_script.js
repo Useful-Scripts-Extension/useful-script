@@ -405,6 +405,8 @@ function main() {
   });
 
   chrome.runtime.onInstalled.addListener(async function (reason) {
+    // reasons: browser_update / chrome_update / update / install
+
     if (utils.hasUserId()) {
       await trackEvent("ufs-RE-INSTALLED");
     }

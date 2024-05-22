@@ -153,9 +153,6 @@ export default {
     // onDocumentStart: () => {
     //   window.stop();
     // },
-    onClick() {
-      console.log(UfsGlobal.DOM.getMousePos());
-    },
     _onClick: () => {
       function formatSize(size, fixed = 0) {
         size = Number(size);
@@ -243,7 +240,7 @@ export default {
       analyzeWebpage();
     },
     // render video in document.title
-    _onClick: () => {
+    onClick: () => {
       let video = document.querySelector("video");
 
       if (!video) {
