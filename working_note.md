@@ -2,6 +2,12 @@
 
 ## 28/04/2024 - 14/05/2024
 
+- [ ] image downloader <https://chromewebstore.google.com/detail/image-downloader-imageye/agionbommeaifngbhincahgmoflcikhm>
+
+- [x] save to facebook <https://chromewebstore.google.com/detail/save-to-facebook/jmfikkaogpplgnfjmbjdpalkhclendgd> => Cần load script/css từ facebook => không ổn
+
+- [ ] youtube dislike UI
+
 - [ ] Switch to Swal
 
 - [ ] Clear browser histories for specific website.
