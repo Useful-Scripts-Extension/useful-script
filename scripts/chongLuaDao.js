@@ -27,7 +27,6 @@ export default {
       const { Storage } = await import("./helpers/utils.js");
       Storage.remove(KEYS.blackList);
       Storage.remove(KEYS.whiteList);
-
       chrome.runtime.sendMessage({ action: KEYS.clearCache });
     },
   },
@@ -42,10 +41,8 @@ export default {
 
   backgroundScript: {
     onDocumentStart: async (details, context) => {
-      let cached = context.getCache("chongLuaDao");
-      if (!cached) {
-        cached = await saveBgCache(context);
-      }
+      if (!cached) await saveBgCache();
+      if (!cached) return;
 
       let whiteListed = matchOneOfPatterns(details.url, cached.whiteList);
       if (whiteListed) {
@@ -92,16 +89,16 @@ export default {
 
     runtime: {
       onInStalled: (reason, context) => {
-        saveBgCache(context);
+        saveBgCache();
       },
       onStartup: (nil, context) => {
-        saveBgCache(context);
+        saveBgCache();
       },
       onMessage: ({ request, sender, sendResponse }, context) => {
         if (request.action === KEYS.saveCache) {
-          saveBgCache(context);
+          saveBgCache();
         } else if ((request.action = KEYS.clearCache)) {
-          clearBgCache(context);
+          clearBgCache();
         }
       },
     },
@@ -115,29 +112,32 @@ const KEYS = {
   clearCache: "ufs-chongLuaDao-clearCache",
 };
 
-function getStorage(key) {
-  return chrome.storage.local.get([key]).then((data) => data?.[key] || []);
+function getStorage(key, defaultValue = null) {
+  return chrome.storage.local
+    .get([key])
+    .then((data) => data?.[key] ?? defaultValue);
 }
 
-async function saveBgCache(context) {
+// ===================== bg script context =====================
+let cached = null;
+
+async function saveBgCache() {
   try {
-    const cached = {
-      blackList: await context.utils.Storage.get(KEYS.blackList, []),
-      whiteList: await context.utils.Storage.get(KEYS.whiteList, []),
+    cached = {
+      blackList: await getStorage(KEYS.blackList, []),
+      whiteList: await getStorage(KEYS.whiteList, []),
     };
-    console.log("cached chongLuaDao", cached);
-    context.setCache("chongLuaDao", cached);
-    return cached;
   } catch (e) {
     console.log("cache chongLuaDao FAIL ", e);
   }
   return null;
 }
 
-function clearBgCache(context) {
-  context.removeCache("chongLuaDao");
+function clearBgCache() {
+  cached = null;
 }
 
+// ===================== popup script context =====================
 async function onEnable() {
   const { t } = await import("../popup/helpers/lang.js");
   const { showLoading, Storage } = await import("./helpers/utils.js");
@@ -218,6 +218,7 @@ async function onEnable() {
   return true;
 }
 
+// ===================== content script context =====================
 async function analyzeWeb(onlyShowUIIfNotSafe = false) {
   const href = window.location.href,
     hostname = window.location.hostname,
