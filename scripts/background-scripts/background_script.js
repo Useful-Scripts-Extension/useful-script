@@ -26,26 +26,42 @@ const GLOBAL = {
   runScriptsTab,
   runScriptsBackground,
   checkWillRun,
-  getAllCache,
   getCache,
-  addCache,
+  setCache,
   removeCache,
 };
 
-function getAllCache() {
-  return CACHED;
+// keyChain = "" => get all cached
+function getCache(keyChain, defaultValue = null) {
+  let value = CACHED;
+  keyChain?.split(".")?.forEach((key) => {
+    value = value?.[key] ?? null;
+  });
+  return value ?? defaultValue;
 }
 
-function getCache(key) {
-  return CACHED[key];
+function setCache(keyChain, value) {
+  let keys = keyChain?.split(".");
+  let obj = CACHED;
+  keys?.forEach((key, i) => {
+    if (i === keys.length - 1) {
+      obj[key] = value;
+    } else {
+      obj = obj[key] ?? (obj[key] = {});
+    }
+  });
 }
 
-function addCache(key, value) {
-  CACHED[key] = value;
-}
-
-function removeCache(key) {
-  delete CACHED[key];
+function removeCache(keyChain) {
+  let keys = keyChain?.split(".");
+  let obj = CACHED;
+  keys?.forEach((key, i) => {
+    if (i === keys.length - 1) {
+      delete obj[key];
+    } else {
+      obj = obj[key];
+    }
+  });
 }
 
 function cacheActiveScriptIds() {
@@ -342,8 +358,9 @@ function listenTabs() {
     "onUpdated",
     // "onZoomChange",
   ].forEach((event) => {
-    chrome.tabs[event].addListener((details) => {
-      runScriptsBackground("tabs." + event, details);
+    chrome.tabs[event].addListener((...details) => {
+      // these events will fired in all scripts active scripts (no need to call checkWillRun)
+      runScriptsBackground("tabs." + event, null, details);
     });
   });
 }

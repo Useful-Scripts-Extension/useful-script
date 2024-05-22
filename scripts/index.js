@@ -164,6 +164,7 @@ import remove_tracking_in_url from "./remove_tracking_in_url.js";
 import auto_lockWebsite from "./auto_lockWebsite.js";
 import showFps_v2 from "./showFps_v2.js";
 import chongLuaDao from "./chongLuaDao.js";
+import prevent_closeBrowser_lastTab from "./prevent_closeBrowser_lastTab.js";
 
 // inject badges
 const allScripts = {
@@ -344,6 +345,10 @@ const allScripts = {
   auto_lockWebsite: addBadge(auto_lockWebsite, BADGES.new),
   showFps_v2: addBadge(showFps_v2, BADGES.new),
   chongLuaDao: addBadge(chongLuaDao, BADGES.new),
+  prevent_closeBrowser_lastTab: addBadge(
+    prevent_closeBrowser_lastTab,
+    BADGES.new
+  ),
 };
 
 // alert(Object.keys(allScripts).length);

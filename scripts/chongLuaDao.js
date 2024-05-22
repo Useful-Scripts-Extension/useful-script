@@ -126,7 +126,7 @@ async function saveBgCache(context) {
       whiteList: await context.utils.Storage.get(KEYS.whiteList, []),
     };
     console.log("cached chongLuaDao", cached);
-    context.addCache("chongLuaDao", cached);
+    context.setCache("chongLuaDao", cached);
     return cached;
   } catch (e) {
     console.log("cache chongLuaDao FAIL ", e);

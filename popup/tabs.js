@@ -484,6 +484,7 @@ const tabs = [
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
       s.remove_tracking_in_url,
+      s.prevent_closeBrowser_lastTab,
       s.chongLuaDao,
       s.shortenURL,
       s.unshorten,
