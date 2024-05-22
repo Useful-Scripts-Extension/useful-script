@@ -150,6 +150,9 @@ export default {
   },
 
   contentScript: {
+    // onDocumentStart: () => {
+    //   window.stop();
+    // },
     onClick() {
       console.log(UfsGlobal.DOM.getMousePos());
     },

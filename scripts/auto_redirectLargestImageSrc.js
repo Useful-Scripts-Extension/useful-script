@@ -5,8 +5,16 @@ export default {
     vi: "Tự động - xem ảnh lớn nhất",
   },
   description: {
-    en: "Auto redirect to largest image, support hundred of websites",
-    vi: "Tự động chuyển trang sang ảnh lớn nhất, hỗ trợ hàng trăm trang web",
+    en: `<ul>
+      <li>When viewing an image in new tab.</li>
+      <li>This script will auto find and redirect to largest image.</li>
+      <li>Support hundred of websites.</li>
+    </ul>`,
+    vi: `<ul>
+      <li>Khi bạn mở xem ảnh trong tab mới.</li>
+      <li>Chức năng này sẽ tự động tìm và chuyển trang sang ảnh chất lượng cao nhất.</li>
+      <li>Hỗ trợ hàng trăm trang web.</li>
+    </ul>`,
     img: "/scripts/auto_redirectLargestImageSrc.jpg",
   },
 

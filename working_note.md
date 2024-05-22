@@ -14,7 +14,7 @@
 
 - [x] thêm event onInstalled, onStartup cho background script
 
-- [ ] Kiểm tra trang web an toàn <https://chongluadao.vn/> <https://api.chongluadao.vn/v2/blacklist> <https://api.chongluadao.vn/v2/whitelist>
+- [x] Kiểm tra trang web an toàn <https://chongluadao.vn/> <https://api.chongluadao.vn/v2/blacklist> <https://api.chongluadao.vn/v2/whitelist>
 
 - [x] Fix magnify image on right click
 

@@ -28,9 +28,11 @@ export const simplifiedRules = {
       "ved",
       "uact",
       "stick",
-      "sa",
-      "usg",
       "sca_esv",
+
+      // uncomment this cause bug when open link from google chat
+      // "sa",
+      // "usg",
     ],
   },
   Spotify: {

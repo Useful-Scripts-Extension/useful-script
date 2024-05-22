@@ -48,12 +48,12 @@ export async function getNextDynamicRuleIds(count = 1) {
   const result = [];
   let nextAvailableId = 1;
 
-  for (let i = 0; i < count; i++) {
-    while (ids.has(nextAvailableId)) {
-      nextAvailableId++;
+  while (result.length < count) {
+    if (!ids.has(nextAvailableId)) {
+      result.push(nextAvailableId);
+      ids.add(nextAvailableId);
     }
-    result.push(nextAvailableId);
-    ids.add(nextAvailableId);
+    nextAvailableId++;
   }
 
   return count === 1 ? result[0] : result;
