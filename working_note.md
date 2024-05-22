@@ -18,7 +18,7 @@
 
 - [x] Fix magnify image on right click
 
-- [ ] Auto lock websites
+- [x] Auto lock websites
 
 - [x] add option to run script in allframes
 
@@ -30,7 +30,7 @@
 
 - [x] extends chrome devtools <https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools> => Chưa dùng tới
 
-- [ ] Render video in document.title
+- [x] Render video in document.title => spam event tab update quá => khỏi làm
 
 - [ ] setTimeout is awsome <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
 
@@ -39,6 +39,8 @@
 - [x] onBeforeNavigate event => use declarativeNetRequest
 
 - [ ] finish webTimer + add block website
+
+- [ ] Tự động mời bạn bè vào nhóm <https://chromewebstore.google.com/detail/hifb-auto-group-inviter-m/nhdpeaeaafgbncmionfngamhohnngabl>
 
 - [ ] Tự động kết bạn <https://chromewebstore.google.com/detail/hifb-auto-k%E1%BA%BFt-b%E1%BA%A1n-%C4%91%E1%BB%8Ba-ph%C6%B0/mjgfhahcmnbbmolopombeaklmdnakmml>
 

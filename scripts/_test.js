@@ -150,9 +150,6 @@ export default {
   },
 
   contentScript: {
-    // onDocumentStart: () => {
-    //   window.stop();
-    // },
     _onClick: () => {
       function formatSize(size, fixed = 0) {
         size = Number(size);
@@ -240,7 +237,7 @@ export default {
       analyzeWebpage();
     },
     // render video in document.title
-    onClick: () => {
+    _onClick: () => {
       let video = document.querySelector("video");
 
       if (!video) {
@@ -292,45 +289,6 @@ export default {
         [{ action: "test" }, "callback"]
       );
       console.log(res);
-    },
-  },
-
-  backgroundScript: {
-    tabs: {
-      onRemoved: (details, context) => {
-        const [tabId, removeInfo] = details;
-
-        // check if there is any tab left
-        chrome.tabs.query({}, (tabs) => {
-          let tabCached = context.getCache("tabs");
-
-          // case tabs was opened before extension installed/reloaded
-          if (!tabCached) {
-            tabCached = {};
-            tabs.forEach((tab) => {
-              tabCached[tab.id] = tab;
-            });
-            context.setCache("tabs", tabCached);
-          }
-
-          console.log("tabCached", tabCached);
-          if (
-            !tabCached[tabId] ||
-            tabCached[tabId]?.url?.endsWith?.("://newtab/")
-          )
-            return;
-
-          // create a new tab
-          if (tabs.length == 0) {
-            chrome.tabs.create({ url: "chrome://newtab/" });
-          }
-        });
-      },
-      onUpdated: (details, context) => {
-        console.log("onUpdated", details);
-        const [tabId, changeInfo, tab] = details;
-        context.setCache("tabs." + tabId, tab);
-      },
     },
   },
 };
