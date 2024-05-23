@@ -317,7 +317,7 @@ option {
             z-index: 3;
             border: linear-gradient(rgb(210 213 219) 1px, transparent 1px), linear-gradient(to right, rgb(210 213 219) 1px, rgb(240 241 245) 1px);
 
-            .more i {
+            .more .more-item {
                 width: auto;
                 margin-left: 5px;
                 opacity: 1;
@@ -325,17 +325,17 @@ option {
         }
 
         .more {
-            i {
+            .more-item {
                 opacity: 0;
-                width: 0;
                 transition: all .2s;
+                display: inline-block;
 
                 &:hover {
-                    transform: scale(1.8);
+                    transform: scale(1.1);
                 }
             }
 
-            i.star.active {
+            .more-item .active {
                 color: @color_highlight;
                 width: auto;
                 margin-left: 5px;
@@ -634,6 +634,7 @@ option {
         background: #333333;
         color: @color_tooltip2;
         z-index: 100;
+        pointer-events: none;
     }
 
     &:hover {

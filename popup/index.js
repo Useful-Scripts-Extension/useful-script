@@ -269,13 +269,16 @@ function createScriptButton(script, isFavorite = false) {
 
   // what this? button
   if (script.infoLink) {
-    const infoBtn = document.createElement("i");
-    infoBtn.className = "fa-regular fa-circle-question";
+    const infoBtn = document.createElement("div");
+    infoBtn.innerHTML = `<i class="fa-regular fa-circle-question"></i>`;
+    infoBtn.className = "more-item";
     if (typeof script.infoLink === "string") {
       infoBtn.title = t({
         en: "View info/demo",
         vi: "Xem giới thiệu/demo",
       });
+      infoBtn.setAttribute("data-tooltip", infoBtn.title);
+      infoBtn.setAttribute("data-flow", "left");
     }
     infoBtn.onclick = (e) => {
       e.stopPropagation();
@@ -288,7 +291,10 @@ function createScriptButton(script, isFavorite = false) {
   }
 
   // add to favorite button
-  const addFavoriteBtn = document.createElement("i");
+  const addFavoriteBtn = document.createElement("div");
+  addFavoriteBtn.innerHTML = `<i class="fa-solid fa-star"></i>`;
+  addFavoriteBtn.className = "more-item";
+  addFavoriteBtn.setAttribute("data-flow", "left");
   updateFavBtn(addFavoriteBtn, isFavorite);
   addFavoriteBtn.onclick = (e) => {
     e.stopPropagation();
@@ -302,12 +308,15 @@ function createScriptButton(script, isFavorite = false) {
   more.appendChild(addFavoriteBtn);
 
   // view source button
-  const viewSourceBtn = document.createElement("i");
+  const viewSourceBtn = document.createElement("div");
+  viewSourceBtn.innerHTML = `<i class="fa-solid fa-code"></i>`;
   viewSourceBtn.title = t({
     en: "View script source",
     vi: "Xem mã nguồn",
   });
-  viewSourceBtn.className = "fa-solid fa-code view-source";
+  viewSourceBtn.className = "more-item";
+  viewSourceBtn.setAttribute("data-tooltip", viewSourceBtn.title);
+  viewSourceBtn.setAttribute("data-flow", "left");
   viewSourceBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -350,9 +359,10 @@ function createScriptButton(script, isFavorite = false) {
 }
 
 function updateFavBtn(btn, isFavorite) {
-  btn.className = isFavorite
-    ? "fa-solid fa-star star active"
-    : "fa-regular fa-star star";
+  let i = btn.querySelector("i");
+  i.classList.toggle("active", isFavorite);
+  i.classList.toggle("fa-regular", !isFavorite);
+  i.classList.toggle("fa-solid", isFavorite);
   btn.title = isFavorite
     ? t({
         en: "Remove from favorite",
@@ -362,6 +372,7 @@ function updateFavBtn(btn, isFavorite) {
         en: "Add to farovite",
         vi: "Thêm vào yêu thích",
       });
+  btn.setAttribute("data-tooltip", btn.title);
 }
 
 async function updateButtonChecker(script, button, val) {
@@ -455,7 +466,21 @@ function initTooltip() {
 
 function initSettings() {
   reloadBtn.onclick = () => {
-    chrome.runtime.reload();
+    Swal.fire({
+      icon: "warning",
+      title: t({
+        vi: "Khởi động lại tiện ích?",
+        en: "Reload extension?",
+      }),
+      text: t({
+        vi: "Các chức năng tự chạy sẽ lỗi => cần tải lại trang web.",
+        en: "Autorun scripts will be turned off => you have to reload website.",
+      }),
+      showCancelButton: true,
+      confirmButtonText: t({ vi: "Khởi động lại", en: "Reload" }),
+    }).then((res) => {
+      if (res.isConfirmed) chrome.runtime.reload();
+    });
   };
 
   settingsBtn.onclick = () => {
