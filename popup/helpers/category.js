@@ -22,7 +22,7 @@ export const CATEGORY = {
     id: "all",
     showCount: true,
     name: {
-      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All scripts`,
+      en: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> All`,
       vi: `<i class="fa-solid fa-earth-asia fa-shake" style="color:#1F51FF"></i> Tất cả`,
     },
   },
