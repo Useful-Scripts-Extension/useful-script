@@ -11,7 +11,7 @@ export default {
 
   whiteList: ["https://docs.google.com/spreadsheets/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: () => {
       let url = location.href;
       window.open(url.replace("/edit", "/preview"));

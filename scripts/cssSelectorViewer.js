@@ -9,7 +9,7 @@ export default {
     vi: "Kiểm tra mã css cho thành phần bất kỳ trong trang web",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       var s = document.createElement("div");
       s.innerHTML = "Loading...";

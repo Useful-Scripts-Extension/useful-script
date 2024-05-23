@@ -2,6 +2,10 @@
 
 ## 28/04/2024 - 14/05/2024
 
+- [ ] css variables hay <https://codepen.io/valhead/pen/yXYYdm> <https://valhead.com/2017/07/21/animating-with-css-variables/>
+
+- [ ] giấu dữ liệu trong text <https://tranxuanthang.github.io/zwc-datahider/index.html>
+
 - [ ] image downloader <https://chromewebstore.google.com/detail/image-downloader-imageye/agionbommeaifngbhincahgmoflcikhm>
 
 - [x] save to facebook <https://chromewebstore.google.com/detail/save-to-facebook/jmfikkaogpplgnfjmbjdpalkhclendgd> => Cần load script/css từ facebook => không ổn

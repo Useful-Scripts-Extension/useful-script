@@ -11,7 +11,7 @@ export default {
 
   whiteList: ["https://www.douyin.com/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: () => {
       var download = async function (url, aweme_id, desc) {
         var file_name = aweme_id + "-" + desc + ".mp4";

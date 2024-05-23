@@ -9,7 +9,7 @@ export default {
   },
   whiteList: ["https://www.facebook.com/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       // Lấy page id - khi đang trong trang của page fb. Ví dụ: https://www.facebook.com/ColourfulSpace
 

@@ -230,49 +230,43 @@ export default {
       }
 
       // Listen for videos
-      UfsGlobal.DOM.onElementsVisible(
-        'a[href*="/video/"]',
-        (nodes) => {
-          // remove if not in DOM
-          for (let i = checkboxes.length - 1; i >= 0; i--) {
-            let checkbox = checkboxes[i];
-            if (!document.contains(checkbox)) {
-              checkboxes.splice(i, 1);
-            }
+      UfsGlobal.DOM.onElementsVisible('a[href*="/video/"]', (nodes) => {
+        // remove if not in DOM
+        for (let i = checkboxes.length - 1; i >= 0; i--) {
+          let checkbox = checkboxes[i];
+          if (!document.contains(checkbox)) {
+            checkboxes.splice(i, 1);
           }
+        }
 
-          for (let node of nodes) {
-            if (!node.querySelector("canvas")) continue;
-            let isPrivate = node.querySelector("svg.private") !== null;
+        for (let node of nodes) {
+          if (!node.querySelector("canvas")) continue;
+          let isPrivate = node.querySelector("svg.private") !== null;
 
-            if (isPrivate) {
-              let p = document.createElement("p");
-              p.innerText = "Riêng tư";
-              p.style = [
-                "position: absolute;",
-                "top: 0;",
-                "right: 0;",
-                "color: red",
-                "background: black",
-                "padding: 8px",
-                "font-weight: bold",
-              ].join(";");
-              node.parentElement.appendChild(p);
-            } else {
-              let url = node.getAttribute("href");
-              let checkbox = createCheckBox(url);
-              node.parentElement.appendChild(checkbox);
-              checkboxes.push(checkbox);
-            }
+          if (isPrivate) {
+            let p = document.createElement("p");
+            p.innerText = "Riêng tư";
+            p.style = [
+              "position: absolute;",
+              "top: 0;",
+              "right: 0;",
+              "color: red",
+              "background: black",
+              "padding: 8px",
+              "font-weight: bold",
+            ].join(";");
+            node.parentElement.appendChild(p);
+          } else {
+            let url = node.getAttribute("href");
+            let checkbox = createCheckBox(url);
+            node.parentElement.appendChild(checkbox);
+            checkboxes.push(checkbox);
           }
+        }
 
-          let selected = checkboxes.filter(
-            (checkbox) => checkbox.checked
-          ).length;
-          progressDiv.innerText = `Đã chọn ${selected}/${checkboxes.length} video. Bấm nút Get link khi chọn xong nhé.`;
-        },
-        true
-      );
+        let selected = checkboxes.filter((checkbox) => checkbox.checked).length;
+        progressDiv.innerText = `Đã chọn ${selected}/${checkboxes.length} video. Bấm nút Get link khi chọn xong nhé.`;
+      });
     },
   },
 };

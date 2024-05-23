@@ -143,21 +143,15 @@ export default {
         focusTimerValue = 0;
 
       // listen title change
-      UfsGlobal.DOM.waitForElements("title").then(function (element) {
-        new MutationObserver(function (mutations) {
-          let title = mutations[0].target.textContent;
-          if (title === titleCache || !title) return;
-          if (title?.includes(invisible)) {
-            originalTitle = title?.split(invisible)?.[1] || originalTitle;
-          } else {
-            originalTitle = title;
-          }
-          makeTitle();
-        }).observe(document.querySelector("title"), {
-          subtree: true,
-          characterData: true,
-          childList: true,
-        });
+      UfsGlobal.DOM.onElementsVisible("title", (ele) => {
+        let title = ele.textContent;
+        if (title === titleCache || !title) return;
+        if (title?.includes(invisible)) {
+          originalTitle = title?.split(invisible)?.[1] || originalTitle;
+        } else {
+          originalTitle = title;
+        }
+        makeTitle();
       });
 
       // get saved timer

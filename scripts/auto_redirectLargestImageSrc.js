@@ -22,26 +22,13 @@ export default {
     "2024-04-16": "init",
   },
 
-  pageScript: {
+  contentScript: {
     onDocumentStart: async () => {
       let oldHref = location.href;
       check(oldHref);
 
-      window.onload = () => {
-        // listen location href change
-        var bodyList = document.querySelector("body");
-        var observer = new MutationObserver(function (mutations) {
-          if (oldHref != document.location.href) {
-            oldHref = document.location.href;
-            check(oldHref);
-          }
-        });
-        var config = {
-          childList: true,
-          subtree: true,
-        };
-        observer.observe(bodyList, config);
-      };
+      window.onload = () =>
+        UfsGlobal.DOM.onHrefChanged((oldHref, newHref) => check(newHref));
 
       async function check(href) {
         let url = await UfsGlobal.Utils.getLargestImageSrc(href, href);

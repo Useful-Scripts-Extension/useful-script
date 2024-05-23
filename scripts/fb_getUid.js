@@ -10,7 +10,7 @@ export default {
   },
   whiteList: ["https://*.facebook.com/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: async function () {
       // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
 

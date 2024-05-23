@@ -17,8 +17,7 @@ export default {
     onDocumentStart: () => {
       // Source: https://github.com/gys-dev/Unlimited-Stdphim
       UfsGlobal.DOM.deleteElements(
-        ".overlay.playable.hide, .overlay.playable, #topchapter, #wrapper_header",
-        true
+        ".overlay.playable.hide, .overlay.playable, #topchapter, #wrapper_header"
       );
     },
   },

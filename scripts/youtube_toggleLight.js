@@ -10,7 +10,7 @@ export default {
   },
   whiteList: ["*://www.youtube.com/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       ["#below", "#secondary", "#masthead-container"].forEach((_) => {
         let doms = document.querySelectorAll(_);

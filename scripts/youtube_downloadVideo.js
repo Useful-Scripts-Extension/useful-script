@@ -9,7 +9,7 @@ export default {
     vi: "Tải cả video giới hạn độ tuổi, không cần đăng nhập",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       // https://stackoverflow.com/a/8260383/11898496
       function getIdFromYoutubeURL(url) {

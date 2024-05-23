@@ -11,7 +11,7 @@ export default {
 
   whiteList: ["https://www.douyin.com/user/*"],
 
-  pageScript: {
+  contentScript: {
     // https://github.com/diepvantien/douyin-dowload-all-video
     onClick: () => {
       alert("Mở console (F12) để xem tiến trình tải video.");

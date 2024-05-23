@@ -25,7 +25,7 @@ export default {
 
   whiteList: ["https://*.facebook.com/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentIdle: () => {
       UfsGlobal.DOM.onElementsVisible(
         '[role="navigation"], [role="complementary"]',
@@ -38,8 +38,7 @@ export default {
               el.style.display = "none";
             } else console.log("ERROR: Cannot find element");
           });
-        },
-        true
+        }
       );
     },
 

@@ -9,7 +9,7 @@ export default {
     vi: "đơn vị pixels",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       alert(
         `Window inner dimensions:\n

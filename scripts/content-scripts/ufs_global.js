@@ -621,7 +621,7 @@ Call UseGlobal directly, no need to import
       });
     });
   }
-  function deleteElements(selector, willReRun) {
+  function deleteElements(selector, once) {
     onElementsVisible(
       selector,
       (nodes) => {
@@ -630,21 +630,35 @@ Call UseGlobal directly, no need to import
           console.log("Useful-scripts: element removed ", node);
         });
       },
-      willReRun
+      once
     );
   }
   function waitForElements(selector) {
     return new Promise((resolve, reject) => {
-      onElementsVisible(selector, resolve, false);
+      onElementsVisible(selector, resolve, true);
     });
+  }
+  // https://stackoverflow.com/a/46428962
+  function onHrefChanged(callback, once) {
+    let oldHref = document.location.href;
+    const body = document.querySelector("body");
+    const observer = new MutationObserver((mutations) => {
+      let curHref = document.location.href;
+      if (oldHref !== curHref) {
+        callback?.(oldHref, curHref);
+        oldHref = document.location.href;
+        if (once) observer.disconnect();
+      }
+    });
+    observer.observe(body, { childList: true, subtree: true });
   }
   // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
   // https://stackoverflow.com/a/61511955/11898496
-  function onElementsVisible(selector, callback, willReRun) {
+  function onElementsVisible(selector, callback, once) {
     let nodes = document.querySelectorAll(selector);
     if (nodes?.length) {
       callback(nodes);
-      if (!willReRun) return;
+      if (once) return;
     }
 
     const observer = new MutationObserver((mutations) => {
@@ -660,7 +674,7 @@ Call UseGlobal directly, no need to import
 
           if (n?.length) {
             callback(n);
-            if (!willReRun) observer.disconnect();
+            if (once) observer.disconnect();
           }
         }
       });

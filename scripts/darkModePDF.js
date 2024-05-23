@@ -9,7 +9,7 @@ export default {
     vi: "Bật/Tắt chế độ tối cho PDF bạn đang xem",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       let id = "useful-scripts-darkModePDF";
 

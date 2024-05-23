@@ -11,7 +11,7 @@ export default {
   infoLink:
     "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM",
 
-  pageScript: {
+  contentScript: {
     onDocumentIdle: detectZeroWidthCharacters,
     onClick: detectZeroWidthCharacters,
   },
@@ -49,10 +49,12 @@ function detectZeroWidthCharacters() {
     );
     const regExp = new RegExp(`([${zeroWidthCharacters}])`, "g");
     let textToAdd = '<span class="' + spanClass + '"></span>';
-    element.classList.add(containerClass);
-    element.innerHTML = element.innerHTML
-      .replace(textToAdd, "")
-      .replace(regExp, "$1" + textToAdd);
+    let preHighlight = element.querySelectorAll(`span.${spanClass}`);
+    preHighlight.forEach((el) => {
+      el.remove();
+    });
+    element.classList.toggle(containerClass, true);
+    element.innerHTML = element.innerHTML.replace(regExp, "$1" + textToAdd);
   };
   // From: https://jsfiddle.net/tim333/np874wae/13/
   const checkElement = function (element) {
@@ -90,7 +92,9 @@ function detectZeroWidthCharacters() {
   (async () => {
     // inject css
     UfsGlobal.DOM.injectCssFile(
-      await UfsGlobal.Extension.getURL("scripts/detect_zeroWidthCharacters.css")
+      await UfsGlobal.Extension.getURL(
+        "/scripts/detect_zeroWidthCharacters.css"
+      )
     );
 
     // Check Page

@@ -9,7 +9,7 @@ export default {
     vi: "Chơi các trò chơi (minigame) từng có trên google tìm kiếm",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: () => window.open("https://elgoog.im/"),
   },
 };

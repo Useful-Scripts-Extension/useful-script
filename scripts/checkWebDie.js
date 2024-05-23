@@ -9,7 +9,7 @@ export default {
     vi: "Dùng bên thứ 3 để kiểm tra xem website có bị die thật không",
   },
 
-  pageScript: {
+  popupScript: {
     onClick: async function () {
       const { getCurrentTab } = await import("./helpers/utils.js");
       let { url } = await getCurrentTab();

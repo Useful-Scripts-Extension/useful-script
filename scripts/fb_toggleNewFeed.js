@@ -12,13 +12,10 @@ export default {
     "https://www.facebook.com/groups/j2team.community/posts/1919935575005220/",
   whiteList: ["https://*.facebook.com/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentStart: () => {
-      UfsGlobal.DOM.onElementsVisible(
-        "[role='feed'], [role='main']",
-        (nodes) =>
-          Array.from(nodes).forEach((node) => (node.style.display = "none")),
-        true
+      UfsGlobal.DOM.onElementsVisible("[role='feed'], [role='main']", (nodes) =>
+        Array.from(nodes).forEach((node) => (node.style.display = "none"))
       );
     },
 

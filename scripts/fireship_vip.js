@@ -11,7 +11,7 @@ export default {
 
   whiteList: ["https://fireship.io/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentIdle: () => {
       // ==UserScript==
       // @name         Freeship

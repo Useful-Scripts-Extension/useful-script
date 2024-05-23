@@ -146,7 +146,6 @@ import ggdrive_downloadDoc from "./ggdrive_downloadDoc.js";
 import ggdrive_copySheetText from "./ggdrive_copySheetText.js";
 import duckRace_cheat from "./duckRace_cheat.js";
 import magnify_image from "./magnify_image.js";
-import consoleLog_withTime from "./consoleLog_withTime.js";
 import auto_redirectLargestImageSrc from "./auto_redirectLargestImageSrc.js";
 import textToQrCode from "./textToQrCode.js";
 import insta_anonymousStoryViewer from "./insta_anonymousStoryViewer.js";
@@ -210,7 +209,7 @@ const allScripts = {
   removeBloat,
   internalOrExternalLink,
   getWindowSize,
-  letItSnow,
+  letItSnow: addBadge(letItSnow, BADGES.new),
   shortenURL: addBadge(shortenURL, BADGES.hot),
   listAllImagesInWeb,
   viewScriptsUsed,
@@ -324,7 +323,6 @@ const allScripts = {
   ggdrive_copySheetText: addBadge(ggdrive_copySheetText, BADGES.new),
   duckRace_cheat: addBadge(duckRace_cheat, BADGES.hot, BADGES.new),
   magnify_image: addBadge(magnify_image, BADGES.hot, BADGES.new),
-  consoleLog_withTime: consoleLog_withTime,
   auto_redirectLargestImageSrc: addBadge(
     auto_redirectLargestImageSrc,
     BADGES.new

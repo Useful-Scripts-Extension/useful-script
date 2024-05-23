@@ -9,7 +9,7 @@ export default {
     vi: "Tải facebook story / video bình luận bạn đang xem",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 

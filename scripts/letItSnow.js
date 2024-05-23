@@ -9,134 +9,106 @@ export default {
     vi: "Thêm hiệu ứng tuyết rơi vào trang web",
   },
 
-  pageScript: {
+  changeLogs: {
+    "2024-05-23": "better UI",
+  },
+
+  contentScript: {
+    // original from https://github.com/HoanghoDev/32eqwedaw
     onClick: function () {
-      function i() {
-        this.D = function () {
-          const t = h.atan(this.i / this.d);
-          l.save(),
-            l.translate(this.b, this.a),
-            l.rotate(-t),
-            l.scale(this.e, this.e * h.max(1, h.pow(this.j, 0.7) / 15)),
-            l.drawImage(m, -v / 2, -v / 2),
-            l.restore();
-        };
+      let id = "ufs-letItSnow";
+      let exist = document.getElementById(id);
+      if (exist) {
+        exist.remove();
+        return;
       }
-      window;
-      const h = Math,
-        r = h.random,
-        a = document,
-        o = Date.now;
-      (e = (t) => {
-        l.clearRect(0, 0, _, f), l.fill(), requestAnimationFrame(e);
-        const i = 0.001 * y.et;
-        y.r();
-        const s = L.et * g;
-        for (var n = 0; n < C.length; ++n) {
-          const t = C[n];
-          (t.i = h.sin(s + t.g) * t.h),
-            (t.j = h.sqrt(t.i * t.i + t.f)),
-            (t.a += t.d * i),
-            (t.b += t.i * i),
-            t.a > w && (t.a = -u),
-            t.b > b && (t.b = -u),
-            t.b < -u && (t.b = b),
-            t.D();
+
+      let style = document.createElement("style");
+      style.textContent = `
+        #${id} {
+          --rotateEnd: 180deg;
+          --xStart: 0;
+          --xEnd: 0;
+          --yStart: 0;
+          --yEnd: 100vh;
+
+          position: fixed;
+          top: 0;
+          left: 0;
+          width:100vw;
+          height:100vh;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          pointer-events: none;
+          z-index: 2147483647;
         }
-      }),
-        (s = (t) => {
-          for (var e = 0; e < p; ++e)
-            (C[e].a = r() * (f + u)), (C[e].b = r() * _);
-        }),
-        (n = (t) => {
-          (c.width = _ = innerWidth),
-            (c.height = f = innerHeight),
-            (w = f + u),
-            (b = _ + u),
-            s();
+        #${id} .snow {
+          position: absolute;
+          top:0;
+          left:0;
+          width:50px;
+          height:50px;
+          animation: animationSnow 4s ease-in-out infinite;
+          opacity: 0;
+        }
+        @keyframes animationSnow {
+            0%{
+                transform: translate(var(--xStart),var(--yStart)) rotate(0);
+                opacity: 0;
+            }
+            50%{
+                opacity: 1;
+            }
+            100%{
+                opacity: 0;
+                transform: translate(var(--xEnd),var(--yEnd)) rotate(var(--rotateEnd));
+            }
+        }`;
+
+      function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+      }
+
+      function resetSnow(snow) {
+        let size = randInt(5, 50);
+        let blur = randInt(0, 7);
+        let xStart = randInt(0, container.clientWidth);
+        let yStart = randInt(-50, 50);
+        let xEnd = xStart + randInt(50, 200);
+        let yEnd = randInt(container.clientHeight / 2, container.clientHeight);
+        let rotateEnd = randInt(-360, 360);
+
+        snow.style.setProperty("--xStart", xStart + "px");
+        snow.style.setProperty("--xEnd", xEnd + "px");
+        snow.style.setProperty("--yStart", yStart + "px");
+        snow.style.setProperty("--yEnd", yEnd + "px");
+        snow.style.setProperty("--rotateEnd", rotateEnd + "deg");
+        snow.style.width = size + "px";
+        snow.style.height = size + "px";
+        snow.style.filter = "blur(" + blur + "px)";
+      }
+
+      let count = 50;
+      let container = document.createElement("div");
+      container.id = id;
+      container.appendChild(style);
+      document.documentElement.appendChild(container);
+
+      for (var i = 0; i < count; i++) {
+        let snow = document.createElement("img");
+        snow.src = chrome.runtime.getURL("/scripts/letItSnow.png");
+        snow.classList.add("snow");
+        snow.style.animationDuration = randInt(8000, 15000) + "ms";
+
+        resetSnow(snow);
+        snow.addEventListener("animationiteration", function () {
+          resetSnow(snow);
         });
-      class d {
-        constructor(t, e = !0) {
-          (this._ts = o()),
-            (this._p = !0),
-            (this._pa = o()),
-            (this.d = t),
-            e && this.s();
-        }
-        get et() {
-          return this.ip ? this._pa - this._ts : o() - this._ts;
-        }
-        get rt() {
-          return h.max(0, this.d - this.et);
-        }
-        get ip() {
-          return this._p;
-        }
-        get ic() {
-          return this.et >= this.d;
-        }
-        s() {
-          return (this._ts = o() - this.et), (this._p = !1), this;
-        }
-        r() {
-          return (this._pa = this._ts = o()), this;
-        }
-        p() {
-          return (this._p = !0), (this._pa = o()), this;
-        }
-        st() {
-          return (this._p = !0), this;
-        }
+
+        container.appendChild(snow);
       }
-      const c = a.createElement("canvas");
-      (H = c.style),
-        (H.position = "fixed"),
-        (H.left = 0),
-        (H.top = 0),
-        (H.width = "100vw"),
-        (H.height = "100vh"),
-        (H.zIndex = "100000"),
-        (H.pointerEvents = "none"),
-        a.body.insertBefore(c, a.body.children[0]);
-      const l = c.getContext("2d"),
-        p = 300,
-        g = 5e-4,
-        u = 20;
-      let _ = (c.width = innerWidth),
-        f = (c.height = innerHeight),
-        w = f + u,
-        b = _ + u;
-      const v = 15.2,
-        m = a.createElement("canvas"),
-        E = m.getContext("2d"),
-        x = E.createRadialGradient(7.6, 7.6, 0, 7.6, 7.6, 7.6);
-      x.addColorStop(0, "hsla(255,255%,255%,1)"),
-        x.addColorStop(1, "hsla(255,255%,255%,0)"),
-        (E.fillStyle = x),
-        E.fillRect(0, 0, v, v);
-      let y = new d(0, !0),
-        C = [],
-        L = new d(0, !0);
-      for (var j = 0; j < p; ++j) {
-        const t = new i();
-        (t.a = r() * (f + u)),
-          (t.b = r() * _),
-          (t.c = 1 * (3 * r() + 0.8)),
-          (t.d = 0.1 * h.pow(t.c, 2.5) * 50 * (2 * r() + 1)),
-          (t.d = t.d < 65 ? 65 : t.d),
-          (t.e = t.c / 7.6),
-          (t.f = t.d * t.d),
-          (t.g = (r() * h.PI) / 1.3),
-          (t.h = 15 * t.c),
-          (t.i = 0),
-          (t.j = 0),
-          C.push(t);
-      }
-      s(),
-        (EL = a.addEventListener),
-        EL("visibilitychange", () => setTimeout(n, 100), !1),
-        EL("resize", n, !1),
-        e();
     },
   },
 };

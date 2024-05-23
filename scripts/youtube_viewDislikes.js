@@ -10,13 +10,29 @@ export default {
   },
   whiteList: ["*://*.youtube.com/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentStart: () => {
       // youtube watch
       document.querySelector("dislike-button-view-model");
 
       // youtube shorts
       document.querySelector("ytd-toggle-button-renderer#dislike-button");
+
+      // youtube watch
+      UfsGlobal.DOM.onElementsVisible(
+        "dislike-button-view-model",
+        (ele) => {},
+        true
+      );
+
+      // youtube shorts
+      UfsGlobal.DOM.onElementsVisible(
+        "ytd-toggle-button-renderer#dislike-button",
+        (ele) => {
+          // get watching shorts
+        },
+        true
+      );
     },
 
     onClick: async function () {

@@ -13,7 +13,7 @@ export default {
     "2024-05-20": "remove duplicate emails",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       // source code from: https://bookmarklet.vercel.app/
 

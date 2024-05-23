@@ -11,7 +11,7 @@ export default {
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1362716140727169/",
 
-  pageScript: {
+  contentScript: {
     // Source: https://gist.github.com/monokaijs/44ef4bd0770f83272b83c038a2769c90
     onClick: () => {
       (async function () {

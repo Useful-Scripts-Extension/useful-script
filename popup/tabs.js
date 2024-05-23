@@ -816,7 +816,6 @@ const tabs = [
       s.viewStylesUsed,
       s.cssSelectorViewer,
       s.viewPartialSource,
-      s.consoleLog_withTime,
       createTitle("--- Remove ---", "--- Xoá ---"),
       s.removeColours,
       s.removeStylesheet,

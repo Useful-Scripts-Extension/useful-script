@@ -16,7 +16,7 @@ export default {
 
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentEnd: async () => {
       const logs = document.body.innerText
         .split("\n")

@@ -19,7 +19,7 @@ export default {
 
   whiteList: ["https://github.com/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       window.open("https://github.dev" + location.pathname);
     },
