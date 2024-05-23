@@ -9,7 +9,7 @@ export default {
     vi: "Liệt kê tất cả đường link có trong website",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       function getParameterByName(e, t) {
         e = e.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -23,9 +23,9 @@ export default {
           return r == null ? "" : decodeURIComponent(r[1].replace(/\+/g, " "));
         }
       }
-      str =
+      let str =
         "<style type='text/css'>body{color:#000;background-color:#fff;margin:0;padding:0;font-family:arial,helvetica,sans-serif;font-size:82%}*{font-weight:400;color:#000}h3,h4,h5,h6{margin:0 0 15px;padding:0}#rt{font-size:12px;width:500px}table,td,th,tr{font-size:1em;overflow:hidden;text-overflow:ellipsis;word-wrap:break-word}textarea{width:100%}th{background-color:#eee;color:#000;font-weight:700}td a{width:446px;display:block}.id{background:#eee;color:#000;text-align:center}.g{font-family:arial,sans-serif;color:#000;margin:1em 0;font-size:122%}.g h2{font-family:arial,sans-serif;margin:0}.r{display:inline;font-weight:400;margin:10}.j{width:34em}.std{font-size:82%}.a{color:green}.fl{color:#77c}.bl{display:inline}a{color:#00c}a:visited{color:#551a8b}a:active{color:red}.twitter-share-button{margin-bottom:-5px}p.b{line-height:22px;text-align:center}</style>\n";
-      anchors = document.getElementsByTagName("a");
+      let anchors = document.getElementsByTagName("a");
       var all = [];
       var keyword = getParameterByName("q", false);
       str += "<title>Google SERP Scraper Bookmarklet</title>";
@@ -45,7 +45,7 @@ export default {
       var links = "";
       var anchorTexts = "";
       var linksAnchors = "";
-      for (i = 0; i < anchors.length; i++) {
+      for (let i = 0; i < anchors.length; i++) {
         var anchorText = anchors[i].textContent;
         var anchorLink = anchors[i].href;
         var linkAnchor = "";

@@ -11,30 +11,32 @@ export default {
 
   contentScript: {
     onClick: function () {
-      var s = document.createElement("div");
-      s.innerHTML = "Loading...";
-      s.style.color = "black";
-      s.style.padding = "20px";
-      s.style.position = "fixed";
-      s.style.zIndex = "9999";
-      s.style.fontSize = "3.0em";
-      s.style.border = "2px solid black";
-      s.style.right = "40px";
-      s.style.top = "40px";
-      s.setAttribute("class", "selector_gadget_loading");
-      s.style.background = "white";
-      document.body.appendChild(s);
+      var div = document.createElement("div");
+      div.innerHTML = "Loading...";
+      div.style.color = "black";
+      div.style.padding = "20px";
+      div.style.position = "fixed";
+      div.style.zIndex = "9999";
+      div.style.fontSize = "3.0em";
+      div.style.border = "2px solid black";
+      div.style.right = "40px";
+      div.style.top = "40px";
+      div.setAttribute("class", "selector_gadget_loading");
+      div.style.background = "white";
+      document.body.appendChild(div);
 
-      s = document.createElement("script");
-      s.setAttribute("type", "text/javascript");
-      s.setAttribute(
+      let script = document.createElement("script");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute(
         "src",
         "https://dv0akt2986vzh.cloudfront.net/unstable/lib/selectorgadget.js"
       );
-      s.onerror = () => {
+      script.onerror = () => {
+        div.remove();
+        script.remove();
         alert("ERROR, cannot load remote script.");
       };
-      document.body.appendChild(s);
+      document.body.appendChild(script);
     },
   },
 };

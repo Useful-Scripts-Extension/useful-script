@@ -156,7 +156,3 @@ export default {
     },
   },
 };
-
-// functions/attributes that other scripts can import and use
-// can only used by popupScript, backgroundScript
-export const shared = {};

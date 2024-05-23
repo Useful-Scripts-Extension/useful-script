@@ -815,7 +815,6 @@ const tabs = [
       s.viewScriptsUsed,
       s.viewStylesUsed,
       s.cssSelectorViewer,
-      s.viewPartialSource,
       createTitle("--- Remove ---", "--- Xoá ---"),
       s.removeColours,
       s.removeStylesheet,

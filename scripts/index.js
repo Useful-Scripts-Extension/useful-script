@@ -45,7 +45,6 @@ import shortenURL from "./shortenURL.js";
 import listAllImagesInWeb from "./listAllImagesInWeb.js";
 import viewScriptsUsed from "./viewScriptsUsed.js";
 import viewStylesUsed from "./viewStylesUsed.js";
-import viewPartialSource from "./viewPartialSource.js";
 import openWaybackUrl from "./openWaybackUrl.js";
 import showFPS from "./showFPS.js";
 import search_googleSite from "./search_googleSite.js";
@@ -214,7 +213,6 @@ const allScripts = {
   listAllImagesInWeb,
   viewScriptsUsed,
   viewStylesUsed,
-  viewPartialSource,
   openWaybackUrl,
   showFPS,
   search_googleSite,

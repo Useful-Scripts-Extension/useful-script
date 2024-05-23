@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 14/05/2024
 
+- [x] Show recently closed tabs => Bỏ, browser có sẵn rồi
+
 - [ ] css variables hay <https://codepen.io/valhead/pen/yXYYdm> <https://valhead.com/2017/07/21/animating-with-css-variables/>
 
 - [ ] giấu dữ liệu trong text <https://tranxuanthang.github.io/zwc-datahider/index.html>

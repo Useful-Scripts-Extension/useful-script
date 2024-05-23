@@ -17,6 +17,7 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getUidFromUrl } = await import("./fb_GLOBAL.js");
       const { showLoading } = await import("./helpers/utils.js");
       let friendUrl = prompt("Nhập link fb bạn bè: ");
 
@@ -25,7 +26,7 @@ export default {
         if (keyword == null) return;
 
         const { closeLoading } = showLoading("Đang tìm uid...");
-        let uid = await UfsGlobal.Facebook.getUidFromUrl(friendUrl);
+        let uid = await getUidFromUrl(friendUrl);
         closeLoading();
 
         let str = `{"rp_author:0":"{\\"name\\":\\"author\\",\\"args\\":\\"${uid}\\"}"}`;

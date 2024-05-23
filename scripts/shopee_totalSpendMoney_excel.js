@@ -12,7 +12,7 @@ export default {
     "https://www.facebook.com/groups/j2team.community/posts/2222766368055471/",
   whiteList: ["https://shopee.vn/*"],
 
-  pageScript: {
+  contentScript: {
     onClick: async () => {
       // https://pastecode.io/s/7cpgip63
       // https://www.facebook.com/groups/j2team.community/posts/2222766368055471/

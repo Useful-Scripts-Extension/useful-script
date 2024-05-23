@@ -11,20 +11,19 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const {
+        getUidFromUrl,
+        getYourUserId,
+        getFbdtsg,
+        searchAllGroupForOther,
+        getUserInfoFromUid,
+      } = await import("./fb_GLOBAL.js");
       const { showLoading } = await import("./helpers/utils.js");
       let url = prompt("Nhập link facebook bạn bè (hoặc của bạn): ");
       if (url == null) return;
 
       let { setLoadingText, closeLoading } = showLoading("Đang chuẩn bị...");
       try {
-        let {
-          getUidFromUrl,
-          getYourUserId,
-          getFbdtsg,
-          searchAllGroupForOther,
-          getUserInfoFromUid,
-        } = UfsGlobal.Facebook;
-
         setLoadingText("Đang lấy uid, token...");
         let other_uid = await getUidFromUrl(url);
         let uid = await getYourUserId();

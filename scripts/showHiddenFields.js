@@ -9,7 +9,7 @@ export default {
     vi: "Web thường ẩn mốt số thành phần như token, id, form, ...",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       // source code from: https://bookmarklet.vercel.app/
 

@@ -1,10 +1,12 @@
+import { getFbdtsg, getUidFromUrl, getUserInfo } from "./fb_GLOBAL.js";
+
 window.onload = async () => {
   const Global = {
     endpoint: "https://www.facebook.com/api/graphqlbatch/",
     mid: null,
     right: Date.now(),
     left: new Date("1/1/2004").getTime(),
-    fb_dtsg: await UfsGlobal.Facebook.getFbdtsg(),
+    fb_dtsg: await getFbdtsg(),
   };
 
   console.log(Global);
@@ -32,11 +34,8 @@ window.onload = async () => {
       if (!access_token) throw new Error("Vui lòng nhập access token của bạn");
 
       showLoading("Đang lấy thông tin bạn bè...");
-      let friendUid = await UfsGlobal.Facebook.getUidFromUrl(friend_url);
-      let friendInfo = await UfsGlobal.Facebook.getUserInfo(
-        friendUid,
-        access_token
-      );
+      let friendUid = await getUidFromUrl(friend_url);
+      let friendInfo = await getUserInfo(friendUid, access_token);
       console.log(friendInfo);
     } catch (e) {
       alert("ERROR: " + e);

@@ -9,7 +9,7 @@ export default {
     vi: "Hiển thị tất cả tag audio/âm thanh trong trang web, giúp dễ dàng tải xuống/lấy link.",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       function getSrc(audio) {
         let src = audio.getAttribute("src");

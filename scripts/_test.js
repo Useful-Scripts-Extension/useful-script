@@ -10,6 +10,13 @@ export default {
   },
 
   popupScript: {
+    onClick: () => {
+      chrome.sessions.getRecentlyClosed({}, (data) => {
+        console.log(data);
+      });
+    },
+
+    // fake window update screen
     _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
       openWebAndRunScript({
@@ -23,6 +30,8 @@ export default {
         waitUntilLoadEnd: true,
       });
     },
+
+    // saveAsMHTML
     _onClick: async () => {
       const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
       const tab = await getCurrentTab();
@@ -36,6 +45,8 @@ export default {
         filename: "web.mhtml",
       });
     },
+
+    // Delete browsers history
     _onClick: async () => {
       const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
 
@@ -97,6 +108,8 @@ export default {
       ]
     */
     },
+
+    // devtool command
     _onClick: async () => {
       // const {
       //   attachDebugger,
@@ -150,6 +163,7 @@ export default {
   },
 
   contentScript: {
+    // text size in KB
     _onClick: () => {
       function formatSize(size, fixed = 0) {
         size = Number(size);
@@ -187,55 +201,7 @@ export default {
         alert(e);
       }
     },
-    _onClick: () => {
-      function analyzeWebpage() {
-        const href = window.location.href,
-          hostname = window.location.hostname,
-          a = href.replace("www.", "");
 
-        const features = {
-          "IP Address": (() => {
-            const ipv4Regex =
-              /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-            const ipv6Regex = /^0x([0-9a-fA-F]{2})(.|$){3}[0-9a-fA-F]{2}$/;
-            if (ipv4Regex.test(hostname) || ipv6Regex.test(hostname)) return 1;
-            return -1;
-          })(),
-          "URL Length":
-            href.length < 54
-              ? -1
-              : href.length >= 54 && href.length <= 75
-              ? 0
-              : 1,
-          "Tiny URL": a.length < 7 ? 1 : -1,
-          "@ Symbol": /@/.test(href) ? 1 : -1,
-          "Redirecting using //": href.lastIndexOf("//") > 7 ? 1 : -1,
-          "(-) Prefix/Suffix in domain": /-/.test(hostname) ? 1 : -1,
-          "No. of Sub Domains": (() => {
-            let len = (a.match(RegExp("\\.", "g")) || []).length;
-            return len == 1 ? -1 : len == 2 ? 0 : 1;
-          })(),
-          HTTPS: /https:\/\//.test(href) ? -1 : 1,
-          Favicon: (() => {
-            let icon;
-            const c = document.getElementsByTagName("link");
-            for (let t = 0; t < c.length; t++) {
-              ("icon" != c[t].getAttribute("rel") &&
-                "shortcut icon" != c[t].getAttribute("rel")) ||
-                (icon = c[t].getAttribute("href"));
-            }
-            if (!icon || icon.length != 12) return -1;
-
-            let i = RegExp(hostname, "g");
-            return i.test(icon) ? -1 : 1;
-          })(),
-        };
-
-        console.log("Webpage Features:", features);
-      }
-
-      analyzeWebpage();
-    },
     // render video in document.title
     _onClick: () => {
       let video = document.querySelector("video");
@@ -278,17 +244,6 @@ export default {
       }, 1000 / 30);
 
       updateFavicon();
-    },
-  },
-
-  pageScript: {
-    _onClick: async () => {
-      console.log("send");
-      let res = await UfsGlobal.Extension.runInContentScript(
-        "chrome.runtime.sendMessage",
-        [{ action: "test" }, "callback"]
-      );
-      console.log(res);
     },
   },
 };

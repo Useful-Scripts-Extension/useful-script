@@ -12,7 +12,7 @@ export default {
     "2024-05-01": "can undo",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       var images,
         img,

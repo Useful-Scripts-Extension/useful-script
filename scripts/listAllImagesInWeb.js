@@ -9,7 +9,7 @@ export default {
     vi: "Xem danh sách hình ảnh trong tab mới",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       var A = {},
         B = [],

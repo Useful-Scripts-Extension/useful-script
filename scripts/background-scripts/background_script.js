@@ -321,19 +321,7 @@ function listenNavigation() {
         if (eventChain === "onDocumentStart") {
           // clear badge cache on main frame
           if (details.frameId === 0) CACHED.badges[tabId] = [];
-          [
-            { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
-            { files: ["ufs_global.js"], world: MAIN },
-          ].forEach(({ files, world }) => {
-            utils.runScriptFile({
-              files: files.map((file) => "/scripts/content-scripts/" + file),
-              target: {
-                tabId: tabId,
-                frameIds: [frameId],
-              },
-              world: world,
-            });
-          });
+          injectUfsGlobal(tabId, frameId);
         }
         runScriptsTab(eventChain, MAIN, details);
         runScriptsTab(eventChain, ISOLATED, details);
@@ -400,6 +388,22 @@ function listenMessage() {
   });
 }
 
+function injectUfsGlobal(tabId, frameId) {
+  [
+    { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
+    { files: ["ufs_global.js"], world: MAIN },
+  ].forEach(({ files, world }) => {
+    utils.runScriptFile({
+      files: files.map((file) => "/scripts/content-scripts/" + file),
+      target: {
+        tabId: tabId,
+        frameIds: [frameId],
+      },
+      world: world,
+    });
+  });
+}
+
 function main() {
   // listen change active scripts
   cacheActiveScriptIds();
@@ -433,6 +437,17 @@ function main() {
     trackEvent("ufs-INSTALLED");
 
     runScriptsBackground("runtime.onInstalled", null, reason, true);
+
+    // inject ufsGlobal to all frames in all tabs
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.webNavigation.getAllFrames({ tabId: tab.id }, (frames) => {
+          frames.forEach((frame) => {
+            injectUfsGlobal(tab.id, frame.frameId);
+          });
+        });
+      });
+    });
   });
 
   chrome.action.setBadgeBackgroundColor({ color: "#666" });

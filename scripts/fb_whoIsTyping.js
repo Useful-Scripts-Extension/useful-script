@@ -15,7 +15,9 @@ export default {
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   pageScript: {
-    onDocumentStart: () => {
+    onDocumentStart: async () => {
+      const { getUserInfoFromUid } = await import("./fb_GLOBAL.js");
+
       const key = "ufs_fb_whoIsTyping";
       try {
         window.ufs_fb_whoIsTyping = JSON.parse(
@@ -53,7 +55,7 @@ export default {
               let uid = utf8_str.match(/(?!\")(\d{3,})/g)?.[1];
 
               if (!(uid in window.ufs_whoIsTyping_users_cache)) {
-                let userData = await UfsGlobal.Facebook.getUserInfoFromUid(uid);
+                let userData = await getUserInfoFromUid(uid);
                 window.ufs_whoIsTyping_users_cache[uid] = userData;
               }
 

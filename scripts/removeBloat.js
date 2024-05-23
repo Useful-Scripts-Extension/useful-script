@@ -8,7 +8,7 @@ export default {
     vi: "Xoá mọi thứ gây xao nhãng (quảng cáo, web nhúng, ..)",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       function R(w) {
         try {

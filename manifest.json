@@ -23,6 +23,7 @@
     "history",
     "storage",
     "cookies",
+    "sessions",
     "debugger",
     "activeTab",
     "downloads",

@@ -15,6 +15,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getUidFromUsername, getAllMedia } = await import(
+        "./insta_GLOBAL.js"
+      );
       const { showLoading } = await import("./helpers/utils.js");
       const { t } = await import("../popup/helpers/lang.js");
       let username = prompt(
@@ -34,7 +37,7 @@ export default {
       );
 
       try {
-        let uid = await UfsGlobal.Instagram.getUidFromUsername(username);
+        let uid = await getUidFromUsername(username);
         if (!uid)
           throw new Error(
             t({
@@ -43,7 +46,7 @@ export default {
             })
           );
 
-        let all_urls = await UfsGlobal.Instagram.getAllMedia({
+        let all_urls = await getAllMedia({
           uid,
           progressCallback: (p) => {
             setLoadingText(

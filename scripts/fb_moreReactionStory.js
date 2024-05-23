@@ -18,32 +18,25 @@ export default {
     // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
     // Source https://github.com/whoant/react-story-facebook
     onDocumentStart: async () => {
-      (async () => {
-        try {
-          // crawl emoji from https://emojipedia.org https://getemoji.com/
-          // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
-          let url = await UfsGlobal.Extension.getURL(
-            "scripts/fb_moreReactionStory.json"
-          );
-          const emojiJson = await fetch(url);
-          const EMOJI_LIST = await emojiJson.json();
+      const { getFbdtsg, getYourUserId, getStoryId } = await import(
+        "./fb_GLOBAL.js"
+      );
 
-          loadModal(EMOJI_LIST);
-        } catch (e) {
-          alert("ERROR: " + e);
-        }
-      })();
+      // crawl emoji from https://emojipedia.org https://getemoji.com/
+      // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
+      const { emojiData } = await import("./fb_moreReactionStory_emoji.js");
+      loadModal(emojiData);
 
       function loadModal(EMOJI_LIST) {
         const timeoutCheckStoriesFooter = setInterval(async () => {
           if (!window.location.href.includes("facebook.com/stories")) return;
           if (!!document.querySelector(".ufs-more-react-story")) return;
 
-          const fb_dtsg = await UfsGlobal.Facebook.getFbdtsg();
-          const user_id = await UfsGlobal.Facebook.getYourUserId();
+          const fb_dtsg = await getFbdtsg();
+          const user_id = await getYourUserId();
 
           window.ufs_reactStory = async (text) => {
-            const storyId = await UfsGlobal.Facebook.getStoryId();
+            const storyId = await getStoryId();
             if (!UfsGlobal.Utils.isEmoji(text)) {
               alert("Must be emoji");
               return;
@@ -101,7 +94,7 @@ export default {
 
                 let loading = 0;
                 emojiLi.onclick = async function () {
-                  const storyId = UfsGlobal.Facebook.getStoryId();
+                  const storyId = getStoryId();
                   try {
                     if (!loading) emojiLi.classList.add("loading");
                     loading++;

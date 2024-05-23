@@ -13,8 +13,9 @@ export default {
   contentScript: {
     onClick: async function () {
       // Lấy user id (uid) - khi đang trong tường của người dùng muốn lấy user id. Ví dụ: https://www.facebook.com/callchoulnhe
+      const { getUidFromUrl } = await import("./fb_GLOBAL.js");
 
-      let uid = await UfsGlobal.Facebook.getUidFromUrl(location.href);
+      let uid = await getUidFromUrl(location.href);
       if (uid) return prompt(`USER ID của ${document.title}:`, uid);
 
       const find = (r) => (r ? r[0] : 0);

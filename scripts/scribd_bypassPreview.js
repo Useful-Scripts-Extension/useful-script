@@ -11,10 +11,10 @@ export default {
   blackList: [],
   whiteList: ["https://www.scribd.com/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentIdle: () => {
-      UfsGlobal.Extension.getURL("scripts/scribd_bypassPreview.css").then(
-        UfsGlobal.DOM.injectCssFile
+      UfsGlobal.DOM.injectCssFile(
+        chrome.runtime.getURL("scripts/scribd_bypassPreview.css")
       );
 
       function ufs_scribd_bypass_preview() {

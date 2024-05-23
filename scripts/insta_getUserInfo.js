@@ -11,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getInstaUserInfo } = await import("./insta_GLOBAL.js");
       const { showLoading } = await import("./helpers/utils.js");
       const { t } = await import("../popup/helpers/lang.js");
 
@@ -65,7 +66,7 @@ export default {
           })
         );
         try {
-          const json = await UfsGlobal.Instagram.getInstaUserInfo(txt);
+          const json = await getInstaUserInfo(txt);
           const { users, places, hashtags } = json;
           if (!users?.length)
             return alert(

@@ -27,7 +27,10 @@ export default {
   },
 
   pageScript: {
-    onDocumentIdle: () => {
+    onDocumentIdle: async () => {
+      const { downloadTiktokVideoFromUrl, downloadTiktokVideoFromId } =
+        await import("./tiktok_GLOBAL.js");
+
       let checkboxes = [];
 
       // Setup DOM
@@ -190,15 +193,10 @@ export default {
             console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
             progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
             downloadBtn.innerText = `Đang get link ${progress}...`;
-            let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(
-              queue[0],
-              true
-            );
+            let link = await downloadTiktokVideoFromUrl(queue[0], true);
 
             if (!link) {
-              link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(
-                getId(queue[0])
-              );
+              link = await downloadTiktokVideoFromId(getId(queue[0]));
             }
 
             if (link) {

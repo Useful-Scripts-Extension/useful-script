@@ -9,7 +9,7 @@ export default {
     vi: "Xem video trong cửa sổ nổi",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       function findLargestPlayingVideoInViewport() {
         const videos = Array.from(document.querySelectorAll("video"))

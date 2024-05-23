@@ -11,6 +11,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getUserAvatarFromUid } = await import("./fb_GLOBAL.js");
       const { showLoading } = await import("./helpers/utils.js");
       const { downloadData } = UfsGlobal.Utils;
 
@@ -23,8 +24,8 @@ export default {
         let urls = [];
         for (let uid of uids) {
           setLoadingText("Đang lấy avatar của " + uid + "...");
-          let url = UfsGlobal.Facebook.getUserAvatarFromUid(uid);
-          let res = await fetch(uid);
+          let url = getUserAvatarFromUid(uid);
+          let res = await fetch(url);
           url = res.url;
           if (url) {
             urls.push(url);

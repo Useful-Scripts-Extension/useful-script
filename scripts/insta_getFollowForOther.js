@@ -13,6 +13,9 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { getUidFromUsername, getCrftoken, getAllFollow } = await import(
+        "./insta_GLOBAL.js"
+      );
       const { showLoading, runScriptInCurrentTab } = await import(
         "./helpers/utils.js"
       );
@@ -26,7 +29,7 @@ export default {
       );
 
       try {
-        let uid = await UfsGlobal.Instagram.getUidFromUsername(username);
+        let uid = await getUidFromUsername(username);
 
         if (!uid)
           throw new Error(
@@ -37,9 +40,7 @@ export default {
           );
 
         setLoadingText(t({ vi: "Đang tìm token...", en: "Finding token..." }));
-        let csrftoken = await runScriptInCurrentTab(() =>
-          UfsGlobal.Instagram.getCrftoken()
-        );
+        let csrftoken = await runScriptInCurrentTab(() => getCrftoken());
         if (!csrftoken) throw new Error("Can't get csrftoken");
 
         let type = prompt(
@@ -68,7 +69,7 @@ export default {
               duration: 99999999,
             });
             try {
-              let data = await UfsGlobal.Instagram.getAllFollow({
+              let data = await getAllFollow({
                 type: typename,
                 uid,
                 csrftoken,

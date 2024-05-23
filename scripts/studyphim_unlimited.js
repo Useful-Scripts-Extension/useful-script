@@ -13,7 +13,7 @@ export default {
 
   whiteList: ["https://www.studyphim.vn/*"],
 
-  pageScript: {
+  contentScript: {
     onDocumentStart: () => {
       // Source: https://github.com/gys-dev/Unlimited-Stdphim
       UfsGlobal.DOM.deleteElements(

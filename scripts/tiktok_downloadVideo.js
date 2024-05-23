@@ -51,13 +51,16 @@ export const shared = {
   },
 
   getVideoNoWaterMark: async function (video_url, isVideoId = false) {
-    let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(video_url);
+    const { downloadTiktokVideoFromUrl, downloadTiktokVideoFromId } =
+      await import("./tiktok_GLOBAL.js");
+
+    let link = await downloadTiktokVideoFromUrl(video_url);
     if (!link) {
       let videoId = isVideoId
         ? video_url
         : shared.getTiktokVideoIdFromUrl(video_url);
       if (!videoId) throw Error("Video URL không đúng định dạng");
-      link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(videoId);
+      link = await downloadTiktokVideoFromId(videoId);
     }
     return link;
   },

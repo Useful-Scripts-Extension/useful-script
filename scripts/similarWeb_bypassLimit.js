@@ -1,4 +1,4 @@
-import removeCookies from "./removeCookies.js";
+import { clearCookies } from "./removeCookies.js";
 
 export default {
   icon: "https://files.startupranking.com/startup/thumb/19950_8743c12283f6a62f069b5b05d518e1ba31465150_similarweb_l.png",
@@ -22,7 +22,7 @@ export default {
 
   whiteList: ["https://www.similarweb.com/*"],
 
-  pageScript: {
-    onDocumentEnd: () => removeCookies.onClick(true),
+  contentScript: {
+    onDocumentEnd: clearCookies,
   },
 };

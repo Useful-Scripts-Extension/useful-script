@@ -9,7 +9,7 @@ export default {
     vi: "Sử dụng google site search",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       let q =
         "" +

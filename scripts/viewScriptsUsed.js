@@ -9,13 +9,11 @@ export default {
     vi: "Mở danh sách scripts đươc dùng bởi trang web trong tab mới",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
-      s = document.getElementsByTagName("SCRIPT");
-      d = window.open().document;
-      d.open();
-      d.close();
-      b = d.body;
+      let s = document.getElementsByTagName("SCRIPT"),
+        d = window.open().document,
+        b = d.body;
 
       function trim(s) {
         return s.replace(/^\s*\n/, "").replace(/\s*$/, "");
@@ -30,16 +28,16 @@ export default {
       }
 
       function makeText(tag, text) {
-        t = makeTag(tag);
+        let t = makeTag(tag);
         t.appendChild(d.createTextNode(text));
         return t;
       }
       add(makeText("style", "iframe{width:100%;height:18em;border:1px solid;"));
       add(makeText("h3", (d.title = "Scripts in " + location.href)));
-      for (i = 0; i < s.length; ++i) {
+      for (let i = 0; i < s.length; ++i) {
         if (s[i].src) {
           add(makeText("h4", 'script src="' + s[i].src + '"'));
-          iframe = makeTag("iframe");
+          let iframe = makeTag("iframe");
           iframe.src = s[i].src;
           add(iframe);
         } else {

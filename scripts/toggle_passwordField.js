@@ -14,7 +14,7 @@ export default {
     ["2024-05-18"]: "init",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: () => {
       let inpPass = Array.from(
         document.querySelectorAll(

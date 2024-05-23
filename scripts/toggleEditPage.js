@@ -9,7 +9,7 @@ export default {
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       let isOn = document.designMode == "on";
 

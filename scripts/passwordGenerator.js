@@ -9,7 +9,7 @@ export default {
     vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       /*
   It’s a good practice to always use unique passwords while creating accounts on websites, So if one website’s password gets compromised your other accounts are safe.

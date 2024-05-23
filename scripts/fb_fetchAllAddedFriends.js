@@ -13,14 +13,14 @@ export default {
     onClick: async () => {
       const { showLoading } = await import("./helpers/utils.js");
       let { setLoadingText, closeLoading } = showLoading("Đang chuẩn bị...");
-      try {
-        let {
-          getYourUserId,
-          getFbdtsg,
-          fetchAddedFriends,
-          fetchAllAddedFriendsSince,
-        } = UfsGlobal.Facebook;
+      const {
+        getYourUserId,
+        getFbdtsg,
+        fetchAddedFriends,
+        fetchAllAddedFriendsSince,
+      } = await import("./fb_GLOBAL.js");
 
+      try {
         setLoadingText("Đang lấy uid, token...");
         let uid = await getYourUserId();
         let dtsg = await getFbdtsg();

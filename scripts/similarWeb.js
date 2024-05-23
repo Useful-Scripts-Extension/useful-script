@@ -9,7 +9,7 @@ export default {
     vi: "SimilarWeb - Phân tích chi tiết cho mọi trang web trực tuyến",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       window.open(
         `https://www.similarweb.com/website/` +

@@ -9,7 +9,7 @@ export default {
     vi: "Thêm nút chức năng sắp xếp cho từng cột trong table",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       function toArray(c) {
         var a, k;

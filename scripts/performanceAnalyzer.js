@@ -9,7 +9,7 @@ export default {
     vi: "Phân tích hiệu suất website không cần biết code",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       let options = [
         {

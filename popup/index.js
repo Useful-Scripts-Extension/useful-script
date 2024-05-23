@@ -36,6 +36,7 @@ import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
+const reloadBtn = document.querySelector(".reload");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const searchInput = document.querySelector(".search input");
@@ -441,7 +442,22 @@ async function runScript(script) {
 // ========================================================
 // #region others
 
+function initTooltip() {
+  settingsBtn.setAttribute(
+    "data-tooltip",
+    t({ vi: "Cài đặt", en: "Settings" })
+  );
+  reloadBtn.setAttribute(
+    "data-tooltip",
+    t({ vi: "Khởi động lại tiện ích", en: "Reload extension" })
+  );
+}
+
 function initSettings() {
+  reloadBtn.onclick = () => {
+    chrome.runtime.reload();
+  };
+
   settingsBtn.onclick = () => {
     trackEvent("CLICK_SETTINGS");
 
@@ -479,6 +495,7 @@ function initSettings() {
 
       // re-open setting modal
       settingsBtn.click();
+      initTooltip();
     };
     body.appendChild(langRow);
 
@@ -518,6 +535,7 @@ function initSettings() {
 
       // re-open setting modal
       settingsBtn.click();
+      initTooltip();
     };
     body.appendChild(themeRow);
 
@@ -610,6 +628,7 @@ window.addEventListener("scroll", onScrollEnd);
 
   initTracking();
   initSearch();
+  initTooltip();
   initSettings();
   initScrollToTop();
   createTabs().then(restoreScroll);

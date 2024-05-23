@@ -9,14 +9,12 @@ export default {
     vi: "Mở danh sách css được dùng bởi website trong tab mới",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
-      s = document.getElementsByTagName("STYLE");
-      ex = document.getElementsByTagName("LINK");
-      d = window.open().document; /*set base href*/
-      d.open();
-      d.close();
-      b = d.body;
+      let s = document.getElementsByTagName("STYLE"),
+        ex = document.getElementsByTagName("LINK"),
+        d = window.open().document /*set base href*/,
+        b = d.body;
 
       function trim(s) {
         return s.replace(/^\s*\n/, "").replace(/\s*$/, "");
@@ -35,13 +33,13 @@ export default {
       }
 
       function makeText(tag, text) {
-        t = makeTag(tag);
+        let t = makeTag(tag);
         t.appendChild(d.createTextNode(text));
         return t;
       }
       add(makeText("style", "iframe{width:100%;height:18em;border:1px solid;"));
       add(makeText("h3", (d.title = "Style sheets in " + location.href)));
-      for (i = 0; i < s.length; ++i) {
+      for (let i = 0; i < s.length; ++i) {
         add(
           makeText(
             "h4",
@@ -50,9 +48,9 @@ export default {
         );
         add(makeText("pre", trim(s[i].innerHTML)));
       }
-      for (i = 0; i < ex.length; ++i) {
-        rs = ex[i].rel.split(" ");
-        for (j = 0; j < rs.length; ++j)
+      for (let i = 0; i < ex.length; ++i) {
+        let rs = ex[i].rel.split(" ");
+        for (let j = 0; j < rs.length; ++j)
           if (rs[j].toLowerCase() == "stylesheet") {
             add(
               makeText(
@@ -65,7 +63,7 @@ export default {
                   iff(' title="', ex[i].title, '"')
               )
             );
-            iframe = makeTag("iframe");
+            let iframe = makeTag("iframe");
             iframe.src = ex[i].href;
             add(iframe);
             break;

@@ -13,7 +13,7 @@ export default {
     "2024-05-01": "fix cors + undo",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       const ufs_remove_colours_id = "ufs-remove-colours";
       let exist = document.getElementById(ufs_remove_colours_id);

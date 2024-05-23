@@ -11,15 +11,18 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { getFbdtsg, getYourUserId, messagesCount } = await import(
+        "./fb_GLOBAL.js"
+      );
       const { showLoading } = await import("./helpers/utils.js");
       let { closeLoading, setLoadingText } = showLoading("Đang chuẩn bị...");
       try {
         setLoadingText("Đang lấy token...");
-        let dtsg = await UfsGlobal.Facebook.getFbdtsg();
-        let uid = await UfsGlobal.Facebook.getYourUserId();
+        let dtsg = await getFbdtsg();
+        let uid = await getYourUserId();
 
         setLoadingText("Đang lấy dữ liệu tin nhắn...");
-        let msgData = await UfsGlobal.Facebook.messagesCount(dtsg);
+        let msgData = await messagesCount(dtsg);
 
         let { count: threadCount, nodes } = msgData.viewer.message_threads;
         let ranking = nodes

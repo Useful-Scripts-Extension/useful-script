@@ -9,7 +9,7 @@ export default {
     vi: "Tải video dễ dàng hơn",
   },
 
-  pageScript: {
+  contentScript: {
     onClick: function () {
       let videos = Array.from(document.querySelectorAll("video"));
 
