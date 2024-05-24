@@ -40,6 +40,18 @@ chrome.storage.local.get("web_timer", function (result) {
   showData({ fromDate: new Date() });
 });
 
+function getOldestDate() {
+  try {
+    let dateKeys = Object.keys(web_timer);
+    dateKeys.sort();
+    console.log(dateKeys);
+    return dateKeys[0];
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 function init() {
   backBtn.addEventListener("click", () => {
     window.history.back();
@@ -82,15 +94,17 @@ function init() {
         dateBtn.addEventListener("click", (e) => {
           let x = dateBtn.offsetLeft - document.documentElement.scrollLeft;
           let y = dateBtn.offsetTop - document.documentElement.scrollTop;
-          openDatePicker(x, y, curDate).then((selectedDate) => {
-            if (selectedDate) {
-              let success = showData({ fromDate: selectedDate });
-              if (success) {
-                curDate = selectedDate;
-                dateBtn.innerText = formatDate(curDate);
+          openDatePicker(x, y, curDate, getOldestDate(), new Date()).then(
+            (selectedDate) => {
+              if (selectedDate) {
+                let success = showData({ fromDate: selectedDate });
+                if (success) {
+                  curDate = selectedDate;
+                  dateBtn.innerText = formatDate(curDate);
+                }
               }
             }
-          });
+          );
         });
         preBtn.addEventListener("click", () => {
           let preDate = new Date(curDate);
@@ -149,11 +163,21 @@ function init() {
   });
 }
 
-function openDatePicker(x, y, date = new Date()) {
+function openDatePicker(
+  x,
+  y,
+  date = new Date(),
+  minDate = null,
+  maxDate = null
+) {
   return new Promise((resolve) => {
     let input = document.createElement("input");
     input.type = "date";
     input.value = formatDate(date);
+    if (minDate)
+      input.min = minDate instanceof Date ? formatDate(minDate) : minDate;
+    if (maxDate)
+      input.max = maxDate instanceof Date ? formatDate(maxDate) : maxDate;
     input.style = `position: fixed; top: ${y}px; left: ${x}px; visibility: hidden;`;
     input.addEventListener("change", (e) => {
       let selectedDate = new Date(e.target.value);

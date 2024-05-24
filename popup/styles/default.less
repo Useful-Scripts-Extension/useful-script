@@ -1,6 +1,7 @@
 @import "./scrollbar.css";
 
 @font_family_1: "Roboto", sans-serif;
+@font-weight: 500;
 @bg_body: #e6e6e6;
 @color_body: #333;
 
@@ -37,9 +38,9 @@
 @bg_inp_search: #f5f5f5;
 @bg_search_result: #dddd;
 
-@bg_tooltip: rgb(133, 133, 133);
-@color_tooltip: rgb(255, 255, 255);
-@border_tooltip: transparent transparent rgb(133, 133, 133) transparent;
+@bg_tooltip: #333333;
+@color_tooltip: #FFFFFF;
+@border_tooltip: transparent transparent @bg_tooltip transparent;
 @border_change_logs: white;
 
 @color_tooltip2: #FFFFFF;
@@ -53,8 +54,10 @@
 
 * {
     font-family: @font_family_1;
+    // font-weight: @font-weight;
     margin: 0;
     box-sizing: border-box;
+    color: @color_body;
 }
 
 body {
@@ -62,10 +65,6 @@ body {
     color: @color_body;
     min-width: 370px;
     min-height: 600px;
-}
-
-* {
-    color: @color_body;
 }
 
 h1 {
@@ -98,7 +97,7 @@ option {
 
 .settings,
 .reload {
-    position: absolute;
+    position: absolute !important;
     width: 40px;
     height: 40px;
     top: 0px;
@@ -318,28 +317,37 @@ option {
             border: linear-gradient(rgb(210 213 219) 1px, transparent 1px), linear-gradient(to right, rgb(210 213 219) 1px, rgb(240 241 245) 1px);
 
             .more .more-item {
-                width: auto;
                 margin-left: 5px;
                 opacity: 1;
+
+                i {
+                    width: auto;
+                }
             }
         }
 
         .more {
             .more-item {
-                opacity: 0;
-                transition: all .2s;
                 display: inline-block;
 
-                &:hover {
+                i {
+                    transition: all .2s;
+                }
+
+                &:hover i {
+                    transform: scale(1.5);
+                }
+
+                &[data-tooltip]:hover {
                     transform: scale(1.1);
                 }
-            }
 
-            .more-item .active {
-                color: @color_highlight;
-                width: auto;
-                margin-left: 5px;
-                opacity: 1;
+                & i.active {
+                    color: @color_highlight;
+                    width: auto;
+                    margin-left: 5px;
+                    opacity: 1;
+                }
             }
         }
 
@@ -600,7 +608,7 @@ option {
 }
 
 [data-tooltip] {
-    // position: relative;
+    position: relative;
     cursor: pointer;
 
     &::before {
@@ -631,7 +639,7 @@ option {
         text-overflow: ellipsis;
         padding: 6px 8px;
         border-radius: 3px;
-        background: #333333;
+        background: @bg_tooltip2;
         color: @color_tooltip2;
         z-index: 100;
         pointer-events: none;

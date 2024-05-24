@@ -13,7 +13,7 @@ export default {
     <ul>
       <li>Right click any image</li>
       <li>Left click this feature and choose image</li>
-      <li>Double Ctrl on any image (require enable)<li>
+      <li>Double Ctrl on any image (require autorun)</li>
     </ul>
     `,
     vi: `Xem bất kỳ hình ảnh nào trong cửa sổ phóng đại<br/>

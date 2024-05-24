@@ -11,6 +11,22 @@ export default {
     vi: "",
     img: "",
   },
+
+  // buttons that show beside favorite/view source buttons
+  // show on hover script
+  buttons: [
+    {
+      icon: '<i class="fa-regular fa-circle-question"></i>',
+      title: {
+        vi: "Đây là gì?",
+        en: "What is this?",
+      },
+      onPress: () => {},
+    },
+  ],
+
+  // easier way to add info button into moreButtons list
+  // show as
   infoLink: "",
 
   changeLogs: {

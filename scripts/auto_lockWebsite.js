@@ -1,3 +1,5 @@
+const managerBtn = '<i class="fa-solid fa-unlock-keyhole"></i>';
+
 export default {
   icon: '<i class="fa-solid fa-fingerprint fa-lg fa-beat-fade"></i>',
   name: {
@@ -7,13 +9,13 @@ export default {
   description: {
     en: `Auto lock websites. Enter password to unlock.<br/>
     <ul>
-      <li>Click to temporarly lock current website.</li>
-      <li>Click ? to open settings.</li>
+      <li style="color:yellow">Click to temporarly lock current website.</li>
+      <li>Click ${managerBtn} to open settings.</li>
     </ul>`,
     vi: `Tự động khoá trang web. Nhập mật khẩu để mở khoá.<br/>
     <ul>
-      <li>Click để khoá trang hiện tại.</li>
-      <li>Bấm ? để mở giao diện quản lý.</li>
+      <li style="color:yellow">Click để khoá trang hiện tại.</li>
+      <li>Bấm nút ${managerBtn} để mở giao diện quản lý.</li>
     </ul>`,
   },
 
@@ -21,15 +23,24 @@ export default {
     "2024-05-20": "init",
   },
 
-  infoLink: async function openManager() {
-    let curPass = await locker.password.get();
-    if (curPass == null) {
-      curPass = await initPassword();
-    }
-    if (curPass) {
-      window.open("/scripts/auto_lockWebsite.html", "_self");
-    }
-  },
+  buttons: [
+    {
+      icon: managerBtn,
+      name: {
+        vi: "Mở trang quản lý",
+        en: "Open manager",
+      },
+      onClick: async function openManager() {
+        let curPass = await locker.password.get();
+        if (curPass == null) {
+          curPass = await initPassword();
+        }
+        if (curPass) {
+          window.open("/scripts/auto_lockWebsite.html", "_self");
+        }
+      },
+    },
+  ],
 
   popupScript: {
     onEnable: async () => {

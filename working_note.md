@@ -1,10 +1,14 @@
 # WORKING NOTES
 
-## 28/04/2024 - 14/05/2024
+## 28/04/2024 - 24/05/2024
+
+- [ ] optimize prevent close browser on last tab, try debounce/throttle
+
+- [ ] import UfsGlobal thay vì để global + tách nhỏ UfsGobal
 
 - [x] Show recently closed tabs => Bỏ, browser có sẵn rồi
 
-- [ ] css variables hay <https://codepen.io/valhead/pen/yXYYdm> <https://valhead.com/2017/07/21/animating-with-css-variables/>
+- [ ] css variables hay <https://codepen.io/valhead/pen/yXYYdm> <https://valhead.com/2017/07/21/animating-with-css-variables/> <https://codepen.io/magnificode/pen/JedJPO>
 
 - [ ] giấu dữ liệu trong text <https://tranxuanthang.github.io/zwc-datahider/index.html>
 
@@ -14,15 +18,13 @@
 
 - [ ] youtube dislike UI
 
-- [ ] Switch to Swal
+- [x] Switch to Swal
 
 - [ ] Clear browser histories for specific website.
 
 - [ ] Export all data, and restore when re-install extension
 
 - [x] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
-
-- [ ] CSS hay <https://codepen.io/magnificode/pen/JedJPO>
 
 - [x] thêm event onInstalled, onStartup cho background script
 
@@ -38,13 +40,13 @@
 
 - [x] Oauth to google <https://stackoverflow.com/a/25046173/23648002> <https://console.cloud.google.com/apis/credentials/consent?authuser=1&project=useful-scripts-423305&supportedpurview=project> => This API is not supported on Microsoft Edge
 
-- [ ] @@extension_id <https://developer.chrome.com/docs/extensions/reference/api/i18n#overview-predefined>
+- [x] @@extension_id <https://developer.chrome.com/docs/extensions/reference/api/i18n#overview-predefined> => chưa biết làm gì
 
 - [x] extends chrome devtools <https://developer.chrome.com/docs/extensions/how-to/devtools/extend-devtools> => Chưa dùng tới
 
 - [x] Render video in document.title => spam event tab update quá => khỏi làm
 
-- [ ] setTimeout is awsome <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
+- [x] setTimeout is awsome <https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful>
 
 - [ ] dynamic rules editor
 
@@ -60,7 +62,7 @@
 
 - [x] scroll to top popup extension
 
-- [ ] optimize UfsGlbal
+- [x] optimize UfsGlbal
 
 - [x] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks> => Not interested
 
@@ -76,7 +78,7 @@ chrome.tabs.update(tabId, {url: 'javascript:functionNameHere()'});
 openssl rsa -in useful-script.pem -pubout > public_key.pem
 ```
 
-- [ ] p5 visualize music <https://github.com/therewasaguy/p5-music-viz>
+- [x] p5 visualize music <https://github.com/therewasaguy/p5-music-viz>
 
 - [ ] lyric generator <https://lrcgenerator.com/>
 
@@ -96,7 +98,7 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 - [ ] Youtube local download => lấy data từ ytplayer.config.args.raw_player_response => Làm UI
 
-- [ ] html2img khá ngon, nhưng chưa biết xài vô cái gì
+- [x] html2img khá ngon, nhưng chưa biết xài vô cái gì => lỗi trusted type, không dùng đc
 
 - [x] Optimize import jszip => có lẽ không cần
 
@@ -106,7 +108,7 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 - [x] text to qrcode không còn hoạt động => xoá luôn, ít xài
 
-- [ ] bookmark exporter/manager
+- [x] bookmark exporter/manager => export ra json, lười làm UI quá
 
 - [x] Google docs/sheet downloader => Done
 
@@ -144,12 +146,12 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 - [x] Thêm change logs cho từng scripts
 
-- [ ] Xem google extension howto [Link](https://developer.chrome.com/docs/extensions/how-to)
+- [x] Xem google extension howto [Link](https://developer.chrome.com/docs/extensions/how-to)
   - [x] record audio and video from another tab [link](https://developer.chrome.com/docs/extensions/how-to/web-platform/screen-capture) => **TIỀM NĂNG làm web visualize music**
   - [x] chụp ảnh website bằng chrome.tabs.captureVisibleTab => bỏ, không có tiềm năng
   - [x] chrome.tabCapture [link](https://developer.chrome.com/docs/extensions/reference/api/tabCapture) => access MediaStream of current tab => phải là 1 page trong extension mới truy cập được => không tiềm năng
 
-- [ ] Thêm UI cho get all friends fb
+- [x] Thêm UI cho get all friends fb => ???
 
 - [x] <https://github.com/lelinhtinh/Userscript>
 

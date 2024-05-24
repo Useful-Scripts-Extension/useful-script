@@ -6,7 +6,7 @@ export default {
   },
   description: {
     en: "Taking a screenshot of an entire webpage",
-    vi: "Tạo ảnh chụp màn hình toàn bộ website",
+    vi: "Tạo 1 ảnh chụp màn hình chứa toàn bộ nội dung website",
   },
 
   popupScript: {

@@ -91,6 +91,7 @@
   background-color: #000b;
   z-index: 2147483647;
   overflow: hidden;
+  text-align: left !important;
 }
 
 .ufs-toolbar {

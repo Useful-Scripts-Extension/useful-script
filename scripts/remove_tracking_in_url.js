@@ -22,12 +22,34 @@ export default {
     vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...<br/>${ul}`,
   },
 
-  infoLink: () => {
-    window.open(
-      chrome?.runtime?.getURL?.("/pages/viewScriptSource/index.html") +
-        "?file=remove_tracking_in_url_rules_simplified"
-    );
-  },
+  buttons: [
+    {
+      icon: '<i class="fa-solid fa-hashtag"></i>',
+      name: {
+        vi: "Xem danh sách tham số",
+        en: "View list parameters",
+      },
+      onClick: () => {
+        window.open(
+          chrome?.runtime?.getURL?.("/pages/viewScriptSource/index.html") +
+            "?file=remove_tracking_in_url_rules_simplified"
+        );
+      },
+    },
+    {
+      icon: '<i class="fa-solid fa-list"></i>',
+      name: {
+        vi: "Dynamic rules editor",
+        en: "Dynamic rules editor",
+      },
+      onClick: () =>
+        window.open(
+          chrome.runtime.getURL(
+            "/scripts/net-request-rules/dynamicRulesEditor/index.html"
+          )
+        ),
+    },
+  ],
 
   changeLogs: {
     ["2024-05-14"]: "init",
@@ -106,14 +128,6 @@ export default {
       chrome.declarativeNetRequest.updateDynamicRules({
         removeRuleIds: ids,
       });
-    },
-
-    onClick: () => {
-      window.open(
-        chrome.runtime.getURL(
-          "scripts/net-request-rules/dynamicRulesEditor/index.html"
-        )
-      );
     },
   },
 };

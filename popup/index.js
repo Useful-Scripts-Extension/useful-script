@@ -160,8 +160,11 @@ function createScriptButton(script, isFavorite = false) {
 
   // button checker
   if (canAutoRun(script)) {
+    const checkmarkContainer = document.createElement("div");
+    checkmarkContainer.setAttribute("data-flow", "right");
+
     const checkmark = document.createElement("button");
-    checkmark.className = "checkmark tooltip";
+    checkmark.className = "checkmark";
     checkmark.onclick = async (e) => {
       let oldVal = await isActiveScript(script.id);
       let newVal = !oldVal;
@@ -174,11 +177,12 @@ function createScriptButton(script, isFavorite = false) {
 
       setActiveScript(script.id, newVal);
       trackEvent(script.id + (newVal ? "-ON" : "-OFF"));
-      updateButtonChecker(script, buttonContainer, newVal);
+      updateButtonChecker(script, checkmarkContainer, newVal);
     };
 
-    buttonContainer.appendChild(checkmark);
-    updateButtonChecker(script, buttonContainer);
+    checkmarkContainer.appendChild(checkmark);
+    buttonContainer.appendChild(checkmarkContainer);
+    updateButtonChecker(script, checkmarkContainer);
   }
 
   // button
@@ -234,31 +238,12 @@ function createScriptButton(script, isFavorite = false) {
     button.appendChild(badgeContainer);
   }
 
-  // button icon
+  // script icon
   if (script.icon && typeof script.icon === "string") {
-    // image icon
-    if (
-      script.icon.startsWith("/") ||
-      script.icon.startsWith("http://") ||
-      script.icon.startsWith("https://") ||
-      script.icon.startsWith("data:image")
-    ) {
-      const icon = document.createElement("img");
-      icon.classList.add("icon-img");
-      icon.src = script.icon;
-      button.appendChild(icon);
-    }
-
-    // text/html icon
-    else {
-      const icon = document.createElement("span");
-      icon.classList.add("icon-html");
-      icon.innerHTML = script.icon;
-      button.appendChild(icon);
-    }
+    button.appendChild(createIcon(script.icon));
   }
 
-  // button title
+  // script title
   const title = document.createElement("span");
   title.classList.add("btn-title");
   title.innerHTML = t(script.name);
@@ -267,28 +252,30 @@ function createScriptButton(script, isFavorite = false) {
   const more = document.createElement("span");
   more.classList.add("more");
 
-  // what this? button
-  if (script.infoLink) {
-    const infoBtn = document.createElement("div");
-    infoBtn.innerHTML = `<i class="fa-regular fa-circle-question"></i>`;
-    infoBtn.className = "more-item";
-    if (typeof script.infoLink === "string") {
-      infoBtn.title = t({
-        en: "View info/demo",
-        vi: "Xem giới thiệu/demo",
-      });
-      infoBtn.setAttribute("data-tooltip", infoBtn.title);
-      infoBtn.setAttribute("data-flow", "left");
-    }
-    infoBtn.onclick = (e) => {
+  // script buttons
+  let scriptBtns = script.buttons ?? [];
+  if (typeof script.infoLink === "string")
+    scriptBtns.unshift({
+      icon: `<i class="fa-regular fa-circle-question"></i>`,
+      name: { en: "Info", vi: "Thông tin" },
+      onClick: () => window.open(script.infoLink),
+    });
+  scriptBtns.forEach((btnConfig) => {
+    const btn = document.createElement("div");
+    btn.appendChild(createIcon(btnConfig.icon));
+    btn.classList.add("more-item");
+    const title = t(btnConfig.name);
+    btn.setAttribute("data-tooltip", title);
+    btn.setAttribute("data-flow", "left");
+    btn.onclick = (e) => {
+      // prevent to trigger other script's onClick funcs
       e.stopPropagation();
       e.preventDefault();
-      trackEvent(script.id + "-INFO");
-      if (typeof script.infoLink === "string") window.open(script.infoLink);
-      if (typeof script.infoLink === "function") script.infoLink();
+      trackEvent(script.id + "-BUTTON-" + title);
+      btnConfig.onClick();
     };
-    more.appendChild(infoBtn);
-  }
+    more.appendChild(btn);
+  });
 
   // add to favorite button
   const addFavoriteBtn = document.createElement("div");
@@ -310,12 +297,14 @@ function createScriptButton(script, isFavorite = false) {
   // view source button
   const viewSourceBtn = document.createElement("div");
   viewSourceBtn.innerHTML = `<i class="fa-solid fa-code"></i>`;
-  viewSourceBtn.title = t({
-    en: "View script source",
-    vi: "Xem mã nguồn",
-  });
   viewSourceBtn.className = "more-item";
-  viewSourceBtn.setAttribute("data-tooltip", viewSourceBtn.title);
+  viewSourceBtn.setAttribute(
+    "data-tooltip",
+    t({
+      en: "View script source",
+      vi: "Xem mã nguồn",
+    })
+  );
   viewSourceBtn.setAttribute("data-flow", "left");
   viewSourceBtn.onclick = (e) => {
     e.stopPropagation();
@@ -330,15 +319,6 @@ function createScriptButton(script, isFavorite = false) {
   const tooltip = document.createElement("span");
   tooltip.classList.add("tooltiptext");
   tooltip.innerHTML = t(script.description);
-
-  // if (script.infoLink) {
-  //   tooltip.innerHTML +=
-  //     "<br/><br/>" +
-  //     t({
-  //       vi: "<b>Bấm ? để xem chi tiết<b/>",
-  //       en: "<b>Click ? for more details<b/>",
-  //     });
-  // }
 
   if (script.description?.img) {
     tooltip.innerHTML += `<img src="${script.description.img}" style="width:80vw" />`;
@@ -358,39 +338,66 @@ function createScriptButton(script, isFavorite = false) {
   return buttonContainer;
 }
 
+function createIcon(srcOrHtml) {
+  // image icon
+  if (
+    srcOrHtml.startsWith("/") ||
+    srcOrHtml.startsWith("http://") ||
+    srcOrHtml.startsWith("https://") ||
+    srcOrHtml.startsWith("data:image")
+  ) {
+    const img = document.createElement("img");
+    img.classList.add("icon-img");
+    img.src = srcOrHtml;
+    return img;
+  }
+
+  // text/html icon: usually fontAwesome icon
+  else {
+    const span = document.createElement("span");
+    span.classList.add("icon-html");
+    span.innerHTML = srcOrHtml;
+    return span;
+  }
+}
+
 function updateFavBtn(btn, isFavorite) {
   let i = btn.querySelector("i");
   i.classList.toggle("active", isFavorite);
   i.classList.toggle("fa-regular", !isFavorite);
   i.classList.toggle("fa-solid", isFavorite);
-  btn.title = isFavorite
-    ? t({
-        en: "Remove from favorite",
-        vi: "Xoá khỏi yêu thích",
-      })
-    : t({
-        en: "Add to farovite",
-        vi: "Thêm vào yêu thích",
-      });
-  btn.setAttribute("data-tooltip", btn.title);
+  btn.setAttribute(
+    "data-tooltip",
+    isFavorite
+      ? t({
+          en: "Remove from favorite",
+          vi: "Xoá khỏi yêu thích",
+        })
+      : t({
+          en: "Add to farovite",
+          vi: "Thêm vào yêu thích",
+        })
+  );
 }
 
-async function updateButtonChecker(script, button, val) {
-  let checkmark = button.querySelector(".checkmark");
+async function updateButtonChecker(script, checkmarkContainer, val) {
+  let checkmark = checkmarkContainer.querySelector(".checkmark");
   if (!checkmark) return;
+  let tooltip = "";
   if (val ?? (await isActiveScript(script.id))) {
     checkmark.classList.add("active");
-    checkmark.title = t({
+    tooltip = t({
       vi: "Tắt tự động chạy",
       en: "Turn off Autorun",
     });
   } else {
     checkmark.classList.remove("active");
-    checkmark.title = t({
+    tooltip = t({
       vi: "Bật tự động chạy",
       en: "Turn on Autorun",
     });
   }
+  checkmarkContainer.setAttribute("data-tooltip", tooltip);
 }
 
 async function runScript(script) {
@@ -473,8 +480,8 @@ function initSettings() {
         en: "Reload extension?",
       }),
       text: t({
-        vi: "Các chức năng tự chạy sẽ lỗi => cần tải lại trang web.",
-        en: "Autorun scripts will be turned off => you have to reload website.",
+        vi: "Các chức năng tự chạy sẽ mất kết nối, gây lỗi => cần tải lại các trang web để hoạt động trở lại.",
+        en: "Autorun scripts will be disconnected => you have to reload websites.",
       }),
       showCancelButton: true,
       confirmButtonText: t({ vi: "Khởi động lại", en: "Reload" }),

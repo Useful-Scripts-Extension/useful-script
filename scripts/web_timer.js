@@ -1,3 +1,8 @@
+const graphIcon = '<i class="fa-solid fa-chart-pie"></i>';
+function openGraph() {
+  window.open("/scripts/web_timer.html", "_self");
+}
+
 export default {
   icon: '<i class="fa-solid fa-hourglass-half fa-lg fa-spin-pulse"></i>',
   name: {
@@ -5,22 +10,34 @@ export default {
     vi: "Thời gian lướt web",
   },
   description: {
-    en: "Keep track of how you spend your time on the web.<br/><h3>CLICK TO OPEN GRAPH.</h3>",
-    vi: "Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/><h3>BẤM ĐỂ XEM BIỂU ĐỒ.</h3>",
+    en: `Keep track of how you spend your time on the web.<br/>
+    <h3>CLICK ${graphIcon} TO OPEN GRAPH.</h3>`,
+    vi: `Lưu lại / Kiểm tra thời gian lướt web của bạn cho từng trang web.<br/>
+    <h3>BẤM NÚT ${graphIcon} ĐỂ XEM BIỂU ĐỒ.</h3>`,
     img: "/scripts/web_timer.png",
   },
+
+  buttons: [
+    {
+      icon: graphIcon,
+      name: {
+        en: "Open Graph",
+        vi: "Xem biểu đồ",
+      },
+      onClick: openGraph,
+    },
+  ],
 
   changeLogs: {
     ["2024-05-10"]: "init",
   },
 
   popupScript: {
-    onClick: () => {
-      window.open("/scripts/web_timer.html", "_self");
-    },
+    onClick: openGraph,
   },
 
   contentScript: {
+    runInAllFrames: true, // to able to track user active events in all frames
     onDocumentStart: async (details) => {
       const { frameId, frameType } = details;
       const isMainFrame = frameType === "outermost_frame";
@@ -398,7 +415,6 @@ export default {
         if (windowLoaded) document.title = titleCache;
       }
     },
-    runInAllFrames: true, // to able to tracking user events in all frames
   },
 };
 

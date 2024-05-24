@@ -1,3 +1,5 @@
+const updateIcon = '<i class="fa-regular fa-circle-down"></i>';
+
 export default {
   icon: "https://chongluadao.vn/wp-content/uploads/2021/04/cropped-favicon-150x150.png",
   name: {
@@ -5,17 +7,28 @@ export default {
     vi: "Chống lừa đảo",
   },
   description: {
-    en:
-      "Alert when you access a dangerous website, malware or spy content<br/>" +
-      "Click ? to fetch newest websites database<br/><br/>" +
-      "<p style='color:yellow'>Click to analyze current website</p>",
-    vi:
-      "Cảnh báo khi bạn truy cập các trang web có nguy cơ lừa đảo, giả mạo, có nội dung xấu hoặc phần mềm độc hại<br/>" +
-      "Click ? để cập nhật dữ liệu website giả mạo mới nhất<br/><br/>" +
-      "<p style='color:yellow'>Click để tính toán độ an toàn của trang web hiện tại</p>",
+    en: `Alert when you access a dangerous website, malware or spy content<br/>
+      <ul>
+        <li style='color:yellow'>Click to analyze current website</li>
+        <li>Click ${updateIcon} to fetch newest websites database</li>
+      </ul>`,
+    vi: `Cảnh báo khi bạn truy cập các trang web có nguy cơ lừa đảo, giả mạo, có nội dung xấu hoặc phần mềm độc hại<br/>
+      <ul>
+        <li style='color:yellow'>Click để tính toán độ an toàn của trang web hiện tại</li>
+        <li>Click ${updateIcon} để cập nhật dữ liệu website giả mạo mới nhất</li>
+      </ul>`,
   },
 
-  infoLink: onEnable,
+  buttons: [
+    {
+      icon: updateIcon,
+      name: {
+        vi: "Cập nhật dữ liệu",
+        en: "Update database",
+      },
+      onClick: onEnable,
+    },
+  ],
 
   changeLogs: {
     "2024-05-20": "init",
@@ -155,8 +168,8 @@ async function onEnable() {
   try {
     setLoadingText(
       t({
-        vi: "Đang tải danh sách trang web ĐỘC HẠI...",
-        en: "Downloading DANGER websites list...",
+        vi: "Bạn chờ một chút nhé (~ 30s)<br/>Đang tải danh sách trang web ĐỘC HẠI...",
+        en: "Please wait (~ 30s)<br/>Downloading DANGER websites list...",
       })
     );
     let res = await fetch("https://api.chongluadao.vn/v2/blacklist");
