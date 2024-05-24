@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: `https://www.typewolf.com/favicon.ico`,
   name: {
@@ -10,9 +12,8 @@ export default {
   },
 
   pageScript: {
-    onClick: function () {
+    onClick: async function () {
       // https://www.typewolf.com/type-sample
-
       UfsGlobal.DOM.injectScriptSrc(
         "https://www.typesample.com/assets/typesample.js?r=" +
           Math.random() * 99999999,

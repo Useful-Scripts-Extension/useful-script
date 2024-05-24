@@ -1,3 +1,6 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { showLoading, runScriptInCurrentTab } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-solid fa-file-export fa-lg"></i>',
   name: {
@@ -13,11 +16,6 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const { runScriptInCurrentTab, showLoading } = await import(
-        "./helpers/utils.js"
-      );
-      const { downloadData } = UfsGlobal.Utils;
-
       const c = (e) => {
         try {
           return e();
@@ -96,7 +94,7 @@ export default {
         let saved = await getAllSaved(uid, fb_dtsg);
 
         if (saved.length)
-          downloadData(
+          UfsGlobal.Utils.downloadData(
             JSON.stringify(saved, null, 4),
             "saved_facebook",
             "json"

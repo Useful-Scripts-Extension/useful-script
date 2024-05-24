@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.document",
   name: {

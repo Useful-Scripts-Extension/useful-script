@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.ouiseo.com/",
   name: {

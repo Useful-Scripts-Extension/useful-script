@@ -1,3 +1,12 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import {
+  attachDebugger,
+  detachDebugger,
+  getCurrentTab,
+  sendDevtoolCommand,
+  showLoading,
+} from "./helpers/utils.js";
+
 export default {
   icon: `https://lh3.googleusercontent.com/qz7_-nogEpLsoxevV_IQbz0UesDFWsbmKyv_vOGUhMRSu6pEYAJCUM50QkTBvw8saVNSmwB0DBpLSBZgfpmAYL3bgh4=w128-h128-e365-rj-sc0x00ffffff`,
   name: {
@@ -11,15 +20,6 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const {
-        attachDebugger,
-        detachDebugger,
-        getCurrentTab,
-        sendDevtoolCommand,
-        showLoading,
-      } = await import("./helpers/utils.js");
-      const { downloadURL } = UfsGlobal.Utils;
-
       const { setLoadingText, closeLoading } = showLoading("Đang tạo PDF...");
       let tab = await getCurrentTab();
       try {
@@ -32,7 +32,10 @@ export default {
         await detachDebugger(tab);
 
         // https://stackoverflow.com/a/59352848/11898496
-        downloadURL("data:application/pdf;base64," + res.data, "web.pdf");
+        UfsGlobal.Utils.downloadURL(
+          "data:application/pdf;base64," + res.data,
+          "web.pdf"
+        );
       } catch (e) {
         if (
           confirm(

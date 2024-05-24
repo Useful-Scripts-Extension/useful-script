@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "https://s-f.scribdassets.com/scribd.ico?014e86d16?v=5",
   name: {
@@ -12,7 +14,7 @@ export default {
   whiteList: ["https://www.scribd.com/*"],
 
   contentScript: {
-    onDocumentIdle: () => {
+    onDocumentIdle: async () => {
       UfsGlobal.DOM.injectCssFile(
         chrome.runtime.getURL("scripts/scribd_bypassPreview.css")
       );

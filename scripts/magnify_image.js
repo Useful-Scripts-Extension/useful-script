@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-expand fa-lg fa-bounce"></i>',
   name: {
@@ -42,7 +44,7 @@ export default {
   },
 
   contentScript: {
-    onClick: () => {
+    onClick: async () => {
       const { remove: removeNoti, setPosition } = UfsGlobal.DOM.notify({
         msg: "Useful-script: Click any image to magnify",
         duration: 99999,
@@ -78,9 +80,8 @@ export default {
       createPreview(details?.srcUrl);
     },
 
-    onDocumentStart: () => {
+    onDocumentStart: async () => {
       injectCss();
-
       let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
         UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
         let mouse = UfsGlobal.DOM.getMousePos();

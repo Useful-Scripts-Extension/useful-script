@@ -1,3 +1,7 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { showLoading, runScriptInCurrentTab } from "./helpers/utils.js";
+import { shared as tiktok_downloadVideo } from "./tiktok_downloadVideo.js";
+
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
@@ -19,13 +23,6 @@ export default {
   popupScript: {
     onClick: async function () {
       const { t } = await import("../popup/helpers/lang.js");
-      const { showLoading, runScriptInCurrentTab } = await import(
-        "./helpers/utils.js"
-      );
-      const { shared: tiktok_downloadVideo } = await import(
-        "./tiktok_downloadVideo.js"
-      );
-
       const { closeLoading, setLoadingText } = showLoading(
         t({ vi: "Đang tìm video id..", en: "Finding video id..." })
       );
@@ -118,7 +115,6 @@ export const shared = {
     return `https://www.tiktok.com/@${author}/video/${videoId}`;
   },
   getListVideoIdInWebsite: async function () {
-    const { runScriptInCurrentTab } = await import("./helpers/utils.js");
     return await runScriptInCurrentTab(() => {
       const { getOverlapScore, closest } = UfsGlobal.DOM;
 

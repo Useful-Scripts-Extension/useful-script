@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: `https://www.wappalyzer.com/favicon.ico`,
   name: {

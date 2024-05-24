@@ -1,3 +1,6 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -12,9 +15,6 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const { showLoading } = await import("./helpers/utils.js");
-      const { downloadData } = UfsGlobal.Utils;
-
       const accessToken = prompt("Nhập access token:", "");
       if (!accessToken) return;
       const albumId = prompt("Nhập album id: ", "");
@@ -110,7 +110,7 @@ export default {
                 " links ảnh/video.\nBấm OK để tải xuống."
             )
           )
-            downloadData(links.join("\n"), albumId, ".txt");
+            UfsGlobal.Utils.downloadData(links.join("\n"), albumId, ".txt");
         })
         .catch((e) => {
           alert("ERROR: " + e);

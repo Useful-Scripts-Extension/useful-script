@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
   name: {
@@ -14,7 +16,7 @@ export default {
   },
 
   popupScript: {
-    onClick: function () {
+    onClick: async function () {
       chrome.bookmarks.getTree((tree) => {
         console.log(tree);
 

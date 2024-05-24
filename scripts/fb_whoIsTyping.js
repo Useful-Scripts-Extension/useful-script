@@ -1,3 +1,6 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { getUserInfoFromUid } from "./fb_GLOBAL.js";
+
 export default {
   icon: '<i class="fa-regular fa-comment-dots fa-lg"></i>',
   name: {
@@ -16,8 +19,6 @@ export default {
 
   pageScript: {
     onDocumentStart: async () => {
-      const { getUserInfoFromUid } = await import("./fb_GLOBAL.js");
-
       const key = "ufs_fb_whoIsTyping";
       try {
         window.ufs_fb_whoIsTyping = JSON.parse(
@@ -90,18 +91,15 @@ export default {
         if (!exist) {
           exist = document.createElement("div");
           exist.id = divId;
-          exist.innerHTML = /*html*/ `<div class="ufs-header clearfix">
-          <button class="ufs-clear-btn">X</button>
-          <button class="ufs-minimize-btn">-</button>
-        </div>`;
-          exist.querySelector(".ufs-header .ufs-minimize-btn").onclick = (
-            e
-          ) => {
+          exist.innerHTML = `<div class="ufs-header clearfix">
+            <button class="ufs-clear-btn">X</button>
+            <button class="ufs-minimize-btn">-</button>
+          </div>`;
+
+          exist.querySelector(".ufs-header .ufs-minimize-btn").onclick = (e) =>
             exist.classList.toggle("collapsed");
-          };
-          exist.querySelector(".ufs-header .ufs-clear-btn").onclick = (e) => {
-            if (confirm("Bạn có chắc muốn xoá hết thông báo?")) exist.remove();
-          };
+          exist.querySelector(".ufs-header .ufs-clear-btn").onclick = (e) =>
+            confirm("Bạn có chắc muốn xoá hết thông báo?") && exist.remove();
 
           document.body.appendChild(exist);
         }

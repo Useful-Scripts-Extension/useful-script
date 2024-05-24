@@ -10,10 +10,9 @@ export default {
   },
 
   popupScript: {
-    onClick: () => {
-      chrome.sessions.getRecentlyClosed({}, (data) => {
-        console.log(data);
-      });
+    onClick: async () => {
+      const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
+      console.log(UfsGlobal);
     },
 
     // fake window update screen

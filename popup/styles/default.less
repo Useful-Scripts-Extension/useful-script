@@ -316,40 +316,38 @@ option {
             z-index: 3;
             border: linear-gradient(rgb(210 213 219) 1px, transparent 1px), linear-gradient(to right, rgb(210 213 219) 1px, rgb(240 241 245) 1px);
 
-            .more .more-item {
-                margin-left: 5px;
-                opacity: 1;
-
-                i {
-                    width: auto;
-                }
-            }
-        }
-
-        .more {
             .more-item {
-                display: inline-block;
-
-                i {
-                    transition: all .2s;
-                }
-
-                &:hover i {
-                    transform: scale(1.5);
-                }
-
-                &[data-tooltip]:hover {
-                    transform: scale(1.1);
-                }
-
-                & i.active {
-                    color: @color_highlight;
-                    width: auto;
-                    margin-left: 5px;
-                    opacity: 1;
-                }
+                opacity: 1;
             }
         }
+
+        .more-item {
+            display: inline-block;
+            transition: all .2s ease;
+            margin-left: 5px;
+            opacity: 0;
+
+            i {
+                transition: all .2s ease;
+            }
+
+            &.active {
+                i {
+                    color: @color_highlight;
+                }
+
+                opacity: 1;
+            }
+
+            &:hover i {
+                transform: scale(1.5);
+            }
+
+            &[data-tooltip]:hover {
+                transform: scale(1.1);
+            }
+        }
+
 
         .btn-title {
             vertical-align: middle;

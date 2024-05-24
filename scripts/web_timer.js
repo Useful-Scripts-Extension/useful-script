@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 const graphIcon = '<i class="fa-solid fa-chart-pie"></i>';
 function openGraph() {
   window.open("/scripts/web_timer.html", "_self");
@@ -218,10 +220,10 @@ export default {
         let idleState = await getIdleState();
 
         if (idleState.isIdle) {
-          UfsGlobal.DOM.notify({
-            msg: `Useful script - Webtimer - IDLE state (${idleState.reason})`,
-            duration: 2000,
-          });
+          // UfsGlobal.DOM.notify({
+          //   msg: `Useful script - Webtimer - IDLE state (${idleState.reason})`,
+          //   duration: 2000,
+          // });
           if (SHOW_OVERLAY && !document.hidden) setShowOverlay(true);
         } else {
           setShowOverlay(false);

@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 // Helpers
 export async function fetchGraphQl(str, fb_dtsg) {
   var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);

@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-user-secret fa-lg"></i>',
   name: {

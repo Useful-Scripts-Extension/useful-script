@@ -1,8 +1,7 @@
 import * as utils from "../helpers/utils.js";
 import { allScripts } from "../index.js";
-import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/62806068/23648002
-
-console.log(UfsGlobal);
+import { UfsGlobal } from "../content-scripts/ufs_global.js";
+// import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/62806068/23648002
 
 const {
   convertBlobToBase64,
@@ -14,6 +13,7 @@ const {
 
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
 const CACHED = {
+  path: chrome.runtime.getURL("/scripts/"),
   activeScriptIds: [],
   badges: {},
 };
@@ -317,12 +317,13 @@ function listenNavigation() {
       try {
         const { tabId, frameId } = getDetailIds(details);
 
-        // inject ufsglobal, contentscript, pagescript before run any scripts
         if (eventChain === "onDocumentStart") {
           // clear badge cache on main frame
           if (details.frameId === 0) CACHED.badges[tabId] = [];
+          // inject ufs global
           injectUfsGlobal(tabId, frameId);
         }
+
         runScriptsTab(eventChain, MAIN, details);
         runScriptsTab(eventChain, ISOLATED, details);
         runScriptsBackground(eventChain, details);
@@ -393,19 +394,26 @@ function injectUfsGlobal(tabId, frameId) {
     { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
     { files: ["ufs_global.js"], world: MAIN },
   ].forEach(({ files, world }) => {
+    let paths = files.map((file) => CACHED.path + "content-scripts/" + file);
     utils.runScriptFile({
-      files: files.map((file) => "/scripts/content-scripts/" + file),
       target: {
         tabId: tabId,
         frameIds: [frameId],
       },
+      func: (paths, frameId) => {
+        paths.forEach((path) => {
+          import(path)
+            .then(() => console.log("Ufs import SUCCESS", frameId, path))
+            .catch((e) => console.error("Ufs import FAILED", frameId, e));
+        });
+      },
+      args: [paths, frameId],
       world: world,
     });
   });
 }
 
 function main() {
-  // listen change active scripts
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
     // areaName = "local" / "sync" / "managed" / "session" ...
@@ -437,17 +445,6 @@ function main() {
     trackEvent("ufs-INSTALLED");
 
     runScriptsBackground("runtime.onInstalled", null, reason, true);
-
-    // inject ufsGlobal to all frames in all tabs
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach((tab) => {
-        chrome.webNavigation.getAllFrames({ tabId: tab.id }, (frames) => {
-          frames.forEach((frame) => {
-            injectUfsGlobal(tab.id, frame.frameId);
-          });
-        });
-      });
-    });
   });
 
   chrome.action.setBadgeBackgroundColor({ color: "#666" });
@@ -459,5 +456,3 @@ try {
 } catch (e) {
   console.log("ERROR:", e);
 }
-
-// https://developer.chrome.com/docs/extensions/develop/migrate/blocking-web-requests

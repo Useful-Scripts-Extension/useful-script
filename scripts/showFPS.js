@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-gauge-high fa-lg"></i>',
   name: {
@@ -10,7 +12,7 @@ export default {
   },
 
   pageScript: {
-    onClick: function () {
+    onClick: async function () {
       UfsGlobal.DOM.injectScriptSrc(
         "//mrdoob.github.io/stats.js/build/stats.min.js",
         (success, error) => {

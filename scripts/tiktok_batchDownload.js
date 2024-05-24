@@ -1,3 +1,9 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import {
+  downloadTiktokVideoFromUrl,
+  downloadTiktokVideoFromId,
+} from "./tiktok_GLOBAL.js";
+
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
@@ -28,9 +34,6 @@ export default {
 
   pageScript: {
     onDocumentIdle: async () => {
-      const { downloadTiktokVideoFromUrl, downloadTiktokVideoFromId } =
-        await import("./tiktok_GLOBAL.js");
-
       let checkboxes = [];
 
       // Setup DOM

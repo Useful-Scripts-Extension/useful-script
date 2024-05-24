@@ -1,3 +1,7 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { getFbdtsg, getYourUserId, getStoryId } from "./fb_GLOBAL.js";
+import { emojiData } from "./fb_moreReactionStory_emoji.js";
+
 export default {
   icon: "😍",
   name: {
@@ -18,13 +22,6 @@ export default {
     // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
     // Source https://github.com/whoant/react-story-facebook
     onDocumentStart: async () => {
-      const { getFbdtsg, getYourUserId, getStoryId } = await import(
-        "./fb_GLOBAL.js"
-      );
-
-      // crawl emoji from https://emojipedia.org https://getemoji.com/
-      // Array.from(document.querySelectorAll('.emoji-list .emoji')).map(_ => _.textContent).join(',')
-      const { emojiData } = await import("./fb_moreReactionStory_emoji.js");
       loadModal(emojiData);
 
       function loadModal(EMOJI_LIST) {
@@ -36,7 +33,7 @@ export default {
           const user_id = await getYourUserId();
 
           window.ufs_reactStory = async (text) => {
-            const storyId = await getStoryId();
+            const storyId = getStoryId();
             if (!UfsGlobal.Utils.isEmoji(text)) {
               alert("Must be emoji");
               return;

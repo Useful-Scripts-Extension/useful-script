@@ -1,4 +1,4 @@
-// WARNING: avoid import anything here, use dynamic imports instead
+// WARNING: only import js inside scripts/ folder
 
 export default {
   icon: "",

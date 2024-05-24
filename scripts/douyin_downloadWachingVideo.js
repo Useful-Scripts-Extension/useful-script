@@ -12,16 +12,17 @@ export default {
 
   popupScript: {
     onClick: async function () {
+      const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
       const { runScriptInCurrentTab, showLoading } = await import(
         "./helpers/utils.js"
       );
 
-      const {
-        downloadURL,
-        downloadBlob,
-        getBlobFromUrlWithProgress,
-        formatSize,
-      } = UfsGlobal.Utils;
+      // const {
+      //   downloadURL,
+      //   downloadBlob,
+      //   getBlobFromUrlWithProgress,
+      //   formatSize,
+      // } = UfsGlobal.Utils;
 
       const { closeLoading, setLoadingText } = showLoading(
         "Đang tìm video url..."

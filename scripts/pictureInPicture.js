@@ -10,7 +10,9 @@ export default {
   },
 
   contentScript: {
-    onClick: function () {
+    onClick: async function () {
+      const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
+
       function findLargestPlayingVideoInViewport() {
         const videos = Array.from(document.querySelectorAll("video"))
           .filter((video) => video.readyState != 0)

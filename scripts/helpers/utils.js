@@ -59,14 +59,6 @@ export async function getNextDynamicRuleIds(count = 1) {
   return count === 1 ? result[0] : result;
 }
 
-export function debounce(func, delay) {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
 export async function hasUserId() {
   return !!(await Storage.get("userId"));
 }
@@ -444,14 +436,17 @@ export async function sendDevtoolCommand(tab, commandName, commandParams = {}) {
 // Merge image uri
 // https://stackoverflow.com/a/50658710/11898496
 // https://stackoverflow.com/a/50658710/11898496
-export async function captureVisibleTab(options = {}, willDownload = true) {
-  let imgData = await chrome.tabs.captureVisibleTab(null, {
-    format: options.format || "png",
-    quality: options.quality || 100,
-  });
-  willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
-  return imgData;
-}
+
+// need to import UfsGlobal !!! => impact performace?
+
+// export async function captureVisibleTab(options = {}, willDownload = true) {
+//   let imgData = await chrome.tabs.captureVisibleTab(null, {
+//     format: options.format || "png",
+//     quality: options.quality || 100,
+//   });
+//   willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
+//   return imgData;
+// }
 
 // #endregion
 

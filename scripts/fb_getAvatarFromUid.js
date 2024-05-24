@@ -1,3 +1,7 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { getUserAvatarFromUid } from "./fb_GLOBAL.js";
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-solid fa-user fa-lg"></i>',
   name: {
@@ -11,10 +15,6 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const { getUserAvatarFromUid } = await import("./fb_GLOBAL.js");
-      const { showLoading } = await import("./helpers/utils.js");
-      const { downloadData } = UfsGlobal.Utils;
-
       let uids = prompt("Nhập danh sách uid, Mỗi uid 1 dòng:");
       if (!uids) return;
 
@@ -40,7 +40,7 @@ export default {
               "Tìm được " + urls.length + " avatars.\nBấm Ok để tải xuống."
             )
           )
-            downloadData(
+            UfsGlobal.Utils.downloadData(
               urls.join("\n"),
               `uid-${new Date().toLocaleString()}.txt`
             );

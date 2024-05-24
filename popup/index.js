@@ -5,11 +5,11 @@ import {
   removeAccents,
   setActiveScript,
   trackEvent,
-  debounce,
   Storage,
   checkWillRun,
   runScriptInTabWithEventChain,
 } from "../scripts/helpers/utils.js";
+import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import {
   LANG,
@@ -277,23 +277,6 @@ function createScriptButton(script, isFavorite = false) {
     more.appendChild(btn);
   });
 
-  // add to favorite button
-  const addFavoriteBtn = document.createElement("div");
-  addFavoriteBtn.innerHTML = `<i class="fa-solid fa-star"></i>`;
-  addFavoriteBtn.className = "more-item";
-  addFavoriteBtn.setAttribute("data-flow", "left");
-  updateFavBtn(addFavoriteBtn, isFavorite);
-  addFavoriteBtn.onclick = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    trackEvent(script.id + (isFavorite ? "-REMOVE-FAVORITE" : "-ADD-FAVORITE"));
-    favoriteScriptsSaver.toggle(script);
-    isFavorite = !isFavorite;
-    updateFavBtn(addFavoriteBtn, isFavorite);
-    refreshSpecialTabs();
-  };
-  more.appendChild(addFavoriteBtn);
-
   // view source button
   const viewSourceBtn = document.createElement("div");
   viewSourceBtn.innerHTML = `<i class="fa-solid fa-code"></i>`;
@@ -314,6 +297,23 @@ function createScriptButton(script, isFavorite = false) {
     viewScriptSource(script);
   };
   more.appendChild(viewSourceBtn);
+
+  // add to favorite button
+  const addFavoriteBtn = document.createElement("div");
+  addFavoriteBtn.innerHTML = `<i class="fa-solid fa-star"></i>`;
+  addFavoriteBtn.className = "more-item";
+  addFavoriteBtn.setAttribute("data-flow", "left");
+  updateFavBtn(addFavoriteBtn, isFavorite);
+  addFavoriteBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    trackEvent(script.id + (isFavorite ? "-REMOVE-FAVORITE" : "-ADD-FAVORITE"));
+    favoriteScriptsSaver.toggle(script);
+    isFavorite = !isFavorite;
+    updateFavBtn(addFavoriteBtn, isFavorite);
+    refreshSpecialTabs();
+  };
+  more.appendChild(addFavoriteBtn);
 
   // tooltip
   const tooltip = document.createElement("span");
@@ -363,9 +363,9 @@ function createIcon(srcOrHtml) {
 
 function updateFavBtn(btn, isFavorite) {
   let i = btn.querySelector("i");
-  i.classList.toggle("active", isFavorite);
   i.classList.toggle("fa-regular", !isFavorite);
   i.classList.toggle("fa-solid", isFavorite);
+  btn.classList.toggle("active", isFavorite);
   btn.setAttribute(
     "data-tooltip",
     isFavorite
@@ -647,7 +647,7 @@ function restoreScroll() {
   });
 }
 
-const onScrollEnd = debounce(() => {
+const onScrollEnd = UfsGlobal.Utils.debounce(() => {
   saveScroll();
   scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
 }, 100);

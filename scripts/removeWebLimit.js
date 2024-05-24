@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-gun fa-lg"></i>',
   name: {
@@ -29,7 +31,7 @@ export default {
   },
 
   pageScript: {
-    onDocumentStart: () => {
+    onDocumentStart: async () => {
       // @description:zh    通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
       // @description:zh-CN 通杀大部分网站，可以解除禁止复制、剪切、选择文本、右键菜单的限制。
       // @description:zh-TW 通殺大部分網站，可以解除禁止復制、剪切、選擇文本、右鍵菜單的限制。

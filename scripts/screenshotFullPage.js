@@ -1,3 +1,12 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import {
+  attachDebugger,
+  detachDebugger,
+  getCurrentTab,
+  sendDevtoolCommand,
+  showLoading,
+} from "./helpers/utils.js";
+
 export default {
   icon: "https://gofullpage.com/favicon.ico",
   name: {
@@ -11,16 +20,6 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const {
-        attachDebugger,
-        detachDebugger,
-        getCurrentTab,
-        sendDevtoolCommand,
-        showLoading,
-      } = await import("./helpers/utils.js");
-
-      const { downloadURL } = UfsGlobal.Utils;
-
       const { setLoadingText, closeLoading } = showLoading(
         "Đang lấy kích thước trang..."
       );
@@ -44,7 +43,10 @@ export default {
           console.log(img);
 
           setLoadingText("Đang lưu ảnh...");
-          downloadURL("data:image/png;base64," + img.data, "fullpage.png");
+          UfsGlobal.Utils.downloadURL(
+            "data:image/png;base64," + img.data,
+            "fullpage.png"
+          );
         }
         await detachDebugger(tab);
       } catch (e) {

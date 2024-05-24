@@ -1,3 +1,6 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { showLoading } from "./helpers/utils.js";
+
 export default {
   icon: '<i class="fa-regular fa-images fa-lg"></i>',
   name: {
@@ -11,9 +14,6 @@ export default {
 
   popupScript: {
     onClick: async () => {
-      const { showLoading } = await import("./helpers/utils.js");
-      const { downloadData } = UfsGlobal.Utils;
-
       const WAIT_BEFORE_NEXT_FETCH = 500;
       const FB_API_HOST = "https://graph.facebook.com/v12.0";
       const MEDIA_TYPE = {
@@ -206,7 +206,7 @@ export default {
             alert(
               "Các link ảnh sẽ được lưu vào file\nBạn có thể bỏ file vào IDM để tải tất cả hình ảnh"
             );
-            downloadData(urls, "urls.txt");
+            UfsGlobal.Utils.downloadData(urls, "urls.txt");
           })
           .catch((err) => {
             console.log(err);
