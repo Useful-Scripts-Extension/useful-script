@@ -90,10 +90,10 @@ export default {
 };
 
 export const _storage = {
-  async get(key) {
+  async get(key, defaultValue) {
     let data = await chrome.storage.local.get([key]);
     let pass = data?.[key];
-    return pass;
+    return pass ?? defaultValue;
   },
   async set(key, value) {
     await chrome.storage.local.set({ [key]: value });
@@ -121,7 +121,7 @@ export const locker = {
   sites: {
     storageKey: "auto_lock_website_lockedWebsites",
     get() {
-      return _storage.get(this.storageKey) || [];
+      return _storage.get(this.storageKey, []);
     },
     async add(site) {
       let currentSites = await this.get();

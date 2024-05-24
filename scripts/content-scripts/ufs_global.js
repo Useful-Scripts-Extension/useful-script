@@ -32,6 +32,7 @@ export const UfsGlobal = {
     injectCssFile,
     getTrustedPolicy,
     createTrustedHtml,
+    executeScript,
     injectScriptSrc,
     injectScriptSrcAsync,
     isElementInViewport,
@@ -692,6 +693,10 @@ function getTrustedPolicy() {
 function createTrustedHtml(html) {
   let policy = getTrustedPolicy();
   return policy.createHTML(html);
+}
+function executeScript(code) {
+  let policy = getTrustedPolicy();
+  return policy.createScript(code);
 }
 function injectScriptSrc(src, callback) {
   let policy = getTrustedPolicy();

@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [ ] Fix simple allow copy <https://chrome.google.com/webstore/detail/aefehdhdciieocakfobpaaolhipkcpgc>
+
 - [ ] optimize prevent close browser on last tab, try debounce/throttle
 
 - [ ] import UfsGlobal thay vì để global + tách nhỏ UfsGobal

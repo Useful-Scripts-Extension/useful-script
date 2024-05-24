@@ -137,13 +137,17 @@ export default {
 
         return text;
       }
-      let text = await getAllOrders();
 
-      document.write(
-        "<h2>Dữ liệu đơn hàng. Copy nội dung và dán vào file excel để xem kết quả</h2><textarea>" +
-          text +
-          "</textarea>"
-      );
+      try {
+        let text = await getAllOrders();
+        document.write(
+          "<h2>Dữ liệu đơn hàng. Copy nội dung và dán vào file excel để xem kết quả</h2><textarea>" +
+            text +
+            "</textarea>"
+        );
+      } catch (e) {
+        alert("ERROR: " + e);
+      }
     },
   },
 };

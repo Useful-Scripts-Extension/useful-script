@@ -55,6 +55,7 @@ export default {
         let totalShipDiscount = 0;
         let shopeeVouchers = 0;
         let shopVouchers = 0;
+        let allOrders = [];
 
         while (pulling) {
           setLoadingText("Đang tải đơn hàng thứ " + (offset + 1) + "...");
@@ -84,15 +85,17 @@ export default {
             totalItems += order.info_card.product_count;
 
             let orderId = order.info_card.order_id;
-            let _ = await getOrderDetail(orderId);
-            totalShip += _.shippingSpent / 1e5;
-            shopeeVouchers += _.shopee_voucher / 1e5;
-            shopVouchers += _.shop_voucher / 1e5;
-            totalShipDiscount += _.shipping_discount / 1e5;
+            let detail = await getOrderDetail(orderId);
+            orders[i].detail = detail.json;
+            totalShip += detail.shippingSpent / 1e5;
+            shopeeVouchers += detail.shopee_voucher / 1e5;
+            shopVouchers += detail.shop_voucher / 1e5;
+            totalShipDiscount += detail.shipping_discount / 1e5;
 
             totalOrders++;
           }
 
+          allOrders.push(...orders);
           pulling = orders.length >= limit;
           offset += limit;
         }
@@ -106,6 +109,7 @@ export default {
           totalShipDiscount,
           shopeeVouchers,
           shopVouchers,
+          allOrders,
         };
       }
 
@@ -143,6 +147,7 @@ export default {
           shipping_discount,
           shopee_voucher,
           shop_voucher,
+          json,
         };
       }
 
@@ -181,6 +186,10 @@ export default {
             .join("\n")
         );
         console.table(stats);
+        UfsGlobal.Utils.downloadData(
+          JSON.stringify(data.allOrders, null, 4),
+          "shopee_orders.json"
+        );
       } catch (e) {
         alert("ERROR: " + e);
       } finally {

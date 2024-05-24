@@ -16,7 +16,7 @@ export default {
       // source code from: https://bookmarklet.vercel.app/
 
       if (window.ouiseo === undefined) {
-        await UfsGlobal.DOM.injectScriptSrc(
+        await UfsGlobal.DOM.injectScriptSrcAsync(
           "//carlsednaoui.s3.amazonaws.com/ouiseo/ouiseo.min.js",
           (success, fail) => {
             if (success) {

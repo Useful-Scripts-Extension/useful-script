@@ -485,6 +485,7 @@ function initSettings() {
       }),
       showCancelButton: true,
       confirmButtonText: t({ vi: "Khởi động lại", en: "Reload" }),
+      cancelButtonText: t({ vi: "Huỷ", en: "Cancel" }),
     }).then((res) => {
       if (res.isConfirmed) chrome.runtime.reload();
     });

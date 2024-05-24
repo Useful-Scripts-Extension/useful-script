@@ -400,14 +400,16 @@ function injectUfsGlobal(tabId, frameId) {
         tabId: tabId,
         frameIds: [frameId],
       },
-      func: (paths, frameId) => {
+      func: (paths, frameId, world) => {
         paths.forEach((path) => {
           import(path)
-            .then(() => console.log("Ufs import SUCCESS", frameId, path))
-            .catch((e) => console.error("Ufs import FAILED", frameId, e));
+            .then(() => console.log("Ufs import SUCCESS", frameId, world, path))
+            .catch((e) =>
+              console.error("Ufs import FAILED", frameId, world, e)
+            );
         });
       },
-      args: [paths, frameId],
+      args: [paths, frameId, world],
       world: world,
     });
   });

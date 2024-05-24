@@ -10,10 +10,9 @@ export default {
   },
 
   contentScript: {
-    onClick: function () {
+    onDocumentStart: function () {
       // https://chrome.google.com/webstore/detail/simple-allow-copy/aefehdhdciieocakfobpaaolhipkcpgc
-
-      const unlocker = (() => {
+      window.unlocker = (() => {
         // a raw script to be into page,
         // because content_script's access to BOM is restricted by Chrome
         // see: https://developer.chrome.com/extensions/content_scripts#isolated_world
@@ -52,12 +51,13 @@ export default {
         }
         const logger = {
           log(...args) {
-            // return console.log(...args)
+            return console.log(...args);
           },
           error(...args) {
-            // return console.error(...args)
+            return console.error(...args);
           },
         };
+
         const JS_ELEM_ID = "allow-copy_script";
         const injectAgent = (wnd = window.top) => {
           try {
@@ -160,34 +160,40 @@ export default {
           disable();
         }
         const initForFrames = () => {
-          windows = getFrameWindows();
-          logger.log("windows ", windows);
-          windows.forEach((wnd) => injectAgent(wnd));
+          // windows = getFrameWindows();
+          // logger.log("windows ", windows);
+          // windows.forEach((wnd) => injectAgent(wnd));
+          injectAgent(window);
           if (isEnabled) {
             enable();
           } else {
             disable();
           }
         };
+
+        // init
         initForFrames();
         [1000, 3000, 5000, 10000].forEach((delay) => {
           setTimeout(initForFrames, delay);
         });
+
         return {
           enable,
           disable,
+          enabled: () => isEnabled,
         };
       })();
+    },
+    runInAllFrames: true,
 
-      let key = "ufs-simple-allow-copy";
-      let enabled = document.body.getAttribute(key);
-      if (enabled) {
-        unlocker.disable();
-        document.body.removeAttribute(key);
+    onClick: function () {
+      if (!window.unlocker) {
+        alert("Vui lòng mở chức năng trước, rồi tải lại trang web.");
+      } else if (window.unlocker.enabled()) {
+        window.unlocker.disable();
         alert("Đã TẮT cho phép sao chép.\nSimple allow copy DISABLED.");
       } else {
-        unlocker.enable();
-        document.body.setAttribute(key, true);
+        window.unlocker.enable();
         alert("Đã BẬT cho phép sao chép.\nSimple allow copy ENABLED.");
       }
     },
