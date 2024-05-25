@@ -34,6 +34,7 @@ export default {
               let label = btn.querySelector(
                 ".yt-spec-button-shape-with-label__label span"
               );
+              if (!label) return;
               let text = numberFormat(dislikeCount);
               if (label.textContent === text) return;
               label.textContent = text;
