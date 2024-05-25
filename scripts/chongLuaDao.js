@@ -45,15 +45,16 @@ export default {
   },
 
   contentScript: {
+    // TODO analyze all iframes
     onDocumentIdle: (details) => {
-      if (details.frameType === "outermost_frame") analyzeWeb(true);
+      analyzeWeb(true);
     },
 
     onClick: () => analyzeWeb(false),
   },
 
   backgroundScript: {
-    onDocumentStart: async (details, context) => {
+    onDocumentStart_: async (details, context) => {
       if (!cached) await saveBgCache();
       if (!cached) return;
 
@@ -98,7 +99,6 @@ export default {
         });
       }
     },
-    runInAllFrames: true,
 
     runtime: {
       onInStalled: (reason, context) => {

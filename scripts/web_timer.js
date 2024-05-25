@@ -39,8 +39,7 @@ export default {
   },
 
   contentScript: {
-    runInAllFrames: true, // to able to track user active events in all frames
-    onDocumentStart: async (details) => {
+    onDocumentStart_: async (details) => {
       const { frameId, frameType } = details;
       const isMainFrame = frameType === "outermost_frame";
 

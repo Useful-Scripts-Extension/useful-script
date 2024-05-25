@@ -9,7 +9,7 @@ const CACHED = {
   userID: null,
 };
 
-export function checkWillRun(script, url = location?.href) {
+export function checkBlackWhiteList(script, url = location?.href) {
   if (!url) return false;
   let hasWhiteList = script.whiteList?.length > 0;
   let hasBlackList = script.blackList?.length > 0;
@@ -293,9 +293,12 @@ export const runScriptInTabWithEventChain = ({
           import(url)
             .then(({ default: script }) => {
               let fn = script;
-              eventChain.split(".").forEach((e) => {
-                fn = fn?.[e];
-              });
+
+              let beforeFnName = eventChain.split(".");
+              let fnName = beforeFnName.pop();
+              beforeFnName.forEach((e) => (fn = fn?.[e]));
+              fn = fn?.[fnName + "_"] || fn?.[fnName]; // higher priority for allframes function
+
               if (typeof fn === "function") {
                 if (!silent)
                   console.log(

@@ -10,7 +10,7 @@ export default {
   },
 
   popupScript: {
-    onClick: async () => {
+    _onClick: async () => {
       const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
       console.log(UfsGlobal);
     },
@@ -162,6 +162,14 @@ export default {
   },
 
   contentScript: {
+    onClick_: () => {
+      console.log(window.location.href);
+    },
+
+    onDocumentStart_: () => {
+      console.log("____onDocumentStart");
+    },
+
     // text size in KB
     _onClick: () => {
       function formatSize(size, fixed = 0) {

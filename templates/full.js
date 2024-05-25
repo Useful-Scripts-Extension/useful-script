@@ -12,7 +12,7 @@ export default {
     img: "",
   },
 
-  // buttons that show beside favorite/view source buttons
+  // buttons that show beside favorite/view-source button
   // show on hover script
   buttons: [
     {
@@ -25,14 +25,16 @@ export default {
     },
   ],
 
-  // easier way to add info button into moreButtons list
-  // show as
+  // easier way to add infor button beside favorite/view-source button
+  // will open link in new tab when user click
   infoLink: "",
 
+  // show change-logs at the bottom of script's description
   changeLogs: {
     date: "description",
   },
 
+  // determize which website this script supported
   blackList: [],
   whiteList: [],
 
@@ -64,11 +66,16 @@ export default {
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
-    runInAllFrames: false, // false => only outermost_frame, true => all frames (including sub-frames, iframes)
 
     onClick: () => {},
 
     // advanced
+    // advanced
+    runtime: {
+      onInstalled: (reason) => {},
+      onStartup: (nil) => {},
+      onMessage: (request, sender, sendResponse) => {},
+    },
     webNavigation: {
       onCreatedNavigationTarget: (details) => {},
       onHistoryStateUpdated: (details) => {},
@@ -98,11 +105,15 @@ export default {
     onDocumentStart: (details) => {},
     onDocumentIdle: (details) => {},
     onDocumentEnd: (details) => {},
-    runInAllFrames: false,
 
     onClick: () => {},
 
     // advanced
+    runtime: {
+      onInstalled: (reason) => {},
+      onStartup: (nil) => {},
+      onMessage: (request, sender, sendResponse) => {},
+    },
     webNavigation: {
       onCreatedNavigationTarget: (details) => {},
       onHistoryStateUpdated: (details) => {},
@@ -125,12 +136,11 @@ export default {
   // - can use chrome extension APIs
   // - CANNOT use dynamic imports, but can use GLOBAL variables in background_script.js
   // - can use UfsGlobal
-  // - context => background context => can access GLOBAL in background_script.js
+  // - context = GLOBAL variable in background_script.js
   backgroundScript: {
     onDocumentStart: (details, context) => {},
     onDocumentIdle: (details, context) => {},
     onDocumentEnd: (details, context) => {},
-    runInAllFrames: false,
 
     // advanced
     runtime: {
@@ -172,3 +182,11 @@ export default {
     },
   },
 };
+
+// NOTES: if you want to run script in allFrames (main-frames/sub-frame/iframes)
+// just add _ at the end of function name
+// e.g: onDocumentStart_() onMessage_()
+
+// these functions are not support allFrames:
+// onInstalled, onStartup
+// onMessage, storage.onChanged, tabs.*: default to listen all messages (included allFrames + popup + background)

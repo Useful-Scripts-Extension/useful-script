@@ -170,15 +170,19 @@ function runScriptsBackground(
 function checkWillRun(scriptId, context, eventChain, details) {
   const script = allScripts[scriptId];
   const s = script?.[context];
+
+  let beforeFnName = eventChain.split(".");
+  let fnName = beforeFnName.pop();
+
   let fn = s;
-  eventChain.split(".").forEach((e) => {
-    fn = fn?.[e];
-  });
+  beforeFnName.forEach((e) => (fn = fn?.[e]));
+  fn = fn?.[fnName + "_"] || fn?.[fnName];
+
   if (
     typeof fn === "function" &&
     (!details ||
-      ((s.runInAllFrames || details.frameType == "outermost_frame") &&
-        utils.checkWillRun(script, details.url)))
+      ((fn.name.endsWith("_") || details.frameType == "outermost_frame") &&
+        utils.checkBlackWhiteList(script, details.url)))
   )
     return fn;
 
@@ -318,10 +322,9 @@ function listenNavigation() {
         const { tabId, frameId } = getDetailIds(details);
 
         if (eventChain === "onDocumentStart") {
-          // clear badge cache on main frame
+          // clear badge cache on main frame load
           if (details.frameId === 0) CACHED.badges[tabId] = [];
-          // inject ufs global
-          injectUfsGlobal(tabId, frameId);
+          injectUfsGlobal(tabId, frameId, details);
         }
 
         runScriptsTab(eventChain, MAIN, details);
@@ -389,27 +392,27 @@ function listenMessage() {
   });
 }
 
-function injectUfsGlobal(tabId, frameId) {
+function injectUfsGlobal(tabId, frameId, details) {
   [
-    { files: ["ufs_global.js", "content_script.js"], world: ISOLATED },
-    { files: ["ufs_global.js"], world: MAIN },
-  ].forEach(({ files, world }) => {
+    [["ufs_global.js", "content_script.js"], ISOLATED],
+    [["ufs_global.js"], MAIN],
+  ].forEach(([files, world]) => {
     let paths = files.map((file) => CACHED.path + "content-scripts/" + file);
     utils.runScriptFile({
       target: {
         tabId: tabId,
         frameIds: [frameId],
       },
-      func: (paths, frameId, world) => {
+      func: (paths, frameId, world, url) => {
         paths.forEach((path) => {
           import(path)
-            .then(() => console.log("Ufs import SUCCESS", frameId, world, path))
+            .then(() => console.log("Ufs import SUCCESS", frameId, world, url))
             .catch((e) =>
-              console.error("Ufs import FAILED", frameId, world, e)
+              console.error("Ufs import FAILED", frameId, world, url, e)
             );
         });
       },
-      args: [paths, frameId, world],
+      args: [paths, frameId, world, details.url],
       world: world,
     });
   });

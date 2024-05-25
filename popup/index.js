@@ -6,7 +6,7 @@ import {
   setActiveScript,
   trackEvent,
   Storage,
-  checkWillRun,
+  checkBlackWhiteList,
   runScriptInTabWithEventChain,
 } from "../scripts/helpers/utils.js";
 import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
@@ -402,7 +402,7 @@ async function updateButtonChecker(script, checkmarkContainer, val) {
 
 async function runScript(script) {
   let tab = await getCurrentTab();
-  let willRun = checkWillRun(script, tab.url);
+  let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
     try {
       recentScriptsSaver.add(script);
@@ -411,25 +411,24 @@ async function runScript(script) {
       if (isFunction(script.popupScript?.onClick))
         await script.popupScript.onClick();
 
-      if (isFunction(script.pageScript?.onClick))
-        await runScriptInTabWithEventChain({
-          target: {
-            tabId: tab.id,
-          },
-          scriptIds: [script.id],
-          eventChain: "pageScript.onClick",
-          world: "MAIN",
-        });
-
-      if (isFunction(script.contentScript?.onClick))
-        await runScriptInTabWithEventChain({
-          target: {
-            tabId: tab.id,
-          },
-          scriptIds: [script.id],
-          eventChain: "contentScript.onClick",
-          world: "ISOLATED",
-        });
+      [
+        ["MAIN", "pageScript", "onClick", false],
+        ["MAIN", "pageScript", "onClick_", true],
+        ["ISOLATED", "contentScript", "onClick", false],
+        ["ISOLATED", "contentScript", "onClick_", true],
+      ].forEach(([world, context, func, allFrames]) => {
+        if (isFunction(script?.[context]?.[func])) {
+          runScriptInTabWithEventChain({
+            target: {
+              tabId: tab.id,
+              ...(allFrames ? { allFrames: true } : {}),
+            },
+            scriptIds: [script.id],
+            eventChain: context + "." + func,
+            world: world,
+          });
+        }
+      });
     } catch (e) {
       alert("ERROR: run script " + e);
     }
