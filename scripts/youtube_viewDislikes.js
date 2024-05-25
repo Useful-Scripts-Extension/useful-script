@@ -200,3 +200,18 @@ function isNewDesign() {
 function numberFormat(numberState) {
   return UfsGlobal.Utils.getNumberFormatter("compactShort").format(numberState);
 }
+
+// Information gathering: https://greasyfork.org/en/scripts/471103-youtubedl/code
+function getVideoInformation(url) {
+  const regex =
+    /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:watch\?v=|shorts\/|embed\/)?)([\w-]+)/i;
+  const match = regex.exec(url);
+  const videoId = match ? match[1] : null;
+
+  let type = null;
+  if (url.includes("/shorts/")) type = "shorts";
+  else if (url.includes("/watch?v=")) type = "video";
+  else if (url.includes("/embed/")) type = "embed";
+
+  return { type, videoId };
+}

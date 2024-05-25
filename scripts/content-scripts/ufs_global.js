@@ -1203,8 +1203,7 @@ async function getLargestImageSrc(imgSrc, webUrl) {
 
   async function try2() {
     if (!CACHED.largeImgSiteRules) {
-      let url = await getURL("/scripts/auto_redirectLargestImageSrc_rules.js");
-      let s = await import(url);
+      let s = await import("../auto_redirectLargestImageSrc_rules.js");
       CACHED.largeImgSiteRules = s.default;
     }
     for (let rule of CACHED.largeImgSiteRules) {

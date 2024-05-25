@@ -2,11 +2,15 @@
 
 ## 28/04/2024 - 24/05/2024
 
-- [ ] Fix simple allow copy <https://chrome.google.com/webstore/detail/aefehdhdciieocakfobpaaolhipkcpgc>
+- [ ] update rules cho auto inlarge image <https://chromewebstore.google.com/detail/hover-zoom+/pccckmaobkjjboncdfnnofkonhgpceea>
 
-- [ ] optimize prevent close browser on last tab, try debounce/throttle
+- [ ] Update contributor guide khi release ver mới
 
-- [ ] import UfsGlobal thay vì để global + tách nhỏ UfsGobal
+- [x] Fix simple allow copy <https://chrome.google.com/webstore/detail/aefehdhdciieocakfobpaaolhipkcpgc>
+
+- [x] optimize prevent close browser on last tab, try debounce/throttle => chắc ko optimize đc nữa
+
+- [x] import UfsGlobal thay vì để global + tách nhỏ UfsGobal
 
 - [x] Show recently closed tabs => Bỏ, browser có sẵn rồi
 
@@ -18,7 +22,7 @@
 
 - [x] save to facebook <https://chromewebstore.google.com/detail/save-to-facebook/jmfikkaogpplgnfjmbjdpalkhclendgd> => Cần load script/css từ facebook => không ổn
 
-- [ ] youtube dislike UI
+- [x] youtube dislike UI
 
 - [x] Switch to Swal
 
@@ -68,7 +72,7 @@
 
 - [x] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks> => Not interested
 
-- [ ] call js function from url <https://stackoverflow.com/a/8466513/23648002>
+- [x] call js function from url <https://stackoverflow.com/a/8466513/23648002> => chưa biết áp dụng làm gì
 
 ```
 chrome.tabs.update(tabId, {url: 'javascript:functionNameHere()'});

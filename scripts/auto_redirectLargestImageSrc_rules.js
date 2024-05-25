@@ -1,3 +1,15 @@
+// https://greasyfork.org/en/scripts/24204-picviewer-ce
+
+/*
+{
+  name: unique name for this rule
+  url: regex for url that this rule support
+  src: regex for img src that this rule support
+  r: regex(s) for string that will be replaced
+  s: regex(s) for string that will be added
+}
+*/
+
 export default [
   {
     // https://i1.sndcdn.com/avatars-IMMW4scIEiCxzOrR-hbX1hw-t240x240.jpg
