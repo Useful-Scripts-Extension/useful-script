@@ -29,7 +29,7 @@ export default {
 
   contentScript: {
     onDocumentIdle: () => {
-      UfsGlobal.DOM.onElementsVisible(
+      UfsGlobal.DOM.onElementsAdded(
         '[role="navigation"], [role="complementary"]',
         () => {
           [

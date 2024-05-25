@@ -16,7 +16,7 @@ export default {
 
   contentScript: {
     onDocumentStart: () => {
-      UfsGlobal.DOM.onElementsVisible("[role='feed'], [role='main']", (nodes) =>
+      UfsGlobal.DOM.onElementsAdded("[role='feed'], [role='main']", (nodes) =>
         Array.from(nodes).forEach((node) => (node.style.display = "none"))
       );
     },

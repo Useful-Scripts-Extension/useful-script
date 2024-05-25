@@ -3,42 +3,113 @@ import { UfsGlobal } from "./content-scripts/ufs_global.js";
 export default {
   icon: "https://lh3.googleusercontent.com/X0-M21C_VbWyXYuUjN55oyMDvOukjbzAxbs_WrUjwzsebWbyjFCIEchOtczI0DBvbyL9MUpuEWnghm19gF6dp8Vriw=w128-h128-e365-rj-sc0x00ffffff",
   name: {
-    en: "View youtube video dislikes",
-    vi: "Xem lượng dislike video youtube",
+    en: "Return youtube dislike",
+    vi: "Hiện lượt không thích youtube",
   },
   description: {
-    en: "Know how many dislike does youtube video have",
-    vi: "Biết số lượt dislikes (không thích) video youtube",
+    en: "Returns ability to see dislikes of youtube video/short",
+    vi: "Hiển thị số lượt không thích của video/short youtube",
   },
+
+  changeLogs: {
+    "2024-05-25": "autorun",
+  },
+
   whiteList: ["*://*.youtube.com/*"],
 
   contentScript: {
     onDocumentStart: async () => {
-      // youtube watch
-      document.querySelector("dislike-button-view-model");
+      let listeners = [];
 
-      // youtube shorts
-      document.querySelector("ytd-toggle-button-renderer#dislike-button");
+      function listenShort() {
+        return UfsGlobal.DOM.onElementsAdded(
+          "ytd-toggle-button-renderer#dislike-button",
+          (eles) => {
+            let btn = Array.from(eles).find((el) =>
+              UfsGlobal.DOM.isElementInViewport(el)
+            );
+            if (!btn) return;
 
-      // youtube watch
-      UfsGlobal.DOM.onElementsVisible(
-        "dislike-button-view-model",
-        (ele) => {},
-        true
-      );
+            function makeUI(dislikeCount = 0) {
+              let label = btn.querySelector(
+                ".yt-spec-button-shape-with-label__label span"
+              );
+              let text = numberFormat(dislikeCount);
+              if (label.textContent === text) return;
+              label.textContent = text;
+            }
 
-      // youtube shorts
-      UfsGlobal.DOM.onElementsVisible(
-        "ytd-toggle-button-renderer#dislike-button",
-        (ele) => {
-          // get watching shorts
-        },
-        true
-      );
+            let videoId = getVideoId();
+            getDislikeDataDebounced(videoId, (res) => {
+              makeUI(res.dislikes);
+              let interval = setInterval(() => makeUI(res.dislikes), 1000);
+              listeners.push(() => clearInterval(interval));
+            });
+          }
+        );
+      }
+
+      function listenVideo() {
+        return UfsGlobal.DOM.onElementsAdded(
+          "ytd-watch-metadata dislike-button-view-model button",
+          (eles) => {
+            let videoId = getVideoId();
+
+            const button = eles[0];
+            if (!button) return;
+
+            function makeUI(dislikeCount = 0) {
+              // dislike text
+              let className = "yt-spec-button-shape-next__button-text-content";
+              let exist = button.querySelector(className);
+              if (exist) {
+                exist.textContent = numberFormat(dislikeCount);
+              } else {
+                let dislikeText = document.createElement("div");
+                dislikeText.classList.add(className);
+                dislikeText.textContent = numberFormat(dislikeCount);
+                button.appendChild(dislikeText);
+                UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
+                  makeUI(dislikeCount)
+                );
+              }
+
+              // fix button style
+              button.style.width = "auto";
+
+              // fix dislike icon style
+              const dislikeIcon = button.querySelector(
+                ".yt-spec-button-shape-next__icon"
+              );
+              dislikeIcon.style.marginRight = "6px";
+              dislikeIcon.style.marginLeft = "-6px";
+            }
+
+            getDislikeDataDebounced(videoId, (res) => {
+              makeUI(res.dislikes);
+            });
+          }
+        );
+      }
+
+      function run() {
+        // remove all pre listeners
+        listeners.forEach((fn) => fn?.());
+
+        if (isShorts()) listeners.push(listenShort());
+        else listeners.push(listenVideo());
+      }
+
+      window.onload = () => {
+        run();
+        UfsGlobal.DOM.onHrefChanged((oldHref, newHref) => {
+          run();
+        });
+      };
     },
 
     onClick: async function () {
-      let videoId = getVideoId(location.href);
+      let videoId = getVideoId();
       getDislikeData(videoId).then((response) => {
         console.log(response);
         alert("Youtube Dislikes:\n" + JSON.stringify(response, null, 4));
@@ -47,28 +118,39 @@ export default {
   },
 };
 
+const cached = {};
+
+const getDislikeDataDebounced = UfsGlobal.Utils.debounce(getDislikeData, 100);
+
 // Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
-async function getDislikeData(videoId) {
+async function getDislikeData(videoId, callback) {
+  if (!videoId) return;
+
+  if (cached[videoId]) {
+    callback?.(cached[videoId]);
+    return cached[videoId];
+  }
+
   const apiUrl = "https://returnyoutubedislikeapi.com";
   try {
-    const response = await fetch(
-      `${apiUrl}/votes?videoId=${videoId}&likeCount=`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
-    if (!response.ok) alert("Error: " + response.error);
-    const response_1 = response;
-    return await response_1.json();
+    const res = await fetch(`${apiUrl}/votes?videoId=${videoId}&likeCount=`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    if (!res.ok) throw new Error(res.error);
+    const json = await res.json();
+    cached[videoId] = json;
+    callback?.(json);
+    return json;
   } catch (e) {
-    return alert("ERROR: " + e);
+    console.log("ERROR: ", e);
+    return null;
   }
 }
 
-function getVideoId(url) {
+function getVideoId(url = location.href) {
   const urlObject = new URL(url);
   const pathname = urlObject.pathname;
   if (pathname.startsWith("/clip")) {
@@ -96,7 +178,7 @@ function isInViewport(element) {
   );
 }
 function isVideoLoaded() {
-  const videoId = getVideoId(window.location.href);
+  const videoId = getVideoId();
   return (
     // desktop: spring 2024 UI
     document.querySelector(`ytd-watch-grid[video-id='${videoId}']`) !== null ||
@@ -106,22 +188,14 @@ function isVideoLoaded() {
     document.querySelector('#player[loading="false"]:not([hidden])') !== null
   );
 }
-function createObserver(options, callback) {
-  const observerWrapper = new Object();
-  observerWrapper.options = options;
-  observerWrapper.observer = new MutationObserver(callback);
-  observerWrapper.observe = function (element) {
-    this.observer.observe(element, this.options);
-  };
-  observerWrapper.disconnect = function () {
-    this.observer.disconnect();
-  };
-  return observerWrapper;
-}
 
 function isShorts() {
   return location.pathname.startsWith("/shorts");
 }
 function isNewDesign() {
   return document.getElementById("comment-teaser") !== null;
+}
+
+function numberFormat(numberState) {
+  return UfsGlobal.Utils.getNumberFormatter("compactShort").format(numberState);
 }

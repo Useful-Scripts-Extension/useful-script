@@ -110,7 +110,7 @@ export default {
       onMessage: ({ request, sender, sendResponse }, context) => {
         if (request.action === KEYS.saveCache) {
           saveBgCache();
-        } else if ((request.action = KEYS.clearCache)) {
+        } else if (request.action == KEYS.clearCache) {
           clearBgCache();
         }
       },

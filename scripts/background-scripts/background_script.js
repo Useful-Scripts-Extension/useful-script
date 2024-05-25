@@ -406,7 +406,7 @@ function injectUfsGlobal(tabId, frameId, details) {
       func: (paths, frameId, world, url) => {
         paths.forEach((path) => {
           import(path)
-            .then(() => console.log("Ufs import SUCCESS", frameId, world, url))
+            // .then(() => console.log("Ufs import SUCCESS", frameId, world, url))
             .catch((e) =>
               console.error("Ufs import FAILED", frameId, world, url, e)
             );

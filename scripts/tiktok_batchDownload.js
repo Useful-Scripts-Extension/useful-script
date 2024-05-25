@@ -231,7 +231,7 @@ export default {
       }
 
       // Listen for videos
-      UfsGlobal.DOM.onElementsVisible('a[href*="/video/"]', (nodes) => {
+      UfsGlobal.DOM.onElementsAdded('a[href*="/video/"]', (nodes) => {
         // remove if not in DOM
         for (let i = checkboxes.length - 1; i >= 0; i--) {
           let checkbox = checkboxes[i];

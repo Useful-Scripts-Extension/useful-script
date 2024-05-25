@@ -27,7 +27,12 @@ export const UfsGlobal = {
     clickASAP,
     deleteElements,
     waitForElements,
-    onElementsVisible,
+    onElementsAdded,
+    onElementRemoved,
+    onElementAttributeChanged,
+    onElementTextContentChanged,
+    onHrefChanged,
+    onElementVisibilityChanged,
     injectCssCode,
     injectCssFile,
     getTrustedPolicy,
@@ -41,6 +46,7 @@ export const UfsGlobal = {
     getWatchingVideoSrc,
   },
   Utils: {
+    getNumberFormatter,
     deepClone,
     debounce,
     throttle,
@@ -597,7 +603,7 @@ function clickASAP(selector, sleepTime = 0) {
   });
 }
 function deleteElements(selector, once) {
-  onElementsVisible(
+  onElementsAdded(
     selector,
     (nodes) => {
       [].forEach.call(nodes, function (node) {
@@ -610,7 +616,7 @@ function deleteElements(selector, once) {
 }
 function waitForElements(selector) {
   return new Promise((resolve, reject) => {
-    onElementsVisible(selector, resolve, true);
+    onElementsAdded(selector, resolve, true);
   });
 }
 // https://stackoverflow.com/a/46428962
@@ -627,9 +633,27 @@ function onHrefChanged(callback, once) {
   });
   observer.observe(body, { childList: true, subtree: true });
 }
+function onElementVisibilityChanged(el, option, callback) {
+  // use interaction observer
+  let observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        callback?.(entry.isIntersecting);
+      });
+    },
+    {
+      root: option?.root ?? null,
+      rootMargin: option?.rootMargin ?? "0px",
+      threshold: option?.threshold ?? 0,
+    }
+  );
+  observer.observe(el);
+  return () => observer.unobserve(el);
+}
+
 // Idea from  https://github.com/gys-dev/Unlimited-Stdphim
 // https://stackoverflow.com/a/61511955/11898496
-function onElementsVisible(selector, callback, once) {
+function onElementsAdded(selector, callback, once) {
   let nodes = document.querySelectorAll(selector);
   if (nodes?.length) {
     callback(nodes);
@@ -663,6 +687,67 @@ function onElementsVisible(selector, callback, once) {
   });
 
   // return disconnect function
+  return () => observer.disconnect();
+}
+function onElementRemoved(element, callback) {
+  if (!element.parentElement) throw new Error("element must have parent");
+
+  let observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === "childList") {
+        if (mutation.removedNodes.length > 0) {
+          for (let node of mutation.removedNodes) {
+            if (node === element) {
+              callback?.(node);
+              observer.disconnect();
+            }
+          }
+        }
+      }
+    });
+  });
+
+  observer.observe(element.parentElement, {
+    childList: true,
+  });
+
+  return () => observer.disconnect();
+}
+function onElementAttributeChanged(element, callback, once) {
+  let observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === "attributes") {
+        console.log(mutation);
+        callback?.(mutation);
+        if (once) observer.disconnect();
+      }
+    });
+  });
+
+  observer.observe(element, {
+    // TODO attributeFilter
+    attributeOldValue: true,
+    attributes: true,
+  });
+
+  return () => observer.disconnect();
+}
+function onElementTextContentChanged(element, callback, once) {
+  let observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === "childList") {
+        callback?.(mutation);
+        if (once) observer.disconnect();
+      }
+    });
+  });
+  // https://stackoverflow.com/a/40195712/23648002
+  observer.observe(element, {
+    characterData: false,
+    attributes: false,
+    childList: true,
+    subtree: false,
+  });
   return () => observer.disconnect();
 }
 function injectCssCode(code) {
@@ -722,13 +807,24 @@ function injectScriptSrcAsync(src) {
     });
   });
 }
+// https://stackoverflow.com/a/7557433/23648002
 function isElementInViewport(el) {
-  const rect = el.getBoundingClientRect();
+  // Special bonus for those using jQuery
+  if (typeof jQuery === "function" && el instanceof jQuery) {
+    el = el[0];
+  }
+
+  var rect = el.getBoundingClientRect();
+
   return (
-    rect.bottom > 0 &&
-    rect.right > 0 &&
-    rect.left < window.innerWidth &&
-    rect.top < window.innerHeight
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight ||
+        document.documentElement.clientHeight) /* or $(window).height() */ &&
+    rect.right <=
+      (window.innerWidth ||
+        document.documentElement.clientWidth) /* or $(window).width() */
   );
 }
 function getOverlapScore(el) {
@@ -766,6 +862,61 @@ function getWatchingVideoSrc() {
 // #endregion
 
 // #region Utils
+const numberFormatCached = {};
+/**
+ * Get number formatter
+ * @param {string} optionSelect "compactLong", "standard", "compactShort"
+ * @param {string|undefined} locale Browser locale
+ * @return {Intl.NumberFormat}
+ */
+function getNumberFormatter(optionSelect, locale) {
+  if (!locale) {
+    if (document.documentElement.lang) {
+      locale = document.documentElement.lang;
+    } else if (navigator.language) {
+      locale = navigator.language;
+    } else {
+      try {
+        locale = new URL(
+          Array.from(document.querySelectorAll("head > link[rel='search']"))
+            ?.find((n) => n?.getAttribute("href")?.includes("?locale="))
+            ?.getAttribute("href")
+        )?.searchParams?.get("locale");
+      } catch {
+        cLog(
+          "Cannot find browser locale. Use en as default for number formatting."
+        );
+        locale = "en";
+      }
+    }
+  }
+  let formatterNotation;
+  let formatterCompactDisplay;
+  switch (optionSelect) {
+    case "compactLong":
+      formatterNotation = "compact";
+      formatterCompactDisplay = "long";
+      break;
+    case "standard":
+      formatterNotation = "standard";
+      formatterCompactDisplay = "short";
+      break;
+    case "compactShort":
+    default:
+      formatterNotation = "compact";
+      formatterCompactDisplay = "short";
+  }
+
+  let key = locale + formatterNotation + formatterCompactDisplay;
+  if (!numberFormatCached[key]) {
+    const formatter = Intl.NumberFormat(locale, {
+      notation: formatterNotation,
+      compactDisplay: formatterCompactDisplay,
+    });
+    numberFormatCached[key] = formatter;
+  }
+  return numberFormatCached[key];
+}
 
 /**
  * Make a deep copy of an object

@@ -161,7 +161,7 @@ export default {
         focusTimerValue = 0;
 
       // listen title change
-      UfsGlobal.DOM.onElementsVisible("title", (ele) => {
+      UfsGlobal.DOM.onElementsAdded("title", (ele) => {
         let title = ele.textContent;
         if (title === titleCache || !title) return;
         if (title?.includes(invisible)) {
