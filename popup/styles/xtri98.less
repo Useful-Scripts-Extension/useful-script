@@ -95,7 +95,7 @@
 }
 
 .content {
-    button {
+    button:not(.checkmark) {
         position: relative;
         border: none;
         margin: 0.1em;
@@ -175,22 +175,24 @@
             border-radius: 0.25rem;
         }
     }
+}
 
-    .checkmark {
-        display: inline-block;
-        width: 28px;
-        height: 25px;
-        padding: 0;
-        margin-left: 5px;
-        border: 1px solid #999;
-        background-color: #e6e6e6;
+.checkmark {
+    display: inline-block;
+    width: 28px;
+    height: 25px;
+    padding: 0;
+    margin: 0 5px 0 0;
+    border-radius: 5px;
+    border: 1px solid @checkmark_border;
+    background-color: @bg_checkmark;
+    cursor: pointer;
 
-        &:hover {
-            background-color: #ccc;
-        }
+    &:not(.active):hover {
+        background-color: #ccc;
     }
 
-    .checkmark.active {
+    &.active {
         background-color: #04aa6d;
 
         &:after {

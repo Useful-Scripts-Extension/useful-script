@@ -58,3 +58,8 @@ export const recentScriptsSaver = createScriptsSaver("useful-scripts-recently");
 export const favoriteScriptsSaver = createScriptsSaver(
   "useful-scripts-favorite"
 );
+
+// default is false => enabled; true => disabled
+export const smoothScrollSaver = createVariableSaver(
+  "useful-scripts-smoothScroll"
+);

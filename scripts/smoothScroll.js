@@ -971,4 +971,6 @@ export function run() {
     cleanup();
     cleanupMiddlemouse();
   };
+
+  return window.ufs_smoothScroll_disable;
 }

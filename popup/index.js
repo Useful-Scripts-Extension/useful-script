@@ -27,6 +27,7 @@ import {
   activeTabIdSaver,
   favoriteScriptsSaver,
   recentScriptsSaver,
+  smoothScrollSaver,
 } from "./helpers/storage.js";
 import {
   canAutoRun,
@@ -43,6 +44,8 @@ const contentDiv = document.querySelector("div.content");
 const searchInput = document.querySelector(".search input");
 const searchFound = document.querySelector(".search .searchFound");
 const scrollToTopBtn = document.querySelector("#scroll-to-top");
+
+let disableSmoothScroll = null;
 
 // ========================================================
 // ========================= Tabs =========================
@@ -522,20 +525,19 @@ function initSettings() {
     // select language
     const langRow = document.createElement("div");
     const curLang = getLang();
+    langRow.classList.add("row");
     langRow.innerHTML = `
-      <div class="row">
-        <div class="label">${t({ en: "Language", vi: "Ngôn ngữ" })}</div>
-        <div class="right-container">
-          <img src="${getFlag(curLang)}" />
-          <select class="select">
-          ${LANG_KEY.map(
-            (key) =>
-              `<option value="${key}" ${key === curLang ? "selected" : ""}>
-                  ${LANG[key]}
-                </option>`
-          ).join("")}
-          </select>
-        </div>
+      <div class="label">${t({ en: "Language", vi: "Ngôn ngữ" })}</div>
+      <div class="right-container">
+        <img src="${getFlag(curLang)}" />
+        <select class="select">
+        ${LANG_KEY.map(
+          (key) =>
+            `<option value="${key}" ${key === curLang ? "selected" : ""}>
+                ${LANG[key]}
+              </option>`
+        ).join("")}
+        </select>
       </div>
     `;
     const select = langRow.querySelector(".select");
@@ -558,6 +560,7 @@ function initSettings() {
     let curThemeKey = getTheme();
     let curThem = THEME[curThemeKey];
     const themeRow = document.createElement("div");
+    themeRow.classList.add("row");
     const author = curThem?.author
       ? `<a target="_blank" href="${curThem.author.link}" title="${t({
           vi: "Tác giả",
@@ -567,19 +570,17 @@ function initSettings() {
       </a>`
       : "";
     themeRow.innerHTML = `
-      <div class="row">
-        <div class="label">${t({ en: "Theme", vi: "Chủ đề" })}</div>
-        <div class="right-container">
-          ${author}
-          <select class="select">
-            ${THEME_KEY.map((key) => {
-              let selected = key === curThemeKey ? "selected" : "";
-              return `<option value="${key}" ${selected}>
-                ${t(THEME[key])}
-              </option>`;
-            })}
-          </select>
-        </div>
+      <div class="label">${t({ en: "Theme", vi: "Chủ đề" })}</div>
+      <div class="right-container">
+        ${author}
+        <select class="select">
+          ${THEME_KEY.map((key) => {
+            let selected = key === curThemeKey ? "selected" : "";
+            return `<option value="${key}" ${selected}>
+              ${t(THEME[key])}
+            </option>`;
+          })}
+        </select>
       </div>
     `;
     const selectTheme = themeRow.querySelector(".select");
@@ -593,6 +594,33 @@ function initSettings() {
       initTooltip();
     };
     body.appendChild(themeRow);
+
+    // smooth scroll row
+    const smoothScrollRow = document.createElement("div");
+    smoothScrollRow.classList.add("row");
+    smoothScrollRow.innerHTML = `
+      <div class="label">${t({
+        vi: "Cuộn chuột mượt",
+        en: "Smooth scroll",
+      })}</div>
+      <div class="right-container">
+        <button class="checkmark"></button>
+      </div>
+    `;
+    const checkbox = smoothScrollRow.querySelector("button");
+    checkbox.classList.toggle("active", !(smoothScrollSaver.get() ?? false));
+    checkbox.onclick = () => {
+      let curVal = smoothScrollSaver.get();
+      let newVal = !curVal;
+      smoothScrollSaver.set(newVal);
+
+      let enabled = !newVal;
+      trackEvent("CHANGE-SMOOTH-SCROLL-" + (enabled ? "ON" : "OFF"));
+      checkbox.classList.toggle("active", enabled);
+      if (enabled) disableSmoothScroll = enableSmoothScroll();
+      else if (typeof disableSmoothScroll == "function") disableSmoothScroll();
+    };
+    body.appendChild(smoothScrollRow);
 
     openModal(
       t({
@@ -679,9 +707,9 @@ window.addEventListener("scroll", onScrollEnd);
 // #endregion
 
 (async function () {
-  enableSmoothScroll();
   trackEvent("OPEN-POPUP");
 
+  if (!smoothScrollSaver.get()) disableSmoothScroll = enableSmoothScroll();
   initTracking();
   initSearch();
   initTooltip();
