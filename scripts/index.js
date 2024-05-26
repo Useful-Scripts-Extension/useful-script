@@ -106,7 +106,6 @@ import fb_exportSaved from "./fb_exportSaved.js";
 import studyphim_unlimited from "./studyphim_unlimited.js";
 import shopee_totalSpendMoney from "./shopee_totalSpendMoney.js";
 import tiki_totalSpendMoney from "./tiki_totalSpendMoney.js";
-import fb_invisible_message from "./fb_invisible_message.js";
 import insta_injectDownloadBtn from "./insta_injectDownloadBtn.js";
 import studocu_bypassPreview from "./studocu_bypassPreview.js";
 import fb_revealDeletedMessages from "./fb_revealDeletedMessages.js";
@@ -162,6 +161,7 @@ import auto_lockWebsite from "./auto_lockWebsite.js";
 import showFps_v2 from "./showFps_v2.js";
 import chongLuaDao from "./chongLuaDao.js";
 import prevent_closeBrowser_lastTab from "./prevent_closeBrowser_lastTab.js";
+import createSecretText from "./createSecretText.js";
 
 // inject badges
 const allScripts = {
@@ -279,7 +279,6 @@ const allScripts = {
   studyphim_unlimited: studyphim_unlimited,
   shopee_totalSpendMoney: shopee_totalSpendMoney,
   tiki_totalSpendMoney: tiki_totalSpendMoney,
-  fb_invisible_message: addBadge(fb_invisible_message, BADGES.beta),
   insta_injectDownloadBtn: insta_injectDownloadBtn,
   studocu_bypassPreview: studocu_bypassPreview,
   fb_revealDeletedMessages: addBadge(fb_revealDeletedMessages, BADGES.hot),
@@ -343,6 +342,7 @@ const allScripts = {
     prevent_closeBrowser_lastTab,
     BADGES.new
   ),
+  createSecretText: addBadge(createSecretText, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
