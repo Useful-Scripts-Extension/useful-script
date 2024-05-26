@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [x] Enable smooth scroll <https://chrome.google.com/webstore/detail/nbokbjkabcmbfdlbddjidfmibcpneigj>
+
 - [x] tham khảo <https://github.com/imhiendev/API_FACEBOOK> => facebook graph api có nhiều hơn
 
 - [ ] update rules cho auto inlarge image <https://chromewebstore.google.com/detail/hover-zoom+/pccckmaobkjjboncdfnnofkonhgpceea>

@@ -1,3 +1,9 @@
+import { openModal } from "./helpers/modal.js";
+import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
+import { checkForUpdate } from "./helpers/checkForUpdate.js";
+import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
+import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
+import { run as enableSmoothScroll } from "../scripts/smoothScroll.js";
 import {
   isActiveScript,
   getCurrentTab,
@@ -9,8 +15,6 @@ import {
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
 } from "../scripts/helpers/utils.js";
-import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
-import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import {
   LANG,
   LANG_KEY,
@@ -19,20 +23,17 @@ import {
   setLang,
   t,
 } from "./helpers/lang.js";
-import { openModal } from "./helpers/modal.js";
 import {
   activeTabIdSaver,
   favoriteScriptsSaver,
   recentScriptsSaver,
 } from "./helpers/storage.js";
-import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
 import {
   canAutoRun,
   canClick,
   isTitle,
   viewScriptSource,
 } from "./helpers/utils.js";
-import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
@@ -656,6 +657,7 @@ window.addEventListener("scroll", onScrollEnd);
 // #endregion
 
 (async function () {
+  enableSmoothScroll();
   trackEvent("OPEN-POPUP");
 
   initTracking();

@@ -480,6 +480,7 @@ const tabs = [
       createTitle("--- Utility ---", "--- Tiện ích ---"),
       s.web_timer,
       s.auto_lockWebsite,
+      s.smoothScroll,
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
       s.remove_tracking_in_url,

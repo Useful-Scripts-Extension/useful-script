@@ -162,6 +162,7 @@ import showFps_v2 from "./showFps_v2.js";
 import chongLuaDao from "./chongLuaDao.js";
 import prevent_closeBrowser_lastTab from "./prevent_closeBrowser_lastTab.js";
 import createInvisibleText from "./createInvisibleText.js";
+import smoothScroll from "./smoothScroll.js";
 
 // inject badges
 const allScripts = {
@@ -343,6 +344,7 @@ const allScripts = {
     BADGES.new
   ),
   createInvisibleText: addBadge(createInvisibleText, BADGES.new),
+  smoothScroll: addBadge(smoothScroll, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);
