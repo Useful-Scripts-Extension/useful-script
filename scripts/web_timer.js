@@ -37,17 +37,20 @@ export default {
   popupScript: {
     onEnable: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab } = await import("./helpers/utils.js");
+      const { runScriptInTabWithEventChain } = await import(
+        "./helpers/utils.js"
+      );
       chrome.tabs.query({}, async (tabs) => {
         let count = 0;
         for (let tab of tabs) {
           try {
-            await runScriptInTab({
+            await runScriptInTabWithEventChain({
               target: {
                 tabId: tab.id,
                 allFrames: true,
               },
-              func: run,
+              scriptIds: ["web_timer"],
+              eventChain: "contentScript.onDocumentStart_",
               world: "ISOLATED",
             });
             count++;
