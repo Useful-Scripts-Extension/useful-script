@@ -20,6 +20,21 @@ export default {
     img: "/scripts/auto_redirectLargestImageSrc.jpg",
   },
 
+  buttons: [
+    {
+      icon: '<i class="fa-regular fa-circle-question"></i>',
+      name: {
+        vi: "Danh sách trang web",
+        en: "Supported websites",
+      },
+      onClick: () => {
+        window.open(
+          "/pages/viewScriptSource/index.html?file=auto_redirectLargestImageSrc_rules"
+        );
+      },
+    },
+  ],
+
   changeLogs: {
     "2024-04-16": "init",
   },

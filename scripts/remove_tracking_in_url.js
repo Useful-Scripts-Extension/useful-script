@@ -31,8 +31,7 @@ export default {
       },
       onClick: () => {
         window.open(
-          chrome?.runtime?.getURL?.("/pages/viewScriptSource/index.html") +
-            "?file=remove_tracking_in_url_rules_simplified"
+          "/pages/viewScriptSource/index.html?file=remove_tracking_in_url_rules_simplified"
         );
       },
     },

@@ -17,11 +17,11 @@ export default {
   buttons: [
     {
       icon: '<i class="fa-regular fa-circle-question"></i>',
-      title: {
+      name: {
         vi: "Đây là gì?",
         en: "What is this?",
       },
-      onPress: () => {},
+      onClick: () => {},
     },
   ],
 

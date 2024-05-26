@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [x] tham khảo <https://github.com/imhiendev/API_FACEBOOK> => facebook graph api có nhiều hơn
+
 - [ ] update rules cho auto inlarge image <https://chromewebstore.google.com/detail/hover-zoom+/pccckmaobkjjboncdfnnofkonhgpceea>
 
 - [ ] Update contributor guide khi release ver mới
@@ -16,9 +18,9 @@
 
 - [ ] css variables hay <https://codepen.io/valhead/pen/yXYYdm> <https://valhead.com/2017/07/21/animating-with-css-variables/> <https://codepen.io/magnificode/pen/JedJPO>
 
-- [ ] giấu dữ liệu trong text <https://tranxuanthang.github.io/zwc-datahider/index.html>
+- [x] giấu dữ liệu trong text <https://tranxuanthang.github.io/zwc-datahider/index.html>
 
-- [ ] image downloader <https://chromewebstore.google.com/detail/image-downloader-imageye/agionbommeaifngbhincahgmoflcikhm>
+- [x] image downloader <https://chromewebstore.google.com/detail/image-downloader-imageye/agionbommeaifngbhincahgmoflcikhm> => chrome.downloads không tải nhiều link cùng lúc đc => dùng fdm, idm vẫn ổn hơn
 
 - [x] save to facebook <https://chromewebstore.google.com/detail/save-to-facebook/jmfikkaogpplgnfjmbjdpalkhclendgd> => Cần load script/css từ facebook => không ổn
 
@@ -90,7 +92,7 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 ## 29/03/2024 - 28/04/2024
 
-- [ ] fb_invisible_message có vẻ không hoạt động
+- [x] fb_invisible_message có vẻ không hoạt động => xoá luôn, giữ lại phần tạo text tàng hình
 
 - [x] fb_whoIsTyping có vẻ không hoạt động => chỉ hoạt động nếu ko mã hoá
 
@@ -100,7 +102,7 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 
 - [ ] Tổng hợp các chức năng tải hàng loạt fb vào 1 trang web mới
 
-- [ ] Test thử [rapid api](https://rapidapi.com/)
+- [x] Test thử [rapid api](https://rapidapi.com/) => toàn trả phí là chính
 
 - [ ] Youtube local download => lấy data từ ytplayer.config.args.raw_player_response => Làm UI
 
