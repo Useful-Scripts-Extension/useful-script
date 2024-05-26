@@ -38,10 +38,43 @@ export default {
           }),
           html: t({
             vi:
-              `Đã tự bật cho ${tabs.length} tab đang mở<br/><br/>` +
+              `Đã tự BẬT cho ${tabs.length} tab đang mở<br/><br/>` +
               "Bạn có thể dùng ngay không cần tải lại trang.",
             en:
               `Enabled smooth scroll for ${tabs.length} tabs<br/><br/>` +
+              "Dont need to reload websites.",
+          }),
+        });
+      });
+    },
+    onDisable: async () => {
+      const { t } = await import("../popup/helpers/lang.js");
+      const { runScriptInTab } = await import("./helpers/utils.js");
+      chrome.tabs.query({}, async (tabs) => {
+        for (let tab of tabs) {
+          await runScriptInTab({
+            target: {
+              tabId: tab.id,
+              allFrames: true,
+            },
+            func: () => {
+              window.ufs_smoothScroll_disable?.();
+            },
+            world: "ISOLATED",
+          });
+        }
+        Swal.fire({
+          icon: "success",
+          title: t({
+            vi: "Đã tắt Cuộn chuột Siêu mượt",
+            en: "Super smooth scroll disabled",
+          }),
+          html: t({
+            vi:
+              `Đã tự TẮT cho ${tabs.length} tab đang mở<br/><br/>` +
+              "Không cần tải lại trang.",
+            en:
+              `Disabled smooth scroll for ${tabs.length} tabs<br/><br/>` +
               "Dont need to reload websites.",
           }),
         });
@@ -760,7 +793,7 @@ export function run() {
   /**
    * A module for middle mouse scrolling.
    */
-  (function (window) {
+  const cleanupMiddlemouse = (function (window) {
     var defaultOptions = {
       middleMouse: false,
       frameRate: 200,
@@ -905,5 +938,12 @@ export function run() {
     })();
     addEvent("mousedown", mousedown);
     addEvent("DOMContentLoaded", init);
+
+    return cleanup;
   })(window);
+
+  window.ufs_smoothScroll_disable = () => {
+    cleanup();
+    cleanupMiddlemouse();
+  };
 }
