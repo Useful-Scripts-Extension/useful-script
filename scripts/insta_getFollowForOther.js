@@ -15,7 +15,7 @@ export default {
 
   popupScript: {
     onClick: async function () {
-      const { getUidFromUsername, getCrftoken, getAllFollow } = await import(
+      const { getUidFromUsername, getCrftoken } = await import(
         "./insta_GLOBAL.js"
       );
       const { showLoading, runScriptInCurrentTab } = await import(
@@ -42,7 +42,7 @@ export default {
           );
 
         setLoadingText(t({ vi: "Đang tìm token...", en: "Finding token..." }));
-        let csrftoken = await runScriptInCurrentTab(() => getCrftoken());
+        let csrftoken = await runScriptInCurrentTab(getCrftoken);
         if (!csrftoken) throw new Error("Can't get csrftoken");
 
         let type = prompt(
@@ -66,6 +66,11 @@ export default {
 
         runScriptInCurrentTab(
           async ({ username, typename, uid, csrftoken, limit }) => {
+            let scriptPath = await UfsGlobal.Extension.getURL(
+              "/scripts/insta_GLOBAL.js"
+            );
+            const { getAllFollow } = await import(scriptPath);
+
             const notify = UfsGlobal.DOM.notify({
               msg: "Đang tải " + typename + " của " + username,
               duration: 99999999,

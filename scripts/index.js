@@ -161,7 +161,7 @@ import auto_lockWebsite from "./auto_lockWebsite.js";
 import showFps_v2 from "./showFps_v2.js";
 import chongLuaDao from "./chongLuaDao.js";
 import prevent_closeBrowser_lastTab from "./prevent_closeBrowser_lastTab.js";
-import createSecretText from "./createSecretText.js";
+import createInvisibleText from "./createInvisibleText.js";
 
 // inject badges
 const allScripts = {
@@ -342,7 +342,7 @@ const allScripts = {
     prevent_closeBrowser_lastTab,
     BADGES.new
   ),
-  createSecretText: addBadge(createSecretText, BADGES.new),
+  createInvisibleText: addBadge(createInvisibleText, BADGES.new),
 };
 
 // alert(Object.keys(allScripts).length);

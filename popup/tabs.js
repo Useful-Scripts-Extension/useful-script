@@ -485,7 +485,7 @@ const tabs = [
       s.remove_tracking_in_url,
       s.prevent_closeBrowser_lastTab,
       s.chongLuaDao,
-      s.createSecretText,
+      s.createInvisibleText,
       s.shortenURL,
       s.unshorten,
       createTitle("--- Automation ---", "--- Tự động ---"),

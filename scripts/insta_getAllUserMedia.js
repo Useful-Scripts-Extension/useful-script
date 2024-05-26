@@ -74,7 +74,7 @@ export default {
               en: `Downloading... (${all_urls.length} link)`,
             })
           );
-          UfsGlobal.Utils.downloadData(all_urls.join("\n"), username, ".txt");
+          UfsGlobal.Utils.downloadData(all_urls.join("\n"), username + ".txt");
         }
       } catch (e) {
         alert("ERROR: " + e);
