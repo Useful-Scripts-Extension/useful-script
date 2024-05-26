@@ -12,7 +12,7 @@ const guide = document.querySelector("#guide");
 const dataContainer = document.querySelector("#timer-data");
 
 let web_timer;
-let curDate = new Date();
+
 const FormatCache = new Map();
 const DATE_TYPE = {
   DAY: "day",
@@ -23,8 +23,12 @@ const DISPLAY_TYPE = {
   AVERAGE: "average",
   TOTAL: "total",
 };
-
-init();
+const config = {
+  fromDate: new Date(),
+  endDate: new Date(),
+  dateType: DATE_TYPE.DAY,
+  displayType: DISPLAY_TYPE.TOTAL,
+};
 
 chrome.storage.local.get("web_timer", function (result) {
   web_timer = result.web_timer;
@@ -37,14 +41,13 @@ chrome.storage.local.get("web_timer", function (result) {
   });
   // }
 
-  showData({ fromDate: new Date() });
+  init();
 });
 
 function getOldestDate() {
   try {
     let dateKeys = Object.keys(web_timer);
     dateKeys.sort();
-    console.log(dateKeys);
     return dateKeys[0];
   } catch (e) {
     console.log(e);
@@ -75,13 +78,18 @@ function init() {
       name: t({ vi: "Tất cả", en: "All" }),
     },
   ].forEach((o) => {
-    dateTypeSelect.options.add(new Option(o.name, o.value));
+    let selected = config.dateType === o.value;
+    dateTypeSelect.options.add(new Option(o.name, o.value, selected, selected));
   });
 
   dateTypeSelect.addEventListener("change", (e) => {
     let type = e.target.value;
     switch (type) {
       case "day":
+        displayTypeSelect.style.display = "none";
+        config.dateType = DATE_TYPE.DAY;
+        showData(config);
+
         datePickerContainer.innerHTML = `
           <button type="button">◀</button>
           <button class="date-selector"></button>
@@ -90,52 +98,96 @@ function init() {
         const [preBtn, dateBtn, nextBtn] =
           datePickerContainer.querySelectorAll("button");
 
-        dateBtn.innerText = formatDate(curDate);
+        dateBtn.innerText = formatDate(config.fromDate);
         dateBtn.addEventListener("click", (e) => {
           let x = dateBtn.offsetLeft - document.documentElement.scrollLeft;
           let y = dateBtn.offsetTop - document.documentElement.scrollTop;
-          openDatePicker(x, y, curDate, getOldestDate(), new Date()).then(
-            (selectedDate) => {
-              if (selectedDate) {
-                let success = showData({ fromDate: selectedDate });
-                if (success) {
-                  curDate = selectedDate;
-                  dateBtn.innerText = formatDate(curDate);
-                }
-              }
+          openDatePicker(
+            x,
+            y,
+            config.fromDate,
+            getOldestDate(),
+            new Date()
+          ).then((selectedDate) => {
+            if (selectedDate) {
+              dateBtn.innerText = formatDate(selectedDate);
+              config.fromDate = selectedDate;
+              showData(config);
             }
-          );
+          });
         });
         preBtn.addEventListener("click", () => {
-          let preDate = new Date(curDate);
+          let preDate = new Date(config.fromDate);
           preDate.setDate(preDate.getDate() - 1);
-          let success = showData({ fromDate: preDate });
-          if (success) {
-            curDate = preDate;
-            dateBtn.innerText = formatDate(curDate);
-          }
+          dateBtn.innerText = formatDate(preDate);
+          config.fromDate = preDate;
+          showData(config);
         });
         nextBtn.addEventListener("click", () => {
-          let nextDate = new Date(curDate);
+          let nextDate = new Date(config.fromDate);
           nextDate.setDate(nextDate.getDate() + 1);
-          let success = showData({ fromDate: nextDate });
-          if (success) {
-            curDate = nextDate;
-            dateBtn.innerText = formatDate(curDate);
-          }
+          dateBtn.innerText = formatDate(nextDate);
+          config.fromDate = nextDate;
+          showData(config);
         });
 
         break;
       case "range":
+        displayTypeSelect.style.display = "block";
+        config.dateType = DATE_TYPE.RANGE;
+        showData(config);
+
         datePickerContainer.innerHTML = `
           <button class="date-selector"></button>
+          <span>→</span>
           <button class="date-selector"></button>`;
-        const [fromDate, toDate] =
+        const [fromDateBtn, endDateBtn] =
           datePickerContainer.querySelectorAll("button");
+
+        fromDateBtn.innerText = formatDate(config.fromDate);
+        endDateBtn.innerText = formatDate(config.endDate || new Date());
+
+        fromDateBtn.addEventListener("click", (e) => {
+          let x = fromDateBtn.offsetLeft - document.documentElement.scrollLeft;
+          let y = fromDateBtn.offsetTop - document.documentElement.scrollTop;
+          openDatePicker(
+            x,
+            y,
+            config.fromDate,
+            getOldestDate(),
+            config.endDate || new Date()
+          ).then((selectedDate) => {
+            if (selectedDate) {
+              fromDateBtn.innerText = formatDate(selectedDate);
+              config.fromDate = selectedDate;
+              showData(config);
+            }
+          });
+        });
+
+        endDateBtn.addEventListener("click", (e) => {
+          let x = endDateBtn.offsetLeft - document.documentElement.scrollLeft;
+          let y = endDateBtn.offsetTop - document.documentElement.scrollTop;
+          openDatePicker(
+            x,
+            y,
+            config.endDate,
+            config.fromDate,
+            new Date()
+          ).then((selectedDate) => {
+            if (selectedDate) {
+              endDateBtn.innerText = formatDate(selectedDate);
+              config.endDate = selectedDate;
+              showData(config);
+            }
+          });
+        });
         break;
       case "all":
+        displayTypeSelect.style.display = "block";
         datePickerContainer.innerHTML = "";
-        showData({ type: DISPLAY_TYPE.TOTAL });
+        config.dateType = DATE_TYPE.ALL;
+        showData(config);
         break;
     }
   });
@@ -146,20 +198,23 @@ function init() {
   group.label = t({ vi: "Kiểu hiển thị:", en: "Display type:" });
   displayTypeSelect.appendChild(group);
   displayTypeSelect.addEventListener("change", (e) => {
-    let type = e.target.value;
-    showData(type);
+    config.displayType = e.target.value;
+    showData(config);
   });
   [
     {
       value: DISPLAY_TYPE.AVERAGE,
-      name: t({ vi: "Trung bình", en: "Average" }),
+      name: t({ vi: "Trung bình ngày", en: "Day average" }),
     },
     {
       value: DISPLAY_TYPE.TOTAL,
       name: t({ vi: "Tổng cộng", en: "Total" }),
     },
   ].forEach((o) => {
-    displayTypeSelect.options.add(new Option(o.name, o.value));
+    let selected = config.displayType === o.value;
+    displayTypeSelect.options.add(
+      new Option(o.name, o.value, selected, selected)
+    );
   });
 }
 
@@ -203,9 +258,8 @@ function showData({
   dateType = DATE_TYPE.DAY,
   displayType = DISPLAY_TYPE.TOTAL,
 }) {
-  const { chartData, allData } =
+  const { chartData = [], allData = [] } =
     getData({ fromDate, endDate, dateType, displayType }) || {};
-  if (!allData?.length) return false;
 
   // draw chart
   let chart = Donut(280, chartData, 50, 2);
@@ -258,8 +312,6 @@ function showData({
   return true;
 }
 
-function creatWebsiteeDetail(website, allData) {}
-
 function getData({
   fromDate = new Date(),
   endDate,
@@ -267,50 +319,49 @@ function getData({
   displayType = DISPLAY_TYPE.TOTAL,
 }) {
   let allData = [],
-    chartData = [];
+    chartData = [],
+    totalDays = 1,
+    oldestDate = getOldestDate();
 
   // single day
   if (dateType === DATE_TYPE.DAY) {
-    console.log(fromDate);
     let date = fromDate;
     let dateKey = formatDate(date);
-    if (!web_timer[dateKey]) {
-      alert(
-        t({
-          vi: "không có dữ liệu cho ngày " + formatDate(date),
-          en: "No data for this date " + formatDate(date),
-        })
-      );
-      return null;
+    if (web_timer[dateKey]) {
+      allData = Object.entries(web_timer[dateKey]);
+      totalDays = 1;
+      guide.innerText = t({
+        vi: `Dữ liệu ngày ${dateKey} (${allData.length} websites)`,
+        en: `Data for ${dateKey} (${allData.length} websites)`,
+      });
     }
-    allData = Object.entries(web_timer[dateKey]).filter((_) => _[1] > 0);
-    guide.innerText = t({
-      vi: `Dữ liệu ngày ${dateKey} (${allData.length} websites)`,
-      en: `Data for ${dateKey} (${allData.length} websites)`,
-    });
   }
 
-  // all days
-  if (dateType === DATE_TYPE.ALL) {
+  // range of days / all days
+  if (dateType === DATE_TYPE.RANGE || dateType === DATE_TYPE.ALL) {
+    totalDays = 0;
     let web = {},
-      oldestDate = formatDate(new Date()),
-      totalDays = 0;
+      _fromDate = formatDate(fromDate),
+      _endDate = formatDate(endDate);
 
     for (let date in web_timer) {
-      totalDays++;
-      if (date < oldestDate) oldestDate = date;
-      for (let website in web_timer[date]) {
-        if (!web[website]) web[website] = 0;
-        if (web_timer[date][website]) {
-          web[website] += web_timer[date][website];
+      if (
+        dateType === DATE_TYPE.ALL ||
+        (date >= _fromDate && date <= _endDate)
+      ) {
+        totalDays++;
+        for (let website in web_timer[date]) {
+          if (!web[website]) web[website] = 0;
+          if (web_timer[date][website]) {
+            web[website] += web_timer[date][website];
+          }
         }
       }
     }
     allData = Object.entries(web);
-
     guide.innerText = t({
-      vi: `Dữ liệu tổng hợp từ ${oldestDate} (${totalDays} ngày)`,
-      en: `Aggregate data since ${oldestDate} (${totalDays} days)`,
+      vi: `Dữ liệu từ ${_fromDate} → ${_endDate} (${totalDays} ngày, ${allData.length} websites)`,
+      en: `Data from ${_fromDate} → ${_endDate} (${totalDays} days, ${allData.length} websites)`,
     });
   }
 
@@ -319,10 +370,6 @@ function getData({
     for (let d of allData) {
       d[1] /= totalDays;
     }
-    guide.innerText = t({
-      vi: `Trung bình hằng ngày từ ${oldestDate} (${totalDays} ngày)`,
-      en: `Daily averages since ${oldestDate} (${totalDays} days)`,
-    });
   }
 
   // data structure
@@ -366,6 +413,14 @@ function getData({
         percent += Number(allData[i].percentage);
       }
     }
+  }
+
+  // no data
+  if (!allData.length) {
+    guide.innerText = t({
+      vi: `Không có dữ liệu`,
+      en: `No data`,
+    });
   }
 
   return { chartData, allData };
