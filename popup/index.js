@@ -324,6 +324,28 @@ function createScriptButton(script, isFavorite = false) {
   if (script.description?.img) {
     tooltip.innerHTML += `<img src="${script.description.img}" style="width:80vw" />`;
   }
+  if (script.description?.video) {
+    let video = document.createElement("video");
+    video.src = script.description.video;
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.style.width = "80vw";
+    video.addEventListener("loadeddata", () => {
+      video.pause();
+      video.currentTime = 0;
+      video.play();
+    });
+    tooltip.addEventListener("mouseenter", () => {
+      video.pause();
+      video.currentTime = 0;
+      video.play();
+    });
+    tooltip.addEventListener("mouseleave", () => {
+      video.pause();
+    });
+    tooltip.appendChild(video);
+  }
   if (script.changeLogs) {
     let tx = "";
     let dates = Object.keys(script.changeLogs).sort();

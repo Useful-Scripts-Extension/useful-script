@@ -122,6 +122,10 @@ export default {
 };
 
 function run() {
+  if (typeof window.ufs_web_timer_cleanup === "function") {
+    window.ufs_web_timer_cleanup();
+  }
+
   const isMainFrame = window === window.top;
   const cleanupFn = [];
 

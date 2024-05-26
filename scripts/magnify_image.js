@@ -12,22 +12,22 @@ export default {
     Auto find large version of image to show.
     <br/></br>
     <p style="color:yellow">3 ways to use:</p>
-    <ul>
+    <ol>
       <li>Right click any image</li>
       <li>Left click this feature and choose image</li>
       <li>Double Ctrl on any image (require autorun)</li>
-    </ul>
+    </ol>
     `,
     vi: `Xem bất kỳ hình ảnh nào trong cửa sổ phóng đại<br/>
     Nơi bạn có thể phóng to/thu nhỏ, xoay, kéo thả, ...<br/>
     Tự động tìm ảnh chất lượng cao để hiển thị.
     <br/></br>
     <p style="color:yellow">3 cách sử dụng:</p>
-    <ul>
+    <ol>
       <li>Chuột phải vào ảnh</li>
       <li>Click chức năng và click chọn ảnh</li>
       <li>Ctrl 2 lần vào ảnh (cần mở tự động chạy)</li>
-    </ul>`,
+    </ol>`,
     img: "",
   },
 

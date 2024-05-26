@@ -9,7 +9,10 @@ export default {
   description: {
     en: "",
     vi: "",
+
+    // optional
     img: "",
+    video: "",
   },
 
   // buttons that show beside favorite/view-source button
