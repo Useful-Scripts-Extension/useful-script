@@ -5,8 +5,10 @@ export default {
     vi: "Cuộn chuột siêu mượt",
   },
   description: {
-    en: "Scroll smoothly on all websites with your mouse and keyboard.<br/>Smooth like when you scroll this extension.",
-    vi: "Cuộn chuột siêu mượt cho mọi trang web.<br/>Mượt như khi cuộn chuột trong extension này vậy.",
+    en: `Scroll smoothly on all websites with your mouse and keyboard.<br/>
+    Smooth like when you scroll this extension.<br/>`,
+    vi: `Cuộn chuột siêu mượt cho mọi trang web.<br/>
+    Mượt như khi cuộn chuột trong extension này vậy.<br/>`,
     video: "https://www.smoothscroll.net/mac/img/vid/Demo-Mac-720p.mp4",
   },
 
