@@ -1,4 +1,7 @@
+import { run as enableSmoothScroll } from "../../scripts/smoothScroll.js";
+
 window.onload = async () => {
+  enableSmoothScroll();
   try {
     let id = new URL(location.href).searchParams.get("file");
     let source = await getScriptSource(id);

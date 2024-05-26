@@ -5,8 +5,8 @@ export default {
     vi: "Cuộn chuột siêu mượt",
   },
   description: {
-    en: "Scroll smoothly on all websites with your mouse and keyboard. Smooth like this extension.",
-    vi: "Cuộn chuột siêu mượt cho tất cả website, mượt như extension này vậy.",
+    en: "Scroll smoothly on all websites with your mouse and keyboard.<br/>Smooth like when you scroll this extension.",
+    vi: "Cuộn chuột siêu mượt cho tất cả website.<br/>Mượt như khi cuộn chuột trong extension này vậy.",
     img: "",
   },
 
@@ -56,8 +56,9 @@ export default {
   },
 };
 
+// TODO: setting page + horizontal scroll + fix window.scrollTo with behavior: "smooth"
+
 // https://chromewebstore.google.com/detail/smoothscroll/nbokbjkabcmbfdlbddjidfmibcpneigj
-// TODO: setting page
 export function run() {
   // =======================================================================
   // ============================ sscr.js ==================================

@@ -394,7 +394,7 @@ async function updateButtonChecker(script, checkmarkContainer, val) {
   } else {
     checkmark.classList.remove("active");
     tooltip = t({
-      vi: "Bật tự động chạy",
+      vi: "Bật tự chạy",
       en: "Turn on Autorun",
     });
   }

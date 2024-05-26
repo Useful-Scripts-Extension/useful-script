@@ -57,6 +57,23 @@ export default {
       await locker.sites.clear();
       return true;
     },
+    onClick: async () => {
+      const { t } = await import("../popup/helpers/lang.js");
+      let password = await locker.password.get();
+      if (password == null) {
+        Swal.fire({
+          icon: "warning",
+          title: t({
+            vi: "Cần tạo mật khẩu",
+            en: "Autorun required",
+          }),
+          html: t({
+            vi: "Bạn hãy Bật tự chạy và Tạo mật khẩu trước.<br/><br/>Sau đó hãy bấm lại để KHÓA trang web hiện tại nhé.",
+            en: "Please enable autorun and create password first.<br/><br/>Then click again to LOCK current website.",
+          }),
+        });
+      }
+    },
   },
 
   contentScript: {
@@ -75,9 +92,6 @@ export default {
       try {
         let password = await locker.password.get();
         if (password == null) {
-          alert(
-            "Bạn chưa tạo mật khẩu, Vui lòng bật chức năng và tạo mật khẩu trước"
-          );
           return;
         }
         lockCurrentWebsite(password);
