@@ -6,8 +6,7 @@ export default {
   },
   description: {
     en: "Scroll smoothly on all websites with your mouse and keyboard.<br/>Smooth like when you scroll this extension.",
-    vi: "Cuộn chuột siêu mượt cho tất cả website.<br/>Mượt như khi cuộn chuột trong extension này vậy.",
-    img: "",
+    vi: "Cuộn chuột siêu mượt cho mọi trang web.<br/>Mượt như khi cuộn chuột trong extension này vậy.",
   },
 
   changeLogs: {
@@ -20,31 +19,36 @@ export default {
       const { t } = await import("../popup/helpers/lang.js");
       const { runScriptInTab } = await import("./helpers/utils.js");
       chrome.tabs.query({}, async (tabs) => {
+        let count = 0;
         for (let tab of tabs) {
-          await runScriptInTab({
-            target: {
-              tabId: tab.id,
-              allFrames: true,
-            },
-            func: run,
-            world: "ISOLATED",
-          });
+          try {
+            await runScriptInTab({
+              target: {
+                tabId: tab.id,
+                allFrames: true,
+              },
+              func: run,
+              world: "ISOLATED",
+            });
+            count++;
+          } catch (e) {}
         }
-        Swal.fire({
-          icon: "success",
-          title: t({
-            vi: "Đã bật Cuộn chuột Siêu mượt",
-            en: "Super smooth scroll enabled",
-          }),
-          html: t({
-            vi:
-              `Đã tự BẬT cho ${tabs.length} tab đang mở<br/><br/>` +
-              "Bạn có thể dùng ngay không cần tải lại trang.",
-            en:
-              `Enabled smooth scroll for ${tabs.length} tabs<br/><br/>` +
-              "Dont need to reload websites.",
-          }),
-        });
+        if (count)
+          Swal.fire({
+            icon: "success",
+            title: t({
+              vi: "Đã bật Cuộn chuột Siêu mượt",
+              en: "Super smooth scroll enabled",
+            }),
+            html: t({
+              vi:
+                `Đã tự BẬT cho ${count} tab đang mở<br/><br/>` +
+                "Bạn có thể dùng ngay không cần tải lại trang.",
+              en:
+                `Enabled smooth scroll for ${count} opening tabs<br/><br/>` +
+                "Dont need to reload websites.",
+            }),
+          });
       });
     },
     onDisable: async () => {
@@ -74,7 +78,7 @@ export default {
               `Đã tự TẮT cho ${tabs.length} tab đang mở<br/><br/>` +
               "Không cần tải lại trang.",
             en:
-              `Disabled smooth scroll for ${tabs.length} tabs<br/><br/>` +
+              `Disabled smooth scroll for ${tabs.length} opening tabs<br/><br/>` +
               "Dont need to reload websites.",
           }),
         });

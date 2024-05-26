@@ -20,13 +20,19 @@ export default {
     onEnable: () => {
       chrome.runtime.sendMessage({ action: enableEvent });
     },
+    onDisable: () => {
+      chrome.runtime.sendMessage({ action: disableEvent });
+    },
   },
 
   backgroundScript: {
     runtime: {
-      onMessage: ({ request, sender, sendResponse }, context) => {
+      onMessage: async ({ request, sender, sendResponse }, context) => {
         if (request.action === enableEvent) {
-          handleEvent("onEnable");
+          onEnable();
+        }
+        if (request.action === disableEvent) {
+          onDisable();
         }
       },
     },
@@ -51,19 +57,23 @@ export default {
 };
 
 const enableEvent = "prevent_closeBrowser_lastTab_enabled";
+const disableEvent = "prevent_closeBrowser_lastTab_disabled";
 
 // https://chromewebstore.google.com/detail/dont-close-window-with-la/dlnpfhfhmkiebpnlllpehlmklgdggbhn
 // ===================== bg script context =====================
 
-var newTabUrl = "chrome://newtab/";
-var working = false;
-var handling = false;
-var first_window_id = null;
-var single_new_tab = false;
-var new_tab_last = false;
-var first_window = true;
-var every_window = false;
-var debug = false;
+let newTabUrl = "chrome://newtab/";
+let working = false;
+let handling = false;
+let first_window_id = null;
+let pinned_tab_id = null;
+
+// config
+let single_new_tab = false;
+let new_tab_last = false;
+let first_window = true;
+let every_window = false;
+let debug = false;
 
 function isNewTabPage(url) {
   url = url.trim();
@@ -72,6 +82,16 @@ function isNewTabPage(url) {
     url == "edge://newtab/" ||
     (url.indexOf("/_/chrome/newtab?") !== -1 && url.indexOf("google.") !== -1)
   );
+}
+
+async function onEnable() {
+  first_window_id = null;
+  pinned_tab_id = null;
+  await handleEvent("onEnable");
+}
+
+async function onDisable() {
+  if (pinned_tab_id) await chrome.tabs.remove(pinned_tab_id);
 }
 
 async function handleEvent(type) {
@@ -134,13 +154,14 @@ async function handleEvent(type) {
       working = true;
       if (debug) console.log("creating pinned tab");
       try {
-        await chrome.tabs.create({
+        let tab = await chrome.tabs.create({
           windowId: win.id,
           index: 0,
           pinned: true,
           active: false,
           url: newTabUrl,
         });
+        pinned_tab_id = tab.id;
         first_window_id = win.id;
         wasWorking = true;
       } catch (error) {
@@ -190,6 +211,7 @@ async function handleEvent(type) {
       if (debug) console.log("removing pinned tab 1");
       try {
         await chrome.tabs.remove(pinnedTabs[0].id);
+        pinned_tab_id = null;
         wasWorking = true;
       } catch (error) {
         setTimeout(function () {

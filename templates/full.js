@@ -47,8 +47,8 @@ export default {
   //    + can run scripts in background-context (limited - via UseGlobal.Extension)
   popupScript: {
     // run when enable/disable autorun script
-    onEnable: () => {},
-    onDisable: () => {},
+    onEnable: () => {}, // tip: 'return false' to cancel enable action
+    onDisable: () => {}, // tip: 'return false' to cancel disable action
 
     onClick: () => {},
   },
@@ -69,7 +69,6 @@ export default {
 
     onClick: () => {},
 
-    // advanced
     // advanced
     runtime: {
       onInstalled: (reason) => {},

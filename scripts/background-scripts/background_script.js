@@ -368,9 +368,9 @@ function listenMessage() {
         });
         return true;
       } else {
-        let sended = false;
+        let sent = false;
         let internalSendEvent = (data) => {
-          sended = true;
+          sent = true;
           sendResponse(data);
         };
         runScriptsBackground(
@@ -383,7 +383,7 @@ function listenMessage() {
           { request, sender, sendResponse: internalSendEvent },
           true
         );
-        return sended ? false : true;
+        return !sent;
       }
     } catch (e) {
       console.log("ERROR:", e);
