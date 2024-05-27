@@ -418,6 +418,13 @@ function getData({
 
   // no data
   if (!allData.length) {
+    chartData.push({
+      website: t({ vi: "Không có dữ liệu", en: "No data" }),
+      value: 1,
+      color: "gray",
+      percentage: 0,
+    });
+
     guide.innerText = t({
       vi: `Không có dữ liệu`,
       en: `No data`,
