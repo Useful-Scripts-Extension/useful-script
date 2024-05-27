@@ -306,6 +306,7 @@ const tabs = [
       createTitle("--- Hot ---", "--- Nổi bật ---"),
       s.fb_revealDeletedMessages,
       s.fb_moreReactionStory,
+      s.fb_detectUnfriend,
       s.fb_whoIsTyping,
       s.fb_toggleLight,
       s.fb_toggleNewFeed,

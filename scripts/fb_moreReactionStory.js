@@ -3,14 +3,14 @@ import { getFbdtsg, getYourUserId, getStoryId } from "./fb_GLOBAL.js";
 import { emojiData } from "./fb_moreReactionStory_emoji.js";
 
 export default {
-  icon: "😍",
+  icon: "<p style='font-size: 20px'>😍</p>",
   name: {
-    en: "Facebook Story - Add more emoji reactions",
-    vi: "Facebook Story - Thêm nhiều loại emoji",
+    en: "Facebook Story - More reactions",
+    vi: "Facebook Story - Thêm cảm xúc",
   },
   description: {
     en: "React story Facebook with more emojis",
-    vi: "React story Facebook với nhiều loại emoji khác nhau",
+    vi: "Thả cảm xúc story Facebook với nhiều loại emoji khác nhau",
     img: "/scripts/fb_moreReactionStory.png",
   },
   infoLink:

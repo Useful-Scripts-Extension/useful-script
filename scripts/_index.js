@@ -163,3 +163,4 @@ export { default as prevent_closeBrowser_lastTab } from "./prevent_closeBrowser_
 export { default as createInvisibleText } from "./createInvisibleText.js";
 export { default as smoothScroll } from "./smoothScroll.js";
 export { default as fb_getTokenMessage } from "./fb_getTokenMessage.js";
+export { default as fb_detectUnfriend } from "./fb_detectUnfriend.js";
