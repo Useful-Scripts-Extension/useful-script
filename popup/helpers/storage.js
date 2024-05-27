@@ -60,6 +60,6 @@ export const favoriteScriptsSaver = createScriptsSaver(
 );
 
 // default is false => enabled; true => disabled
-export const smoothScrollSaver = createVariableSaver(
-  "useful-scripts-smoothScroll"
+export const disableSmoothScrollSaver = createVariableSaver(
+  "useful-scripts-disable-smoothScroll"
 );

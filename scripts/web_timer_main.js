@@ -268,6 +268,23 @@ function showData({
 
   // draw controller
   dataContainer.innerHTML = "";
+
+  // total row
+  let totalTime = allData.reduce((acc, curr) => acc + curr.value, 0);
+  let totalRow = document.createElement("div");
+  totalRow.classList.add("row", "total");
+  totalRow.innerHTML = `
+    <div>
+      <div class="label">${t({ vi: "Tổng", en: "Total" })}</div>
+    </div>
+    <div>
+      <div class="percentage">100.00 %</div>
+      <div class="timer">${splitHidden(formatSeconds(totalTime, true))}</div>
+    </div>
+  `;
+  dataContainer.append(totalRow);
+
+  // all rows
   allData.forEach((d) => {
     let row = document.createElement("div");
     row.classList.add("row");
@@ -294,21 +311,6 @@ function showData({
     dataContainer.appendChild(row);
   });
 
-  // total row
-  let totalTime = allData.reduce((acc, curr) => acc + curr.value, 0);
-  let totalRow = document.createElement("div");
-  totalRow.classList.add("row", "total");
-  totalRow.innerHTML = `
-    <div>
-      <div class="label">${t({ vi: "Tổng", en: "Total" })}</div>
-    </div>
-    <div>
-      <div class="percentage">100.00 %</div>
-      <div class="timer">${splitHidden(formatSeconds(totalTime, true))}</div>
-    </div>
-  `;
-  dataContainer.appendChild(totalRow);
-
   return true;
 }
 
@@ -320,8 +322,7 @@ function getData({
 }) {
   let allData = [],
     chartData = [],
-    totalDays = 1,
-    oldestDate = getOldestDate();
+    totalDays = 1;
 
   // single day
   if (dateType === DATE_TYPE.DAY) {
@@ -374,7 +375,7 @@ function getData({
 
   // data structure
   if (allData.length) {
-    let totalTime = allData.reduce((acc, curr) => acc + curr[1], 0);
+    let totalTime = allData.reduce((acc, curr) => acc + curr[1], 0) || 1;
 
     allData = allData
       .sort((a, b) => b[1] - a[1])

@@ -320,6 +320,10 @@ option {
             .more-item {
                 opacity: 1;
             }
+
+            .badgeContainer {
+                transform: translateY(-100%);
+            }
         }
 
         .more-item {
@@ -371,8 +375,8 @@ option {
         .badgeContainer {
             position: absolute;
             top: 0;
-            right: 5px;
-            transform: translateY(-40%);
+            right: 0;
+            transition: all .2s ease;
             border-radius: 3px;
             overflow: hidden;
         }
@@ -478,7 +482,7 @@ option {
             visibility: visible;
             top: calc(100% + 5px);
             opacity: 1;
-            transition: all .2s ease .2s;
+            transition: all .2s ease .5s;
         }
     }
 }

@@ -3,6 +3,7 @@ import { themeSaver } from "./storage.js";
 const cssTag = document.querySelector("link[rel='stylesheet/less']");
 
 const me = {
+  name: "HoangTran",
   link: "https://github.com/hoangTran0410",
   avatar: "https://avatars.githubusercontent.com/u/36368107",
 };
@@ -22,6 +23,7 @@ export const THEME = {
     en: "xtri98",
     vi: "xtri98",
     author: {
+      name: "xtri98",
       link: "https://github.com/xtri98",
       avatar: "https://avatars.githubusercontent.com/u/154915091",
     },

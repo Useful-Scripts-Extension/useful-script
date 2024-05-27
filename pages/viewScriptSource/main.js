@@ -1,7 +1,8 @@
+import { disableSmoothScrollSaver } from "../../popup/helpers/storage.js";
 import { run as enableSmoothScroll } from "../../scripts/smoothScroll.js";
 
 window.onload = async () => {
-  enableSmoothScroll();
+  if (!disableSmoothScrollSaver.get()) enableSmoothScroll();
   try {
     let id = new URL(location.href).searchParams.get("file");
     let source = await getScriptSource(id);

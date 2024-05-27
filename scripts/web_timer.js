@@ -28,6 +28,14 @@ export default {
       },
       onClick: openGraph,
     },
+    {
+      icon: '<i class="fa-regular fa-clock"></i>',
+      name: {
+        en: "For developers - Coding timer",
+        vi: "Cho developer - Thời gian code",
+      },
+      onClick: () => window.open("https://wakatime.com/", "_blank"),
+    },
   ],
 
   changeLogs: {
@@ -242,7 +250,7 @@ function run() {
   });
 
   const INTERVAL_UPDATE = 1;
-  const INTERVAL_SAVE = 30;
+  const INTERVAL_SAVE = 10;
   const IDLE_TIME = 60;
   const IDLE_TIME_IF_BLUR = 10;
   const SHOW_OVERLAY = true;

@@ -27,7 +27,7 @@ import {
   activeTabIdSaver,
   favoriteScriptsSaver,
   recentScriptsSaver,
-  smoothScrollSaver,
+  disableSmoothScrollSaver,
 } from "./helpers/storage.js";
 import {
   canAutoRun,
@@ -560,10 +560,10 @@ function initSettings() {
     const themeRow = document.createElement("div");
     themeRow.classList.add("row");
     const author = curThem?.author
-      ? `<a target="_blank" href="${curThem.author.link}" title="${t({
-          vi: "Tác giả",
-          en: "Author",
-        })}">
+      ? `<a target="_blank" href="${curThem.author.link}" data-tooltip="${t({
+          vi: "Tác giả: " + curThem.author.name,
+          en: "Author: " + curThem.author.name,
+        })}" data-flow="left">
         <img src="${curThem.author.avatar}" class="avatar" />
       </a>`
       : "";
@@ -606,11 +606,14 @@ function initSettings() {
       </div>
     `;
     const checkbox = smoothScrollRow.querySelector("button");
-    checkbox.classList.toggle("active", !(smoothScrollSaver.get() ?? false));
+    checkbox.classList.toggle(
+      "active",
+      !(disableSmoothScrollSaver.get() ?? false)
+    );
     checkbox.onclick = () => {
-      let curVal = smoothScrollSaver.get();
+      let curVal = disableSmoothScrollSaver.get();
       let newVal = !curVal;
-      smoothScrollSaver.set(newVal);
+      disableSmoothScrollSaver.set(newVal);
 
       let enabled = !newVal;
       trackEvent("CHANGE-SMOOTH-SCROLL-" + (enabled ? "ON" : "OFF"));
@@ -707,7 +710,8 @@ window.addEventListener("scroll", onScrollEnd);
 (async function () {
   trackEvent("OPEN-POPUP");
 
-  if (!smoothScrollSaver.get()) disableSmoothScroll = enableSmoothScroll();
+  if (!disableSmoothScrollSaver.get())
+    disableSmoothScroll = enableSmoothScroll();
   initTracking();
   initSearch();
   initTooltip();
