@@ -914,16 +914,18 @@ function createPreview(
     }
   };
 
-  toolbar.appendChild(sizeEle);
-  toolbar.appendChild(zoomEle);
-  toolbar.appendChild(toggleBg);
-  toolbar.appendChild(flipH);
-  toolbar.appendChild(flipV);
-  toolbar.appendChild(rotateLeft);
-  toolbar.appendChild(rotateRight);
-  toolbar.appendChild(openNewTab);
-  toolbar.appendChild(download);
-  toolbar.appendChild(desc);
+  toolbar.append(
+    sizeEle,
+    zoomEle,
+    toggleBg,
+    flipH,
+    flipV,
+    rotateLeft,
+    rotateRight,
+    openNewTab,
+    download,
+    desc
+  );
 
   UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
     if (data?.type === "scale") {

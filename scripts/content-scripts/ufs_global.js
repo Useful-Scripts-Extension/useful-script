@@ -294,9 +294,9 @@ function enableDragAndZoom(element, container, callback) {
     `;
 
   // Variables to track the current position
-  var lastX = 0;
-  var lastY = 0;
-  var dragging = false;
+  let lastX = 0;
+  let lastY = 0;
+  let dragging = false;
   let mouse = { x: 0, y: 0 };
 
   // Mouse down event listener
@@ -339,30 +339,27 @@ function enableDragAndZoom(element, container, callback) {
   // Mouse wheel event listener for zooming
   (container || element).addEventListener("wheel", function (e) {
     e.preventDefault();
-    var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-    var scaleFactor = 1.2;
-    var scale = delta > 0 ? scaleFactor : 1 / scaleFactor;
 
-    // Calculate mouse position relative to the container
-    // var rect = container.getBoundingClientRect();
-    // var mouseX = e.clientX - rect.left;
-    // var mouseY = e.clientY - rect.top;
+    let curScale = parseFloat(element.style.width) / element.width;
+    let delta = -e.wheelDeltaY || -e.wheelDelta;
+    let factor = Math.abs((0.1 * delta) / 120);
+    let scale = delta > 0 ? curScale * (1 - factor) : curScale * (1 + factor);
 
     // Adjust scale at mouse position
-    var offsetX = mouse.x - element.offsetLeft;
-    var offsetY = mouse.y - element.offsetTop;
+    let offsetX = mouse.x - element.offsetLeft;
+    let offsetY = mouse.y - element.offsetTop;
 
-    var newWidth = element.width * scale;
-    var newHeight = element.height * scale;
+    let newWidth = element.width * scale;
+    let newHeight = element.height * scale;
 
     if (newWidth < 3 || newHeight < 3) {
       return;
     }
 
-    var newLeft =
+    let newLeft =
       element.offsetLeft -
       (newWidth - element.width) * (offsetX / element.width);
-    var newTop =
+    let newTop =
       element.offsetTop -
       (newHeight - element.height) * (offsetY / element.height);
 
@@ -376,13 +373,13 @@ function enableDragAndZoom(element, container, callback) {
 }
 // prettier-ignore
 function getContentClientRect(target) {
-    var rect = target.getBoundingClientRect();
-    var compStyle = window.getComputedStyle(target);
-    var pFloat = parseFloat;
-    var top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
-    var right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
-    var bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
-    var left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
+    let rect = target.getBoundingClientRect();
+    let compStyle = window.getComputedStyle(target);
+    let pFloat = parseFloat;
+    let top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
+    let right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
+    let bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
+    let left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
     return {
         top : top,
         right : right,
@@ -394,8 +391,8 @@ function getContentClientRect(target) {
   }
 function dataURLToCanvas(dataurl, cb) {
   if (!dataurl) return cb(null);
-  var ctx = canvas.getContext("2d");
-  var img = new Image();
+  let ctx = canvas.getContext("2d");
+  let img = new Image();
   img.setAttribute("crossOrigin", "anonymous");
   img.onload = function () {
     canvas.width = img.width;
@@ -558,8 +555,8 @@ function onDoublePress(key, callback, timeout = 500) {
   };
 } // https://stackoverflow.com/a/3381522
 function createFlashTitle(newMsg, howManyTimes) {
-  var original = document.title;
-  var timeout;
+  let original = document.title;
+  let timeout;
 
   function step() {
     document.title = document.title == original ? newMsg : original;
@@ -751,13 +748,13 @@ function onElementTextContentChanged(element, callback, once) {
   return () => observer.disconnect();
 }
 function injectCssCode(code) {
-  var css = document.createElement("style");
+  let css = document.createElement("style");
   if ("textContent" in css) css.textContent = code;
   else css.innerText = code;
   (document.head || document.documentElement).appendChild(css);
 }
 function injectCssFile(filePath, id) {
-  var css = document.createElement("link");
+  let css = document.createElement("link");
   css.setAttribute("rel", "stylesheet");
   css.setAttribute("type", "text/css");
   css.setAttribute("href", filePath);
@@ -814,7 +811,7 @@ function isElementInViewport(el) {
     el = el[0];
   }
 
-  var rect = el.getBoundingClientRect();
+  let rect = el.getBoundingClientRect();
 
   return (
     rect.top >= 0 &&
@@ -828,7 +825,7 @@ function isElementInViewport(el) {
   );
 }
 function getOverlapScore(el) {
-  var rect = el.getBoundingClientRect();
+  let rect = el.getBoundingClientRect();
   return (
     Math.min(
       rect.bottom,
@@ -923,7 +920,7 @@ function getNumberFormatter(optionSelect, locale) {
  * @source - required (Object|Array) the object or array to be copied
  */
 function deepClone(source) {
-  var result = {};
+  let result = {};
 
   if (typeof source !== "object") {
     return source;
@@ -934,7 +931,7 @@ function deepClone(source) {
   if (Object.prototype.toString.call(source) === "[object Null]") {
     result = null;
   }
-  for (var key in source) {
+  for (let key in source) {
     result[key] =
       typeof source[key] === "object" ? deepClone(source[key]) : source[key];
   }
@@ -973,11 +970,11 @@ function domainCheck(domains) {
 }
 function setCookie(name, value, days) {
   if (days) {
-    var date = new Date();
+    let date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     let expires = "; expires=" + date.toGMTString();
   } else {
-    var expires = "";
+    let expires = "";
     document.cookie = name + "=" + value + expires + "; path=/";
   }
 }
@@ -1010,7 +1007,7 @@ async function xml2json(xml) {
   return window.xml2json(xml);
 }
 function getLargestSrcset(srcset) {
-  var srcs = srcset.split(/[xw],/i),
+  let srcs = srcset.split(/[xw],/i),
     largeSize = -1,
     largeSrc = null;
   if (!srcs.length) return null;
@@ -1124,7 +1121,7 @@ function uniqueArray(array) {
   return Array.from(new Set(array));
 }
 function replaceUsingRegex(str, r, s) {
-  var results = [];
+  let results = [];
 
   if (!Array.isArray(r) && !Array.isArray(s)) {
     if (r && r.test && r.test(str)) {
@@ -1223,7 +1220,7 @@ async function getLargestImageSrc(imgSrc, webUrl) {
   // https://greasyfork.org/en/scripts/2312-resize-image-on-open-image-in-new-tab
   function try3() {
     return new Promise((resolve) => {
-      var m = null;
+      let m = null;
       //google
       if (
         (m = imgSrc.match(
@@ -1269,7 +1266,7 @@ async function getLargestImageSrc(imgSrc, webUrl) {
         ))
       ) {
         if (m[2] < 1280) {
-          var ajax = new XMLHttpRequest();
+          let ajax = new XMLHttpRequest();
           ajax.onreadystatechange = function () {
             if (ajax.status == 200) {
               resolve(m[1] + "1280" + m[3]);
@@ -1286,14 +1283,14 @@ async function getLargestImageSrc(imgSrc, webUrl) {
           /^(https?:\/\/\w+\.twimg\.com\/media\/[^\/:]+)\.(jpg|jpeg|gif|png|bmp|webp)(:\w+)?$/i
         ))
       ) {
-        var format = m[2];
+        let format = m[2];
         if (m[2] == "jpeg") format = "jpg";
         resolve(m[1] + "?format=" + format + "&name=orig");
       } else if (
         (m = imgSrc.match(/^(https?:\/\/\w+\.twimg\.com\/.+)(\?.+)$/i))
       ) {
         let url = new URL(webUrl);
-        var pars = url.searchParams;
+        let pars = url.searchParams;
         if (!pars.format || !pars.name) return;
         if (pars.name == "orig") return;
         resolve(m[1] + "?format=" + pars.format + "&name=orig");
@@ -1505,7 +1502,7 @@ function canonicalUri(src, location = window.location) {
   if (src.charAt(0) == "#") return location.href + src;
   if (src.charAt(0) == "?")
     return location.href.replace(/^([^\?#]+).*/, "$1" + src);
-  var root_page = /^[^?#]*\//.exec(location.href)[0],
+  let root_page = /^[^?#]*\//.exec(location.href)[0],
     base_path = location.pathname.replace(/\/[^\/]+\.[^\/]+$/, "/"),
     root_domain = /^\w+\:\/\/\/?[^\/]+/.exec(root_page)[0],
     absolute_regex = /^\w+\:\/\//;
@@ -1581,9 +1578,9 @@ function hook(obj, name, callback) {
 }
 // https://stackoverflow.com/a/38552302/11898496
 function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
+  let base64Url = token.split(".")[1];
+  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  let jsonPayload = decodeURIComponent(
     atob(base64)
       .split("")
       .map(function (c) {
@@ -1622,7 +1619,7 @@ function copyToClipboard(text) {
 // https://stackoverflow.com/a/7960435
 function isEmptyFunction(func) {
   try {
-    var m = func.toString().match(/\{([\s\S]*)\}/m)[1];
+    let m = func.toString().match(/\{([\s\S]*)\}/m)[1];
     return !m.replace(/^\s*\/\/.*$/gm, "");
   } catch (e) {
     console.log("Error isEmptyFunction", e);
@@ -1638,8 +1635,8 @@ function unescapeRegExp(text) {
   return text.replace(/\\(.)/g, "$1");
 }
 function encodeQueryString(obj) {
-  var str = [];
-  for (var p in obj)
+  let str = [];
+  for (let p in obj)
     if (obj.hasOwnProperty(p)) {
       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     }
@@ -1753,7 +1750,7 @@ function downloadBlob(blob, filename) {
 // https://stackoverflow.com/a/15832662/11898496
 // TODO: chrome.downloads: https://developer.chrome.com/docs/extensions/reference/downloads/#method-download
 function downloadURL(url, name) {
-  var link = document.createElement("a");
+  let link = document.createElement("a");
   link.target = "_blank";
   link.download = name;
   link.href = url;
@@ -1762,11 +1759,11 @@ function downloadURL(url, name) {
   document.body.removeChild(link);
 }
 function downloadData(data, filename, type = "text/plain") {
-  var file = new Blob([data], { type: type });
+  let file = new Blob([data], { type: type });
   if (window.navigator.msSaveOrOpenBlob)
     window.navigator.msSaveOrOpenBlob(file, filename);
   else {
-    var a = document.createElement("a"),
+    let a = document.createElement("a"),
       url = URL.createObjectURL(file);
     a.href = url;
     a.download = filename;
