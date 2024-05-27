@@ -334,18 +334,16 @@ function createScriptButton(script, isFavorite = false) {
     video.muted = true;
     video.loop = true;
     video.style.width = "80vw";
-    video.addEventListener("loadeddata", () => {
-      video.pause();
-      video.currentTime = 0;
-      video.play();
+    // TODO why this not working??
+    button.addEventListener("mouseenter", () => {
+      setTimeout(() => {
+        video.pause();
+        video.currentTime = 0;
+        video.play();
+      }, 10);
     });
-    tooltip.addEventListener("mouseenter", () => {
-      video.pause();
-      video.currentTime = 0;
-      video.play();
-    });
-    tooltip.addEventListener("mouseleave", () => {
-      video.pause();
+    button.addEventListener("mouseleave", () => {
+      setTimeout(() => video.pause(), 0);
     });
     tooltip.appendChild(video);
   }

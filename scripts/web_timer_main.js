@@ -36,8 +36,8 @@ chrome.storage.local.get("web_timer", function (result) {
 
   // if (!web_timer || !Object.keys(web_timer).length) {
   guide.innerHTML = t({
-    vi: "Không có dữ liệu<br/>Vui lòng bật chức năng<br/>Sau đó tải lại các trang web để bắt đầu quá trình đếm.",
-    en: "No data<br/>Please enable this script<br/>Then reload all your websites to start the timer.",
+    vi: "Không có dữ liệu",
+    en: "No data",
   });
   // }
 
