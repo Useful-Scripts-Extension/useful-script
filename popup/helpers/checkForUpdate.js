@@ -20,7 +20,10 @@ export async function checkForUpdate() {
       });
       updateBtn.setAttribute(
         "data-tooltip",
-        t({ vi: "Đã có phiên bản mới", en: "Update available" })
+        t({
+          vi: "Đã có phiên bản mới v" + lastestVer,
+          en: "Update available v" + lastestVer,
+        })
       );
       updateBtn.setAttribute("data-flow", "bottom");
       updateBtn.onclick = () => {

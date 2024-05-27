@@ -1,11 +1,11 @@
 export default {
   icon: '<i class="fa-regular fa-eye-slash fa-lg"></i>',
   name: {
-    en: "Create invisible text",
+    en: "Create invisible message",
     vi: "Tạo tin nhắn tàng hình",
   },
   description: {
-    en: "Create invisible text to hide messages. Receiver to use this feature to decode messages.",
+    en: "Create invisible text to hide secret messages. Receiver to use this feature to decode messages.",
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
 
@@ -15,14 +15,15 @@ export default {
 
   popupScript: {
     onClick: async () => {
+      const { t } = await import("../popup/helpers/lang.js");
       Swal.fire({
         icon: "info",
-        title: "Tin nhắn tàng hình",
-        text: "Vui lòng chọn",
+        title: t({ vi: "Tin nhắn tàng hình", en: "Invisible messages" }),
+        text: t({ vi: "Vui lòng chọn", en: "Please choose" }),
         showDenyButton: true,
         showCancelButton: false,
-        confirmButtonText: "Tạo tin nhắn",
-        denyButtonText: "Giải mã tin nhắn",
+        confirmButtonText: t({ vi: "Tạo tin nhắn", en: "Create message" }),
+        denyButtonText: t({ vi: "Giải mã tin nhắn", en: "Decode message" }),
       }).then((result) => {
         if (result.isConfirmed) {
           doEncode();
@@ -34,8 +35,11 @@ export default {
       function doEncode() {
         Swal.fire({
           icon: "question",
-          title: "Nhập tin nhắn",
-          html: "Đặt ngoặc nhọn >< bao ngoài những nội dung muốn tành hình<br/><br/> Ví dụ: Hôm nay <b>>đi chơi không<</b> trời đẹp quá.",
+          title: t({ vi: "Nhập tin nhắn", en: "Enter message" }),
+          html: t({
+            vi: "Đặt ngoặc nhọn >< bao ngoài những nội dung muốn tành hình<br/><br/> Ví dụ: Gọi tôi <b>>0123456789<</b> là Hoang.",
+            en: "Wrap text in >< to hide message<br/><br/> Example: Call me <b>>0123456789, abc street<</b> Jane.",
+          }),
           input: "textarea",
           showCancelButton: true,
         }).then((result) => {
@@ -43,8 +47,17 @@ export default {
             let encoded = encode(result.value);
             Swal.fire({
               icon: "success",
-              title: "Tạo tin tàng hình thành công",
-              html: result.value + "<br/> Bạn hãy copy và sử dụng nhé",
+              title: t({
+                vi: "Tạo tin tàng hình thành công",
+                en: "Create invisible message successfully",
+              }),
+              html:
+                result.value +
+                "<br/><br/>" +
+                t({
+                  vi: " Bạn hãy copy và sử dụng nhé",
+                  en: " Please copy and use",
+                }),
               input: "textarea",
               inputValue: encoded,
             });
@@ -72,7 +85,7 @@ export default {
             } else {
               Swal.fire({
                 icon: "info",
-                title: "Tin nhắn này chưa được mã hoá",
+                title: "Tin nhắn này không có nội dung tàng hình",
                 text: result.value,
               });
             }

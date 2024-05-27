@@ -159,7 +159,7 @@ option {
     display: none;
     border: none;
     border-radius: 5px;
-    padding: 3px;
+    padding: 5px;
     color: @bg_body;
     background-color: @bg_update;
     font-weight: bold;
@@ -593,6 +593,32 @@ option {
         transform: rotate(360deg);
     }
 }
+
+// https://codepen.io/nohoid/pen/eYXpNL
+// https://codepen.io/pec-man/pen/xxKgxaN
+.rainbow-bg {
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, indigo, blue, green, yellow, orange, red, red);
+    background-size: 1000% 100%;
+    animation: create-rainbow-gradient-shift 15s ease infinite;
+
+    color: white;
+    text-shadow: 0 0 15px black;
+}
+
+@keyframes create-rainbow-gradient-shift {
+    0% {
+        background-position: 0% 82%
+    }
+
+    50% {
+        background-position: 100% 19%
+    }
+
+    100% {
+        background-position: 0% 82%
+    }
+}
+
 
 // https://www.cssportal.com/css-tooltip-generator/
 @keyframes tooltip-vert {
