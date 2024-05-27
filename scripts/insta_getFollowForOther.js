@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-user-secret fa-lg"></i>',
@@ -10,7 +11,7 @@ export default {
     en: "Know about your (or your friends's) following / followers on instagram. Export to json file",
     vi: "Biết bạn bè của bạn (hoặc chính bạn) đang follow những ai / được ai follow trên instagram. Tải về file json",
   },
-
+  badges: [BADGES.new],
   whiteList: ["https://www.instagram.com/*"],
 
   popupScript: {

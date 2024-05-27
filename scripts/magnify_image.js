@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-expand fa-lg fa-bounce"></i>',
@@ -30,7 +31,7 @@ export default {
     </ol>`,
     img: "",
   },
-
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",

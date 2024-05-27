@@ -1,4 +1,5 @@
 export default {
+  icon: '<i class="fa-solid fa-list-ul fa-lg"></i>',
   name: {
     en: "Get all fb Album ID from current page",
     vi: "Lấy tất cả fb album id từ trang hiện tại",

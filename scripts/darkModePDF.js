@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `<i class="fa-solid fa-circle-half-stroke fa-lg"></i>`,
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Enable/Disable darkmode for PDF",
     vi: "Bật/Tắt chế độ tối cho PDF bạn đang xem",
   },
+  badges: [BADGES.hot],
 
   contentScript: {
     onClick: function () {

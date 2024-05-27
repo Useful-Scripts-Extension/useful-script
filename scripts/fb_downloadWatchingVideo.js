@@ -1,6 +1,7 @@
+import { BADGES } from "./helpers/badge.js";
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { showLoading, runScriptInCurrentTab } from "./helpers/utils.js";
 import { shared as fb_videoDownloader } from "./fb_videoDownloader.js";
+import { showLoading, runScriptInCurrentTab } from "./helpers/utils.js";
 
 export default {
   icon: "https://www.facebook.com/favicon.ico",
@@ -12,6 +13,7 @@ export default {
     en: "Download any facebook video that you are watching (watch / story / comment / reel / chat)",
     vi: "Tải bất kỳ video facebook nào mà bạn đang xem (watch / story / comment / reel / chat / bình luận / tin nhắn)",
   },
+  badges: [BADGES.hot],
   whiteList: ["https://*.facebook.com/*"],
   infoLink:
     "https://greasyfork.org/en/scripts/477748-facebook-video-downloader",

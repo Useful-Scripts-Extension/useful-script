@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 import {
   attachDebugger,
   detachDebugger,
@@ -17,6 +18,7 @@ export default {
     en: "Taking a screenshot of an entire webpage",
     vi: "Tạo 1 ảnh chụp màn hình chứa toàn bộ nội dung website",
   },
+  badges: [BADGES.hot],
 
   popupScript: {
     onClick: async function () {

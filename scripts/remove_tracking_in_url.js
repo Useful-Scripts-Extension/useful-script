@@ -3,6 +3,8 @@
 // Adguard: https://github.com/AdguardTeam/AdguardFilters/tree/master/TrackParamFilter/sections
 // https://github.com/DandelionSprout/adfilt/blob/master/LegitimateURLShortener.txt
 
+import { BADGES } from "./helpers/badge.js";
+
 let company = "Facebook, Google, Tiktok, Twitter";
 let ul = `<ul>
 <li>fbclid</li>
@@ -21,7 +23,7 @@ export default {
     en: `Remove tracking parameters from url, prevent tracking from ${company} etc.<br/>${ul}`,
     vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...<br/>${ul}`,
   },
-
+  badges: [BADGES.new],
   buttons: [
     {
       icon: '<i class="fa-solid fa-hashtag"></i>',

@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
@@ -10,6 +11,7 @@ export default {
     en: "Hide Newfeed facebook for better focus to work",
     vi: "Ẩn Newfeed facebook để tập trung làm việc",
   },
+  badges: [BADGES.hot],
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/1919935575005220/",
   whiteList: ["https://*.facebook.com/*"],

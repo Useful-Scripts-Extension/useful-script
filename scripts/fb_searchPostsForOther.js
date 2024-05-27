@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-regular fa-newspaper fa-lg"></i>',
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Search all public posts of your friends on facebook. Include posts in group, page, wall, ...",
     vi: "Tìm tất cả bài posts công khai của bạn bè trên facebook. Bao gồm bài post trong group, page, trên tường, ...",
   },
+  badges: [BADGES.new],
   infoLink:
     "https://anonyviet.com/cach-tim-tat-ca-bai-viet-cua-nguoi-khac-tren-facebook/",
 

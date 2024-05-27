@@ -1,3 +1,4 @@
+import { BADGES } from "./helpers/badge.js";
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { showLoading, runScriptInCurrentTab } from "./helpers/utils.js";
 import { shared as tiktok_downloadVideo } from "./tiktok_downloadVideo.js";
@@ -12,7 +13,7 @@ export default {
     en: "Download tiktok video you are watching (no watermark)",
     vi: "Tải video tiktok bạn đang xem (không watermark)",
   },
-
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-04-27": "fix bug - use snaptik",
     "2024-05-16": "fix title + show download speed",

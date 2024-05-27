@@ -1,4 +1,4 @@
-import { allScripts } from "../../scripts/index.js";
+import allScripts from "../../scripts/_allScripts.js";
 
 const createVariableSaver = (key, defaultValue = null) => ({
   set: (data) => {

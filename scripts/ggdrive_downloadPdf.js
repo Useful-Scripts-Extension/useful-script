@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   // https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.google-apps.document
@@ -24,7 +25,7 @@ export default {
     en: "Download google drive PDF file that dont have download button.<br/>Pages will be <b>convert to image, cannot edit.</b>",
     vi: "Tải file PDF không có nút download trên google drive.<br/>Tải về <b>định dạng hình ảnh, không thể sửa nội dung<b>.",
   },
-
+  badges: [BADGES.hot],
   whiteList: ["https://drive.google.com/file/d/*"],
 
   pageScript: {

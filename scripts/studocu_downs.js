@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://d20ohkaloyme4g.cloudfront.net/img/favicon.ico",
   name: {
@@ -8,7 +10,7 @@ export default {
     en: "Download documents on Studocu.com for free",
     vi: "Tải tài liệu trên Studocu.com miễn phí",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-05-11": "combine + auto download",
   },

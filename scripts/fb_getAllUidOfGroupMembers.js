@@ -1,6 +1,8 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
+  icon: '<i class="fa-solid fa-users-line fa-lg"></i>',
   name: {
     en: "Get all fb User ID from group",
     vi: "Lấy tất cả fb user ID từ group",
@@ -9,6 +11,7 @@ export default {
     en: "Get id of all user from group members facebook",
     vi: "Lấy id của tất cả user từ group facebook",
   },
+  badges: [BADGES.hot],
 
   changeLogs: {
     "2024-04-27": "fixed - new api",

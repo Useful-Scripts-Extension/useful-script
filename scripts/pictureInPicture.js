@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://lh3.googleusercontent.com/cvfpnTKw3B67DtM1ZpJG2PNAIjP6hVMOyYy403X4FMkOuStgG1y4cjCn21vmTnnsip1dTZSVsWBA9IxutGuA3dVDWhg=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Watch videos in a floating window",
     vi: "Xem video trong cửa sổ nổi",
   },
+  badges: [BADGES.hot],
 
   contentScript: {
     onClick: async function () {

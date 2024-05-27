@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `https://www.youtube.com/s/desktop/ff71ea81/img/favicon_48x48.png`,
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Bypass age restriction, without login",
     vi: "Tải cả video giới hạn độ tuổi, không cần đăng nhập",
   },
+  badges: [BADGES.hot],
 
   contentScript: {
     onClick: function () {

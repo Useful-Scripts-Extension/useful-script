@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `<i class="fa-solid fa-snowflake fa-lg"></i>`,
   name: {
@@ -8,7 +10,7 @@ export default {
     en: "Make website like it snowing",
     vi: "Thêm hiệu ứng tuyết rơi vào trang web",
   },
-
+  badges: [BADGES.hot, BADGES.new],
   changeLogs: {
     "2024-05-23": "better UI",
   },

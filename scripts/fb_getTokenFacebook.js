@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Get facebook access token EAAB from www.facebook.com",
     vi: "Lấy facebook access token EAAB từ trang www.facebook.com",
   },
+  badges: [BADGES.hot],
   whiteList: ["https://*.facebook.com/*"],
 
   pageScript: {

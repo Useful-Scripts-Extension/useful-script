@@ -15,8 +15,7 @@ export default {
     video: "",
   },
 
-  // buttons that show beside favorite/view-source button
-  // show on hover script
+  // buttons that show beside favorite/view-source button. Show when hover script
   buttons: [
     {
       icon: '<i class="fa-regular fa-circle-question"></i>',
@@ -26,6 +25,10 @@ export default {
       },
       onClick: () => {},
     },
+  ],
+
+  badges: [
+    // BADGES.hot, BADGES.beta, BADGES.new, BADGES.beta
   ],
 
   // easier way to add infor button beside favorite/view-source button
@@ -185,10 +188,49 @@ export default {
   },
 };
 
-// NOTES: if you want to run script in allFrames (main-frames/sub-frame/iframes)
-// just add _ at the end of function name
-// e.g: onDocumentStart_() onMessage_()
+/* Run scripts in all frames (main-frames/sub-frame/iframes)
 
-// these functions are not support allFrames:
-// onInstalled, onStartup
-// onMessage, storage.onChanged, tabs.*: default to listen all messages (included allFrames + popup + background)
+  just add _ at the end of function name
+  e.g: onDocumentStart_() onMessage_()
+
+  these functions are not support allFrames:
+  onInstalled, onStartup
+  onMessage, storage.onChanged, tabs.*: default to listen all messages (included allFrames + popup + background)
+*/
+
+/* Comunicate between contexts
+
+  There are 4 contexts:
+  + popupScript: run in extension popup
+  + contentScript: run in webpage ISOLATED world
+  + pageScript: run in webpage MAIN world
+  + backgroundScript: run in service worker
+
+  Each context has its own world that can not be shared (variables) with other contexts.
+  But there are few ways to communicate between these contexts:
+
+  -> : one way communicate (may support callback)
+  <-> : two way communicate
+
+  popupScript -> pageScript/contentScript:
+  + chrome.scripting.executeScript (utils.runScriptInCurrentTab, ...)
+
+  popupScript <-> backgroundScript:
+  + chrome.runtime.sendMessage
+
+  contentScript <-> backgroundScript:
+  + chrome.runtime.sendMessage
+
+  pageScript <-> contentScript:
+  + window.postMessage
+
+  pageScript -> backgroundScript:
+  + UfsGlobal.Extension.runInBackground
+
+  backgroundScript -> pageScript/contentScript:
+  + chrome.scripting.executeScript
+
+  backgroundScript <-> backgroundScript (different scripts)
+  + chrome.runtime.sendMessage
+  + context cache (setCache, getCache)
+*/

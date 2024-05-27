@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-solid fa-computer-mouse fa-lg"></i>',
   name: {
@@ -11,7 +13,7 @@ export default {
     Mượt như khi cuộn chuột trong extension này vậy.<br/>`,
     video: "https://www.smoothscroll.net/mac/img/vid/Demo-Mac-720p.mp4",
   },
-
+  badges: [BADGES.new],
   buttons: [
     {
       icon: '<i class="fa-solid fa-display"></i>',

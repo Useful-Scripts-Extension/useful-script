@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 const managerBtn = '<i class="fa-solid fa-unlock-keyhole"></i>';
 
 export default {
@@ -18,7 +20,7 @@ export default {
       <li>Bấm nút ${managerBtn} để mở giao diện quản lý.</li>
     </ul>`,
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-05-20": "init",
   },

@@ -1,5 +1,5 @@
 export default {
-  icon: `<i class="fa-regular fa-id-card fa-lg"></i>`,
+  icon: `<i class="fa-solid fa-user fa-lg"></i>`,
   name: {
     en: "Get fb User ID",
     vi: "Lấy fb User ID",

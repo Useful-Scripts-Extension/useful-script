@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',
   name: {
@@ -8,10 +10,16 @@ export default {
     en: "View first message in facebook messenger",
     vi: "Xem tin nhắn đầu tiên với bạn bè trong facebook messenger",
   },
+  badges: [BADGES.comingSoon],
 
   popupScript: {
     onClick: async () => {
-      window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
+      Swal.fire({
+        icon: "info",
+        title: "Coming soon!",
+        text: "This feature is coming soon!",
+      });
+      // window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
     },
   },
 };

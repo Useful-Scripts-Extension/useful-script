@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 import {
   attachDebugger,
   detachDebugger,
@@ -17,6 +18,7 @@ export default {
     en: "Convert current website to PDF",
     vi: "Chuyển trang web hiện tại thành PDF",
   },
+  badges: [BADGES.hot],
 
   popupScript: {
     onClick: async function () {

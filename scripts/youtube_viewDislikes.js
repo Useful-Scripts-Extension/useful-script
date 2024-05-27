@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: "https://lh3.googleusercontent.com/X0-M21C_VbWyXYuUjN55oyMDvOukjbzAxbs_WrUjwzsebWbyjFCIEchOtczI0DBvbyL9MUpuEWnghm19gF6dp8Vriw=w128-h128-e365-rj-sc0x00ffffff",
@@ -10,6 +11,7 @@ export default {
     en: "Returns ability to see dislikes of youtube video/short",
     vi: "Hiển thị số lượt không thích của video/short youtube",
   },
+  badges: [BADGES.hot, BADGES.new],
 
   changeLogs: {
     "2024-05-25": "autorun",

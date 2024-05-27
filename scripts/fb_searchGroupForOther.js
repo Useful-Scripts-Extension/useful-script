@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-solid fa-users-line fa-lg"></i>',
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Know about your friends's joined groups (public groups) on facebook",
     vi: "Biết bạn bè của bạn đang tham gia các nhóm (công khai) nào trên facebook",
   },
+  badges: [BADGES.hot],
 
   popupScript: {
     onClick: async () => {

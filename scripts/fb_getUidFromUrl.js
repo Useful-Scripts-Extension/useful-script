@@ -1,4 +1,5 @@
 export default {
+  icon: '<i class="fa-solid fa-link fa-lg"></i>',
   name: {
     en: "Get fb User ID from url",
     vi: "Lấy fb User ID từ URL",

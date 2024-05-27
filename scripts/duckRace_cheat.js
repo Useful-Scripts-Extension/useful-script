@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://www.online-stopwatch.com/favicon.ico",
   name: {
@@ -9,7 +11,7 @@ export default {
     vi: "Hack kết quả Duck race, sẽ luôn ra kết quả bạn mong muốn",
     img: "/scripts/duckRage_cheat.png",
   },
-
+  badges: [BADGES.hot],
   whiteList: ["https://www.online-stopwatch.com/*"],
 
   pageScript: {

@@ -1,10 +1,12 @@
-import { BADGES, addBadge } from "../scripts/helpers/badge.js";
-import { getCurrentTab } from "../scripts/helpers/utils.js";
-import { allScripts as s } from "../scripts/index.js";
-import { CATEGORY } from "./helpers/category.js";
+import s from "../scripts/_allScripts.js";
 import { getLang } from "./helpers/lang.js";
-import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
 import { canAutoRun } from "./helpers/utils.js";
+import { CATEGORY } from "./helpers/category.js";
+import { BADGES } from "../scripts/helpers/badge.js";
+import { getCurrentTab } from "../scripts/helpers/utils.js";
+import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+
+console.log(s);
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
 
@@ -36,44 +38,39 @@ const tabs = [
       s.similarWeb,
       s.similarWeb_bypassLimit,
       s.search_sharedAccount,
-      addBadge(
-        {
-          id: "recommend_archive",
-          icon: "https://archive.org/favicon.ico",
-          name: {
-            en: "Internet archive - Free library",
-            vi: "Internet archive - Thư viện miễn phí",
-          },
-          description: {
-            en: "Non-profit library of millions of free books, movies, software, music, websites, and more.",
-            vi: "Thư viện với hàng triệu sách, báo, phim, phần mềm, nhạc, website, ... miễn phí",
-            img: "/scripts/internet_archive.png",
-          },
-          popupScript: {
-            onClick: () => window.open("https://archive.org/"),
-          },
+      {
+        id: "recommend_archive",
+        icon: "https://archive.org/favicon.ico",
+        name: {
+          en: "Internet archive - Free library",
+          vi: "Internet archive - Thư viện miễn phí",
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        {
-          id: "recommend_wappalyzer",
-          icon: "https://www.wappalyzer.com/favicon.ico",
-          name: {
-            en: "Wappalyzer - view website stacks",
-            vi: "Wappalyzer - Web dùng công nghệ gì?",
-          },
-          description: {
-            en: "Technology that current website is using",
-            vi: "Xem những công nghệ/thư viện trang web đang dùng",
-          },
-
-          popupScript: {
-            onClick: () => window.open("https://www.wappalyzer.com/apps/"),
-          },
+        description: {
+          en: "Non-profit library of millions of free books, movies, software, music, websites, and more.",
+          vi: "Thư viện với hàng triệu sách, báo, phim, phần mềm, nhạc, website, ... miễn phí",
+          img: "/scripts/internet_archive.png",
         },
-        BADGES.recommend
-      ),
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://archive.org/"),
+        },
+      },
+      {
+        id: "recommend_wappalyzer",
+        icon: "https://www.wappalyzer.com/favicon.ico",
+        name: {
+          en: "Wappalyzer - view website stacks",
+          vi: "Wappalyzer - Web dùng công nghệ gì?",
+        },
+        description: {
+          en: "Technology that current website is using",
+          vi: "Xem những công nghệ/thư viện trang web đang dùng",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://www.wappalyzer.com/apps/"),
+        },
+      },
       s.whois,
       s.viewWebMetaInfo,
       {
@@ -123,7 +120,7 @@ const tabs = [
       s.saveAllVideo,
       s.vuiz_getLink,
       s.savevideo_me,
-      addBadge({
+      {
         id: "getLinkLuanxt_newtab",
         icon: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/favicon.ico",
         name: {
@@ -135,75 +132,68 @@ const tabs = [
           vi: "Sử dụng API của luanxt.com. Tải Zing MP3, Zing Video Clip, Zing TV, NhacCuaTui, YouTube, SoundCloud, Nhac.vn, ChiaSeNhac.vn, Facebook Video, Keeng Audio, Keeng Video, Keeng Phim",
         },
         infoLink: "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/",
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () =>
             window.open(
               "https://luanxt.com/get-link-mp3-320-lossless-vip-zing/"
             ),
         },
-      }),
+      },
       createTitle("--- Photos ---", "--- Ảnh ---"),
       s.twitter_downloadButton,
       s.getFavicon,
-      addBadge(
-        {
-          id: "recommend_picviewer_ce+",
-          icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
-          name: {
-            en: "Picviewer CE+ download images",
-            vi: "Picviewer CE+ tải ảnh",
-          },
-          description: {
-            en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
-            vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
-            img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://greasyfork.org/en/scripts/24204-picviewer-ce"
-              ),
-          },
+      {
+        id: "recommend_picviewer_ce+",
+        icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAV1BMVEUAAAD////29vbKysoqKioiIiKysrKhoaGTk5N9fX3z8/Pv7+/r6+vk5OTb29vOzs6Ojo5UVFQzMzMZGRkREREMDAy4uLisrKylpaV4eHhkZGRPT08/Pz/IfxjQAAAAgklEQVQoz53RRw7DIBBAUb5pxr2m3/+ckfDImwyJlL9DDzQgDIUMRu1vWOxTBdeM+onApENF0qHjpkOk2VTwLVEF40Kbfj1wK8AVu2pQA1aBBYDHJ1wy9Cf4cXD5chzNAvsAnc8TjoLAhIzsBao9w1rlVTIvkOYMd9nm6xPi168t9AYkbANdajpjcwAAAABJRU5ErkJggg==",
+        name: {
+          en: "Picviewer CE+ download images",
+          vi: "Picviewer CE+ tải ảnh",
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        {
-          id: "recommend_file_converter",
-          icon: "https://file-converter.io/favicon.ico",
-          name: {
-            en: "File-converter.io - change image type",
-            vi: "File-converter.io - chuyển đổi ảnh",
-          },
-          description: {
-            en: "Powerful tool which allows you to convert and compress files using the context menu in windows explorer.",
-            vi: "Công cụ nén ảnh, đổi định dạng ảnh hàng loạt, trực tiếp bằng chuột phải.",
-            img: "https://file-converter.io/images/file-converter-usage.gif",
-          },
-          popupScript: {
-            onClick: () => window.open("https://file-converter.io/"),
-          },
+        description: {
+          en: "Powerful picture viewing tool online, which can popup/scale/rotate/batch save pictures automatically",
+          vi: "Công cụ mạnh mẽ để xem/tải ảnh hàng loạt, cho tất cả trang web",
+          img: "https://v2fy.com/asset/063_picviewer_ce/73130353-c4598e00-4031-11ea-810e-9498677a40d1.gif",
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        {
-          id: "recommend_squoosh_app",
-          icon: "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
-          name: {
-            en: "Squoosh.app - compress images",
-            vi: "Squoosh.app - nén ảnh",
-          },
-          description: {
-            en: "Make images smaller using best-in-class codecs, right in the browser.",
-            vi: "Công cụ nén ảnh mạnh mẽ, giảm kích thước ngay trên trình duyệt",
-          },
-          popupScript: {
-            onClick: () => window.open("https://squoosh.app/"),
-          },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open("https://greasyfork.org/en/scripts/24204-picviewer-ce"),
         },
-        BADGES.recommend
-      ),
+      },
+      {
+        id: "recommend_file_converter",
+        icon: "https://file-converter.io/favicon.ico",
+        name: {
+          en: "File-converter.io - change image type",
+          vi: "File-converter.io - chuyển đổi ảnh",
+        },
+        description: {
+          en: "Powerful tool which allows you to convert and compress files using the context menu in windows explorer.",
+          vi: "Công cụ nén ảnh, đổi định dạng ảnh hàng loạt, trực tiếp bằng chuột phải.",
+          img: "https://file-converter.io/images/file-converter-usage.gif",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://file-converter.io/"),
+        },
+      },
+      {
+        id: "recommend_squoosh_app",
+        icon: "https://squoosh.app/c/icon-large-maskable-c2078ced.png",
+        name: {
+          en: "Squoosh.app - compress images",
+          vi: "Squoosh.app - nén ảnh",
+        },
+        description: {
+          en: "Make images smaller using best-in-class codecs, right in the browser.",
+          vi: "Công cụ nén ảnh mạnh mẽ, giảm kích thước ngay trên trình duyệt",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://squoosh.app/"),
+        },
+      },
       createTitle("--- Music ---", "--- Nhạc ---"),
       s.spotify_downloadButton,
       s.soundcloud_downloadMusic,
@@ -218,46 +208,43 @@ const tabs = [
       s.studocu_downs,
       s.scribd_downloadDocuments,
       s.tailieu_vn,
-      addBadge(
-        {
-          id: "recommend_docsdownloader",
-          icon: "https://docsdownloader.com/assets/img/android-icon-192x192.png",
-          name: {
-            en: "DocDownloader - Download document",
-            vi: "DocDownloader - Tải document",
-          },
-          description: {
-            en: "Download document on Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
-            vi: "Tải document từ Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
-          },
-          popupScript: {
-            onClick: () => window.open("https://docdownloader.com/"),
-          },
+
+      {
+        id: "recommend_docsdownloader",
+        icon: "https://docsdownloader.com/assets/img/android-icon-192x192.png",
+        name: {
+          en: "DocDownloader - Download document",
+          vi: "DocDownloader - Tải document",
         },
-        BADGES.recommend
-      ),
+        description: {
+          en: "Download document on Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
+          vi: "Tải document từ Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://docdownloader.com/"),
+        },
+      },
       s.bookmark_exporter,
-      addBadge(
-        {
-          id: "recommend_BookmarkSidebar",
-          icon: "https://lh3.googleusercontent.com/4kT7DxtoPSmSLzTit1w2Vbx7b1L2zkASTrqGzEpBW-qs2EwmLYzBTyv0cvlGZo-rD-s732OIrUXX-C33RHPSFvOj=s0",
-          name: {
-            en: "Bookmark Sidebar",
-            vi: "Bookmark Sidebar",
-          },
-          description: {
-            en: "Very good Bookmark manager, find your bookmarks faster.",
-            vi: "Trình quản lý bookmark ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
-              ),
-          },
+      {
+        id: "recommend_BookmarkSidebar",
+        icon: "https://lh3.googleusercontent.com/4kT7DxtoPSmSLzTit1w2Vbx7b1L2zkASTrqGzEpBW-qs2EwmLYzBTyv0cvlGZo-rD-s732OIrUXX-C33RHPSFvOj=s0",
+        name: {
+          en: "Bookmark Sidebar",
+          vi: "Bookmark Sidebar",
         },
-        BADGES.recommend
-      ),
+        description: {
+          en: "Very good Bookmark manager, find your bookmarks faster.",
+          vi: "Trình quản lý bookmark ngon, tìm kiếm bookmark nhanh hơn bao giờ hết.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/thanh-d%E1%BA%A5u-trang/jdbnofccmhefkmjbkkdkfiicjkgofkdh"
+            ),
+        },
+      },
       // s.researchGate_downloader, // limited
     ],
   },
@@ -275,29 +262,25 @@ const tabs = [
       createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
       s.ggDrive_downloadAllVideosInFolder,
       createTitle("--- More ---", "--- Khác ---"),
-      addBadge(
-        {
-          id: "recommend_googleAdvanced",
-          icon: "https://www.google.com/favicon.ico",
-          name: {
-            en: "Google search advanced",
-            vi: "Google tìm kiếm nâng cao",
-          },
-          description: {
-            en: "Search google with a lot of advanced features",
-            vi: "Tìm kiếm google với nhiều tuỳ chọn nâng cao",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://www.google.com/advanced_search?hl=" +
-                  getLang() +
-                  "&fg=1"
-              ),
-          },
+      {
+        id: "recommend_googleAdvanced",
+        icon: "https://www.google.com/favicon.ico",
+        name: {
+          en: "Google search advanced",
+          vi: "Google tìm kiếm nâng cao",
         },
-        BADGES.recommend
-      ),
+        description: {
+          en: "Search google with a lot of advanced features",
+          vi: "Tìm kiếm google với nhiều tuỳ chọn nâng cao",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.google.com/advanced_search?hl=" + getLang() + "&fg=1"
+            ),
+        },
+      },
       s.search_totalIndexedPages,
       s.search_googleSite,
       s.googleShortcuts,
@@ -439,27 +422,25 @@ const tabs = [
       s.pip_canvas,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
-      addBadge(
-        {
-          id: "recommend_improve_youtube",
-          icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
-          name: {
-            en: "Improve YouTube - 85+ features",
-            vi: "Improve YouTube - 85+ chức năng",
-          },
-          description: {
-            en: "Make YouTube more beautiful, faster, and more useful!",
-            vi: "Làm cho YouTube gọn gàng+thông minh!",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
-              ),
-          },
+      {
+        id: "recommend_improve_youtube",
+        icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
+        name: {
+          en: "Improve YouTube - 85+ features",
+          vi: "Improve YouTube - 85+ chức năng",
         },
-        BADGES.recommend
-      ),
+        description: {
+          en: "Make YouTube more beautiful, faster, and more useful!",
+          vi: "Làm cho YouTube gọn gàng+thông minh!",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/improve-youtube-%F0%9F%8E%A7-for-yo/bnomihfieiccainjcjblhegjgglakjdd"
+            ),
+        },
+      },
     ],
   },
   {
@@ -472,7 +453,6 @@ const tabs = [
       createTitle("--- Douyin ---", "--- Douyin ---"),
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
-      // s.douyin_batchDownload,
     ],
   },
   {
@@ -504,72 +484,67 @@ const tabs = [
       s.send_shareFiles,
       s.vuiz_createLogo,
       s.performanceAnalyzer,
-      addBadge(
-        {
-          id: "recommend_ItTools",
-          icon: "https://it-tools.tech/favicon-32x32.png",
-          name: {
-            en: "IT Tools - All for Developers",
-            vi: "IT Tools - Vì tương lai Developer",
-          },
-          description: {
-            en: "Handy tools for developers (open source)",
-            vi: "Tổng hợp tools hữu ích cho IT (mã nguồn mở)",
-          },
-          popupScript: {
-            onClick: () => window.open("https://it-tools.tech/"),
-          },
+      {
+        id: "recommend_ItTools",
+        icon: "https://it-tools.tech/favicon-32x32.png",
+        name: {
+          en: "IT Tools - All for Developers",
+          vi: "IT Tools - Vì tương lai Developer",
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        {
-          id: "recommend_cssportal",
-          icon: "https://www.cssportal.com/favicon.ico",
-          name: {
-            en: "CSS Portal - Empowered your CSS skills",
-            vi: "CSS Portal - Nâng trình CSS",
-          },
-          description: {
-            en: "Empowered your CSS skills with hundreds of CSS tools.",
-            vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://www.cssportal.com/css-animated-text-generator/"
-              ),
-          },
+        description: {
+          en: "Handy tools for developers (open source)",
+          vi: "Tổng hợp tools hữu ích cho IT (mã nguồn mở)",
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        // https://copyicon.com/generator/svg-chart
-        {
-          id: "recommend_copyicon",
-          icon: "https://copyicon.com/favicon.ico",
-          name: {
-            en: "CopyIcon - FREE emoji, icon, generator",
-            vi: "CopyIcon - emoji, icon, svg miễn phí",
-          },
-          description: {
-            en: "285,000 free Icons, Emoji, SVG generator, and more...",
-            vi: "285,000 Icons, Emiji, trình tạo SVG, và hơn thế nữa...",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open("https://copyicon.com/generator/svg-chart"),
-          },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://it-tools.tech/"),
         },
-        BADGES.recommend
-      ),
-      addBadge(
-        {
-          id: "recommend_beautifytools",
-          icon: "https://beautifytools.com/img/favicon.ico",
-          name: { en: "Beautify Tools", vi: "Beautify Tools" },
-          description: {
-            en: `Handy tools for developers
+      },
+
+      {
+        id: "recommend_cssportal",
+        icon: "https://www.cssportal.com/favicon.ico",
+        name: {
+          en: "CSS Portal - Empowered your CSS skills",
+          vi: "CSS Portal - Nâng trình CSS",
+        },
+        description: {
+          en: "Empowered your CSS skills with hundreds of CSS tools.",
+          vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.cssportal.com/css-animated-text-generator/"
+            ),
+        },
+      },
+
+      // https://copyicon.com/generator/svg-chart
+      {
+        id: "recommend_copyicon",
+        icon: "https://copyicon.com/favicon.ico",
+        name: {
+          en: "CopyIcon - FREE emoji, icon, generator",
+          vi: "CopyIcon - emoji, icon, svg miễn phí",
+        },
+        description: {
+          en: "285,000 free Icons, Emoji, SVG generator, and more...",
+          vi: "285,000 Icons, Emiji, trình tạo SVG, và hơn thế nữa...",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open("https://copyicon.com/generator/svg-chart"),
+        },
+      },
+      {
+        id: "recommend_beautifytools",
+        icon: "https://beautifytools.com/img/favicon.ico",
+        name: { en: "Beautify Tools", vi: "Beautify Tools" },
+        description: {
+          en: `Handy tools for developers
             <ol>
               <li>Beautifiers And Minifiers</li>
               <li>CSS Preprocessors</li>
@@ -581,7 +556,7 @@ const tabs = [
               <li>Cryptography</li>
               <li>Code Editors</li>
             </ol>`,
-            vi: `Tổng hợp tools hữu ích cho IT
+          vi: `Tổng hợp tools hữu ích cho IT
             <ol>
               <li>Beautifiers And Minifiers</li>
               <li>CSS Preprocessors</li>
@@ -593,59 +568,52 @@ const tabs = [
               <li>Cryptography</li>
               <li>Code Editors</li>
             </ol>`,
-          },
-          popupScript: {
-            onClick: () => window.open("https://beautifytools.com/"),
-          },
         },
-        BADGES.recommend
-      ),
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://beautifytools.com/"),
+        },
+      },
       createTitle("--- Github ---", "--- Github ---"),
       s.github_goToAnyCommit,
       s.githubdev,
       s.github1s,
-      addBadge(
-        {
-          id: "recommend_cloc",
-          icon: '<i class="fa-solid fa-code"></i>',
-          name: {
-            en: "Cloc - count line of code",
-            vi: "Cloc - đếm số dòng code",
-          },
-          description: {
-            en: "Count blank lines, comment lines, and physical lines of source code in many programming languages.",
-            vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
-            img: "/scripts/recommend_cloc.png",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://github.com/AlDanial/cloc?tab=readme-ov-file"
-              ),
-          },
+      {
+        id: "recommend_cloc",
+        icon: '<i class="fa-solid fa-code"></i>',
+        name: {
+          en: "Cloc - count line of code",
+          vi: "Cloc - đếm số dòng code",
         },
-        BADGES.recommend
-      ),
+        description: {
+          en: "Count blank lines, comment lines, and physical lines of source code in many programming languages.",
+          vi: "Đếm dòng trống, comment, dòng code trong repo, hỗ trợ nhiều ngôn ngữ lập trình.",
+          img: "/scripts/recommend_cloc.png",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
+        },
+      },
       createTitle("--- Shopping ---", "--- Mua sắm ---"),
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
       s.shopee_totalSpendMoney_excel,
       s.tiki_totalSpendMoney,
-      addBadge(
-        {
-          id: "recommend_Beecost",
-          icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
-          name: { en: "Beecost", vi: "Beecost" },
-          description: {
-            en: "Check deals/prices in ecommerce websites",
-            vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
-          },
-          popupScript: {
-            onClick: () => window.open("https://beecost.vn/"),
-          },
+      {
+        id: "recommend_Beecost",
+        icon: "https://lh3.googleusercontent.com/QeCUs-fM4mwAmBVRS0VU8NrjJnDnbSsXoqUrCbd8ZbHou03FBPEQOYHAcdcL_rn7NMrUpWMcXoG2m_CrKtAhc-wLgLU=w128-h128-e365-rj-sc0x00ffffff",
+        name: { en: "Beecost", vi: "Beecost" },
+        description: {
+          en: "Check deals/prices in ecommerce websites",
+          vi: "Kiểm tra giá/ưu đãi giả khi mua hàng online",
         },
-        BADGES.recommend
-      ),
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://beecost.vn/"),
+        },
+      },
       createTitle("--- PDF ---", "--- PDF ---"),
       {
         id: "recommend_fastDoc",
@@ -740,7 +708,7 @@ const tabs = [
           },
         },
       },
-      addBadge({
+      {
         id: "recommend_leakCheck",
         icon: "https://leakcheck.io/favicon.ico",
         name: {
@@ -758,57 +726,53 @@ const tabs = [
             window.open("https://okela.fun/");
           },
         },
-      }),
+      },
     ],
   },
   {
     ...CATEGORY.webUI,
     scripts: [
       createTitle("--- Hot ---", "--- Nổi bật ---"),
-      addBadge(
-        {
-          id: "recommend_DarkReader",
-          icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
-          name: { en: "Dark reader", vi: "Dark reader" },
-          description: {
-            en: "Darkmode for every website",
-            vi: "Chế độ tối cho mọi trang web",
-          },
-          popupScript: {
-            onClick: () =>
-              window.open(
-                "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
-              ),
-          },
+      {
+        id: "recommend_DarkReader",
+        icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
+        name: { en: "Dark reader", vi: "Dark reader" },
+        description: {
+          en: "Darkmode for every website",
+          vi: "Chế độ tối cho mọi trang web",
         },
-        BADGES.recommend
-      ),
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://chrome.google.com/webstore/detail/dark-reader/eimadpbcbfnmbkopoojfekhnkhdbieeh"
+            ),
+        },
+      },
       s.darkModePDF,
       s.toggleEditPage,
       s.showFPS,
       s.showFps_v2,
       s.toggle_passwordField,
       createTitle("--- View ---", "--- Xem ---"),
-      addBadge(
-        {
-          id: "recommend_fontRendering",
-          icon: '<i class="fa-solid fa-font fa-lg"></i>',
-          name: {
-            en: "Font Rendering - better font display",
-            vi: "Font Rendering - font chữ dễ nhìn",
-          },
-          description: {
-            en: "Improve browser displaying, font rewriting, smoothing, scaling, stroke, shadow, special style elements, custom monospaced, etc",
-            vi: "Cải thiện font chữ web, giúp lướt web dễ chịu hơn.",
-          },
-          popupScript: {
-            onClick: () => {
-              window.open("https://greasyfork.org/scripts/416688");
-            },
+      {
+        id: "recommend_fontRendering",
+        icon: '<i class="fa-solid fa-font fa-lg"></i>',
+        name: {
+          en: "Font Rendering - better font display",
+          vi: "Font Rendering - font chữ dễ nhìn",
+        },
+        description: {
+          en: "Improve browser displaying, font rewriting, smoothing, scaling, stroke, shadow, special style elements, custom monospaced, etc",
+          vi: "Cải thiện font chữ web, giúp lướt web dễ chịu hơn.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => {
+            window.open("https://greasyfork.org/scripts/416688");
           },
         },
-        BADGES.recommend
-      ),
+      },
       s.whatFont,
       s.visualEvent,
       s.listAllImagesInWeb,
@@ -992,9 +956,7 @@ function sortScriptsByTab(scripts, _tabs, addTabTitle = true) {
 
     for (let script of tab.scripts) {
       let found = scripts.findIndex((_) => _.id === script.id) >= 0;
-      if (found) {
-        sorted.push(script);
-      }
+      if (found) sorted.push(script);
     }
 
     if (sorted.length) {

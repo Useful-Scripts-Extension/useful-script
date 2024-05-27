@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Get facebook access token from www.facebook.com (messenger_for_android)",
     vi: "Lấy facebook access token từ trang www.facebook.com (messenger_for_android)",
   },
+  badges: [BADGES.new],
   whiteList: ["https://*.facebook.com/*"],
 
   pageScript: {

@@ -43,7 +43,7 @@ export function setTheme(themeKey) {
   if (themeKey in THEME) {
     currentThemeKey = themeKey;
     themeSaver.set(themeKey);
-    cssTag.href = `styles/${themeKey}.less`;
+    cssTag.href = `themes/${themeKey}.less`;
 
     // remove old compiled css
     document.querySelector("style[id^=less]")?.remove?.();

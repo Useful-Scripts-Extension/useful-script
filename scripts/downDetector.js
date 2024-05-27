@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://cdn2.downdetector.com/dc31f7f27fda396/images/v2/problem.svg",
   name: {
@@ -8,7 +10,7 @@ export default {
     en: "View web bug reports",
     vi: "Xem thống kê các báo cáo về sự cố web",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-04-27": "optimize, fetch list supported sites",
   },

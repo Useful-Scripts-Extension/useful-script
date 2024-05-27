@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: `<i class="fa-solid fa-code-branch fa-lg"></i>`,
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Go to any commit of github repo. Included first commit.",
     vi: "Đi tới commit bất kỳ của repo github. Bao gồm cả commit đầu tiên.",
   },
+  badges: [BADGES.hot],
 
   popupScript: {
     onClick: async () => {

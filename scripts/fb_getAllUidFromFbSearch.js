@@ -1,4 +1,7 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
+  icon: '<i class="fa-solid fa-magnifying-glass fa-lg"></i>',
   name: {
     en: "Get all fb User ID from search page",
     vi: "Lấy tất cả fb user ID từ trang tìm kiếm",
@@ -7,7 +10,7 @@ export default {
     en: "Get id of all user from facebook search page",
     vi: "Lấy id của tất cả user từ trang tìm kiếm người dùng facebook",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-04-27": "x100 faster api",
   },

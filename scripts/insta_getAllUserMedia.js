@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-download fa-lg"></i>',
@@ -10,7 +11,7 @@ export default {
     en: "Get all media of instagram user (use instagram API)",
     vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
   },
-
+  badges: [BADGES.hot, BADGES.new],
   changeLogs: {
     "2024-04-03": "optimize flow",
   },

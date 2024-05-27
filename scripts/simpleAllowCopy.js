@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: `<i class="fa-regular fa-copy fa-lg"></i>`,
@@ -22,6 +23,7 @@ export default {
       <li>Khi copy/chuột phải xong có thể click lần nữa để TẮT.</li>
     </ul>`,
   },
+  badges: [BADGES.hot, BADGES.new],
 
   contentScript: {
     onDocumentStart_: function () {

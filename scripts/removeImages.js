@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   name: {
     en: "Remove images",
@@ -7,7 +9,7 @@ export default {
     en: "Remove all images from website.<br/> Click again to undo.",
     vi: "Chỉ để lại văn bản, giúp tập trung hơn.<br/>Bấm lại để hoàn tác.",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-05-01": "can undo",
   },

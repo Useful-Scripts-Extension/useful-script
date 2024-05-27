@@ -13,7 +13,7 @@ async function renderSites() {
 
   if (!sites.length) {
     container.innerHTML = t({
-      vi: "Không có website nào bị khoá",
+      vi: "Không có trang web nào bị khoá",
       en: "No website is locked",
     });
   }

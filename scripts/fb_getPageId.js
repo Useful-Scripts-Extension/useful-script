@@ -1,4 +1,5 @@
 export default {
+  icon: '<i class="fa-solid fa-pager fa-lg"></i>',
   name: {
     en: "Get fb Page ID",
     vi: "Lấy fb Page ID",

@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 const updateIcon = '<i class="fa-regular fa-circle-down"></i>';
 
 export default {
@@ -18,7 +20,7 @@ export default {
         <li>Click ${updateIcon} để cập nhật dữ liệu website giả mạo mới nhất</li>
       </ul>`,
   },
-
+  badges: [BADGES.new],
   buttons: [
     {
       icon: updateIcon,

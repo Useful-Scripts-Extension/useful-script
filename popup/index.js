@@ -1,5 +1,6 @@
 import { openModal } from "./helpers/modal.js";
 import { refreshSpecialTabs, getAllTabs } from "./tabs.js";
+import { BADGES_CONFIG } from "../scripts/helpers/badge.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
 import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
@@ -228,16 +229,18 @@ function createScriptButton(script, isFavorite = false) {
     const badgeContainer = document.createElement("div");
     badgeContainer.classList.add("badgeContainer");
 
-    script.badges?.map((badge) => {
-      const { text, color, backgroundColor } = badge;
-      const badgeItem = document.createElement("span");
-      badgeItem.classList.add("badge");
-      badgeItem.innerHTML = t(text);
-      badgeItem.style.color = color;
-      badgeItem.style.backgroundColor = backgroundColor;
+    script.badges
+      .filter((badge) => badge in BADGES_CONFIG)
+      .map((badge) => {
+        const { text, color, backgroundColor } = BADGES_CONFIG[badge];
+        const badgeItem = document.createElement("span");
+        badgeItem.classList.add("badge");
+        badgeItem.innerHTML = t(text);
+        badgeItem.style.color = color;
+        badgeItem.style.backgroundColor = backgroundColor;
 
-      badgeContainer.appendChild(badgeItem);
-    });
+        badgeContainer.appendChild(badgeItem);
+      });
 
     button.appendChild(badgeContainer);
   }
@@ -692,7 +695,7 @@ function initTracking() {
 
 function initScrollToTop() {
   scrollToTopBtn.addEventListener("click", () => {
-    document.body.scrollTo({
+    window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
@@ -704,13 +707,13 @@ function initScrollToTop() {
 }
 
 function saveScroll() {
-  const scrollY = document.body.scrollTop;
+  const scrollY = window.scrollY;
   Storage.set("popupScrollY", scrollY);
 }
 
 function restoreScroll() {
   Storage.get("popupScrollY", 0).then((value) => {
-    document.body.scrollTo({
+    window.scrollTo({
       top: value,
       // behavior: "smooth",
     });
@@ -719,7 +722,7 @@ function restoreScroll() {
 
 const onScrollEnd = UfsGlobal.Utils.debounce(() => {
   saveScroll();
-  scrollToTopBtn.classList.toggle("hide", document.body.scrollTop < 200);
+  scrollToTopBtn.classList.toggle("hide", window.scrollY < 200);
 }, 100);
 
 window.addEventListener("scroll", onScrollEnd);

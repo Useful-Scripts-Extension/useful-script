@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://drive-thirdparty.googleusercontent.com/32/type/video/mp4",
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Download google drive video that dont have download button",
     vi: "Tải video không có nút download trên google drive",
   },
+  badges: [BADGES.hot],
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
 

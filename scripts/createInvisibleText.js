@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-regular fa-eye-slash fa-lg"></i>',
   name: {
@@ -8,7 +10,7 @@ export default {
     en: "Create invisible text to hide secret messages. Receiver to use this feature to decode messages.",
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2025-05-26": "init",
   },
