@@ -5,8 +5,8 @@ export default {
     vi: "Lấy fb token EAAB (campaigns)",
   },
   description: {
-    en: "Get facebook token EAAG from www.facebook.com campaigns",
-    vi: "Lấy facebook token EAAG từ www.facebook.com campaigns",
+    en: "Get facebook token EAAB from www.facebook.com (campaigns)",
+    vi: "Lấy facebook token EAAB từ www.facebook.com (campaigns)",
   },
 
   popupScript: {

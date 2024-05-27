@@ -5,8 +5,8 @@ export default {
     vi: "Lấy fb token EAAc (studio)",
   },
   description: {
-    en: "Get facebook access token from business.facebook.com",
-    vi: "Lấy facebook access token từ trang business.facebook.com",
+    en: "Get facebook access token EAAc from business.facebook.com",
+    vi: "Lấy facebook access token EAAc từ trang business.facebook.com",
   },
 
   popupScript: {
