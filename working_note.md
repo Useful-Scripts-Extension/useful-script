@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [ ] fb detect unfriend - xem ai huỷ kết bạn với bạn
+
 - [x] Enable smooth scroll <https://chrome.google.com/webstore/detail/nbokbjkabcmbfdlbddjidfmibcpneigj>
 
 - [x] tham khảo <https://github.com/imhiendev/API_FACEBOOK> => facebook graph api có nhiều hơn
