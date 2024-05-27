@@ -31,7 +31,7 @@ const config = {
 };
 
 chrome.storage.local.get("web_timer", function (result) {
-  web_timer = result.web_timer;
+  web_timer = result.web_timer || {};
   console.log(web_timer);
 
   // if (!web_timer || !Object.keys(web_timer).length) {
