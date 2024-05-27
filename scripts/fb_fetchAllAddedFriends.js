@@ -22,7 +22,7 @@ export default {
 
       try {
         setLoadingText("Đang lấy uid, token...");
-        let uid = await getYourUserId();
+        let uid = "100020477807351"; // await getYourUserId();
         let dtsg = await getFbdtsg();
 
         setLoadingText("Đang tải thông tin...");

@@ -1,4 +1,4 @@
-import { getFbdtsg, getUidFromUrl, getUserInfo } from "./fb_GLOBAL.js";
+import { getFbdtsg, getUidFromUrl, getUserInfo_ } from "./fb_GLOBAL.js";
 
 window.onload = async () => {
   const Global = {
@@ -35,7 +35,7 @@ window.onload = async () => {
 
       showLoading("Đang lấy thông tin bạn bè...");
       let friendUid = await getUidFromUrl(friend_url);
-      let friendInfo = await getUserInfo(friendUid, access_token);
+      let friendInfo = await getUserInfo_(friendUid, access_token);
       console.log(friendInfo);
     } catch (e) {
       alert("ERROR: " + e);

@@ -8,8 +8,8 @@ export default {
   },
   badges: [BADGES.comingSoon],
   description: {
-    en: "",
-    vi: "",
+    en: "Combine all bulk download features on facebook into single page",
+    vi: "Tổng hợp tất cả chức năng tải hàng loạt facebook",
   },
 
   popupScript: {

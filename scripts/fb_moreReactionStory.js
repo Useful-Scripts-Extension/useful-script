@@ -1,6 +1,4 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { getFbdtsg, getYourUserId, getStoryId } from "./fb_GLOBAL.js";
-import { emojiData } from "./fb_moreReactionStory_emoji.js";
 
 export default {
   icon: "<p style='font-size: 20px'>😍</p>",
@@ -22,6 +20,11 @@ export default {
     // FB POST: https://www.facebook.com/groups/j2team.community/posts/1769666783365434
     // Source https://github.com/whoant/react-story-facebook
     onDocumentStart: async () => {
+      const { getFbdtsg, getYourUserId, getStoryId } = await import(
+        "./fb_GLOBAL.js"
+      );
+      const { emojiData } = await import("./fb_moreReactionStory_emoji.js");
+
       loadModal(emojiData);
 
       function loadModal(EMOJI_LIST) {

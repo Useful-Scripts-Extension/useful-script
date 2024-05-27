@@ -1,8 +1,10 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 
+// NOTES: functions that end with _ are required access token
+
 // Helpers
 export async function fetchGraphQl(str, fb_dtsg) {
-  var fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
+  fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
   fb_dtsg += str.includes("variables")
     ? "&" + str
     : "&q=" + encodeURIComponent(str);
@@ -46,11 +48,7 @@ export async function getFbdtsg() {
 }
 // User Data
 export function getUserAvatarFromUid(uid) {
-  return (
-    "https://graph.facebook.com/" +
-    uid +
-    "/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662"
-  );
+  return `https://graph.facebook.com/${uid}/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 }
 export async function getYourUserId() {
   let methods = [
@@ -108,7 +106,7 @@ export async function getUserInfoFromUid(uid) {
     alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
   };
 }
-export async function getUserInfo(uid, access_token) {
+export async function getUserInfo_(uid, access_token) {
   let fields = [
     "birthday",
     "age_range",
@@ -125,7 +123,7 @@ export async function getUserInfo(uid, access_token) {
     "short_name",
     "picture",
   ].join(",");
-  var n = `https://graph.facebook.com/${uid}/?fields=${fields}&access_token=${access_token}`;
+  let n = `https://graph.facebook.com/${uid}/?fields=${fields}&access_token=${access_token}`;
   const e = await fetch(n);
   let json = await e.json();
   console.log(json);
@@ -141,10 +139,10 @@ export async function getUidFromUrl(url) {
   let methods = [
     () => require("CometRouteStore").getRoute(url).rootView.props.userID,
     async () => {
-      var response = await fetch(url);
+      let response = await fetch(url);
       if (response.status == 200) {
-        var text = await response.text();
-        let uid = /(?<=\"userID\"\:\")(.\d+?)(?=\")/.exec(text);
+        let text = await response.text();
+        let uid = /(?<="userID":")(.\d+?)(?=")/.exec(text);
         if (uid?.length) {
           return uid[0];
         }
@@ -277,13 +275,13 @@ export async function getStoryInfo(bucketID, fb_dtsg) {
 }
 // Friend
 export async function removeFriendConfirm(friend_uid, uid, fb_dtsg) {
-  var f = new FormData();
-  f.append("uid", friend_uid),
-    f.append("unref", "bd_friends_tab"),
-    f.append("floc", "friends_tab"),
-    f.append("__user", uid),
-    f.append("__a", 1),
-    f.append("fb_dtsg", fb_dtsg);
+  let f = new FormData();
+  f.append("uid", friend_uid);
+  f.append("unref", "bd_friends_tab");
+  f.append("floc", "friends_tab");
+  f.append("__user", uid);
+  f.append("__a", 1);
+  f.append("fb_dtsg", fb_dtsg);
   await fetch(
     "https://www.facebook.com/ajax/ajax/profile/removefriendconfirm.php?dpr=1",
     {
@@ -293,6 +291,39 @@ export async function removeFriendConfirm(friend_uid, uid, fb_dtsg) {
     }
   );
 }
+export async function fetchAllFriends_(access_token, progressCallback) {
+  let friends = [];
+  let total = 0;
+  let limit = 25;
+  let after = null;
+
+  while (true) {
+    try {
+      const res = await fetch(
+        `https://graph.facebook.com/v19.0/me?fields=friends` +
+          `&access_token=${access_token}&pretty=0&limit=${limit}` +
+          (after ? `&after=${after}` : "")
+      );
+      const json = await res.json();
+      const { data, paging, summary } = json.friends;
+      total = summary.total_count || total;
+      friends = friends.concat(data);
+
+      progressCallback?.({
+        data: friends,
+        loaded: friends.length,
+        total,
+      });
+
+      if (!paging?.cursors?.after || paging.cursors.after === after) break;
+      after = paging.cursors.after;
+    } catch (e) {
+      console.error(e);
+      break;
+    }
+  }
+  return friends;
+}
 export async function fetchAddedFriends(uid, fb_dtsg, cursor) {
   let variables = JSON.stringify({
     count: 8,
@@ -300,14 +331,14 @@ export async function fetchAddedFriends(uid, fb_dtsg, cursor) {
     category_key: "FRIENDS",
   });
   const t = new URLSearchParams();
-  t.append("__user", uid),
-    t.append("__a", 1),
-    t.append("dpr", 1),
-    t.append("fb_dtsg", fb_dtsg),
-    t.append("fb_api_caller_class", "RelayModern"),
-    t.append("fb_api_req_friendly_name", "ActivityLogStoriesQuery"),
-    t.append("doc_id", "2761528123917382"),
-    t.append("variables", variables);
+  t.append("__user", uid);
+  t.append("__a", 1);
+  t.append("dpr", 1);
+  t.append("fb_dtsg", fb_dtsg);
+  t.append("fb_api_caller_class", "RelayModern");
+  t.append("fb_api_req_friendly_name", "ActivityLogStoriesQuery");
+  t.append("doc_id", "2761528123917382");
+  t.append("variables", variables);
 
   let res = await fetch("https://www.facebook.com/api/graphql/", {
     method: "POST",
@@ -394,14 +425,14 @@ export async function messagesCount(fb_dtsg) {
 }
 // Page
 export async function unlikePage(pageId, uid, fb_dtsg) {
-  var f = new FormData();
-  f.append("fbpage_id", pageId),
-    f.append("add", false),
-    f.append("reload", false),
-    f.append("fan_origin", "page_timeline"),
-    f.append("__user", uid),
-    f.append("__a", 1),
-    f.append("fb_dtsg", fb_dtsg);
+  let f = new FormData();
+  f.append("fbpage_id", pageId);
+  f.append("add", false);
+  f.append("reload", false);
+  f.append("fan_origin", "page_timeline");
+  f.append("__user", uid);
+  f.append("__a", 1);
+  f.append("fb_dtsg", fb_dtsg);
   await fetch("https://www.facebook.com/ajax/pages/fan_status.php?dpr=1", {
     method: "POST",
     credentials: "include",
@@ -487,11 +518,11 @@ export async function searchAllPageForOther(
 }
 // Group
 export async function leaveGroup(groupId, uid, fb_dtsg) {
-  var f = new FormData();
-  f.append("fb_dtsg", fb_dtsg),
-    f.append("confirmed", 1),
-    f.append("__user", uid),
-    f.append("__a", 1);
+  let f = new FormData();
+  f.append("fb_dtsg", fb_dtsg);
+  f.append("confirmed", 1);
+  f.append("__user", uid);
+  f.append("__a", 1);
   await fetch(
     "https://www.facebook.com/ajax/groups/membership/leave.php?group_id=" +
       groupId +

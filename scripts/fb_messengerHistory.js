@@ -3,8 +3,8 @@ import { BADGES } from "./helpers/badge.js";
 export default {
   icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',
   name: {
-    en: "Facebook messenger history",
-    vi: "Facebook xem tin nhắn đầu tiên",
+    en: "Facebook - Messenger history",
+    vi: "Facebook - Xem tin nhắn đầu tiên",
   },
   description: {
     en: "View first message in facebook messenger",

@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: '<i class="fa-solid fa-user-large-slash fa-lg"></i>',
   name: {
@@ -9,40 +11,17 @@ export default {
     vi: "Xem ai đã huỷ kết bạn với bạn trên facebook",
     img: "",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
-    date: "description",
+    "2024-05-28": "init",
   },
-
-  blackList: [],
-  whiteList: [],
 
   popupScript: {
-    onEnable: () => {},
-    onDisable: () => {},
+    // onEnable: () => {},
+    // onDisable: () => {},
 
-    onClick: () => {},
-  },
-
-  contentScript: {
-    onDocumentStart: (details) => {},
-    onDocumentIdle: (details) => {},
-    onDocumentEnd: (details) => {},
-
-    onClick: () => {},
-  },
-
-  pageScript: {
-    onDocumentStart: (details) => {},
-    onDocumentIdle: (details) => {},
-    onDocumentEnd: (details) => {},
-
-    onClick: () => {},
-  },
-
-  backgroundScript: {
-    onDocumentStart: (details, context) => {},
-    onDocumentIdle: (details, context) => {},
-    onDocumentEnd: (details, context) => {},
+    onClick: () => {
+      window.open("/scripts/fb_detectUnfriend.html", "_blank");
+    },
   },
 };

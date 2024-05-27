@@ -5,8 +5,8 @@ export default {
     vi: "Facebook - Đếm tin nhắn",
   },
   description: {
-    en: "Counts the number of messages sent from your Facebook Messenger account.",
-    vi: "Đếm tin nhắn từ tài khoản Facebook Messenger của bạn.",
+    en: "Let see who are your most active friends on facebook messenger",
+    vi: "Xem bạn đã nhắn với ai nhiều nhất trên facebook messenger",
   },
 
   popupScript: {
