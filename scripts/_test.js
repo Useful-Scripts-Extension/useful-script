@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { getCurrentTab } from "./helpers/utils.js";
 
 export default {
   icon: "",
@@ -12,6 +13,10 @@ export default {
   },
 
   popupScript: {
+    onClick: async () => {
+      let currentTab = await getCurrentTab();
+      chrome.tabs.update(currentTab.id, { url: "javascript:alert(1)" });
+    },
     _onClick: async () => {
       const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
       console.log(UfsGlobal);
@@ -341,7 +346,7 @@ export default {
 
   pageScript: {
     // fb token messenger
-    onClick: () => {
+    _onClick: () => {
       let dtsg =
           require("DTSGInitialData").token ||
           document.querySelector('[name="fb_dtsg"]').value,

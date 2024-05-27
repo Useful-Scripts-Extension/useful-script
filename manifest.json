@@ -41,7 +41,7 @@
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["*://*/*", "<all_urls>"],
   "options_page": "./pages/options/options.html",
   "background": {
     "service_worker": "scripts/background-scripts/background_script.js",

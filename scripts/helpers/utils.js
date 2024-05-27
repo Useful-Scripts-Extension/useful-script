@@ -244,6 +244,14 @@ export const mergeObject = (...objs) => {
   return res;
 };
 
+export const getAllTabs = async () => {
+  let tabs = await chrome.tabs.query({
+    // url: ["https://*/*", "http://*/*"],
+    // windowType: "normal",
+  });
+  return tabs;
+};
+
 // Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
   let tabs = await chrome.tabs.query({
@@ -344,8 +352,12 @@ export const runScriptInTab = async (config = {}) => {
         config
       ),
       (injectionResults) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          reject(chrome.runtime.lastError);
+        }
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults?.find?.((_) => _.result)?.result);
+        else resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });
@@ -362,8 +374,12 @@ export const runScriptFile = (config = {}) => {
         config
       ),
       (injectionResults) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          reject(chrome.runtime.lastError);
+        }
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults?.find?.((_) => _.result)?.result);
+        else resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });

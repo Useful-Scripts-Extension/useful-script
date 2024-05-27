@@ -45,80 +45,78 @@ export default {
   popupScript: {
     onEnable: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTabWithEventChain } = await import(
+      const { runScriptInTabWithEventChain, getAllTabs } = await import(
         "./helpers/utils.js"
       );
-      chrome.tabs.query({}, async (tabs) => {
-        let count = 0;
-        for (let tab of tabs) {
-          try {
-            await runScriptInTabWithEventChain({
-              target: {
-                tabId: tab.id,
-                allFrames: true,
-              },
-              scriptIds: ["web_timer"],
-              eventChain: "contentScript.onDocumentStart_",
-              world: "ISOLATED",
-            });
-            count++;
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        if (count)
-          Swal.fire({
-            icon: "success",
-            title: t({
-              vi: "Đã bật",
-              en: "Enabled",
-            }),
-            html: t({
-              vi: "Đã BẬT bộ đếm thời gian cho " + count + " tab đang mở",
-              en: "Enabled timer for " + count + " opening tabs",
-            }),
+      const tabs = await getAllTabs();
+      let count = 0;
+      for (let tab of tabs) {
+        try {
+          runScriptInTabWithEventChain({
+            target: {
+              tabId: tab.id,
+              allFrames: true,
+            },
+            scriptIds: ["web_timer"],
+            eventChain: "contentScript.onDocumentStart_",
+            world: "ISOLATED",
           });
-      });
+          count++;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (count)
+        Swal.fire({
+          icon: "success",
+          title: t({
+            vi: "Đã bật",
+            en: "Enabled",
+          }),
+          html: t({
+            vi: "Đã BẬT bộ đếm thời gian cho " + count + " tab đang mở",
+            en: "Enabled timer for " + count + " opening tabs",
+          }),
+        });
     },
     onDisable: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab } = await import("./helpers/utils.js");
-      chrome.tabs.query({}, async (tabs) => {
-        let count = 0;
-        for (let tab of tabs) {
-          try {
-            let res = await runScriptInTab({
-              target: {
-                tabId: tab.id,
-                allFrames: true,
-              },
-              func: () => {
-                if (typeof window.ufs_web_timer_cleanup === "function") {
-                  window.ufs_web_timer_cleanup();
-                  return true;
-                }
-                return false;
-              },
-              world: "ISOLATED",
-            });
-            if (res) count++;
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        if (count)
-          Swal.fire({
-            icon: "success",
-            title: t({
-              vi: "Đã tắt",
-              en: "Disabled",
-            }),
-            html: t({
-              vi: "Đã TẮT bộ đếm thời gian cho " + count + " trang tab",
-              en: "Disabled timer for " + count + " tabs",
-            }),
+      const { runScriptInTab, getAllTabs } = await import("./helpers/utils.js");
+      const tabs = await getAllTabs();
+      let count = 0;
+      for (let tab of tabs) {
+        try {
+          let res = await runScriptInTab({
+            target: {
+              tabId: tab.id,
+              allFrames: true,
+            },
+            func: () => {
+              if (typeof window.ufs_web_timer_cleanup === "function") {
+                window.ufs_web_timer_cleanup();
+                return true;
+              }
+              return false;
+            },
+            world: "ISOLATED",
           });
-      });
+          if (res) count++;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (count)
+        Swal.fire({
+          icon: "success",
+          title: t({
+            vi: "Đã tắt",
+            en: "Disabled",
+          }),
+          html: t({
+            vi: "Đã TẮT bộ đếm thời gian cho " + count + " trang tab",
+            en: "Disabled timer for " + count + " tabs",
+          }),
+        });
     },
 
     onClick: openGraph,

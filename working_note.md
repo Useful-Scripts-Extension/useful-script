@@ -76,7 +76,7 @@
 
 - [x] Boost timer + bypass all short link <https://greasyfork.org/en/scripts/431691-bypass-all-shortlinks> => Not interested
 
-- [x] call js function from url <https://stackoverflow.com/a/8466513/23648002> => chưa biết áp dụng làm gì
+- [x] call js function from url <https://stackoverflow.com/a/8466513/23648002> => chrome đã chặn, không dùng được
 
 ```
 chrome.tabs.update(tabId, {url: 'javascript:functionNameHere()'});

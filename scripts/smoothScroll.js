@@ -30,64 +30,68 @@ export default {
   popupScript: {
     onEnable: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab } = await import("./helpers/utils.js");
-      chrome.tabs.query({}, async (tabs) => {
-        let count = 0;
-        for (let tab of tabs) {
-          try {
-            await runScriptInTab({
-              target: {
-                tabId: tab.id,
-                allFrames: true,
-              },
-              func: run,
-              world: "ISOLATED",
-            });
-            count++;
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        if (count)
-          Swal.fire({
-            icon: "success",
-            title: t({
-              vi: "Đã bật Cuộn chuột Siêu mượt",
-              en: "Super smooth scroll enabled",
-            }),
-            html: t({
-              vi:
-                `Đã tự BẬT cho ${count} tab đang mở<br/><br/>` +
-                "Bạn có thể dùng ngay không cần tải lại trang.",
-              en:
-                `Enabled smooth scroll for ${count} opening tabs<br/><br/>` +
-                "Dont need to reload websites.",
-            }),
+      const { runScriptInTab, getAllTabs: getAllAvailableTabs } = await import(
+        "./helpers/utils.js"
+      );
+      const tabs = await getAllAvailableTabs();
+      let count = 0;
+      for (let tab of tabs) {
+        try {
+          runScriptInTab({
+            target: {
+              tabId: tab.id,
+              allFrames: true,
+            },
+            func: run,
+            world: "ISOLATED",
           });
-      });
+          count++;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (count)
+        Swal.fire({
+          icon: "success",
+          title: t({
+            vi: "Đã bật Cuộn chuột Siêu mượt",
+            en: "Super smooth scroll enabled",
+          }),
+          html: t({
+            vi:
+              `Đã tự BẬT cho ${count} tab đang mở<br/><br/>` +
+              "Bạn có thể dùng ngay không cần tải lại trang.",
+            en:
+              `Enabled smooth scroll for ${count} opening tabs<br/><br/>` +
+              "Dont need to reload websites.",
+          }),
+        });
     },
     onDisable: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab } = await import("./helpers/utils.js");
-      chrome.tabs.query({}, async (tabs) => {
-        let count = 0;
-        for (let tab of tabs) {
-          try {
-            await runScriptInTab({
-              target: {
-                tabId: tab.id,
-                allFrames: true,
-              },
-              func: () => {
-                window.ufs_smoothScroll_disable?.();
-              },
-              world: "ISOLATED",
-            });
-            count++;
-          } catch (e) {
-            console.error(e);
-          }
+      const { runScriptInTab, getAllTabs: getAllAvailableTabs } = await import(
+        "./helpers/utils.js"
+      );
+      const tabs = await getAllAvailableTabs();
+      let count = 0;
+      for (let tab of tabs) {
+        try {
+          runScriptInTab({
+            target: {
+              tabId: tab.id,
+              allFrames: true,
+            },
+            func: () => {
+              window.ufs_smoothScroll_disable?.();
+            },
+            world: "ISOLATED",
+          });
+          count++;
+        } catch (e) {
+          console.error(e);
         }
+      }
+      if (count)
         Swal.fire({
           icon: "success",
           title: t({
@@ -103,7 +107,6 @@ export default {
               "Dont need to reload websites.",
           }),
         });
-      });
     },
   },
 

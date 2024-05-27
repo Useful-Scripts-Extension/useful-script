@@ -411,7 +411,7 @@ async function updateButtonChecker(script, checkmarkContainer, val) {
   if (val ?? (await isActiveScript(script.id))) {
     checkmark.classList.add("active");
     tooltip = t({
-      vi: "Tắt tự động chạy",
+      vi: "Tắt tự chạy",
       en: "Turn off Autorun",
     });
   } else {
@@ -424,38 +424,48 @@ async function updateButtonChecker(script, checkmarkContainer, val) {
   checkmarkContainer.setAttribute("data-tooltip", tooltip);
 }
 
+function showError(e) {
+  Swal.fire({
+    icon: "error",
+    title: t({ vi: "Lỗi", en: "Error" }),
+    text: e?.message || "",
+    input: "textarea",
+    inputValue: JSON.stringify(e, null, 4),
+  });
+}
+
 async function runScript(script) {
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
-    try {
-      recentScriptsSaver.add(script);
-      trackEvent(script.id);
+    recentScriptsSaver.add(script);
+    trackEvent(script.id);
 
+    try {
       if (isFunction(script.popupScript?.onClick))
         await script.popupScript.onClick();
-
-      [
-        ["MAIN", "pageScript", "onClick", false],
-        ["MAIN", "pageScript", "onClick_", true],
-        ["ISOLATED", "contentScript", "onClick", false],
-        ["ISOLATED", "contentScript", "onClick_", true],
-      ].forEach(([world, context, func, allFrames]) => {
-        if (isFunction(script?.[context]?.[func])) {
-          runScriptInTabWithEventChain({
-            target: {
-              tabId: tab.id,
-              ...(allFrames ? { allFrames: true } : {}),
-            },
-            scriptIds: [script.id],
-            eventChain: context + "." + func,
-            world: world,
-          });
-        }
-      });
     } catch (e) {
-      alert("ERROR: run script " + e);
+      showError(e);
     }
+
+    [
+      ["MAIN", "pageScript", "onClick", false],
+      ["MAIN", "pageScript", "onClick_", true],
+      ["ISOLATED", "contentScript", "onClick", false],
+      ["ISOLATED", "contentScript", "onClick_", true],
+    ].forEach(([world, context, func, allFrames]) => {
+      if (isFunction(script?.[context]?.[func])) {
+        runScriptInTabWithEventChain({
+          target: {
+            tabId: tab.id,
+            ...(allFrames ? { allFrames: true } : {}),
+          },
+          scriptIds: [script.id],
+          eventChain: context + "." + func,
+          world: world,
+        }).catch(showError);
+      }
+    });
   } else {
     let w = script?.whiteList?.join("<br/>");
     let b = script?.blackList?.join("<br/>");
@@ -596,10 +606,18 @@ function initSettings() {
     // smooth scroll row
     const smoothScrollRow = document.createElement("div");
     smoothScrollRow.classList.add("row");
+    smoothScrollRow.setAttribute(
+      "data-tooltip",
+      t({
+        vi: "Tắt nếu bạn đã cài app SmoothScroll",
+        en: "Turn off if installed SmoothScroll app",
+      })
+    );
+    smoothScrollRow.setAttribute("data-flow", "bottom");
     smoothScrollRow.innerHTML = `
       <div class="label">${t({
-        vi: "Cuộn chuột mượt",
-        en: "Smooth scroll",
+        vi: "Cuôn chuột siêu mượt",
+        en: "Super smooth scroll",
       })}</div>
       <div class="right-container">
         <button class="checkmark"></button>
