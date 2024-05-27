@@ -12,7 +12,7 @@ export async function checkForUpdate() {
 
     const { version_check, source_code } = config;
     const lastestVer = (await (await fetch(version_check)).json()).version;
-    if (lastestVer >= currentVer) {
+    if (lastestVer > currentVer) {
       updateBtn.style.display = "inline-block";
       updateBtn.innerHTML = t({
         vi: "cập nhật v" + lastestVer,

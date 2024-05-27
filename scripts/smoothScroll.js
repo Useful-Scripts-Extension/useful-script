@@ -114,7 +114,11 @@ export default {
   },
 };
 
-// TODO: setting page + horizontal scroll + fix window.scrollTo with behavior: "smooth"
+// TODO:
+// + setting page
+// + horizontal scroll
+// + fix window.scrollTo with behavior: "smooth"
+// + check excluded
 
 // https://chromewebstore.google.com/detail/smoothscroll/nbokbjkabcmbfdlbddjidfmibcpneigj
 export function run() {
