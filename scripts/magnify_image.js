@@ -628,14 +628,14 @@ function createPreview(
   // container
   let overlay = document.createElement("div");
   overlay.id = id;
-  overlay.onclick = (e) => {
-    e.preventDefault();
+  overlay.addEventListener("click", (e) => {
     if (e.target == overlay) {
       overlay.remove();
       overlay = null;
+      destroy();
       onClose?.();
     }
-  };
+  });
   document.body.appendChild(overlay);
 
   // animation div: a rect that represent image scaled up from original position (mouse position)
@@ -710,6 +710,16 @@ function createPreview(
   };
   overlay.appendChild(img);
 
+  let { destroy, animateTo } = UfsGlobal.DOM.enableDragAndZoom(
+    img,
+    overlay,
+    (data) => {
+      if (data?.type === "scale") {
+        updateZoom();
+      }
+    }
+  );
+
   // toolbar
   let toolbar = document.createElement("div");
   toolbar.classList.add("ufs-toolbar");
@@ -760,10 +770,7 @@ function createPreview(
       h = newSize.height;
     }
 
-    img.style.width = w + "px";
-    img.style.height = h + "px";
-    img.style.left = window.innerWidth / 2 + "px";
-    img.style.top = window.innerHeight / 2 + "px";
+    animateTo(window.innerWidth / 2, window.innerHeight / 2, w, h);
 
     updateZoom();
   };
@@ -926,12 +933,6 @@ function createPreview(
     download,
     desc
   );
-
-  UfsGlobal.DOM.enableDragAndZoom(img, overlay, (data) => {
-    if (data?.type === "scale") {
-      updateZoom();
-    }
-  });
 
   // auto get largest image
   let loadingRef,

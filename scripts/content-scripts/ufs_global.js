@@ -17,6 +17,7 @@ export const UfsGlobal = {
     closest,
     addLoadingAnimation,
     addLoadingAnimationAtPos,
+    addEventListener,
     enableDragAndZoom,
     getContentClientRect,
     dataURLToCanvas,
@@ -46,6 +47,7 @@ export const UfsGlobal = {
     getWatchingVideoSrc,
   },
   Utils: {
+    lerp,
     getNumberFormatter,
     deepClone,
     debounce,
@@ -276,11 +278,20 @@ function addLoadingAnimation(
     if (element) element.classList.remove("ufs-loading-" + id);
   };
 }
+function addEventListener(target, event, callback, options) {
+  target.addEventListener(event, callback, options);
+  return () => target.removeEventListener(event, callback, options);
+}
 function enableDragAndZoom(element, container, callback) {
   // set style
-  element.style.cssText += `
+  const className = "ufs-drag-and-zoom";
+  element.classList.add(className);
+
+  let style = document.createElement("style");
+  style.textContent = `
+    .${className} {
       cursor: grab;
-      position: relative;
+      position: relative !important;
       -webkit-user-select: none !important;
       -moz-user-select: none !important;
       -ms-user-select: none !important;
@@ -291,85 +302,122 @@ function enableDragAndZoom(element, container, callback) {
       min-width: unset !important;
       min-height: unset !important;
       -webkit-user-drag: none !important;
-    `;
+    }`;
+  (container || element).appendChild(style);
 
-  // Variables to track the current position
-  let lastX = 0;
-  let lastY = 0;
+  // config
   let dragging = false;
-  let mouse = { x: 0, y: 0 };
+  const lerpSpeed = 0.3;
+  const last = { x: 0, y: 0 };
+  const mouse = { x: 0, y: 0 };
+  const animTarget = {
+    left: parseFloat(element.style.left),
+    top: parseFloat(element.style.top),
+    width: parseFloat(element.style.width),
+    height: parseFloat(element.style.height),
+  };
+
+  let animationId;
+  function animate() {
+    for (let prop in animTarget) {
+      element.style[prop] =
+        lerp(parseFloat(element.style[prop]), animTarget[prop], lerpSpeed) +
+        "px";
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+
+  animate();
 
   // Mouse down event listener
-  (container || element).addEventListener("mousedown", function (e) {
+  let _down = addEventListener(container || element, "mousedown", function (e) {
     e.preventDefault();
     dragging = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
+    last.x = e.clientX;
+    last.y = e.clientY;
     element.style.cursor = "grabbing";
   });
 
   // Mouse move event listener
-  document.addEventListener("mousemove", function (e) {
-    mouse = { x: e.clientX, y: e.clientY };
+  let _move = addEventListener(document, "mousemove", function (e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
     if (dragging) {
-      let x = e.clientX - lastX + element.offsetLeft;
-      let y = e.clientY - lastY + element.offsetTop;
+      let delX = e.clientX - last.x;
+      let delY = e.clientY - last.y;
 
-      element.style.left = x + "px";
-      element.style.top = y + "px";
-      callback?.({ x, y, type: "move" });
+      animTarget.left += delX;
+      animTarget.top += delY;
+      callback?.({ ...animTarget, type: "move" });
 
-      lastX = e.clientX;
-      lastY = e.clientY;
+      last.x = e.clientX;
+      last.y = e.clientY;
     }
   });
 
   // Mouse up event listener
-  document.addEventListener("mouseup", function () {
+  let _up = addEventListener(document, "mouseup", function () {
     dragging = false;
     element.style.cursor = "grab";
   });
 
   // Mouse leave event listener
-  document.addEventListener("mouseleave", function () {
+  let _leave = addEventListener(document, "mouseleave", function () {
     dragging = false;
     element.style.cursor = "grab";
   });
 
   // Mouse wheel event listener for zooming
-  (container || element).addEventListener("wheel", function (e) {
+  let _wheel = addEventListener(container || element, "wheel", function (e) {
     e.preventDefault();
 
     let curScale = parseFloat(element.style.width) / element.width;
     let delta = -e.wheelDeltaY || -e.wheelDelta;
-    let factor = Math.abs((0.1 * delta) / 120);
-    let scale = delta > 0 ? curScale * (1 - factor) : curScale * (1 + factor);
+    let factor = Math.abs((0.3 * delta) / 120);
+    let newScale =
+      delta > 0 ? curScale * (1 - factor) : curScale * (1 + factor);
 
-    // Adjust scale at mouse position
-    let offsetX = mouse.x - element.offsetLeft;
-    let offsetY = mouse.y - element.offsetTop;
+    let newWidth = element.width * newScale;
+    let newHeight = element.height * newScale;
 
-    let newWidth = element.width * scale;
-    let newHeight = element.height * scale;
-
-    if (newWidth < 3 || newHeight < 3) {
+    if (newWidth < 10 || newHeight < 10) {
       return;
     }
 
-    let newLeft =
-      element.offsetLeft -
-      (newWidth - element.width) * (offsetX / element.width);
-    let newTop =
-      element.offsetTop -
-      (newHeight - element.height) * (offsetY / element.height);
+    let left = parseFloat(element.style.left);
+    let top = parseFloat(element.style.top);
+    let offsetX = mouse.x - left;
+    let offsetY = mouse.y - top;
 
-    element.style.width = newWidth + "px";
-    element.style.height = newHeight + "px";
-    element.style.left = newLeft + "px";
-    element.style.top = newTop + "px";
+    let newLeft = left - (newWidth - element.width) * (offsetX / element.width);
+    let newTop =
+      top - (newHeight - element.height) * (offsetY / element.height);
+
+    animTarget.left = newLeft;
+    animTarget.top = newTop;
+    animTarget.width = newWidth;
+    animTarget.height = newHeight;
 
     callback?.({ type: "scale" });
   });
+
+  let listeners = [_down, _move, _up, _leave, _wheel];
+
+  return {
+    animateTo: (x, y, w, h) => {
+      animTarget.left = x;
+      animTarget.top = y;
+      animTarget.width = w;
+      animTarget.height = h;
+    },
+    destroy: () => {
+      cancelAnimationFrame(animationId);
+      style.remove();
+      element.classList.remove(className);
+      listeners.forEach((l) => l?.());
+    },
+  };
 }
 // prettier-ignore
 function getContentClientRect(target) {
@@ -859,6 +907,11 @@ function getWatchingVideoSrc() {
 // #endregion
 
 // #region Utils
+
+function lerp(from, to, speed) {
+  return from + (to - from) * speed;
+}
+
 const numberFormatCached = {};
 /**
  * Get number formatter
