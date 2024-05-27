@@ -4,6 +4,7 @@ import _test from "./_test.js";
 import fb_toggleLight from "./fb_toggleLight.js";
 import fb_getTokenBusinessStudio from "./fb_getTokenBusinessStudio.js";
 import fb_getTokenFacebook from "./fb_getTokenFacebook.js";
+import fb_getTokenMessage from "./fb_getTokenMessage.js";
 import fb_getUid from "./fb_getUid.js";
 import fb_getPageId from "./fb_getPageId.js";
 import fb_getGroupId from "./fb_getGroupId.js";
@@ -165,6 +166,7 @@ const allScripts = {
   fb_toggleLight: fb_toggleLight,
   fb_getTokenBusinessStudio: fb_getTokenBusinessStudio,
   fb_getTokenFacebook: addBadge(fb_getTokenFacebook, BADGES.hot),
+  fb_getTokenMessage: fb_getTokenMessage,
   fb_getUid: fb_getUid,
   fb_getPageId: fb_getPageId,
   fb_getGroupId: fb_getGroupId,

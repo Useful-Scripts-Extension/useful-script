@@ -1,0 +1,29 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    // "**/*.d.ts": true,
+    "*.log": true,
+    "**/*.lock": true,
+    "**/*.lockb": true,
+    "**/*node.json": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
+}

@@ -264,6 +264,7 @@ const tabs = [
       s.fb_getTokenFfb,
       s.fb_getTokenFacebook,
       s.fb_getTokenBussinessLocation,
+      s.fb_getTokenMessage,
       // s.fb_getTokenBusinessStudio,
       s.fb_getTokenCampaigns,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
