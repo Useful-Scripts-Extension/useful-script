@@ -829,7 +829,7 @@ export function run() {
    */
   const cleanupMiddlemouse = (function (window) {
     let defaultOptions = {
-      middleMouse: false,
+      middleMouse: true,
       frameRate: 200,
     };
     let options = defaultOptions;
@@ -851,16 +851,15 @@ export function run() {
     /**
      * Initializes the image at the reference point.
      */
-    // function init() {
-    //   let url = chrome.runtime.getURL("../img/cursor.png");
-    //   let style = img.style;
-    //   style.background = "url(" + url + ") no-repeat";
-    //   style.position = "fixed";
-    //   style.zIndex = "1000";
-    //   style.width = "20px";
-    //   style.height = "20px";
-    //   new Image().src = url; // force download
-    // }
+    function init() {
+      let url = chrome.runtime.getURL("/scripts/smoothscroll_cursor.png");
+      img.style.background = "url(" + url + ") no-repeat";
+      img.style.position = "fixed";
+      img.style.zIndex = "999999999";
+      img.style.width = "20px";
+      img.style.height = "20px";
+      new Image().src = url; // force download
+    }
     /**
      * Removes event listeners and other traces left on the page.
      */
@@ -970,8 +969,10 @@ export function run() {
             return Date.now();
           };
     })();
+
     addEvent("mousedown", mousedown);
-    // addEvent("DOMContentLoaded", init);
+    if (document.readyState === "complete") init();
+    else addEvent("load", init);
 
     return cleanup;
   })(window);
