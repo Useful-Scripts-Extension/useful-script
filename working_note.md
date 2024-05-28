@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [x] chrome flags for faster web exp <https://www.androidauthority.com/chrome-flags-1009941/>
+
 - [ ] fb detect unfriend - xem ai huỷ kết bạn với bạn
 
 - [x] Enable smooth scroll <https://chrome.google.com/webstore/detail/nbokbjkabcmbfdlbddjidfmibcpneigj>

@@ -683,6 +683,25 @@ const tabs = [
       s.removeCookies,
       createTitle("--- Other ---", "--- Khác ---"),
       {
+        id: "recommend_chromeFlags",
+        icon: '<i class="fa-solid fa-flask fa-lg"></i>',
+        name: {
+          en: "Make browser super fast",
+          vi: "Tăng tốc tối đa trình duyệt",
+        },
+        description: {
+          en: "Some flags experiments that can make your browser super fast",
+          vi: "Các flags giúp trình duyệt của bạn chạy nhanh hơn thỏ",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.androidauthority.com/chrome-flags-1009941/"
+            ),
+        },
+      },
+      {
         id: "recommend_viewSavedWifiPass",
         icon: '<i class="fa-solid fa-wifi"></i>',
         name: {
