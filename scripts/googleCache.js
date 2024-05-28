@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   // icon get from https://chrome.google.com/webstore/detail/google-cache-viewer/fgfklknfijhflahngajfoagmoilakebp
   icon: "https://lh3.googleusercontent.com/OoZ3sM4u01hfT9201pmeBasLOsaRlZe2CbXzcXQLBYOcgpKVDPEakpr_ZHxiXQ1IkQ5dYTvEYndU0m8RH7TOhb1H=w128-h128-e365-rj-sc0x00ffffff",
@@ -12,19 +10,22 @@ export default {
     vi: "Phù hơp để xem các trang web bị block",
   },
 
-  onClickExtension: async function () {
-    // https://cachedviews.com/
+  popupScript: {
+    onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
+      // https://cachedviews.com/
 
-    let { url } = await getCurrentTab();
-    let url_to_check = prompt(
-      "Nhập URL muốn xem cache: ",
-      url.replace(/^http\:\/\/(.*)$/, "$1")
-    );
-    if (url_to_check != null) {
-      window.open(
-        "http://www.google.com/search?q=cache:" +
-          encodeURIComponent(url_to_check)
+      let { url } = await getCurrentTab();
+      let url_to_check = prompt(
+        "Nhập URL muốn xem cache: ",
+        url.replace(/^http\:\/\/(.*)$/, "$1")
       );
-    }
+      if (url_to_check != null) {
+        window.open(
+          "http://www.google.com/search?q=cache:" +
+            encodeURIComponent(url_to_check)
+        );
+      }
+    },
   },
 };

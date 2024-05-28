@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
   name: {
@@ -10,19 +12,19 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "support download as .json",
-    },
+    "2024-04-27": "support download as .json",
   },
 
-  onClickExtension: function () {
-    chrome.bookmarks.getTree((tree) => {
-      console.log(tree);
+  popupScript: {
+    onClick: async function () {
+      chrome.bookmarks.getTree((tree) => {
+        console.log(tree);
 
-      UfsGlobal.Utils.downloadData(
-        JSON.stringify(tree, null, 4),
-        "bookmarks.json"
-      );
-    });
+        UfsGlobal.Utils.downloadData(
+          JSON.stringify(tree, null, 4),
+          "bookmarks.json"
+        );
+      });
+    },
   },
 };

@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 import {
   attachDebugger,
   detachDebugger,
@@ -14,43 +16,47 @@ export default {
   },
   description: {
     en: "Taking a screenshot of an entire webpage",
-    vi: "Tạo ảnh chụp màn hình toàn bộ website",
+    vi: "Tạo 1 ảnh chụp màn hình chứa toàn bộ nội dung website",
   },
+  badges: [BADGES.hot],
 
-  onClickExtension: async function () {
-    const { downloadURL } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: async function () {
+      const { setLoadingText, closeLoading } = showLoading(
+        "Đang lấy kích thước trang..."
+      );
+      try {
+        let tab = await getCurrentTab();
+        await attachDebugger(tab);
+        let res = await sendDevtoolCommand(tab, "Page.getLayoutMetrics", {});
+        const { x, y, width, height } = res.cssContentSize;
 
-    const { setLoadingText, closeLoading } = showLoading(
-      "Đang lấy kích thước trang..."
-    );
-    try {
-      let tab = await getCurrentTab();
-      await attachDebugger(tab);
-      let res = await sendDevtoolCommand(tab, "Page.getLayoutMetrics", {});
-      const { x, y, width, height } = res.cssContentSize;
+        if (
+          confirm(`Kích thước trang: ${width} x ${height}\n Bấm OK để chụp`)
+        ) {
+          setLoadingText("Đang tạo ảnh chụp màn hình...");
+          let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
+            format: "png",
+            quality: 100,
+            fromSurface: true,
+            captureBeyondViewport: true,
+            clip: { x: 0, y: 0, width, height, scale: 1 },
+          });
+          console.log(img);
 
-      if (confirm(`Kích thước trang: ${width} x ${height}\n Bấm OK để chụp`)) {
-        setLoadingText("Đang tạo ảnh chụp màn hình...");
-        let img = await sendDevtoolCommand(tab, "Page.captureScreenshot", {
-          format: "png",
-          quality: 100,
-          fromSurface: true,
-          captureBeyondViewport: true,
-          clip: { x: 0, y: 0, width, height, scale: 1 },
-        });
+          setLoadingText("Đang lưu ảnh...");
+          UfsGlobal.Utils.downloadURL(
+            "data:image/png;base64," + img.data,
+            "fullpage.png"
+          );
+        }
         await detachDebugger(tab);
-        console.log(img);
-
-        setLoadingText("Đang lưu ảnh...");
-        downloadURL("data:image/png;base64," + img.data, "fullpage.png");
-      } else {
-        await detachDebugger(tab);
+      } catch (e) {
+        alert("Lỗi: " + e);
+      } finally {
+        closeLoading();
       }
-    } catch (e) {
-      alert("Lỗi: " + e);
-    } finally {
-      closeLoading();
-    }
+    },
   },
 };
 

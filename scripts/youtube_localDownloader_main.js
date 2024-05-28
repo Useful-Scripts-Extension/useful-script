@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 const { formatSize, promiseAllStepN } = UfsGlobal.Utils;
 const { injectScriptSrc } = UfsGlobal.DOM;
 

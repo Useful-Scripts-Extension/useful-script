@@ -50,16 +50,18 @@ export default {
   //   });
   // },
 
-  onClick: async () => {
-    let url =
-      window.PDFView?.url ||
-      document.querySelector("#loaddocdetail iframe")?.contentWindow?.PDFView
-        ?.url;
+  pageScript: {
+    onClick: async () => {
+      let url =
+        window.PDFView?.url ||
+        document.querySelector("#loaddocdetail iframe")?.contentWindow?.PDFView
+          ?.url;
 
-    if (url) {
-      window.open(url);
-    } else {
-      alert("Không tìm thấy file PDF nào");
-    }
+      if (url) {
+        window.open(url);
+      } else {
+        alert("Không tìm thấy file PDF nào");
+      }
+    },
   },
 };

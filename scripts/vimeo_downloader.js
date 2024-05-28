@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://vimeo.com/favicon.ico",
   name: {
@@ -11,11 +9,15 @@ export default {
     vi: "Tải video trên vimeo",
   },
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Enter vimeo video url: ", tab.url);
-    if (url == null) return;
+  popupScript: {
+    onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
 
-    window.open("https://www.savethevideo.com/vimeo-downloader?url=" + url);
+      let tab = await getCurrentTab();
+      let url = prompt("Enter vimeo video url: ", tab.url);
+      if (url == null) return;
+
+      window.open("https://www.savethevideo.com/vimeo-downloader?url=" + url);
+    },
   },
 };

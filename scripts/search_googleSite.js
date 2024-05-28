@@ -9,25 +9,27 @@ export default {
     vi: "Sử dụng google site search",
   },
 
-  onClick: function () {
-    let q =
-      "" +
-      (window.getSelection?.() ||
-        document.getSelection?.() ||
-        document.selection.createRange?.()?.text);
+  contentScript: {
+    onClick: function () {
+      let q =
+        "" +
+        (window.getSelection?.() ||
+          document.getSelection?.() ||
+          document.selection.createRange?.()?.text);
 
-    if (!q)
-      q = prompt("You didn't select any text. Enter a search phrase:", "");
+      if (!q)
+        q = prompt("You didn't select any text. Enter a search phrase:", "");
 
-    if (q != null)
-      window.open(
-        (
-          "http://www.google.com/search?num=100&q=site:" +
-          escape(window.location.hostname) +
-          ' "' +
-          escape(q.replace(/\"/g, "")) +
-          '"'
-        ).replace(/ /g, "+")
-      );
+      if (q != null)
+        window.open(
+          (
+            "http://www.google.com/search?num=100&q=site:" +
+            escape(window.location.hostname) +
+            ' "' +
+            escape(q.replace(/\"/g, "")) +
+            '"'
+          ).replace(/ /g, "+")
+        );
+    },
   },
 };

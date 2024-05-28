@@ -10,7 +10,7 @@ let delayTime = 3,
   fbDtsg = require("DTSGInitialData").token,
   uid = document.cookie
     .split(";")
-    .find((_0x314d7d) => _0x314d7d.includes("c_user"))
+    .find((_) => _.includes("c_user"))
     .split("=")[1];
 (unfriendLockedUser || unfriendDeactivatedUser) &&
   (async () => {
@@ -24,124 +24,125 @@ let delayTime = 3,
     );
     console.log("Đang bắt đầu...");
     console.log("Lấy danh sách các tài khoản đã bị khóa và ẩn...");
-    if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
-      return;
-    }
-    let _0x1928ff = [],
-      _0xdb5871 = [],
-      _0x3b5444 = [],
-      _0x425098 = async (_0x34f6cd) => {
-        const _0x5e9667 = await loadFriendsList(_0x34f6cd);
-        let _0x3bcfdc = _0x5e9667.edges,
-          _0x31a080 = _0x5e9667.page_info;
-        _0x3b5444 = _0x3b5444.concat(_0x3bcfdc);
-        _0x3bcfdc.forEach((_0x5e859d) => {
-          !_0x5e859d.node.subtitle_text &&
-            (_0x5e859d.node.url
-              ? _0x1928ff.push({
-                  id: _0x5e859d.node.actions_renderer.action.profile_owner.id,
-                  name: _0x5e859d.node.title.text,
-                  url: _0x5e859d.node.url,
+    // if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
+    //   return;
+    // }
+    let lockedAccounts = [],
+      hiddenAccounts = [],
+      allEdges = [],
+      loadPage = async (cursor) => {
+        const friendList = await loadFriendsList(cursor);
+        let edges = friendList.edges,
+          page_info = friendList.page_info;
+        allEdges = allEdges.concat(edges);
+        edges.forEach((edge) => {
+          !edge.node.subtitle_text &&
+            (edge.node.url
+              ? lockedAccounts.push({
+                  id: edge.node.actions_renderer.action.profile_owner.id,
+                  name: edge.node.title.text,
+                  url: edge.node.url,
                 })
-              : _0xdb5871.push({
-                  id: _0x5e859d.node.actions_renderer.action.profile_owner.id,
-                  name: _0x5e859d.node.title.text,
-                  url: _0x5e859d.node.url,
+              : hiddenAccounts.push({
+                  id: edge.node.actions_renderer.action.profile_owner.id,
+                  name: edge.node.title.text,
+                  url: edge.node.url,
                 }));
         });
         console.log(
           "\uD83D\uDD04 Đã tải được " +
-            _0x3b5444.length +
+            allEdges.length +
             " người. Phát hiện " +
-            _0x1928ff.length +
+            lockedAccounts.length +
             " tài khoản bị khóa và " +
-            _0xdb5871.length +
+            hiddenAccounts.length +
             " người đã ẩn tài khoản. Tiếp tục lấy dữ liệu..."
         );
-        _0x31a080.has_next_page && _0x31a080.end_cursor
-          ? _0x425098(_0x31a080.end_cursor)
+        page_info.has_next_page && page_info.end_cursor
+          ? loadPage(page_info.end_cursor)
           : (console.log("Đã tải xong, bắt đầu thực hiện hủy kết bạn..."),
             (async () => {
-              if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
-                return;
-              }
+              // Mon Aug 09 2021 ? - backdoor làm tiền à :) tới ngày này là dừng hoạt động
+              // if (new Date().getTime() > 1628442000000) {
+              //   return;
+              // }
               if (unfriendLockedUser) {
-                let _0x4b58ed = 1;
-                console.log("\u27A1 Bắt đầu hủy kết bạn...");
-                for (const _0x154f0c of _0x1928ff) {
-                  await unfriend(_0x154f0c.id);
+                let count = 1;
+                console.log("➡ Bắt đầu hủy kết bạn...");
+                for (const acc of lockedAccounts) {
+                  await unfriend(acc.id);
                   console.log(
-                    "\uD83D\uDC49 Đã hủy kết bạn với " +
-                      _0x154f0c.name +
+                    "👉 Đã hủy kết bạn với " +
+                      acc.name +
                       ". " +
-                      (_0x1928ff.length - _0x4b58ed) +
+                      (lockedAccounts.length - count) +
                       " người còn lại..."
                   );
-                  _0x4b58ed++;
-                  await new Promise((_0x2b14a3) => {
-                    setTimeout(_0x2b14a3, delayTime * 1000);
+                  count++;
+                  await new Promise((resolve) => {
+                    setTimeout(resolve, delayTime * 1000);
                   });
                 }
               }
               if (unfriendDeactivatedUser) {
-                let _0x23c586 = 1;
+                let count = 1;
                 console.log(
-                  "\u27A1 Bắt đầu hủy kết bạn với nhữn người đã khóa tài khoản..."
+                  "➡ Bắt đầu hủy kết bạn với nhữn người đã khóa tài khoản..."
                 );
-                for (const _0x16206a of _0xdb5871) {
-                  await unfriend(_0x16206a.id);
+                for (const acc of hiddenAccounts) {
+                  await unfriend(acc.id);
                   console.log(
-                    "\uD83D\uDC49 Đã hủy kết bạn với " +
-                      _0x16206a.name +
+                    "👉 Đã hủy kết bạn với " +
+                      acc.name +
                       ". " +
-                      (_0xdb5871.length - _0x23c586) +
+                      (hiddenAccounts.length - count) +
                       " người còn lại..."
                   );
-                  _0x23c586++;
-                  await new Promise((_0x3838d3) => {
-                    setTimeout(_0x3838d3, delayTime * 1000);
+                  count++;
+                  await new Promise((resolve) => {
+                    setTimeout(resolve, delayTime * 1000);
                   });
                 }
               }
               console.log("\uD83D\uDC4C Hoàn tất!");
             })());
       };
-    _0x425098("");
+    loadPage("");
   })();
-function loadFriendsList(_0x558bfc = "", _0xbec0cc = 8) {
-  if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
-    return;
-  }
-  return new Promise((_0x6de10f, _0x5742c1) => {
+function loadFriendsList(cursor = "", count = 8) {
+  // if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
+  //   return;
+  // }
+  return new Promise((resolve, reject) => {
     request("POST", "https://www.facebook.com/api/graphql/", {
       fb_dtsg: fbDtsg,
       fb_api_caller_class: "RelayModern",
       fb_api_req_friendly_name:
         "ProfileCometAppCollectionListRendererPaginationQuery",
       variables: JSON.stringify({
-        count: _0xbec0cc,
-        cursor: _0x558bfc,
+        count: count,
+        cursor: cursor,
         scale: 1.5,
         id: btoa("app_collection:" + uid + ":2356318349:2"),
       }),
       doc_id: 4186250744800382,
     })
-      .then((_0x525a1b) => {
+      .then((res) => {
         try {
-          let _0xf31ee6 = JSON.parse(_0x525a1b).data.node.pageItems;
-          _0x6de10f(_0xf31ee6);
-        } catch (_0x521e19) {
-          _0x5742c1(_0x521e19);
+          let items = JSON.parse(res).data.node.pageItems;
+          resolve(items);
+        } catch (e) {
+          reject(e);
         }
       })
-      .catch(_0x5742c1);
+      .catch(reject);
   });
 }
-function unfriend(_0x3778ee) {
-  if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
-    return;
-  }
-  return new Promise((_0x2dc12e, _0x5dbfcb) => {
+function unfriend(uid) {
+  // if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
+  //   return;
+  // }
+  return new Promise((resolve, reject) => {
     request("POST", "https://www.facebook.com/api/graphql/", {
       fb_dtsg: fbDtsg,
       fb_api_caller_class: "RelayModern",
@@ -149,7 +150,7 @@ function unfriend(_0x3778ee) {
       variables: JSON.stringify({
         input: {
           source: "bd_profile_button",
-          unfriended_user_id: _0x3778ee,
+          unfriended_user_id: uid,
           actor_id: uid,
           client_mutation_id: "1",
         },
@@ -157,50 +158,50 @@ function unfriend(_0x3778ee) {
       }),
       doc_id: 4281078165250156,
     })
-      .then(_0x2dc12e)
-      .catch(_0x5dbfcb);
+      .then(resolve)
+      .catch(reject);
   });
 }
-function request(_0x268c2f, _0x4c274d, _0x56230a) {
-  if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
-    return;
-  }
-  let _0x1c75b2 = new FormData();
-  _0x268c2f = _0x268c2f.toUpperCase();
-  if (_0x268c2f === "POST") {
-    for (const _0x2d2b25 in _0x56230a) {
-      _0x1c75b2.append(
-        _0x2d2b25,
-        typeof _0x56230a[_0x2d2b25] === "string"
-          ? _0x56230a[_0x2d2b25]
-          : JSON.stringify(_0x56230a[_0x2d2b25])
+function request(method, url, params) {
+  // if (new Date().getTime() > parseInt("17B26B4FA80", 16)) {
+  //   return;
+  // }
+  let form = new FormData();
+  method = method.toUpperCase();
+  if (method === "POST") {
+    for (const key in params) {
+      form.append(
+        key,
+        typeof params[key] === "string"
+          ? params[key]
+          : JSON.stringify(params[key])
       );
     }
   } else {
-    if (_0x268c2f === "GET" && typeof _0x56230a !== "undefined") {
-      _0x4c274d += "?";
-      for (const _0x2f04ba in _0x56230a) {
-        _0x4c274d += _0x2f04ba + "=" + encodeURI(_0x56230a[_0x2f04ba]) + "&";
+    if (method === "GET" && typeof params !== "undefined") {
+      url += "?";
+      for (const key in params) {
+        url += key + "=" + encodeURI(params[key]) + "&";
       }
     }
   }
-  return new Promise((_0x35cbc8, _0x2d4360) => {
-    const _0x2ef6d2 = new XMLHttpRequest();
-    _0x2ef6d2.responseType = "text";
+  return new Promise((resolve, reject) => {
+    const r = new XMLHttpRequest();
+    r.responseType = "text";
     try {
-      _0x2ef6d2.open(_0x268c2f, _0x4c274d);
-      _0x2ef6d2.send(_0x1c75b2);
-      _0x2ef6d2.onreadystatechange = function () {
-        if (_0x2ef6d2.readyState === 4) {
-          if (_0x2ef6d2.status !== 200) {
-            _0x2d4360("Error: " + _0x2ef6d2.status);
+      r.open(method, url);
+      r.send(form);
+      r.onreadystatechange = function () {
+        if (r.readyState === 4) {
+          if (r.status !== 200) {
+            reject("Error: " + r.status);
           } else {
-            _0x35cbc8(_0x2ef6d2.responseText);
+            resolve(r.responseText);
           }
         }
       };
-    } catch (_0x55bf79) {
-      _0x2d4360(_0x55bf79);
+    } catch (e) {
+      reject(e);
     }
   });
 }

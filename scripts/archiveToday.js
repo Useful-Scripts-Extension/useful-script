@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: `https://archive.ph/favicon.ico`,
   name: {
@@ -11,15 +9,20 @@ export default {
     vi: "Lưu trang web hiện tại lên archive.today",
   },
 
-  onClickExtension: async function () {
-    let { url } = await getCurrentTab();
+  popupScript: {
+    onClick: async function () {
+      const { getCurrentTab } = await import("./helpers/utils.js");
+      let { url } = await getCurrentTab();
 
-    var a = prompt(
-      "Nhập URL muốn tạo archive: ",
-      url.replace(/^http\:\/\/(.*)$/, "$1")
-    );
-    if (a != null) {
-      window.open("https://archive.today/?run=1&url=" + encodeURIComponent(a));
-    }
+      var a = prompt(
+        "Nhập URL muốn tạo archive: ",
+        url.replace(/^http\:\/\/(.*)$/, "$1")
+      );
+      if (a != null) {
+        window.open(
+          "https://archive.today/?run=1&url=" + encodeURIComponent(a)
+        );
+      }
+    },
   },
 };

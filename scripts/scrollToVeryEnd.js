@@ -1,98 +1,4 @@
-export const shared = {
-  scrollToVeryEnd: function () {
-    return new Promise(async (resolve, reject) => {
-      const notify = UfsGlobal.DOM.notify({
-        msg: "Usefull-script: Scrolling to very end...",
-        duration: 99999,
-      });
-
-      function findMainScrollableElement() {
-        let scrollableElements = [];
-
-        // Check all elements for scrollable content
-        let elements = Array.from(document.querySelectorAll("*")).concat(
-          document.documentElement
-        );
-        for (let element of elements) {
-          let style = window.getComputedStyle(element);
-          if (
-            style.overflowY !== "hidden" &&
-            (element.scrollHeight > element.clientHeight ||
-              element.scrollWidth > element.clientWidth)
-          ) {
-            scrollableElements.push(element);
-          }
-        }
-
-        console.log(scrollableElements);
-
-        // If only one scrollable element is found, return it
-        if (scrollableElements.length === 1) {
-          return scrollableElements[0];
-        }
-
-        // Otherwise, try to find the main scrollable element based on its size and position
-        let mainScrollableElement = null;
-        let maxArea = 0;
-        for (let element of scrollableElements) {
-          let rect = element.getBoundingClientRect();
-          let area = rect.width * rect.height;
-          if (area > maxArea) {
-            maxArea = area;
-            mainScrollableElement = element;
-          }
-        }
-
-        return mainScrollableElement;
-      }
-
-      let height = (ele) => (ele || document.body).scrollHeight;
-      let down = (ele = document) =>
-        ele.scrollTo({ left: 0, top: height(ele) });
-      let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-      let lastScroll = {
-        time: Date.now(),
-        top: 0,
-      };
-
-      let running = true;
-      let clickToCancel = () => {
-        running = false;
-        document.removeEventListener("click", clickToCancel);
-        notify.setText("Useful-script: DỪNG scroll do bạn click");
-        notify.closeAfter(3000);
-      };
-      document.addEventListener("click", clickToCancel);
-
-      let scrollEle = findMainScrollableElement();
-
-      console.log(scrollEle);
-
-      while (running) {
-        down(scrollEle);
-        let currentHeight = height(scrollEle);
-        let time = Date.now() - lastScroll.time;
-        let secondLeft = Math.round((5000 - time) / 1000);
-        notify.setText(
-          `Useful-script: đang scroll xuống cuối ... (${secondLeft}s)`
-        );
-
-        if (currentHeight != lastScroll.top) {
-          lastScroll.top = currentHeight;
-          lastScroll.time = Date.now();
-        } else if (time > 5000) {
-          running = false;
-          notify.setText("Useful-script: scroll XONG");
-          notify.closeAfter(2000);
-        }
-        await sleep(100);
-      }
-
-      resolve();
-    });
-  },
-};
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
 
 export default {
   icon: `<i class="fa-solid fa-angles-down fa-lg"></i>`,
@@ -110,10 +16,103 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "add tips",
-    },
+    "2024-04-27": "add tips",
   },
 
-  onClick: shared.scrollToVeryEnd,
+  contentScript: {
+    onClick: scrollToVeryEnd,
+  },
 };
+
+export function scrollToVeryEnd() {
+  return new Promise(async (resolve, reject) => {
+    const notify = UfsGlobal.DOM.notify({
+      msg: "Usefull-script: Scrolling to very end...",
+      duration: 99999,
+    });
+
+    function findMainScrollableElement() {
+      let scrollableElements = [];
+
+      // Check all elements for scrollable content
+      let elements = Array.from(document.querySelectorAll("*")).concat(
+        document.documentElement
+      );
+      for (let element of elements) {
+        let style = window.getComputedStyle(element);
+        if (
+          style.overflowY !== "hidden" &&
+          (element.scrollHeight > element.clientHeight ||
+            element.scrollWidth > element.clientWidth)
+        ) {
+          scrollableElements.push(element);
+        }
+      }
+
+      console.log(scrollableElements);
+
+      // If only one scrollable element is found, return it
+      if (scrollableElements.length === 1) {
+        return scrollableElements[0];
+      }
+
+      // Otherwise, try to find the main scrollable element based on its size and position
+      let mainScrollableElement = null;
+      let maxArea = 0;
+      for (let element of scrollableElements) {
+        let rect = element.getBoundingClientRect();
+        let area = rect.width * rect.height;
+        if (area > maxArea) {
+          maxArea = area;
+          mainScrollableElement = element;
+        }
+      }
+
+      return mainScrollableElement;
+    }
+
+    let height = (ele) => (ele || document.body).scrollHeight;
+    let down = (ele = document) => ele.scrollTo({ left: 0, top: height(ele) });
+    let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    let lastScroll = {
+      time: Date.now(),
+      top: 0,
+    };
+
+    let running = true;
+    let clickToCancel = () => {
+      running = false;
+      document.removeEventListener("click", clickToCancel);
+      notify.setText("Useful-script: DỪNG scroll do bạn click");
+      notify.closeAfter(3000);
+    };
+    document.addEventListener("click", clickToCancel);
+
+    let scrollEle = findMainScrollableElement();
+
+    console.log(scrollEle);
+
+    while (running) {
+      down(scrollEle);
+      let currentHeight = height(scrollEle);
+      let time = Date.now() - lastScroll.time;
+      let secondLeft = Math.round((5000 - time) / 1000);
+      notify.setText(
+        `Useful-script: đang scroll xuống cuối ... (${secondLeft}s)`
+      );
+
+      if (currentHeight != lastScroll.top) {
+        lastScroll.top = currentHeight;
+        lastScroll.time = Date.now();
+      } else if (time > 5000) {
+        running = false;
+        notify.setText("Useful-script: scroll XONG");
+        notify.closeAfter(2000);
+      }
+      await sleep(100);
+    }
+
+    resolve();
+  });
+}

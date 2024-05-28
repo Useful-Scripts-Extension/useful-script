@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "https://lh3.googleusercontent.com/6i_qAB7dGRV44NxLp_JzemPr0ZoHp1e2JT0QxHbAteVJwsLQ-1HLaxmcUJ19F-wKITawVukn8ZbLri2FZamcxgBB=w128-h128-e365-rj-sc0x00ffffff",
   name: {
@@ -5,14 +7,16 @@ export default {
     vi: "Phát hiện ký tự ẩn (Zero-Width)",
   },
   description: {
-    en: "Detects zero-width characters, highlights the characters and containing DOM element.\n\nClick ? for more detail.",
-    vi: "Phát hiện ký tự ẩn (zero-width) trong văn bản cho trình duyệt, e-mail client, trình soạn thảo văn bản,...\n\nBấm ? để xem thêm chi tiết.",
+    en: "Detects zero-width characters, highlights the characters and containing DOM element.",
+    vi: "Phát hiện ký tự ẩn (zero-width) trong văn bản cho trình duyệt, e-mail client, trình soạn thảo văn bản,...",
   },
   infoLink:
     "https://viblo.asia/p/ky-tu-zero-width-sat-thu-vo-hinh-nam-giua-doan-van-ban-thuan-vo-hai-L4x5xM7qKBM",
 
-  onDocumentIdle: detectZeroWidthCharacters,
-  onClick: detectZeroWidthCharacters,
+  contentScript: {
+    onDocumentIdle: detectZeroWidthCharacters,
+    onClick: detectZeroWidthCharacters,
+  },
 };
 
 // Code extracted from https://chrome.google.com/webstore/detail/detect-zero-width-charact/icibkhaehdofmcbfjfpppogioidkilib
@@ -47,10 +51,12 @@ function detectZeroWidthCharacters() {
     );
     const regExp = new RegExp(`([${zeroWidthCharacters}])`, "g");
     let textToAdd = '<span class="' + spanClass + '"></span>';
-    element.classList.add(containerClass);
-    element.innerHTML = element.innerHTML
-      .replace(textToAdd, "")
-      .replace(regExp, "$1" + textToAdd);
+    let preHighlight = element.querySelectorAll(`span.${spanClass}`);
+    preHighlight.forEach((el) => {
+      el.remove();
+    });
+    element.classList.toggle(containerClass, true);
+    element.innerHTML = element.innerHTML.replace(regExp, "$1" + textToAdd);
   };
   // From: https://jsfiddle.net/tim333/np874wae/13/
   const checkElement = function (element) {
@@ -88,7 +94,9 @@ function detectZeroWidthCharacters() {
   (async () => {
     // inject css
     UfsGlobal.DOM.injectCssFile(
-      await UfsGlobal.Extension.getURL("scripts/detect_zeroWidthCharacters.css")
+      await UfsGlobal.Extension.getURL(
+        "/scripts/detect_zeroWidthCharacters.css"
+      )
     );
 
     // Check Page

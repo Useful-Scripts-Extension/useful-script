@@ -1,6 +1,10 @@
+import { disableSmoothScrollSaver } from "../../popup/helpers/storage.js";
+import { enableSmoothScroll } from "../../scripts/smoothScroll.js";
+
 window.onload = async () => {
+  if (!disableSmoothScrollSaver.get()) enableSmoothScroll();
   try {
-    let id = localStorage.viewScriptSource_sharedData;
+    let id = new URL(location.href).searchParams.get("file");
     let source = await getScriptSource(id);
 
     if (source) {
@@ -16,7 +20,6 @@ window.onload = async () => {
       hljs.initLineNumbersOnLoad();
     }
   } catch (e) {}
-  // delete localStorage.viewScriptSource_sharedData;
 };
 
 function copy(text) {

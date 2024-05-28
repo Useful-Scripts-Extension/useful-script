@@ -8,5 +8,8 @@ export default {
     en: "Create logo from text online",
     vi: "Tạo logo chữ đẹp theo mẫu có sẵn",
   },
-  onClickExtension: () => window.open("https://m.vuiz.net/logo/"),
+
+  popupScript: {
+    onClick: () => window.open("https://m.vuiz.net/logo/"),
+  },
 };

@@ -1,5 +1,3 @@
-import { popupCenter } from "./helpers/utils.js";
-
 export default {
   icon: "https://send.zcyph.cc/favicon-32x32.c470c36d.png",
   name: {
@@ -11,12 +9,15 @@ export default {
     vi: "Mở send.zcyph.cc - chia sẻ file lớn lên tới 20Gb",
   },
 
-  onClickExtension: function () {
-    popupCenter({
-      url: "https://send.zcyph.cc/",
-      title: "Send",
-      w: 500,
-      h: 700,
-    });
+  popupScript: {
+    onClick: async function () {
+      const { popupCenter } = await import("./helpers/utils.js");
+      popupCenter({
+        url: "https://send.zcyph.cc/",
+        title: "Send",
+        w: 500,
+        h: 700,
+      });
+    },
   },
 };

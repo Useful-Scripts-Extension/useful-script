@@ -18,6 +18,14 @@ export async function checkForUpdate() {
         vi: "cập nhật v" + lastestVer,
         en: "update v" + lastestVer,
       });
+      updateBtn.setAttribute(
+        "data-tooltip",
+        t({
+          vi: "Đã có phiên bản mới v" + lastestVer,
+          en: "Update available v" + lastestVer,
+        })
+      );
+      updateBtn.setAttribute("data-flow", "bottom");
       updateBtn.onclick = () => {
         trackEvent("CHECK-FOR-UPDATE");
         window.open(source_code);

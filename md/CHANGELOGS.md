@@ -1,6 +1,62 @@
 ## Change logs
 
 <details>
+  <summary>v1.67 - 29/05/2024</summary>
+
+### CHỨC NĂNG MỚI
+
+- Cập nhật cấu trúc file script [template](/templates/full.js):
+  - Bây giờ mỗi chức năng như 1 extension con. Có đủ đồ chơi cho dev lựa chọn (popup,content,page,background,event,...)
+  - Mở rộng khả năng hoạt động của các script.
+
+- Giao diện cài đặt
+  - **Chọn ngôn ngữ**: anh / việt
+  - **Chọn chủ đề**: sáng / tối hoặc `custom (chủ đề được cộng đồng đóng góp)`
+  - **Cuộn chuột siêu mượt**: mượt như sunsilk
+  - **Sao lưu / Khôi phục dữ liệu**: Sử dụng khi cập nhật phiên bản mới, cần đưa cài đặt cũ sang.
+  - **Đặt lại dữ liệu**: Như cài mới luôn
+
+- Tab Tự động > Tiện ích
+  - **Thời gian lướt web**: thống kê thời gian lướt web của bạn. [source](/scripts/web_timer.js)
+  - **Tự động khoá trang web**: khoá trang web bất kỳ, cần mật khẩu để mở khoá. [source](/scripts/auto_lockWebsite.js)
+  - **Cuộn chuột siêu mượt**: Giúp scroll trang web mượt hơn, tin mình đi dùng sướng lắm [source](/scripts/smoothScroll.js)
+  - **Xoá theo dõi trong url**: Xoá các tham số theo dõi trong link, chặn theo dõi từ facebook, google, tiktok, ... [source](/scripts/remove_tracking_in_url.js)
+  - **Không tắt trình duyệt khi tắt tab cuối**: Đúng như tên gọi [source](/scripts/prevent_closeBrowser_lastTab.js)
+  - **Chống lừa đảo**: Cảnh báo khi truy cập website giả mạo + Tính toán độ an toàn website [source](/scripts/chongLuaDao.js)
+  - **Tạo tin nhắn tàng hình**: Tàng hình xong copy gửi bằng facebook, discord, chat ... người nhận cần dùng chức năng này để giải mã. [source](/scripts/createInvisibleText.js)
+
+- Tab Facebook:
+  - **Tìm mọi bài viết của bạn bè**: Post trong group/page khác cũng thấy luôn nhé. [source](/scripts/fb_searchPostsForOther.js)
+
+- Tab Instagram:
+  - **Tải tất cả following/follower**: xem người khác đnag follow ai, được ai follow trên instagram. [source](/scripts/insta_getFollowForOther.js)
+
+- Tab Tải xuống:
+  - **Tải Studocu**: tự động click khi dùng dlstudocu [source](/scripts/studocu_downs.js)
+
+### SỬA CHỨC NĂNG CŨ
+
+- Tab Youtube:
+  - **Hiện lượt không thích**: Tự động hiện số lượt không thích ngay nút dislike luôn nhé. [source](/scripts/youtube_viewDislikes.js)
+
+- Tab Mở khoá:
+  - **Cho phép sao chép/chuột phải**: Hướng tiếp cận mới, giảm lỗi và bật/tắt dễ dàng. [source](/scripts/simpleAllowCopy.js)
+
+- Tab Giao diện:
+  - **Hiển thị FPS 2**: Sử dụng debugger => hỗ trợ mọi trang web. [source](/scripts/showFps_v2.js)
+  - **Xoá mọi màu/style/ảnh trong trang web**: Hỗ trợ undo, tắt/mở dễ dàng không cần tải lại trang. [color](/scripts/removeColours.js), [style](/scripts/removeStylesheet.js), [img](/scripts/removeImages.js)
+  - **Hiệu ứng tuyết rơi mới**: Đẹp hơn bản cũ nhiều [source](/scripts/letItSnow.js)
+
+### XOÁ CHỨC NĂNG
+
+- **Remove web limit**
+- **Fb tin nhắn tàng hình**
+- **Xem thông tin trình duyệt**
+- **Xem mã nguồn của phần bôi đen**
+
+</details>
+
+<details>
   <summary>v1.66 - 27/04/2024</summary>
 
 ### CHỨC NĂNG MỚI

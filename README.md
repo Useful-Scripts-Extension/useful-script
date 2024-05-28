@@ -6,11 +6,26 @@
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
-## Lịch sử cập nhật
+## Giới thiệu
 
-Verion hiện tại:
+1 tiện ích chứa rất nhiều chức năng nhỏ. Giúp cuộc sống dễ dàng hơn.
 
-- **v1.66 - big update** (27/04/2024)
+- Hãy tham gia ngay [GROUP FACEBOOK](https://www.facebook.com/groups/1154059318582088) của tiện ích
+
+- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+
+## Phiên bản
+
+Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
+
+Phiên bản hiện tại:
+
+- **v1.67 - bản cập nhật siêu lớn** (29/05/2024)
+
+<details>
+  <summary>Xem phiên bản cũ hơn</summary>
+
+- <del>v1.66 - bản cập nhật lớn (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>
@@ -21,25 +36,23 @@ Verion hiện tại:
 - <del>v1.2 (08/11/2022)</del>
 - <del>v1.1 (07/11/2022)</del>
 
-[Lịch sử cập nhật](/md/CHANGELOGS.md)
+</details>
 
-## Giới thiệu
+## Ảnh chụp màn hình
 
-1 tiện ích chứa rất nhiều chức năng nhỏ. Giúp cuộc sống dễ dàng hơn.
+<div style="display:flex">
 
-- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)
 
-- [Nhóm facebook](https://www.facebook.com/groups/1154059318582088) của extension
+![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)
+
+</div>
 
 ## Cài đặt
 
 - Cài đặt thủ công - [Xem hướng dẫn (youtube)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
-
-## Ảnh chụp màn hình
-
-![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
 ## Dành cho dev (Demo)
 

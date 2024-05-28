@@ -9,6 +9,60 @@ const CACHED = {
   userID: null,
 };
 
+export function checkBlackWhiteList(script, url = location?.href) {
+  if (!url) return false;
+  let hasWhiteList = script.whiteList?.length > 0;
+  let hasBlackList = script.blackList?.length > 0;
+  let inWhiteList = matchOneOfPatterns(url, script.whiteList || []);
+  let inBlackList = matchOneOfPatterns(url, script.blackList || []);
+  return (
+    (!hasWhiteList && !hasBlackList) ||
+    (hasWhiteList && inWhiteList) ||
+    (hasBlackList && !inBlackList)
+  );
+}
+
+export function matchOneOfPatterns(url, patterns) {
+  for (let pattern of patterns) {
+    const regex = new RegExp(
+      "^" +
+        pattern
+          .split("*")
+          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join(".*") +
+        "$"
+    );
+    if (regex.test(url)) return true;
+  }
+  return false;
+}
+
+export function getExtensionId() {
+  return chrome.runtime.id;
+}
+
+export async function getNextDynamicRuleIds(count = 1) {
+  const ruleList = await chrome.declarativeNetRequest.getDynamicRules();
+  const ids = new Set(ruleList.map((rule) => rule.id));
+
+  const result = [];
+  let nextAvailableId = 1;
+
+  while (result.length < count) {
+    if (!ids.has(nextAvailableId)) {
+      result.push(nextAvailableId);
+      ids.add(nextAvailableId);
+    }
+    nextAvailableId++;
+  }
+
+  return count === 1 ? result[0] : result;
+}
+
+export async function hasUserId() {
+  return !!(await Storage.get("userId"));
+}
+
 export async function setUserId(uid = new Date().getTime()) {
   CACHED.userID = uid;
   await Storage.set("userId", uid);
@@ -60,18 +114,21 @@ export function runFunc(fnPath = "", params = [], global = {}) {
 
     if (!(typeof fn === "function")) return resolve(null);
 
-    let res = fn(..._params);
+    try {
+      let res = fn(..._params);
 
-    if (!hasCallback) {
-      if (typeof res?.then === "function") {
-        res.then?.((_res) => {
-          console.log(_res);
-          resolve(_res);
-        });
-      } else {
-        console.log(res);
-        resolve(res);
+      if (!hasCallback) {
+        if (typeof res?.then === "function") {
+          res.then?.((_res) => {
+            resolve(_res);
+          });
+        } else {
+          resolve(res);
+        }
       }
+    } catch (e) {
+      console.log("ERROR runFunc: ", e);
+      resolve(null);
     }
   });
 }
@@ -116,20 +173,23 @@ export const Storage = {
     await chrome.storage.local.set({ [key]: value });
     return value;
   },
-  get: async (key, defaultValue = "") => {
+  get: async (key, defaultValue) => {
     let result = await chrome.storage.local.get([key]);
     return result[key] || defaultValue;
   },
+  remove: async (key) => {
+    return await chrome.storage.local.remove(key);
+  },
 };
 
-const listActiveScriptsKey = "activeScripts";
+export const listActiveScriptsKey = "activeScripts";
 export async function setActiveScript(scriptId, isActive = true) {
   let list = await getAllActiveScriptIds();
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
   // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
-  chrome.storage.local.set({ [listActiveScriptsKey]: list }); // save to storage => content script can access
+  Storage.set(listActiveScriptsKey, list); // save to storage => content script can access
   return list;
 }
 
@@ -138,12 +198,8 @@ export async function isActiveScript(scriptId) {
   return currentList.find((_) => _ == scriptId) != null;
 }
 
-export function getAllActiveScriptIds() {
-  return new Promise((resolve) => {
-    chrome.storage.local.get([listActiveScriptsKey], (result) => {
-      resolve(result[listActiveScriptsKey] || []);
-    });
-  });
+export async function getAllActiveScriptIds() {
+  return await Storage.get(listActiveScriptsKey, []);
 }
 
 export async function toggleActiveScript(scriptId) {
@@ -181,6 +237,21 @@ export async function toggleActiveScript(scriptId) {
 //   { windowTypes: ["normal"] }
 // );
 
+export const mergeObject = (...objs) => {
+  // merge without null value
+  let res = {};
+  for (let obj of objs) for (let key in obj) if (obj[key]) res[key] = obj[key];
+  return res;
+};
+
+export const getAllTabs = async () => {
+  let tabs = await chrome.tabs.query({
+    // url: ["https://*/*", "http://*/*"],
+    // windowType: "normal",
+  });
+  return tabs;
+};
+
 // Lấy ra tab hiện tại, trong window sử dung gần nhất
 export const getCurrentTab = async () => {
   let tabs = await chrome.tabs.query({
@@ -207,110 +278,155 @@ export function closeTab(tab) {
   return chrome.tabs.remove(tab.id);
 }
 
-export const runScriptInTab = async ({
-  func,
-  tabId,
-  args = [],
-  world = chrome.scripting.ExecutionWorld.MAIN,
+export function pinTab(tab, pinned = true) {
+  return chrome.tabs.update(tab.id, { pinned: pinned });
+}
+
+export const runScriptInTabWithEventChain = ({
+  target,
+  scriptIds,
+  path = chrome.runtime.getURL("/scripts/"),
+  world = "MAIN",
+  details = {},
+  eventChain,
+  silent = false,
 }) => {
+  return runScriptInTab({
+    target,
+    func: async (scriptIds, path, eventChain, details, silent) => {
+      const promises = [];
+      for (let scriptId of scriptIds) {
+        const url = `${path}${scriptId}.js`;
+        promises.push(
+          import(url)
+            .then(({ default: script }) => {
+              let fn = script;
+
+              let beforeFnName = eventChain.split(".");
+              let fnName = beforeFnName.pop();
+              beforeFnName.forEach((e) => (fn = fn?.[e]));
+              fn = fn?.[fnName + "_"] || fn?.[fnName]; // higher priority for allframes function
+
+              if (typeof fn === "function") {
+                if (!silent)
+                  console.log(
+                    `> Useful-script: Run SUCCESS`,
+                    scriptId + "\n",
+                    eventChain,
+                    details
+                  );
+                fn(details);
+                return scriptId;
+              }
+              return false;
+            })
+            .catch((e) => {
+              console.log(
+                `> Useful-script: Run FAILED`,
+                scriptId + "\n",
+                eventChain,
+                details,
+                e
+              );
+              return false;
+            })
+        );
+      }
+      let res = await Promise.all(promises);
+      let successScripts = res.filter(Boolean);
+      return successScripts;
+    },
+    args: [scriptIds, path, eventChain, details, silent],
+    world,
+  });
+};
+
+export const runScriptInTab = async (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
-      {
-        target: { tabId: tabId },
-        func: func,
-        args: args,
-        world: world,
-        injectImmediately: true,
-      },
+      mergeObject(
+        {
+          world: "MAIN",
+          injectImmediately: true,
+        },
+        config
+      ),
       (injectionResults) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          reject(chrome.runtime.lastError);
+        }
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults?.find?.((_) => _.result)?.result);
+        else resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });
 };
 
-export const runScriptFile = ({
-  scriptFile,
-  tabId,
-  args = [],
-  world = chrome.scripting.ExecutionWorld.MAIN,
-}) => {
+export const runScriptFile = (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(
-      {
-        target: { tabId: tabId },
-        files: [scriptFile],
-        args: args,
-        world: world,
-        injectImmediately: true,
-      },
+      mergeObject(
+        {
+          world: "MAIN",
+          injectImmediately: true,
+        },
+        config
+      ),
       (injectionResults) => {
+        if (chrome.runtime.lastError) {
+          console.error(chrome.runtime.lastError);
+          reject(chrome.runtime.lastError);
+        }
         // https://developer.chrome.com/docs/extensions/reference/scripting/#handling-results
-        resolve(injectionResults?.find?.((_) => _.result)?.result);
+        else resolve(injectionResults?.find?.((_) => _.result)?.result);
       }
     );
   });
 };
 
-export const runScriptInCurrentTab = async (func, args, world) => {
+export const runScriptInCurrentTab = async (func, args, world = "MAIN") => {
   const tab = await getCurrentTab();
-  focusToTab(tab);
-  return await runScriptInTab({ func, args, tabId: tab.id, world });
+  // focusToTab(tab);
+  return await runScriptInTab({ func, args, target: { tabId: tab.id }, world });
 };
 
-export const runScriptFileInCurrentTab = async (scriptFile, args, world) => {
+export const runScriptFileInCurrentTab = async (scriptFile, world = "MAIN") => {
   const tab = await getCurrentTab();
-  focusToTab();
-  return await runScriptFile({ scriptFile, args, tabId: tab.id, world });
+  // focusToTab();
+  return await runScriptFile({
+    target: { tabId: tab.id },
+    files: [scriptFile],
+    world,
+  });
 };
-
-export function checkBlackWhiteList(script, url) {
-  if (!url) return false;
-
-  let w = script.whiteList || [],
-    b = script.blackList || [],
-    hasWhiteList = w.length > 0,
-    hasBlackList = b.length > 0,
-    inWhiteList = matchOneOfPatterns(url, w) ?? true,
-    inBlackList = matchOneOfPatterns(url, b) ?? false;
-
-  let willRun =
-    (!hasWhiteList && !hasBlackList) ||
-    (hasWhiteList && inWhiteList) ||
-    (hasBlackList && !inBlackList);
-
-  return willRun;
-}
-
-function matchOneOfPatterns(url, patterns) {
-  for (let pattern of patterns) {
-    const regex = new RegExp(
-      "^" +
-        pattern
-          .split("*")
-          .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-          .join(".*") +
-        "$"
-    );
-    if (regex.test(url)) return true;
-  }
-  return false;
-}
 
 // https://stackoverflow.com/a/68634884/11898496
+// WARNING: should be run in backgound script
+// If use this in popup script, when tab is focus, popup page will be closed => script not finish
 export async function openWebAndRunScript({
   url,
   func,
-  args,
+  args = [],
+  world = "MAIN",
+  waitUntilLoadEnd = true,
   focusAfterRunScript = true,
   closeAfterRunScript = false,
+  focusImmediately = false,
 }) {
-  let tab = await chrome.tabs.create({ active: false, url: url });
-  await waitForTabToLoad(tab.id);
-  let res = await runScriptInTab({ func, tabId: tab.id, args });
-  !closeAfterRunScript && focusAfterRunScript && focusToTab(tab);
-  closeAfterRunScript && closeTab(tab);
+  let tab = await chrome.tabs.create({ active: focusImmediately, url: url });
+  if (waitUntilLoadEnd) await waitForTabToLoad(tab.id);
+  let res = await runScriptInTab({
+    func,
+    target: { tabId: tab.id },
+    args,
+    world,
+  });
+  if (closeAfterRunScript) {
+    closeTab(tab);
+  } else if (focusAfterRunScript) {
+    focusToTab(tab);
+  }
   return res;
 }
 
@@ -339,14 +455,17 @@ export async function sendDevtoolCommand(tab, commandName, commandParams = {}) {
 // Merge image uri
 // https://stackoverflow.com/a/50658710/11898496
 // https://stackoverflow.com/a/50658710/11898496
-export async function captureVisibleTab(options = {}, willDownload = true) {
-  let imgData = await chrome.tabs.captureVisibleTab(null, {
-    format: options.format || "png",
-    quality: options.quality || 100,
-  });
-  willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
-  return imgData;
-}
+
+// need to import UfsGlobal !!! => impact performace?
+
+// export async function captureVisibleTab(options = {}, willDownload = true) {
+//   let imgData = await chrome.tabs.captureVisibleTab(null, {
+//     format: options.format || "png",
+//     quality: options.quality || 100,
+//   });
+//   willDownload && UfsGlobal.Utils.downloadURL(imgData, "img.png");
+//   return imgData;
+// }
 
 // #endregion
 
@@ -515,29 +634,6 @@ export function showLoading(text = "") {
         textP.innerHTML = textOrFunction;
       }
     },
-  };
-}
-
-export function showPopup(title = "", innerHTML = "") {
-  let html = /*html*/ `<div class="popup-container">
-    <div class="popup-inner-container">
-        <button class="close-btn">X</button>
-        <h2 style="text-align: center; margin-bottom:10px">${title}</h2>
-        ${innerHTML}
-    </div>
-  </div>`;
-  let div = document.createElement("div");
-  div.innerHTML = html;
-  document.body.appendChild(div);
-
-  document
-    .querySelector(".popup-container .close-btn")
-    ?.addEventListener?.("click", () => {
-      div?.remove?.();
-    });
-
-  return {
-    closePopup: () => div?.remove?.(),
   };
 }
 

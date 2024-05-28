@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "https://drive-thirdparty.googleusercontent.com/32/type/application/vnd.openxmlformats-officedocument.presentationml.presentation",
   name: {
@@ -13,34 +11,53 @@ export default {
 
   whiteList: ["https://docs.google.com/presentation/*"],
 
-  onClickExtension: async () => {
-    let tab = await getCurrentTab();
-    let { url, title } = tab;
-
-    if (url.includes("/htmlpresent")) {
-      alert(
-        "Ban hãy bấm Ctrl+S để lưu toàn bộ slides trong trang hiện tại nhé."
+  popupScript: {
+    onClick: async () => {
+      const { t } = await import("../popup/helpers/lang.js");
+      const { getCurrentTab, openWebAndRunScript } = await import(
+        "./helpers/utils.js"
       );
-    } else {
-      url = prompt(
-        "Nhập link file powerpoint (slide) google drive: \nĐịnh dạng: https://docs.google.com/presentation/*",
-        url
-      );
-      if (!url) return;
+      let tab = await getCurrentTab();
+      let { url, title } = tab;
 
-      let id = /d\/([^\/]+)\/?/.exec(url)?.[1];
-      if (!id) {
-        alert("Không tìm được id file trên url");
-        return;
+      let guide = t({
+        vi: "Sử dụng chức năng\nTự động > In web ra PDF hoặc\nTự động > Chụp ảnh toàn bộ web\nđể tải slides nhé.",
+        en: "Please use feature\nAutomation > Screenshot full page OR\nAutomation > Web to PDF\nto download this slides",
+      });
+
+      if (url.includes("/htmlpresent")) {
+        alert(guide);
+      } else {
+        url = prompt(
+          t({
+            vi: "Nhập link file powerpoint (slide) google drive: \nĐịnh dạng: https://docs.google.com/presentation/*",
+            en: "Enter google drive presentation url: \nFormat: https://docs.google.com/presentation/*",
+          }),
+          url
+        );
+        if (!url) return;
+
+        let id = /d\/([^\/]+)\/?/.exec(url)?.[1];
+        if (!id) {
+          alert(
+            t({
+              vi: "Không tìm được id file trên url",
+              en: "Can not find file id in url",
+            })
+          );
+          return;
+        }
+
+        openWebAndRunScript({
+          url: "https://docs.google.com/presentation/d/" + id + "/htmlpresent",
+          func: async (guide) => {
+            window.onload = alert(guide);
+          },
+          args: [guide],
+          focusImmediately: true,
+          waitUntilLoadEnd: false,
+        });
       }
-
-      alert(
-        "File sẽ được mở trong trang mới. Bạn có thể bấm Ctrl+S để lưu toàn bộ slides trong trang mới."
-      );
-
-      window.open(
-        "https://docs.google.com/presentation/d/" + id + "/htmlpresent"
-      );
-    }
+    },
   },
 };

@@ -1,5 +1,3 @@
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-qrcode fa-lg"></i>',
   name: {
@@ -11,16 +9,20 @@ export default {
     vi: "Chuyển chữ/link sang QRCode",
   },
 
-  onClickExtension: async () => {
-    const tab = await getCurrentTab();
+  popupScript: {
+    onClick: async () => {
+      const { getCurrentTab, popupCenter } = await import("./helpers/utils.js");
+      const tab = await getCurrentTab();
 
-    let text = prompt("Nhập text/url: ", tab.url);
-    if (text) {
-      window.open(
-        "https://hoothin.com/qrcode/#" + text,
-        "",
-        "scrollbars=no,width=700,height=700"
-      );
-    }
+      let text = prompt("Nhập text/url: ", tab.url);
+      if (text) {
+        popupCenter({
+          url: "/scripts/textToQrCode.html#" + text,
+          title: "Text to QRCode",
+          w: 400,
+          h: 500,
+        });
+      }
+    },
   },
 };

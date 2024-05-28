@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Timer - Useful script</title>
+
+  <link rel="stylesheet/less" type="text/css" href="./web_timer.less" />
+  <script src="../popup/libs/less.js"></script>
+
+  <style>
+    html {
+      min-width: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Webtimer - Useful scripts</h1>
+  <div id="chart"></div>
+  <div id="controller">
+    <div class="vertical">
+      <select id="date-type"></select>
+      <div id="date-picker-container"></div>
+    </div>
+    <div>
+      <select id="display-type"></select>
+    </div>
+  </div>
+  <div id="guide">No data</div>
+  <div id="timer-data"></div>
+
+  <button type="button" id="back" title="Go Back">⬅️</button>
+  <a href="/scripts/web_timer.html" target="_blank" title="Open in new tab" id="new-tab">↗</a>
+
+  <script type="module" src="./web_timer_main.js"></script>
+</body>
+
+</html>

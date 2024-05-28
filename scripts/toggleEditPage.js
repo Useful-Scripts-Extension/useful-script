@@ -9,20 +9,21 @@ export default {
     vi: "Cho phép chỉnh sửa mọi văn bản trong website",
   },
 
-  onClick: function () {
-    let isOn = document.designMode == "on";
-    let willOn = isOn ? false : true;
+  contentScript: {
+    onClick: function () {
+      let isOn = document.designMode == "on";
 
-    if (willOn) {
-      document.body.contentEditable = "true";
-      document.designMode = "on";
+      if (!isOn) {
+        document.body.contentEditable = "true";
+        document.designMode = "on";
 
-      alert("Bạn có thể chỉnh sửa ngay bây giờ");
-    } else {
-      document.body.contentEditable = "false";
-      document.designMode = "off";
+        alert("Bạn có thể chỉnh sửa ngay bây giờ");
+      } else {
+        document.body.contentEditable = "false";
+        document.designMode = "off";
 
-      alert("Đã tắt chế độ chỉnh sửa");
-    }
+        alert("Đã tắt chế độ chỉnh sửa");
+      }
+    },
   },
 };

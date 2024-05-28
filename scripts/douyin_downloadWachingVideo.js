@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.douyin.com/favicon.ico",
   name: {
@@ -12,42 +10,49 @@ export default {
   },
   whiteList: ["https://www.douyin.com/*"],
 
-  onClickExtension: async function () {
-    const {
-      downloadURL,
-      downloadBlob,
-      getBlobFromUrlWithProgress,
-      formatSize,
-    } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: async function () {
+      const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
 
-    const { closeLoading, setLoadingText } = showLoading(
-      "Đang tìm video url..."
-    );
+      // const {
+      //   downloadURL,
+      //   downloadBlob,
+      //   getBlobFromUrlWithProgress,
+      //   formatSize,
+      // } = UfsGlobal.Utils;
 
-    const src = await runScriptInCurrentTab(async () => {
-      return await UfsGlobal.DOM.getWatchingVideoSrc();
-    });
+      const { closeLoading, setLoadingText } = showLoading(
+        "Đang tìm video url..."
+      );
 
-    if (!src) {
-      alert("Không tìm thấy video nào.");
-    } else {
-      setLoadingText("Đang tải video...");
-      // downloadURL(src, "douyin_video.mp4");
-      window.open(src);
-      // const blob = await getBlobFromUrlWithProgress(
-      //   src,
-      //   ({ loaded, total, speed }) => {
-      //     const percent = ((loaded / total) * 100) | 0;
-      //     setLoadingText(
-      //       `Đang tải video...<br/>` +
-      //         `Vui lòng không tắt popup <br/>` +
-      //         `${formatSize(loaded)}/${formatSize(total)} (${percent}%)` +
-      //         ` - ${formatSize(speed)}/s`
-      //     );
-      //   }
-      // );
-      // await downloadBlob(blob, "douyin_video.mp4");
-    }
-    closeLoading();
+      const src = await runScriptInCurrentTab(async () => {
+        return await UfsGlobal.DOM.getWatchingVideoSrc();
+      });
+
+      if (!src) {
+        alert("Không tìm thấy video nào.");
+      } else {
+        setLoadingText("Đang tải video...");
+        // downloadURL(src, "douyin_video.mp4");
+        window.open(src);
+        // const blob = await getBlobFromUrlWithProgress(
+        //   src,
+        //   ({ loaded, total, speed }) => {
+        //     const percent = ((loaded / total) * 100) | 0;
+        //     setLoadingText(
+        //       `Đang tải video...<br/>` +
+        //         `Vui lòng không tắt popup <br/>` +
+        //         `${formatSize(loaded)}/${formatSize(total)} (${percent}%)` +
+        //         ` - ${formatSize(speed)}/s`
+        //     );
+        //   }
+        // );
+        // await downloadBlob(blob, "douyin_video.mp4");
+      }
+      closeLoading();
+    },
   },
 };

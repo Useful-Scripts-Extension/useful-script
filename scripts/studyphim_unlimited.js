@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "https://www.studyphim.vn/assets/ico/favicon.ico",
   name: {
@@ -13,11 +15,12 @@ export default {
 
   whiteList: ["https://www.studyphim.vn/*"],
 
-  onDocumentStart: () => {
-    // Source: https://github.com/gys-dev/Unlimited-Stdphim
-    UfsGlobal.DOM.deleteElements(
-      ".overlay.playable.hide, .overlay.playable, #topchapter, #wrapper_header",
-      true
-    );
+  contentScript: {
+    onDocumentStart: async () => {
+      // Source: https://github.com/gys-dev/Unlimited-Stdphim
+      UfsGlobal.DOM.deleteElements(
+        ".overlay.playable.hide, .overlay.playable, #topchapter, #wrapper_header"
+      );
+    },
   },
 };

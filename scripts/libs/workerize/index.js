@@ -1,4 +1,4 @@
-
+// https://github.com/developit/workerize
 /** TODO:
  *	- pooling (+ load balancing by tracking # of open calls)
  *  - queueing (worth it? sortof free via postMessage already)

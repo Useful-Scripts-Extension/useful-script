@@ -11,8 +11,10 @@ export default {
 
   whiteList: ["https://docs.google.com/spreadsheets/*"],
 
-  onClick: () => {
-    let url = location.href;
-    window.open(url.replace("/edit", "/preview"));
+  contentScript: {
+    onClick: () => {
+      let url = location.href;
+      window.open(url.replace("/edit", "/preview"));
+    },
   },
 };

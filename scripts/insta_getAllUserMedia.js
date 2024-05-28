@@ -1,6 +1,8 @@
-import { showLoading } from "./helpers/utils.js";
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
+  icon: '<i class="fa-solid fa-download fa-lg"></i>',
   name: {
     en: "Get all media of insta user (API)",
     vi: "Tải về tất cả media của insta user (API)",
@@ -9,77 +11,77 @@ export default {
     en: "Get all media of instagram user (use instagram API)",
     vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
   },
-
+  badges: [BADGES.hot, BADGES.new],
   changeLogs: {
-    1.66: {
-      "2024-04-03": "optimize flow",
-    },
+    "2024-04-03": "optimize flow",
   },
 
-  onClickExtension: async function () {
-    const { downloadData } = UfsGlobal.Utils;
+  popupScript: {
+    onClick: async function () {
+      const { getUidFromUsername, getAllMedia } = await import(
+        "./insta_GLOBAL.js"
+      );
+      const { showLoading } = await import("./helpers/utils.js");
+      const { t } = await import("../popup/helpers/lang.js");
+      let username = prompt(
+        t({
+          en: "Enter insta username (eg. woohye0n):",
+          vi: "Nhập tên user muốn tải (ví dụ: woohye0n):",
+        }),
+        ""
+      );
+      if (!username) return;
 
-    let user_id = prompt("Enter user id:", "");
-    if (!user_id) return;
-    function getBiggestMediaFromNode(node) {
-      if (node.is_video) {
-        return getUniversalCdnUrl(node.video_url);
-      } else {
-        let r = node.display_resources;
-        return r[r.length - 1]?.src;
-      }
-    }
-    function getUniversalCdnUrl(cdnLink) {
-      const cdn = new URL(cdnLink);
-      cdn.host = "scontent.cdninstagram.com";
-      return cdn.href;
-    }
+      let { closeLoading, setLoadingText } = showLoading(
+        t({
+          vi: "Đang tìm uid...",
+          en: "Finding uid...",
+        })
+      );
 
-    let { closeLoading, setLoadingText } = showLoading(
-      "Đang lấy link ảnh/video ..."
-    );
-    try {
-      let all_urls = [];
-      let after = "";
-      while (true) {
-        let data = await fetch(
-          `https://www.instagram.com/graphql/query/?query_hash=396983faee97f4b49ccbe105b4daf7a0&variables={"id":"${user_id}","first":50,"after":"${after}"}`
-        );
-        let json = await data.json();
-        let edges = json?.data?.user?.edge_owner_to_timeline_media?.edges || [];
+      try {
+        let uid = await getUidFromUsername(username);
+        if (!uid)
+          throw new Error(
+            t({
+              vi: "Không tìm được uid của username này",
+              en: "Cannot find uid for this username",
+            })
+          );
 
-        let urls = [];
-        edges.forEach((e) => {
-          let childs = e.node?.edge_sidecar_to_children?.edges;
-          if (childs) {
-            urls.push(...childs.map((c) => getBiggestMediaFromNode(c.node)));
-          } else {
-            urls.push(getBiggestMediaFromNode(e.node));
-          }
+        let all_urls = await getAllMedia({
+          uid,
+          progressCallback: (p) => {
+            setLoadingText(
+              t({
+                vi: `Đang tìm ảnh/video ... (${p.current})`,
+                en: `Fetching image/video... (${p.current})`,
+              })
+            );
+          },
         });
-        all_urls.push(...urls);
-        setLoadingText(`Đang lấy link ảnh/video... (${all_urls.length} link)`);
-
-        let pageInfo =
-          json?.data?.user?.edge_owner_to_timeline_media?.page_info;
-        if (pageInfo?.has_next_page) {
-          after = pageInfo?.end_cursor;
+        console.log(all_urls);
+        if (!all_urls?.length) {
+          alert(
+            t({
+              vi: "Không tìm được link ảnh/video nào.",
+              en: "No image/video found",
+            })
+          );
         } else {
-          console.log("[STOP] THIS IS THE LAST PAGE.");
-          break;
+          setLoadingText(
+            t({
+              vi: `Đang tải xuống ... (${all_urls.length} link)`,
+              en: `Downloading... (${all_urls.length} link)`,
+            })
+          );
+          UfsGlobal.Utils.downloadData(all_urls.join("\n"), username + ".txt");
         }
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
       }
-      console.log(all_urls);
-      if (!all_urls?.length) {
-        alert("Không tìm được link ảnh/video nào.");
-      } else {
-        setLoadingText(`Đang tải xuống ... (${all_urls.length} link)`);
-        downloadData(all_urls.join("\n"), user_id, ".txt");
-      }
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+    },
   },
 };

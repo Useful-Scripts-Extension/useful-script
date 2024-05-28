@@ -1,8 +1,10 @@
 {
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhadTVWVja6aEjRKN+G2OTLETy593wWzEXeEhoZ54Nzm50IdRHh0qq279daZbfClfXAHPEICCSoRU1DJDSVUQvMKcvn2lhcLyYpcA4zxPH8Wi9txW0iU3pbG3I8/JpRPvt9YZrq5rWPilueOwVIYUviYHL3tUVV+VrugsUEEHxeQ2T6xX4g+Gt1jm8LuLp8aZElT33Utk7O6JDGEBPLck36H+QG2lhhZK8j8O+0gPryO+/k/cydyG9ywfI7iXEF9H+DWPVjU0/qGKNee96YEfHXfTPgNcKWTAmBPNBo1IaLukVJ29gCEKQOizOj+u2nhhXSZC7Md+I8SAFh4ExNRBJQIDAQAB",
   "manifest_version": 3,
   "name": "Useful Scripts",
   "description": "Scripts that can make your life faster and better",
-  "version": "1.66",
+  "homepage_url": "https://github.com/HoangTran0410/useful-script",
+  "version": "1.67",
   "icons": {
     "16": "./assets/icon16.png",
     "32": "./assets/icon32.png",
@@ -14,17 +16,22 @@
     "default_icon": "./assets/icon32.png"
   },
   "permissions": [
+    "idle",
     "tts",
-    "power",
     "tabs",
+    "power",
+    "history",
     "storage",
     "cookies",
+    "sessions",
     "debugger",
     "activeTab",
     "downloads",
     "bookmarks",
     "scripting",
+    "webRequest",
     "tabCapture",
+    "pageCapture",
     "contextMenus",
     "desktopCapture",
     "webNavigation",
@@ -34,33 +41,12 @@
     "declarativeNetRequestFeedback",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["*://*/*", "<all_urls>"],
   "options_page": "./pages/options/options.html",
   "background": {
-    "service_worker": "scripts/background-scripts/background-script.js",
+    "service_worker": "scripts/background-scripts/background_script.js",
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["scripts/content-scripts/content_script.js"],
-      "run_at": "document_start",
-      "world": "ISOLATED",
-      "match_origin_as_fallback": true,
-      "match_about_blank": true
-    },
-    {
-      "matches": ["<all_urls>"],
-      "js": [
-        "scripts/content-scripts/ufs_global.js",
-        "scripts/content-scripts/page_scripts.js"
-      ],
-      "run_at": "document_start",
-      "world": "MAIN",
-      "match_origin_as_fallback": true,
-      "match_about_blank": true
-    }
-  ],
   "web_accessible_resources": [
     {
       "resources": ["scripts/*"],

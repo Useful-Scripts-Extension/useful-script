@@ -1,9 +1,3 @@
-import {
-  getCurrentTab,
-  runScriptInCurrentTab,
-  showLoading,
-} from "./helpers/utils.js";
-
 export default {
   icon: '<i class="fa-solid fa-video fa-lg"></i>',
   name: {
@@ -16,29 +10,33 @@ export default {
   },
   whiteList: ["https://*.facebook.com/*"],
 
-  onClickExtension: async function () {
-    let tab = await getCurrentTab();
-    let url = prompt("Nhập link video/reel/watch:", tab.url);
-    let videoId = shared.extractFbVideoIdFromUrl(url);
-    if (!videoId) {
-      alert(
-        "Link không đúng định dạng, không tìm thấy video/reel/watch id trong link."
-      );
-      return;
-    }
+  popupScript: {
+    onClick: async function () {
+      const { getCurrentTab, showLoading } = await import("./helpers/utils.js");
 
-    let { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
-    try {
-      let dtsg = await shared.getDtsg();
-      setLoadingText("Đang get link video...");
-      let link = await shared.getLinkFbVideo(videoId, dtsg);
-      if (link) window.open(link);
-      else throw Error("Không tìm thấy link");
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+      let tab = await getCurrentTab();
+      let url = prompt("Nhập link video/reel/watch:", tab.url);
+      let videoId = shared.extractFbVideoIdFromUrl(url);
+      if (!videoId) {
+        alert(
+          "Link không đúng định dạng, không tìm thấy video/reel/watch id trong link."
+        );
+        return;
+      }
+
+      let { closeLoading, setLoadingText } = showLoading("Đang lấy token...");
+      try {
+        let dtsg = await shared.getDtsg();
+        setLoadingText("Đang get link video...");
+        let link = await shared.getLinkFbVideo(videoId, dtsg);
+        if (link) window.open(link);
+        else throw Error("Không tìm thấy link");
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 
@@ -48,6 +46,7 @@ export const shared = {
   },
 
   getDtsg: async function () {
+    const { runScriptInCurrentTab } = await import("./helpers/utils.js");
     return await runScriptInCurrentTab(() => {
       return require("DTSGInitialData").token;
     });

@@ -1,16 +1,25 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
-  icon: '<i class="fa-solid fa-cloud-arrow-down"></i>',
+  icon: '<i class="fa-solid fa-cloud-arrow-down fa-lg"></i>',
   name: {
     en: "Facebook - Bulk download",
     vi: "Facebook - Tải hàng loạt",
   },
+  badges: [BADGES.comingSoon],
   description: {
-    en: "",
-    vi: "",
+    en: "Combine all bulk download features on facebook into single page",
+    vi: "Tổng hợp tất cả chức năng tải hàng loạt facebook",
   },
 
-  onClickExtension: () => {
-    window.open(chrome.runtime.getURL("scripts/fb_bulkDownload.html"));
+  popupScript: {
+    onClick: () => {
+      Swal.fire({
+        icon: "info",
+        title: "Coming soon",
+      });
+      // window.open(chrome.runtime.getURL("scripts/fb_bulkDownload.html"));
+    },
   },
 };
 

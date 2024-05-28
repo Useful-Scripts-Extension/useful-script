@@ -27,7 +27,17 @@
 
 </details>
 <details>
-  <summary>4. Wappalyzer - view website stacks</summary>
+  <summary>4. Internet archive - Free library</summary>
+
+  [View source](/scripts/recommend_archive.js)
+
+  <code>Non-profit library of millions of free books, movies, software, music, websites, and more.</code>
+
+  ![](/scripts/internet_archive.png)
+
+</details>
+<details>
+  <summary>5. Wappalyzer - view website stacks</summary>
 
   [View source](/scripts/recommend_wappalyzer.js)
 
@@ -35,7 +45,7 @@
 
 </details>
 <details>
-  <summary>5. Who.is</summary>
+  <summary>6. Who.is</summary>
 
   [View source](/scripts/whois.js)
 
@@ -43,7 +53,7 @@
 
 </details>
 <details>
-  <summary>6. See web meta info (SEO)</summary>
+  <summary>7. See web meta info (SEO)</summary>
 
   [View source](/scripts/viewWebMetaInfo.js)
 
@@ -51,7 +61,7 @@
 
 </details>
 <details>
-  <summary>7. Top global treding music?</summary>
+  <summary>8. Top global treding music?</summary>
 
   [View source](/scripts/recommend_search_musicTreding.js)
 
@@ -59,7 +69,7 @@
 
 </details>
 <details>
-  <summary>8. Where to find papers/books/pdf/...</summary>
+  <summary>9. Where to find papers/books/pdf/...</summary>
 
   [View source](/scripts/search_paperWhere.js)
 
@@ -67,7 +77,7 @@
 
 </details>
 <details>
-  <summary>9. Search guitar chords</summary>
+  <summary>10. Search guitar chords</summary>
 
   [View source](/scripts/search_hopamchuan.js)
 
@@ -75,7 +85,7 @@
 
 </details>
 <details>
-  <summary>10. Dowfor - Check web die</summary>
+  <summary>11. Dowfor - Check web die</summary>
 
   [View source](/scripts/checkWebDie.js)
 
@@ -83,7 +93,7 @@
 
 </details>
 <details>
-  <summary>11. DownDetector - View report web crash</summary>
+  <summary>12. DownDetector - View report web crash</summary>
 
   [View source](/scripts/downDetector.js)
 
@@ -91,7 +101,7 @@
 
 </details>
 <details>
-  <summary>12. Open wayback url</summary>
+  <summary>13. Open wayback url</summary>
 
   [View source](/scripts/openWaybackUrl.js)
 
@@ -99,7 +109,7 @@
 
 </details>
 <details>
-  <summary>13. Archive the current Page online</summary>
+  <summary>14. Archive the current Page online</summary>
 
   [View source](/scripts/archiveToday.js)
 
@@ -107,7 +117,7 @@
 
 </details>
 <details>
-  <summary>14. Search Userscripts</summary>
+  <summary>15. Search Userscripts</summary>
 
   [View source](/scripts/recommend_search_userscript.js)
 
@@ -119,7 +129,7 @@
 
 --- All in one ---
 <details>
-  <summary>15. Save All Video</summary>
+  <summary>16. Save All Video</summary>
 
   [View source](/scripts/saveAllVideo.js)
 
@@ -127,7 +137,7 @@
 
 </details>
 <details>
-  <summary>16. Vuiz - Get link audio/video/album</summary>
+  <summary>17. Vuiz - Get link audio/video/album</summary>
 
   [View source](/scripts/vuiz_getLink.js)
 
@@ -135,7 +145,7 @@
 
 </details>
 <details>
-  <summary>17. SaveVideo - Download video</summary>
+  <summary>18. SaveVideo - Download video</summary>
 
   [View source](/scripts/savevideo_me.js)
 
@@ -143,7 +153,7 @@
 
 </details>
 <details>
-  <summary>18. Get audio/video (luanxt)</summary>
+  <summary>19. Get audio/video (luanxt)</summary>
 
   [View source](/scripts/getLinkLuanxt_newtab.js)
 
@@ -153,27 +163,7 @@
 
 --- Photos ---
 <details>
-  <summary>19. Magnify any Image</summary>
-
-  [View source](/scripts/magnify_image.js)
-
-  <code>Press Ctrl twice (or right click) to any image to open it in magnified window
-    <br/><br/>
-    Auto find large version of image to show.</code>
-
-</details>
-<details>
-  <summary>20. Auto - view largest image</summary>
-
-  [View source](/scripts/auto_redirectLargestImageSrc.js)
-
-  <code>Auto redirect to largest image, support on some websites</code>
-
-  ![](/scripts/auto_redirectLargestImageSrc.jpg)
-
-</details>
-<details>
-  <summary>21. Twitter X - Add download button</summary>
+  <summary>20. Twitter X - Add download button</summary>
 
   [View source](/scripts/twitter_downloadButton.js)
 
@@ -183,7 +173,7 @@
 
 </details>
 <details>
-  <summary>22. Download favicon from website</summary>
+  <summary>21. Download favicon from website</summary>
 
   [View source](/scripts/getFavicon.js)
 
@@ -191,7 +181,7 @@
 
 </details>
 <details>
-  <summary>23. Picviewer CE+ download images</summary>
+  <summary>22. Picviewer CE+ download images</summary>
 
   [View source](/scripts/recommend_picviewer_ce+.js)
 
@@ -201,7 +191,7 @@
 
 </details>
 <details>
-  <summary>24. File-converter.io - change image type</summary>
+  <summary>23. File-converter.io - change image type</summary>
 
   [View source](/scripts/recommend_file_converter.js)
 
@@ -211,7 +201,7 @@
 
 </details>
 <details>
-  <summary>25. Squoosh.app - compress images</summary>
+  <summary>24. Squoosh.app - compress images</summary>
 
   [View source](/scripts/recommend_squoosh_app.js)
 
@@ -221,7 +211,7 @@
 
 --- Music ---
 <details>
-  <summary>26. Spotify - Add download button</summary>
+  <summary>25. Spotify - Add download button</summary>
 
   [View source](/scripts/spotify_downloadButton.js)
 
@@ -231,7 +221,7 @@
 
 </details>
 <details>
-  <summary>27. Soundcloud - Add download button</summary>
+  <summary>26. Soundcloud - Add download button</summary>
 
   [View source](/scripts/soundcloud_downloadMusic.js)
 
@@ -241,7 +231,7 @@
 
 </details>
 <details>
-  <summary>28. Nhaccuatui music/lyric downloader</summary>
+  <summary>27. Nhaccuatui music/lyric downloader</summary>
 
   [View source](/scripts/nhaccuatui_downloader.js)
 
@@ -249,7 +239,7 @@
 
 </details>
 <details>
-  <summary>29. Zingmp3 music dowloader (API)</summary>
+  <summary>28. Zingmp3 music dowloader (API)</summary>
 
   [View source](/scripts/zingmp3_downloadMusic.js)
 
@@ -257,7 +247,7 @@
 
 </details>
 <details>
-  <summary>30. Show all audio in website</summary>
+  <summary>29. Show all audio in website</summary>
 
   [View source](/scripts/showTheAudios.js)
 
@@ -267,7 +257,7 @@
 
 --- Videos ---
 <details>
-  <summary>31. Download watching video</summary>
+  <summary>30. Download watching video</summary>
 
   [View source](/scripts/download_watchingVideo.js)
 
@@ -275,7 +265,7 @@
 
 </details>
 <details>
-  <summary>32. Vimeo - video downloader</summary>
+  <summary>31. Vimeo - video downloader</summary>
 
   [View source](/scripts/vimeo_downloader.js)
 
@@ -283,7 +273,7 @@
 
 </details>
 <details>
-  <summary>33. Show all videos in website</summary>
+  <summary>32. Show all videos in website</summary>
 
   [View source](/scripts/showTheVideos.js)
 
@@ -293,39 +283,15 @@
 
 --- Document ---
 <details>
-  <summary>34. Export bookmarks to file</summary>
+  <summary>33. Studocu - Download documents</summary>
 
-  [View source](/scripts/bookmark_exporter.js)
+  [View source](/scripts/studocu_downs.js)
 
-  <code>Export all your browser's bookmarks to JSON file</code>
-
-</details>
-<details>
-  <summary>35. Bookmark Sidebar</summary>
-
-  [View source](/scripts/recommend_BookmarkSidebar.js)
-
-  <code>Very good Bookmark manager, find your bookmarks faster.</code>
+  <code>Download documents on Studocu.com for free</code>
 
 </details>
 <details>
-  <summary>36. Download free from tailieu.vn</summary>
-
-  [View source](/scripts/tailieu_vn.js)
-
-  <code>Download any document on tailieu.vn without login</code>
-
-</details>
-<details>
-  <summary>37. DocDownloader - Download document</summary>
-
-  [View source](/scripts/docDownloader.js)
-
-  <code>Download document on Scribd, Issuu, Slideshare, Academia</code>
-
-</details>
-<details>
-  <summary>38. Scribd - Download documents</summary>
+  <summary>34. Scribd - Download documents</summary>
 
   [View source](/scripts/scribd_downloadDocuments.js)
 
@@ -333,19 +299,35 @@
 
 </details>
 <details>
-  <summary>39. Studocu - Download documents (Dlstudocu)</summary>
+  <summary>35. Download free from tailieu.vn</summary>
 
-  [View source](/scripts/studocu_dl.js)
+  [View source](/scripts/tailieu_vn.js)
 
-  <code></code>
+  <code>Download any document on tailieu.vn without login</code>
 
 </details>
 <details>
-  <summary>40. Studocu - Download documents (Downstudocu)</summary>
+  <summary>36. DocDownloader - Download document</summary>
 
-  [View source](/scripts/studocu_downs.js)
+  [View source](/scripts/recommend_docsdownloader.js)
 
-  <code>Download document pdf on Studocu.com for free</code>
+  <code>Download document on Scribd, Everand, Slideshare, Issuu, Academia, Chegg, Researchgate, Coursehero, Studocu, Perlego, Yumpu, Tiendeo, Fliphtml5, Anyflip, Docsity, Passei direto, Udocz</code>
+
+</details>
+<details>
+  <summary>37. Export bookmarks to file</summary>
+
+  [View source](/scripts/bookmark_exporter.js)
+
+  <code>Export all your browser's bookmarks to JSON file</code>
+
+</details>
+<details>
+  <summary>38. Bookmark Sidebar</summary>
+
+  [View source](/scripts/recommend_BookmarkSidebar.js)
+
+  <code>Very good Bookmark manager, find your bookmarks faster.</code>
 
 </details>
 
@@ -353,7 +335,7 @@
 
 --- Download ---
 <details>
-  <summary>41. Google drive - generate direct link</summary>
+  <summary>39. Google drive - generate direct link</summary>
 
   [View source](/scripts/ggdrive_generateDirectLink.js)
 
@@ -361,15 +343,15 @@
 
 </details>
 <details>
-  <summary>42. GG Drive - Download PDF</summary>
+  <summary>40. GG Drive - Download PDF</summary>
 
   [View source](/scripts/ggdrive_downloadPdf.js)
 
-  <code>Download google drive PDF file that dont have download button. Pages will be convert to image, cannot edit.</code>
+  <code>Download google drive PDF file that dont have download button.<br/>Pages will be <b>convert to image, cannot edit.</b></code>
 
 </details>
 <details>
-  <summary>43. GG Drive - Download PowerPoint (Slides/Presentation)</summary>
+  <summary>41. GG Drive - Download PowerPoint (Slides/Presentation)</summary>
 
   [View source](/scripts/ggdrive_downloadPresentation.js)
 
@@ -377,7 +359,7 @@
 
 </details>
 <details>
-  <summary>44. GG Drive - Download Document (to PDF)</summary>
+  <summary>42. GG Drive - Download Document (to PDF)</summary>
 
   [View source](/scripts/ggdrive_downloadDoc.js)
 
@@ -385,7 +367,7 @@
 
 </details>
 <details>
-  <summary>45. GG Drive - Download Sheet (copy Text)</summary>
+  <summary>43. GG Drive - Download Sheet (copy Text)</summary>
 
   [View source](/scripts/ggdrive_copySheetText.js)
 
@@ -393,7 +375,7 @@
 
 </details>
 <details>
-  <summary>46. GG Drive - Download video</summary>
+  <summary>44. GG Drive - Download video</summary>
 
   [View source](/scripts/ggdrive_downloadVideo.js)
 
@@ -401,7 +383,7 @@
 
 </details>
 <details>
-  <summary>47. Google - Download all your data</summary>
+  <summary>45. Google - Download all your data</summary>
 
   [View source](/scripts/google_downloadAllYourData.js)
 
@@ -411,7 +393,7 @@
 
 --- Bulk Download ---
 <details>
-  <summary>48. GGDrive - Download all videos in folder</summary>
+  <summary>46. GGDrive - Download all videos in folder</summary>
 
   [View source](/scripts/ggDrive_downloadAllVideosInFolder.js)
 
@@ -421,7 +403,15 @@
 
 --- More ---
 <details>
-  <summary>49. Check total indexed pages</summary>
+  <summary>47. Google search advanced</summary>
+
+  [View source](/scripts/recommend_googleAdvanced.js)
+
+  <code>Search google with a lot of advanced features</code>
+
+</details>
+<details>
+  <summary>48. Check total indexed pages</summary>
 
   [View source](/scripts/search_totalIndexedPages.js)
 
@@ -429,7 +419,7 @@
 
 </details>
 <details>
-  <summary>50. Google site search</summary>
+  <summary>49. Google site search</summary>
 
   [View source](/scripts/search_googleSite.js)
 
@@ -437,7 +427,7 @@
 
 </details>
 <details>
-  <summary>51. Google shortcuts</summary>
+  <summary>50. Google shortcuts</summary>
 
   [View source](/scripts/googleShortcuts.js)
 
@@ -445,7 +435,7 @@
 
 </details>
 <details>
-  <summary>52. View Google cache of website</summary>
+  <summary>51. View Google cache of website</summary>
 
   [View source](/scripts/googleCache.js)
 
@@ -453,7 +443,7 @@
 
 </details>
 <details>
-  <summary>53. Google mirror - I'm elgooG</summary>
+  <summary>52. Google mirror - I'm elgooG</summary>
 
   [View source](/scripts/google_mirror.js)
 
@@ -465,7 +455,7 @@
 
 --- Download ---
 <details>
-  <summary>54. Download watching fb video</summary>
+  <summary>53. Download watching fb video</summary>
 
   [View source](/scripts/fb_downloadWatchingVideo.js)
 
@@ -473,15 +463,15 @@
 
 </details>
 <details>
-  <summary>55. Download watching fb Story</summary>
+  <summary>54. Download watching fb Story/Comment</summary>
 
   [View source](/scripts/fb_storySaver.js)
 
-  <code>Download facebook story that you are watching</code>
+  <code>Download facebook story / comment video that you are watching</code>
 
 </details>
 <details>
-  <summary>56. Download fb video/reel/watch from url</summary>
+  <summary>55. Download fb video/reel/watch from url</summary>
 
   [View source](/scripts/fb_videoDownloader.js)
 
@@ -489,7 +479,7 @@
 
 </details>
 <details>
-  <summary>57. Get avatar from fb user id</summary>
+  <summary>56. Get avatar from fb user id</summary>
 
   [View source](/scripts/fb_getAvatarFromUid.js)
 
@@ -498,6 +488,14 @@
 </details>
 
 --- Bulk Download ---
+<details>
+  <summary>57. Facebook - Bulk download</summary>
+
+  [View source](/scripts/fb_bulkDownload.js)
+
+  <code>Combine all bulk download features on facebook into single page</code>
+
+</details>
 <details>
   <summary>58. Download album facebook</summary>
 
@@ -523,15 +521,7 @@
 
 </details>
 <details>
-  <summary>61. View your facebook saved</summary>
-
-  [View source](/scripts/fb_openSaved.js)
-
-  <code>View saved contents on Facebook</code>
-
-</details>
-<details>
-  <summary>62. Export saved facebook items</summary>
+  <summary>61. Export saved facebook items</summary>
 
   [View source](/scripts/fb_exportSaved.js)
 
@@ -541,7 +531,7 @@
 
 --- Hot ---
 <details>
-  <summary>63. Facebook - Reveal deleted messages</summary>
+  <summary>62. Facebook - Reveal deleted messages</summary>
 
   [View source](/scripts/fb_revealDeletedMessages.js)
 
@@ -549,17 +539,7 @@
 
 </details>
 <details>
-  <summary>64. Invisible facebook  message</summary>
-
-  [View source](/scripts/fb_invisible_message.js)
-
-  <code>Add the > character before writing a message to send hidden messages.
-
-Your friends needs to install this extension and enable it to view hidden messages.</code>
-
-</details>
-<details>
-  <summary>65. Facebook Story - Add more emoji reactions</summary>
+  <summary>63. Facebook Story - More reactions</summary>
 
   [View source](/scripts/fb_moreReactionStory.js)
 
@@ -569,7 +549,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>66. Facebook - Who is typing to you?</summary>
+  <summary>64. Facebook - Who is typing to you?</summary>
 
   [View source](/scripts/fb_whoIsTyping.js)
 
@@ -577,15 +557,15 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>67. Turn off light fb newfeed</summary>
+  <summary>65. Turn off light fb newfeed</summary>
 
   [View source](/scripts/fb_toggleLight.js)
 
-  <code>Hide Navigator bar and complementary bar in facebook</code>
+  <code>Hide Navigator bar and complementary bar in facebook.<br/><br/><ul><li>Click to temporarily hide/show on this page.</li><li>Enable autorun to auto hide whenever open facebook.</li></ul></code>
 
 </details>
 <details>
-  <summary>68. Hide Newfeed facebook</summary>
+  <summary>66. Hide Newfeed facebook</summary>
 
   [View source](/scripts/fb_toggleNewFeed.js)
 
@@ -595,7 +575,15 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Statistic ---
 <details>
-  <summary>69. Facebook messenger history</summary>
+  <summary>67. Facebook - Detect unfriend</summary>
+
+  [View source](/scripts/fb_detectUnfriend.js)
+
+  <code>Detect unfriend, know who unfriend you on facebook</code>
+
+</details>
+<details>
+  <summary>68. Facebook - Messenger history</summary>
 
   [View source](/scripts/fb_messengerHistory.js)
 
@@ -603,15 +591,15 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>70. Facebook - Messenger count</summary>
+  <summary>69. Facebook - Messenger count</summary>
 
   [View source](/scripts/fb_messengerCount.js)
 
-  <code>Counts the number of messages sent from your Facebook Messenger account.</code>
+  <code>Let see who are your most active friends on facebook messenger</code>
 
 </details>
 <details>
-  <summary>71. Facebook - View your friends's joined groups</summary>
+  <summary>70. Facebook - View your friends's joined groups</summary>
 
   [View source](/scripts/fb_searchGroupForOther.js)
 
@@ -619,7 +607,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>72. Facebook - View your friend's liked pages</summary>
+  <summary>71. Facebook - View your friend's liked pages</summary>
 
   [View source](/scripts/fb_searchPageForOther.js)
 
@@ -627,11 +615,19 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>73. Facebook - Fetch all added friends</summary>
+  <summary>72. Facebook - Fetch all added friends</summary>
 
   [View source](/scripts/fb_fetchAllAddedFriends.js)
 
   <code>View all friends added to your Facebook account.</code>
+
+</details>
+<details>
+  <summary>73. Facebook - Find all posts of your friends</summary>
+
+  [View source](/scripts/fb_searchPostsForOther.js)
+
+  <code>Search all public posts of your friends on facebook. Include posts in group, page, wall, ...</code>
 
 </details>
 
@@ -657,7 +653,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
   [View source](/scripts/fb_getTokenFacebook.js)
 
-  <code>Get facebook access token from www.facebook.com</code>
+  <code>Get facebook access token EAAB from www.facebook.com</code>
 
 </details>
 <details>
@@ -669,17 +665,25 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>78. Get fb token EAAB (campaigns)</summary>
+  <summary>78. Get fb token EAADo1 (messenger)</summary>
+
+  [View source](/scripts/fb_getTokenMessage.js)
+
+  <code>Get facebook access token from www.facebook.com (messenger_for_android)</code>
+
+</details>
+<details>
+  <summary>79. Get fb token EAAB (campaigns)</summary>
 
   [View source](/scripts/fb_getTokenCampaigns.js)
 
-  <code>Get facebook token EAAG from www.facebook.com campaigns</code>
+  <code>Get facebook token EAAB from www.facebook.com (campaigns)</code>
 
 </details>
 
 --- Get ID ---
 <details>
-  <summary>79. Get fb User ID</summary>
+  <summary>80. Get fb User ID</summary>
 
   [View source](/scripts/fb_getUid.js)
 
@@ -687,7 +691,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>80. Get fb Page ID</summary>
+  <summary>81. Get fb Page ID</summary>
 
   [View source](/scripts/fb_getPageId.js)
 
@@ -695,7 +699,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>81. Get fb Group ID</summary>
+  <summary>82. Get fb Group ID</summary>
 
   [View source](/scripts/fb_getGroupId.js)
 
@@ -703,7 +707,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>82. Get fb Album ID</summary>
+  <summary>83. Get fb Album ID</summary>
 
   [View source](/scripts/fb_getAlbumId.js)
 
@@ -711,7 +715,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>83. Get all fb Album ID from current page</summary>
+  <summary>84. Get all fb Album ID from current page</summary>
 
   [View source](/scripts/fb_getAllAlbumIdFromCurrentWebsite.js)
 
@@ -719,7 +723,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>84. Get fb User ID from url</summary>
+  <summary>85. Get fb User ID from url</summary>
 
   [View source](/scripts/fb_getUidFromUrl.js)
 
@@ -727,7 +731,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>85. Get all fb User ID from search page</summary>
+  <summary>86. Get all fb User ID from search page</summary>
 
   [View source](/scripts/fb_getAllUidFromFbSearch.js)
 
@@ -735,7 +739,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>86. Get all fb User ID from group</summary>
+  <summary>87. Get all fb User ID from group</summary>
 
   [View source](/scripts/fb_getAllUidOfGroupMembers.js)
 
@@ -745,7 +749,15 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Shortcut ---
 <details>
-  <summary>87. View your memories on facebook</summary>
+  <summary>88. View your facebook saved</summary>
+
+  [View source](/scripts/undefined.js)
+
+  <code>View saved contents on Facebook</code>
+
+</details>
+<details>
+  <summary>89. View your memories on facebook</summary>
 
   [View source](/scripts/fb_openMemories.js)
 
@@ -753,7 +765,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>88. View your ads activities</summary>
+  <summary>90. View your ads activities</summary>
 
   [View source](/scripts/fb_openAdsActivities.js)
 
@@ -761,18 +773,26 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>89. Check your activities on Facebook</summary>
+  <summary>91. Check your activities on Facebook</summary>
 
   [View source](/scripts/fb_openAllActivities.js)
 
   <code>Check all your activities on facebook</code>
 
 </details>
+<details>
+  <summary>92. Change language Facebook</summary>
+
+  [View source](/scripts/fb_changeLanguage.js)
+
+  <code>Change display language on facebook</code>
+
+</details>
 
 ### <i class="fa-brands fa-instagram"></i> Instagram
 
 <details>
-  <summary>90. Get insta user info (uid, avatar, ...)</summary>
+  <summary>93. Get insta user info (uid, avatar, ...)</summary>
 
   [View source](/scripts/insta_getUserInfo.js)
 
@@ -780,7 +800,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>91. Add Instagram download button</summary>
+  <summary>94. Add Instagram download button</summary>
 
   [View source](/scripts/insta_injectDownloadBtn.js)
 
@@ -790,7 +810,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>92. Insta - Anonymous story viewer</summary>
+  <summary>95. Insta - Anonymous story viewer</summary>
 
   [View source](/scripts/insta_anonymousStoryViewer.js)
 
@@ -800,18 +820,26 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Bulk Download ---
 <details>
-  <summary>93. Get all media of insta user (API)</summary>
+  <summary>96. Get all media of insta user (API)</summary>
 
   [View source](/scripts/insta_getAllUserMedia.js)
 
   <code>Get all media of instagram user (use instagram API)</code>
 
 </details>
+<details>
+  <summary>97. Insta - Export all following/followers</summary>
+
+  [View source](/scripts/insta_getFollowForOther.js)
+
+  <code>Know about your (or your friends's) following / followers on instagram. Export to json file</code>
+
+</details>
 
 ### <i class="fa-brands fa-youtube"></i> Youtube
 
 <details>
-  <summary>94. Download youtube video/audio</summary>
+  <summary>98. Download youtube video/audio</summary>
 
   [View source](/scripts/youtube_downloadVideo.js)
 
@@ -819,23 +847,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>95. Picture in Picture</summary>
-
-  [View source](/scripts/pictureInPicture.js)
-
-  <code>Watch videos in a floating window</code>
-
-</details>
-<details>
-  <summary>96. PIP full website</summary>
-
-  [View source](/scripts/pip_fullWebsite.js)
-
-  <code>Picture in picture mode for full website</code>
-
-</details>
-<details>
-  <summary>97. Toggle light youtube</summary>
+  <summary>99. Toggle light youtube</summary>
 
   [View source](/scripts/youtube_toggleLight.js)
 
@@ -843,15 +855,39 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>98. View youtube video dislikes</summary>
+  <summary>100. Picture in Picture</summary>
 
-  [View source](/scripts/youtube_viewDislikes.js)
+  [View source](/scripts/pictureInPicture.js)
 
-  <code>Know how many dislike does youtube video have</code>
+  <code>Watch videos in a floating window</code>
 
 </details>
 <details>
-  <summary>99. Youtube nonstop</summary>
+  <summary>101. PIP full website</summary>
+
+  [View source](/scripts/pip_fullWebsite.js)
+
+  <code>Picture in picture mode for full website</code>
+
+</details>
+<details>
+  <summary>102. PIP for canvas</summary>
+
+  [View source](/scripts/pip_canvas.js)
+
+  <code>Picture in picture mode for canvas</code>
+
+</details>
+<details>
+  <summary>103. Return youtube dislike</summary>
+
+  [View source](/scripts/youtube_viewDislikes.js)
+
+  <code>Returns ability to see dislikes of youtube video/short</code>
+
+</details>
+<details>
+  <summary>104. Youtube nonstop</summary>
 
   [View source](/scripts/youtube_nonstop.js)
 
@@ -861,7 +897,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>100. Improve YouTube - 85+ features</summary>
+  <summary>105. Improve YouTube - 85+ features</summary>
 
   [View source](/scripts/recommend_improve_youtube.js)
 
@@ -873,7 +909,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Tiktok ---
 <details>
-  <summary>101. Tiktok - Download watching video</summary>
+  <summary>106. Tiktok - Download watching video</summary>
 
   [View source](/scripts/tiktok_downloadWatchingVideo.js)
 
@@ -881,7 +917,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>102. Tiktok - Download video from URL</summary>
+  <summary>107. Tiktok - Download video from URL</summary>
 
   [View source](/scripts/tiktok_downloadVideo.js)
 
@@ -889,7 +925,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>103. Tiktok - Batch download</summary>
+  <summary>108. Tiktok - Batch download</summary>
 
   [View source](/scripts/tiktok_batchDownload.js)
 
@@ -901,7 +937,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Douyin ---
 <details>
-  <summary>104. Douyin - Download watching video</summary>
+  <summary>109. Douyin - Download watching video</summary>
 
   [View source](/scripts/douyin_downloadWachingVideo.js)
 
@@ -909,7 +945,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>105. Douyin - Download all user videos</summary>
+  <summary>110. Douyin - Download all user videos</summary>
 
   [View source](/scripts/douyin_downloadAllVideoUser.js)
 
@@ -921,15 +957,106 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Utility ---
 <details>
-  <summary>106. Text to QRCode</summary>
+  <summary>111. Web timer</summary>
 
-  [View source](/scripts/textToQrCode.js)
+  [View source](/scripts/web_timer.js)
 
-  <code>Convert text/url to QRCode</code>
+  <code>Keep track of how you spend your time on the web.<br/>
+    <h3>CLICK <i class="fa-solid fa-chart-pie"></i> TO OPEN GRAPH.</h3></code>
+
+  ![](/scripts/web_timer.png)
 
 </details>
 <details>
-  <summary>107. Shorten URL</summary>
+  <summary>112. Auto lock websites</summary>
+
+  [View source](/scripts/auto_lockWebsite.js)
+
+  <code>Auto lock websites. Enter password to unlock.<br/>
+    <ul>
+      <li style="color:yellow">Click to temporarly lock current website.</li>
+      <li>Click <i class="fa-solid fa-unlock-keyhole"></i> to open settings.</li>
+    </ul></code>
+
+</details>
+<details>
+  <summary>113. Super smooth scroll</summary>
+
+  [View source](/scripts/smoothScroll.js)
+
+  <code>Scroll smoothly on all websites with your mouse and keyboard.<br/>
+    Smooth like when you scroll this extension.<br/><br/>
+    Support middle click to scroll.</code>
+
+</details>
+<details>
+  <summary>114. Magnify any Image</summary>
+
+  [View source](/scripts/magnify_image.js)
+
+  <code>View any images in magnified window<br/>
+    Where you are able to zoom in/out, rotate, drag, and more.<br/>
+    Auto find large version of image to show.
+    <br/></br>
+    <p style="color:yellow">3 ways to use:</p>
+    <ol>
+      <li>Right click any image</li>
+      <li>Left click this feature and choose image</li>
+      <li>Double Ctrl on any image (require autorun)</li>
+    </ol>
+    </code>
+
+</details>
+<details>
+  <summary>115. Auto - view largest image</summary>
+
+  [View source](/scripts/auto_redirectLargestImageSrc.js)
+
+  <code><ul>
+      <li>When viewing an image in new tab.</li>
+      <li>This script will auto find and redirect to largest image.</li>
+      <li>Support hundred of websites.</li>
+    </ul></code>
+
+  ![](/scripts/auto_redirectLargestImageSrc.jpg)
+
+</details>
+<details>
+  <summary>116. Prevent tracking url</summary>
+
+  [View source](/scripts/remove_tracking_in_url.js)
+
+  <code>Remove tracking parameters from url, prevent tracking from Facebook, Google, Tiktok, Twitter etc.<br/><ul>
+<li>fbclid</li>
+<li>ttclid</li>
+<li>utm_*</li>
+<li>...</li>
+</ul></code>
+
+</details>
+<details>
+  <summary>117. Don't close browser with last tab</summary>
+
+  [View source](/scripts/prevent_closeBrowser_lastTab.js)
+
+  <code>Prevent closing of Browser after close the last tab<br/>
+    Auto create new empty tab if no tab left</code>
+
+</details>
+<details>
+  <summary>118. Block trackers, spy and malware</summary>
+
+  [View source](/scripts/chongLuaDao.js)
+
+  <code>Alert when you access a dangerous website, malware or spy content<br/>
+      <ul>
+        <li style='color:yellow'>Click to analyze current website</li>
+        <li>Click <i class="fa-regular fa-circle-down"></i> to fetch newest websites database</li>
+      </ul></code>
+
+</details>
+<details>
+  <summary>119. Shorten URL</summary>
 
   [View source](/scripts/shortenURL.js)
 
@@ -937,7 +1064,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>108. Unshorten link</summary>
+  <summary>120. Unshorten link</summary>
 
   [View source](/scripts/unshorten.js)
 
@@ -945,17 +1072,17 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>109. IT Tools</summary>
+  <summary>121. Create invisible message</summary>
 
-  [View source](/scripts/recommend_ItTools.js)
+  [View source](/scripts/createInvisibleText.js)
 
-  <code>Handy tools for developers</code>
+  <code>Create invisible text to hide secret messages. Receiver to use this feature to decode messages.</code>
 
 </details>
 
 --- Automation ---
 <details>
-  <summary>110. Scroll to very end</summary>
+  <summary>122. Scroll to very end</summary>
 
   [View source](/scripts/scrollToVeryEnd.js)
 
@@ -963,7 +1090,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>111. Screenshot full webpage</summary>
+  <summary>123. Screenshot full webpage</summary>
 
   [View source](/scripts/screenshotFullPage.js)
 
@@ -971,7 +1098,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>112. Web to PDF</summary>
+  <summary>124. Web to PDF</summary>
 
   [View source](/scripts/webToPDF.js)
 
@@ -979,7 +1106,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>113. Extract all Emails from website</summary>
+  <summary>125. Extract all Emails from website</summary>
 
   [View source](/scripts/getAllEmailsInWeb.js)
 
@@ -987,7 +1114,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>114. Enable/Disable Hack T-Rex Dino Game</summary>
+  <summary>126. Enable/Disable Hack T-Rex Dino Game</summary>
 
   [View source](/scripts/dino_hack.js)
 
@@ -995,7 +1122,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>115. Password generator</summary>
+  <summary>127. Password generator</summary>
 
   [View source](/scripts/passwordGenerator.js)
 
@@ -1005,15 +1132,15 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Tools ---
 <details>
-  <summary>116. Send - Share file faster</summary>
+  <summary>128. Text to QRCode</summary>
 
-  [View source](/scripts/send_shareFiles.js)
+  [View source](/scripts/textToQrCode.js)
 
-  <code>Open send.zcyph.cc - share large file up to 20Gb</code>
+  <code>Convert text/url to QRCode</code>
 
 </details>
 <details>
-  <summary>117. Text to Speech (j2team)</summary>
+  <summary>129. Text to Speech (j2team)</summary>
 
   [View source](/scripts/textToSpeech.js)
 
@@ -1021,15 +1148,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>118. Vuiz - create logo WAP online</summary>
-
-  [View source](/scripts/vuiz_createLogo.js)
-
-  <code>Create logo from text online</code>
-
-</details>
-<details>
-  <summary>119. Audio output switcher</summary>
+  <summary>130. Audio output switcher</summary>
 
   [View source](/scripts/changeAudioOutput.js)
 
@@ -1037,17 +1156,76 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>120. Performance Analyzer</summary>
+  <summary>131. Send - Share file faster</summary>
+
+  [View source](/scripts/send_shareFiles.js)
+
+  <code>Open send.zcyph.cc - share large file up to 20Gb</code>
+
+</details>
+<details>
+  <summary>132. Vuiz - create logo WAP online</summary>
+
+  [View source](/scripts/vuiz_createLogo.js)
+
+  <code>Create logo from text online</code>
+
+</details>
+<details>
+  <summary>133. Performance Analyzer</summary>
 
   [View source](/scripts/performanceAnalyzer.js)
 
   <code>Check performance metrics of website</code>
 
 </details>
+<details>
+  <summary>134. IT Tools - All for Developers</summary>
+
+  [View source](/scripts/recommend_ItTools.js)
+
+  <code>Handy tools for developers (open source)</code>
+
+</details>
+<details>
+  <summary>135. CSS Portal - Empowered your CSS skills</summary>
+
+  [View source](/scripts/recommend_cssportal.js)
+
+  <code>Empowered your CSS skills with hundreds of CSS tools.</code>
+
+</details>
+<details>
+  <summary>136. CopyIcon - FREE emoji, icon, generator</summary>
+
+  [View source](/scripts/recommend_copyicon.js)
+
+  <code>285,000 free Icons, Emoji, SVG generator, and more...</code>
+
+</details>
+<details>
+  <summary>137. Beautify Tools</summary>
+
+  [View source](/scripts/recommend_beautifytools.js)
+
+  <code>Handy tools for developers
+            <ol>
+              <li>Beautifiers And Minifiers</li>
+              <li>CSS Preprocessors</li>
+              <li>Converters</li>
+              <li>String Utilities</li>
+              <li>SEO Tools</li>
+              <li>IP Tools</li>
+              <li>Code Validators</li>
+              <li>Cryptography</li>
+              <li>Code Editors</li>
+            </ol></code>
+
+</details>
 
 --- Github ---
 <details>
-  <summary>121. Go to any commit</summary>
+  <summary>138. Go to any commit</summary>
 
   [View source](/scripts/github_goToAnyCommit.js)
 
@@ -1055,7 +1233,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>122. Open repo in github.dev</summary>
+  <summary>139. Open repo in github.dev</summary>
 
   [View source](/scripts/githubdev.js)
 
@@ -1063,7 +1241,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>123. Open repo in github1s.com</summary>
+  <summary>140. Open repo in github1s.com</summary>
 
   [View source](/scripts/github1s.js)
 
@@ -1071,7 +1249,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>124. Cloc - count line of code</summary>
+  <summary>141. Cloc - count line of code</summary>
 
   [View source](/scripts/recommend_cloc.js)
 
@@ -1083,7 +1261,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Shopping ---
 <details>
-  <summary>125. Shopee - Top variation</summary>
+  <summary>142. Shopee - Top variation</summary>
 
   [View source](/scripts/shopee_topVariation.js)
 
@@ -1093,7 +1271,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>126. Shopee - Total spend money</summary>
+  <summary>143. Shopee - Total spend money</summary>
 
   [View source](/scripts/shopee_totalSpendMoney.js)
 
@@ -1101,7 +1279,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>127. Shopee - Export order history (Excel)</summary>
+  <summary>144. Shopee - Export order history (Excel)</summary>
 
   [View source](/scripts/shopee_totalSpendMoney_excel.js)
 
@@ -1109,7 +1287,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>128. Tiki - Total spend money?</summary>
+  <summary>145. Tiki - Total spend money?</summary>
 
   [View source](/scripts/tiki_totalSpendMoney.js)
 
@@ -1117,7 +1295,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>129. Beecost</summary>
+  <summary>146. Beecost</summary>
 
   [View source](/scripts/recommend_Beecost.js)
 
@@ -1127,7 +1305,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- PDF ---
 <details>
-  <summary>130. FastDoc - Convert PDF/Photo to Word/Excel</summary>
+  <summary>147. FastDoc - Convert PDF/Photo to Word/Excel</summary>
 
   [View source](/scripts/recommend_fastDoc.js)
 
@@ -1135,7 +1313,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>131. SmartPDF - Tools for PDF</summary>
+  <summary>148. SmartPDF - Tools for PDF</summary>
 
   [View source](/scripts/recommend_smartPDF.js)
 
@@ -1143,7 +1321,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>132. PDF Stuffs - Tools for PDF</summary>
+  <summary>149. PDF Stuffs - Tools for PDF</summary>
 
   [View source](/scripts/recommend_pdfstuffs.js)
 
@@ -1155,20 +1333,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Unlock web ---
 <details>
-  <summary>133. Remove web limits</summary>
-
-  [View source](/scripts/removeWebLimit.js)
-
-  <code>Pass to kill most of the site, you can lift the restrictions prohibited to copy, cut, select the text, right-click menu.
-    <br/><br/>
-    <h2 style="color:blue">WARNING</h2>
-    May cause some websites's functions to be disabled.<br/>
-    Only turn on when necessary (copy, right-click).<br/>
-    Turn off after using.</code>
-
-</details>
-<details>
-  <summary>134. Hack Duck race</summary>
+  <summary>150. Hack Duck race</summary>
 
   [View source](/scripts/duckRace_cheat.js)
 
@@ -1178,7 +1343,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>135. Hack Wheel of Names</summary>
+  <summary>151. Hack Wheel of Names</summary>
 
   [View source](/scripts/wheelOfNames_hack.js)
 
@@ -1186,7 +1351,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>136. Read full medium article</summary>
+  <summary>152. Read full medium article</summary>
 
   [View source](/scripts/medium_readFullArticle.js)
 
@@ -1194,7 +1359,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>137. Fireship - PRO unlocked</summary>
+  <summary>153. Fireship - PRO unlocked</summary>
 
   [View source](/scripts/fireship_vip.js)
 
@@ -1202,7 +1367,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>138. Scribd - bypass preview</summary>
+  <summary>154. Scribd - bypass preview</summary>
 
   [View source](/scripts/scribd_bypassPreview.js)
 
@@ -1210,7 +1375,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>139. Studocu - Bypass preview</summary>
+  <summary>155. Studocu - Bypass preview</summary>
 
   [View source](/scripts/studocu_bypassPreview.js)
 
@@ -1218,7 +1383,7 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 </details>
 <details>
-  <summary>140. Studyphim - Watch free movies</summary>
+  <summary>156. Studyphim - Watch free movies</summary>
 
   [View source](/scripts/studyphim_unlimited.js)
 
@@ -1228,17 +1393,29 @@ Your friends needs to install this extension and enable it to view hidden messag
 
 --- Unlock function ---
 <details>
-  <summary>141. Detect Zero-Width Characters</summary>
+  <summary>157. Enable/Disable allow copy</summary>
 
-  [View source](/scripts/detect_zeroWidthCharacters.js)
+  [View source](/scripts/simpleAllowCopy.js)
 
-  <code>Detects zero-width characters, highlights the characters and containing DOM element.
-
-Click ? for more detail.</code>
+  <code>Allow Copy on every websites<br/>
+    <p style="color:yellow">NOTES:</p>
+    <ul>
+      <li>Need to enable autorun first</li>
+      <li>Click this button to TURN ON cheat to allow copy/right-click for current website.</li>
+      <li>Click again to TURN OFF.</li>
+    </ul></code>
 
 </details>
 <details>
-  <summary>142. Inject script to website</summary>
+  <summary>158. Detect Zero-Width Characters</summary>
+
+  [View source](/scripts/detect_zeroWidthCharacters.js)
+
+  <code>Detects zero-width characters, highlights the characters and containing DOM element.</code>
+
+</details>
+<details>
+  <summary>159. Inject script to website</summary>
 
   [View source](/scripts/injectScriptToWebsite.js)
 
@@ -1246,15 +1423,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>143. Enable/Disable allow copy</summary>
-
-  [View source](/scripts/simpleAllowCopy.js)
-
-  <code>Allow Copy on every websites</code>
-
-</details>
-<details>
-  <summary>144. Show hidden fields</summary>
+  <summary>160. Show hidden fields</summary>
 
   [View source](/scripts/showHiddenFields.js)
 
@@ -1262,7 +1431,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>145. View cookies</summary>
+  <summary>161. View cookies</summary>
 
   [View source](/scripts/viewCookies.js)
 
@@ -1270,25 +1439,25 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>146. Remove cookies</summary>
+  <summary>162. Remove cookies</summary>
 
   [View source](/scripts/removeCookies.js)
 
   <code>Remove cookies from current website</code>
 
 </details>
-<details>
-  <summary>147. View browser information</summary>
-
-  [View source](/scripts/viewBrowserInfo.js)
-
-  <code>OS name, browser name, version, userAgent, ...</code>
-
-</details>
 
 --- Other ---
 <details>
-  <summary>148. View saved wifi passwords</summary>
+  <summary>163. Make browser super fast</summary>
+
+  [View source](/scripts/recommend_chromeFlags.js)
+
+  <code>Some flags experiments that can make your browser super fast</code>
+
+</details>
+<details>
+  <summary>164. View saved wifi passwords</summary>
 
   [View source](/scripts/recommend_viewSavedWifiPass.js)
 
@@ -1296,7 +1465,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>149. Leak check - your password has been leaked?</summary>
+  <summary>165. Leak check - your password has been leaked?</summary>
 
   [View source](/scripts/recommend_leakCheck.js)
 
@@ -1306,8 +1475,9 @@ Click ? for more detail.</code>
 
 ### <i class="fa-solid fa-eye"></i> Web UI
 
+--- Hot ---
 <details>
-  <summary>150. Dark reader</summary>
+  <summary>166. Dark reader</summary>
 
   [View source](/scripts/recommend_DarkReader.js)
 
@@ -1315,7 +1485,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>151. Darkmode for pdf</summary>
+  <summary>167. Darkmode for pdf</summary>
 
   [View source](/scripts/darkModePDF.js)
 
@@ -1323,7 +1493,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>152. Toggle edit page</summary>
+  <summary>168. Toggle edit page</summary>
 
   [View source](/scripts/toggleEditPage.js)
 
@@ -1331,25 +1501,33 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>153. Run Stat.js</summary>
+  <summary>169. Show FPS</summary>
 
-  [View source](/scripts/runStatJs.js)
+  [View source](/scripts/showFPS.js)
 
-  <code>Run stat.js in current website</code>
+  <code>Show frames per second of current website (inject stat.js library)</code>
+
+</details>
+<details>
+  <summary>170. Show FPS - ver 2</summary>
+
+  [View source](/scripts/showFps_v2.js)
+
+  <code>Show frames per second of current website (use debugger)</code>
+
+</details>
+<details>
+  <summary>171. Hide/Show password field</summary>
+
+  [View source](/scripts/toggle_passwordField.js)
+
+  <code>Show/hide value of password fields in website<br/>(eg. **** -> 1234)</code>
 
 </details>
 
 --- View ---
 <details>
-  <summary>154. console.log with time</summary>
-
-  [View source](/scripts/consoleLog_withTime.js)
-
-  <code>Add prefix execution time to console.log</code>
-
-</details>
-<details>
-  <summary>155. Font Rendering - better font display</summary>
+  <summary>172. Font Rendering - better font display</summary>
 
   [View source](/scripts/recommend_fontRendering.js)
 
@@ -1357,7 +1535,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>156. What font</summary>
+  <summary>173. What font</summary>
 
   [View source](/scripts/whatFont.js)
 
@@ -1365,7 +1543,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>157. Show all javascript events</summary>
+  <summary>174. Show all javascript events</summary>
 
   [View source](/scripts/visualEvent.js)
 
@@ -1373,7 +1551,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>158. View all images in web</summary>
+  <summary>175. View all images in web</summary>
 
   [View source](/scripts/listAllImagesInWeb.js)
 
@@ -1381,7 +1559,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>159. View all links</summary>
+  <summary>176. View all links</summary>
 
   [View source](/scripts/viewAllLinks.js)
 
@@ -1389,7 +1567,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>160. View scripts used</summary>
+  <summary>177. View scripts used</summary>
 
   [View source](/scripts/viewScriptsUsed.js)
 
@@ -1397,7 +1575,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>161. View stylesheet used</summary>
+  <summary>178. View stylesheet used</summary>
 
   [View source](/scripts/viewStylesUsed.js)
 
@@ -1405,49 +1583,41 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>162. CSS selector viewer</summary>
+  <summary>179. CSS selector viewer</summary>
 
   [View source](/scripts/cssSelectorViewer.js)
 
   <code>Inspect css at specific element on the web</code>
 
 </details>
-<details>
-  <summary>163. View source code of selected area</summary>
-
-  [View source](/scripts/viewPartialSource.js)
-
-  <code>Just select the area and use this bookmarklet</code>
-
-</details>
 
 --- Remove ---
 <details>
-  <summary>164. Remove all colors in web</summary>
+  <summary>180. Remove all colors in web</summary>
 
   [View source](/scripts/removeColours.js)
 
-  <code>Remove all colours in the web</code>
+  <code>Remove all colours in the web.<br/>Click again to undo.</code>
 
 </details>
 <details>
-  <summary>165. Remove stylesheet</summary>
+  <summary>181. Remove stylesheet</summary>
 
   [View source](/scripts/removeStylesheet.js)
 
-  <code>Remove all stylesheet from website</code>
+  <code>Remove all stylesheet from website.<br/>Click again to undo.</code>
 
 </details>
 <details>
-  <summary>166. Remove images</summary>
+  <summary>182. Remove images</summary>
 
   [View source](/scripts/removeImages.js)
 
-  <code>Remove all images from website</code>
+  <code>Remove all images from website.<br/> Click again to undo.</code>
 
 </details>
 <details>
-  <summary>167. Remove bloat (iframe, embed)</summary>
+  <summary>183. Remove bloat (iframe, embed)</summary>
 
   [View source](/scripts/removeBloat.js)
 
@@ -1457,7 +1627,7 @@ Click ? for more detail.</code>
 
 --- Table ---
 <details>
-  <summary>168. Add sort to table</summary>
+  <summary>184. Add sort to table</summary>
 
   [View source](/scripts/table_addSortTable.js)
 
@@ -1465,7 +1635,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>169. Add number columns</summary>
+  <summary>185. Add number columns</summary>
 
   [View source](/scripts/table_addNumberColumn.js)
 
@@ -1473,7 +1643,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>170. Swap rows and columns</summary>
+  <summary>186. Swap rows and columns</summary>
 
   [View source](/scripts/table_swapRowAndColumn.js)
 
@@ -1483,7 +1653,7 @@ Click ? for more detail.</code>
 
 --- More ---
 <details>
-  <summary>171. Highlight internal/external link</summary>
+  <summary>187. Highlight internal/external link</summary>
 
   [View source](/scripts/internalOrExternalLink.js)
 
@@ -1493,7 +1663,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>172. Get window size</summary>
+  <summary>188. Get window size</summary>
 
   [View source](/scripts/getWindowSize.js)
 
@@ -1501,7 +1671,7 @@ Click ? for more detail.</code>
 
 </details>
 <details>
-  <summary>173. Let it snow</summary>
+  <summary>189. Let it snow</summary>
 
   [View source](/scripts/letItSnow.js)
 

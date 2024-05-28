@@ -1,4 +1,4 @@
-import { allScripts } from "../../scripts/index.js";
+import allScripts from "../../scripts/_allScripts.js";
 
 const createVariableSaver = (key, defaultValue = null) => ({
   set: (data) => {
@@ -49,6 +49,7 @@ const createScriptsSaver = (key, addToHead = true) => {
   return { add, remove, has, toggle, clear, getIds, get };
 };
 
+export const themeSaver = createVariableSaver("useful-scripts-theme");
 export const langSaver = createVariableSaver("useful-scripts-lang");
 export const activeTabIdSaver = createVariableSaver(
   "useful-scripts-activeTabId"
@@ -56,4 +57,9 @@ export const activeTabIdSaver = createVariableSaver(
 export const recentScriptsSaver = createScriptsSaver("useful-scripts-recently");
 export const favoriteScriptsSaver = createScriptsSaver(
   "useful-scripts-favorite"
+);
+
+// default is false => enabled; true => disabled
+export const disableSmoothScrollSaver = createVariableSaver(
+  "useful-scripts-disable-smoothScroll"
 );

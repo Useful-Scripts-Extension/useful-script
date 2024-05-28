@@ -1,16 +1,23 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <title>Useful Script</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <script src="libs/jszip.min.js"></script>
+    <script src="./libs/swal2.min.js"></script>
+
+    <link rel="stylesheet/less" type="text/css" href="themes/default.less" />
+    <script src="libs/less.js"></script>
 </head>
 
 <body>
-    <h1>Useful Scripts</h1>
+    <div class="popup-header">Useful Script</div>
     <h3>
         <a data-track="donate" target="_blank"
             href="https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md">
@@ -24,7 +31,7 @@
         </a>
         <br />
         <span id="version"></span>
-        <button id="update-btn">(update)</button>
+        <button id="update-btn" class="rainbow-bg">(update)</button>
         <p>Make with <i class="fa-solid fa-heart fa-beat" style="color:#ff0000a3"></i>
             by <a data-track="author" target="_blank" href="https://github.com/HoangTran0410">Hoang Tran</a>
         </p>
@@ -44,22 +51,34 @@
     <div class="content">
     </div>
 
-    <!-- language flag -->
-    <img id="flag" src="" alt="" title="Change language">
+    <!-- settings -->
+    <div class="settings" data-tooltip="Settings" data-flow="left">
+        <i class="fa-solid fa-gear fa-lg"></i>
+    </div>
+
+    <!-- reload -->
+    <div class="reload" data-tooltip="Reload extension" data-flow="right">
+        <i class="fa-solid fa-arrows-rotate fa-lg"></i>
+    </div>
 
     <!-- modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal hide">
         <!-- Modal content -->
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3 class="modal-title">Modal Title</h3>
-            <div class="modal-body">Some text in the Modal..</div>
+        <div class="content">
+            <span class="close">&times;</span>
+            <h3 class="title">Modal Title</h3>
+            <div class="body">Some text in the Modal..</div>
         </div>
     </div>
 
     <!-- loading fullscreen -->
     <div id="loading-fullscreen" class="loading-container">
         <div class="loader"></div>
+    </div>
+
+    <!-- scroll to top -->
+    <div id="scroll-to-top" class="hide" title="Scroll to top">
+        <i class="fa-solid fa-arrow-up fa-lg"></i>
     </div>
 
     <script src="main.js"></script>

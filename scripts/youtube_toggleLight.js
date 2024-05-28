@@ -10,20 +10,22 @@ export default {
   },
   whiteList: ["*://www.youtube.com/*"],
 
-  onClick: function () {
-    ["#below", "#secondary", "#masthead-container"].forEach((_) => {
-      let doms = document.querySelectorAll(_);
-      Array.from(doms).forEach((dom) => {
-        let current = dom.style.opacity || 1;
-        let newValue = current == 1 ? 0 : 1;
-        dom.style.opacity = newValue;
-        dom.style.pointerEvents = newValue ? "" : "none";
+  contentScript: {
+    onClick: function () {
+      ["#below", "#secondary", "#masthead-container"].forEach((_) => {
+        let doms = document.querySelectorAll(_);
+        Array.from(doms).forEach((dom) => {
+          let current = dom.style.opacity || 1;
+          let newValue = current == 1 ? 0 : 1;
+          dom.style.opacity = newValue;
+          dom.style.pointerEvents = newValue ? "" : "none";
+        });
       });
-    });
 
-    document.querySelector("ytd-player")?.scrollIntoView?.({
-      behavior: "smooth",
-      block: "center",
-    });
+      document.querySelector("ytd-player")?.scrollIntoView?.({
+        behavior: "smooth",
+        block: "center",
+      });
+    },
   },
 };

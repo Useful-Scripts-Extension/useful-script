@@ -9,8 +9,10 @@ export default {
     vi: "Chuyển đổi văn bản thành giọng nói sử dụng công cụ của j2team",
   },
 
-  onClickExtension: () => {
-    window.open("https://j2team.dev/tools/text-to-speech");
+  popupScript: {
+    onClick: () => {
+      window.open("https://j2team.dev/tools/text-to-speech");
+    },
   },
 };
 

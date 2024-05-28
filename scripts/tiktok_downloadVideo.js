@@ -1,5 +1,3 @@
-import { runScriptInCurrentTab, showLoading } from "./helpers/utils.js";
-
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
   name: {
@@ -12,31 +10,35 @@ export default {
   },
 
   changeLogs: {
-    1.66: {
-      "2024-04-27": "fix bug - use snaptik",
-    },
+    "2024-04-27": "fix bug - use snaptik",
   },
 
-  onClickExtension: async function () {
-    let url = prompt(
-      "Nhập link tiktok video: ",
-      await runScriptInCurrentTab(() => location.href)
-    );
-    if (url == null) return;
+  popupScript: {
+    onClick: async function () {
+      const { runScriptInCurrentTab, showLoading } = await import(
+        "./helpers/utils.js"
+      );
 
-    let { closeLoading } = showLoading(
-      "Đang lấy link video không watermark..."
-    );
-    try {
-      let link = "";
-      link = await shared.getVideoNoWaterMark(url);
-      if (link) window.open(link);
-      else throw Error("Không tìm được video không watermark");
-    } catch (e) {
-      alert("ERROR: " + e);
-    } finally {
-      closeLoading();
-    }
+      let url = prompt(
+        "Nhập link tiktok video: ",
+        await runScriptInCurrentTab(() => location.href)
+      );
+      if (url == null) return;
+
+      let { closeLoading } = showLoading(
+        "Đang lấy link video không watermark..."
+      );
+      try {
+        let link = "";
+        link = await shared.getVideoNoWaterMark(url);
+        if (link) window.open(link);
+        else throw Error("Không tìm được video không watermark");
+      } catch (e) {
+        alert("ERROR: " + e);
+      } finally {
+        closeLoading();
+      }
+    },
   },
 };
 
@@ -49,13 +51,16 @@ export const shared = {
   },
 
   getVideoNoWaterMark: async function (video_url, isVideoId = false) {
-    let link = await UfsGlobal.Tiktok.downloadTiktokVideoFromUrl(video_url);
+    const { downloadTiktokVideoFromUrl, downloadTiktokVideoFromId } =
+      await import("./tiktok_GLOBAL.js");
+
+    let link = await downloadTiktokVideoFromUrl(video_url);
     if (!link) {
       let videoId = isVideoId
         ? video_url
         : shared.getTiktokVideoIdFromUrl(video_url);
       if (!videoId) throw Error("Video URL không đúng định dạng");
-      link = await UfsGlobal.Tiktok.downloadTiktokVideoFromId(videoId);
+      link = await downloadTiktokVideoFromId(videoId);
     }
     return link;
   },

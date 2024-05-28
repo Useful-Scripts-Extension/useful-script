@@ -1,5 +1,3 @@
-import { showLoading } from "./helpers/utils.js";
-
 export default {
   icon: `<i class="fa-solid fa-key fa-lg"></i>`,
   name: {
@@ -7,59 +5,62 @@ export default {
     vi: "Lấy fb token EAAB (campaigns)",
   },
   description: {
-    en: "Get facebook token EAAG from www.facebook.com campaigns",
-    vi: "Lấy facebook token EAAG từ www.facebook.com campaigns",
+    en: "Get facebook token EAAB from www.facebook.com (campaigns)",
+    vi: "Lấy facebook token EAAB từ www.facebook.com (campaigns)",
   },
 
-  onClickExtension: function () {
-    // Source code extracted from https://chrome.google.com/webstore/detail/get-token-cookie/naciaagbkifhpnoodlkhbejjldaiffcm/related
+  popupScript: {
+    onClick: async function () {
+      const { showLoading } = await import("./helpers/utils.js");
+      // Source code extracted from https://chrome.google.com/webstore/detail/get-token-cookie/naciaagbkifhpnoodlkhbejjldaiffcm/related
 
-    async function getToken() {
-      try {
-        let res = await fetch(
-          "https://www.facebook.com/adsmanager/manage/campaigns"
-        );
-        let htmlText = await res.text();
-        if (-1 != htmlText.search("EAA")) {
-          var regex_result = htmlText.match(/EAAB.*?\"/),
-            token = regex_result[0] ? regex_result[0].replace(/\W/g, "") : "";
-          return token;
-        }
-        for (
-          var regex_value, act, regex = /campaigns\?act=(.*?)&/g;
-          null !== (regex_value = regex.exec(htmlText));
-
-        )
-          regex_value.index === regex.lastIndex && regex.lastIndex++,
-            regex_value.forEach(function (_value, _index) {
-              1 == _index && (act = _value);
-            });
-        if (act) {
+      async function getToken() {
+        try {
           let res = await fetch(
-            `https://www.facebook.com/adsmanager/manage/campaigns?act=${act}&nav_source=no_referrer`
+            "https://www.facebook.com/adsmanager/manage/campaigns"
           );
           let htmlText = await res.text();
-          if (-1 == htmlText.search("EAA")) return "";
-          var regex_result = htmlText.match(/EAAB.*?\"/),
-            token = regex_result[0] ? regex_result[0].replace(/\W/g, "") : "";
-          return token;
-        }
-      } catch (e) {
-        alert("Error: " + e);
-      }
-      return "";
-    }
+          if (-1 != htmlText.search("EAA")) {
+            var regex_result = htmlText.match(/EAAB.*?\"/),
+              token = regex_result[0] ? regex_result[0].replace(/\W/g, "") : "";
+            return token;
+          }
+          for (
+            var regex_value, act, regex = /campaigns\?act=(.*?)&/g;
+            null !== (regex_value = regex.exec(htmlText));
 
-    (async () => {
-      const { closeLoading } = showLoading("Đang lấy access token...");
-      let token = await getToken();
-      if (token) {
-        prompt("Access token: ", token);
-      } else {
-        alert("Không tìm thấy access token");
+          )
+            regex_value.index === regex.lastIndex && regex.lastIndex++,
+              regex_value.forEach(function (_value, _index) {
+                1 == _index && (act = _value);
+              });
+          if (act) {
+            let res = await fetch(
+              `https://www.facebook.com/adsmanager/manage/campaigns?act=${act}&nav_source=no_referrer`
+            );
+            let htmlText = await res.text();
+            if (-1 == htmlText.search("EAA")) return "";
+            var regex_result = htmlText.match(/EAAB.*?\"/),
+              token = regex_result[0] ? regex_result[0].replace(/\W/g, "") : "";
+            return token;
+          }
+        } catch (e) {
+          alert("Error: " + e);
+        }
+        return "";
       }
-      closeLoading();
-    })();
+
+      (async () => {
+        const { closeLoading } = showLoading("Đang lấy access token...");
+        let token = await getToken();
+        if (token) {
+          prompt("Access token: ", token);
+        } else {
+          alert("Không tìm thấy access token");
+        }
+        closeLoading();
+      })();
+    },
   },
 };
 
