@@ -8,9 +8,11 @@ export default {
   },
   description: {
     en: `Scroll smoothly on all websites with your mouse and keyboard.<br/>
-    Smooth like when you scroll this extension.<br/>`,
+    Smooth like when you scroll this extension.<br/><br/>
+    Support middle click to scroll.`,
     vi: `Cuộn chuột siêu mượt cho mọi trang web.<br/>
-    Mượt như khi cuộn chuột trong extension này vậy.<br/>`,
+    Mượt như khi cuộn chuột trong extension này vậy.<br/><br/>
+    Hỗ trợ scroll khi bấm chuột giữa.`,
     video: "https://www.smoothscroll.net/mac/img/vid/Demo-Mac-720p.mp4",
   },
   badges: [BADGES.new],
@@ -296,19 +298,28 @@ export function enableSmoothScroll() {
       }
     }, 1);
   }
+  const dateNow = (function () {
+    return window.performance && performance.now
+      ? function () {
+          return performance.now();
+        }
+      : function () {
+          return Date.now();
+        };
+  })();
   /************************************************
    * SCROLLING
    ************************************************/
   let que = [];
   let pending = null;
-  let lastScroll = Date.now();
+  let lastScroll = dateNow();
   /**
    * Pushes scroll actions to the scrolling queue.
    */
   function scrollArray(elem, left, top) {
     directionCheck(left, top);
     if (options.accelerationMax != 1) {
-      let now = Date.now();
+      let now = dateNow();
       let elapsed = now - lastScroll;
       if (elapsed < options.accelerationDelta) {
         let factor = (1 + 50 / elapsed) / 2;
@@ -318,7 +329,7 @@ export function enableSmoothScroll() {
           top *= factor;
         }
       }
-      lastScroll = Date.now();
+      lastScroll = dateNow();
     }
     // push a scroll command
     que.push({
@@ -326,7 +337,7 @@ export function enableSmoothScroll() {
       y: top,
       lastX: left < 0 ? 0.99 : -0.99,
       lastY: top < 0 ? 0.99 : -0.99,
-      start: Date.now(),
+      start: dateNow(),
     });
     // don't act if there's a pending frame loop
     if (pending) {
@@ -341,7 +352,7 @@ export function enableSmoothScroll() {
       elem.style.scrollBehavior = "auto";
     }
     let step = function (time) {
-      let now = Date.now();
+      let now = dateNow();
       let scrollX = 0;
       let scrollY = 0;
       for (let i = 0; i < que.length; i++) {
@@ -740,7 +751,7 @@ export function enableSmoothScroll() {
       });
       if (!tp)
         chrome.storage.local.set({
-          lastDiscreetWheel: Date.now(),
+          lastDiscreetWheel: dateNow(),
         });
     }, 1000);
     return tp;
@@ -957,18 +968,6 @@ export function enableSmoothScroll() {
       addEvent("mousedown", remove);
       addEvent("keydown", remove);
     }
-    /**
-     * performance.now with fallback
-     */
-    let dateNow = (function () {
-      return window.performance && performance.now
-        ? function () {
-            return performance.now();
-          }
-        : function () {
-            return Date.now();
-          };
-    })();
 
     addEvent("mousedown", mousedown);
     if (document.readyState === "complete") init();
