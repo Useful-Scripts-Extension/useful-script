@@ -2,7 +2,7 @@ import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { showLoading } from "./helpers/utils.js";
 
 export default {
-  icon: '<i class="fa-regular fa-images fa-lg"></i>',
+  icon: '<i class="fa-regular fa-newspaper fa-lg"></i>',
   name: {
     en: "Download all photos from posts",
     vi: "Tải tất cả hình trên bài viết",

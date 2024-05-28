@@ -301,7 +301,6 @@ const tabs = [
       s.fb_downloadAlbumMedia,
       s.fb_downloadWallMediaFromPosts,
       s.fb_getAllAlbumInformation,
-      s.fb_openSaved,
       s.fb_exportSaved,
       createTitle("--- Hot ---", "--- Nổi bật ---"),
       s.fb_revealDeletedMessages,
@@ -335,6 +334,21 @@ const tabs = [
       s.fb_getAllUidFromFbSearch,
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
+      {
+        icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
+        name: {
+          en: "View your facebook saved",
+          vi: "Xem mục đã lưu trên facebook",
+        },
+        description: {
+          en: "View saved contents on Facebook",
+          vi: "Xem nội dung bạn đã lưu trên Facebook",
+        },
+
+        popupScript: {
+          onClick: () => window.open("https://www.facebook.com/saved"),
+        },
+      },
       {
         id: "fb_openMemories",
         icon: '<i class="fa-solid fa-clock-rotate-left fa-lg"></i>',

@@ -1,4 +1,8 @@
 import { t } from "../popup/helpers/lang.js";
+import { enableSmoothScroll } from "./smoothScroll.js";
+import { disableSmoothScrollSaver } from "../popup/helpers/storage.js";
+
+if (!disableSmoothScrollSaver.get()) enableSmoothScroll();
 
 const backBtn = document.querySelector("#back");
 const chartContainer = document.querySelector("#chart");
@@ -342,7 +346,8 @@ function getData({
   if (dateType === DATE_TYPE.RANGE || dateType === DATE_TYPE.ALL) {
     totalDays = 0;
     let web = {},
-      _fromDate = formatDate(fromDate),
+      _fromDate =
+        dateType === DATE_TYPE.ALL ? getOldestDate() : formatDate(fromDate),
       _endDate = formatDate(endDate);
 
     for (let date in web_timer) {

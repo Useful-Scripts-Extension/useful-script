@@ -44,7 +44,7 @@ export default {
               tabId: tab.id,
               allFrames: true,
             },
-            func: run,
+            func: enableSmoothScroll,
             world: "ISOLATED",
           });
           count++;
@@ -114,7 +114,7 @@ export default {
 
   contentScript: {
     onDocumentStart_: (details) => {
-      run();
+      enableSmoothScroll();
     },
   },
 };
@@ -126,7 +126,7 @@ export default {
 // + check excluded
 
 // https://chromewebstore.google.com/detail/smoothscroll/nbokbjkabcmbfdlbddjidfmibcpneigj
-export function run() {
+export function enableSmoothScroll() {
   // =======================================================================
   // ============================ sscr.js ==================================
   // =======================================================================

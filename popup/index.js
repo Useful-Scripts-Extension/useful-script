@@ -4,7 +4,7 @@ import { BADGES_CONFIG } from "../scripts/helpers/badge.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
 import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
-import { run as enableSmoothScroll } from "../scripts/smoothScroll.js";
+import { enableSmoothScroll } from "../scripts/smoothScroll.js";
 import {
   isActiveScript,
   getCurrentTab,

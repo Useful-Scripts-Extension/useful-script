@@ -1,5 +1,5 @@
 import { disableSmoothScrollSaver } from "../../popup/helpers/storage.js";
-import { run as enableSmoothScroll } from "../../scripts/smoothScroll.js";
+import { enableSmoothScroll } from "../../scripts/smoothScroll.js";
 
 window.onload = async () => {
   if (!disableSmoothScrollSaver.get()) enableSmoothScroll();

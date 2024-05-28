@@ -1,7 +1,7 @@
 import { BADGES } from "./helpers/badge.js";
 
 export default {
-  icon: '<i class="fa-solid fa-cloud-arrow-down"></i>',
+  icon: '<i class="fa-solid fa-cloud-arrow-down fa-lg"></i>',
   name: {
     en: "Facebook - Bulk download",
     vi: "Facebook - Tải hàng loạt",

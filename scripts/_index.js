@@ -101,7 +101,6 @@ export { default as ggdrive_generateDirectLink } from "./ggdrive_generateDirectL
 export { default as soundcloud_downloadMusic } from "./soundcloud_downloadMusic.js";
 export { default as dino_hack } from "./dino_hack.js";
 export { default as google_mirror } from "./google_mirror.js";
-export { default as fb_openSaved } from "./fb_openSaved.js";
 export { default as fb_exportSaved } from "./fb_exportSaved.js";
 export { default as studyphim_unlimited } from "./studyphim_unlimited.js";
 export { default as shopee_totalSpendMoney } from "./shopee_totalSpendMoney.js";
