@@ -620,14 +620,92 @@ function createPreview(
   onClose = () => {},
   onFoundBigImg = () => {}
 ) {
-  let { x, y } = validateMouse(_x, _y);
-  let id = "ufs-magnify-image";
-  let exist = document.getElementById(id);
+  const { x, y } = validateMouse(_x, _y);
+  const id = "ufs-magnify-image";
+  const exist = document.getElementById(id);
   if (exist) exist.remove();
 
   // container
-  let overlay = document.createElement("div");
+  const overlay = document.createElement("div");
   overlay.id = id;
+  overlay.innerHTML = `
+    <div class="ufs-img-anim" style="top: ${y}px; left: ${x}px;"></div>
+    <img
+      src="${src}"
+      style="
+        top: ${window.innerHeight / 2}px;
+        left: ${window.innerWidth / 2}px;
+        transform-origin: center;
+        transform: translate(-50%, -50%) !important;
+        max-width: 100vw;
+        max-height: 100vh;
+        opacity: 0;
+      "/>
+    <div class="ufs-toolbar">
+      <div class="ufs-btn" ufs_title="Original size">Size</div>
+      <div class="ufs-btn" ufs_title="Toggle original size">Z</div>
+      <div class="ufs-btn" ufs_title="Toggle background">B</div>
+      <div class="ufs-btn" ufs_title="Flip horizontal">↔</div>
+      <div class="ufs-btn" ufs_title="Flip vertical">↕</div>
+      <div class="ufs-btn" ufs_title="Rotate left">↺</div>
+      <div class="ufs-btn" ufs_title="Rotate right">↻</div>
+      <div class="ufs-btn" ufs_title="Open in new tab">↗</div>
+      <div class="ufs-btn" ufs_title="Download">⤓</div>
+      <div class="ufs-desc"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // animation div: a rect that represent image scaled up from original position (mouse position)
+  const animDiv = overlay.querySelector(".ufs-img-anim");
+  const img = overlay.querySelector("img");
+  const toolbar = overlay.querySelector(".ufs-toolbar");
+  const [
+    sizeEle,
+    zoomEle,
+    toggleBg,
+    flipH,
+    flipV,
+    rotateLeft,
+    rotateRight,
+    openNewTab,
+    download,
+  ] = Array.from(toolbar.querySelectorAll(".ufs-btn"));
+  const desc = toolbar.querySelector(".ufs-desc");
+
+  function updateSize() {
+    if (img.naturalWidth && img.naturalHeight) {
+      let resolution = UfsGlobal.Utils.getResolutionCategory(
+        img.naturalWidth,
+        img.naturalHeight
+      );
+      sizeEle.innerText =
+        `${img.naturalWidth} x ${img.naturalHeight}` +
+        (resolution ? ` ~ ${resolution}` : "");
+    }
+  }
+
+  function updateZoom() {
+    if (img.naturalWidth && img.naturalHeight) {
+      let zoom = (parseFloat(img.style.width) / img.naturalWidth).toFixed(1);
+      if (parseInt(zoom) == zoom) zoom = parseInt(zoom);
+      zoomEle.innerText = `${zoom}x`;
+    }
+  }
+
+  const { destroy, animateTo } = UfsGlobal.DOM.enableDragAndZoom(
+    img,
+    overlay,
+    (updatedValue) => {
+      if ("width" in updatedValue || "height" in updatedValue) updateZoom();
+    }
+  );
+  let removeAnimLoading;
+  setTimeout(() => {
+    removeAnimLoading = UfsGlobal.DOM.addLoadingAnimation(animDiv, 40);
+  }, 500);
+
+  // close on click outside
   overlay.addEventListener("click", (e) => {
     if (e.target == overlay) {
       overlay.remove();
@@ -636,33 +714,6 @@ function createPreview(
       onClose?.();
     }
   });
-  document.body.appendChild(overlay);
-
-  // animation div: a rect that represent image scaled up from original position (mouse position)
-  let animDiv = document.createElement("div");
-  animDiv.classList.add("ufs-img-anim");
-  animDiv.style.cssText = `
-        top: ${y}px;
-        left: ${x}px;
-      `;
-  overlay.appendChild(animDiv);
-  let removeAnimLoading;
-  setTimeout(() => {
-    removeAnimLoading = UfsGlobal.DOM.addLoadingAnimation(animDiv, 40);
-  }, 500);
-
-  // image
-  let img = document.createElement("img");
-  img.src = src;
-  img.style.cssText = `
-        top: ${window.innerHeight / 2}px;
-        left: ${window.innerWidth / 2}px;
-        transform-origin: center;
-        transform: translate(-50%, -50%) !important;
-        max-width: 100vw;
-        max-height: 100vh;
-        opacity: 0;
-      `;
 
   let isFirstLoad = false;
   img.onload = () => {
@@ -708,52 +759,7 @@ function createPreview(
     updateSize();
     updateZoom();
   };
-  overlay.appendChild(img);
 
-  let { destroy, animateTo } = UfsGlobal.DOM.enableDragAndZoom(
-    img,
-    overlay,
-    (data) => {
-      if (data?.type === "scale") {
-        updateZoom();
-      }
-    }
-  );
-
-  // toolbar
-  let toolbar = document.createElement("div");
-  toolbar.classList.add("ufs-toolbar");
-  overlay.appendChild(toolbar);
-
-  let transformStatus = {
-    flip_horizontal: false,
-    flip_vertical: false,
-    rotate: 0,
-  };
-
-  // size
-  let sizeEle = document.createElement("div");
-  sizeEle.classList.add("ufs-btn");
-  sizeEle.innerText = "Size";
-  sizeEle.ufs_title = "Original size";
-
-  function updateSize() {
-    if (img.naturalWidth && img.naturalHeight) {
-      let resolution = UfsGlobal.Utils.getResolutionCategory(
-        img.naturalWidth,
-        img.naturalHeight
-      );
-      sizeEle.innerText =
-        `${img.naturalWidth} x ${img.naturalHeight}` +
-        (resolution ? ` ~ ${resolution}` : "");
-    }
-  }
-
-  // zoom
-  let zoomEle = document.createElement("div");
-  zoomEle.classList.add("ufs-btn");
-  zoomEle.innerText = "Z";
-  zoomEle.ufs_title = "Toggle original size";
   zoomEle.onclick = () => {
     let w = img.naturalWidth,
       h = img.naturalHeight;
@@ -774,16 +780,8 @@ function createPreview(
 
     updateZoom();
   };
-  function updateZoom() {
-    if (img.naturalWidth && img.naturalHeight) {
-      let zoom = (img.clientWidth / img.naturalWidth).toFixed(1);
-      if (parseInt(zoom) == zoom) zoom = parseInt(zoom);
-      zoomEle.innerText = `${zoom}x`;
-    }
-  }
 
-  // toggle background
-  let bgStates = [
+  const bgStates = [
     BgState.none,
     BgState.transparent,
     BgState.dark,
@@ -791,11 +789,6 @@ function createPreview(
   ];
   let curBgState =
     (Number(localStorage.getItem("ufs-magnify-image-bg")) || 0) - 1;
-
-  let toggleBg = document.createElement("div");
-  toggleBg.classList.add("ufs-btn");
-  toggleBg.innerText = "B";
-  toggleBg.ufs_title = "Change image background";
   toggleBg.onclick = () => {
     curBgState = (curBgState + 1) % bgStates.length;
     img.style.background = "";
@@ -819,72 +812,47 @@ function createPreview(
     toggleBg.innerText = "BG " + bgStates[curBgState];
     localStorage.setItem("ufs-magnify-image-bg", curBgState);
   };
-  toggleBg.click(); // default is toggle ON
-  toolbar.appendChild(toggleBg);
+  toggleBg.click(); // click to apply saved value
 
-  // toggle flip horizontally
-  let flipH = document.createElement("div");
-  flipH.classList.add("ufs-btn");
-  flipH.innerText = "↔";
-  flipH.ufs_title = "Flip horizontally";
+  const transform = {
+    flip_horizontal: false,
+    flip_vertical: false,
+    rotate: 0,
+  };
   flipH.onclick = () => {
-    if (transformStatus.flip_horizontal) {
+    if (transform.flip_horizontal) {
       img.style.transform = img.style.transform.replace("scaleX(-1)", "");
-      transformStatus.flip_horizontal = false;
+      transform.flip_horizontal = false;
     } else {
       img.style.transform += " scaleX(-1)";
-      transformStatus.flip_horizontal = true;
+      transform.flip_horizontal = true;
     }
   };
-
-  // flip vertically
-  let flipV = document.createElement("div");
-  flipV.classList.add("ufs-btn");
-  flipV.innerText = "↕";
-  flipV.ufs_title = "Flip vertically";
   flipV.onclick = () => {
-    if (transformStatus.flip_vertical) {
+    if (transform.flip_vertical) {
       img.style.transform = img.style.transform.replace("scaleY(-1)", "");
-      transformStatus.flip_vertical = false;
+      transform.flip_vertical = false;
     } else {
       img.style.transform += " scaleY(-1)";
-      transformStatus.flip_vertical = true;
+      transform.flip_vertical = true;
     }
   };
-
-  // rotate left
-  let rotateLeft = document.createElement("div");
-  rotateLeft.classList.add("ufs-btn");
-  rotateLeft.innerText = "↺";
-  rotateLeft.ufs_title = "Rotate left";
   rotateLeft.onclick = () => {
     img.style.transform = img.style.transform.replace(
-      `rotate(${transformStatus.rotate}deg)`,
+      `rotate(${transform.rotate}deg)`,
       ""
     );
-    transformStatus.rotate = transformStatus.rotate - 90;
-    img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
+    transform.rotate = transform.rotate - 90;
+    img.style.transform += ` rotate(${transform.rotate}deg)`;
   };
-
-  // rorate right
-  let rotateRight = document.createElement("div");
-  rotateRight.classList.add("ufs-btn");
-  rotateRight.innerText = "↻";
-  rotateRight.ufs_title = "Rotate right";
   rotateRight.onclick = () => {
     img.style.transform = img.style.transform.replace(
-      `rotate(${transformStatus.rotate}deg)`,
+      `rotate(${transform.rotate}deg)`,
       ""
     );
-    transformStatus.rotate = transformStatus.rotate + 90;
-    img.style.transform += ` rotate(${transformStatus.rotate}deg)`;
+    transform.rotate = transform.rotate + 90;
+    img.style.transform += ` rotate(${transform.rotate}deg)`;
   };
-
-  // open in new tab
-  let openNewTab = document.createElement("div");
-  openNewTab.classList.add("ufs-btn");
-  openNewTab.innerText = "↗";
-  openNewTab.ufs_title = "Open in new tab";
   openNewTab.onclick = () => {
     if (/^data:image\/svg/.test(img.src)) {
       const url = UfsGlobal.Utils.svgBase64ToUrl(img.src);
@@ -893,21 +861,9 @@ function createPreview(
       window.open(img.src, "_blank");
     }
   };
-
-  // download
-  let download = document.createElement("div");
-  download.classList.add("ufs-btn");
-  download.innerText = "⤓";
-  download.ufs_title = "Download";
   download.onclick = () => {
     UfsGlobal.Extension.download({ url: img.src });
   };
-
-  // desc
-  let desc = document.createElement("div");
-  desc.classList.add("ufs-desc");
-  desc.textContent = "";
-  toolbar.appendChild(desc);
   toolbar.onmousemove = (e) => {
     if (
       e.target != toolbar &&
@@ -921,26 +877,13 @@ function createPreview(
     }
   };
 
-  toolbar.append(
-    sizeEle,
-    zoomEle,
-    toggleBg,
-    flipH,
-    flipV,
-    rotateLeft,
-    rotateRight,
-    openNewTab,
-    download,
-    desc
-  );
-
-  // auto get largest image
+  // ===================== auto get largest image =====================
   let loadingRef,
-    notiRef = UfsGlobal.DOM.notify({
-      msg: `Finding big image...`,
-      duration: 99999,
-    }),
     loaded = false;
+  const notiRef = UfsGlobal.DOM.notify({
+    msg: `Finding big image...`,
+    duration: 99999,
+  });
   setTimeout(() => {
     if (!loaded) {
       loadingRef = UfsGlobal.DOM.addLoadingAnimationAtPos(
@@ -949,7 +892,7 @@ function createPreview(
       );
     }
 
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (loaded || !overlay) {
         loadingRef?.();
         notiRef?.closeAfter?.(!overlay ? 0 : 3000);
@@ -970,7 +913,7 @@ function createPreview(
 
     notiRef.setText(`Found big image. Loading...`);
 
-    let temp = new Image();
+    const temp = new Image();
     temp.src = _src;
     temp.onload = () => {
       loaded = true;

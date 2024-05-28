@@ -282,7 +282,7 @@ function addEventListener(target, event, callback, options) {
   target.addEventListener(event, callback, options);
   return () => target.removeEventListener(event, callback, options);
 }
-function enableDragAndZoom(element, container, callback) {
+function enableDragAndZoom(element, container, onUpdateCallback) {
   // set style
   const className = "ufs-drag-and-zoom";
   element.classList.add(className);
@@ -306,7 +306,6 @@ function enableDragAndZoom(element, container, callback) {
   (container || element).appendChild(style);
 
   // config
-  let dragging = false;
   const lerpSpeed = 0.3;
   const last = { x: 0, y: 0 };
   const mouse = { x: 0, y: 0 };
@@ -317,20 +316,31 @@ function enableDragAndZoom(element, container, callback) {
     height: parseFloat(element.style.height),
   };
 
-  let animationId;
+  let run = true;
   function animate() {
+    let updated = false;
+    let updatedValue = {};
     for (let prop in animTarget) {
-      element.style[prop] =
-        lerp(parseFloat(element.style[prop]), animTarget[prop], lerpSpeed) +
-        "px";
-    }
+      const currentValue = parseFloat(element.style[prop]);
+      const targetValue = animTarget[prop];
+      let del = Math.abs(targetValue - currentValue);
 
-    animationId = requestAnimationFrame(animate);
+      if (del > 0) {
+        const newValue =
+          del < 1 ? targetValue : lerp(currentValue, targetValue, lerpSpeed);
+        element.style[prop] = newValue + "px";
+        updatedValue[prop] = newValue;
+        updated = true;
+      }
+    }
+    if (updated) onUpdateCallback?.(updatedValue);
+    if (run) requestAnimationFrame(animate);
   }
 
   animate();
 
   // Mouse down event listener
+  let dragging = false;
   let _down = addEventListener(container || element, "mousedown", function (e) {
     e.preventDefault();
     dragging = true;
@@ -349,7 +359,6 @@ function enableDragAndZoom(element, container, callback) {
 
       animTarget.left += delX;
       animTarget.top += delY;
-      callback?.({ ...animTarget, type: "move" });
 
       last.x = e.clientX;
       last.y = e.clientY;
@@ -372,34 +381,30 @@ function enableDragAndZoom(element, container, callback) {
   let _wheel = addEventListener(container || element, "wheel", function (e) {
     e.preventDefault();
 
-    let curScale = parseFloat(element.style.width) / element.width;
-    let delta = -e.wheelDeltaY || -e.wheelDelta;
-    let factor = Math.abs((0.3 * delta) / 120);
-    let newScale =
+    const curScale = parseFloat(element.style.width) / element.width;
+    const delta = -e.wheelDeltaY || -e.wheelDelta;
+    const factor = Math.abs((0.3 * delta) / 120);
+    const newScale =
       delta > 0 ? curScale * (1 - factor) : curScale * (1 + factor);
 
-    let newWidth = element.width * newScale;
-    let newHeight = element.height * newScale;
+    const newW = element.width * newScale;
+    const newH = element.height * newScale;
 
-    if (newWidth < 10 || newHeight < 10) {
+    if (newW < 10 || newH < 10) {
       return;
     }
 
-    let left = parseFloat(element.style.left);
-    let top = parseFloat(element.style.top);
-    let offsetX = mouse.x - left;
-    let offsetY = mouse.y - top;
-
-    let newLeft = left - (newWidth - element.width) * (offsetX / element.width);
-    let newTop =
-      top - (newHeight - element.height) * (offsetY / element.height);
+    const left = parseFloat(element.style.left);
+    const top = parseFloat(element.style.top);
+    const offsetX = mouse.x - left;
+    const offsetY = mouse.y - top;
+    const newLeft = left - (newW - element.width) * (offsetX / element.width);
+    const newTop = top - (newH - element.height) * (offsetY / element.height);
 
     animTarget.left = newLeft;
     animTarget.top = newTop;
-    animTarget.width = newWidth;
-    animTarget.height = newHeight;
-
-    callback?.({ type: "scale" });
+    animTarget.width = newW;
+    animTarget.height = newH;
   });
 
   let listeners = [_down, _move, _up, _leave, _wheel];
@@ -412,7 +417,7 @@ function enableDragAndZoom(element, container, callback) {
       animTarget.height = h;
     },
     destroy: () => {
-      cancelAnimationFrame(animationId);
+      run = false;
       style.remove();
       element.classList.remove(className);
       listeners.forEach((l) => l?.());
