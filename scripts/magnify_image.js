@@ -797,7 +797,7 @@ function createPreview(
       case BgState.none:
         break;
       case BgState.transparent:
-        var gradientValue =
+        const gradientValue =
           "linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 0 0 / 20px 20px, linear-gradient(45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.4) 75%, rgba(255, 255, 255, 0.4) 100%) 10px 10px / 20px 20px";
         img.style.cssText += "background: " + gradientValue + " !important;";
         break;
@@ -867,10 +867,10 @@ function createPreview(
   toolbar.onmousemove = (e) => {
     if (
       e.target != toolbar &&
-      e.target?.ufs_title &&
-      e.target?.ufs_title != desc.textContent
+      e.target.attributes.ufs_title &&
+      e.target.attributes.ufs_title.textContent != desc.textContent
     ) {
-      desc.textContent = e.target.ufs_title;
+      desc.textContent = e.target.attributes.ufs_title.textContent;
       let x =
         e.target.offsetLeft + e.target.offsetWidth / 2 - desc.offsetWidth / 2;
       desc.style.cssText = `left: ${x}px`;

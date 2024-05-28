@@ -173,7 +173,7 @@ export const Storage = {
     await chrome.storage.local.set({ [key]: value });
     return value;
   },
-  get: async (key, defaultValue = "") => {
+  get: async (key, defaultValue) => {
     let result = await chrome.storage.local.get([key]);
     return result[key] || defaultValue;
   },

@@ -36,6 +36,7 @@ import {
   isTitle,
   viewScriptSource,
 } from "./helpers/utils.js";
+import { checkPass } from "../scripts/auto_lockWebsite.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
@@ -609,16 +610,14 @@ function initSettings() {
     // smooth scroll row
     const smoothScrollRow = document.createElement("div");
     smoothScrollRow.classList.add("row");
-    smoothScrollRow.setAttribute(
-      "data-tooltip",
-      t({
-        vi: "Tắt nếu bạn đã cài app SmoothScroll",
-        en: "Turn off if installed SmoothScroll app",
-      })
-    );
-    smoothScrollRow.setAttribute("data-flow", "bottom");
     smoothScrollRow.innerHTML = `
-      <div class="label">${t({
+      <div class="label"
+        data-tooltip="${t({
+          vi: "Tắt nếu bạn đã cài app SmoothScroll",
+          en: "Turn off if installed SmoothScroll app",
+        })}"
+        data-flow="bottom"
+      >${t({
         vi: "Cuôn chuột siêu mượt",
         en: "Super smooth scroll",
       })}</div>
@@ -715,10 +714,19 @@ async function backup() {
   UfsGlobal.Utils.downloadData(JSON.stringify(data), name);
 }
 
-function restore() {
+async function restore() {
+  if (
+    !(await checkPass(
+      t({
+        vi: " chức năng Tự động khoá trang web",
+        en: " feature Auto lock websites",
+      })
+    ))
+  )
+    return;
   Swal.fire({
     title: t({ en: "Restore data", vi: "Khôi phục dữ liệu" }),
-    text: t({ en: "Select backup file", vi: "Chọn file đã sao lưu" }),
+    text: t({ en: "Select file to restore", vi: "Chọn file để khôi phục" }),
     input: "file",
     inputAttributes: {
       accept: ".json",
@@ -747,12 +755,14 @@ function restore() {
         const { localStorage: l, chromeStorage } = json;
 
         if (l) {
+          localStorage.clear();
           Object.keys(l).forEach((key) => {
             localStorage[key] = l[key];
           });
         }
 
         if (chromeStorage) {
+          await chrome.storage.local.clear();
           for (let key in chromeStorage) {
             await chrome.storage.local.set({ [key]: chromeStorage[key] });
           }
@@ -777,7 +787,16 @@ function restore() {
   });
 }
 
-function reset() {
+async function reset() {
+  if (
+    !(await checkPass(
+      t({
+        vi: " chức năng Tự động khoá trang web",
+        en: " feature Auto lock websites",
+      })
+    ))
+  )
+    return;
   Swal.fire({
     icon: "warning",
     title: t({ en: "Reset", vi: "Đặt lại" }),

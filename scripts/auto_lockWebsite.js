@@ -1,5 +1,6 @@
 import { BADGES } from "./helpers/badge.js";
 import { md5 } from "./libs/crypto/md5.js";
+import { Storage } from "./helpers/utils.js";
 
 const managerBtn = '<i class="fa-solid fa-unlock-keyhole"></i>';
 
@@ -82,7 +83,7 @@ export default {
   contentScript: {
     onDocumentStart: async () => {
       const pass = await locker.password.get();
-      if (pass != null) {
+      if (pass) {
         const sites = await locker.sites.get();
         if (sites.length > 0) {
           let hostname = location.hostname;
@@ -94,7 +95,7 @@ export default {
     onClick: async () => {
       try {
         const pass = await locker.password.get();
-        if (pass == null) return;
+        if (!pass) return;
 
         lockCurrentWebsite(pass);
         locker.sites.add(location.hostname);
@@ -105,51 +106,35 @@ export default {
   },
 };
 
-export const _storage = {
-  async get(key, defaultValue) {
-    let data = await chrome.storage.local.get([key]);
-    let pass = data?.[key];
-    return pass ?? defaultValue;
-  },
-  async set(key, value) {
-    await chrome.storage.local.set({ [key]: value });
-    return true;
-  },
-  async remove(key) {
-    await chrome.storage.local.remove(key);
-    return true;
-  },
-};
-
 export const locker = {
   password: {
     storageKey: "auto_lock_website_manager_password",
     async compare(pass) {
-      return md5(pass) === (await _storage.get(this.storageKey));
+      return pass && md5(pass) === (await Storage.get(this.storageKey));
     },
     async has() {
-      return (await _storage.get(this.storageKey)) != null;
+      return (await Storage.get(this.storageKey)) != null;
     },
     get() {
-      return _storage.get(this.storageKey);
+      return Storage.get(this.storageKey);
     },
     set(pass) {
-      return _storage.set(this.storageKey, md5(pass));
+      return Storage.set(this.storageKey, md5(pass));
     },
     remove() {
-      return _storage.remove(this.storageKey);
+      return Storage.remove(this.storageKey);
     },
   },
   sites: {
     storageKey: "auto_lock_website_lockedWebsites",
     get() {
-      return _storage.get(this.storageKey, []);
+      return Storage.get(this.storageKey, []);
     },
     async add(site) {
       let currentSites = await this.get();
       if (currentSites.includes(site)) return false;
       currentSites.unshift(site);
-      await _storage.set(this.storageKey, currentSites);
+      await Storage.set(this.storageKey, currentSites);
       return true;
     },
     async remove(site) {
@@ -157,11 +142,11 @@ export const locker = {
       let currentSites = await this.get();
       if (!currentSites.includes(site)) return false;
       currentSites = currentSites.filter((s) => s !== site);
-      await _storage.set(key, currentSites);
+      await Storage.set(key, currentSites);
       return true;
     },
     async clear() {
-      await _storage.remove(this.storageKey);
+      await Storage.remove(this.storageKey);
     },
   },
 };

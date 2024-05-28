@@ -326,7 +326,7 @@ function enableDragAndZoom(element, container, onUpdateCallback) {
       const targetValue = animTarget[prop];
       let del = Math.abs(targetValue - currentValue);
 
-      if (del > 0) {
+      if (del > 0.1) {
         const newValue =
           del < 1 ? targetValue : lerp(currentValue, targetValue, lerpSpeed);
         element.style[prop] = newValue + "px";
