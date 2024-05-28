@@ -1,4 +1,5 @@
 import { BADGES } from "./helpers/badge.js";
+import { md5 } from "./libs/crypto/md5.js";
 
 const managerBtn = '<i class="fa-solid fa-unlock-keyhole"></i>';
 
@@ -33,11 +34,11 @@ export default {
         en: "Open manager",
       },
       onClick: async function openManager() {
-        let curPass = await locker.password.get();
-        if (curPass == null) {
-          curPass = await initPassword();
+        let hasPass = await locker.password.has();
+        if (!hasPass) {
+          hasPass = await initPassword();
         }
-        if (curPass) {
+        if (hasPass) {
           window.open("/scripts/auto_lockWebsite.html", "_self");
         }
       },
@@ -61,8 +62,8 @@ export default {
     },
     onClick: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      let password = await locker.password.get();
-      if (password == null) {
+      let hasPass = await locker.password.has();
+      if (!hasPass) {
         Swal.fire({
           icon: "warning",
           title: t({
@@ -92,11 +93,10 @@ export default {
     },
     onClick: async () => {
       try {
-        let password = await locker.password.get();
-        if (password == null) {
-          return;
-        }
-        lockCurrentWebsite(password);
+        const pass = await locker.password.get();
+        if (pass == null) return;
+
+        lockCurrentWebsite(pass);
         locker.sites.add(location.hostname);
       } catch (e) {
         console.error(e);
@@ -124,11 +124,17 @@ export const _storage = {
 export const locker = {
   password: {
     storageKey: "auto_lock_website_manager_password",
+    async compare(pass) {
+      return md5(pass) === (await _storage.get(this.storageKey));
+    },
+    async has() {
+      return (await _storage.get(this.storageKey)) != null;
+    },
     get() {
       return _storage.get(this.storageKey);
     },
     set(pass) {
-      return _storage.set(this.storageKey, pass);
+      return _storage.set(this.storageKey, md5(pass));
     },
     remove() {
       return _storage.remove(this.storageKey);
@@ -192,8 +198,8 @@ export async function initPassword(createNew = false) {
 export async function checkPass(reason) {
   const { t } = await import("../popup/helpers/lang.js");
 
-  let curPass = await locker.password.get();
-  if (curPass == null) return "not init";
+  let hasPass = await locker.password.has();
+  if (!hasPass) return "not init";
 
   const { value: pass } = await Swal.fire({
     icon: "info",
@@ -221,7 +227,7 @@ export async function checkPass(reason) {
     },
   });
 
-  if (pass === curPass) return true;
+  if (await locker.password.compare(pass)) return true;
   if (pass != null) {
     await Swal.fire(
       t({ vi: "Sai mật khẩu", en: "Wrong password!" }),
@@ -359,7 +365,7 @@ function lockCurrentWebsite(pass, matchedPattern) {
   const unlockTemporarly = overlay.querySelector("input#unlock-temporarly");
   const inputPass = overlay.querySelector("input#password");
   inputPass.addEventListener("input", (e) => {
-    if (e.target.value == pass) {
+    if (md5(e.target.value) == pass) {
       overlay.style.top = "-100vh";
       style.disabled = true;
       inputPass.value = "";
