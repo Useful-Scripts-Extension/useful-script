@@ -644,6 +644,57 @@ function initSettings() {
     };
     body.appendChild(smoothScrollRow);
 
+    // backup/restore button
+    const backupRestoreRow = document.createElement("div");
+    backupRestoreRow.className = "row";
+    backupRestoreRow.innerHTML = `
+      <button
+        data-flow="bottom"
+        data-tooltip="${t({
+          vi: "Lưu toàn bộ dữ liệu extension ra file",
+          en: "Backup all extension data to file",
+        })}">
+        <i class="fa-solid fa-download"></i>
+        ${t({ vi: "Sao lưu", en: "Backup" })}
+      </button>
+      <button
+        data-flow="bottom"
+        data-tooltip="${t({
+          vi: "Khôi phục dữ liệu extension từ file",
+          en: "Restore all extension data from file",
+        })}">
+        <i class="fa-solid fa-upload"></i>
+        ${t({ vi: "Khôi phục", en: "Restore" })}
+      </button>
+    `;
+    const [backupBtn, restoreBtn] = Array.from(
+      backupRestoreRow.querySelectorAll("button")
+    );
+    backupBtn.onclick = backup;
+    restoreBtn.onclick = restore;
+    body.appendChild(backupRestoreRow);
+
+    // reset row
+    const resetRow = document.createElement("div");
+    resetRow.classList.add("row");
+    resetRow.innerHTML = `
+      <button
+        data-flow="bottom"
+        data-tooltip="${t({
+          vi: "Xoá toàn bộ dữ liệu, đặt lại cài đặt gốc",
+          en: "Delete all data, reset to default settings",
+        })}">
+        <i class="fa-solid fa-rotate-left"></i>
+        ${t({
+          vi: "Đặt lại dữ liệu",
+          en: "Reset extension",
+        })}
+      </button>
+    `;
+    const resetBtn = resetRow.querySelector("button");
+    resetBtn.onclick = reset;
+    body.appendChild(resetRow);
+
     openModal(
       t({
         en: "Settings",
@@ -652,6 +703,99 @@ function initSettings() {
       body
     );
   };
+}
+
+async function backup() {
+  const data = {
+    localStorage,
+    chromeStorage: await chrome.storage.local.get(),
+    time: new Date().getTime(),
+  };
+  const name = "useful-script-backup-" + new Date().toISOString() + ".json";
+  UfsGlobal.Utils.downloadData(JSON.stringify(data), name);
+}
+
+function restore() {
+  Swal.fire({
+    title: t({ en: "Restore data", vi: "Khôi phục dữ liệu" }),
+    text: t({ en: "Select backup file", vi: "Chọn file đã sao lưu" }),
+    input: "file",
+    inputAttributes: {
+      accept: ".json",
+    },
+    showCancelButton: true,
+    confirmButtonText: t({ en: "Restore", vi: "Khôi phục" }),
+    showLoaderOnConfirm: true,
+    inputValidator: (value) => {
+      if (!value)
+        return t({ en: "Please select a file", vi: "Vui lòng chọn file" });
+    },
+    preConfirm: (file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.readAsText(file);
+      });
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const json = JSON.parse(result.value);
+        const { localStorage: l, chromeStorage } = json;
+
+        if (l) {
+          Object.keys(l).forEach((key) => {
+            localStorage[key] = l[key];
+          });
+        }
+
+        if (chromeStorage) {
+          for (let key in chromeStorage) {
+            await chrome.storage.local.set({ [key]: chromeStorage[key] });
+          }
+        }
+
+        Swal.fire({
+          icon: "success",
+          title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
+          text: t({
+            en: "Imported data from",
+            vi: "Đã nạp dữ liệu",
+          }),
+        });
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: t({ en: "Error", vi: "Lỗi" }),
+          text: e?.message || e,
+        });
+      }
+    }
+  });
+}
+
+function reset() {
+  Swal.fire({
+    icon: "warning",
+    title: t({ en: "Reset", vi: "Đặt lại" }),
+    text: t({
+      en: "All data will be deleted. Are you sure?",
+      vi: "Tất cả dữ liệu sẽ bị xoá. Bạn có chắc không?",
+    }),
+    showCancelButton: true,
+    confirmButtonText: t({ en: "Delete all", vi: "Xoá hết" }),
+    confirmButtonColor: "#d33",
+    cancelButtonText: t({ en: "Cancel", vi: "Huỷ" }),
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.clear();
+      chrome.storage.local.clear();
+      chrome.runtime.reload();
+    }
+  });
 }
 
 function initSearch() {
