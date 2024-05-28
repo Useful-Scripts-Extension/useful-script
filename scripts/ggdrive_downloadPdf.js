@@ -23,7 +23,7 @@ export default {
   },
   description: {
     en: "Download google drive PDF file that dont have download button.<br/>Pages will be <b>convert to image, cannot edit.</b>",
-    vi: "Tải file PDF không có nút download trên google drive.<br/>Tải về <b>định dạng hình ảnh, không thể sửa nội dung<b>.",
+    vi: "Tải file PDF không có nút download trên google drive.<br/>Tải về <b>định dạng hình ảnh, không thể sửa nội dung</b>.",
   },
   badges: [BADGES.hot],
   whiteList: ["https://drive.google.com/file/d/*"],

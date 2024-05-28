@@ -2,6 +2,10 @@
 
 ## 28/04/2024 - 24/05/2024
 
+- [ ] options page for smooth scroll: disable for specific sites, config smooth, ...
+
+- [ ] restore data options: merge / override
+
 - [ ] tiktok video downloader <https://chromewebstore.google.com/detail/chrome-video-downloader-f/kmobjdioiclamniofdnngmafbhgcniok>
 
 - [x] chrome flags for faster web exp <https://www.androidauthority.com/chrome-flags-1009941/>
@@ -14,7 +18,7 @@
 
 - [ ] update rules cho auto inlarge image <https://chromewebstore.google.com/detail/hover-zoom+/pccckmaobkjjboncdfnnofkonhgpceea>
 
-- [ ] Update contributor guide khi release ver mới
+- [x] Update contributor guide khi release ver mới
 
 - [x] Fix simple allow copy <https://chrome.google.com/webstore/detail/aefehdhdciieocakfobpaaolhipkcpgc>
 
@@ -38,7 +42,7 @@
 
 - [ ] Clear browser histories for specific website.
 
-- [ ] Export all data, and restore when re-install extension
+- [x] Export all data, and restore when re-install extension
 
 - [x] Check window focus in iframes => truyền details vào allFrames đang không hoạt động đúng dưới background script
 
@@ -68,7 +72,7 @@
 
 - [x] onBeforeNavigate event => use declarativeNetRequest
 
-- [ ] finish webTimer + add block website
+- [x] finish webTimer + add filter by range
 
 - [ ] Tự động mời bạn bè vào nhóm <https://chromewebstore.google.com/detail/hifb-auto-group-inviter-m/nhdpeaeaafgbncmionfngamhohnngabl>
 

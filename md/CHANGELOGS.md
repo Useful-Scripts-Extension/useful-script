@@ -1,6 +1,17 @@
 ## Change logs
 
 <details>
+  <summary>v1.67 - 29/05/2024</summary>
+
+### CHỨC NĂNG MỚI
+
+### SỬA CHỨC NĂNG CŨ
+
+### XOÁ CHỨC NĂNG
+
+</details>
+
+<details>
   <summary>v1.66 - 27/04/2024</summary>
 
 ### CHỨC NĂNG MỚI

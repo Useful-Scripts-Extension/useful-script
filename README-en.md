@@ -16,9 +16,16 @@ An extension includes a lot of small extensions. Make your life easier.
 
 ## Change logs
 
-Versions:
+[Full change logs](/md/CHANGELOGS.md)
 
-- **v1.66 - big update** (27/04/2024)
+Current Versions:
+
+- **v1.67 - huge update** (29/05/2024)
+
+<details>
+  <summary>Old versions</summary>
+
+- <del>v1.66 - big update (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>
@@ -29,17 +36,23 @@ Versions:
 - <del>v1.2 (08/11/2022)</del>
 - <del>v1.1 (07/11/2022)</del>
 
-[Full change logs](/md/CHANGELOGS.md)
+</details>
+
+## ScreenShots
+
+<div style="display:flex">
+
+![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)
+
+![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)
+
+</div>
 
 ## Install
 
 - Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
-
-## Screenshots
-
-![screenshot](./assets/screenshots/ScreensShot%202022-12-25%20at%2020.00.00.png)
 
 ## For developer (Demo)
 
