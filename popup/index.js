@@ -27,10 +27,12 @@ import {
 } from "./helpers/lang.js";
 import {
   activeTabIdSaver,
-  favoriteScriptsSaver,
-  recentScriptsSaver,
   disableSmoothScrollSaver,
 } from "./helpers/storage.js";
+import {
+  recentScriptsSaver,
+  favoriteScriptsSaver,
+} from "./helpers/storageScripts.js";
 import {
   canAutoRun,
   canClick,

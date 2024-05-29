@@ -4,7 +4,10 @@ import { canAutoRun } from "./helpers/utils.js";
 import { CATEGORY } from "./helpers/category.js";
 import { BADGES } from "../scripts/helpers/badge.js";
 import { getCurrentTab } from "../scripts/helpers/utils.js";
-import { favoriteScriptsSaver, recentScriptsSaver } from "./helpers/storage.js";
+import {
+  favoriteScriptsSaver,
+  recentScriptsSaver,
+} from "./helpers/storageScripts.js";
 
 console.log(s);
 
