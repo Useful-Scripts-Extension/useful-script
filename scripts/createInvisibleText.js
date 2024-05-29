@@ -11,6 +11,7 @@ export default {
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
   badges: [BADGES.new],
+  infoLink: "/scripts/createInvisibleText.html",
   changeLogs: {
     "2025-05-26": "init",
   },
@@ -18,7 +19,7 @@ export default {
   popupScript: {
     onClick: async () => {
       const { t } = await import("../popup/helpers/lang.js");
-      Swal.fire({
+      let result = await Swal.fire({
         icon: "info",
         title: t({ vi: "Tin nhắn tàng hình", en: "Invisible messages" }),
         text: t({ vi: "Vui lòng chọn", en: "Please choose" }),
@@ -26,16 +27,16 @@ export default {
         showCancelButton: false,
         confirmButtonText: t({ vi: "Tạo tin nhắn", en: "Create message" }),
         denyButtonText: t({ vi: "Giải mã tin nhắn", en: "Decode message" }),
-      }).then((result) => {
-        if (result.isConfirmed) {
-          doEncode();
-        } else if (result.isDenied) {
-          doDecode();
-        }
       });
 
-      function doEncode() {
-        Swal.fire({
+      if (result.isConfirmed) {
+        await doEncode();
+      } else if (result.isDenied) {
+        await doDecode();
+      }
+
+      async function doEncode() {
+        let result = await Swal.fire({
           icon: "question",
           title: t({ vi: "Nhập tin nhắn", en: "Enter message" }),
           html: t({
@@ -44,55 +45,53 @@ export default {
           }),
           input: "textarea",
           showCancelButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            let encoded = encode(result.value);
-            Swal.fire({
-              icon: "success",
-              title: t({
-                vi: "Tạo tin tàng hình thành công",
-                en: "Create invisible message successfully",
-              }),
-              html:
-                result.value +
-                "<br/><br/>" +
-                t({
-                  vi: " Bạn hãy copy và sử dụng nhé",
-                  en: " Please copy and use",
-                }),
-              input: "textarea",
-              inputValue: encoded,
-            });
-          }
         });
+        if (result.isConfirmed) {
+          let encoded = encode(result.value);
+          await Swal.fire({
+            icon: "success",
+            title: t({
+              vi: "Tạo tin tàng hình thành công",
+              en: "Create invisible message successfully",
+            }),
+            html:
+              result.value +
+              "<br/><br/>" +
+              t({
+                vi: " Bạn hãy copy và sử dụng nhé",
+                en: " Please copy and use",
+              }),
+            input: "textarea",
+            inputValue: encoded,
+          });
+        }
       }
 
-      function doDecode() {
-        Swal.fire({
+      async function doDecode() {
+        let result = await Swal.fire({
           icon: "question",
           title: "Nhập tin nhắn cần giải mã",
           input: "textarea",
           showCancelButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            let decoded = decode(result.value);
-            if (decoded != result.value) {
-              Swal.fire({
-                icon: "success",
-                title: "Kết quả giải mã",
-                text: result.value,
-                input: "textarea",
-                inputValue: decoded,
-              });
-            } else {
-              Swal.fire({
-                icon: "info",
-                title: "Tin nhắn này không có nội dung tàng hình",
-                text: result.value,
-              });
-            }
-          }
         });
+        if (result.isConfirmed) {
+          let decoded = decode(result.value);
+          if (decoded != result.value) {
+            await Swal.fire({
+              icon: "success",
+              title: "Kết quả giải mã",
+              text: result.value,
+              input: "textarea",
+              inputValue: decoded,
+            });
+          } else {
+            await Swal.fire({
+              icon: "info",
+              title: "Tin nhắn này không có nội dung tàng hình",
+              text: result.value,
+            });
+          }
+        }
       }
     },
   },
