@@ -135,7 +135,7 @@ export function runFunc(fnPath = "", params = [], global = {}) {
 
 export async function trackEvent(scriptId) {
   console.log("trackEvent", scriptId, version);
-  return;
+  // return;
   try {
     let res = await fetch(
       // "http://localhost:3000/count",
