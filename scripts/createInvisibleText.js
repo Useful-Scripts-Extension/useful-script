@@ -11,7 +11,20 @@ export default {
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
   badges: [BADGES.new],
-  infoLink: "/scripts/createInvisibleText.html",
+  buttons: [
+    {
+      icon: '<i class="fa-solid fa-mobile-screen"></i>',
+      name: {
+        en: "Web version",
+        vi: "Phiên bản web",
+      },
+      onClick: () =>
+        window.open(
+          "https://hoangtran0410.github.io/useful-script/scripts/createInvisibleText.html"
+        ),
+    },
+  ],
+
   changeLogs: {
     "2025-05-26": "init",
   },
