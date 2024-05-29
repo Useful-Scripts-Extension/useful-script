@@ -15,6 +15,7 @@ const {
 const { ISOLATED, MAIN } = chrome.scripting.ExecutionWorld;
 const CACHED = {
   path: chrome.runtime.getURL("/scripts/"),
+  lastFocusedWindowIds: [],
   activeScriptIds: [],
   badges: {},
 };
@@ -363,7 +364,6 @@ function listenMessage() {
     try {
       if (request.action === "ufs-runInBackground") {
         const { params = [], fnPath = "" } = request.data || {};
-        // console.log("runInBackground", fnPath, params);
         utils.runFunc(fnPath, params, GLOBAL).then((res) => {
           sendResponse(res);
         });
@@ -391,6 +391,35 @@ function listenMessage() {
       sendResponse({ error: e.message });
     }
   });
+}
+
+function listenWindows() {
+  ["onBoundsChanged", "onCreated", "onFocusChanged", "onRemoved"].forEach(
+    (event) => {
+      chrome.windows[event].addListener((...details) => {
+        // listen and cache last window focus
+        if (event === "onFocusChanged") {
+          let windowId = details[0];
+
+          CACHED.lastFocusedWindowIds.unshift(windowId);
+          // remove duplicate
+          for (let i = 1; i < CACHED.lastFocusedWindowIds.length; i++) {
+            if (windowId === CACHED.lastFocusedWindowIds[i]) {
+              CACHED.lastFocusedWindowIds.splice(i, 1);
+              break;
+            }
+          }
+        }
+
+        if (event === "onRemoved") {
+          let index = CACHED.lastFocusedWindowIds.indexOf(details[0]);
+          if (index >= 0) CACHED.lastFocusedWindowIds.splice(index, 1);
+        }
+
+        runScriptsBackground("windows." + event, null, details);
+      });
+    }
+  );
 }
 
 function injectUfsGlobal(tabId, frameId, details) {
@@ -431,6 +460,7 @@ function main() {
   listenNavigation();
   listenTabs();
   listenMessage();
+  listenWindows();
 
   chrome.contextMenus.onClicked.addListener(async (info) => {
     runScriptsBackground("contextMenus.onClicked", null, info, true);
@@ -443,7 +473,7 @@ function main() {
   chrome.runtime.onInstalled.addListener(async function (reason) {
     // reasons: browser_update / chrome_update / update / install
 
-    if (utils.hasUserId()) {
+    if (await utils.hasUserId()) {
       await trackEvent("ufs-RE-INSTALLED");
     }
     // create new unique id and save it

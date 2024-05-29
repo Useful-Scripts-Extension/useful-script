@@ -18,13 +18,13 @@ export default {
       let videos = document.querySelectorAll("video");
       let listUrls = [];
 
-      for (var i = videos.length - 1; i >= 0; i--) {
+      for (let i = videos.length - 1; i >= 0; i--) {
         if (videos[i].offsetHeight === 0) continue;
-        var reactKey = "";
-        keys = Object.keys(videos[i]);
-        for (var j = 0; j < keys.length; j++) {
-          if (keys[j].indexOf("__reactFiber") != -1) {
-            reactKey = keys[j].split("__reactFiber")[1];
+        let reactKey = "";
+        let keys = Object.keys(videos[i]);
+        for (let key of keys) {
+          if (key.indexOf("__reactFiber") != -1) {
+            reactKey = key.split("__reactFiber")[1];
             break;
           }
         }

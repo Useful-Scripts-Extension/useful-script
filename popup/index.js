@@ -15,6 +15,7 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
+  getLastFocusedTab,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -48,6 +49,7 @@ const searchFound = document.querySelector(".search .searchFound");
 const scrollToTopBtn = document.querySelector("#scroll-to-top");
 
 let disableSmoothScroll = null;
+let isInNewTab = false;
 
 // ========================================================
 // ========================= Tabs =========================
@@ -445,9 +447,17 @@ async function runScript(script) {
     recentScriptsSaver.add(script);
     trackEvent(script.id);
 
+    // if (isInNewTab) {
+    //   // focus to targeTab
+    //   await chrome.windows.update(tab.windowId, {
+    //     focused: true,
+    //   });
+    // }
+
     try {
-      if (isFunction(script.popupScript?.onClick))
+      if (isFunction(script.popupScript?.onClick)) {
         await script.popupScript.onClick();
+      }
     } catch (e) {
       showError(e);
     }
@@ -504,13 +514,33 @@ function initTooltip() {
   );
   openInNewTabBtn.setAttribute(
     "data-tooltip",
-    t({ vi: "Mở trong tab mới", en: "Open in new tab" })
+    t({ vi: "Mở trong cửa sổ mới", en: "Open in new window" })
   );
 }
 
-function initSettings() {
+const updateTargetTab = UfsGlobal.Utils.debounce(async () => {
+  let targetTab = await getCurrentTab();
+  document.title = targetTab?.title || "Useful scripts";
+}, 500);
+
+async function initOpenInNewTab() {
+  let currentTab = await chrome.tabs.getCurrent();
+  isInNewTab = currentTab != null;
+
+  if (isInNewTab) {
+    [
+      ["tabs", "onHighlighted"],
+      ["windows", "onFocusChanged"],
+    ].forEach(([context, event]) => {
+      chrome[context][event].addListener(updateTargetTab);
+    });
+
+    openInNewTabBtn.remove();
+    return;
+  }
+
   openInNewTabBtn.onclick = async () => {
-    let exist = await chrome.tabs.query({
+    const exist = await chrome.tabs.query({
       url: location.href,
     });
     if (exist.length > 0) {
@@ -521,12 +551,12 @@ function initSettings() {
 
     trackEvent("CLICK_OPEN_IN_NEW_TAB");
 
-    let width = document.documentElement.clientWidth,
-      height = document.documentElement.clientHeight,
+    let width = window.outerWidth,
+      height = window.outerHeight,
       left = window.screenLeft,
       top = window.screenTop;
 
-    chrome.windows.create({
+    await chrome.windows.create({
       url: location.href,
       type: "popup",
       height,
@@ -538,7 +568,9 @@ function initSettings() {
 
     window.close();
   };
+}
 
+function initSettings() {
   settingsBtn.onclick = () => {
     trackEvent("CLICK_SETTINGS");
 
@@ -948,6 +980,7 @@ window.addEventListener("scroll", onScrollEnd);
   initSearch();
   initTooltip();
   initSettings();
+  initOpenInNewTab();
   initScrollToTop();
   createTabs().then(restoreScroll);
 

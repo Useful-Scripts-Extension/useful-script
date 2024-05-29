@@ -7,7 +7,6 @@ const { version } =
 
 const CACHED = {
   userID: null,
-  lastWindowIds: [],
 };
 
 export function checkBlackWhiteList(script, url = location?.href) {
@@ -113,16 +112,14 @@ export function runFunc(fnPath = "", params = [], global = {}) {
       return p;
     });
 
-    if (!(typeof fn === "function")) return resolve(null);
+    if (typeof fn !== "function") return resolve(null);
 
     try {
       let res = fn(..._params);
 
       if (!hasCallback) {
         if (typeof res?.then === "function") {
-          res.then?.((_res) => {
-            resolve(_res);
-          });
+          res.then?.(resolve);
         } else {
           resolve(res);
         }
@@ -189,7 +186,6 @@ export async function setActiveScript(scriptId, isActive = true) {
   if (isActive) list.push(scriptId);
   else list = list.filter((_) => _ != scriptId);
   list = list.filter((_) => _);
-  // localStorage.setItem(listActiveScriptsKey, JSON.stringify(list));
   Storage.set(listActiveScriptsKey, list); // save to storage => content script can access
   return list;
 }
@@ -225,10 +221,6 @@ export async function toggleActiveScript(scriptId) {
 //       });
 // };
 
-// const CACHED = {
-//   lastWindowId: 0,
-// };
-
 // https://developer.chrome.com/docs/extensions/reference/windows/#event-onFocusChanged
 // chrome.windows.onFocusChanged.addListener(
 //   (windowId) => {
@@ -253,45 +245,48 @@ export const getAllTabs = async () => {
   return tabs;
 };
 
-// Lấy ra tab hiện tại, trong window sử dung gần nhất
-if (typeof chrome?.windows?.onFocusChanged?.addListener === "function") {
-  chrome.windows.onFocusChanged.addListener((windowId) => {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE) {
-      CACHED.lastWindowIds.unshift(windowId);
-
-      // remove duplicate
-      for (let i = 1; i < CACHED.lastWindowIds.length; i++) {
-        if (windowId === CACHED.lastWindowIds[i]) {
-          CACHED.lastWindowIds.splice(i, 1);
-          break;
-        }
-      }
-    }
-  });
+export function getPopupURL() {
+  return chrome.runtime.getURL("/popup/popup.html");
 }
 
-export const getCurrentTab = async () => {
-  let windows = await chrome.windows.getAll({ populate: true });
-  let lastFocusedWindow = windows
+export const getLastFocusedWindowIds = () => {
+  return chrome.runtime.sendMessage({
+    action: "ufs-runInBackground",
+    data: {
+      fnPath: "getCache",
+      params: ["lastFocusedWindowIds"],
+    },
+  });
+};
+
+export const getLastFocusedTab = async () => {
+  const lastFocusedWindowIds = await getLastFocusedWindowIds();
+  const windows = await chrome.windows.getAll({ populate: true });
+  const lastFocusedWindow = windows
     // sort windows by lastFocused
     .sort(
       (a, b) =>
-        CACHED.lastWindowIds.indexOf(a.id) - CACHED.lastWindowIds.indexOf(b.id)
+        lastFocusedWindowIds.indexOf(a.id) - lastFocusedWindowIds.indexOf(b.id)
     )
     // get windows that not popup extension
-    .filter(
-      (w) =>
-        w.type !== "popup" &&
-        w.tabs[0].url !== chrome.runtime.getURL("/popup/popup.html")
-    )?.[0];
-
-  console.log("lastFocusedWindow", lastFocusedWindow);
+    .filter((w) => w.type !== "popup" && w.tabs[0].url !== getPopupURL())?.[0];
 
   if (!lastFocusedWindow) return null;
-
-  let tab = lastFocusedWindow.tabs.find((tab) => tab.active);
-  console.log("tabs", tab);
+  const tab = lastFocusedWindow.tabs.find(
+    (tab) => tab.active && tab.url !== getPopupURL()
+  );
   return tab;
+};
+
+export const getCurrentTab = async () => {
+  // case normal popup
+  let tabs = await chrome.tabs.query({
+    active: true,
+    currentWindow: true,
+  });
+  if (tabs?.[0]?.url !== getPopupURL()) return tabs[0];
+
+  return await getLastFocusedTab();
 };
 
 export const getCurrentTabId = async () => {

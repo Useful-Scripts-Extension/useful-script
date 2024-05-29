@@ -185,6 +185,12 @@ export default {
     storage: {
       onChanged: (details, context) => {},
     },
+    windows: {
+      onCreated: (details, context) => {},
+      onFocusChanged: (details, context) => {},
+      onBoundsChanged: (details, context) => {},
+      onRemoved: (details, context) => {},
+    },
   },
 };
 
