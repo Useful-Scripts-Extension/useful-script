@@ -33,7 +33,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
+      s._test,
       // s._ufs_statistic,
       s.similarWeb,
       s.similarWeb_bypassLimit,
@@ -1051,6 +1051,7 @@ async function refreshSpecialTabs() {
 
   // add auto runned scripts
   let currentTab = await getCurrentTab();
+  if (!currentTab) return;
   let bgCached = await chrome.runtime.sendMessage({
     action: "ufs-runInBackground",
     data: { fnPath: "getCache", params: ["badges"] },

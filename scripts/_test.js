@@ -13,7 +13,7 @@ export default {
   },
 
   popupScript: {
-    onClick: async () => {
+    _onClick: async () => {
       let currentTab = await getCurrentTab();
       chrome.tabs.update(currentTab.id, { url: "javascript:alert(1)" });
     },
@@ -169,6 +169,19 @@ export default {
   },
 
   contentScript: {
+    onClick: () => {
+      alert("test");
+    },
+    onDocumentEnd: () => {
+      if (location.hostname === "anonyviet.com") {
+        let url = new URL(location.href);
+        if (url.searchParams.has("url")) {
+          let target = url.searchParams.get("url");
+          window.open(target, "_self");
+        }
+      }
+    },
+
     // sync element position accross all tabs
     _onDocumentStart: (details) => {
       console.log(details);

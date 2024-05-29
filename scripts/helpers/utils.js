@@ -7,6 +7,7 @@ const { version } =
 
 const CACHED = {
   userID: null,
+  lastWindowIds: [],
 };
 
 export function checkBlackWhiteList(script, url = location?.href) {
@@ -253,12 +254,44 @@ export const getAllTabs = async () => {
 };
 
 // Lấy ra tab hiện tại, trong window sử dung gần nhất
-export const getCurrentTab = async () => {
-  let tabs = await chrome.tabs.query({
-    currentWindow: true,
-    active: true,
+if (typeof chrome?.windows?.onFocusChanged?.addListener === "function") {
+  chrome.windows.onFocusChanged.addListener((windowId) => {
+    if (windowId !== chrome.windows.WINDOW_ID_NONE) {
+      CACHED.lastWindowIds.unshift(windowId);
+
+      // remove duplicate
+      for (let i = 1; i < CACHED.lastWindowIds.length; i++) {
+        if (windowId === CACHED.lastWindowIds[i]) {
+          CACHED.lastWindowIds.splice(i, 1);
+          break;
+        }
+      }
+    }
   });
-  return tabs[0];
+}
+
+export const getCurrentTab = async () => {
+  let windows = await chrome.windows.getAll({ populate: true });
+  let lastFocusedWindow = windows
+    // sort windows by lastFocused
+    .sort(
+      (a, b) =>
+        CACHED.lastWindowIds.indexOf(a.id) - CACHED.lastWindowIds.indexOf(b.id)
+    )
+    // get windows that not popup extension
+    .filter(
+      (w) =>
+        w.type !== "popup" &&
+        w.tabs[0].url !== chrome.runtime.getURL("/popup/popup.html")
+    )?.[0];
+
+  console.log("lastFocusedWindow", lastFocusedWindow);
+
+  if (!lastFocusedWindow) return null;
+
+  let tab = lastFocusedWindow.tabs.find((tab) => tab.active);
+  console.log("tabs", tab);
+  return tab;
 };
 
 export const getCurrentTabId = async () => {

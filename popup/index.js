@@ -40,7 +40,7 @@ import { checkPass } from "../scripts/auto_lockWebsite.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
-const reloadBtn = document.querySelector(".reload");
+const openInNewTabBtn = document.querySelector(".open-in-newtab");
 const tabDiv = document.querySelector("div.tab");
 const contentDiv = document.querySelector("div.content");
 const searchInput = document.querySelector(".search input");
@@ -502,30 +502,41 @@ function initTooltip() {
     "data-tooltip",
     t({ vi: "Cài đặt", en: "Settings" })
   );
-  reloadBtn.setAttribute(
+  openInNewTabBtn.setAttribute(
     "data-tooltip",
-    t({ vi: "Khởi động lại tiện ích", en: "Reload extension" })
+    t({ vi: "Mở trong tab mới", en: "Open in new tab" })
   );
 }
 
 function initSettings() {
-  reloadBtn.onclick = () => {
-    Swal.fire({
-      icon: "warning",
-      title: t({
-        vi: "Khởi động lại tiện ích?",
-        en: "Reload extension?",
-      }),
-      text: t({
-        vi: "Các chức năng tự chạy sẽ mất kết nối, gây lỗi => cần tải lại các trang web để hoạt động trở lại.",
-        en: "Autorun scripts will be disconnected => you have to reload websites.",
-      }),
-      showCancelButton: true,
-      confirmButtonText: t({ vi: "Khởi động lại", en: "Reload" }),
-      cancelButtonText: t({ vi: "Huỷ", en: "Cancel" }),
-    }).then((res) => {
-      if (res.isConfirmed) chrome.runtime.reload();
+  openInNewTabBtn.onclick = async () => {
+    let exist = await chrome.tabs.query({
+      url: location.href,
     });
+    if (exist.length > 0) {
+      chrome.windows.update(exist[0].windowId, { focused: true });
+      window.close();
+      return;
+    }
+
+    trackEvent("CLICK_OPEN_IN_NEW_TAB");
+
+    let width = document.documentElement.clientWidth,
+      height = document.documentElement.clientHeight,
+      left = window.screenLeft,
+      top = window.screenTop;
+
+    chrome.windows.create({
+      url: location.href,
+      type: "popup",
+      height,
+      width,
+      left,
+      top,
+      setSelfAsOpener: true,
+    });
+
+    window.close();
   };
 
   settingsBtn.onclick = () => {
@@ -680,6 +691,18 @@ function initSettings() {
       <button
         data-flow="bottom"
         data-tooltip="${t({
+          vi: "Khởi động lại tiện ích",
+          en: "Reload extension",
+        })}">
+        <i class="fa-solid fa-arrows-rotate fa-lg"></i>
+        ${t({
+          vi: "Khởi động lại",
+          en: "Reload",
+        })}
+      </button>
+      <button
+        data-flow="bottom"
+        data-tooltip="${t({
           vi: "Xoá toàn bộ dữ liệu, đặt lại cài đặt gốc",
           en: "Delete all data, reset to default settings",
         })}">
@@ -690,7 +713,10 @@ function initSettings() {
         })}
       </button>
     `;
-    const resetBtn = resetRow.querySelector("button");
+    const [reloadBtn, resetBtn] = Array.from(
+      resetRow.querySelectorAll("button")
+    );
+    reloadBtn.onclick = reload;
     resetBtn.onclick = reset;
     body.appendChild(resetRow);
 
@@ -702,6 +728,25 @@ function initSettings() {
       body
     );
   };
+}
+
+function reload() {
+  Swal.fire({
+    icon: "warning",
+    title: t({
+      vi: "Khởi động lại tiện ích?",
+      en: "Reload extension?",
+    }),
+    text: t({
+      vi: "Các chức năng tự chạy sẽ mất kết nối, gây lỗi => cần tải lại các trang web để hoạt động trở lại.",
+      en: "Autorun scripts will be disconnected => you have to reload websites.",
+    }),
+    showCancelButton: true,
+    confirmButtonText: t({ vi: "Khởi động lại", en: "Reload" }),
+    cancelButtonText: t({ vi: "Huỷ", en: "Cancel" }),
+  }).then((res) => {
+    if (res.isConfirmed) chrome.runtime.reload();
+  });
 }
 
 async function backup() {
@@ -905,6 +950,12 @@ window.addEventListener("scroll", onScrollEnd);
   initSettings();
   initScrollToTop();
   createTabs().then(restoreScroll);
+
+  chrome.windows.onFocusChanged.addListener((windowId) => {
+    setTimeout(async () => {
+      let currentTab = await getCurrentTab();
+    }, 200);
+  });
 
   checkForUpdate();
 })();
