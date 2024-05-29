@@ -705,6 +705,7 @@ function initSettings() {
 }
 
 async function backup() {
+  trackEvent("BACKUP");
   const data = {
     localStorage,
     chromeStorage: await chrome.storage.local.get(),
@@ -751,6 +752,7 @@ async function restore() {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
+        trackEvent("RESTORE");
         const json = JSON.parse(result.value);
         const { localStorage: l, chromeStorage } = json;
 
@@ -810,6 +812,7 @@ async function reset() {
     cancelButtonText: t({ en: "Cancel", vi: "Huỷ" }),
   }).then((result) => {
     if (result.isConfirmed) {
+      trackEvent("RESET");
       localStorage.clear();
       chrome.storage.local.clear();
       chrome.runtime.reload();
