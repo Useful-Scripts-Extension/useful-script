@@ -53,8 +53,8 @@ export default {
           icon: "question",
           title: t({ vi: "Nhập tin nhắn", en: "Enter message" }),
           html: t({
-            vi: "Đặt ngoặc nhọn >< bao ngoài những nội dung muốn tành hình<br/><br/> Ví dụ: Gọi tôi <b>>0123456789<</b> là Hoang.",
-            en: "Wrap text in >< to hide message<br/><br/> Example: Call me <b>>0123456789, abc street<</b> Jane.",
+            vi: "Đặt ngoặc nhọn >< bao ngoài những nội dung muốn tàng hình<br/><br/> Ví dụ: Gọi tôi <b>>0123456789<</b> là Hoang.",
+            en: "Wrap text in >< to hide messages<br/><br/> Example: Call me <b>>0123456789, abc street<</b> Jane.",
           }),
           input: "textarea",
           showCancelButton: true,
