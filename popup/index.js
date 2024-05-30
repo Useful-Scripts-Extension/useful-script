@@ -449,13 +449,6 @@ async function runScript(script) {
     recentScriptsSaver.add(script);
     trackEvent(script.id);
 
-    // if (isInNewTab) {
-    //   // focus to targeTab
-    //   await chrome.windows.update(tab.windowId, {
-    //     focused: true,
-    //   });
-    // }
-
     try {
       if (isFunction(script.popupScript?.onClick)) {
         await script.popupScript.onClick();
@@ -464,6 +457,7 @@ async function runScript(script) {
       showError(e);
     }
 
+    let isRunInTab = false;
     [
       ["MAIN", "pageScript", "onClick", false],
       ["MAIN", "pageScript", "onClick_", true],
@@ -471,6 +465,7 @@ async function runScript(script) {
       ["ISOLATED", "contentScript", "onClick_", true],
     ].forEach(([world, context, func, allFrames]) => {
       if (isFunction(script?.[context]?.[func])) {
+        isRunInTab = true;
         runScriptInTabWithEventChain({
           target: {
             tabId: tab.id,
@@ -482,6 +477,13 @@ async function runScript(script) {
         }).catch(showError);
       }
     });
+
+    if (isInNewTab && isRunInTab) {
+      // focus to targeTab
+      await chrome.windows.update(tab.windowId, {
+        focused: true,
+      });
+    }
   } else {
     let w = script?.whiteList?.join("<br/>");
     let b = script?.blackList?.join("<br/>");
