@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 29/05/2024
 
+- [ ] detect screenshot <https://stackoverflow.com/questions/67916474/how-do-you-detect-a-screen-shot-with-js>
+
 - [ ] options page for smooth scroll: disable for specific sites, config smooth, ...
 
 - [ ] restore data options: merge / override
