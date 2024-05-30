@@ -454,7 +454,7 @@ option {
         border-radius: 6px;
         padding: 5px;
         pointer-events: none;
-        width: calc(100% - 40px);
+        width: calc(100%);
         position: absolute;
         z-index: 1;
         top: 80%;
@@ -462,6 +462,10 @@ option {
         opacity: 0;
         transition: all .1s;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+        & img {
+            max-width: 100%;
+        }
 
         & * {
             color: @color_tooltip;

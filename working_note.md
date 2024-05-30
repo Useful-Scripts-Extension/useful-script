@@ -1,6 +1,6 @@
 # WORKING NOTES
 
-## 28/04/2024 - 24/05/2024
+## 28/04/2024 - 29/05/2024
 
 - [ ] options page for smooth scroll: disable for specific sites, config smooth, ...
 

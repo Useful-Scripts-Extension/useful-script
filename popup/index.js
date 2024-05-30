@@ -333,7 +333,7 @@ function createScriptButton(script, isFavorite = false) {
   tooltip.innerHTML = t(script.description);
 
   if (script.description?.img) {
-    tooltip.innerHTML += `<img src="${script.description.img}" style="width:80vw" />`;
+    tooltip.innerHTML += `<img src="${script.description.img}"/>`;
   }
   if (script.description?.video) {
     let video = document.createElement("video");
