@@ -15,7 +15,7 @@ export default {
   },
 
   contentScript: {
-    onClick: function () {
+    onClick_: function () {
       var images,
         img,
         key = "data-ufs-remove-image";

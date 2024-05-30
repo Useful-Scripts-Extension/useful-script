@@ -16,7 +16,7 @@ export default {
   },
 
   contentScript: {
-    onClick: function () {
+    onClick_: function () {
       const ufs_remove_colours_id = "ufs-remove-colours";
       let exist = document.getElementById(ufs_remove_colours_id);
       if (exist) {
@@ -32,13 +32,14 @@ export default {
       }
       img, video, canvas, picture, svg, object {
         filter: grayscale(100%) !important;
-      }
-      :link, :link * {
-        color: #0000EE !important
-      }
-      :visited, :visited * {
-        color: #551A8B !important
       }`;
+
+      // :link, :link * {
+      //   color: #0000EE !important
+      // }
+      // :visited, :visited * {
+      //   color: #551A8B !important
+      // }
       document.head.appendChild(style);
     },
   },
