@@ -14,6 +14,7 @@ export default {
   changeLogs: {
     "2024-04-23": "init",
     "2024-04-27": "scripts by uid + date picker",
+    "2024-05-31": "trace uid",
   },
 
   whiteList: ["https://useful-script-statistic.glitch.me/log*"],
@@ -117,6 +118,7 @@ async function onDocumentEnd() {
             indexes.unshift(i);
           }
           if (
+            pre &&
             cur.data.version == pre.data.version &&
             cur.data.eventName.includes("ufs-RE-INSTALLED") &&
             pre?.data?.eventName?.includes?.("ufs-INSTALLED") &&
@@ -137,6 +139,7 @@ async function onDocumentEnd() {
             indexes.push(i);
           }
           if (
+            next &&
             cur.data.version == next.data.version &&
             next.data.eventName.includes("ufs-INSTALLED") &&
             cur?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&

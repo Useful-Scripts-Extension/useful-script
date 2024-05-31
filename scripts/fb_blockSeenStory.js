@@ -37,8 +37,7 @@ export default {
               if (
                 !(
                   this._method === "POST" &&
-                  data &&
-                  data.toString().includes("storiesUpdateSeenStateMutation")
+                  data?.toString().includes("storiesUpdateSeenStateMutation")
                 )
               )
                 return send.apply(this, arguments);

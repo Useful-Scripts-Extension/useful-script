@@ -1,6 +1,3 @@
-import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { getCurrentTab } from "./helpers/utils.js";
-
 export default {
   icon: "",
   name: {
@@ -13,15 +10,6 @@ export default {
   },
 
   popupScript: {
-    _onClick: async () => {
-      let currentTab = await getCurrentTab();
-      chrome.tabs.update(currentTab.id, { url: "javascript:alert(1)" });
-    },
-    _onClick: async () => {
-      const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
-      console.log(UfsGlobal);
-    },
-
     // fake window update screen
     _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
@@ -114,61 +102,10 @@ export default {
       ]
     */
     },
-
-    // devtool command
-    _onClick: async () => {
-      // const {
-      //   attachDebugger,
-      //   detachDebugger,
-      //   sendDevtoolCommand,
-      //   getCurrentTab,
-      // } = await import("./helpers/utils.js");
-      // let blobId = prompt("Enter blob id: ");
-      // if (blobId) {
-      //   const tab = await getCurrentTab();
-      //   await attachDebugger(tab);
-      //   let res = await sendDevtoolCommand(tab, "IO.resolveBlob", {
-      //     objectId: blobId,
-      //   });
-      //   console.log(res);
-      //   await detachDebugger(tab);
-      // }
-      // try {
-      //   const tab = await getCurrentTab();
-      //   await attachDebugger(tab);
-      //   let res = await sendDevtoolCommand(tab, "Input.dispatchKeyEvent", {
-      //     type: "rawKeyDown",
-      //     modifiers: 2,
-      //     code: "KeyQ",
-      //   });
-      //   console.log(res);
-      //   await detachDebugger(tab);
-      // } catch (e) {
-      //   alert(e);
-      // }
-      // const tab = await getCurrentTab();
-      // chrome.debugger.attach({ tabId: tab.id }, "1.2", function () {
-      //   chrome.debugger.sendCommand(
-      //     { tabId: tab.id },
-      //     "Network.enable",
-      //     {},
-      //     function () {
-      //       if (chrome.runtime.lastError) {
-      //         console.error(chrome.runtime.lastError);
-      //       }
-      //     }
-      //   );
-      // });
-      // chrome.debugger.onEvent.addListener(function (source, method, params) {
-      //   if (method === "Network.responseReceived") {
-      //     console.log("Response received:", params.response);
-      //     // Perform your desired action with the response data
-      //   }
-      // });
-    },
   },
 
   contentScript: {
+    // bypass anonyviet
     _onDocumentEnd: () => {
       if (location.hostname === "anonyviet.com") {
         let url = new URL(location.href);
@@ -355,52 +292,7 @@ export default {
   },
 
   pageScript: {
-    onDocumentStart: async () => {
-      const { proxy, hook } = await import("./libs/ajax-hook/index.js");
-      proxy({
-        //请求发起前进入
-        onRequest: (config, handler) => {
-          console.log(config.url);
-          handler.next(config);
-        },
-        //请求发生错误时进入，比如超时；注意，不包括http状态码错误，如404仍然会认为请求成功
-        onError: (err, handler) => {
-          console.log(err.type);
-          handler.next(err);
-        },
-        //请求成功后进入
-        onResponse: (response, handler) => {
-          console.log(response.response);
-          handler.next(response);
-        },
-      });
-      return;
-
-      const { unHook, originXhr } = hook({
-        //拦截回调
-        onreadystatechange: function (xhr, event) {
-          console.log("onreadystatechange called: %O");
-          //返回false表示不阻断，拦截函数执行完后会接着执行真正的xhr.onreadystatechange回调.
-          //返回true则表示阻断，拦截函数执行完后将不会执行xhr.onreadystatechange.
-          return false;
-        },
-        onload: function (xhr, event) {
-          console.log("onload called");
-          return false;
-        },
-        //拦截方法
-        open: function (args, xhr) {
-          console.log(
-            "open called: method:%s,url:%s,async:%s",
-            args[0],
-            args[1],
-            args[2]
-          );
-          //拦截方法的返回值含义同拦截回调的返回值
-          return false;
-        },
-      });
-    },
+    onDocumentStart: async () => {},
   },
 
   backgroundScript: {
