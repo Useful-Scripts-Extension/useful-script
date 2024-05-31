@@ -2,6 +2,8 @@ body {
   max-width: 700px;
   margin: auto;
   padding: 10px;
+  background-color: #333;
+  color: #eee;
 }
 
 label,
@@ -76,4 +78,43 @@ textarea {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.msgs-container {
+  max-height: 700px;
+  max-width: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+}
+
+.msg {
+  display: flex;
+}
+
+.msg.friend .avatar {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.msg-time {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.msg-text {
+  border-radius: 50%;
+  background: #0084ff;
+  color: #eee;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+}
+
+.msg.friend .msg-text {
+  background: #303030;
+  color: #eee;
 }

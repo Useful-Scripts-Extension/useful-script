@@ -14,12 +14,12 @@ export default {
 
   popupScript: {
     onClick: async () => {
-      Swal.fire({
-        icon: "info",
-        title: "Coming soon!",
-        text: "This feature is coming soon!",
-      });
-      // window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
+      // Swal.fire({
+      //   icon: "info",
+      //   title: "Coming soon!",
+      //   text: "This feature is coming soon!",
+      // });
+      window.open(chrome.runtime.getURL("scripts/fb_messengerHistory.html"));
     },
   },
 };

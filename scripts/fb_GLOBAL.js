@@ -103,7 +103,9 @@ export async function getUserInfoFromUid(uid) {
         /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1]
     ),
     gender: /"gender":"(.*?)"/.exec(text)?.[1],
-    alternateName: /"alternate_name":"(.*?)"/.exec(text)?.[1],
+    alternateName: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+      /"alternate_name":"(.*?)"/.exec(text)?.[1]
+    ),
   };
 }
 export async function getUserInfo_(uid, access_token) {

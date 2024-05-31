@@ -379,4 +379,10 @@ const backup = () => {
       });
     };
   })();
+
+  (() => {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      console.log("onMessage", request, sender, sendResponse);
+    });
+  })();
 };

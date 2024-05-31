@@ -1957,9 +1957,13 @@ UfsGlobal.DEBUG = {
   // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
   decodeEscapedUnicodeString(str) {
     if (!str) return "";
-    return decodeURIComponent(
-      JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
-    );
+    let res = str;
+    while (res.includes("\\u")) {
+      res = decodeURIComponent(
+        JSON.parse('"' + res.replace(/\"/g, '\\"') + '"')
+      );
+    }
+    return res;
   },
 
   // https://stackoverflow.com/a/8649003
