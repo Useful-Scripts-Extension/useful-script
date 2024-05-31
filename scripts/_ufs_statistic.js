@@ -66,78 +66,87 @@ async function onDocumentEnd() {
     });
     console.log(all_li);
 
+    const traceUidCheckmark = document.createElement("input");
+    traceUidCheckmark.id = "trace-uid";
+    traceUidCheckmark.type = "checkbox";
+    traceUidCheckmark.checked = false;
+    container.appendChild(traceUidCheckmark);
+    traceUidCheckmark.addEventListener("change", (e) => {
+      searchBox.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    const label = document.createElement("label");
+    label.textContent = "Trace by uid";
+    label.setAttribute("for", traceUidCheckmark.id);
+    container.appendChild(label);
+
     const searchBox = document.createElement("input");
     searchBox.placeholder = "Search logs...";
     container.prepend(searchBox);
     searchBox.addEventListener("input", (e) => {
       let searchText = e.target.value;
-      all_li.forEach(({ li, data }) => {
-        if (
-          !searchText ||
-          data.log.toLowerCase().includes(searchText.toLowerCase())
-        )
-          li.classList.remove("hidden");
-        else li.classList.add("hidden");
-      });
-    });
 
-    // search user across re-install
-    const traceUid = document.createElement("input");
-    traceUid.placeholder = "Trace uid...";
-    container.appendChild(traceUid);
-    traceUid.addEventListener("input", (e) => {
-      let searchText = e.target.value;
-      let index = all_li.findIndex(({ li, data }) =>
-        data.uid?.includes?.(searchText)
-      );
-      if (!searchText || index == -1) {
-        all_li.forEach(({ li }) => li.classList.remove("hidden"));
-        return;
-      }
-
-      console.log(index);
-
-      let indexes = [];
-
-      // trace backward
-      let uid = all_li[index].data.uid;
-      for (let i = index; i >= 0; i--) {
-        if (all_li[i].data.uid == uid) {
-          indexes.unshift(i);
-        }
-        if (
-          all_li[i].data.eventName.includes("ufs-INSTALLED") &&
-          all_li[i + 1]?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
-          Math.abs(all_li[i + 1].data.time - all_li[i].data.time) < 5000
-        ) {
-          indexes.unshift(i);
-          uid = all_li[i - 1].data.uid;
-          console.log(uid);
-        }
-      }
-
-      // forward
-      uid = all_li[index].data.uid;
-      for (let i = index; i < all_li.length - 1; i++) {
-        if (all_li[i].data.uid == uid) {
-          indexes.push(i);
-        }
-        if (
-          all_li[i].data.eventName.includes("ufs-RE-INSTALLED") &&
-          all_li[i - 1]?.data?.eventName?.includes?.("ufs-INSTALLED") &&
-          Math.abs(all_li[i - 1].data.time - all_li[i].data.time) < 5000
-        ) {
-          indexes.push(i);
-          uid = all_li[i + 1].data.uid;
-          console.log(uid);
-        }
-      }
-
-      if (indexes.length) {
-        all_li.forEach(({ li }) => li.classList.add("hidden"));
-        indexes.forEach((i) => all_li[i].li.classList.remove("hidden"));
+      if (!traceUidCheckmark.checked) {
+        all_li.forEach(({ li, data }) => {
+          if (
+            !searchText ||
+            data.log.toLowerCase().includes(searchText.toLowerCase())
+          )
+            li.classList.remove("hidden");
+          else li.classList.add("hidden");
+        });
       } else {
-        all_li.forEach(({ li }) => li.classList.remove("hidden"));
+        let index = all_li.findIndex(({ li, data }) =>
+          data.log?.includes?.(searchText)
+        );
+        if (!searchText || index == -1) {
+          all_li.forEach(({ li }) => li.classList.remove("hidden"));
+          return;
+        }
+
+        console.log(index);
+
+        let indexes = [];
+
+        // trace backward
+        let uid = all_li[index].data.uid;
+        for (let i = index; i >= 0; i--) {
+          if (all_li[i].data.uid == uid) {
+            indexes.unshift(i);
+          }
+          if (
+            all_li[i].data.eventName.includes("ufs-INSTALLED") &&
+            all_li[i + 1]?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
+            Math.abs(all_li[i + 1].data.time - all_li[i].data.time) < 5000
+          ) {
+            indexes.unshift(i);
+            uid = all_li[i - 1].data.uid;
+            console.log(uid);
+          }
+        }
+
+        // forward
+        uid = all_li[index].data.uid;
+        for (let i = index; i < all_li.length - 1; i++) {
+          if (all_li[i].data.uid == uid) {
+            indexes.push(i);
+          }
+          if (
+            all_li[i].data.eventName.includes("ufs-RE-INSTALLED") &&
+            all_li[i - 1]?.data?.eventName?.includes?.("ufs-INSTALLED") &&
+            Math.abs(all_li[i - 1].data.time - all_li[i].data.time) < 5000
+          ) {
+            indexes.push(i);
+            uid = all_li[i + 1].data.uid;
+            console.log(uid);
+          }
+        }
+
+        if (indexes.length) {
+          all_li.forEach(({ li }) => li.classList.add("hidden"));
+          indexes.forEach((i) => all_li[i].li.classList.remove("hidden"));
+        } else {
+          all_li.forEach(({ li }) => li.classList.remove("hidden"));
+        }
       }
     });
 
