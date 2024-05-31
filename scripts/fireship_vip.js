@@ -8,6 +8,7 @@ export default {
     en: "Unlock all Fireship PRO courses/lessons (saved $399 USD)",
     vi: "Mở khoá tất cả khoá học/bài giảng PRO trên Fireship (tiết kiệm $399 USD)",
   },
+  infoLink: "https://fireship.io/",
 
   whiteList: ["https://fireship.io/*"],
 

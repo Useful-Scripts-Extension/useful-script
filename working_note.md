@@ -2,6 +2,10 @@
 
 ## 28/04/2024 - 29/05/2024
 
+- [ ] chặn request bằng ajax hook
+
+- [x] bài viết hay về js import <https://viblo.asia/p/js-modules-bao-nhieu-kieu-khai-bao-lam-sao-nho-het-gGJ59AY15X2>
+
 - [ ] detect screenshot <https://stackoverflow.com/questions/67916474/how-do-you-detect-a-screen-shot-with-js>
 
 - [ ] options page for smooth scroll: disable for specific sites, config smooth, ...

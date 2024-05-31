@@ -163,3 +163,6 @@ export { default as createInvisibleText } from "./createInvisibleText.js";
 export { default as smoothScroll } from "./smoothScroll.js";
 export { default as fb_getTokenMessage } from "./fb_getTokenMessage.js";
 export { default as fb_detectUnfriend } from "./fb_detectUnfriend.js";
+export { default as fb_blockSeenAndTyping } from "./fb_blockSeenAndTyping.js";
+export { default as medium_fixVietnameseFont } from "./medium_fixVietnameseFont.js";
+export { default as fb_blockSeenStory } from "./fb_blockSeenStory.js";

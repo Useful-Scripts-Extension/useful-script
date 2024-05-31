@@ -139,4 +139,3 @@ export function hook(proxy, win) {
   // Return the real XMLHttpRequest and unHook func
   return { originXhr, unHook  };
 }
-

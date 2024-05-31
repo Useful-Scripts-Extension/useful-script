@@ -110,16 +110,20 @@ async function onDocumentEnd() {
         // trace backward
         let uid = all_li[index].data.uid;
         for (let i = index; i >= 0; i--) {
-          if (all_li[i].data.uid == uid) {
+          let cur = all_li[i];
+          let pre = all_li[i - 1];
+
+          if (cur.data.uid == uid) {
             indexes.unshift(i);
           }
           if (
-            all_li[i].data.eventName.includes("ufs-INSTALLED") &&
-            all_li[i + 1]?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
-            Math.abs(all_li[i + 1].data.time - all_li[i].data.time) < 5000
+            cur.data.version == pre.data.version &&
+            cur.data.eventName.includes("ufs-RE-INSTALLED") &&
+            pre?.data?.eventName?.includes?.("ufs-INSTALLED") &&
+            Math.abs(pre.data.time.getTime() - cur.data.time.getTime()) < 2000 // 2s
           ) {
-            indexes.unshift(i);
-            uid = all_li[i - 1].data.uid;
+            indexes.unshift(i, i - 1);
+            uid = pre.data.uid;
             console.log(uid);
           }
         }
@@ -127,16 +131,19 @@ async function onDocumentEnd() {
         // forward
         uid = all_li[index].data.uid;
         for (let i = index; i < all_li.length - 1; i++) {
-          if (all_li[i].data.uid == uid) {
+          let cur = all_li[i];
+          let next = all_li[i + 1];
+          if (cur.data.uid == uid) {
             indexes.push(i);
           }
           if (
-            all_li[i].data.eventName.includes("ufs-RE-INSTALLED") &&
-            all_li[i - 1]?.data?.eventName?.includes?.("ufs-INSTALLED") &&
-            Math.abs(all_li[i - 1].data.time - all_li[i].data.time) < 5000
+            cur.data.version == next.data.version &&
+            next.data.eventName.includes("ufs-INSTALLED") &&
+            cur?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
+            Math.abs(next.data.time.getTime() - cur.data.time.getTime()) < 2000 // 2s
           ) {
-            indexes.push(i);
-            uid = all_li[i + 1].data.uid;
+            indexes.push(i, i + 1);
+            uid = next.data.uid;
             console.log(uid);
           }
         }
@@ -350,7 +357,7 @@ async function onDocumentEnd() {
         : "Show scripts only (OFF)";
       scriptOnlyToggle.classList.toggle("btn-active", scriptOnlyState);
       all_li.forEach(({ li, data }) => {
-        if (scriptOnlyState && data.isScript) {
+        if (scriptOnlyState && !data.isScript) {
           li.classList.add("not-script");
         } else {
           li.classList.remove("not-script");
@@ -483,6 +490,7 @@ function extractVersion(log) {
 function isScript(log) {
   return !(
     log.includes("ufs-INSTALLED") ||
+    log.includes("ufs-RE-INSTALLED") ||
     log.includes("OPEN-") ||
     log.includes("CLICK_") ||
     log.includes("-INFO") ||

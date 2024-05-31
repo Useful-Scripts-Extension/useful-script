@@ -4,7 +4,7 @@
  * source code: https://github.com/wendux/Ajax-hook
  */
 
-import { hook, configEvent, events } from "./xhr-hook";
+import { hook, configEvent, events } from "./xhr-hook.js";
 
 var eventLoad = events[0],
   eventLoadEnd = events[1],
@@ -205,7 +205,6 @@ function proxyAjax(proxy, win) {
 
         // If there is a request interceptor, open the link after calling onRequest. Because the best time to call onRequest is before send,
         // So we manually call open in the send interception function, so return true to prevent the xhr.open call.
-        //
         // If there is no request interceptor, there is no need to block the xhr.open call
         if (onRequest) return true;
       },

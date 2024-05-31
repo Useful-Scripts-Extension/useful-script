@@ -4,7 +4,7 @@
  * source code: https://github.com/wendux/Ajax-hook
  */
 
-import { hook, unHook } from "./xhr-hook";
-import { proxy, unProxy } from "./xhr-proxy";
+import { hook } from "./xhr-hook.js";
+import { proxy } from "./xhr-proxy.js";
 
-export { proxy, unProxy, hook, unHook };
+export { proxy, hook };
