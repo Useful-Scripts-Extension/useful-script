@@ -1,3 +1,8 @@
+body {
+  max-width: 1000px;
+  margin: auto;
+}
+
 canvas {
   max-height: 500px;
 }
