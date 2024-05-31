@@ -15,7 +15,7 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
-  getLastFocusedTab,
+  getUserId,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -973,6 +973,30 @@ const onScrollEnd = UfsGlobal.Utils.debounce(() => {
 }, 100);
 
 window.addEventListener("scroll", onScrollEnd);
+
+async function checkUidMessage() {
+  try {
+    let res = await fetch(
+      "https://github.com/HoangTran0410/useful-script/blob/dev/md/uid_messages.txt"
+    );
+    let messages = await res.text();
+    let uid = await getUserId();
+    for (let message of messages.split("\n")) {
+      let [targetUid, title, text, target] = message.split("|");
+      if (uid == targetUid) {
+        trackEvent("UID_MESSAGE_" + targetUid);
+        await Swal.fire({
+          icon: "info",
+          title: title,
+          text: text,
+        }).then((result) => {
+          if (result.isConfirmed && target) window.open(target);
+        });
+      }
+    }
+  } catch (e) {}
+}
+
 // #endregion
 
 (async function () {
@@ -980,6 +1004,7 @@ window.addEventListener("scroll", onScrollEnd);
 
   if (!disableSmoothScrollSaver.get())
     disableSmoothScroll = enableSmoothScroll();
+  checkUidMessage();
   initTracking();
   initSearch();
   initTooltip();
