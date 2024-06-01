@@ -2,7 +2,9 @@
 
 ## 28/04/2024 - 29/05/2024
 
-- [ ] chặn request bằng ajax hook
+- [ ] datatables js <https://github.com/fiduswriter/Simple-DataTables>
+
+- [x] chặn request bằng ajax hook => Gây lỗi facebook => không ổn định, bỏ
 
 - [x] bài viết hay về js import <https://viblo.asia/p/js-modules-bao-nhieu-kieu-khai-bao-lam-sao-nho-het-gGJ59AY15X2>
 
