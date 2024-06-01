@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: "",
   name: {
@@ -292,7 +294,9 @@ export default {
   },
 
   pageScript: {
-    onDocumentStart: async () => {},
+    onClick: async () => {
+      UfsGlobal.Utils.zipAndDownloadBlobs();
+    },
   },
 
   backgroundScript: {

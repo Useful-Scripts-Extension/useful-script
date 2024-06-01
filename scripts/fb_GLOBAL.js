@@ -2,51 +2,9 @@ import { UfsGlobal } from "./content-scripts/ufs_global.js";
 
 // NOTES: functions that end with _ are required access token
 
-// Helpers
-export async function fetchGraphQl(str, fb_dtsg) {
-  fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
-  fb_dtsg += str.includes("variables")
-    ? "&" + str
-    : "&q=" + encodeURIComponent(str);
-
-  let res = await fetch("https://www.facebook.com/api/graphql/", {
-    body: fb_dtsg,
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    credentials: "include",
-  });
-
-  let json = await res.json();
-  return json;
-}
-export function decodeArrId(arrId) {
-  return arrId[0] * 4294967296 + arrId[1];
-}
-export async function getFbdtsg() {
-  let methods = [
-    () => require("DTSGInitData").token,
-    () => require("DTSG").getToken(),
-    () => {
-      return document.documentElement.innerHTML.match(
-        /"DTSGInitialData",\[],{"token":"(.+?)"/
-      )[1];
-    },
-    async () => {
-      let res = await fetch("https://mbasic.facebook.com/photos/upload/");
-      let text = await res.text();
-      return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
-    },
-    () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
-  ];
-  for (let m of methods) {
-    try {
-      let d = await m();
-      if (d) return d;
-    } catch (e) {}
-  }
-  return null;
-}
-// User Data
+// =============================================================================
+// ================================= User Data =================================
+// =============================================================================
 export function getUserAvatarFromUid(uid) {
   return `https://graph.facebook.com/${uid}/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 }
@@ -161,121 +119,10 @@ export async function getUidFromUrl(url) {
   }
   return null;
 }
-// Story
-export function getStoryBucketIdFromURL(url) {
-  return url.match(/stories\/(\d+)\//)?.[1];
-}
-export function getStoryId() {
-  const htmlStory = document.getElementsByClassName(
-    "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
-  );
-  return htmlStory[htmlStory.length - 1].getAttribute("data-id");
-}
-export async function getStoryInfo(bucketID, fb_dtsg) {
-  // Source: https://pastebin.com/CNvUxpfc
-  let body = new URLSearchParams();
-  body.append("__a", 1);
-  body.append("fb_dtsg", fb_dtsg);
-  body.append(
-    "variables",
-    JSON.stringify({
-      bucketID: bucketID,
-      initialLoad: false,
-      scale: 1,
-    })
-  );
-  body.append("doc_id", 2586853698032602);
 
-  let res = await fetch("https://www.facebook.com/api/graphql/", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: body,
-    credentials: "include",
-  });
-
-  let json = await res.json();
-  console.log(json);
-  let data = json?.data?.bucket;
-
-  if (!data) throw new Error("Không lấy được data");
-  return {
-    storyId: data.id,
-    author: {
-      id: data.owner.id,
-      name: data.owner.name,
-      avatar: data.owner.profile_picture.uri,
-      avatarURL: data.owner.url,
-    },
-    Objects: data.unified_stories.edges.map((_, i) => {
-      return {
-        pictureBlurred:
-          data.unified_stories.edges[i].node.attachments[0].media.blurredImage
-            .uri,
-        picturePreview:
-          data.unified_stories.edges[i].node.attachments[0].media.previewImage
-            .uri,
-        totalReaction:
-          data.unified_stories.edges[i].node.story_card_info.feedback_summary
-            .total_reaction_count,
-        backgroundCss:
-          data.unified_stories.edges[i].node.story_default_background.color,
-        backgroundCss3:
-          data.unified_stories.edges[i].node.story_default_background.gradient
-            .css,
-        ...(data.unified_stories.edges[i].node.attachments[0].media
-          .__typename == "Photo"
-          ? {
-              caption:
-                data.unified_stories.edges[i].node.attachments[0].media
-                  .accessibility_caption,
-              image:
-                data.unified_stories.edges[i].node.attachments[0].media.image
-                  .uri,
-            }
-          : data.unified_stories.edges[i].node.attachments[0].media
-              .__typename == "Video"
-          ? {
-              permanlinkUrl:
-                data.unified_stories.edges[i].node.attachments[0].media
-                  .permalink_url,
-              playableVideo:
-                data.unified_stories.edges[i].node.attachments[0].media
-                  .playable_url,
-              playableUrlDash:
-                data.unified_stories.edges[0].node.attachments[0].media
-                  .playable_url_dash,
-              playableUrlHDString:
-                data.unified_stories.edges[i].node.attachments[0].media
-                  .playableUrlHdString,
-              playableUrlHD:
-                data.unified_stories.edges[i].node.attachments[0].media
-                  .playable_url_quality_hd,
-            }
-          : null),
-      };
-    }),
-  };
-
-  // let data =
-  //   "__a=1&fb_dtsg=" +
-  //   dtsg +
-  //   "&variables=%7B%22bucketID%22%3A%22" +
-  //   bucketID +
-  //   "%22%2C%22initialLoad%22%3Afalse%2C%22scale%22%3A1%7D&doc_id=2586853698032602";
-
-  // let xhr = new XMLHttpRequest();
-  // xhr.withCredentials = true;
-  // xhr.addEventListener("readystatechange", function () {
-  //   if (this.readyState === 4) {
-
-  //   }
-  // });
-
-  // xhr.open("POST", "https://www.facebook.com/api/graphql/");
-  // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  // xhr.send(body);
-}
-// Friend
+// =============================================================================
+// =================================== Friend ==================================
+// =============================================================================
 export async function removeFriendConfirm(friend_uid, uid, fb_dtsg) {
   let f = new FormData();
   f.append("uid", friend_uid);
@@ -390,7 +237,10 @@ export async function fetchAllAddedFriendsSince(
   }
   return allFriends;
 }
-// Messages
+
+// =============================================================================
+// ================================= Messages ==================================
+// =============================================================================
 export async function messagesCount(fb_dtsg) {
   return await fetchGraphQl(
     `viewer(){
@@ -425,7 +275,10 @@ export async function messagesCount(fb_dtsg) {
     fb_dtsg
   );
 }
-// Page
+
+// =============================================================================
+// =================================== Page ====================================
+// =============================================================================
 export async function unlikePage(pageId, uid, fb_dtsg) {
   let f = new FormData();
   f.append("fbpage_id", pageId);
@@ -518,7 +371,10 @@ export async function searchAllPageForOther(
   }
   return allPages;
 }
-// Group
+
+// =============================================================================
+// =================================== Group ===================================
+// =============================================================================
 export async function leaveGroup(groupId, uid, fb_dtsg) {
   let f = new FormData();
   f.append("fb_dtsg", fb_dtsg);
@@ -617,4 +473,168 @@ export async function searchAllGroupForOther(
     console.log("ERROR search all group for other", e);
   }
   return allGroups;
+}
+
+// =============================================================================
+// ================================== Helpers ==================================
+// =============================================================================
+export async function fetchGraphQl(str, fb_dtsg) {
+  fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
+  fb_dtsg += str.includes("variables")
+    ? "&" + str
+    : "&q=" + encodeURIComponent(str);
+
+  let res = await fetch("https://www.facebook.com/api/graphql/", {
+    body: fb_dtsg,
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    credentials: "include",
+  });
+
+  let json = await res.json();
+  return json;
+}
+export function decodeArrId(arrId) {
+  return arrId[0] * 4294967296 + arrId[1];
+}
+export async function getFbdtsg() {
+  let methods = [
+    () => require("DTSGInitData").token,
+    () => require("DTSG").getToken(),
+    () => {
+      return document.documentElement.innerHTML.match(
+        /"DTSGInitialData",\[],{"token":"(.+?)"/
+      )[1];
+    },
+    async () => {
+      let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+      let text = await res.text();
+      return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
+    },
+    () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
+  ];
+  for (let m of methods) {
+    try {
+      let d = await m();
+      if (d) return d;
+    } catch (e) {}
+  }
+  return null;
+}
+
+// =============================================================================
+// =================================== Story ===================================
+// =============================================================================
+export function getStoryBucketIdFromURL(url) {
+  return url.match(/stories\/(\d+)\//)?.[1];
+}
+export function getStoryId() {
+  const htmlStory = document.getElementsByClassName(
+    "xh8yej3 x1n2onr6 xl56j7k x5yr21d x78zum5 x6s0dn4"
+  );
+  return htmlStory[htmlStory.length - 1].getAttribute("data-id");
+}
+export async function getStoryInfo(bucketID, fb_dtsg) {
+  // Source: https://pastebin.com/CNvUxpfc
+  let body = new URLSearchParams();
+  body.append("__a", 1);
+  body.append("fb_dtsg", fb_dtsg);
+  body.append(
+    "variables",
+    JSON.stringify({
+      bucketID: bucketID,
+      initialLoad: false,
+      scale: 1,
+    })
+  );
+  body.append("doc_id", 2586853698032602);
+
+  let res = await fetch("https://www.facebook.com/api/graphql/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body,
+    credentials: "include",
+  });
+
+  let json = await res.json();
+  console.log(json);
+  let data = json?.data?.bucket;
+
+  if (!data) throw new Error("Không lấy được data");
+  return {
+    storyId: data.id,
+    author: {
+      id: data.owner.id,
+      name: data.owner.name,
+      avatar: data.owner.profile_picture.uri,
+      avatarURL: data.owner.url,
+    },
+    Objects: data.unified_stories.edges.map((_, i) => {
+      return {
+        pictureBlurred:
+          data.unified_stories.edges[i].node.attachments[0].media.blurredImage
+            .uri,
+        picturePreview:
+          data.unified_stories.edges[i].node.attachments[0].media.previewImage
+            .uri,
+        totalReaction:
+          data.unified_stories.edges[i].node.story_card_info.feedback_summary
+            .total_reaction_count,
+        backgroundCss:
+          data.unified_stories.edges[i].node.story_default_background.color,
+        backgroundCss3:
+          data.unified_stories.edges[i].node.story_default_background.gradient
+            .css,
+        ...(data.unified_stories.edges[i].node.attachments[0].media
+          .__typename == "Photo"
+          ? {
+              caption:
+                data.unified_stories.edges[i].node.attachments[0].media
+                  .accessibility_caption,
+              image:
+                data.unified_stories.edges[i].node.attachments[0].media.image
+                  .uri,
+            }
+          : data.unified_stories.edges[i].node.attachments[0].media
+              .__typename == "Video"
+          ? {
+              permanlinkUrl:
+                data.unified_stories.edges[i].node.attachments[0].media
+                  .permalink_url,
+              playableVideo:
+                data.unified_stories.edges[i].node.attachments[0].media
+                  .playable_url,
+              playableUrlDash:
+                data.unified_stories.edges[0].node.attachments[0].media
+                  .playable_url_dash,
+              playableUrlHDString:
+                data.unified_stories.edges[i].node.attachments[0].media
+                  .playableUrlHdString,
+              playableUrlHD:
+                data.unified_stories.edges[i].node.attachments[0].media
+                  .playable_url_quality_hd,
+            }
+          : null),
+      };
+    }),
+  };
+
+  // let data =
+  //   "__a=1&fb_dtsg=" +
+  //   dtsg +
+  //   "&variables=%7B%22bucketID%22%3A%22" +
+  //   bucketID +
+  //   "%22%2C%22initialLoad%22%3Afalse%2C%22scale%22%3A1%7D&doc_id=2586853698032602";
+
+  // let xhr = new XMLHttpRequest();
+  // xhr.withCredentials = true;
+  // xhr.addEventListener("readystatechange", function () {
+  //   if (this.readyState === 4) {
+
+  //   }
+  // });
+
+  // xhr.open("POST", "https://www.facebook.com/api/graphql/");
+  // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // xhr.send(body);
 }

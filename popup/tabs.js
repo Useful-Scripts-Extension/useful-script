@@ -340,6 +340,7 @@ const tabs = [
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
       {
+        id: "fb_openSaved",
         icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
         name: {
           en: "View your facebook saved",
@@ -403,7 +404,7 @@ const tabs = [
         },
       },
       {
-        id: "fb_changeLanguage",
+        id: "fb_openChangeLanguage",
         icon: '<i class="fa-solid fa-language fa-lg"></i>',
         name: {
           en: "Change language Facebook",
@@ -416,6 +417,21 @@ const tabs = [
         popupScript: {
           onClick: () =>
             window.open("https://www.facebook.com/settings/?tab=language"),
+        },
+      },
+      {
+        id: "fb_openAccountHacked",
+        icon: '<i class="fa-solid fa-skull fa-lg"></i>',
+        name: {
+          en: "Recover fb account",
+          vi: "Khôi phục tài khoản fb",
+        },
+        description: {
+          en: "Your fb account has been hacked? Facebook can help you.",
+          vi: "Tài khoản fb của bạn bị hack? Facebook có thể giúp bạn.",
+        },
+        popupScript: {
+          onClick: () => window.open("https://fb.com/hacked"),
         },
       },
     ],
@@ -642,6 +658,7 @@ const tabs = [
           en: "FastDoc - Convert PDF/Photo to Word/Excel",
           vi: "FastDoc - Chuyển PDF/Ảnh sang Word/Excel",
         },
+        badges: [BADGES.recommend],
         description: {
           en: "Convert Photos & PDF to Excel, Word, Searchable PDF for free",
           vi: "Chuyển đổi hình ảnh và pdf sang Excel, Word, Searchable PDF miễn phí",
@@ -661,6 +678,7 @@ const tabs = [
           en: "Compress PDF, PDF Converter, PPT to PDF, PDF to PPT, JPG to PDF, PDF to JPG, Excel to PDF, PDF to Excel, Edit PDF, PDF Reader, Number Pages, Delete PDF Pages, Rotate PDF, Word to PDF, PDF to Word, Merge PDF, Split PDF, eSign PDF, Unlock PDF, Protect PDF, PDF Scanner",
           vi: "Giảm dung lượng PDF, Chuyển đổi PDF, PPT sang PDF, PDF sang PPT, JPG sang PDF, PDF sang JPG, Excel sang PDF, PDF sang Excel, Chỉnh sửa PDF, Trình đọc PDF, Số trang, Xóa các trang PDF, Xoay PDF, Word sang PDF, PDF sang Word, Ghép PDF, Cắt PDF, Ký tên PDF, Mở khóa PDF, Bảo vệ PDF, Máy quét PDF",
         },
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () => window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
         },
@@ -676,6 +694,7 @@ const tabs = [
           en: "Free PDF converter online service: Merge PDF, Split PDF, Compress PDF, PDF to Word, PDF to PPT, PDF to Excel, Word to PDF, Excel to PDF, PPT to PDF, PDF to JPG, JPG to PDF, PDF to HTML, HTML to PDF, Unlock PDF, Protect PDF, Rotate PDF, Crop PDF, Delete pages, Add page numbers, Watermark PDF",
           vi: "Công cụ chuyển đổi PDF online miễn phí: Ghép file PDF, Tách file PDF, Nén file PDF, PDF sang Word, PDF sang PPT, PDF sang Excel, Word sang PDF, Excel sang PDF, PPT sang PDF, PDF sang JPG, JPG sang PDF, PDF sang HTML, HTML sang PDF, Mở khóa PDF, Khóa file PDF, Xoay file PDF,  Cắt file PDF, Xóa trang PDF, Đánh số trang PDF, Chèn watermark",
         },
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () => window.open("https://pdfstuff.com/"),
         },

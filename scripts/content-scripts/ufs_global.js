@@ -38,6 +38,7 @@ export const UfsGlobal = {
     injectCssFile,
     getTrustedPolicy,
     createTrustedHtml,
+    createTrustedScript,
     executeScript,
     injectScriptSrc,
     injectScriptSrcAsync,
@@ -805,6 +806,7 @@ function injectCssCode(code) {
   if ("textContent" in css) css.textContent = code;
   else css.innerText = code;
   (document.head || document.documentElement).appendChild(css);
+  return css;
 }
 function injectCssFile(filePath, id) {
   let css = document.createElement("link");
@@ -813,6 +815,7 @@ function injectCssFile(filePath, id) {
   css.setAttribute("href", filePath);
   if (id) css.setAttribute("id", id);
   (document.head || document.documentElement).appendChild(css);
+  return css;
 }
 function getTrustedPolicy() {
   let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
@@ -829,9 +832,17 @@ function createTrustedHtml(html) {
   let policy = getTrustedPolicy();
   return policy.createHTML(html);
 }
-function executeScript(code) {
+function createTrustedScript(code) {
   let policy = getTrustedPolicy();
   return policy.createScript(code);
+}
+function executeScript(code) {
+  let script = document.createElement("script");
+  script.textContent = createTrustedScript(code);
+  (document.head || document.documentElement).appendChild(script);
+  script.onload = function () {
+    script.remove();
+  };
 }
 function injectScriptSrc(src, callback) {
   let policy = getTrustedPolicy();
@@ -845,12 +856,13 @@ function injectScriptSrc(src, callback) {
   };
   script.src = jsSrc; // Assigning the TrustedScriptURL to src
   (document.head || document.documentElement).appendChild(script);
+  return script;
 }
 function injectScriptSrcAsync(src) {
   return new Promise((resolve, reject) => {
-    injectScriptSrc(src, (success, e) => {
+    let script = injectScriptSrc(src, (success, e) => {
       if (success) {
-        resolve();
+        resolve(script);
       } else {
         reject(e);
       }
@@ -1066,15 +1078,13 @@ function strBetween(s, front, back, trim = false) {
 }
 async function json2xml(json) {
   if (!window.json2xml) {
-    let url = await getURL("/scripts/libs/xml-json/json2xml.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/xml-json/json2xml.js");
   }
   return window.json2xml(json);
 }
 async function xml2json(xml) {
   if (!window.xml2json) {
-    let url = await getURL("/scripts/libs/xml-json/xml2json.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/xml-json/xml2json.js");
   }
   return window.xml2json(xml);
 }
@@ -1143,8 +1153,7 @@ function getResolutionCategory(width, height) {
 async function saveAs(url_blob_file, title = "download", options = {}) {
   try {
     if (!window.saveAs) {
-      let url = await getURL("/scripts/libs/file-saver/index.js");
-      await injectScriptSrcAsync(url);
+      await import("../libs/file-saver/index.js");
     }
 
     window.saveAs(url_blob_file, title, options);
@@ -1716,10 +1725,10 @@ async function zipAndDownloadBlobs(
   successCallback
 ) {
   if (!window.JSZip) {
-    let url = await getURL("/scripts/libs/jzip/index.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/jzip/index.js");
   }
   const zip = new window.JSZip();
+  console.log(zip);
 
   // Add each Blob to the ZIP archive with a unique name
   blobList.forEach(({ blob, fileName }, index) => {
