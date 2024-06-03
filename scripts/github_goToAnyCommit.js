@@ -3,8 +3,8 @@ import { BADGES } from "./helpers/badge.js";
 export default {
   icon: `<i class="fa-solid fa-code-branch fa-lg"></i>`,
   name: {
-    en: "Go to any commit",
-    vi: "Đi tới commit bất kỳ",
+    en: "Github - Go to any commit",
+    vi: "Github - Đi tới commit bất kỳ",
   },
   description: {
     en: "Go to any commit of github repo. Included first commit.",

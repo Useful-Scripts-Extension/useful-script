@@ -166,3 +166,4 @@ export { default as fb_detectUnfriend } from "./fb_detectUnfriend.js";
 export { default as fb_blockSeenAndTyping } from "./fb_blockSeenAndTyping.js";
 export { default as medium_fixVietnameseFont } from "./medium_fixVietnameseFont.js";
 export { default as fb_blockSeenStory } from "./fb_blockSeenStory.js";
+export { default as github_openRepoPages } from "./github_openRepoPages.js";
