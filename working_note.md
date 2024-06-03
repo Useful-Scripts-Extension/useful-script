@@ -2,6 +2,8 @@
 
 ## 28/04/2024 - 29/05/2024
 
+- [ ] puppeteer sử dụng only backgroundScript?
+
 - [ ] datatables js <https://github.com/fiduswriter/Simple-DataTables>
 
 - [x] chặn request bằng ajax hook => Gây lỗi facebook => không ổn định, bỏ
