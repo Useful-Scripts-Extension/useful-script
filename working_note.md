@@ -1,10 +1,16 @@
 # WORKING NOTES
 
-## 28/04/2024 - 29/05/2024
+## 30/05/2024 - ?
+
+- [ ] pdf to markdown <https://github.com/VikParuchuri/marker>
+
+- [ ] extract color from image <https://lokeshdhakar.com/projects/color-thief/>
 
 - [ ] puppeteer sử dụng only backgroundScript?
 
 - [ ] datatables js <https://github.com/fiduswriter/Simple-DataTables>
+
+## 28/04/2024 - 29/05/2024
 
 - [x] chặn request bằng ajax hook => Gây lỗi facebook => không ổn định, bỏ
 
