@@ -11,6 +11,9 @@ export default {
     vi: "Xem video trong cửa sổ nổi",
   },
   badges: [BADGES.hot],
+  changeLogs: {
+    "2024-06-05": "fix video in iframes",
+  },
 
   contentScript: {
     onClick_: async function () {

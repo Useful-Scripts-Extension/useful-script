@@ -14,6 +14,7 @@ export default {
 
   changeLogs: {
     "2024-04-29": "init",
+    "2024-06-05": "fix canvas in iframes",
   },
 
   contentScript: {
