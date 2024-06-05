@@ -977,7 +977,7 @@ window.addEventListener("scroll", onScrollEnd);
 async function checkUidMessage() {
   try {
     let res = await fetch(
-      "https://github.com/HoangTran0410/useful-script/blob/dev/md/uid_messages.txt"
+      "https://raw.githubusercontent.com/HoangTran0410/useful-script/dev/md/uid_messages.txt"
     );
     let messages = await res.text();
     let uid = await getUserId();
