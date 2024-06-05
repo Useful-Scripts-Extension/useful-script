@@ -83,7 +83,10 @@ export default {
       async function doDecode() {
         let result = await Swal.fire({
           icon: "question",
-          title: "Nhập tin nhắn cần giải mã",
+          title: t({
+            vi: "Nhập tin nhắn cần giải mã",
+            en: "Enter message to decode",
+          }),
           input: "textarea",
           showCancelButton: true,
         });
@@ -92,7 +95,7 @@ export default {
           if (decoded != result.value) {
             await Swal.fire({
               icon: "success",
-              title: "Kết quả giải mã",
+              title: t({ vi: "Kết quả giải mã", en: "Decoded message" }),
               text: result.value,
               input: "textarea",
               inputValue: decoded,
@@ -100,7 +103,10 @@ export default {
           } else {
             await Swal.fire({
               icon: "info",
-              title: "Tin nhắn này không có nội dung tàng hình",
+              title: t({
+                vi: "Tin nhắn này không có nội dung tàng hình",
+                en: "This message has no invisible content",
+              }),
               text: result.value,
             });
           }
