@@ -18,7 +18,7 @@ export default {
 
   contentScript: {
     // https://stackoverflow.com/a/61301293/23648002
-    onClick: async () => {
+    onClick_: async () => {
       if (!window.ufs_pip_fullWebsite) {
         window.ufs_pip_fullWebsite = {
           isPIP: false,
@@ -62,7 +62,6 @@ export default {
         const largestCanvas = findLargestCanvasInViewport();
 
         if (!largestCanvas) {
-          alert("Không tìm thấy canvas nào");
           leavePIP();
           return;
         }
