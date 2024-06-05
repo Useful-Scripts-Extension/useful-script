@@ -507,9 +507,9 @@ const tabs = [
       s.unshorten,
       s.createInvisibleText,
       createTitle("--- Automation ---", "--- Tự động ---"),
-      s.scrollToVeryEnd,
       s.screenshotFullPage,
       s.webToPDF,
+      s.scrollToVeryEnd,
       s.getAllEmailsInWeb,
       s.dino_hack,
       s.passwordGenerator,
@@ -536,27 +536,6 @@ const tabs = [
           onClick: () => window.open("https://it-tools.tech/"),
         },
       },
-
-      {
-        id: "recommend_cssportal",
-        icon: "https://www.cssportal.com/favicon.ico",
-        name: {
-          en: "CSS Portal - Empowered your CSS skills",
-          vi: "CSS Portal - Nâng trình CSS",
-        },
-        description: {
-          en: "Empowered your CSS skills with hundreds of CSS tools.",
-          vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
-        },
-        badges: [BADGES.recommend],
-        popupScript: {
-          onClick: () =>
-            window.open(
-              "https://www.cssportal.com/css-animated-text-generator/"
-            ),
-        },
-      },
-
       // https://copyicon.com/generator/svg-chart
       {
         id: "recommend_copyicon",
@@ -793,6 +772,11 @@ const tabs = [
     ...CATEGORY.webUI,
     scripts: [
       createTitle("--- Hot ---", "--- Nổi bật ---"),
+      s.darkModePDF,
+      s.toggleEditPage,
+      s.showFPS,
+      s.showFps_v2,
+      s.toggle_passwordField,
       {
         id: "recommend_DarkReader",
         icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
@@ -809,11 +793,41 @@ const tabs = [
             ),
         },
       },
-      s.darkModePDF,
-      s.toggleEditPage,
-      s.showFPS,
-      s.showFps_v2,
-      s.toggle_passwordField,
+      {
+        id: "recommend_cssportal",
+        icon: "https://www.cssportal.com/favicon.ico",
+        name: {
+          en: "CSS Portal - Empowered your CSS skills",
+          vi: "CSS Portal - Nâng trình CSS",
+        },
+        description: {
+          en: "Empowered your CSS skills with hundreds of CSS tools.",
+          vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.cssportal.com/css-animated-text-generator/"
+            ),
+        },
+      },
+      {
+        id: "recommend_uiverse",
+        icon: "https://uiverse.io/favicon.ico",
+        name: {
+          en: "UIverse - Open-Source UI elements",
+          vi: "UIverse - Tổng hợp code UI xịn",
+        },
+        description: {
+          en: "Open-Source UI elements for any project.",
+          vi: "Tổng hợp code UI mã nguồn mở cho mọi trang web.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://uiverse.io/"),
+        },
+      },
       createTitle("--- View ---", "--- Xem ---"),
       {
         id: "recommend_fontRendering",

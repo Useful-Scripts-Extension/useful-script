@@ -626,7 +626,7 @@ function createPreview(
   if (exist) exist.remove();
 
   // container
-  const overlay = document.createElement("div");
+  let overlay = document.createElement("div");
   overlay.id = id;
   overlay.innerHTML = `
     <div class="ufs-img-anim" style="top: ${y}px; left: ${x}px;"></div>

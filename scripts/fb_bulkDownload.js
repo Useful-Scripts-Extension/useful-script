@@ -14,11 +14,7 @@ export default {
 
   popupScript: {
     onClick: () => {
-      Swal.fire({
-        icon: "info",
-        title: "Coming soon",
-      });
-      // window.open(chrome.runtime.getURL("scripts/fb_bulkDownload.html"));
+      window.open("/scripts/fb_bulkDownload.html");
     },
   },
 };
