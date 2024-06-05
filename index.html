@@ -8,7 +8,15 @@
 </head>
 
 <body>
-  <h1>ABC def</h1>
+  <a href="https://google.com">google.com</a>
+
+  <script>
+    let a = document.querySelector('a');
+    a.onclick = (e) => {
+      e.preventDefault();
+      window.open("https://example.com")
+    }
+  </script>
 </body>
 
 </html>
