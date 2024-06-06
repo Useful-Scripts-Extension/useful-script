@@ -17,9 +17,13 @@ export function getBiggestMediaFromNode(node) {
   }
 }
 export function getUniversalCdnUrl(cdnLink) {
-  const cdn = new URL(cdnLink);
-  cdn.host = "scontent.cdninstagram.com";
-  return cdn.href;
+  try {
+    const cdn = new URL(cdnLink);
+    cdn.host = "scontent.cdninstagram.com";
+    return cdn.href;
+  } catch (e) {
+    return cdnLink;
+  }
 }
 export async function getAllMedia({ uid, progressCallback, limit = 0 }) {
   let all_urls = [];
