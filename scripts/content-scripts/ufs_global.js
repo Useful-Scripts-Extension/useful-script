@@ -586,7 +586,10 @@ function onDoublePress(key, callback, timeout = 500) {
   let clickCount = 0;
 
   const keyup = (event) => {
-    if (event.key !== key) return;
+    if (event.key !== key) {
+      clickCount = 0;
+      return;
+    }
 
     clickCount++;
     if (clickCount === 2) {
