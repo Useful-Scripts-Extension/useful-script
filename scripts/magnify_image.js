@@ -125,7 +125,7 @@ export default {
       window.addEventListener("mouseover", (e) => {
         let srcs = getImgSrcsFromElement(e.target);
         if (!srcs?.length) {
-          div.classList.toggle("hide", true);
+          div.classList.toggle("hide", e.target !== div);
           return;
         }
 

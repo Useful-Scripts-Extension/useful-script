@@ -197,7 +197,7 @@
   opacity: 1;
 }
 
-#ufs-magnify-image-hover-div.hide {
+#ufs-magnify-image-hover-div.hide:not(:hover) {
   opacity: 0;
   transition: all 0.2s 2s ease;
 }
