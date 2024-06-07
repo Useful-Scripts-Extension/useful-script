@@ -12,22 +12,32 @@ export default {
     Where you are able to zoom in/out, rotate, drag, and more.<br/>
     Auto find large version of image to show.
     <br/></br>
-    <p style="color:yellow">3 ways to use:</p>
+    <p style="color:yellow">4 ways to use:</p>
+    Using now:
     <ol>
-      <li>Right click in website</li>
+      <li>Right click in website > click magnify image</li>
       <li>Left click this feature then click image</li>
-      <li>Double Ctrl on any image (require autorun)</li>
+    </ol>
+    After turn-on auto-run:
+    <ol>
+      <li>Hover on any image/video > click magnify button</li>
+      <li>Double Ctrl on any image</li>
     </ol>
     `,
     vi: `Xem bất kỳ hình ảnh nào trong cửa sổ phóng đại<br/>
     Nơi bạn có thể phóng to/thu nhỏ, xoay, kéo thả, ...<br/>
     Tự động tìm ảnh chất lượng cao để hiển thị.
     <br/></br>
-    <p style="color:yellow">3 cách sử dụng:</p>
+    <p style="color:yellow">4 cách sử dụng:</p>
+    Dùng ngay:
     <ol>
-      <li>Chuột phải vào trang web</li>
+      <li>Chuột phải vào ảnh/trang web > chọn magnify image</li>
       <li>Click chức năng rồi click chọn ảnh</li>
-      <li>Ctrl 2 lần vào ảnh (cần mở tự động chạy)</li>
+    </ol>
+    Cần mở tự chạy:
+    <ol>
+      <li>Đưa chuột vào ảnh/video > bấm nút phóng to</li>
+      <li>Ctrl 2 lần vào ảnh</li>
     </ol>`,
     img: "",
   },
@@ -36,7 +46,8 @@ export default {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",
     "2024-05-21": "not reqire autorun",
-    "2024-06-07": "support video frame + right click anywhere",
+    "2024-06-07":
+      "support video frame + right click anywhere + magnify on hover",
   },
 
   popupScript: {
