@@ -10,7 +10,6 @@ export default {
     en: "View VIP document on Scribd.com, bypass preview popup / reveal blurred content.",
     vi: "Xem tài liệu VIP trên Scribd.com, loại bỏ popup chặn xem trước, loại bỏ hiệu ứng làm mờ.",
   },
-  blackList: [],
   whiteList: ["https://www.scribd.com/*"],
 
   contentScript: {

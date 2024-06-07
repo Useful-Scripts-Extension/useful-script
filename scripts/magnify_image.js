@@ -45,7 +45,7 @@ export default {
   changeLogs: {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",
-    "2024-05-21": "not reqire autorun",
+    "2024-05-21": "not require autorun",
     "2024-06-07":
       "support video frame + right click anywhere + magnify on hover",
   },

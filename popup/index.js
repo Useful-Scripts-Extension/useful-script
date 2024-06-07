@@ -357,10 +357,13 @@ function createScriptButton(script, isFavorite = false) {
   }
   if (script.changeLogs) {
     let tx = "";
-    let dates = Object.keys(script.changeLogs).sort();
-    for (let date of dates) {
-      tx += `<li>${date} - ${script.changeLogs[date]}</li>`;
-    }
+    let dates = Object.keys(script.changeLogs).sort().reverse();
+    let lastDate = dates[0];
+    if (lastDate) tx += `<li>${lastDate} - ${script.changeLogs[lastDate]}</li>`;
+
+    // for (let date of dates) {
+    // tx += `<li>${date} - ${script.changeLogs[date]}</li>`;
+    // }
     tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
   }
   button.appendChild(more);
@@ -485,22 +488,25 @@ async function runScript(script) {
       });
     }
   } else {
-    let w = script?.whiteList?.join("<br/>");
-    let b = script?.blackList?.join("<br/>");
+    let text = "";
+    [
+      [script?.whiteList, t({ vi: "Chỉ chạy tại", en: "Only run at" })],
+      [script?.blackList, t({ vi: "Không chạy tại", en: "Not run at" })],
+    ].forEach(([list, title]) => {
+      if (list?.length) {
+        text += `${title}:<br/>
+        <ul>
+          ${list.map((_) => "<li><i>" + _ + "</i></li>").join("")}
+        </ul><br/>`;
+      }
+    });
 
     openModal(
       t({
         en: `Script not supported in current website`,
         vi: `Script không hỗ trợ website hiện tại`,
       }),
-      t({
-        en:
-          `${w ? `+ Only run at:  <i>${w}</i>` : ""}<br />` +
-          `${b ? `+ Not run at:  <i>${b}</i>` : ""}`,
-        vi:
-          `${w ? `+ Chỉ chạy tại:  <i>${w}</i>` : ""}<br />` +
-          `${b ? `+ Không chạy tại:  <i>${b}</i>` : ""}`,
-      })
+      text
     );
   }
 }
