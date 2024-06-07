@@ -14,8 +14,8 @@ export default {
     <br/></br>
     <p style="color:yellow">3 ways to use:</p>
     <ol>
-      <li>Right click any image</li>
-      <li>Left click this feature and choose image</li>
+      <li>Right click in website</li>
+      <li>Left click this feature then click image</li>
       <li>Double Ctrl on any image (require autorun)</li>
     </ol>
     `,
@@ -25,8 +25,8 @@ export default {
     <br/></br>
     <p style="color:yellow">3 cách sử dụng:</p>
     <ol>
-      <li>Chuột phải vào ảnh</li>
-      <li>Click chức năng và click chọn ảnh</li>
+      <li>Chuột phải vào trang web</li>
+      <li>Click chức năng rồi click chọn ảnh</li>
       <li>Ctrl 2 lần vào ảnh (cần mở tự động chạy)</li>
     </ol>`,
     img: "",
@@ -36,6 +36,7 @@ export default {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",
     "2024-05-21": "not reqire autorun",
+    "2024-06-07": "support video frame + right click anywhere",
   },
 
   popupScript: {
@@ -78,7 +79,11 @@ export default {
     // expose for background script to call
     _createPreview: (details) => {
       injectCss();
-      createPreview(details?.srcUrl);
+      if (details?.srcUrl) {
+        createPreview(details?.srcUrl);
+      } else {
+        magnifyImage();
+      }
     },
 
     onDocumentStart: async () => {
@@ -95,8 +100,9 @@ export default {
     runtime: {
       onInstalled: () => {
         chrome.contextMenus.create({
-          title: "Magnify this image",
-          contexts: ["image"],
+          title: "Magnify image",
+          // contexts: ["image", "video"],
+          contexts: ["all"],
           id: "ufs-magnify-image",
         });
       },
@@ -104,6 +110,7 @@ export default {
     contextMenus: {
       onClicked: (info, context) => {
         context.utils.trackEvent("magnify-image-CONTEXT-MENU");
+        console.log(info);
         /*
       {
         "editable": false,
@@ -117,6 +124,7 @@ export default {
     } */
         if (info.menuItemId == "ufs-magnify-image") {
           context.utils.getCurrentTab().then((tab) => {
+            if (!tab) return;
             context.utils.runScriptInTabWithEventChain({
               target: {
                 tabId: tab.id,
@@ -155,41 +163,41 @@ function validateMouse(x, y) {
 }
 
 function magnifyImage(x, y) {
-  let ctrlMouse = { x, y };
+  let mouse = validateMouse(x, y);
   let removeLoading,
     loaded = false;
 
   setTimeout(() => {
     if (!loaded)
       removeLoading = UfsGlobal.DOM.addLoadingAnimationAtPos(
-        ctrlMouse.x,
-        ctrlMouse.y,
+        mouse.x,
+        mouse.y,
         40,
         "",
         `background: #eee9;`
       );
   }, 100);
 
-  getImagesAtMouse().then((imgs) => {
+  getImagesAtPos(x, y).then((imgs) => {
     loaded = true;
     removeLoading?.();
 
-    if (!imgs.length) {
+    if (!imgs?.length) {
       UfsGlobal.DOM.notify({
         msg: "Useful-script: No image found",
-        x: ctrlMouse.x,
-        y: ctrlMouse.y,
+        x: mouse.x,
+        y: mouse.y,
         align: "left",
       });
-    } else if (imgs.length === 1) {
+    } else if (imgs?.length === 1) {
       console.log(imgs);
       let src = imgs[0].src;
-      createPreview(src, ctrlMouse.x, ctrlMouse.y);
+      createPreview(src, mouse.x, mouse.y);
     } else {
       chooseImg(
         imgs.map((img) => img.src),
-        ctrlMouse.x,
-        ctrlMouse.y
+        mouse.x,
+        mouse.y
       );
     }
   });
@@ -298,6 +306,16 @@ function getImgSrcsFromElement(ele) {
       if (/canvas/i.test(ele.tagName)) {
         return ele.toDataURL();
       }
+      if (/video/i.test(ele.tagName)) {
+        // get current capture frame
+        let canvas = document.createElement("canvas");
+        canvas.width = ele.videoWidth;
+        canvas.height = ele.videoHeight;
+        canvas.getContext("2d").drawImage(ele, 0, 0);
+        let dataURL = canvas.toDataURL();
+        canvas.remove();
+        return dataURL;
+      }
     },
   ];
 
@@ -358,18 +376,18 @@ async function filterImageSrcs(eleSrcs) {
   }
 }
 
-async function getImagesAtMouse() {
+async function getImagesAtPos(x, y) {
   let eles = Array.from(document.querySelectorAll("*"));
 
-  let mouse = UfsGlobal.DOM.getMousePos();
+  let pos = validateMouse(x, y);
   let sourceEles = [];
   eles = eles.reverse().filter((ele) => {
     let rect = ele.getBoundingClientRect();
     let isAtMouse =
-      rect.left <= mouse.x &&
-      rect.right >= mouse.x &&
-      rect.top <= mouse.y &&
-      rect.bottom >= mouse.y;
+      rect.left <= pos.x &&
+      rect.right >= pos.x &&
+      rect.top <= pos.y &&
+      rect.bottom >= pos.y;
     if (isAtMouse && /picture|img/i.test(ele.tagName)) {
       let sources = Array.from(ele.querySelectorAll("source"));
       if (sources?.length) sourceEles = sourceEles.concat(sources);
@@ -414,7 +432,7 @@ async function getImagesAtMouse() {
 
   // filter out video
   results = results.filter(({ ele, src }) => {
-    return !/video/i.test(ele.tagName) && !/iframe/i.test(ele.tagName);
+    return !/iframe/i.test(ele.tagName);
   });
 
   // results = await filterImageSrcs(results);
