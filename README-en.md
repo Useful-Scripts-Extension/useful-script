@@ -49,7 +49,7 @@ Current Versions:
 
 ## ScreenShots
 
-<div style="display:flex">
+<div style="display:flex;flex-direction:row">
 
 ![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)
 
