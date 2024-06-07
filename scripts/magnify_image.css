@@ -173,3 +173,31 @@
   background-color: #fffa;
   border-radius: 50%;
 }
+
+#ufs-magnify-image-hover-div {
+  position: fixed;
+  top: -100vh;
+  left: -100vw;
+  width: 15px;
+  height: 15px;
+  z-index: 99999999;
+  background-color: #3339;
+  border: 1px #eee9 solid;
+  transition: all 0.2s ease;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#ufs-magnify-image-hover-div:hover {
+  background-color: #eee9;
+  border: 1px #3339 solid;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+}
+
+#ufs-magnify-image-hover-div.hide {
+  opacity: 0;
+  transition: all 0.2s 2s ease;
+}

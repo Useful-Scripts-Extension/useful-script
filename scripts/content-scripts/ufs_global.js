@@ -124,11 +124,9 @@ function sendToContentScript(event, data) {
   return new Promise((resolve, reject) => {
     let uuid = Math.random().toString(36); // uuid to distinguish events
     let listenerKey = "ufs-contentscript-sendto-pagescript" + uuid;
-    let listener = (evt) => {
-      resolve(evt.detail.data);
-      window.removeEventListener(listenerKey, listener);
-    };
-    window.addEventListener(listenerKey, listener);
+    window.addEventListener(listenerKey, (evt) => resolve(evt.detail.data), {
+      once: true,
+    });
     window.dispatchEvent(
       new CustomEvent("ufs-pagescript-sendto-contentscript", {
         detail: { event, data, uuid },
@@ -426,25 +424,26 @@ function enableDragAndZoom(element, container, onUpdateCallback) {
   };
 }
 // prettier-ignore
-function getContentClientRect(target) {
-    let rect = target.getBoundingClientRect();
-    let compStyle = window.getComputedStyle(target);
-    let pFloat = parseFloat;
-    let top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
-    let right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
-    let bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
-    let left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
-    return {
-        top : top,
-        right : right,
-        bottom : bottom,
-        left : left,
-        width : right-left,
-        height : bottom-top,
-    };
-  }
+function getContentClientRect(target, win = window) {
+  let rect = target.getBoundingClientRect();
+  let compStyle = win.getComputedStyle(target);
+  let pFloat = parseFloat;
+  let top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
+  let right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
+  let bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
+  let left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
+  return {
+      top : top,
+      right : right,
+      bottom : bottom,
+      left : left,
+      width : right-left,
+      height : bottom-top,
+  };
+}
 function dataURLToCanvas(dataurl, cb) {
   if (!dataurl) return cb(null);
+  let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
   let img = new Image();
   img.setAttribute("crossOrigin", "anonymous");

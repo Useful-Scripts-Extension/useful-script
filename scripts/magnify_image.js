@@ -86,13 +86,66 @@ export default {
       }
     },
 
-    onDocumentStart: async () => {
+    onDocumentStart_: async () => {
       injectCss();
-      let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
-        UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
-        let mouse = UfsGlobal.DOM.getMousePos();
-        magnifyImage(mouse.x, mouse.y);
+
+      let hovering = null;
+      let div = document.createElement("div");
+      div.id = "ufs-magnify-image-hover-div";
+      div.title = "Useful-script: Click to magnify";
+      div.addEventListener("click", () => {
+        if (hovering)
+          window.top.postMessage(
+            {
+              type: "ufs-magnify-image-hover",
+              data: {
+                srcs: hovering?.srcs,
+                x: hovering?.rect?.left,
+                y: hovering?.rect?.top,
+              },
+            },
+            "*"
+          );
       });
+      window.addEventListener("load", () => {
+        (document.body || document.documentElement).appendChild(div);
+      });
+
+      window.addEventListener("mouseover", (e) => {
+        let srcs = getImgSrcsFromElement(e.target);
+        if (!srcs?.length) {
+          div.classList.toggle("hide", true);
+          return;
+        }
+
+        let rect = UfsGlobal.DOM.getContentClientRect(e.target);
+        hovering = { srcs, rect };
+
+        div.style.left = rect.left + "px";
+        div.style.top = rect.top + "px";
+        div.classList.toggle("hide", false);
+      });
+
+      // only main frame
+      if (window === window.top) {
+        // ctrl
+        let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
+          UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
+          let mouse = UfsGlobal.DOM.getMousePos();
+          magnifyImage(mouse.x, mouse.y);
+        });
+
+        // hover
+        window.addEventListener("message", (e) => {
+          const { data, type } = e.data || {};
+          if (type === "ufs-magnify-image-hover") {
+            let srcs = data?.srcs;
+
+            if (srcs?.length > 1) chooseImg(srcs);
+            else if (srcs?.length === 1) createPreview(srcs[0]);
+          }
+        });
+      }
     },
   },
 
@@ -142,10 +195,12 @@ export default {
   },
 };
 
-function injectCss() {
-  let id = "ufs-magnify-image-css";
+function injectCss(
+  path = "/scripts/magnify_image.css",
+  id = "ufs-magnify-image-css"
+) {
   if (!document.querySelector("#" + id)) {
-    UfsGlobal.Extension.getURL("/scripts/magnify_image.css").then((url) => {
+    UfsGlobal.Extension.getURL(path).then((url) => {
       UfsGlobal.DOM.injectCssFile(url, id);
     });
   }
