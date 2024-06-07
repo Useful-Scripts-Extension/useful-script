@@ -1,8 +1,17 @@
+[Tiếng Việt](./README.md) | [English](./README-en.md)
+
 ![Logo](/assets/icon128.png)
 
 # Useful scripts - Chrome extension
 
-[Tiếng Việt](./README.md)
+- [Useful scripts - Chrome extension](#useful-scripts---chrome-extension)
+  - [Overview](#overview)
+  - [Change logs](#change-logs)
+  - [ScreenShots](#screenshots)
+  - [Install](#install)
+  - [For developer (Demo)](#for-developer-demo)
+  - [Contribute](#contribute)
+  - [Learn](#learn)
 
 Donate? For better health and ideas <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 

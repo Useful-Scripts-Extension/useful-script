@@ -1,8 +1,17 @@
+[Tiếng Việt](./README.md) | [English](./README-en.md)
+
 ![Logo](/assets/icon128.png)
 
 # Useful scripts - Chrome extension
 
-[English](./README-en.md)
+- [Useful scripts - Chrome extension](#useful-scripts---chrome-extension)
+  - [Giới thiệu](#giới-thiệu)
+  - [Phiên bản](#phiên-bản)
+  - [Ảnh chụp màn hình](#ảnh-chụp-màn-hình)
+  - [Cài đặt](#cài-đặt)
+  - [Dành cho dev (Demo)](#dành-cho-dev-demo)
+  - [Contribute](#contribute)
+  - [Kiến thức hay](#kiến-thức-hay)
 
 Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
