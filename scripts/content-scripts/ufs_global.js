@@ -147,7 +147,7 @@ function runInBackground(fnPath, params) {
     params,
   });
 }
-function fetchByPassOrigin(url, options = {}) {
+async function fetchByPassOrigin(url, options = {}) {
   try {
     let _url = url;
     let urlObject = new URL(url);
@@ -155,11 +155,11 @@ function fetchByPassOrigin(url, options = {}) {
     if (location.hostname == urlObject?.hostname) {
       _url = urlObject.pathname;
     }
-    return fetch(_url, options);
+    return await fetch(_url, options);
   } catch (e) {
     console.log("NORMAL FETCH FAIL: ", e);
   }
-  return runInBackground("fetch", [url]);
+  return await runInBackground("fetch", [url]);
 }
 function getURL(filePath) {
   return runInContentScript("chrome.runtime.getURL", [filePath]);
