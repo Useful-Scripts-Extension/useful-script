@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] search by google image/lens <https://chromewebstore.google.com/detail/disable-google-lens/dkapjhgpncbeiebegegdbpgfoabdkilh>
+
 - [ ] pdf to markdown <https://github.com/VikParuchuri/marker>
 
 - [ ] extract color from image <https://lokeshdhakar.com/projects/color-thief/>

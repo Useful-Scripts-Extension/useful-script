@@ -105,7 +105,7 @@ export default {
       div.id = "ufs-magnify-image-hover-div";
       div.title = "Useful-script: Click to magnify";
       div.addEventListener("click", () => {
-        if (hovering)
+        if (hovering) {
           window.top.postMessage(
             {
               type: "ufs-magnify-image-hover",
@@ -117,6 +117,7 @@ export default {
             },
             "*"
           );
+        }
       });
       window.addEventListener("load", () => {
         (document.body || document.documentElement).appendChild(div);
@@ -130,7 +131,7 @@ export default {
         }
 
         let rect = UfsGlobal.DOM.getContentClientRect(e.target);
-        hovering = { srcs, rect };
+        hovering = { srcs, rect, target: e.target };
 
         div.style.left = rect.left + "px";
         div.style.top = rect.top + "px";
@@ -205,6 +206,25 @@ export default {
     },
   },
 };
+
+const defaultSearchData = `Google lens | https://lens.google.com/uploadbyurl?url=#t#
+Google image | https://www.google.com/searchbyimage?safe=off&sbisrc=1&image_url=#t#
+Yandex | https://yandex.com/images/search?source=collections&rpt=imageview&url=#t#
+SauceNAO | https://saucenao.com/search.php?db=999&url=#t#
+IQDB | https://iqdb.org/?url=#t#
+3D IQDB | https://3d.iqdb.org/?url=#t#
+Baidu | https://graph.baidu.com/details?isfromtusoupc=1&tn=pc&carousel=0&promotion_name=pc_image_shituindex&extUiData%5bisLogoShow%5d=1&image=#t#
+Bing | https://www.bing.com/images/search?view=detailv2&iss=sbi&form=SBIVSP&sbisrc=UrlPaste&q=imgurl:#t#
+TinEye | https://www.tineye.com/search?url=#t#
+Sogou | https://pic.sogou.com/ris?query=#t#
+360 | http://st.so.com/stu?imgurl=#t#
+WhatAnime | https://trace.moe/?url=#t#
+Ascii2D | https://ascii2d.net/search/url/#t#
+Trace Moe | https://trace.moe/?url=#t#
+KarmaDecay | http://karmadecay.com/#t#
+QRCode decode | https://zxing.org/w/decode?full=true&u=#t#
+QRCode | https://hoothin.com/qrcode/##t#
+ImgOps | https://imgops.com/#b#`;
 
 function injectCss(
   path = "/scripts/magnify_image.css",
@@ -734,7 +754,18 @@ function createPreview(
       <div class="ufs-btn" ufs_title="Rotate left">↺</div>
       <div class="ufs-btn" ufs_title="Rotate right">↻</div>
       <div class="ufs-btn" ufs_title="Open in new tab">↗</div>
-      <div class="ufs-btn" ufs_title="Download">⤓</div>
+      <div class="ufs-btn" ufs_title="Download">⬇️</div>
+      <div class="ufs-btn ufs-dropdown-menu" ufs_title="">🔎 Search by image
+        <ul>
+        ${defaultSearchData
+          .split("\n")
+          .map((s) => {
+            let [title, url] = s.split(" | ");
+            return `<li class="ufs-btn" data-url="${url}">${title}</li>`;
+          })
+          .join("")}
+        </ul>
+      </div>
       <div class="ufs-desc"></div>
     </div>
   `;
@@ -754,6 +785,7 @@ function createPreview(
     rotateRight,
     openNewTab,
     download,
+    search,
   ] = Array.from(toolbar.querySelectorAll(".ufs-btn"));
   const desc = toolbar.querySelector(".ufs-desc");
 
@@ -945,6 +977,20 @@ function createPreview(
       window.open(img.src, "_blank");
     }
   };
+  search.querySelectorAll("li.ufs-btn").forEach((li) => {
+    li.onclick = async (e) => {
+      e.preventDefault();
+      let src = img.src;
+      let imgurl = encodeURIComponent(src);
+      let imgurl_b = src.replace(/https?:\/\//i, "");
+      let url = li.getAttribute("data-url");
+      window.open(
+        url.replace("#b#", imgurl_b).replace("#t#", imgurl),
+        "_blank",
+        "width=1024, height=768, toolbar=1"
+      );
+    };
+  });
   download.onclick = () => {
     UfsGlobal.Extension.download({ url: img.src });
   };
