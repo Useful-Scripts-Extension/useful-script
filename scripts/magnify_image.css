@@ -129,14 +129,6 @@
   user-select: none;
 }
 
-.ufs-btn:first-of-type {
-  border-radius: 0 0 0 5px;
-}
-
-.ufs-btn:last-of-type {
-  border-radius: 0 0 5px 0;
-}
-
 .ufs-btn:hover {
   background: #555d;
 }
@@ -188,17 +180,19 @@
   position: absolute;
   top: 100%;
   left: 0;
+  width: 100%;
   margin: 0;
   border-radius: 0 0 5px 5px;
   list-style: none;
-  transition: all 0.1s ease;
   height: 0;
   opacity: 0;
   overflow: hidden;
+  transition: all 0.2s ease;
 }
 
 #ufs-magnify-image .ufs-dropdown-menu ul li {
   padding: 5px;
+  text-align: left;
 }
 
 #ufs-magnify-image-hover-div {

@@ -64,9 +64,10 @@ export default {
             function makeUI(dislikeCount = 0) {
               // dislike text
               let className = "yt-spec-button-shape-next__button-text-content";
-              let exist = button.querySelector(className);
-              if (exist) {
-                exist.textContent = numberFormat(dislikeCount);
+              let exists = Array.from(button.querySelectorAll(className));
+              if (exists?.length) {
+                exists[0].textContent = numberFormat(dislikeCount);
+                for (let i = 1; i < exists.length; i++) exists[i].remove();
               } else {
                 let dislikeText = document.createElement("div");
                 dislikeText.classList.add(className);
