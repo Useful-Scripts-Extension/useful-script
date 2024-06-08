@@ -141,23 +141,28 @@ export default {
     contextMenus: {
       onClicked: ({ info, tab }, context) => {
         if (info.parentMenuItemId === "create-invisible-text") {
-          let text = info.selectionText || info.linkUrl;
-          if (text) {
-            let res =
-              info.menuItemId === "encode"
-                ? encode("hidden: >" + text + "<")
-                : decode(text);
+          let original = info.selectionText || info.linkUrl;
+          if (original) {
+            let action = info.menuItemId;
+            let result =
+              action === "encode" ? _encode(original) : decode(original);
             chrome.scripting.executeScript({
               target: { tabId: tab.id },
-              func: (text) => {
+              func: (action, original, result) => {
                 try {
-                  navigator.clipboard.writeText(text);
+                  navigator.clipboard.writeText(result);
                 } catch (err) {
                   console.log("Failed to copy text to clipboard:", err);
                 }
-                prompt(`Useful Script - Invisible text - copy to use:`, text);
+                const maxLen = 100;
+                if (original?.length > maxLen)
+                  original = original.slice(0, maxLen) + "…";
+                prompt(
+                  `Useful Script - Invisible text - ${action}:\n\nValue:\n${original}\n\nResult: (copy to use)`,
+                  result
+                );
               },
-              args: [res],
+              args: [action, original, result],
             });
           }
         }
