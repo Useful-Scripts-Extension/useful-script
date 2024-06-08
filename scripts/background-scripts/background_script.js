@@ -462,8 +462,12 @@ function main() {
   listenMessage();
   listenWindows();
 
-  chrome.contextMenus.onClicked.addListener(async (info) => {
-    runScriptsBackground("contextMenus.onClicked", null, info, true);
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    let parent = info.parentMenuItemId;
+    parent = parent === "root" ? "" : parent + ".";
+    utils.trackEvent(parent + info.menuItemId + "-CONTEXT-MENU");
+
+    runScriptsBackground("contextMenus.onClicked", null, { info, tab }, true);
   });
 
   chrome.runtime.onStartup.addListener(async function () {
@@ -479,6 +483,13 @@ function main() {
     // create new unique id and save it
     await setUserId();
     trackEvent("ufs-INSTALLED");
+
+    // create root item in context menu
+    chrome.contextMenus.create({
+      id: "root",
+      title: "Useful Script",
+      contexts: ["all"],
+    });
 
     runScriptsBackground("runtime.onInstalled", null, reason, true);
   });

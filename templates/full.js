@@ -153,6 +153,9 @@ export default {
       onStartup: (nil, context) => {},
       onMessage: ({ request, sender, sendResponse }, context) => {},
     },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {},
+    },
     webNavigation: {
       onCreatedNavigationTarget: (details, context) => {},
       onHistoryStateUpdated: (details, context) => {},

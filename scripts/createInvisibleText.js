@@ -114,6 +114,56 @@ export default {
       }
     },
   },
+  backgroundScript: {
+    runtime: {
+      onInstalled: (reason, context) => {
+        const folder_id = "create-invisible-text";
+        const contexts = ["selection", "link", "editable"];
+        [
+          {
+            id: folder_id,
+            title: "Invisible text",
+            contexts,
+            parentId: "root",
+          },
+          { id: "encode", title: "Encode", contexts, parentId: folder_id },
+          { id: "decode", title: "Decode", contexts, parentId: folder_id },
+        ].forEach((item) => {
+          chrome.contextMenus.create({
+            title: item.title,
+            contexts: item.contexts,
+            id: item.id,
+            parentId: item.parentId,
+          });
+        });
+      },
+    },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {
+        if (info.parentMenuItemId === "create-invisible-text") {
+          let text = info.selectionText || info.linkUrl;
+          if (text) {
+            let res =
+              info.menuItemId === "encode"
+                ? encode("hidden: >" + text + "<")
+                : decode(text);
+            chrome.scripting.executeScript({
+              target: { tabId: tab.id },
+              func: (text) => {
+                try {
+                  navigator.clipboard.writeText(text);
+                } catch (err) {
+                  console.log("Failed to copy text to clipboard:", err);
+                }
+                prompt(`Useful Script - Invisible text - copy to use:`, text);
+              },
+              args: [res],
+            });
+          }
+        }
+      },
+    },
+  },
 };
 
 const PADDING_START = "\u200c";

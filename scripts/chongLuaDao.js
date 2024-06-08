@@ -103,8 +103,15 @@ export default {
     },
 
     runtime: {
-      onInStalled: (reason, context) => {
+      onInstalled: (reason, context) => {
         saveBgCache();
+
+        chrome.contextMenus.create({
+          title: "Chong Lua Dao",
+          type: "normal",
+          id: "chongLuaDao",
+          parentId: "root",
+        });
       },
       onStartup: (nil, context) => {
         saveBgCache();
@@ -114,6 +121,22 @@ export default {
           saveBgCache();
         } else if (request.action == KEYS.clearCache) {
           clearBgCache();
+        }
+      },
+    },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {
+        if (info.menuItemId == "chongLuaDao") {
+          context.utils.runScriptInTabWithEventChain({
+            target: {
+              tabId: tab.id,
+              frameIds: [0],
+            },
+            scriptIds: ["chongLuaDao"],
+            eventChain: "contentScript.onClick",
+            details: info,
+            world: "ISOLATED",
+          });
         }
       },
     },

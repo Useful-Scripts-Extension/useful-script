@@ -61,5 +61,8 @@
         "path": "scripts/net-request-rules/rules.json"
       }
     ]
+  },
+  "externally_connectable": {
+    "matches": ["https://hoangtran0410.github.io/*", "http://localhost:5500/*"]
   }
 }
