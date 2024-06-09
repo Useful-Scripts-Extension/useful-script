@@ -14,7 +14,7 @@ export default {
       let ACCESS_TOKEN = prompt("Nhập access token của bạn vào đây");
       if (!ACCESS_TOKEN) return;
 
-      let id = prompt("Nhập ID của user, group, page cần lấy group id", "");
+      let id = prompt("Nhập ID của user, group, page cần lấy albums", "");
       if (!id) return;
 
       fetch(

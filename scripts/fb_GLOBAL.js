@@ -478,14 +478,36 @@ export async function searchAllGroupForOther(
 // =============================================================================
 // ================================== Helpers ==================================
 // =============================================================================
-export async function fetchGraphQl(str, fb_dtsg) {
-  fb_dtsg = "fb_dtsg=" + encodeURIComponent(fb_dtsg);
-  fb_dtsg += str.includes("variables")
-    ? "&" + str
-    : "&q=" + encodeURIComponent(str);
+export function wrapGraphQlParams(params) {
+  const formBody = [];
+  for (const property in params) {
+    const encodedKey = encodeURIComponent(property);
+    const value =
+      typeof params[property] === "string"
+        ? params[property]
+        : JSON.stringify(params[property]);
+    const encodedValue = encodeURIComponent(value);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  return formBody.join("&");
+}
+
+export async function fetchGraphQl(params, fb_dtsg) {
+  let form;
+  if (typeof params === "string")
+    form =
+      "fb_dtsg=" +
+      encodeURIComponent(fb_dtsg) +
+      "&q=" +
+      encodeURIComponent(params);
+  else
+    form = wrapGraphQlParams({
+      fb_dtsg,
+      ...params,
+    });
 
   let res = await fetch("https://www.facebook.com/api/graphql/", {
-    body: fb_dtsg,
+    body: form,
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     credentials: "include",
