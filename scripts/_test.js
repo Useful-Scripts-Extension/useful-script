@@ -12,7 +12,7 @@ export default {
   },
 
   popupScript: {
-    onClick: async () => {
+    _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
 
       let firstImgOfAlbumUrl = prompt("Enter url of album's first image", "");
@@ -345,7 +345,7 @@ export default {
   },
 
   pageScript: {
-    _onClick: async () => {
+    onClick: async () => {
       (async () => {
         function getPageId() {
           let funcs = [
@@ -609,7 +609,7 @@ export default {
               renderLocation: "permalink",
               nodeID: photo_id,
               mediasetToken: "a." + albumId,
-              scale: 1,
+              scale: 2,
               feedLocation: "COMET_MEDIA_VIEWER",
               feedbackSource: 65,
               focusCommentID: null,
@@ -625,8 +625,8 @@ export default {
             server_timestamps: true,
             doc_id: "7575853042491661",
           });
-          console.log(res);
-          return null;
+          let first = JSON.parse(res.split("\n")[0]);
+          return first.data.currMedia.image.uri;
         }
 
         async function enlargePhotos(albumPhotos, albumId) {
@@ -635,7 +635,9 @@ export default {
             try {
               let large = await enlargePhoto(photo.id, albumId);
               result.push(...large);
+              console.log("large", photo.uri, large);
             } catch (e) {
+              result.push(photo.uri);
               console.log("ERROR", e);
             }
           }
@@ -682,22 +684,6 @@ export default {
           }
           return result;
         }
-
-        // fetchGraphQl({
-        //   fb_api_req_friendly_name:
-        //     "ProfileCometAppCollectionMediaActionsMenuQuery",
-        //   variables: {
-        //     feed_location: "COMET_MEDIA_VIEWER",
-        //     id: "UzpfSTEwMDA1MzU0NzE0MzIxNDpWSzoxMDIzNDA3ODIyNzg3NDQ2",
-        //     scale: 1,
-        //   },
-        //   server_timestamps: true,
-        //   doc_id: "25670776369237611",
-        // })
-        //   .then(console.log)
-        //   .catch(console.log);
-
-        // return;
 
         const id = getPageId();
         if (!id) {
@@ -769,7 +755,9 @@ export default {
                   },
                 });
                 console.log(result2);
-                result.push(...result2);
+                const largest = await enlargePhotos(result2, album.id);
+                console.log(largest);
+                result.push(...largest);
               }
 
               console.log(result);
