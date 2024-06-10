@@ -694,6 +694,7 @@ function isSameOrigin(url) {
 }
 
 function matchOneOfPatterns(url, patterns) {
+  if (!patterns?.length) return false;
   for (let pattern of patterns) {
     const regex = new RegExp(
       "^" +

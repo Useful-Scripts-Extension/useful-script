@@ -76,8 +76,11 @@ export default [
   {
     name: "font gstatic",
     src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
-    r: /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)/,
-    s: "$1/512.$2",
+    r: [
+      /(https?:\/\/.*)\/\d+.(png|jpg)/,
+      /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)/,
+    ],
+    s: ["$1/512.$2"],
   },
   {
     name: "artstation",
