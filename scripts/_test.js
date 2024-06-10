@@ -12,6 +12,57 @@ export default {
   },
 
   popupScript: {
+    onClick: async () => {
+      const { openWebAndRunScript } = await import("./helpers/utils.js");
+
+      let firstImgOfAlbumUrl = prompt("Enter url of album's first image", "");
+      if (!firstImgOfAlbumUrl) return;
+
+      let res = await openWebAndRunScript({
+        url: firstImgOfAlbumUrl,
+        waitUntilLoadEnd: true,
+        closeAfterRunScript: true,
+        func: async () => {
+          return await new Promise((resolve) => {
+            resolve("abc");
+            return;
+            let result = new Map();
+            let end = UfsGlobal.DOM.onElementsAdded(
+              '[data-visualcompletion="media-vc-image"]',
+              async (eles) => {
+                try {
+                  let id = location.href.match(/\?fbid=(\d+)/)?.[1];
+                  let img = eles[0];
+                  if (id && img) {
+                    console.log(img.src);
+                    result.set(id, img.src);
+                  }
+                  let nextImgBtn = document.querySelector(
+                    '[aria-label="Ảnh tiếp theo"]'
+                  );
+                  if (nextImgBtn) {
+                    nextImgBtn.click();
+                  } else {
+                    end();
+                    let isFail = document.body.textContent.match(
+                      "Rất tiếc, nội dung này hiện chưa thể hiển thị"
+                    );
+                    console.log("fail", isFail);
+                    resolve({ result, hasNext: isFail });
+                  }
+                } catch (e) {
+                  alert(e);
+                  console.log(e);
+                  resolve({ result, hasNext: false });
+                }
+              }
+            );
+          });
+        },
+      });
+      console.log(res);
+      alert(res);
+    },
     // fake window update screen
     _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
@@ -294,7 +345,7 @@ export default {
   },
 
   pageScript: {
-    onClick: async () => {
+    _onClick: async () => {
       (async () => {
         function getPageId() {
           let funcs = [
@@ -430,38 +481,48 @@ export default {
         }
 
         async function fetchAlbumPhotosFromCursor({
-          albumId,
           cursor,
+          albumId,
           access_token,
         }) {
-          let url = encodeURI(
-            `https://graph.facebook.com/v20.0/${albumId}?fields=photos{largest_image}&access_token=${access_token}`
-          );
-          if (cursor) url += `&after=${cursor}`;
-          const data = await fetch(url);
-          const json = await data.json();
-          if (!json) return null;
-          return {
-            imgData:
-              json.photos?.data?.map((_) => ({
-                id: _.id,
-                url: _.largest_image.source,
-              })) || [],
-            nextCursor: json.photos?.paging?.cursors?.after || null,
-          };
+          for (let _ of [
+            `https://graph.facebook.com/v20.0/${albumId}/photos?fields=largest_image{source}&limit=100&access_token=${access_token}`,
+            `https://graph.facebook.com/v20.0/${albumId}?fields=photos{largest_image{source}}&limit=25&access_token=${access_token}`,
+          ]) {
+            let url = encodeURI(_);
+            if (cursor) url += `&after=${cursor}`;
+            console.log(url);
+            const res = await fetch(url);
+            const json = await res.json();
+            console.log("json", json);
+            const root = json?.photos || json;
+            if (!json || !root?.data?.length) {
+              continue;
+            }
+            return {
+              imgData:
+                root?.data?.map((_) => ({
+                  id: _.id,
+                  url: _.largest_image.source,
+                })) || [],
+              nextCursor: root?.paging?.cursors?.after || null,
+            };
+          }
         }
         async function fetchAlbumPhotos({
           albumId,
           access_token,
           pageLimit = Infinity,
           fromPhotoId = null,
-          pageFetchedCallback = async () => {},
+          progress = async () => {},
         }) {
           let currentPage = 1;
           let hasNextCursor = true;
           let nextCursor = fromPhotoId
             ? Buffer.from(fromPhotoId).toString("base64")
             : null;
+
+          let photIds = new Set();
           let allImgsData = [];
           while (hasNextCursor && currentPage <= pageLimit) {
             const data = await fetchAlbumPhotosFromCursor({
@@ -470,11 +531,18 @@ export default {
               cursor: nextCursor,
             });
             if (data?.imgData) {
-              allImgsData.push(...data.imgData);
-              await pageFetchedCallback(data.imgData, allImgsData.length);
+              let added = false;
+              for (let img of data.imgData) {
+                if (!photIds.has(img.id)) {
+                  added = true;
+                  photIds.add(img.id);
+                  allImgsData.push(img);
+                }
+              }
+              await progress(photIds.size);
 
               nextCursor = data.nextCursor;
-              hasNextCursor = nextCursor != null;
+              hasNextCursor = added && nextCursor != null;
               currentPage++;
             } else {
               console.log("[!] ERROR.");
@@ -482,27 +550,6 @@ export default {
             }
           }
           return allImgsData;
-        }
-        async function fetchAllPhotoLinksInAlbum({
-          albumId,
-          fromPhotoId,
-          access_token,
-          progress,
-        }) {
-          const from_text = fromPhotoId
-            ? "vị trí photo_id=" + fromPhotoId
-            : "đầu album";
-          console.log(`ĐANG TẢI DỮ LIỆU ALBUM ${albumId} TỪ ${from_text}...`);
-          const result = await fetchAlbumPhotos({
-            albumId,
-            fromPhotoId,
-            access_token,
-            pageFetchedCallback: (pageImgsData, total) => {
-              // result.push(...pageImgsData.map((_) => _.url));
-              progress?.(total);
-            },
-          });
-          return result;
         }
 
         function downloadData(data, filename) {
@@ -552,28 +599,6 @@ export default {
 
           let json = await res.text();
           return json;
-        }
-
-        async function _enlargePhoto(photo_creation_id) {
-          let res = await fetchGraphQl({
-            __a: 1,
-            dpr: 1,
-            jazoest: 25336,
-            fb_api_caller_class: "RelayModern",
-            fb_api_req_friendly_name:
-              "ProfileCometAppCollectionMediaActionsMenuQuery",
-            variables: {
-              feed_location: "COMET_MEDIA_VIEWER",
-              id: photo_creation_id,
-              scale: 1,
-            },
-            server_timestamps: true,
-            doc_id: "25670776369237611",
-          });
-          console.log(res);
-          return res.data.node.nfx_action_menu_items
-            .find((_) => _.__typename === "PhotoDownloadMenuItem")
-            .story.attachments.map((at) => at.media.download_link);
         }
 
         async function enlargePhoto(photo_id, albumId) {
@@ -724,12 +749,12 @@ export default {
               // console.log(result2);
               // return;
 
-              const result = await fetchAllPhotoLinksInAlbum({
+              const result = await fetchAlbumPhotos({
                 access_token,
                 albumId: album.id,
-                fromPhotoId: lastPhotoId,
-                progress: (current) => {
-                  console.log(`Đang tải ${current}/${album.count}...`);
+                fromPhotoId: null,
+                progress: (loaded) => {
+                  console.log(`Đang tải ${loaded}/${album.count}...`);
                 },
               });
 
