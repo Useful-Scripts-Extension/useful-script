@@ -347,6 +347,18 @@ export default {
   pageScript: {
     onClick: async () => {
       (async () => {
+        function getGroupId() {
+          let found = /(?<=\/groups\/)(.\d+?)($|(?=\/)|(?=&))/.exec(
+            location.href
+          )?.[0];
+          if (found) return found;
+          const list_a = document.querySelectorAll("a");
+          for (let a of Array.from(list_a)) {
+            let found = /(?<=\/groups\/)(.\d+?)(?=\/user\/)/.exec(a.href)?.[0];
+            if (found) return found;
+          }
+          return null;
+        }
         function getPageId() {
           let funcs = [
             () =>
@@ -487,7 +499,7 @@ export default {
         }) {
           for (let _ of [
             `https://graph.facebook.com/v20.0/${albumId}/photos?fields=largest_image{source}&limit=100&access_token=${access_token}`,
-            `https://graph.facebook.com/v20.0/${albumId}?fields=photos{largest_image{source}}&limit=25&access_token=${access_token}`,
+            // `https://graph.facebook.com/v20.0/${albumId}?fields=photos{largest_image{source}}&limit=25&access_token=${access_token}`,
           ]) {
             let url = encodeURI(_);
             if (cursor) url += `&after=${cursor}`;
@@ -629,10 +641,12 @@ export default {
           return first.data.currMedia.image.uri;
         }
 
-        async function enlargePhotos(albumPhotos, albumId) {
+        async function enlargePhotos(albumPhotos, albumId, progress) {
           let result = [];
-          for (let photo of albumPhotos) {
+          for (let i = 0; i < albumPhotos.length; i++) {
             try {
+              let photo = albumPhotos[i];
+              progress?.(i, albumPhotos.length);
               let large = await enlargePhoto(photo.id, albumId);
               result.push(...large);
               console.log("large", photo.uri, large);
@@ -685,19 +699,8 @@ export default {
           return result;
         }
 
-        const id = getPageId();
-        if (!id) {
-          alert(
-            "Không tìm thấy page id, Vui lòng mở 1 page trên facebook trước."
-          );
-          return;
-        }
-
-        alert(
-          'Đang tải ảnh của page: "' +
-            id +
-            '". Quá trình tải diễn ra trong console'
-        );
+        const id = prompt("Nhập user/page/group id muốn tải:");
+        if (!id) return;
 
         let options = [2, 1];
         for (let i = 0; i < options.length; i++) {
@@ -707,16 +710,7 @@ export default {
             let access_token = await getToken(option);
             // console.log(access_token);
 
-            const albums = [
-              {
-                type: "wall",
-                name: "Ảnh trên dòng thời gian",
-                count: 45771,
-                link: "https://www.facebook.com/album.php?fbid=775458280915736&id=100053547143214&aid=1073741826",
-                created_time: "2023-04-03T08:24:13+0000",
-                id: "775458280915736",
-              },
-            ]; //await getAllAlbums(id, access_token);
+            const albums = await getAllAlbums(id, access_token);
             if (!albums?.length) throw new Error("Không tìm thấy album nào");
 
             console.log(albums);
@@ -724,16 +718,6 @@ export default {
             const allResult = [];
             for (let album of albums) {
               console.log("Đang tải album...", album);
-
-              // const result2 = await downloadAlbum({
-              //   albumId: album.id,
-              //   // cursor: btoa(result[result.length - 1].id),
-              //   progress: (current) => {
-              //     console.log(`Đang tải ${current}/${album.count}...`);
-              //   },
-              // });
-              // console.log(result2);
-              // return;
 
               const result = await fetchAlbumPhotos({
                 access_token,
@@ -755,7 +739,15 @@ export default {
                   },
                 });
                 console.log(result2);
-                const largest = await enlargePhotos(result2, album.id);
+                const largest = await enlargePhotos(
+                  result2,
+                  album.id,
+                  (current) => {
+                    console.log(
+                      `Đang tải ảnh lớn ${current}/${result2.length}...`
+                    );
+                  }
+                );
                 console.log(largest);
                 result.push(...largest);
               }

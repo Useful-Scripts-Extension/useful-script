@@ -2,7 +2,9 @@
 
 ## 30/05/2024 - ?
 
-- [ ] search by google image/lens <https://chromewebstore.google.com/detail/disable-google-lens/dkapjhgpncbeiebegegdbpgfoabdkilh>
+- [x] down fb album <https://chromewebstore.google.com/detail/esuit-photos-downloader-f/djlgfdiljlmbcfimhkeenolnndblfmoo>
+
+- [x] search by google image/lens <https://chromewebstore.google.com/detail/disable-google-lens/dkapjhgpncbeiebegegdbpgfoabdkilh>
 
 - [ ] pdf to markdown <https://github.com/VikParuchuri/marker>
 
@@ -18,7 +20,7 @@
 
 - [x] bài viết hay về js import <https://viblo.asia/p/js-modules-bao-nhieu-kieu-khai-bao-lam-sao-nho-het-gGJ59AY15X2>
 
-- [ ] detect screenshot <https://stackoverflow.com/questions/67916474/how-do-you-detect-a-screen-shot-with-js>
+- [x] detect screenshot <https://stackoverflow.com/questions/67916474/how-do-you-detect-a-screen-shot-with-js> => bypass Stream DRM
 
 - [ ] options page for smooth scroll: disable for specific sites, config smooth, ...
 
