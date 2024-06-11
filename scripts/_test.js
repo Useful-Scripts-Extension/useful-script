@@ -477,7 +477,7 @@ export default {
           while (true) {
             try {
               const res = await fetch(
-                `https://graph.facebook.com/v13.0/${id}/albums?fields=type,name,count,link,created_time&limit=100&access_token=${access_token}&after=${after}`
+                `https://graph.facebook.com/v20.0/${id}/albums?fields=type,name,count,link,created_time&limit=100&access_token=${access_token}&after=${after}`
               );
               const json = await res.json();
               if (json.data) result = result.concat(json.data);
@@ -699,7 +699,7 @@ export default {
           return result;
         }
 
-        const id = prompt("Nhập user/page/group id muốn tải:");
+        const id = prompt("Nhập user/page id muốn tải:");
         if (!id) return;
 
         let options = [2, 1];

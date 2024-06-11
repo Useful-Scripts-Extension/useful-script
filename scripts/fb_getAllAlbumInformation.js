@@ -41,7 +41,7 @@ export async function fb_getAllAlbumInfos(id, access_token) {
   while (true) {
     try {
       const res = await fetch(
-        `https://graph.facebook.com/v13.0/${id}/albums?fields=type,name,count,link,created_time&limit=100&access_token=${access_token}&after=${after}`
+        `https://graph.facebook.com/v20.0/${id}/albums?fields=type,name,count,link,created_time&limit=100&access_token=${access_token}&after=${after}`
       );
       const json = await res.json();
       if (json.data) result = result.concat(json.data);

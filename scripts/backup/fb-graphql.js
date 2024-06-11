@@ -118,3 +118,56 @@ let searchPosts = {
   server_timestamps: true,
   doc_id: 5460236254084400,
 };
+
+let groupPhotoFirst = {
+  fb_api_req_friendly_name: "GroupsCometPhotosRootQueryContainerQuery",
+  variables: { groupID: "247291592389757", scale: 1, count: 8 },
+  server_timestamps: true,
+  doc_id: 5748011228634887,
+};
+
+let groupPhotos = {
+  fb_api_req_friendly_name: "GroupsCometMediaPhotosTabGridQuery",
+  variables: {
+    count: 8,
+    cursor:
+      "AQHRbtqZNHhpk2j9QZwjsm8dMQVBuATh_nfhwCF75j4OvibmWG2xkIcREvM5LKWLYtCv1OLorvPgcCZO70peCmfrQQ",
+    scale: 1,
+    id: "247291592389757",
+  },
+  server_timestamps: true,
+  doc_id: 6022153214500431,
+};
+
+let groupPost = {
+  fb_api_req_friendly_name: "GroupsCometFeedRegularStoriesPaginationQuery",
+  variables: {
+    count: 3,
+    cursor:
+      "Cg8TZXhpc3RpbmdfdW5pdF9jb3VudAIFDwtyZWFsX2N1cnNvcg+XQVFIUk1GODRaY2w0NDRXZEtReG0xcUI4WmRGMV9LVHc3LXh5SEUxemFxTVQyV1hqQzdfV3oxTHg3WXpxem9nRXdwWDNTbWRjcU1sRi1KaTU4cklWTEVHV2xBOmV5SXdJam94TnpFNE1USTJNRFEzTENJeElqb3pOVGcyTENJeklqb3hMQ0kwSWpveExDSTFJam95ZlE9PQ8TaGVhZGVyX2dsb2JhbF9jb3VudAIBDxJtYWluX2ZlZWRfcG9zaXRpb24CBQ8NZmVlZF9vcmRlcmluZw8bcmFua2VkX2ludGVyZXN0X2NvbW11bml0aWVzDxNpc19ldmVyZ3JlZW5fY3Vyc29yEQAPImlzX29mZmxpbmVfYWdncmVnYXRlZF9wb3N0c19jdXJzb3IRAA8SZ3JvdXBfZmVlZF92ZXJzaW9uDwJWMg8QZGVtb3RlZF9wb3N0X2lkcwoBAQ==",
+    feedLocation: "GROUP",
+    feedType: "DISCUSSION",
+    feedbackSource: 0,
+    focusCommentID: null,
+    privacySelectorRenderLocation: "COMET_STREAM",
+    renderLocation: "group",
+    scale: 1,
+    sortingSetting: "TOP_POSTS",
+    stream_initial_count: 1,
+    useDefaultActor: false,
+    useGroupFeedWithEntQL_EXPERIMENTAL: false,
+    id: "247291592389757",
+    __relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider: false,
+    __relay_internal__pv__IsWorkUserrelayprovider: false,
+    __relay_internal__pv__IsMergQAPollsrelayprovider: false,
+    __relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider: false,
+    __relay_internal__pv__CometUFIShareActionMigrationrelayprovider: false,
+    __relay_internal__pv__CometIsAdaptiveUFIEnabledrelayprovider: false,
+    __relay_internal__pv__IncludeCommentWithAttachmentrelayprovider: true,
+    __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
+    __relay_internal__pv__StoriesRingrelayprovider: false,
+    __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
+  },
+  server_timestamps: true,
+  doc_id: 8234098703285800,
+};
