@@ -967,14 +967,13 @@ function createPreview(
   search.querySelectorAll("li.ufs-btn").forEach((li) => {
     li.onclick = async (e) => {
       e.preventDefault();
-      let src = img.src;
-      let imgurl = encodeURIComponent(src);
-      let imgurl_b = src.replace(/https?:\/\//i, "");
-      let url = li.getAttribute("data-url");
       window.open(
-        url.replace("#b#", imgurl_b).replace("#t#", imgurl),
+        li
+          .getAttribute("data-url")
+          .replace("#b#", img.src.replace(/https?:\/\//i, ""))
+          .replace("#t#", encodeURIComponent(img.src)),
         "_blank",
-        "width=1024, height=768, toolbar=1"
+        "width=1024, height=768, toolbar=1, menubar=1, titlebar=1"
       );
     };
   });

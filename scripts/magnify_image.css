@@ -122,6 +122,7 @@
   cursor: pointer;
   padding: 10px;
   margin: 0;
+  line-height: 100%;
   background-color: #111d;
   z-index: 1;
   min-width: 10px;
