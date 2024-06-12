@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] find chrome extension with Id <https://superuser.com/a/1475146>
+
 - [x] down fb album <https://chromewebstore.google.com/detail/esuit-photos-downloader-f/djlgfdiljlmbcfimhkeenolnndblfmoo>
 
 - [x] search by google image/lens <https://chromewebstore.google.com/detail/disable-google-lens/dkapjhgpncbeiebegegdbpgfoabdkilh>
