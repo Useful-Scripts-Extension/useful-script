@@ -38,8 +38,7 @@ export default {
               );
               if (!label) return;
               let text = numberFormat(dislikeCount);
-              if (label.textContent === text) return;
-              label.textContent = text;
+              if (label.textContent != text) label.textContent = text;
             }
 
             let videoId = getVideoId();
@@ -62,26 +61,24 @@ export default {
             if (!button) return;
 
             function makeUI(dislikeCount = 0) {
-              // dislike text
               let className = "yt-spec-button-shape-next__button-text-content";
-              let exists = Array.from(button.querySelectorAll(className));
-              if (exists?.length) {
-                exists[0].textContent = numberFormat(dislikeCount);
-                for (let i = 1; i < exists.length; i++) exists[i].remove();
+              let exist = button.querySelector(className);
+              if (exist) {
+                exist.textContent = numberFormat(dislikeCount);
               } else {
                 let dislikeText = document.createElement("div");
                 dislikeText.classList.add(className);
                 dislikeText.textContent = numberFormat(dislikeCount);
                 button.appendChild(dislikeText);
-                UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
-                  makeUI(dislikeCount)
+                listeners.push(
+                  UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
+                    makeUI(dislikeCount)
+                  )
                 );
               }
 
               // fix button style
               button.style.width = "auto";
-
-              // fix dislike icon style
               const dislikeIcon = button.querySelector(
                 ".yt-spec-button-shape-next__icon"
               );
@@ -99,6 +96,7 @@ export default {
       function run() {
         // remove all pre listeners
         listeners.forEach((fn) => fn?.());
+        listeners = []; // Reset listeners array after clearing
 
         if (isShorts()) listeners.push(listenShort());
         else listeners.push(listenVideo());
@@ -172,8 +170,6 @@ function isInViewport(element) {
   const height = innerHeight || document.documentElement.clientHeight;
   const width = innerWidth || document.documentElement.clientWidth;
   return (
-    // When short (channel) is ignored, the element (like/dislike AND short itself) is
-    // hidden with a 0 DOMRect. In this case, consider it outside of Viewport
     !(rect.top == 0 && rect.left == 0 && rect.bottom == 0 && rect.right == 0) &&
     rect.top >= 0 &&
     rect.left >= 0 &&
@@ -181,14 +177,12 @@ function isInViewport(element) {
     rect.right <= width
   );
 }
+
 function isVideoLoaded() {
   const videoId = getVideoId();
   return (
-    // desktop: spring 2024 UI
     document.querySelector(`ytd-watch-grid[video-id='${videoId}']`) !== null ||
-    // desktop: older UI
     document.querySelector(`ytd-watch-flexy[video-id='${videoId}']`) !== null ||
-    // mobile: no video-id attribute
     document.querySelector('#player[loading="false"]:not([hidden])') !== null
   );
 }
@@ -196,6 +190,7 @@ function isVideoLoaded() {
 function isShorts() {
   return location.pathname.startsWith("/shorts");
 }
+
 function isNewDesign() {
   return document.getElementById("comment-teaser") !== null;
 }
