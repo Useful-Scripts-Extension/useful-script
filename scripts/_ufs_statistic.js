@@ -119,6 +119,7 @@ async function onDocumentEnd() {
           }
           if (
             pre &&
+            cur.data.uid == uid &&
             cur.data.version == pre.data.version &&
             cur.data.eventName.includes("ufs-RE-INSTALLED") &&
             pre?.data?.eventName?.includes?.("ufs-INSTALLED") &&
@@ -140,6 +141,7 @@ async function onDocumentEnd() {
           }
           if (
             next &&
+            next.data.uid == uid &&
             cur.data.version == next.data.version &&
             next.data.eventName.includes("ufs-INSTALLED") &&
             cur?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
