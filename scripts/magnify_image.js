@@ -133,8 +133,10 @@ export default {
         }
 
         let rect = UfsGlobal.DOM.getContentClientRect(e.target);
-        hovering = { srcs, rect, target: e.target };
+        rect.left = Math.max(rect.left, 0);
+        rect.top = Math.max(rect.top, 0);
 
+        hovering = { srcs, rect, target: e.target };
         div.style.left = rect.left + "px";
         div.style.top = rect.top + "px";
         div.classList.toggle("hide", false);
