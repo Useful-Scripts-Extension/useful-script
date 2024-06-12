@@ -864,6 +864,9 @@ function createPreview(
     updateSize();
     updateZoom();
   };
+  img.onerror = () => {
+    UfsGlobal.DOM.notify({ msg: "Failed to load image" });
+  };
 
   zoomEle.onclick = () => {
     let w = img.naturalWidth,
