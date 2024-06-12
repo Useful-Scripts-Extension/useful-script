@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "",
   name: {
@@ -9,6 +11,7 @@ export default {
     vi: "",
     img: "",
   },
+  badges: [BADGES.comingSoon],
 
   changeLogs: {
     date: "description",

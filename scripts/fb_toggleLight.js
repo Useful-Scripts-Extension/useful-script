@@ -4,8 +4,8 @@ import { BADGES } from "./helpers/badge.js";
 export default {
   icon: `<i class="fa-solid fa-lightbulb fa-lg"></i>`,
   name: {
-    en: "Turn off light fb newfeed",
-    vi: "Tắt đèn fb newfeed",
+    en: "Turn off light facebook newfeed",
+    vi: "Tắt đèn newfeed facebook",
   },
   description: {
     en:

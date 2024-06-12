@@ -4,12 +4,12 @@ import { BADGES } from "./helpers/badge.js";
 export default {
   icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
   name: {
-    en: "Hide Newfeed facebook",
-    vi: "Ẩn Newfeed facebook",
+    en: "Hide facebook new feed",
+    vi: "Ẩn dòng thời gian facebook",
   },
   description: {
-    en: "Hide Newfeed facebook for better focus to work",
-    vi: "Ẩn Newfeed facebook để tập trung làm việc",
+    en: "Hide facebook new feed (home page) for better focus to work",
+    vi: "Ẩn dòng thời gian facebook (trang chủ) để tập trung làm việc",
   },
   badges: [BADGES.hot],
   infoLink:
