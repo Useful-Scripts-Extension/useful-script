@@ -184,3 +184,11 @@ let birthday = {
   variables: { count: 2, cursor: "2", offset_month: -1, scale: 2 },
   doc_id: "9704885789535257",
 };
+
+let onlineStatus = {
+  fb_api_req_friendly_name: "UpdateUserLastActiveMutation",
+  variables: {
+    input: { actor_id: "100004848287494", client_mutation_id: "2" },
+  },
+  doc_id: "4844391925651372",
+};

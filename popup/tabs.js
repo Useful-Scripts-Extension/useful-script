@@ -398,9 +398,25 @@ const tabs = [
           vi: "Kiểm tra nhật ký hoạt động của bạn trên facebook",
         },
         popupScript: {
+          onClick: () => window.open("https://www.facebook.com/me/allactivity"),
+        },
+      },
+      {
+        id: "fb_openVideoActivities",
+        icon: '<i class="fa-solid fa-film fa-lg"></i>',
+        name: {
+          en: "Video you watched on facebook",
+          vi: "Video bạn vừa xem trên facebook",
+        },
+        description: {
+          en: "View all videos you watched on facebook",
+          vi: "Xem lại những video bạn đã xem trên facebook",
+        },
+        badges: [BADGES.new],
+        popupScript: {
           onClick: () =>
             window.open(
-              "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
+              "https://www.facebook.com/100004848287494/allactivity?activity_history=false&category_key=VIDEOWATCH&manage_mode=false&should_load_landing_page=false"
             ),
         },
       },
@@ -424,8 +440,8 @@ const tabs = [
         id: "fb_openBirthdays",
         icon: '<i class="fa-solid fa-cake-candles fa-lg"></i>',
         name: {
-          en: "Friend's birthdays",
-          vi: "Sinh nhật bạn bè",
+          en: "Facebook friend's birthdays",
+          vi: "Sinh nhật bạn bè facebook",
         },
         description: {
           en: "View your friend's birthdays each month on facebook",
@@ -457,8 +473,8 @@ const tabs = [
         id: "fb_openAccountHacked",
         icon: '<i class="fa-solid fa-skull fa-lg"></i>',
         name: {
-          en: "Recover fb account",
-          vi: "Khôi phục tài khoản fb",
+          en: "Recover facebook account",
+          vi: "Khôi phục tài khoản facebook",
         },
         description: {
           en: "Your fb account has been hacked? Facebook can help you.",

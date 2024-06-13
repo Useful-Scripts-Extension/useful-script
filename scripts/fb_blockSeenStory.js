@@ -4,8 +4,8 @@ import { BADGES } from "./helpers/badge.js";
 export default {
   icon: '<i class="fa-solid fa-user-ninja fa-lg"></i>',
   name: {
-    en: "Fb - Block seen story",
-    vi: 'Fb - Chặn "Đã xem" story',
+    en: "Block seen story facebook",
+    vi: 'Chặn "Đã xem" story facebook',
   },
   description: {
     en: "Block 'Seen' story in facebook. Your friend will not know that you have seen his/her stories.",

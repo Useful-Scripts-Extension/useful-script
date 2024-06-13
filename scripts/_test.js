@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { fetchGraphQl } from "./fb_GLOBAL.js";
 
 export default {
   icon: "",
@@ -345,7 +346,10 @@ export default {
   },
 
   pageScript: {
-    onClick: async () => {
+    onClick: () => {
+      fetchGraphQl();
+    },
+    _onClick: async () => {
       (async () => {
         function getGroupId() {
           let found = /(?<=\/groups\/)(.\d+?)($|(?=\/)|(?=&))/.exec(

@@ -48,20 +48,27 @@ function stopNewFeed() {
       "StoriesTrayRectangularRootQuery",
       "useStoriesViewerBucketsPaginationQuery",
     ],
-    "video tab": ["CometVideoHomeFeedSectionPaginationQuery"],
-    "home tab": ["CometNewsFeedPaginationQuery"],
-    "group tab": ["GroupsCometCrossGroupFeedPaginationQuery"],
+    "video tab": [
+      "CometVideoHomeFeedRootQuery",
+      "CometVideoHomeFeedSectionPaginationQuery",
+    ],
+    "home tab": ["CometModernHomeFeedQuery", "CometNewsFeedPaginationQuery"],
+    "group tab": [
+      "GroupsCometCrossGroupFeedPaginationQuery",
+      "GroupsCometCrossGroupFeedContainerQuery",
+    ],
     "group feed": ["GroupsCometFeedRegularStoriesPaginationQuery"],
     "marketplace tab": [
       // "CometMarketplaceRootQuery",
-      "MarketplaceBannerContainerQuery",
       // "MarketplaceCometBrowseFeedLightContainerQuery",
       // "MarketplaceCometBrowseFeedLightPaginationQuery",
+      "MarketplaceBannerContainerQuery",
       "CometMarketplaceLeftRailNavigationContainerQuery",
     ],
     "event tab": [
       // "EventCometHomeDiscoverContentRefetchQuery"
     ],
+    "online status": ["UpdateUserLastActiveMutation"],
   };
 
   let enabled = true;

@@ -242,7 +242,7 @@ export async function fetchAllAddedFriendsSince(
 // ================================= Messages ==================================
 // =============================================================================
 export async function messagesCount(fb_dtsg) {
-  return await fetchGraphQl(
+  const res = await fetchGraphQl(
     `viewer(){
         message_threads {
           count,
@@ -274,6 +274,7 @@ export async function messagesCount(fb_dtsg) {
       }`.replace(/\s+/g, ""),
     fb_dtsg
   );
+  return JSON.parse(res);
 }
 
 // =============================================================================
@@ -513,7 +514,7 @@ export async function fetchGraphQl(params, fb_dtsg) {
     credentials: "include",
   });
 
-  let json = await res.json();
+  let json = await res.text();
   return json;
 }
 export function decodeArrId(arrId) {
