@@ -36,15 +36,14 @@ let gridquery = {
     scale: 1,
     id: "775458280915736",
   },
-  server_timestamps: true,
-  doc_id: 5520045484790315,
+  doc_id: "5520045484790315",
 };
 
 // photo large
 
 // fb_api_caller_class: RelayModern
 // fb_api_req_friendly_name: CometPhotoRootContentQuery
-// doc_id: 7575853042491661
+// doc_id: '7575853042491661'
 
 let photo = {
   isMediaset: true,
@@ -73,8 +72,7 @@ let a = {
     id: "UzpfSTEwMDA1MzU0NzE0MzIxNDpWSzoxMDIzNDA3ODIyNzg3NDQ2",
     scale: 1,
   },
-  server_timestamps: true,
-  doc_id: 25670776369237611,
+  doc_id: "25670776369237611",
 };
 
 // search posts
@@ -115,15 +113,13 @@ let searchPosts = {
     __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: false,
     __relay_internal__pv__StoriesRingrelayprovider: false,
   },
-  server_timestamps: true,
-  doc_id: 5460236254084400,
+  doc_id: "5460236254084400",
 };
 
 let groupPhotoFirst = {
   fb_api_req_friendly_name: "GroupsCometPhotosRootQueryContainerQuery",
   variables: { groupID: "247291592389757", scale: 1, count: 8 },
-  server_timestamps: true,
-  doc_id: 5748011228634887,
+  doc_id: "5748011228634887",
 };
 
 let groupPhotos = {
@@ -135,8 +131,7 @@ let groupPhotos = {
     scale: 1,
     id: "247291592389757",
   },
-  server_timestamps: true,
-  doc_id: 6022153214500431,
+  doc_id: "6022153214500431",
 };
 
 let groupPost = {
@@ -168,6 +163,24 @@ let groupPost = {
     __relay_internal__pv__StoriesRingrelayprovider: false,
     __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
   },
-  server_timestamps: true,
-  doc_id: 8234098703285800,
+  doc_id: "8234098703285800",
+};
+
+let story = {
+  fb_api_req_friendly_name: "StoriesTrayRectangularQuery",
+  variables: {
+    blur: 10,
+    bucketsToFetch: 5,
+    cursor:
+      "MTAwMDA0ODQ4Mjg3NDk0OjE6MTcxODI0NzA4MzoxMDMxNTc5MjE4NTQzODQ6LTE6Y2NvOjk5NjQ1NDEyOTkwNDg5NDAwNjowOjE3MTgyNDcwODM6",
+    scale: 2,
+    id: "100004848287494",
+  },
+  doc_id: "24539171939059864",
+};
+
+let birthday = {
+  fb_api_req_friendly_name: "BirthdayCometMonthlyBirthdaysRefetchQuery",
+  variables: { count: 2, cursor: "2", offset_month: -1, scale: 2 },
+  doc_id: "9704885789535257",
 };

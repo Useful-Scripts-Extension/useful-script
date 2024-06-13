@@ -10,12 +10,12 @@ export default {
   description: {
     en: `Stop load new feed on facebook, better for work performance<br/>
       <ul>
-        <li>Support feeds: home, video, group, marketplace</li>
+        <li>Support feeds: stories, home, video, group, marketplace</li>
         <li>Click to temporary toggle ON/OFF for current facebook session</li>
       </ul>`,
     vi: `Tạm dừng tải dòng thời gian trên facebook, giúp tập trung làm việc<br/>
       <ul>
-        <li>Hỗ trợ các tab: home, video, nhóm, marketplace</li>
+        <li>Hỗ trợ các tab: stories, home, video, nhóm, marketplace</li>
         <li>Bấm chức năng để TẮT/MỞ cho trang facebook hiện tại</li>
       </ul>`,
   },
@@ -40,22 +40,46 @@ export default {
 };
 
 function stopNewFeed() {
-  const blackList = [
-    "CometVideoHomeFeedSectionPaginationQuery", // video tab
-    "CometNewsFeedPaginationQuery", // home tab,
-    "GroupsCometCrossGroupFeedPaginationQuery", // group tab
-    // "GroupsCometFeedRegularStoriesPaginationQuery", // group feed
-    "MarketplaceCometBrowseFeedLightPaginationQuery", // marketplace tab
-  ];
+  const blackList = {
+    story: [
+      // "StoriesSuspenseNavigationPaneRootWithEntryPointQuery",
+      // "StoriesSuspenseContentPaneRootWithEntryPointQuery",
+      "StoriesTrayRectangularQuery",
+      "StoriesTrayRectangularRootQuery",
+      "useStoriesViewerBucketsPaginationQuery",
+    ],
+    "video tab": ["CometVideoHomeFeedSectionPaginationQuery"],
+    "home tab": ["CometNewsFeedPaginationQuery"],
+    "group tab": ["GroupsCometCrossGroupFeedPaginationQuery"],
+    "group feed": ["GroupsCometFeedRegularStoriesPaginationQuery"],
+    "marketplace tab": [
+      // "CometMarketplaceRootQuery",
+      "MarketplaceBannerContainerQuery",
+      // "MarketplaceCometBrowseFeedLightContainerQuery",
+      // "MarketplaceCometBrowseFeedLightPaginationQuery",
+      "CometMarketplaceLeftRailNavigationContainerQuery",
+    ],
+    "event tab": [
+      // "EventCometHomeDiscoverContentRefetchQuery"
+    ],
+  };
 
   let enabled = true;
   var originalXMLSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function () {
     let s = arguments[0]?.toString() || "";
-    let inBlackList = blackList.find((item) => s.includes(item));
+
+    let inBlackList = false;
+    for (const [key, value] of Object.entries(blackList)) {
+      if (value.find((item) => s.includes(item))) {
+        inBlackList = key;
+        break;
+      }
+    }
+
     if (enabled && inBlackList) {
       UfsGlobal.DOM.notify({
-        msg: "Usefull-script: Stopped new feed facebook",
+        msg: "Useful-script: Stopped new feed facebook '" + inBlackList + "'",
       });
     } else {
       originalXMLSend.apply(this, arguments);
@@ -63,14 +87,14 @@ function stopNewFeed() {
   };
 
   UfsGlobal.DOM.notify({
-    msg: "Usefull-script: ENABLED Stop new feed facebook",
+    msg: "Useful-script: ENABLED Stop new feed facebook",
   });
 
   return (value = !enabled) => {
     enabled = value;
     UfsGlobal.DOM.notify({
       msg:
-        "Usefull-script:" +
+        "Useful-script:" +
         (enabled ? "ENABLED" : "DISABLED") +
         " Stop new feed facebook ",
     });

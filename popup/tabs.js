@@ -405,11 +405,44 @@ const tabs = [
         },
       },
       {
+        id: "fb_openPassEvents",
+        icon: '<i class="fa-solid fa-calendar-days fa-lg"></i>',
+        name: {
+          en: "Events joined on facebook",
+          vi: "Sự kiện đã tham gia trên facebook",
+        },
+        description: {
+          en: "View pass events that you have joined on facebook.",
+          vi: "Xem tất cả sự kiện bạn từng tham gia trên facebook.",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () => window.open("https://www.facebook.com/events/past"),
+        },
+      },
+      {
+        id: "fb_openBirthdays",
+        icon: '<i class="fa-solid fa-cake-candles fa-lg"></i>',
+        name: {
+          en: "Friend's birthdays",
+          vi: "Sinh nhật bạn bè",
+        },
+        description: {
+          en: "View your friend's birthdays each month on facebook",
+          vi: "Xem từng tháng có những sinh nhật nào của bạn bè trên facebook.",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () =>
+            window.open("https://www.facebook.com/events/birthdays"),
+        },
+      },
+      {
         id: "fb_openChangeLanguage",
         icon: '<i class="fa-solid fa-language fa-lg"></i>',
         name: {
-          en: "Change language Facebook",
-          vi: "Đổi ngôn ngữ Facebook",
+          en: "Change language facebook",
+          vi: "Đổi ngôn ngữ facebook",
         },
         description: {
           en: "Change display language on facebook",
@@ -431,6 +464,7 @@ const tabs = [
           en: "Your fb account has been hacked? Facebook can help you.",
           vi: "Tài khoản fb của bạn bị hack? Facebook có thể giúp bạn.",
         },
+        badges: [BADGES.new],
         popupScript: {
           onClick: () => window.open("https://fb.com/hacked"),
         },

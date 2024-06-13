@@ -27,7 +27,7 @@ export default {
           let s = arguments[0]?.toString() || "";
           if (s.includes("viewSeenAt") || s.includes("SeenMutation")) {
             UfsGlobal.DOM.notify({
-              msg: "Usefull-script: Blocked story view tracking",
+              msg: "Useful-script: Blocked story view tracking",
             });
           } else {
             originalXMLSend.apply(this, arguments);
@@ -38,7 +38,7 @@ export default {
 
     onDocumentEnd: () => {
       UfsGlobal.DOM.notify({
-        msg: "Usefull-script: Blocked story view tracking READY",
+        msg: "Useful-script: Blocked story view tracking READY",
       });
     },
   },
