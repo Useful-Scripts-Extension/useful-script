@@ -45,7 +45,7 @@ function stopNewFeed() {
       // "StoriesSuspenseNavigationPaneRootWithEntryPointQuery",
       // "StoriesSuspenseContentPaneRootWithEntryPointQuery",
       "StoriesTrayRectangularQuery",
-      "StoriesTrayRectangularRootQuery",
+      // "StoriesTrayRectangularRootQuery",
       "useStoriesViewerBucketsPaginationQuery",
     ],
     "video tab": [
@@ -68,7 +68,9 @@ function stopNewFeed() {
     "event tab": [
       // "EventCometHomeDiscoverContentRefetchQuery"
     ],
-    "online status": ["UpdateUserLastActiveMutation"],
+    "online status": [
+      // "UpdateUserLastActiveMutation"
+    ],
   };
 
   let enabled = true;
@@ -88,6 +90,7 @@ function stopNewFeed() {
       UfsGlobal.DOM.notify({
         msg: "Useful-script: Stopped new feed facebook '" + inBlackList + "'",
       });
+      console.log(arguments);
     } else {
       originalXMLSend.apply(this, arguments);
     }
