@@ -28,11 +28,11 @@ export default {
             "Link không đúng định dạng.\nLink ví dụ: https://github.com/HoangTran0410/useful-script"
           );
 
-        let repoName = shared.getRepoNameFromUrl(url);
+        let repoName = getRepoNameFromUrl(url);
         let [user, repo] = repoName.split("/");
 
         setLoadingText("Đang đếm số lượng commit...");
-        let totalCommits = await shared.getTotalCommitCount(user, repo);
+        let totalCommits = await getTotalCommitCount(user, repo);
 
         setLoadingText("Đang chờ lựa chọn...");
         let index;
@@ -52,7 +52,7 @@ export default {
         }
 
         setLoadingText("Đang tìm link commit...");
-        let firstCommit = await shared.getCommitAtIndex(
+        let firstCommit = await getCommitAtIndex(
           user,
           repo,
           totalCommits - index + 1
@@ -69,28 +69,26 @@ export default {
   },
 };
 
-export const shared = {
-  // Idea from: https://github.com/FarhadG/init
-  // https://github.com/HoangTran0410/useful-script => repoName = HoangTran0410/useful-script
-  getRepoNameFromUrl(url) {
-    let pathName = new URL(url).pathname;
-    let [repoName, branchOrHash] =
-      pathName.match(/\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/) || [];
-    return repoName.slice(1);
-  },
-  getTotalCommitCount: async (user, repo) => {
-    let res = await fetch(
-      `https://api.github.com/repos/${user}/${repo}/commits?per_page=1`
-    );
-    let linkInHeader = res.headers.get("link");
-    let commitCount = linkInHeader.match(/&page=(\d+)>; rel="last"/)?.[1];
-    return Number(commitCount);
-  },
-  getCommitAtIndex: async (user, repo, index) => {
-    let res = await fetch(
-      `https://api.github.com/repos/${user}/${repo}/commits?per_page=1&page=${index}`
-    );
-    let json = await res.json();
-    return json[0];
-  },
-};
+// Idea from: https://github.com/FarhadG/init
+// https://github.com/HoangTran0410/useful-script => repoName = HoangTran0410/useful-script
+export function getRepoNameFromUrl(url) {
+  let pathName = new URL(url).pathname;
+  let [repoName, branchOrHash] =
+    pathName.match(/\/([^\/]+\/[^\/]+)(?:\/tree\/([^\/]+))?/) || [];
+  return repoName.slice(1);
+}
+export async function getTotalCommitCount(user, repo) {
+  let res = await fetch(
+    `https://api.github.com/repos/${user}/${repo}/commits?per_page=1`
+  );
+  let linkInHeader = res.headers.get("link");
+  let commitCount = linkInHeader.match(/&page=(\d+)>; rel="last"/)?.[1];
+  return Number(commitCount);
+}
+export async function getCommitAtIndex(user, repo, index) {
+  let res = await fetch(
+    `https://api.github.com/repos/${user}/${repo}/commits?per_page=1&page=${index}`
+  );
+  let json = await res.json();
+  return json[0];
+}

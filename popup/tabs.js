@@ -643,6 +643,7 @@ const tabs = [
       },
       createTitle("--- Github ---", "--- Github ---"),
       s.github_goToAnyCommit,
+      s.github_HTMLPreview,
       s.github_openRepoPages,
       s.githubdev,
       s.github1s,

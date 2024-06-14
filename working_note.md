@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [x] preview any html file on github <https://htmlpreview.github.io/>?
+
 - [ ] find chrome extension with Id <https://superuser.com/a/1475146>
 
 - [x] down fb album <https://chromewebstore.google.com/detail/esuit-photos-downloader-f/djlgfdiljlmbcfimhkeenolnndblfmoo>

@@ -169,3 +169,4 @@ export { default as fb_blockSeenStory } from "./fb_blockSeenStory.js";
 export { default as github_openRepoPages } from "./github_openRepoPages.js";
 export { default as screenshotVisiblePage } from "./screenshotVisiblePage.js";
 export { default as fb_stopNewFeed } from "./fb_stopNewFeed.js";
+export { default as github_HTMLPreview } from "./github_HTMLPreview.js";

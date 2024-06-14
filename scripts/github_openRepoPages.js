@@ -1,4 +1,5 @@
-import { shared } from "./github_goToAnyCommit.js";
+import { getRepoNameFromUrl } from "./github_goToAnyCommit.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-square-arrow-up-right fa-lg"></i>',
@@ -14,7 +15,7 @@ export default {
     <b>username</b>.github.io/<b>repo</b><br/>
     github.com/<b>username</b>/<b>repo</b><br/>`,
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-06-03": "init",
   },
@@ -23,23 +24,24 @@ export default {
 
   popupScript: {
     onClick: async () => {
-      const { getCurrentTab } = await import("./helpers/utils.js");
-      let tab = await getCurrentTab();
-      let url = tab.url;
+      try {
+        const { getCurrentTab } = await import("./helpers/utils.js");
+        let tab = await getCurrentTab();
+        let url = new URL(tab.url);
 
-      if (url.includes("github.com")) {
-        let repoName = shared.getRepoNameFromUrl(url);
-        let [user, repo] = repoName?.split("/") || [];
-        if (user && repo) window.open(`https://${user}.github.io/${repo}`);
-      } else if (url.includes(".github.io/")) {
-        try {
-          let _url = new URL(url);
-          let repo = _url.pathname.slice(1);
-          let user = _url.hostname.split(".")[0];
-          if (user && repo) window.open(`https://github.com/${user}/${repo}`);
-        } catch (e) {
-          alert("Error: " + e);
+        if (url.hostname === "github.com") {
+          let repoName = getRepoNameFromUrl(url.href);
+          let [user, repo] = repoName?.split("/") || [];
+          if (user && repo) window.open(`https://${user}.github.io/${repo}`);
+          else throw Error(`URL not valid: user: ${user}, repo: ${repo}`);
+        } else if (url.hostname.includes(".github.io")) {
+          let user = url.hostname.split(".")[0];
+          let repo = url.pathname.slice(1) || user + ".github.com";
+          if (user) window.open(`https://github.com/${user}/${repo}`);
+          else throw Error(`URL not valid: user: ${user}, repo: ${repo}`);
         }
+      } catch (e) {
+        alert("Error: " + e);
       }
     },
   },
