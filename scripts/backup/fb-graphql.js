@@ -192,3 +192,41 @@ let onlineStatus = {
   },
   doc_id: "4844391925651372",
 };
+
+let groupInfo = {
+  fb_api_req_friendly_name: "CometHovercardQueryRendererQuery",
+  variables: {
+    actionBarRenderLocation: "WWW_COMET_HOVERCARD",
+    context: "GROUP",
+    entityID: "3023202714464310",
+    groupID: "3023202714464310",
+    includeTdaInfo: false,
+    scale: 1,
+  },
+  doc_id: "7257793420991802",
+};
+
+let userInfoInGroup = {
+  fb_api_req_friendly_name: "CometHovercardQueryRendererQuery",
+  variables: {
+    actionBarRenderLocation: "WWW_COMET_HOVERCARD",
+    context: "GROUP",
+    entityID: "100007769103811",
+    groupID: "3023202714464310",
+    includeTdaInfo: false,
+    scale: 1,
+  },
+  doc_id: "7257793420991802",
+};
+
+let userInfoHome = {
+  fb_api_req_friendly_name: "CometHovercardQueryRendererQuery",
+  variables: {
+    actionBarRenderLocation: "WWW_COMET_HOVERCARD",
+    context: "DEFAULT",
+    entityID: "100009721779003",
+    includeTdaInfo: false,
+    scale: 1,
+  },
+  doc_id: "7257793420991802",
+};
