@@ -1,4 +1,4 @@
-(async () => {
+javascript: (async () => {
   function getToken2() {
     return new Promise((resolve, reject) => {
       let uid = /(?<=c_user=)(\d+)/.exec(document.cookie)?.[0];
@@ -169,9 +169,7 @@
     }
   }
 
-  const key = "ufs-fb-album-run-count";
-  let count = localStorage.getItem(key) || 0;
-  if (Date.now() > new Date("2024-06-13").getTime() || count >= 2) {
+  if (Date.now() > new Date("2024-07-15").getTime()) {
     alert("Script đã hết hạn, vui lòng liên hệ gia hạn");
     return;
   }
@@ -179,7 +177,7 @@
   const id = prompt("Nhập user/page id muốn tải:");
   if (!id) return;
 
-  localStorage.setItem(key, ++count);
+  alert("Thông tin sẽ được hiển thị trong Console (F12)");
 
   let options = [2, 1];
   for (let i = 0; i < options.length; i++) {

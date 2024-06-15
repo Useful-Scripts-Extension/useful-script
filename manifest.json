@@ -63,6 +63,6 @@
     ]
   },
   "externally_connectable": {
-    "matches": ["https://hoangtran0410.github.io/*", "http://localhost:5500/*"]
+    "matches": ["https://hoangtran0410.github.io/*", "http://localhost:5173/*"]
   }
 }

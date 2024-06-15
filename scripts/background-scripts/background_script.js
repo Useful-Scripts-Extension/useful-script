@@ -393,6 +393,36 @@ function listenMessage() {
   });
 }
 
+function listenExternalMessage() {
+  chrome.runtime.onMessageExternal.addListener(
+    (request, sender, sendResponse) => {
+      console.log("onExternalMessage", request, sender);
+
+      try {
+        let sent = false;
+        let internalSendEvent = (data) => {
+          sent = true;
+          sendResponse(data);
+        };
+        runScriptsBackground(
+          "runtime.onMessageExternal",
+          null,
+          // {
+          //   tabId: sender.tab.id,
+          //   frameIds: [sender.frameId],
+          // },
+          { request, sender, sendResponse: internalSendEvent },
+          true
+        );
+        return !sent;
+      } catch (e) {
+        console.log("ERROR:", e);
+        sendResponse({ error: e.message });
+      }
+    }
+  );
+}
+
 function listenWindows() {
   ["onBoundsChanged", "onCreated", "onFocusChanged", "onRemoved"].forEach(
     (event) => {
@@ -448,6 +478,16 @@ function injectUfsGlobal(tabId, frameId, details) {
   });
 }
 
+function listenContextMenus() {
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    let parent = info.parentMenuItemId;
+    parent = parent === "root" ? "" : parent + ".";
+    utils.trackEvent(parent + info.menuItemId + "-CONTEXT-MENU");
+
+    runScriptsBackground("contextMenus.onClicked", null, { info, tab }, true);
+  });
+}
+
 function main() {
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -460,15 +500,9 @@ function main() {
   listenNavigation();
   listenTabs();
   listenMessage();
+  listenExternalMessage();
   listenWindows();
-
-  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-    let parent = info.parentMenuItemId;
-    parent = parent === "root" ? "" : parent + ".";
-    utils.trackEvent(parent + info.menuItemId + "-CONTEXT-MENU");
-
-    runScriptsBackground("contextMenus.onClicked", null, { info, tab }, true);
-  });
+  listenContextMenus();
 
   chrome.runtime.onStartup.addListener(async function () {
     runScriptsBackground("runtime.onStartup", null, null, true);
