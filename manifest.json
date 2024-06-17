@@ -63,6 +63,10 @@
     ]
   },
   "externally_connectable": {
-    "matches": ["https://hoangtran0410.github.io/*", "http://localhost:5173/*"]
+    "matches": [
+      "https://hoangtran0410.github.io/*",
+      "https://useful-scripts-extension.github.io/*",
+      "http://localhost:5173/*"
+    ]
   }
 }
