@@ -37,7 +37,7 @@ export default {
         }
 
         if (request.action === "request_graphql" && request.query) {
-          fetch("https://www.facebook.com/api/graphql/", {
+          fetch(request.url || "https://www.facebook.com/api/graphql/", {
             body: request.query + "&fb_dtsg=" + CACHED.fb_dtsg,
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
