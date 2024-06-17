@@ -121,9 +121,12 @@ export default {
           );
         }
       });
-      window.addEventListener("load", () => {
+
+      function addToDom() {
         (document.body || document.documentElement).appendChild(div);
-      });
+      }
+      addToDom();
+      UfsGlobal.DOM.onElementRemoved(div, addToDom);
 
       window.addEventListener("mouseover", (e) => {
         let srcs = getImgSrcsFromElement(e.target);
