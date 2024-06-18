@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] how tiktok make floating video? <https://developer.chrome.com/docs/web-platform/document-picture-in-picture> <https://web.swipeinsight.app/posts/tiktok-introduces-new-feature-floating-player-for-desktop-users>
+
 - [x] preview any html file on github <https://htmlpreview.github.io/>?
 
 - [ ] find chrome extension with Id <https://superuser.com/a/1475146>
