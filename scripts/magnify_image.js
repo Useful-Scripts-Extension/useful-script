@@ -159,6 +159,8 @@ export default {
           const { data, type } = e.data || {};
           if (type === "ufs-magnify-image-hover") {
             let srcs = data?.srcs;
+            if (srcs?.length)
+              UfsGlobal.Extension.trackEvent("magnify-image-HOVER");
 
             if (srcs?.length > 1) chooseImg(srcs);
             else if (srcs?.length === 1) createPreview(srcs[0]);
