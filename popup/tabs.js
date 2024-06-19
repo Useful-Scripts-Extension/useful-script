@@ -665,6 +665,25 @@ const tabs = [
             window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
         },
       },
+      {
+        id: "recommend_refined_github",
+        icon: "https://lh3.googleusercontent.com/4N2wipmBVx1qK0R0E0XdADE31-8IuMylOtO9AyFopOA9i3IQKoCC5L4nYFDy55xpxpk6qKusHuqXyKJqvw8jcJaiqg=s60",
+        name: {
+          en: "Refined GitHub ",
+          vi: "Refined GitHub",
+        },
+        description: {
+          en: "Simplifies the GitHub interface and adds useful features",
+          vi: "Sửa giao diện github và thêm hàng tá chức năng hay",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/refined-github/hlepfoohegkhhmjieoechaddaejaokhf"
+            ),
+        },
+      },
       createTitle("--- Shopping ---", "--- Mua sắm ---"),
       s.shopee_topVariation,
       s.shopee_totalSpendMoney,
