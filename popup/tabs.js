@@ -551,6 +551,7 @@ const tabs = [
       s.smoothScroll,
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
+      s.showImageOnHoverLink,
       s.remove_tracking_in_url,
       s.prevent_closeBrowser_lastTab,
       s.chongLuaDao,
@@ -882,6 +883,22 @@ const tabs = [
             window.open(
               "https://www.cssportal.com/css-animated-text-generator/"
             ),
+        },
+      },
+      {
+        id: "recommend_cssloaders",
+        icon: "https://css-loaders.com/fav.png",
+        name: {
+          en: "CSS Loaders - 600+ css loader",
+          vi: "CSS Loaders - 600+ css loading",
+        },
+        description: {
+          en: "The Biggest Collection of Loading Animations. Over 600+ CSS-only loaders made using a single element",
+          vi: "Hơn 600 animation loading css miễn phí",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://css-loaders.com/"),
         },
       },
       {
