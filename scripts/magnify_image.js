@@ -136,6 +136,10 @@ export default {
         }
 
         let rect = UfsGlobal.DOM.getContentClientRect(e.target);
+        if (rect.width < 30 || rect.height < 30) {
+          rect.top -= rect.width / 2;
+          rect.left -= rect.height / 2;
+        }
         rect.left = Math.max(rect.left, 0);
         rect.top = Math.max(rect.top, 0);
 
