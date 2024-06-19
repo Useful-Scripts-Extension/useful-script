@@ -358,8 +358,19 @@ function getImgSrcsFromElement(ele) {
 
   let fn = [
     () => {
-      if (!ele.srcset) return null;
-      return UfsGlobal.Utils.getLargestSrcset(ele.srcset);
+      let srcset = ele.srcset || ele.getAttribute("srcset");
+      if (!srcset) {
+        // child srcset
+        let childs = ele.children;
+        if (childs?.length) {
+          for (let i = 0; i < childs.length; i++) {
+            let _ = childs[i].srcset;
+            if (_) srcset += _ + ", ";
+          }
+        }
+      }
+      if (!srcset) return;
+      return UfsGlobal.Utils.getLargestSrcset(srcset);
     },
     () => {
       // if (/img|picture|source|image|a/i.test(ele.tagName))
