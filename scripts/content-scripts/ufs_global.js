@@ -1537,7 +1537,7 @@ async function isImageSrc(src) {
     const res = await fetchByPassOrigin(src, {
       method: "HEAD",
     });
-    if (res.ok) {
+    if (res?.ok) {
       // const type = res.headers.get("content-type");
       const type = res.headers?.["content-type"];
       if (type && type.startsWith("image/")) {
