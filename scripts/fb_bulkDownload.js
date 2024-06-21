@@ -48,6 +48,14 @@ export default {
             .catch((e) => sendResponse({ error: e.message }));
           return true;
         }
+
+        if (request.action === "fetch") {
+          fetch(request.url, request.options || {})
+            .then((res) => res.text())
+            .then(sendResponse)
+            .catch((e) => sendResponse({ error: e.message }));
+          return true;
+        }
       },
     },
   },

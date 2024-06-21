@@ -525,14 +525,26 @@ export async function getFbdtsg() {
     () => require("DTSGInitData").token,
     () => require("DTSG").getToken(),
     () => {
-      return document.documentElement.innerHTML.match(
-        /"DTSGInitialData",\[],{"token":"(.+?)"/
-      )[1];
+      return RegExp(/"DTSGInitialData",\[],{"token":"(.+?)"/).exec(
+        document.documentElement.innerHTML
+      )?.[1];
     },
     async () => {
       let res = await fetch("https://mbasic.facebook.com/photos/upload/");
       let text = await res.text();
-      return text.match(/name="fb_dtsg" value="(.*?)"/)[1];
+      return RegExp(/name="fb_dtsg" value="(.*?)"/).exec(text)?.[1];
+    },
+    async () => {
+      let res = await fetch("https://m.facebook.com/home.php", {
+        headers: {
+          Accept: "text/html",
+        },
+      });
+      let text = await res.text();
+      return (
+        RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
+        RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1]
+      );
     },
     () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
   ];
