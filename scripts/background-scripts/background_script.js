@@ -81,9 +81,9 @@ async function runScriptsTab(eventChain, world, details, silent = false) {
     return;
   }
   const context = world === "MAIN" ? "pageScript" : "contentScript";
-  const scriptIds = CACHED.activeScriptIds.filter((id) =>
-    checkWillRun(id, context, eventChain, details)
-  );
+  const scriptIds = CACHED.activeScriptIds
+    .filter((id) => checkWillRun(id, context, eventChain, details))
+    .sort((a, b) => (a?.priority || Infinity) - (b?.priority || Infinity));
 
   if (scriptIds.length === 0) return;
 
@@ -323,15 +323,15 @@ function listenNavigation() {
       try {
         const { tabId, frameId } = getDetailIds(details);
 
+        runScriptsTab(eventChain, MAIN, details);
+        runScriptsTab(eventChain, ISOLATED, details);
+        runScriptsBackground(eventChain, details);
+
         if (eventChain === "onDocumentStart") {
           // clear badge cache on main frame load
           if (details.frameId === 0) CACHED.badges[tabId] = [];
           injectUfsGlobal(tabId, frameId, details);
         }
-
-        runScriptsTab(eventChain, MAIN, details);
-        runScriptsTab(eventChain, ISOLATED, details);
-        runScriptsBackground(eventChain, details);
       } catch (e) {
         console.log("ERROR:", e);
       }

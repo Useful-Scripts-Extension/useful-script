@@ -346,7 +346,7 @@ export default {
   },
 
   pageScript: {
-    onClick: () => {
+    _onClick: () => {
       fetchGraphQl();
     },
     _onClick: async () => {

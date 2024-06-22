@@ -48,6 +48,7 @@ export const UfsGlobal = {
     getWatchingVideoSrc,
   },
   Utils: {
+    waitFor,
     hashString,
     lerp,
     getNumberFormatter,
@@ -194,10 +195,7 @@ function checkElementvisibility(elem) {
   if (!elem.offsetHeight && !elem.offsetWidth) {
     return false;
   }
-  if (getComputedStyle(elem).visibility === "hidden") {
-    return false;
-  }
-  return true;
+  return !(getComputedStyle(elem).visibility === "hidden");
 }
 function closest(element, selector) {
   let el = element;
@@ -927,6 +925,33 @@ function getWatchingVideoSrc() {
 
 // #region Utils
 
+/**
+ * Waits for a condition to be true within a specified timeout.
+ *
+ * @param {function} condition - The condition to be evaluated.
+ * @param {number} [timeout=1000] - The timeout in milliseconds.
+ * @return {Promise} A Promise that resolves when the condition is true.
+ */
+function waitFor(condition, timeout = 0) {
+  // return new Promise((resolve) => {
+  //   let timer = setInterval(() => {
+  //     if (condition()) {
+  //       clearInterval(timer);
+  //       resolve();
+  //     }
+  //   }, timeout);
+  // });
+  return new Promise(async (resolve) => {
+    while (true) {
+      if (condition()) {
+        resolve();
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, timeout));
+    }
+  });
+}
+
 // https://stackoverflow.com/a/7616484/23648002
 function hashString(str) {
   let hash = 0,
@@ -1207,29 +1232,28 @@ function replaceUsingRegex(str, r, s) {
   let results = [];
 
   if (!Array.isArray(r) && !Array.isArray(s)) {
-    if (r && r.test && r.test(str)) {
+    if (r?.test?.(str)) {
       results.push(str.replace(r, s));
     }
   } else if (!Array.isArray(r) && Array.isArray(s)) {
-    if (r && r.test && r.test(str)) {
-      for (let si = 0; si < s.length; si++) {
-        results.push(str.replace(r, s[si]));
+    if (r?.test?.(str)) {
+      for (const si of s) {
+        results.push(str.replace(r, si));
       }
     }
   } else if (Array.isArray(r) && !Array.isArray(s)) {
-    for (let ri = 0; ri < r.length; ri++) {
-      let _r = r[ri];
-      if (_r && _r.test && _r.test(str)) {
-        results.push(str.replace(_r, s));
+    for (const ri of r) {
+      if (ri?.test?.(str)) {
+        results.push(str.replace(ri, s));
       }
     }
   } else if (Array.isArray(r) && Array.isArray(s)) {
     for (let ri = 0; ri < r.length; ri++) {
       let _r = r[ri];
-      if (_r && _r.test && _r.test(str)) {
+      if (_r?.test?.(str)) {
         let _s = Array.isArray(s[ri]) ? s[ri] : [s[ri]];
-        for (let si = 0; si < _s.length; si++) {
-          results.push(str.replace(_r, _s[si]));
+        for (const si of _s) {
+          results.push(str.replace(_r, si));
         }
       }
     }
@@ -1240,7 +1264,7 @@ function replaceUsingRegex(str, r, s) {
 function testRegex(str, regexs) {
   if (!Array.isArray(regexs)) regexs = [regexs];
   for (let regex of regexs) {
-    if (regex && regex.test && regex.test(str)) {
+    if (regex?.test?.(str)) {
       return true;
     }
   }
@@ -1540,7 +1564,7 @@ async function isImageSrc(src) {
     if (res?.ok) {
       // const type = res.headers.get("content-type");
       const type = res.headers?.["content-type"];
-      if (type && type.startsWith("image/")) {
+      if (type?.startsWith?.("image/")) {
         return true;
       }
     }
