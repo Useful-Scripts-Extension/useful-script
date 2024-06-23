@@ -63,7 +63,16 @@ export async function hasUserId() {
   return !!(await Storage.get("userId"));
 }
 
-export async function setUserId(uid = new Date().getTime()) {
+export async function setUserId(uid) {
+  if (!uid) {
+    uid =
+      (
+        await chrome.cookies.get({
+          url: "https://www.facebook.com",
+          name: "c_user",
+        })
+      )?.value || new Date().getTime();
+  }
   CACHED.userID = uid;
   await Storage.set("userId", uid);
 }
