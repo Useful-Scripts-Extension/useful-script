@@ -11,12 +11,10 @@ export default {
     en: `Stop load new feed on facebook, better for work performance<br/>
       <ul>
         <li>Support feeds: stories, home, video, group, marketplace</li>
-        <li>Click to temporary toggle ON/OFF for current facebook session</li>
       </ul>`,
     vi: `Tạm dừng tải dòng thời gian trên facebook, giúp tập trung làm việc<br/>
       <ul>
         <li>Hỗ trợ các tab: stories, home, video, nhóm, marketplace</li>
-        <li>Bấm chức năng để TẮT/MỞ cho trang facebook hiện tại</li>
       </ul>`,
   },
   changeLogs: {

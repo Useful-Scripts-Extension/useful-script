@@ -7,27 +7,29 @@ const CACHED = {
 };
 
 export default {
-  icon: '<i class="fa-solid fa-cloud-arrow-down fa-lg"></i>',
+  icon: '<i class="fa-brands fa-square-facebook fa-2xl"></i>',
   name: {
-    en: "Facebook - Bulk download",
-    vi: "Facebook - Tải hàng loạt",
+    en: "Facebook - All In One",
+    vi: "Facebook - All In One",
   },
-  badges: [BADGES.comingSoon],
+  badges: [BADGES.hot, BADGES.new],
   description: {
-    en: "Combine all bulk download features on facebook into single page",
-    vi: "Tổng hợp tất cả chức năng tải hàng loạt facebook",
+    en: "Combine all bulk download / statistic features on facebook into single page",
+    vi: "Tổng hợp tất cả chức năng tải hàng loạt / thống kê facebook",
   },
 
   popupScript: {
     onClick: () => {
-      window.open("http://localhost:5173/");
+      window.open(
+        "https://useful-scripts-extension.github.io/facebook-all-in-one/dist/index.html"
+      );
     },
   },
 
   backgroundScript: {
     runtime: {
       onMessageExternal: async ({ request, sender, sendResponse }, context) => {
-        if (request.action === "fb_bulkDownload_init") {
+        if (request.action === "fb_allInOne_init") {
           (async () => {
             CACHED.uid = await getYourUserId();
             CACHED.fb_dtsg = await getFbdtsg();
