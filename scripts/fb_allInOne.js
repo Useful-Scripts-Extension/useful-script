@@ -30,24 +30,24 @@ export default {
     runtime: {
       onMessageExternal: async ({ request, sender, sendResponse }, context) => {
         if (request.action === "fb_allInOne_init") {
-          (async () => {
-            CACHED.uid = await getYourUserId();
-            CACHED.fb_dtsg = await getFbdtsg();
-            sendResponse(CACHED);
-          })();
+          init().then(sendResponse);
           return true;
         }
 
         if (request.action === "request_graphql" && request.query) {
-          fetch(request.url || "https://www.facebook.com/api/graphql/", {
-            body: request.query + "&fb_dtsg=" + CACHED.fb_dtsg,
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            credentials: "include",
-          })
-            .then((res) => res.text())
-            .then(sendResponse)
-            .catch((e) => sendResponse({ error: e.message }));
+          (async () => {
+            if (!CACHED.fb_dtsg) await init();
+
+            fetch(request.url || "https://www.facebook.com/api/graphql/", {
+              body: request.query + "&fb_dtsg=" + CACHED.fb_dtsg,
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              credentials: "include",
+            })
+              .then((res) => res.text())
+              .then(sendResponse)
+              .catch((e) => sendResponse({ error: e.message }));
+          })();
           return true;
         }
 
@@ -62,3 +62,9 @@ export default {
     },
   },
 };
+
+async function init() {
+  CACHED.uid = await getYourUserId();
+  CACHED.fb_dtsg = await getFbdtsg();
+  return CACHED;
+}
