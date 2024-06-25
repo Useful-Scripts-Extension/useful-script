@@ -72,7 +72,7 @@ function stopNewFeed() {
   };
 
   let enabled = true;
-  var originalXMLSend = XMLHttpRequest.prototype.send;
+  const originalXMLSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function () {
     let s = arguments[0]?.toString() || "";
 

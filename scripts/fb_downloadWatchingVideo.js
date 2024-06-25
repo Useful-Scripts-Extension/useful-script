@@ -25,21 +25,21 @@ export default {
       );
       try {
         let listVideoId = await shared.getListVideoIdInWebsite();
-        let watchingVideoId = listVideoId?.[0];
-        if (!watchingVideoId) throw Error("Không tìm thấy video nào");
+        if (!listVideoId?.length > 0) throw Error("Không tìm thấy video");
 
-        setLoadingText("Đang lấy token dtsg...");
-        let dtsg = await fb_videoDownloader.getDtsg();
+        for (let videoId of listVideoId) {
+          if (!videoId) continue;
 
-        setLoadingText("Đang tìm video url...");
-        let videoUrl = await fb_videoDownloader.getLinkFbVideo(
-          watchingVideoId,
-          dtsg
-        );
+          setLoadingText("Đang lấy token dtsg...");
+          let dtsg = await fb_videoDownloader.getDtsg();
 
-        if (videoUrl) {
+          setLoadingText("Đang tìm video url...");
+          let videoUrl = await fb_videoDownloader.getLinkFbVideo(videoId, dtsg);
+
+          if (!videoUrl) continue;
+
           UfsGlobal.Utils.downloadURL(videoUrl, "fb_video.mp4");
-        } else throw Error("Không tìm được video link");
+        }
       } catch (e) {
         alert("ERROR: " + e);
       } finally {

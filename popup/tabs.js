@@ -313,6 +313,7 @@ const tabs = [
       s.fb_toggleNewFeed,
       s.fb_stopNewFeed,
       s.fb_blockSeenStory,
+      s.fb_getPostReactionCount,
       s.fb_whoIsTyping,
       // s.fb_blockSeenAndTyping,
       createTitle("--- Statistic ---", "--- Thống kê ---"),

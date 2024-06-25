@@ -530,7 +530,7 @@ function notify({
       }
       ${styleText || ""}
     `;
-  div.textContent = msg;
+  div.innerHTML = createTrustedHtml(msg);
   (document.body || document.documentElement).appendChild(div);
 
   let timeouts = [];
@@ -563,7 +563,7 @@ function notify({
     },
     setText(text) {
       if (div) {
-        div.textContent = text;
+        div.innerHTML = createTrustedHtml(text);
         return true;
       }
       return false;
