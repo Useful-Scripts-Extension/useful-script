@@ -2,6 +2,10 @@
 
 ## 30/05/2024 - ?
 
+- [ ] auto refresh tab <https://chromewebstore.google.com/detail/aabcgdmkeabbnleenpncegpcngjpnjkc>
+
+- [ ] <https://www.maxai.me/affiliate/> <https://www.maxai.me/partners/installed/?name=Useful-script>
+
 - [ ] decrypt in js <https://github.com/diafygi/webcrypto-examples>
 
 - [ ] how tiktok make floating video? <https://developer.chrome.com/docs/web-platform/document-picture-in-picture> <https://web.swipeinsight.app/posts/tiktok-introduces-new-feature-floating-player-for-desktop-users>
