@@ -145,7 +145,6 @@ export { default as _ufs_statistic } from "./_ufs_statistic.js";
 export { default as pip_fullWebsite } from "./pip_fullWebsite.js";
 export { default as similarWeb_bypassLimit } from "./similarWeb_bypassLimit.js";
 export { default as pip_canvas } from "./pip_canvas.js";
-export { default as researchGate_downloader } from "./researchGate_downloader.js";
 export { default as fb_searchPostsForOther } from "./fb_searchPostsForOther.js";
 export { default as toggle_passwordField } from "./toggle_passwordField.js";
 export { default as insta_getFollowForOther } from "./insta_getFollowForOther.js";

@@ -248,7 +248,6 @@ const tabs = [
             ),
         },
       },
-      // s.researchGate_downloader, // limited
     ],
   },
   {
