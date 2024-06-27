@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] check linux compatible
+
 - [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>
 
 - [ ] auto refresh tab <https://chromewebstore.google.com/detail/aabcgdmkeabbnleenpncegpcngjpnjkc>
