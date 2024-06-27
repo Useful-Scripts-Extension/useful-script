@@ -1,9 +1,13 @@
 import { BADGES } from "./helpers/badge.js";
-import { getFbdtsg, getYourUserId } from "./fb_GLOBAL.js";
+import { runFunc } from "./helpers/utils.js";
 
 const CACHED = {
   uid: null,
   fb_dtsg: null,
+};
+
+const GLOBAL = {
+  fetch: (url, options) => fetch(url, options || {}).then((res) => res.text()),
 };
 
 export default {
@@ -29,42 +33,11 @@ export default {
   backgroundScript: {
     runtime: {
       onMessageExternal: async ({ request, sender, sendResponse }, context) => {
-        if (request.action === "fb_allInOne_init") {
-          init().then(sendResponse);
-          return true;
-        }
-
-        if (request.action === "request_graphql" && request.query) {
-          (async () => {
-            if (!CACHED.fb_dtsg) await init();
-
-            fetch(request.url || "https://www.facebook.com/api/graphql/", {
-              body: request.query + "&fb_dtsg=" + CACHED.fb_dtsg,
-              method: "POST",
-              headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              credentials: "include",
-            })
-              .then((res) => res.text())
-              .then(sendResponse)
-              .catch((e) => sendResponse({ error: e.message }));
-          })();
-          return true;
-        }
-
-        if (request.action === "fetch") {
-          fetch(request.url, request.options || {})
-            .then((res) => res.text())
-            .then(sendResponse)
-            .catch((e) => sendResponse({ error: e.message }));
+        if (request.action === "fb_allInOne_runFunc") {
+          runFunc(request.fnPath, request.params, GLOBAL).then(sendResponse);
           return true;
         }
       },
     },
   },
 };
-
-async function init() {
-  CACHED.uid = await getYourUserId();
-  CACHED.fb_dtsg = await getFbdtsg();
-  return CACHED;
-}
