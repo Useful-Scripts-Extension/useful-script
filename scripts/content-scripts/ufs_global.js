@@ -991,7 +991,7 @@ function getNumberFormatter(optionSelect, locale) {
             ?.getAttribute("href")
         )?.searchParams?.get("locale");
       } catch {
-        cLog(
+        console.log(
           "Cannot find browser locale. Use en as default for number formatting."
         );
         locale = "en";

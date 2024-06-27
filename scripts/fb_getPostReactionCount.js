@@ -50,15 +50,19 @@ export default {
       };
 
       const getTotalPostReactionCount = async (id) => {
+        if (CACHED[id] === "loading") return;
+
         const { setText, closeAfter } = UfsGlobal.DOM.notify({
           msg: "Đang đếm số lượng reaction...",
           duration: 10000,
         });
+        const numberFormater = UfsGlobal.Utils.getNumberFormatter("standard");
 
         let res;
         if (CACHED[id]) {
           res = CACHED[id];
         } else {
+          CACHED[id] = "loading";
           res = {
             total: 0,
             each: {},
@@ -67,18 +71,22 @@ export default {
             const count = await getPostReactionsCount(id, reactionId);
             res.total += count;
             res.each[name] = count;
-            setText(`Đang đếm số lượng reaction ${name}... Tổng: ${res.total}`);
+            setText(
+              `Đang đếm số lượng reaction ${name}... Tổng: ${numberFormater.format(
+                res.total
+              )}`
+            );
           }
           CACHED[id] = res;
         }
 
         setText(
           "<p style='color:white;font-size:20px;padding:0;margin:0'>Tổng " +
-            res.total +
+            numberFormater.format(res.total) +
             " reaction.<br/>Bao gồm " +
             Object.entries(res.each)
               .filter(([key, value]) => value > 0)
-              .map(([key, value]) => `${value}${key}`)
+              .map(([key, value]) => `${numberFormater.format(value)}${key}`)
               .join(", ") +
             "</p>"
         );
@@ -88,9 +96,11 @@ export default {
       const originalXMLSend = XMLHttpRequest.prototype.send;
       XMLHttpRequest.prototype.send = function () {
         let s = arguments[0]?.toString() || "";
-        if (s.includes("CometUFIReactionsCountTooltipContentQuery")) {
-          console.log(this);
-          const original = this.onreadystatechange;
+        if (
+          s.includes("CometUFIReactionsCountTooltipContentQuery") ||
+          s.includes("CometUFIReactionIconTooltipContentQuery")
+        ) {
+          const originalReady = this.onreadystatechange;
           this.onreadystatechange = function () {
             if (this.readyState == 4) {
               try {
@@ -106,7 +116,7 @@ export default {
                 console.log(err);
               }
             }
-            original.apply(this, arguments);
+            originalReady.apply(this, arguments);
           };
         }
         originalXMLSend.apply(this, arguments);

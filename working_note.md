@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>
+
 - [ ] auto refresh tab <https://chromewebstore.google.com/detail/aabcgdmkeabbnleenpncegpcngjpnjkc>
 
 - [ ] <https://www.maxai.me/affiliate/> <https://www.maxai.me/partners/installed/?name=Useful-script>
