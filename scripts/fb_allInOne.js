@@ -1,11 +1,6 @@
 import { BADGES } from "./helpers/badge.js";
 import { runFunc } from "./helpers/utils.js";
 
-const CACHED = {
-  uid: null,
-  fb_dtsg: null,
-};
-
 const GLOBAL = {
   fetch: (url, options) => fetch(url, options || {}).then((res) => res.text()),
 };
