@@ -268,14 +268,15 @@ export default {
       //     console.log("onBefore", url, options);
       //   },
       // });
-      // const unregister = hookXHR({
-      //   onBefore: (...args) => {
-      //     console.log("before", args);
-      //   },
-      //   onAfter: (...args) => {
-      //     console.log("-> after", args);
-      //   },
-      // });
+      const unregister = hookXHR({
+        onBefore: (params) => {
+          if (params.url.includes("graphql")) console.log("before", params);
+        },
+        onAfter: (params, response) => {
+          if (params.url.includes("graphql"))
+            console.log("-> after", params, JSON.parse(response));
+        },
+      });
     },
 
     // download album

@@ -82,41 +82,24 @@ export const CANCEL_XHR = {
 };
 
 function initXhr() {
-  const originalXMLHttpRequest = window.XMLHttpRequest;
-  window.XMLHttpRequest = new Proxy(originalXMLHttpRequest, {
-    construct(target, args) {
-      const instance = new target(...args);
+  let oldXHROpen = window.XMLHttpRequest.prototype.open;
+  window.XMLHttpRequest.prototype.open = function (
+    method,
+    url,
+    async,
+    user,
+    password
+  ) {
+    let params = { method, url, async, user, password };
+    for (let { fn } of onBeforeXHRFn) params = fn(params) || params;
+    if (params?.[cancelKey]) return;
 
-      const open = instance.open;
-      instance.open = function (method, url, m, y, f) {
-        this._method = method;
-        this._url = url;
-        return open.apply(this, arguments);
-      };
+    this.addEventListener("load", function () {
+      for (let { fn } of onAfterXHRFn) fn(params, this.responseText);
+    });
 
-      const send = instance.send;
-      instance.send = function (dataSend) {
-        this.dataSend = dataSend;
-
-        for (let { fn } of onBeforeXHRFn)
-          dataSend = fn(this._url, this._method, dataSend) || dataSend;
-
-        if (dataSend?.[cancelKey]) return null;
-
-        return send.apply(this, arguments);
-      };
-
-      // TODO verify
-      instance.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-          for (let { fn } of onAfterXHRFn)
-            fn(this._url, this._method, this.dataSend, this.responseText);
-        }
-      };
-
-      return instance;
-    },
-  });
+    return oldXHROpen.apply(this, Object.values(params));
+  };
 }
 
 export function hookXHR({ onBefore, onAfter } = {}) {
@@ -134,14 +117,11 @@ export function hookXHR({ onBefore, onAfter } = {}) {
 
 /* hookXHR example
 hookXHR({
-  onBefore: (url, method, dataSend) => {
-    console.log({ url, method, dataSend });
-    return dataSend;
+  onBefore: ({ method, url, async, user, password }) => {
     // return CANCEL_XHR;
   },
-  onAfter: (url, method, dataSend, response) => {
+  onAfter: ({ method, url, async, user, password }, responseText) => {
     console.log({ url, method, dataSend, response });
-    return res;
   },
 });
 */
