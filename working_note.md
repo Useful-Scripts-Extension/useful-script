@@ -2,7 +2,7 @@
 
 ## 30/05/2024 - ?
 
-- [ ] check linux compatible
+- [ ] check linux compatible -> relative path in manifest + file name camelcase
 
 - [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>
 

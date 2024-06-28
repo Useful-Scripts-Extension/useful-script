@@ -1,5 +1,11 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { fetchGraphQl } from "./fb_GLOBAL.js";
+import {
+  hookFetch,
+  hookXHR,
+  CANCEL_FETCH,
+  CANCEL_XHR,
+  cancelKey,
+} from "./libs/ajax-hook/index.js";
 
 export default {
   icon: "",
@@ -13,6 +19,7 @@ export default {
   },
 
   popupScript: {
+    // selenium automation get album's images
     _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");
 
@@ -170,97 +177,6 @@ export default {
       }
     },
 
-    // sync element position accross all tabs
-    _onDocumentStart: (details) => {
-      console.log(details);
-
-      const div = document.createElement("div");
-      div.id = "ufs-test";
-      div.innerHTML = `
-      <style>
-        #ufs-test {
-          position: fixed;
-          background-color: #f1f1f1;
-          border: 1px solid #d3d3d3;
-          text-align: center;
-          z-index: 999999999;
-          top: 0;
-          left: 0;
-        }
-
-        #ufs-testheader {
-          padding: 10px;
-          cursor: move;
-          z-index: 10;
-          background-color: #2196F3;
-          color: #fff;
-        }
-      </style>
-      <div id="ufs-testheader">Click here to move</div>
-      <p>Move</p>
-      <p>this</p>
-      <p>DIV</p>`;
-      document.documentElement.appendChild(div);
-
-      window.ufs_test = (x, y) => {
-        div.style.top = y + "px";
-        div.style.left = x + "px";
-      };
-
-      // Make the DIV element draggable:
-      dragElement(div, (x, y) => {
-        console.log(x, y);
-        chrome.runtime.sendMessage({ action: "ufs-test", data: { x, y } });
-      });
-
-      function dragElement(elmnt, onMoved) {
-        var pos1 = 0,
-          pos2 = 0,
-          pos3 = 0,
-          pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-          // if present, the header is where you move the DIV from:
-          document.getElementById(elmnt.id + "header").onmousedown =
-            dragMouseDown;
-        } else {
-          // otherwise, move the DIV from anywhere inside the DIV:
-          elmnt.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-          e = e || window.event;
-          e.preventDefault();
-          // get the mouse cursor position at startup:
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          document.onmouseup = closeDragElement;
-          // call a function whenever the cursor moves:
-          document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-          e = e || window.event;
-          e.preventDefault();
-          // calculate the new cursor position:
-          pos1 = pos3 - e.clientX;
-          pos2 = pos4 - e.clientY;
-          pos3 = e.clientX;
-          pos4 = e.clientY;
-          // set the element's new position:
-          elmnt.style.top = elmnt.offsetTop - pos2 + "px";
-          elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
-        }
-
-        function closeDragElement() {
-          // stop moving when mouse button is released:
-          document.onmouseup = null;
-          document.onmousemove = null;
-
-          onMoved?.(parseInt(elmnt.style.left), parseInt(elmnt.style.top));
-        }
-      }
-    },
-
     // text size in KB
     _onClick: () => {
       function formatSize(size, fixed = 0) {
@@ -346,9 +262,23 @@ export default {
   },
 
   pageScript: {
-    _onClick: () => {
-      fetchGraphQl();
+    onDocumentStart: () => {
+      // hookFetch({
+      //   onBefore: (url, options) => {
+      //     console.log("onBefore", url, options);
+      //   },
+      // });
+      // const unregister = hookXHR({
+      //   onBefore: (...args) => {
+      //     console.log("before", args);
+      //   },
+      //   onAfter: (...args) => {
+      //     console.log("-> after", args);
+      //   },
+      // });
     },
+
+    // download album
     _onClick: async () => {
       (async () => {
         function getGroupId() {
@@ -785,49 +715,7 @@ export default {
       })();
     },
   },
-
-  backgroundScript: {
-    // sync element position accross all tabs
-    _onDocumentStart: (details, context) => {
-      const cachedPos = context.getCache("ufs-test", { x: 0, y: 0 });
-      updatePos(details.tabId, cachedPos.x, cachedPos.y);
-    },
-    _runtime: {
-      onMessage: ({ request, sender, sendResponse }, context) => {
-        if (request.action === "ufs-test" && request.data) {
-          context.setCache("ufs-test", request.data);
-          chrome.tabs.query({}, (tabs) => {
-            for (let tab of tabs) {
-              try {
-                updatePos(tab.id, request.data.x, request.data.y);
-              } catch (e) {}
-            }
-          });
-        }
-      },
-    },
-  },
 };
-
-function updatePos(tabId, x, y) {
-  chrome.scripting.executeScript({
-    target: {
-      tabId: tabId,
-    },
-    func: (x, y) => {
-      let interval = setInterval(() => {
-        if (typeof window.ufs_test == "function") {
-          window.ufs_test?.(x, y);
-          clearInterval(interval);
-          clearTimeout(timeout);
-        }
-      }, 100);
-
-      let timeout = setTimeout(() => clearInterval(interval), 10000);
-    },
-    args: [x, y],
-  });
-}
 
 const backup = () => {
   (() => {
