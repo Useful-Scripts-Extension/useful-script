@@ -1,20 +1,18 @@
 export const cancelKey = "_ufs_cancel_";
 
-function hook({ onBefore, onAfter, onBeforeArr, onAfterArr } = {}) {
-  const beforeId = randId();
-  const afterId = randId();
-
-  if (typeof onBefore === "function")
-    onBeforeArr.push({ fn: onBefore, id: beforeId });
-  if (typeof onAfter === "function")
-    onAfterArr.push({ fn: onAfter, id: afterId });
+function _hook(configs = []) {
+  const unsubFn = [];
+  for (let { fn, arr } of configs) {
+    let id = randId();
+    arr.push({ fn, id });
+    unsubFn.push(() => {
+      let index = arr.findIndex((e) => e.id === id);
+      if (index !== -1) arr.splice(index, 1);
+    });
+  }
 
   return () => {
-    let beforeIndex = onBeforeArr.findIndex((e) => e.id === beforeId);
-    let afterIndex = onAfterArr.findIndex((e) => e.id === afterId);
-
-    if (beforeIndex !== -1) onBeforeArr.splice(beforeIndex, 1);
-    if (afterIndex !== -1) onAfterArr.splice(afterIndex, 1);
+    unsubFn.forEach((fn) => fn?.());
   };
 }
 
@@ -35,12 +33,12 @@ function initFetch() {
   window.fetch = async function (url, options) {
     let request = { url, options };
     for (let { fn } of onBeforeFetchFn)
-      request = fn(request.url, request.options) || request;
+      request = fn?.(request.url, request.options) || request;
     if (request?.options?.[cancelKey]) return null;
 
     let response = await originalFetch(...request);
     for (let { fn } of onAfterFetchFn)
-      response = fn(request.url, request.options, response) || response;
+      response = fn?.(request.url, request.options, response) || response;
 
     return response;
   };
@@ -51,12 +49,10 @@ export function hookFetch({ onBefore, onAfter } = {}) {
     initFetch();
     readyFetch = true;
   }
-  return hook({
-    onBefore,
-    onAfter,
-    onBeforeArr: onBeforeFetchFn,
-    onAfterArr: onAfterFetchFn,
-  });
+  return _hook([
+    { fn: onBefore, arr: onBeforeFetchFn },
+    { fn: onAfter, arr: onAfterFetchFn },
+  ]);
 }
 
 /* hookFetch example
@@ -67,14 +63,16 @@ hookFetch({
   },
   onAfter: (url, options, response) => {
     console.log(url, options, response);
-    return res;
+    reponse = null; // modify response
+    return response;
   },
 });
 */
 
 // =========== XHR ============
-const onBeforeXHRFn = [];
-const onAfterXHRFn = [];
+const onBeforeOpenXHRFn = [];
+const onBeforeSendXHRFn = [];
+const onAfterSendXHRFn = [];
 let readyXhr = false;
 
 export const CANCEL_XHR = {
@@ -82,46 +80,62 @@ export const CANCEL_XHR = {
 };
 
 function initXhr() {
-  let oldXHROpen = window.XMLHttpRequest.prototype.open;
-  window.XMLHttpRequest.prototype.open = function (
-    method,
-    url,
-    async,
-    user,
-    password
-  ) {
-    let params = { method, url, async, user, password };
-    for (let { fn } of onBeforeXHRFn) params = fn(params) || params;
-    if (params?.[cancelKey]) return;
+  const orig = window.XMLHttpRequest;
+  window.XMLHttpRequest = new Proxy(orig, {
+    construct(o, r) {
+      const instance = new o(...r);
 
-    this.addEventListener("load", function () {
-      for (let { fn } of onAfterXHRFn) fn(params, this.responseText);
-    });
+      let p;
 
-    return oldXHROpen.apply(this, Object.values(params));
-  };
+      const open = instance.open;
+      instance.open = function (method, url, async, user, password) {
+        this._method = method;
+        this._url = url;
+
+        p = { method, url, async, user, password };
+        for (let { fn } of onBeforeOpenXHRFn) p = fn?.(p) || p;
+        if (p?.[cancelKey]) return;
+
+        return open.apply(this, [p.mr]);
+      };
+
+      const send = instance.send;
+      instance.send = function (data) {
+        for (let { fn } of onBeforeSendXHRFn) data = fn?.(p, data) || data;
+        if (data?.[cancelKey]) return;
+
+        instance.addEventListener("load", function () {
+          for (let { fn } of onAfterSendXHRFn)
+            fn?.(p, data, instance.responseText);
+        });
+
+        return send.apply(this, arguments);
+      };
+      return instance;
+    },
+  });
 }
 
-export function hookXHR({ onBefore, onAfter } = {}) {
+export function hookXHR({ onBeforeOpen, onBeforeSend, onAfterSend } = {}) {
   if (!readyXhr) {
     initXhr();
-    readyFetch = true;
+    readyXhr = true;
   }
-  return hook({
-    onBefore,
-    onAfter,
-    onBeforeArr: onBeforeXHRFn,
-    onAfterArr: onAfterXHRFn,
-  });
+  return _hook([
+    { fn: onBeforeOpen, arr: onBeforeOpenXHRFn },
+    { fn: onBeforeSend, arr: onBeforeSendXHRFn },
+    { fn: onAfterSend, arr: onAfterSendXHRFn },
+  ]);
 }
 
 /* hookXHR example
 hookXHR({
-  onBefore: ({ method, url, async, user, password }) => {
+  onBeforeOpen: ({method, url, async, user, password}) => {
     // return CANCEL_XHR;
   },
-  onAfter: ({ method, url, async, user, password }, responseText) => {
-    console.log({ url, method, dataSend, response });
+  onBeforeSend: ({method, url, async, user, password}, dataSend) => {
+    // return CANCEL_XHR;
   },
+  onAfterSend: ({method, url, async, user, password}, dataSend, response) => {}
 });
 */

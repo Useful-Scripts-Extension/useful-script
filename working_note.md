@@ -2,6 +2,8 @@
 
 ## 30/05/2024 - ?
 
+- [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
+
 - [ ] check linux compatible -> relative path in manifest + file name camelcase
 
 - [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>

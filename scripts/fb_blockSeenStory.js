@@ -1,5 +1,6 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { BADGES } from "./helpers/badge.js";
+import { CANCEL_XHR, hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-user-ninja fa-lg"></i>',
@@ -20,38 +21,48 @@ export default {
 
   pageScript: {
     onDocumentStart_: async (details) => {
-      const e = window.XMLHttpRequest;
-      window.XMLHttpRequest = new Proxy(e, {
-        construct(o, r) {
-          const instance = new o(...r),
-            open = instance.open;
-          instance.open = function (method, url, m, y, f) {
-            return (
-              (this._method = method),
-              (this._url = url),
-              open.apply(this, arguments)
-            );
-          };
-          const send = instance.send;
-          return (
-            (instance.send = function (data) {
-              if (
-                !(
-                  this._method === "POST" &&
-                  data?.toString().includes("storiesUpdateSeenStateMutation")
-                )
-              )
-                return send.apply(this, arguments);
-              else {
-                UfsGlobal.DOM.notify({
-                  msg: "Useful script: facebook story seen BLOCKED",
-                });
-              }
-            }),
-            instance
-          );
+      hookXHR({
+        onBeforeSend: ({ method, url, async, user, password }, dataSend) => {
+          if (
+            method === "POST" &&
+            dataSend?.toString?.includes("storiesUpdateSeenStateMutation")
+          ) {
+            return CANCEL_XHR;
+          }
         },
       });
+      // const e = window.XMLHttpRequest;
+      // window.XMLHttpRequest = new Proxy(e, {
+      //   construct(o, r) {
+      //     const instance = new o(...r),
+      //       open = instance.open;
+      //     instance.open = function (method, url, m, y, f) {
+      //       return (
+      //         (this._method = method),
+      //         (this._url = url),
+      //         open.apply(this, arguments)
+      //       );
+      //     };
+      //     const send = instance.send;
+      //     return (
+      //       (instance.send = function (data) {
+      //         if (
+      //           !(
+      //             this._method === "POST" &&
+      //             data?.toString().includes("storiesUpdateSeenStateMutation")
+      //           )
+      //         )
+      //           return send.apply(this, arguments);
+      //         else {
+      //           UfsGlobal.DOM.notify({
+      //             msg: "Useful script: facebook story seen BLOCKED",
+      //           });
+      //         }
+      //       }),
+      //       instance
+      //     );
+      //   },
+      // });
     },
   },
 };
