@@ -1,5 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { CANCEL_XHR, hookXHR } from "./libs/ajax-hook/index.js";
+import { hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
@@ -29,7 +29,7 @@ export default {
             UfsGlobal.DOM.notify({
               msg: "Useful-script: Blocked story view tracking",
             });
-            return CANCEL_XHR;
+            return null;
           }
         },
       });

@@ -1,11 +1,4 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import {
-  hookFetch,
-  hookXHR,
-  CANCEL_FETCH,
-  CANCEL_XHR,
-  cancelKey,
-} from "./libs/ajax-hook/index.js";
 
 export default {
   icon: "",
@@ -262,23 +255,6 @@ export default {
   },
 
   pageScript: {
-    onDocumentStart: () => {
-      // hookFetch({
-      //   onBefore: (url, options) => {
-      //     console.log("onBefore", url, options);
-      //   },
-      // });
-      const unregister = hookXHR({
-        onBefore: (params) => {
-          if (params.url.includes("graphql")) console.log("before", params);
-        },
-        onAfter: (params, response) => {
-          if (params.url.includes("graphql"))
-            console.log("-> after", params, JSON.parse(response));
-        },
-      });
-    },
-
     // download album
     _onClick: async () => {
       (async () => {
@@ -716,53 +692,4 @@ export default {
       })();
     },
   },
-};
-
-const backup = () => {
-  (() => {
-    // modify window.fetch
-    const originalFetch = fetch;
-    fetch = function (...args) {
-      console.log("fetch", ...args);
-      return originalFetch(...args).then(async (res) => {
-        try {
-          console.log("res ne", res);
-          let clone = res.clone();
-          let json = await clone.json();
-          console.log("json", json);
-
-          json = {
-            success: true,
-            data: {},
-          };
-          console.log("modifiedJson", json);
-
-          let modifiedResponse = new Response(JSON.stringify(json));
-          [
-            "headers",
-            "ok",
-            "redirected",
-            "status",
-            "statusText",
-            "type",
-            "url",
-          ].forEach((key) => {
-            modifiedResponse[key] = res[key];
-          });
-
-          console.log("modifiedResponse", modifiedResponse);
-          return modifiedResponse;
-        } catch (e) {
-          console.log("error", e);
-          return res;
-        }
-      });
-    };
-  })();
-
-  (() => {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      console.log("onMessage", request, sender, sendResponse);
-    });
-  })();
 };

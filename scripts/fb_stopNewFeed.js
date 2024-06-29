@@ -1,6 +1,6 @@
 import { BADGES } from "./helpers/badge.js";
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { CANCEL_XHR, hookXHR } from "./libs/ajax-hook/index.js";
+import { hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-ban fa-lg"></i>',
@@ -89,7 +89,7 @@ function stopNewFeed() {
         UfsGlobal.DOM.notify({
           msg: "Useful-script: Stopped new feed facebook '" + inBlackList + "'",
         });
-        return CANCEL_XHR;
+        return null;
       }
     },
   });

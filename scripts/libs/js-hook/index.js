@@ -340,7 +340,7 @@ export class HookJs {
     * @returns {boolean}
     */
   hook (parentObj, hookMethods, fn, type, classHook, context, proxyHandler) {
-    /* 支持对象形式的传参 */
+    /* Support parameter passing in object form */
     const opts = arguments[0]
     if (util.isObj(opts) && opts.parentObj && opts.hookMethods) {
       parentObj = opts.parentObj
