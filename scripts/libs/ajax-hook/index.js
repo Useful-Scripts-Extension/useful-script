@@ -3,6 +3,7 @@ export const cancelKey = "_ufs_cancel_";
 function _hook(configs = []) {
   const unsubFn = [];
   for (let { fn, arr } of configs) {
+    if (typeof fn !== "function" || !Array.isArray(arr)) continue;
     let id = randId();
     arr.push({ fn, id });
     unsubFn.push(() => {
@@ -84,29 +85,26 @@ function initXhr() {
   window.XMLHttpRequest = new Proxy(orig, {
     construct(o, r) {
       const instance = new o(...r);
-
       let p;
 
       const open = instance.open;
       instance.open = function (method, url, async, user, password) {
-        this._method = method;
-        this._url = url;
-
         p = { method, url, async, user, password };
         for (let { fn } of onBeforeOpenXHRFn) p = fn?.(p) || p;
         if (p?.[cancelKey]) return;
 
-        return open.apply(this, [p.mr]);
+        return open.apply(this, [p.method, p.url, p.async, p.user, p.password]);
       };
 
       const send = instance.send;
-      instance.send = function (data) {
-        for (let { fn } of onBeforeSendXHRFn) data = fn?.(p, data) || data;
-        if (data?.[cancelKey]) return;
+      instance.send = function (dataSend) {
+        for (let { fn } of onBeforeSendXHRFn)
+          dataSend = fn?.(p, dataSend) || dataSend;
+        if (dataSend?.[cancelKey]) return;
 
         instance.addEventListener("load", function () {
           for (let { fn } of onAfterSendXHRFn)
-            fn?.(p, data, instance.responseText);
+            fn?.(p, dataSend, instance.response);
         });
 
         return send.apply(this, arguments);

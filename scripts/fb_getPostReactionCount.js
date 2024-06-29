@@ -1,5 +1,6 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { fetchGraphQl, getFbdtsg } from "./fb_GLOBAL.js";
+import { hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-thumbs-up fa-lg"></i>',
@@ -93,34 +94,32 @@ export default {
         closeAfter(10000);
       };
 
-      const originalXMLSend = XMLHttpRequest.prototype.send;
-      XMLHttpRequest.prototype.send = function () {
-        let s = arguments[0]?.toString() || "";
-        if (
-          s.includes("CometUFIReactionsCountTooltipContentQuery") ||
-          s.includes("CometUFIReactionIconTooltipContentQuery")
-        ) {
-          const originalReady = this.onreadystatechange;
-          this.onreadystatechange = function () {
-            if (this.readyState == 4) {
-              try {
-                const json = JSON.parse(this.responseText);
-                if (
-                  json?.data?.feedback?.reaction_display_config
-                    ?.reaction_display_strategy == "HIDE_COUNTS"
-                ) {
-                  const id = json.data.feedback.id;
-                  getTotalPostReactionCount(id);
-                }
-              } catch (err) {
-                console.log(err);
+      hookXHR({
+        onAfterSend: (
+          { method, url, async, user, password },
+          dataSend,
+          response
+        ) => {
+          let str = dataSend?.toString?.() || "";
+          if (
+            str.includes("CometUFIReactionsCountTooltipContentQuery") ||
+            str.includes("CometUFIReactionIconTooltipContentQuery")
+          ) {
+            try {
+              const json = JSON.parse(response);
+              if (
+                json?.data?.feedback?.reaction_display_config
+                  ?.reaction_display_strategy == "HIDE_COUNTS"
+              ) {
+                const id = json.data.feedback.id;
+                getTotalPostReactionCount(id);
               }
+            } catch (err) {
+              console.log(err);
             }
-            originalReady.apply(this, arguments);
-          };
-        }
-        originalXMLSend.apply(this, arguments);
-      };
+          }
+        },
+      });
     },
   },
 };

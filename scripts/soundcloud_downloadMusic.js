@@ -48,7 +48,7 @@ export default {
             par.prepend(downloadBtn);
           }
         }
-      }, [1000]);
+      }, 1000);
 
       let clientId;
       window.ufs_soundcloud_allData = new Map();
@@ -66,7 +66,7 @@ export default {
         );
         const json = await res.json();
 
-        if (json && json.id) {
+        if (json?.id) {
           // save media
           if (json.media) {
             window.ufs_soundcloud_allData.set(json.id, json);

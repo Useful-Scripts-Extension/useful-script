@@ -25,44 +25,15 @@ export default {
         onBeforeSend: ({ method, url, async, user, password }, dataSend) => {
           if (
             method === "POST" &&
-            dataSend?.toString?.includes("storiesUpdateSeenStateMutation")
+            dataSend?.toString?.()?.includes?.("storiesUpdateSeenStateMutation")
           ) {
+            UfsGlobal.DOM.notify({
+              msg: "Useful script: facebook story seen BLOCKED",
+            });
             return CANCEL_XHR;
           }
         },
       });
-      // const e = window.XMLHttpRequest;
-      // window.XMLHttpRequest = new Proxy(e, {
-      //   construct(o, r) {
-      //     const instance = new o(...r),
-      //       open = instance.open;
-      //     instance.open = function (method, url, m, y, f) {
-      //       return (
-      //         (this._method = method),
-      //         (this._url = url),
-      //         open.apply(this, arguments)
-      //       );
-      //     };
-      //     const send = instance.send;
-      //     return (
-      //       (instance.send = function (data) {
-      //         if (
-      //           !(
-      //             this._method === "POST" &&
-      //             data?.toString().includes("storiesUpdateSeenStateMutation")
-      //           )
-      //         )
-      //           return send.apply(this, arguments);
-      //         else {
-      //           UfsGlobal.DOM.notify({
-      //             msg: "Useful script: facebook story seen BLOCKED",
-      //           });
-      //         }
-      //       }),
-      //       instance
-      //     );
-      //   },
-      // });
     },
   },
 };

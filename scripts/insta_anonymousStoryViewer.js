@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { CANCEL_XHR, hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
@@ -21,19 +22,17 @@ export default {
 
   pageScript: {
     onDocumentStart: () => {
-      (function () {
-        var originalXMLSend = XMLHttpRequest.prototype.send;
-        XMLHttpRequest.prototype.send = function () {
-          let s = arguments[0]?.toString() || "";
+      hookXHR({
+        onBeforeSend: ({ method, url, async, user, password }, dataSend) => {
+          let s = dataSend?.toString() || "";
           if (s.includes("viewSeenAt") || s.includes("SeenMutation")) {
             UfsGlobal.DOM.notify({
               msg: "Useful-script: Blocked story view tracking",
             });
-          } else {
-            originalXMLSend.apply(this, arguments);
+            return CANCEL_XHR;
           }
-        };
-      })();
+        },
+      });
     },
 
     onDocumentEnd: () => {
