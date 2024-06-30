@@ -133,7 +133,6 @@ async function createTabContent(tab) {
   if (!tab.scripts?.length) {
     const emptyText = document.createElement("h3");
     emptyText.style.padding = "30px 0";
-    emptyText.style.color = "#19143b";
     emptyText.innerHTML = t(
       tab.placeholder || {
         en: `<i class="fa-solid fa-circle-info"></i> Nothing here yet...`,

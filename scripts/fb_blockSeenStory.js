@@ -20,7 +20,7 @@ export default {
   whiteList: ["https://*facebook.com/*"],
 
   pageScript: {
-    onDocumentStart_: async (details) => {
+    onDocumentStart_: (details) => {
       hookXHR({
         onBeforeSend: ({ method, url, async, user, password }, dataSend) => {
           if (

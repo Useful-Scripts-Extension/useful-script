@@ -138,16 +138,18 @@ hookXHR({
     return null; // return null to cancel xhr open
   },
   onBeforeSend: ({method, url, async, user, password}, dataSend) => {
-    return {...}; // modify any property
+    return {...}; // modify dataSend
     return null; // return null to cancel xhr send
   },
-  onAfterSend: ({method, url, async, user, password}, dataSend, response) => {}
+  onAfterSend: ({method, url, async, user, password}, dataSend, response) => {
+    doSomething(); // not support modify reponse yet
+  }
 });
 */
 
 // #endregion
 
-// #region WebSocket
+// #region WebSocket - Experimental - WORKING IN PROGRESS
 const modifyUrlWsFn = [];
 const onBeforeWSFn = [];
 const onAfterWSFn = [];
