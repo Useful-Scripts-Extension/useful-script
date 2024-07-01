@@ -49,12 +49,9 @@ Phiên bản hiện tại:
 
 ## Ảnh chụp màn hình
 
-<div style="display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start">
-
-  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_light.png" style="max-width:300px;display:inline-block" />
-  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_dark.png" style="max-width:300px;display:inline-block"/>
-
-</div>
+| Chế độ sáng  | Chế độ tối  |
+|---|---|
+| ![](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)  | ![](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)  |
 
 ## Cài đặt
 

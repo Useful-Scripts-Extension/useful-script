@@ -49,12 +49,9 @@ Current Versions:
 
 ## ScreenShots
 
-<div style="display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start">
-
-  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_light.png" style="max-width:300px;display:inline-block" />
-  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_dark.png" style="max-width:300px;display:inline-block"/>
-
-</div>
+| Light mode  | Dark mode  |
+|---|---|
+| ![](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)  | ![](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)  |
 
 ## Install
 
