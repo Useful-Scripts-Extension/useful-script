@@ -94,11 +94,9 @@ export default {
       const { closeLoading, setLoadingText } = showLoading(
         "Đang thu thập link ảnh/video trong album..."
       );
-      let total = 0;
       fetchAllPhotoLinksInAlbum({
         albumId,
-        progress: (length) => {
-          total += length;
+        progress: (total) => {
           setLoadingText("Đang thu thập " + total + " links...");
         },
       })

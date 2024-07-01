@@ -27,7 +27,7 @@ export default {
 export function scrollToVeryEnd() {
   return new Promise(async (resolve, reject) => {
     const notify = UfsGlobal.DOM.notify({
-      msg: "Usefull-script: Scrolling to very end...",
+      msg: "Useful-script: Scrolling to very end...",
       duration: 99999,
     });
 

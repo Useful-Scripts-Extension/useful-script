@@ -10,7 +10,7 @@ export default {
     en: "Show frames per second of current website (use debugger)",
     vi: "Hiện thị tốc độ khung hình của trang web hiện tại (sử dụng debugger)",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-05-19": "init",
   },

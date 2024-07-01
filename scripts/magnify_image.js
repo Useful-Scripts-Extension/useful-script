@@ -1,6 +1,8 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { BADGES } from "./helpers/badge.js";
 
+const contextMenuId = "magnify-image";
+
 export default {
   icon: '<i class="fa-solid fa-expand fa-lg fa-bounce"></i>',
   name: {
@@ -12,22 +14,32 @@ export default {
     Where you are able to zoom in/out, rotate, drag, and more.<br/>
     Auto find large version of image to show.
     <br/></br>
-    <p style="color:yellow">3 ways to use:</p>
+    <p style="color:yellow">4 ways to use:</p>
+    Using now:
     <ol>
-      <li>Right click any image</li>
-      <li>Left click this feature and choose image</li>
-      <li>Double Ctrl on any image (require autorun)</li>
+      <li>Right click in website > click magnify image</li>
+      <li>Left click this feature then click image</li>
+    </ol>
+    After turn-on auto-run:
+    <ol>
+      <li>Hover on any image/video > click magnify button</li>
+      <li>Double Ctrl on any image</li>
     </ol>
     `,
     vi: `Xem bất kỳ hình ảnh nào trong cửa sổ phóng đại<br/>
     Nơi bạn có thể phóng to/thu nhỏ, xoay, kéo thả, ...<br/>
     Tự động tìm ảnh chất lượng cao để hiển thị.
     <br/></br>
-    <p style="color:yellow">3 cách sử dụng:</p>
+    <p style="color:yellow">4 cách sử dụng:</p>
+    Dùng ngay:
     <ol>
-      <li>Chuột phải vào ảnh</li>
-      <li>Click chức năng và click chọn ảnh</li>
-      <li>Ctrl 2 lần vào ảnh (cần mở tự động chạy)</li>
+      <li>Chuột phải vào ảnh/trang web > chọn magnify image</li>
+      <li>Click chức năng rồi click chọn ảnh</li>
+    </ol>
+    Cần mở tự chạy:
+    <ol>
+      <li>Đưa chuột vào ảnh/video > bấm nút phóng to</li>
+      <li>Ctrl 2 lần vào ảnh</li>
     </ol>`,
     img: "",
   },
@@ -35,7 +47,9 @@ export default {
   changeLogs: {
     "2024-04-10": "init",
     "2024-04-27": "remove error img in gallery",
-    "2024-05-21": "not reqire autorun",
+    "2024-05-21": "not require autorun",
+    "2024-06-07":
+      "support video frame + right click anywhere + magnify on hover + search by images",
   },
 
   popupScript: {
@@ -78,16 +92,85 @@ export default {
     // expose for background script to call
     _createPreview: (details) => {
       injectCss();
-      createPreview(details?.srcUrl);
+      if (details?.srcUrl) {
+        createPreview(details?.srcUrl);
+      } else {
+        magnifyImage();
+      }
     },
 
-    onDocumentStart: async () => {
+    onDocumentStart_: async () => {
       injectCss();
-      let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
-        UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
-        let mouse = UfsGlobal.DOM.getMousePos();
-        magnifyImage(mouse.x, mouse.y);
+
+      let hovering = null;
+      let div = document.createElement("div");
+      div.id = "ufs-magnify-image-hover-div";
+      div.title = "Useful-script: Click to magnify";
+      div.addEventListener("click", () => {
+        if (hovering) {
+          window.top.postMessage(
+            {
+              type: "ufs-magnify-image-hover",
+              data: {
+                srcs: hovering?.srcs,
+                x: hovering?.rect?.left,
+                y: hovering?.rect?.top,
+              },
+            },
+            "*"
+          );
+        }
       });
+
+      function addToDom() {
+        (document.body || document.documentElement).appendChild(div);
+      }
+      addToDom();
+      UfsGlobal.DOM.onElementRemoved(div, addToDom);
+
+      window.addEventListener("mouseover", (e) => {
+        let srcs = getImgSrcsFromElement(e.target);
+        if (!srcs?.length) {
+          div.classList.toggle("hide", e.target !== div);
+          return;
+        }
+
+        let rect = UfsGlobal.DOM.getContentClientRect(e.target);
+        if (rect.width < 30 || rect.height < 30) {
+          rect.top -= rect.width / 2;
+          rect.left -= rect.height / 2;
+        }
+        rect.left = Math.max(rect.left, 0);
+        rect.top = Math.max(rect.top, 0);
+
+        hovering = { srcs, rect, target: e.target };
+        div.style.left = rect.left + "px";
+        div.style.top = rect.top + "px";
+        div.classList.toggle("hide", false);
+      });
+
+      // only main frame
+      if (window === window.top) {
+        // ctrl
+        let unsub = UfsGlobal.DOM.onDoublePress("Control", () => {
+          UfsGlobal.Extension.trackEvent("magnify-image-CTRL");
+          let mouse = UfsGlobal.DOM.getMousePos();
+          magnifyImage(mouse.x, mouse.y);
+        });
+
+        // hover
+        window.addEventListener("message", (e) => {
+          const { data, type } = e.data || {};
+          if (type === "ufs-magnify-image-hover") {
+            let srcs = data?.srcs;
+            if (srcs?.length)
+              UfsGlobal.Extension.trackEvent("magnify-image-HOVER");
+
+            if (srcs?.length > 1) chooseImg(srcs);
+            else if (srcs?.length === 1) createPreview(srcs[0]);
+          }
+        });
+      }
     },
   },
 
@@ -95,38 +178,26 @@ export default {
     runtime: {
       onInstalled: () => {
         chrome.contextMenus.create({
-          title: "Magnify this image",
-          contexts: ["image"],
-          id: "ufs-magnify-image",
+          title: "Magnify image",
+          // contexts: ["image", "video"],
+          contexts: ["all"],
+          id: contextMenuId,
+          parentId: "root",
         });
       },
     },
     contextMenus: {
-      onClicked: (info, context) => {
-        context.utils.trackEvent("magnify-image-CONTEXT-MENU");
-        /*
-      {
-        "editable": false,
-        "frameId": 2491,
-        "frameUrl": "https://www.deviantart.com/_nsfgfb/?realEstateId=166926a9-15ab-458d-b424-4385d5c9acde&theme=dark&biClientId=fdb7b474-671d-686c-7ebc-7027eecd49f0&biClientIdSigned=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJiaUNsaWVudElkIjoiZmRiN2I0NzQtNjcxZC02ODZjLTdlYmMtNzAyN2VlY2Q0OWYwIiwidHMiOjE3MTM0NjgyNTAsInVzZXJVdWlkIjoiZmRiN2I0NzQtNjcxZC02ODZjLTdlYmMtNzAyN2VlY2Q0OWYwIn0.z98X9tXSYMaUubtwGGG08NsikaoZ7iODsn_aWaeiGD0&newApi=2&platform=desktop",
-        "linkUrl": "https://www.deviantart.com/join?referer=https%3A%2F%2Fwww.deviantart.com%2Fdreamup%3Fda_dealer_footer=1",
-        "mediaType": "image",
-        "menuItemId": "ufs-magnify-image",
-        "pageUrl": "https://www.deviantart.com/kat-zaphire/art/Deep-in-the-forest-989494503",
-        "srcUrl": "https://wixmp-70a14ff54af6225c7974eec7.wixmp.com/offers-assets/94f22a36-bb47-4836-8bce-fea45f844aa4.gif"
-    } */
-        if (info.menuItemId == "ufs-magnify-image") {
-          context.utils.getCurrentTab().then((tab) => {
-            context.utils.runScriptInTabWithEventChain({
-              target: {
-                tabId: tab.id,
-                frameIds: [0],
-              },
-              scriptIds: ["magnify_image"],
-              eventChain: "contentScript._createPreview",
-              details: info,
-              world: "ISOLATED",
-            });
+      onClicked: ({ info, tab }, context) => {
+        if (info.menuItemId == contextMenuId) {
+          context.utils.runScriptInTabWithEventChain({
+            target: {
+              tabId: tab.id,
+              frameIds: [0],
+            },
+            scriptIds: ["magnify_image"],
+            eventChain: "contentScript._createPreview",
+            details: info,
+            world: "ISOLATED",
           });
         }
       },
@@ -134,10 +205,31 @@ export default {
   },
 };
 
-function injectCss() {
-  let id = "ufs-magnify-image-css";
+const defaultSearchData = `Google lens | https://lens.google.com/uploadbyurl?url=#t#
+Google image | https://www.google.com/searchbyimage?safe=off&sbisrc=1&image_url=#t#
+Yandex | https://yandex.com/images/search?source=collections&rpt=imageview&url=#t#
+SauceNAO | https://saucenao.com/search.php?db=999&url=#t#
+IQDB | https://iqdb.org/?url=#t#
+3D IQDB | https://3d.iqdb.org/?url=#t#
+Baidu | https://graph.baidu.com/details?isfromtusoupc=1&tn=pc&carousel=0&promotion_name=pc_image_shituindex&extUiData%5bisLogoShow%5d=1&image=#t#
+Bing | https://www.bing.com/images/search?view=detailv2&iss=sbi&form=SBIVSP&sbisrc=UrlPaste&q=imgurl:#t#
+TinEye | https://www.tineye.com/search?url=#t#
+Sogou | https://pic.sogou.com/ris?query=#t#
+360 | http://st.so.com/stu?imgurl=#t#
+WhatAnime | https://trace.moe/?url=#t#
+Ascii2D | https://ascii2d.net/search/url/#t#
+Trace Moe | https://trace.moe/?url=#t#
+KarmaDecay | http://karmadecay.com/#t#
+QRCode decode | https://zxing.org/w/decode?full=true&u=#t#
+QRCode | https://hoothin.com/qrcode/##t#
+ImgOps | https://imgops.com/#b#`;
+
+function injectCss(
+  path = "/scripts/magnify_image.css",
+  id = "ufs-magnify-image-css"
+) {
   if (!document.querySelector("#" + id)) {
-    UfsGlobal.Extension.getURL("/scripts/magnify_image.css").then((url) => {
+    UfsGlobal.Extension.getURL(path).then((url) => {
       UfsGlobal.DOM.injectCssFile(url, id);
     });
   }
@@ -155,41 +247,41 @@ function validateMouse(x, y) {
 }
 
 function magnifyImage(x, y) {
-  let ctrlMouse = { x, y };
+  let mouse = validateMouse(x, y);
   let removeLoading,
     loaded = false;
 
   setTimeout(() => {
     if (!loaded)
       removeLoading = UfsGlobal.DOM.addLoadingAnimationAtPos(
-        ctrlMouse.x,
-        ctrlMouse.y,
+        mouse.x,
+        mouse.y,
         40,
         "",
         `background: #eee9;`
       );
   }, 100);
 
-  getImagesAtMouse().then((imgs) => {
+  getImagesAtPos(x, y).then((imgs) => {
     loaded = true;
     removeLoading?.();
 
-    if (!imgs.length) {
+    if (!imgs?.length) {
       UfsGlobal.DOM.notify({
         msg: "Useful-script: No image found",
-        x: ctrlMouse.x,
-        y: ctrlMouse.y,
+        x: mouse.x,
+        y: mouse.y,
         align: "left",
       });
-    } else if (imgs.length === 1) {
+    } else if (imgs?.length === 1) {
       console.log(imgs);
       let src = imgs[0].src;
-      createPreview(src, ctrlMouse.x, ctrlMouse.y);
+      createPreview(src, mouse.x, mouse.y);
     } else {
       chooseImg(
         imgs.map((img) => img.src),
-        ctrlMouse.x,
-        ctrlMouse.y
+        mouse.x,
+        mouse.y
       );
     }
   });
@@ -270,8 +362,19 @@ function getImgSrcsFromElement(ele) {
 
   let fn = [
     () => {
-      if (!ele.srcset) return null;
-      return UfsGlobal.Utils.getLargestSrcset(ele.srcset);
+      let srcset = ele.srcset || ele.getAttribute("srcset");
+      if (!srcset) {
+        // child srcset
+        let childs = ele.children;
+        if (childs?.length) {
+          for (let i = 0; i < childs.length; i++) {
+            let _ = childs[i].srcset;
+            if (_) srcset += _ + ", ";
+          }
+        }
+      }
+      if (!srcset) return;
+      return UfsGlobal.Utils.getLargestSrcset(srcset);
     },
     () => {
       // if (/img|picture|source|image|a/i.test(ele.tagName))
@@ -297,6 +400,16 @@ function getImgSrcsFromElement(ele) {
       }
       if (/canvas/i.test(ele.tagName)) {
         return ele.toDataURL();
+      }
+      if (/video/i.test(ele.tagName)) {
+        // get current capture frame
+        let canvas = document.createElement("canvas");
+        canvas.width = ele.videoWidth;
+        canvas.height = ele.videoHeight;
+        canvas.getContext("2d").drawImage(ele, 0, 0);
+        let dataURL = canvas.toDataURL();
+        canvas.remove();
+        return dataURL;
       }
     },
   ];
@@ -358,18 +471,18 @@ async function filterImageSrcs(eleSrcs) {
   }
 }
 
-async function getImagesAtMouse() {
+async function getImagesAtPos(x, y) {
   let eles = Array.from(document.querySelectorAll("*"));
 
-  let mouse = UfsGlobal.DOM.getMousePos();
+  let pos = validateMouse(x, y);
   let sourceEles = [];
   eles = eles.reverse().filter((ele) => {
     let rect = ele.getBoundingClientRect();
     let isAtMouse =
-      rect.left <= mouse.x &&
-      rect.right >= mouse.x &&
-      rect.top <= mouse.y &&
-      rect.bottom >= mouse.y;
+      rect.left <= pos.x &&
+      rect.right >= pos.x &&
+      rect.top <= pos.y &&
+      rect.bottom >= pos.y;
     if (isAtMouse && /picture|img/i.test(ele.tagName)) {
       let sources = Array.from(ele.querySelectorAll("source"));
       if (sources?.length) sourceEles = sourceEles.concat(sources);
@@ -414,7 +527,7 @@ async function getImagesAtMouse() {
 
   // filter out video
   results = results.filter(({ ele, src }) => {
-    return !/video/i.test(ele.tagName) && !/iframe/i.test(ele.tagName);
+    return !/iframe/i.test(ele.tagName);
   });
 
   // results = await filterImageSrcs(results);
@@ -626,7 +739,7 @@ function createPreview(
   if (exist) exist.remove();
 
   // container
-  const overlay = document.createElement("div");
+  let overlay = document.createElement("div");
   overlay.id = id;
   overlay.innerHTML = `
     <div class="ufs-img-anim" style="top: ${y}px; left: ${x}px;"></div>
@@ -650,7 +763,18 @@ function createPreview(
       <div class="ufs-btn" ufs_title="Rotate left">↺</div>
       <div class="ufs-btn" ufs_title="Rotate right">↻</div>
       <div class="ufs-btn" ufs_title="Open in new tab">↗</div>
-      <div class="ufs-btn" ufs_title="Download">⤓</div>
+      <div class="ufs-btn" ufs_title="Download">⬇️</div>
+      <div class="ufs-btn ufs-dropdown-menu" ufs_title="">🔎 Search by image
+        <ul>
+        ${defaultSearchData
+          .split("\n")
+          .map((s) => {
+            let [title, url] = s.split(" | ");
+            return `<li class="ufs-btn" data-url="${url}">${title}</li>`;
+          })
+          .join("")}
+        </ul>
+      </div>
       <div class="ufs-desc"></div>
     </div>
   `;
@@ -670,6 +794,7 @@ function createPreview(
     rotateRight,
     openNewTab,
     download,
+    search,
   ] = Array.from(toolbar.querySelectorAll(".ufs-btn"));
   const desc = toolbar.querySelector(".ufs-desc");
 
@@ -758,6 +883,9 @@ function createPreview(
 
     updateSize();
     updateZoom();
+  };
+  img.onerror = () => {
+    UfsGlobal.DOM.notify({ msg: "Failed to load image" });
   };
 
   zoomEle.onclick = () => {
@@ -861,6 +989,19 @@ function createPreview(
       window.open(img.src, "_blank");
     }
   };
+  search.querySelectorAll("li.ufs-btn").forEach((li) => {
+    li.onclick = async (e) => {
+      e.preventDefault();
+      window.open(
+        li
+          .getAttribute("data-url")
+          .replace("#b#", img.src.replace(/https?:\/\//i, ""))
+          .replace("#t#", encodeURIComponent(img.src)),
+        "_blank",
+        "width=1024, height=768, toolbar=1, menubar=1, titlebar=1"
+      );
+    };
+  });
   download.onclick = () => {
     UfsGlobal.Extension.download({ url: img.src });
   };

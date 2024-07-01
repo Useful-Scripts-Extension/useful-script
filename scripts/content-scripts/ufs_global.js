@@ -38,6 +38,7 @@ export const UfsGlobal = {
     injectCssFile,
     getTrustedPolicy,
     createTrustedHtml,
+    createTrustedScript,
     executeScript,
     injectScriptSrc,
     injectScriptSrcAsync,
@@ -47,6 +48,7 @@ export const UfsGlobal = {
     getWatchingVideoSrc,
   },
   Utils: {
+    waitFor,
     hashString,
     lerp,
     getNumberFormatter,
@@ -76,7 +78,6 @@ export const UfsGlobal = {
     canonicalUri,
     formatSize,
     promiseAllStepN,
-    hook,
     parseJwt,
     copyToClipboard,
     isEmptyFunction,
@@ -124,11 +125,9 @@ function sendToContentScript(event, data) {
   return new Promise((resolve, reject) => {
     let uuid = Math.random().toString(36); // uuid to distinguish events
     let listenerKey = "ufs-contentscript-sendto-pagescript" + uuid;
-    let listener = (evt) => {
-      resolve(evt.detail.data);
-      window.removeEventListener(listenerKey, listener);
-    };
-    window.addEventListener(listenerKey, listener);
+    window.addEventListener(listenerKey, (evt) => resolve(evt.detail.data), {
+      once: true,
+    });
     window.dispatchEvent(
       new CustomEvent("ufs-pagescript-sendto-contentscript", {
         detail: { event, data, uuid },
@@ -149,7 +148,7 @@ function runInBackground(fnPath, params) {
     params,
   });
 }
-function fetchByPassOrigin(url, options = {}) {
+async function fetchByPassOrigin(url, options = {}) {
   try {
     let _url = url;
     let urlObject = new URL(url);
@@ -157,11 +156,11 @@ function fetchByPassOrigin(url, options = {}) {
     if (location.hostname == urlObject?.hostname) {
       _url = urlObject.pathname;
     }
-    return fetch(_url, options);
+    return await fetch(_url, options);
   } catch (e) {
     console.log("NORMAL FETCH FAIL: ", e);
   }
-  return runInBackground("fetch", [url]);
+  return await runInBackground("fetch", [url]);
 }
 function getURL(filePath) {
   return runInContentScript("chrome.runtime.getURL", [filePath]);
@@ -196,10 +195,7 @@ function checkElementvisibility(elem) {
   if (!elem.offsetHeight && !elem.offsetWidth) {
     return false;
   }
-  if (getComputedStyle(elem).visibility === "hidden") {
-    return false;
-  }
-  return true;
+  return !(getComputedStyle(elem).visibility === "hidden");
 }
 function closest(element, selector) {
   let el = element;
@@ -426,25 +422,26 @@ function enableDragAndZoom(element, container, onUpdateCallback) {
   };
 }
 // prettier-ignore
-function getContentClientRect(target) {
-    let rect = target.getBoundingClientRect();
-    let compStyle = window.getComputedStyle(target);
-    let pFloat = parseFloat;
-    let top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
-    let right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
-    let bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
-    let left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
-    return {
-        top : top,
-        right : right,
-        bottom : bottom,
-        left : left,
-        width : right-left,
-        height : bottom-top,
-    };
-  }
+function getContentClientRect(target, win = window) {
+  let rect = target.getBoundingClientRect();
+  let compStyle = win.getComputedStyle(target);
+  let pFloat = parseFloat;
+  let top = rect.top + pFloat(compStyle.paddingTop) + pFloat(compStyle.borderTopWidth);
+  let right = rect.right - pFloat(compStyle.paddingRight) - pFloat(compStyle.borderRightWidth);
+  let bottom = rect.bottom - pFloat(compStyle.paddingBottom) - pFloat(compStyle.borderBottomWidth);
+  let left = rect.left + pFloat(compStyle.paddingLeft) + pFloat(compStyle.borderLeftWidth);
+  return {
+      top : top,
+      right : right,
+      bottom : bottom,
+      left : left,
+      width : right-left,
+      height : bottom-top,
+  };
+}
 function dataURLToCanvas(dataurl, cb) {
   if (!dataurl) return cb(null);
+  let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
   let img = new Image();
   img.setAttribute("crossOrigin", "anonymous");
@@ -533,7 +530,7 @@ function notify({
       }
       ${styleText || ""}
     `;
-  div.textContent = msg;
+  div.innerHTML = createTrustedHtml(msg);
   (document.body || document.documentElement).appendChild(div);
 
   let timeouts = [];
@@ -566,7 +563,7 @@ function notify({
     },
     setText(text) {
       if (div) {
-        div.textContent = text;
+        div.innerHTML = createTrustedHtml(text);
         return true;
       }
       return false;
@@ -586,7 +583,10 @@ function onDoublePress(key, callback, timeout = 500) {
   let clickCount = 0;
 
   const keyup = (event) => {
-    if (event.key !== key) return;
+    if (event.key !== key) {
+      clickCount = 0;
+      return;
+    }
 
     clickCount++;
     if (clickCount === 2) {
@@ -806,6 +806,7 @@ function injectCssCode(code) {
   if ("textContent" in css) css.textContent = code;
   else css.innerText = code;
   (document.head || document.documentElement).appendChild(css);
+  return css;
 }
 function injectCssFile(filePath, id) {
   let css = document.createElement("link");
@@ -814,6 +815,7 @@ function injectCssFile(filePath, id) {
   css.setAttribute("href", filePath);
   if (id) css.setAttribute("id", id);
   (document.head || document.documentElement).appendChild(css);
+  return css;
 }
 function getTrustedPolicy() {
   let policy = window.trustedTypes?.ufsTrustedTypesPolicy || null;
@@ -830,9 +832,17 @@ function createTrustedHtml(html) {
   let policy = getTrustedPolicy();
   return policy.createHTML(html);
 }
-function executeScript(code) {
+function createTrustedScript(code) {
   let policy = getTrustedPolicy();
   return policy.createScript(code);
+}
+function executeScript(code) {
+  let script = document.createElement("script");
+  script.textContent = createTrustedScript(code);
+  (document.head || document.documentElement).appendChild(script);
+  script.onload = function () {
+    script.remove();
+  };
 }
 function injectScriptSrc(src, callback) {
   let policy = getTrustedPolicy();
@@ -846,12 +856,13 @@ function injectScriptSrc(src, callback) {
   };
   script.src = jsSrc; // Assigning the TrustedScriptURL to src
   (document.head || document.documentElement).appendChild(script);
+  return script;
 }
 function injectScriptSrcAsync(src) {
   return new Promise((resolve, reject) => {
-    injectScriptSrc(src, (success, e) => {
+    let script = injectScriptSrc(src, (success, e) => {
       if (success) {
-        resolve();
+        resolve(script);
       } else {
         reject(e);
       }
@@ -914,6 +925,33 @@ function getWatchingVideoSrc() {
 
 // #region Utils
 
+/**
+ * Waits for a condition to be true within a specified timeout.
+ *
+ * @param {function} condition - The condition to be evaluated.
+ * @param {number} [timeout=1000] - The timeout in milliseconds.
+ * @return {Promise} A Promise that resolves when the condition is true.
+ */
+function waitFor(condition, timeout = 0) {
+  // return new Promise((resolve) => {
+  //   let timer = setInterval(() => {
+  //     if (condition()) {
+  //       clearInterval(timer);
+  //       resolve();
+  //     }
+  //   }, timeout);
+  // });
+  return new Promise(async (resolve) => {
+    while (true) {
+      if (condition()) {
+        resolve();
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, timeout));
+    }
+  });
+}
+
 // https://stackoverflow.com/a/7616484/23648002
 function hashString(str) {
   let hash = 0,
@@ -953,7 +991,7 @@ function getNumberFormatter(optionSelect, locale) {
             ?.getAttribute("href")
         )?.searchParams?.get("locale");
       } catch {
-        cLog(
+        console.log(
           "Cannot find browser locale. Use en as default for number formatting."
         );
         locale = "en";
@@ -1067,15 +1105,13 @@ function strBetween(s, front, back, trim = false) {
 }
 async function json2xml(json) {
   if (!window.json2xml) {
-    let url = await getURL("/scripts/libs/xml-json/json2xml.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/xml-json/json2xml.js");
   }
   return window.json2xml(json);
 }
 async function xml2json(xml) {
   if (!window.xml2json) {
-    let url = await getURL("/scripts/libs/xml-json/xml2json.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/xml-json/xml2json.js");
   }
   return window.xml2json(xml);
 }
@@ -1144,8 +1180,7 @@ function getResolutionCategory(width, height) {
 async function saveAs(url_blob_file, title = "download", options = {}) {
   try {
     if (!window.saveAs) {
-      let url = await getURL("/scripts/libs/file-saver/index.js");
-      await injectScriptSrcAsync(url);
+      await import("../libs/file-saver/index.js");
     }
 
     window.saveAs(url_blob_file, title, options);
@@ -1197,29 +1232,28 @@ function replaceUsingRegex(str, r, s) {
   let results = [];
 
   if (!Array.isArray(r) && !Array.isArray(s)) {
-    if (r && r.test && r.test(str)) {
+    if (r?.test?.(str)) {
       results.push(str.replace(r, s));
     }
   } else if (!Array.isArray(r) && Array.isArray(s)) {
-    if (r && r.test && r.test(str)) {
-      for (let si = 0; si < s.length; si++) {
-        results.push(str.replace(r, s[si]));
+    if (r?.test?.(str)) {
+      for (const si of s) {
+        results.push(str.replace(r, si));
       }
     }
   } else if (Array.isArray(r) && !Array.isArray(s)) {
-    for (let ri = 0; ri < r.length; ri++) {
-      let _r = r[ri];
-      if (_r && _r.test && _r.test(str)) {
-        results.push(str.replace(_r, s));
+    for (const ri of r) {
+      if (ri?.test?.(str)) {
+        results.push(str.replace(ri, s));
       }
     }
   } else if (Array.isArray(r) && Array.isArray(s)) {
     for (let ri = 0; ri < r.length; ri++) {
       let _r = r[ri];
-      if (_r && _r.test && _r.test(str)) {
+      if (_r?.test?.(str)) {
         let _s = Array.isArray(s[ri]) ? s[ri] : [s[ri]];
-        for (let si = 0; si < _s.length; si++) {
-          results.push(str.replace(_r, _s[si]));
+        for (const si of _s) {
+          results.push(str.replace(_r, si));
         }
       }
     }
@@ -1230,7 +1264,7 @@ function replaceUsingRegex(str, r, s) {
 function testRegex(str, regexs) {
   if (!Array.isArray(regexs)) regexs = [regexs];
   for (let regex of regexs) {
-    if (regex && regex.test && regex.test(str)) {
+    if (regex?.test?.(str)) {
       return true;
     }
   }
@@ -1527,10 +1561,10 @@ async function isImageSrc(src) {
     const res = await fetchByPassOrigin(src, {
       method: "HEAD",
     });
-    if (res.ok) {
+    if (res?.ok) {
       // const type = res.headers.get("content-type");
       const type = res.headers?.["content-type"];
-      if (type && type.startsWith("image/")) {
+      if (type?.startsWith?.("image/")) {
         return true;
       }
     }
@@ -1633,22 +1667,6 @@ function promiseAllStepN(n, list) {
     });
   });
 }
-function hook(obj, name, callback) {
-  const orig = obj[name];
-  obj[name] = function (...args) {
-    const result = orig.apply(this, args);
-    callback?.({
-      this: this,
-      args: args,
-      result: result,
-    });
-    return result;
-  };
-  return () => {
-    // restore
-    obj[name] = orig;
-  };
-}
 // https://stackoverflow.com/a/38552302/11898496
 function parseJwt(token) {
   let base64Url = token.split(".")[1];
@@ -1733,10 +1751,10 @@ async function zipAndDownloadBlobs(
   successCallback
 ) {
   if (!window.JSZip) {
-    let url = await getURL("/scripts/libs/jzip/index.js");
-    await injectScriptSrcAsync(url);
+    await import("../libs/jzip/index.js");
   }
   const zip = new window.JSZip();
+  console.log(zip);
 
   // Add each Blob to the ZIP archive with a unique name
   blobList.forEach(({ blob, fileName }, index) => {
@@ -1974,9 +1992,13 @@ UfsGlobal.DEBUG = {
   // Giải mã từ dạng 'http\\u00253A\\u00252F\\u00252Fexample.com' về 'http://example.com'
   decodeEscapedUnicodeString(str) {
     if (!str) return "";
-    return decodeURIComponent(
-      JSON.parse('"' + str.replace(/\"/g, '\\"') + '"')
-    );
+    let res = str;
+    while (res.includes("\\u")) {
+      res = decodeURIComponent(
+        JSON.parse('"' + res.replace(/\"/g, '\\"') + '"')
+      );
+    }
+    return res;
   },
 
   // https://stackoverflow.com/a/8649003

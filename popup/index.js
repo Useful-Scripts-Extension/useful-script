@@ -15,7 +15,6 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
-  getLastFocusedTab,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -40,7 +39,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
-// import _ from "../md/exportScriptsToMd.js";
+import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
 const openInNewTabBtn = document.querySelector(".open-in-newtab");
@@ -133,7 +132,6 @@ async function createTabContent(tab) {
   if (!tab.scripts?.length) {
     const emptyText = document.createElement("h3");
     emptyText.style.padding = "30px 0";
-    emptyText.style.color = "#19143b";
     emptyText.innerHTML = t(
       tab.placeholder || {
         en: `<i class="fa-solid fa-circle-info"></i> Nothing here yet...`,
@@ -357,10 +355,13 @@ function createScriptButton(script, isFavorite = false) {
   }
   if (script.changeLogs) {
     let tx = "";
-    let dates = Object.keys(script.changeLogs).sort();
-    for (let date of dates) {
-      tx += `<li>${date} - ${script.changeLogs[date]}</li>`;
-    }
+    let dates = Object.keys(script.changeLogs).sort().reverse();
+    let lastDate = dates[0];
+    if (lastDate) tx += `<li>${lastDate} - ${script.changeLogs[lastDate]}</li>`;
+
+    // for (let date of dates) {
+    // tx += `<li>${date} - ${script.changeLogs[date]}</li>`;
+    // }
     tooltip.innerHTML += `<ul class="change-logs">${tx}</ul>`;
   }
   button.appendChild(more);
@@ -449,13 +450,6 @@ async function runScript(script) {
     recentScriptsSaver.add(script);
     trackEvent(script.id);
 
-    // if (isInNewTab) {
-    //   // focus to targeTab
-    //   await chrome.windows.update(tab.windowId, {
-    //     focused: true,
-    //   });
-    // }
-
     try {
       if (isFunction(script.popupScript?.onClick)) {
         await script.popupScript.onClick();
@@ -464,6 +458,7 @@ async function runScript(script) {
       showError(e);
     }
 
+    let isRunInTab = false;
     [
       ["MAIN", "pageScript", "onClick", false],
       ["MAIN", "pageScript", "onClick_", true],
@@ -471,6 +466,7 @@ async function runScript(script) {
       ["ISOLATED", "contentScript", "onClick_", true],
     ].forEach(([world, context, func, allFrames]) => {
       if (isFunction(script?.[context]?.[func])) {
+        isRunInTab = true;
         runScriptInTabWithEventChain({
           target: {
             tabId: tab.id,
@@ -482,23 +478,33 @@ async function runScript(script) {
         }).catch(showError);
       }
     });
+
+    if (isInNewTab && isRunInTab) {
+      // focus to targeTab
+      await chrome.windows.update(tab.windowId, {
+        focused: true,
+      });
+    }
   } else {
-    let w = script?.whiteList?.join("<br/>");
-    let b = script?.blackList?.join("<br/>");
+    let text = "";
+    [
+      [script?.whiteList, t({ vi: "Chỉ chạy tại", en: "Only run at" })],
+      [script?.blackList, t({ vi: "Không chạy tại", en: "Not run at" })],
+    ].forEach(([list, title]) => {
+      if (list?.length) {
+        text += `${title}:<br/>
+        <ul>
+          ${list.map((_) => "<li><i>" + _ + "</i></li>").join("")}
+        </ul><br/>`;
+      }
+    });
 
     openModal(
       t({
         en: `Script not supported in current website`,
         vi: `Script không hỗ trợ website hiện tại`,
       }),
-      t({
-        en:
-          `${w ? `+ Only run at:  <i>${w}</i>` : ""}<br />` +
-          `${b ? `+ Not run at:  <i>${b}</i>` : ""}`,
-        vi:
-          `${w ? `+ Chỉ chạy tại:  <i>${w}</i>` : ""}<br />` +
-          `${b ? `+ Không chạy tại:  <i>${b}</i>` : ""}`,
-      })
+      text
     );
   }
 }
@@ -971,6 +977,7 @@ const onScrollEnd = UfsGlobal.Utils.debounce(() => {
 }, 100);
 
 window.addEventListener("scroll", onScrollEnd);
+
 // #endregion
 
 (async function () {

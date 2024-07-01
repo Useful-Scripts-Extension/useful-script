@@ -35,6 +35,7 @@ export const canAutoRun = (script) => {
       "onInstalled",
       "onStartup",
       "onMessage",
+      "onMessageExternal",
       "contextMenus",
     ])
   );

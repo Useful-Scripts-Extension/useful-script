@@ -1,5 +1,6 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { getUserInfoFromUid } from "./fb_GLOBAL.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-regular fa-comment-dots fa-lg"></i>',
@@ -15,6 +16,7 @@ export default {
       "Thông báo khi có người đang gõ tin nhắn cho bạn.<br/>" +
       "<h2>Chú ý</h2>Không xem được nếu mã hoá đầu cuối",
   },
+  badges: [BADGES.beta],
   whiteList: ["https://*.facebook.com/*", "https://*.messenger.com/*"],
 
   pageScript: {

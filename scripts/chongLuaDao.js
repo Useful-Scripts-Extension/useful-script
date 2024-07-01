@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 const updateIcon = '<i class="fa-regular fa-circle-down"></i>';
 
 export default {
@@ -20,7 +18,6 @@ export default {
         <li>Click ${updateIcon} để cập nhật dữ liệu website giả mạo mới nhất</li>
       </ul>`,
   },
-  badges: [BADGES.new],
   buttons: [
     {
       icon: updateIcon,
@@ -103,8 +100,15 @@ export default {
     },
 
     runtime: {
-      onInStalled: (reason, context) => {
+      onInstalled: (reason, context) => {
         saveBgCache();
+
+        chrome.contextMenus.create({
+          title: "Chong Lua Dao",
+          type: "normal",
+          id: "chongLuaDao",
+          parentId: "root",
+        });
       },
       onStartup: (nil, context) => {
         saveBgCache();
@@ -114,6 +118,22 @@ export default {
           saveBgCache();
         } else if (request.action == KEYS.clearCache) {
           clearBgCache();
+        }
+      },
+    },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {
+        if (info.menuItemId == "chongLuaDao") {
+          context.utils.runScriptInTabWithEventChain({
+            target: {
+              tabId: tab.id,
+              frameIds: [0],
+            },
+            scriptIds: ["chongLuaDao"],
+            eventChain: "contentScript.onClick",
+            details: info,
+            world: "ISOLATED",
+          });
         }
       },
     },
@@ -671,6 +691,7 @@ function isSameOrigin(url) {
 }
 
 function matchOneOfPatterns(url, patterns) {
+  if (!patterns?.length) return false;
   for (let pattern of patterns) {
     const regex = new RegExp(
       "^" +

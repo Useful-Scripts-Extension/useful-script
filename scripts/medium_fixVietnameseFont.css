@@ -1,0 +1,519 @@
+/* credit: https://github.com/nguyenvanduocit/vietnamese-fonts */
+
+/* Content of file: https://fonts.googleapis.com/css2?family=Lora&display=swap */
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v26/0QI6MX1D_JOuGQbT0gvTJPa787weuxJMkq1umA.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v26/0QI6MX1D_JOuGQbT0gvTJPa787weuxJFkq1umA.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v26/0QI6MX1D_JOuGQbT0gvTJPa787weuxJOkq1umA.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0,
+    U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v26/0QI6MX1D_JOuGQbT0gvTJPa787weuxJPkq1umA.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/lora/v26/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkq0.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F,
+    U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* medium-content-serif-font */
+/* medium-content-slab-serif-font */
+/* medium-content-sans-serif-font */
+/* 400|600 */
+
+/* medium-content-sans-serif-font */
+/* cyrillic-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PJx9X3DKNAtgep_A9Limts0.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PPP77RFU8vG080nkcex36Qc.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PKhwdUGw5miIDy6cfEZS-kE.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PNzKjHAZa5G6jGElUK9rGy0.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PLo_F_VMNKNBNaFp60rwt0I.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PPT8jFRvqs3uSo-zOsO50E4.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: italic;
+  font-weight: 400;
+  src: local('Alegreya Sans Italic'), local('AlegreyaSans-Italic'), url(https://fonts.gstatic.com/s/alegreyasans/v8/TKyx_-JJ6MdpQruNk-t-PL-MGAgQ7T4Lx8Yeka2Yy30.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgtRYQtOEVM6p2uTdjVCgYp4.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgrads8NCgE3jYEV2NM9hcug.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDguzvha-EJ16CL_qD5_foYcU.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgpKZv1eVJOAbNEY_bt6f7Ak.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgjwPnILgNs_SbVTT10TXlz0.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgoLl39Idhk_6gOcz_nuzPgo.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya Sans Regular'), local('AlegreyaSans-Regular'), url(https://fonts.gstatic.com/s/alegreyasans/v8/KYNzioYhDai7mTMnx_gDgp7fs_z8nuqHYC6tC8rLl5s.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aVXh8lE-J73iVpQCB12PogY.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aaAAaX0g9YSWFtW1REmPAuU.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aUxrmG5WChBBvpMoJk0Bfgk.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aVxWfOgx9IioXx3PqQoFnyY.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aewJxQeMeYoEYMfFEmdeKGk.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aWr4NNPK0tdxNvaJ4IAZU-w.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: medium-content-sans-serif-font;
+  font-style: normal;
+  font-weight: 600;
+  src: local('Alegreya Sans Bold'), local('AlegreyaSans-Bold'), url(https://fonts.gstatic.com/s/alegreyasans/v8/11EDm-lum6tskJMBbdy9aSFcOIMZuYN7K3FRrJkYYms.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+
+/* medium-content-serif-font */
+
+/* cyrillic-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNzw7aC6SjiAOpAWOKfJDfVRY.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNzxdwxCXfZpKo5kWAx_74bHs.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNz56vnaPZw6nYDxM4SVEMFKg.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNz_y1_HTwRwgtl1cPga3Fy3Y.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNz_grLsWo7Jk1KvZser0olKY.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNz4joYw3YTyktCCer_ilOlhE.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic'), url(https://fonts.gstatic.com/s/notoserif/v6/HQXBIwLHsOJCNEQeX9kNzxampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvFPfeBX0b_nUXzRxYCltCF0.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvIS3435hDhFFCA6hA_HcfZQ.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvKpkxQ1nyBMhaPnv_ZMXNdQ.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvOrw_3d4vbmST0Hz9sysxkQ.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvBWzg2zaPmhUBtv9M77358I.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvEqWMeizceScn2Xpn1ZpsKI.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Noto Serif Bold Italic'), local('NotoSerif-BoldItalic'), url(https://fonts.gstatic.com/s/notoserif/v6/Wreg0Be4tcFGM2t6VWytvMhHwsiXhsDb0smKjAA7Bek.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/Q47Ro23nlKqZrOLipd3-SwsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/qkE6YsKPRiYUugBb1_QwHAsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/N2U74xxQEyaTBF6QLZRr1AsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/1_daFS3X6gkNOcmGmHl7UgsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/G-mm5mDezDSs-RvEL7XAEAsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/fVu1p3782bqS2z-CaJvp9gsYbbCjybiHxArTLjt7FRU.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Noto Serif'), local('NotoSerif'), url(https://fonts.gstatic.com/s/notoserif/v6/eCpfeMZI7q4jLksXVRWPQwzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* cyrillic-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPbllaL-ufMOTUcv7jfgmuJg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* cyrillic */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPZsnFT_2ovhuEig4Dh-CBQw.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* greek-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPRNdjSauc05SgiTkzms8YJM.woff2) format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* greek */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPSUr6EwJsXdKEU-HN-7gTAs.woff2) format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+/* vietnamese */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPXv4bDVR720piddN5sbmjzs.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+1EA0-1EF9, U+20AB;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPTrEaqfC9P2pvLXik1Kbr9s.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'medium-content-serif-font';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Noto Serif Bold'), local('NotoSerif-Bold'), url(https://fonts.gstatic.com/s/notoserif/v6/lJAvZoKA5NttpPc9yc6lPWaVI6zN22yiurzcBKxPjFE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+/* OUR CODE HERE */
+
+/* Title (h1) and Heading (h2-h6) */
+#root h1,
+#root h2 {
+  font-family: 'Lora', sohne, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+/* Paragraph */
+#root p,
+#root strong {
+  font-family: 'Lora', charter, Georgia, Cambria, 'Times New Roman', Times, serif !important;
+}

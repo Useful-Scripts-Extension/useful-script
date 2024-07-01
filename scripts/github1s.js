@@ -1,8 +1,8 @@
 export default {
   icon: `<i class="fa-solid fa-square-arrow-up-right fa-lg"></i>`,
   name: {
-    en: "Open repo in github1s.com",
-    vi: "Mở repo trong github1s.com",
+    en: "Github - Open repo in github1s.com",
+    vi: "Github - Mở repo trong github1s.com",
   },
   description: {
     en: "Open current repo in github1s.com",

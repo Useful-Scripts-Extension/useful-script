@@ -248,7 +248,6 @@ const tabs = [
             ),
         },
       },
-      // s.researchGate_downloader, // limited
     ],
   },
   {
@@ -294,39 +293,40 @@ const tabs = [
   {
     ...CATEGORY.facebook,
     scripts: [
+      createTitle("--- All in one ---", "--- Tất cả trong một ---"),
+      s.fb_allInOne,
       createTitle("--- Download ---", "--- Tải xuống ---"),
       s.fb_downloadWatchingVideo,
       s.fb_storySaver,
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
-      s.fb_bulkDownload,
-      s.fb_downloadAlbumMedia,
-      s.fb_downloadWallMediaFromPosts,
-      s.fb_getAllAlbumInformation,
       s.fb_exportSaved,
+      // createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      // s.fb_downloadAlbumMedia,
+      // s.fb_downloadWallMediaFromPosts,
+      // s.fb_getAllAlbumInformation,
       createTitle("--- Hot ---", "--- Nổi bật ---"),
       s.fb_revealDeletedMessages,
       s.fb_moreReactionStory,
-      s.fb_whoIsTyping,
       s.fb_toggleLight,
       s.fb_toggleNewFeed,
+      s.fb_stopNewFeed,
+      s.fb_blockSeenStory,
+      s.fb_getPostReactionCount,
+      s.fb_whoIsTyping,
+      // s.fb_blockSeenAndTyping,
       createTitle("--- Statistic ---", "--- Thống kê ---"),
-      s.fb_detectUnfriend,
-      s.fb_messengerHistory,
-      s.fb_messengerCount,
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
-      s.fb_fetchAllAddedFriends,
       s.fb_searchPostsForOther,
       createTitle("--- Access Token ---", "--- Access Token ---"),
       s.fb_checkToken,
-      s.fb_getTokenFfb,
       s.fb_getTokenFacebook,
-      s.fb_getTokenBussinessLocation,
       s.fb_getTokenMessage,
+      s.fb_getTokenBussinessLocation,
       // s.fb_getTokenBusinessStudio,
       s.fb_getTokenCampaigns,
+      s.fb_getTokenFfb,
       createTitle("--- Get ID ---", "--- Lấy ID ---"),
       s.fb_getUid,
       s.fb_getPageId,
@@ -338,6 +338,7 @@ const tabs = [
       s.fb_getAllUidOfGroupMembers,
       createTitle("--- Shortcut ---", "--- Phím tắt ---"),
       {
+        id: "fb_openSaved",
         icon: '<i class="fa-solid fa-bookmark fa-lg"></i>',
         name: {
           en: "View your facebook saved",
@@ -394,18 +395,67 @@ const tabs = [
           vi: "Kiểm tra nhật ký hoạt động của bạn trên facebook",
         },
         popupScript: {
+          onClick: () => window.open("https://www.facebook.com/me/allactivity"),
+        },
+      },
+      {
+        id: "fb_openVideoActivities",
+        icon: '<i class="fa-solid fa-film fa-lg"></i>',
+        name: {
+          en: "Video you watched on facebook",
+          vi: "Video bạn vừa xem trên facebook",
+        },
+        description: {
+          en: "View all videos you watched on facebook",
+          vi: "Xem lại những video bạn đã xem trên facebook",
+        },
+        badges: [BADGES.new],
+        popupScript: {
           onClick: () =>
             window.open(
-              "https://www.facebook.com/me/allactivity/?activity_history=false&category_key=ALL&manage_mode=false&should_load_landing_page=true"
+              "https://www.facebook.com/100004848287494/allactivity?activity_history=false&category_key=VIDEOWATCH&manage_mode=false&should_load_landing_page=false"
             ),
         },
       },
       {
-        id: "fb_changeLanguage",
+        id: "fb_openPassEvents",
+        icon: '<i class="fa-solid fa-calendar-days fa-lg"></i>',
+        name: {
+          en: "Events joined on facebook",
+          vi: "Sự kiện đã tham gia trên facebook",
+        },
+        description: {
+          en: "View pass events that you have joined on facebook.",
+          vi: "Xem tất cả sự kiện bạn từng tham gia trên facebook.",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () => window.open("https://www.facebook.com/events/past"),
+        },
+      },
+      {
+        id: "fb_openBirthdays",
+        icon: '<i class="fa-solid fa-cake-candles fa-lg"></i>',
+        name: {
+          en: "Facebook friend's birthdays",
+          vi: "Sinh nhật bạn bè facebook",
+        },
+        description: {
+          en: "View your friend's birthdays each month on facebook",
+          vi: "Xem từng tháng có những sinh nhật nào của bạn bè trên facebook.",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () =>
+            window.open("https://www.facebook.com/events/birthdays"),
+        },
+      },
+      {
+        id: "fb_openChangeLanguage",
         icon: '<i class="fa-solid fa-language fa-lg"></i>',
         name: {
-          en: "Change language Facebook",
-          vi: "Đổi ngôn ngữ Facebook",
+          en: "Change language facebook",
+          vi: "Đổi ngôn ngữ facebook",
         },
         description: {
           en: "Change display language on facebook",
@@ -414,6 +464,22 @@ const tabs = [
         popupScript: {
           onClick: () =>
             window.open("https://www.facebook.com/settings/?tab=language"),
+        },
+      },
+      {
+        id: "fb_openAccountHacked",
+        icon: '<i class="fa-solid fa-skull fa-lg"></i>',
+        name: {
+          en: "Recover facebook account",
+          vi: "Khôi phục tài khoản facebook",
+        },
+        description: {
+          en: "Your fb account has been hacked? Facebook can help you.",
+          vi: "Tài khoản fb của bạn bị hack? Facebook có thể giúp bạn.",
+        },
+        badges: [BADGES.new],
+        popupScript: {
+          onClick: () => window.open("https://fb.com/hacked"),
         },
       },
     ],
@@ -482,6 +548,7 @@ const tabs = [
       s.smoothScroll,
       s.magnify_image,
       s.auto_redirectLargestImageSrc,
+      s.showImageOnHoverLink,
       s.remove_tracking_in_url,
       s.prevent_closeBrowser_lastTab,
       s.chongLuaDao,
@@ -489,9 +556,10 @@ const tabs = [
       s.unshorten,
       s.createInvisibleText,
       createTitle("--- Automation ---", "--- Tự động ---"),
-      s.scrollToVeryEnd,
-      s.screenshotFullPage,
       s.webToPDF,
+      s.screenshotFullPage,
+      s.screenshotVisiblePage,
+      s.scrollToVeryEnd,
       s.getAllEmailsInWeb,
       s.dino_hack,
       s.passwordGenerator,
@@ -518,27 +586,6 @@ const tabs = [
           onClick: () => window.open("https://it-tools.tech/"),
         },
       },
-
-      {
-        id: "recommend_cssportal",
-        icon: "https://www.cssportal.com/favicon.ico",
-        name: {
-          en: "CSS Portal - Empowered your CSS skills",
-          vi: "CSS Portal - Nâng trình CSS",
-        },
-        description: {
-          en: "Empowered your CSS skills with hundreds of CSS tools.",
-          vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
-        },
-        badges: [BADGES.recommend],
-        popupScript: {
-          onClick: () =>
-            window.open(
-              "https://www.cssportal.com/css-animated-text-generator/"
-            ),
-        },
-      },
-
       // https://copyicon.com/generator/svg-chart
       {
         id: "recommend_copyicon",
@@ -594,6 +641,8 @@ const tabs = [
       },
       createTitle("--- Github ---", "--- Github ---"),
       s.github_goToAnyCommit,
+      s.github_HTMLPreview,
+      s.github_openRepoPages,
       s.githubdev,
       s.github1s,
       {
@@ -612,6 +661,25 @@ const tabs = [
         popupScript: {
           onClick: () =>
             window.open("https://github.com/AlDanial/cloc?tab=readme-ov-file"),
+        },
+      },
+      {
+        id: "recommend_refined_github",
+        icon: "https://lh3.googleusercontent.com/4N2wipmBVx1qK0R0E0XdADE31-8IuMylOtO9AyFopOA9i3IQKoCC5L4nYFDy55xpxpk6qKusHuqXyKJqvw8jcJaiqg=s60",
+        name: {
+          en: "Refined GitHub ",
+          vi: "Refined GitHub",
+        },
+        description: {
+          en: "Simplifies the GitHub interface and adds useful features",
+          vi: "Sửa giao diện github và thêm hàng tá chức năng hay",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://chromewebstore.google.com/detail/refined-github/hlepfoohegkhhmjieoechaddaejaokhf"
+            ),
         },
       },
       createTitle("--- Shopping ---", "--- Mua sắm ---"),
@@ -640,6 +708,7 @@ const tabs = [
           en: "FastDoc - Convert PDF/Photo to Word/Excel",
           vi: "FastDoc - Chuyển PDF/Ảnh sang Word/Excel",
         },
+        badges: [BADGES.recommend],
         description: {
           en: "Convert Photos & PDF to Excel, Word, Searchable PDF for free",
           vi: "Chuyển đổi hình ảnh và pdf sang Excel, Word, Searchable PDF miễn phí",
@@ -659,6 +728,7 @@ const tabs = [
           en: "Compress PDF, PDF Converter, PPT to PDF, PDF to PPT, JPG to PDF, PDF to JPG, Excel to PDF, PDF to Excel, Edit PDF, PDF Reader, Number Pages, Delete PDF Pages, Rotate PDF, Word to PDF, PDF to Word, Merge PDF, Split PDF, eSign PDF, Unlock PDF, Protect PDF, PDF Scanner",
           vi: "Giảm dung lượng PDF, Chuyển đổi PDF, PPT sang PDF, PDF sang PPT, JPG sang PDF, PDF sang JPG, Excel sang PDF, PDF sang Excel, Chỉnh sửa PDF, Trình đọc PDF, Số trang, Xóa các trang PDF, Xoay PDF, Word sang PDF, PDF sang Word, Ghép PDF, Cắt PDF, Ký tên PDF, Mở khóa PDF, Bảo vệ PDF, Máy quét PDF",
         },
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () => window.open("https://smallpdf.com/vi/cac-cong-cu-pdf"),
         },
@@ -674,6 +744,7 @@ const tabs = [
           en: "Free PDF converter online service: Merge PDF, Split PDF, Compress PDF, PDF to Word, PDF to PPT, PDF to Excel, Word to PDF, Excel to PDF, PPT to PDF, PDF to JPG, JPG to PDF, PDF to HTML, HTML to PDF, Unlock PDF, Protect PDF, Rotate PDF, Crop PDF, Delete pages, Add page numbers, Watermark PDF",
           vi: "Công cụ chuyển đổi PDF online miễn phí: Ghép file PDF, Tách file PDF, Nén file PDF, PDF sang Word, PDF sang PPT, PDF sang Excel, Word sang PDF, Excel sang PDF, PPT sang PDF, PDF sang JPG, JPG sang PDF, PDF sang HTML, HTML sang PDF, Mở khóa PDF, Khóa file PDF, Xoay file PDF,  Cắt file PDF, Xóa trang PDF, Đánh số trang PDF, Chèn watermark",
         },
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () => window.open("https://pdfstuff.com/"),
         },
@@ -687,9 +758,10 @@ const tabs = [
       s.duckRace_cheat,
       s.wheelOfNames_hack,
       s.medium_readFullArticle,
+      s.medium_fixVietnameseFont,
       s.fireship_vip,
-      s.scribd_bypassPreview,
       s.studocu_bypassPreview,
+      s.scribd_bypassPreview,
       s.studyphim_unlimited,
       createTitle("--- Unlock function ---", "--- Mở khoá chức năng ---"),
       s.simpleAllowCopy,
@@ -710,7 +782,7 @@ const tabs = [
           en: "Some flags experiments that can make your browser super fast",
           vi: "Các flags giúp trình duyệt của bạn chạy nhanh hơn thỏ",
         },
-        badges: [BADGES.new],
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () =>
             window.open(
@@ -770,6 +842,11 @@ const tabs = [
     ...CATEGORY.webUI,
     scripts: [
       createTitle("--- Hot ---", "--- Nổi bật ---"),
+      s.darkModePDF,
+      s.toggleEditPage,
+      s.showFPS,
+      s.showFps_v2,
+      s.toggle_passwordField,
       {
         id: "recommend_DarkReader",
         icon: "https://lh3.googleusercontent.com/T66wTLk-gpBBGsMm0SDJJ3VaI8YM0Utr8NaGCSANmXOfb84K-9GmyXORLKoslfxtasKtQ4spDCdq_zlp_t3QQ6SI0A=w128-h128-e365-rj-sc0x00ffffff",
@@ -786,11 +863,57 @@ const tabs = [
             ),
         },
       },
-      s.darkModePDF,
-      s.toggleEditPage,
-      s.showFPS,
-      s.showFps_v2,
-      s.toggle_passwordField,
+      {
+        id: "recommend_cssportal",
+        icon: "https://www.cssportal.com/favicon.ico",
+        name: {
+          en: "CSS Portal - Empowered your CSS skills",
+          vi: "CSS Portal - Nâng trình CSS",
+        },
+        description: {
+          en: "Empowered your CSS skills with hundreds of CSS tools.",
+          vi: "Công cụ tự động giúp nâng trình CSS của bạn với hàng trăm chức năng.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () =>
+            window.open(
+              "https://www.cssportal.com/css-animated-text-generator/"
+            ),
+        },
+      },
+      {
+        id: "recommend_cssloaders",
+        icon: "https://css-loaders.com/fav.png",
+        name: {
+          en: "CSS Loaders - 600+ css loader",
+          vi: "CSS Loaders - 600+ css loading",
+        },
+        description: {
+          en: "The Biggest Collection of Loading Animations. Over 600+ CSS-only loaders made using a single element",
+          vi: "Hơn 600 animation loading css miễn phí",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://css-loaders.com/"),
+        },
+      },
+      {
+        id: "recommend_uiverse",
+        icon: "https://uiverse.io/favicon.ico",
+        name: {
+          en: "UIverse - Open-Source UI elements",
+          vi: "UIverse - Tổng hợp code UI xịn",
+        },
+        description: {
+          en: "Open-Source UI elements for any project.",
+          vi: "Tổng hợp code UI mã nguồn mở cho mọi trang web.",
+        },
+        badges: [BADGES.recommend],
+        popupScript: {
+          onClick: () => window.open("https://uiverse.io/"),
+        },
+      },
       createTitle("--- View ---", "--- Xem ---"),
       {
         id: "recommend_fontRendering",

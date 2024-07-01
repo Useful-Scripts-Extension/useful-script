@@ -4,7 +4,7 @@
   "name": "Useful Scripts",
   "description": "Scripts that can make your life faster and better",
   "homepage_url": "https://github.com/HoangTran0410/useful-script",
-  "version": "1.67",
+  "version": "1.68",
   "icons": {
     "16": "./assets/icon16.png",
     "32": "./assets/icon32.png",
@@ -42,9 +42,8 @@
     "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": ["*://*/*", "<all_urls>"],
-  "options_page": "./pages/options/options.html",
   "background": {
-    "service_worker": "scripts/background-scripts/background_script.js",
+    "service_worker": "./scripts/background-scripts/background_script.js",
     "type": "module"
   },
   "web_accessible_resources": [
@@ -58,8 +57,15 @@
       {
         "id": "ruleset_1",
         "enabled": true,
-        "path": "scripts/net-request-rules/rules.json"
+        "path": "./scripts/net-request-rules/rules.json"
       }
+    ]
+  },
+  "externally_connectable": {
+    "matches": [
+      "https://hoangtran0410.github.io/*",
+      "https://useful-scripts-extension.github.io/*",
+      "http://localhost:5173/*"
     ]
   }
 }

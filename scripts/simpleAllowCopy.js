@@ -23,7 +23,7 @@ export default {
       <li>Khi copy/chuột phải xong có thể click lần nữa để TẮT.</li>
     </ul>`,
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.hot],
 
   contentScript: {
     onDocumentStart_: function () {

@@ -10,7 +10,7 @@ export default {
     en: "Create invisible text to hide secret messages. Receiver to use this feature to decode messages.",
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: '<i class="fa-solid fa-mobile-screen"></i>',
@@ -83,7 +83,10 @@ export default {
       async function doDecode() {
         let result = await Swal.fire({
           icon: "question",
-          title: "Nhập tin nhắn cần giải mã",
+          title: t({
+            vi: "Nhập tin nhắn cần giải mã",
+            en: "Enter message to decode",
+          }),
           input: "textarea",
           showCancelButton: true,
         });
@@ -92,7 +95,7 @@ export default {
           if (decoded != result.value) {
             await Swal.fire({
               icon: "success",
-              title: "Kết quả giải mã",
+              title: t({ vi: "Kết quả giải mã", en: "Decoded message" }),
               text: result.value,
               input: "textarea",
               inputValue: decoded,
@@ -100,12 +103,70 @@ export default {
           } else {
             await Swal.fire({
               icon: "info",
-              title: "Tin nhắn này không có nội dung tàng hình",
+              title: t({
+                vi: "Tin nhắn này không có nội dung tàng hình",
+                en: "This message has no invisible content",
+              }),
               text: result.value,
             });
           }
         }
       }
+    },
+  },
+  backgroundScript: {
+    runtime: {
+      onInstalled: (reason, context) => {
+        const folder_id = "create-invisible-text";
+        const contexts = ["selection", "link", "editable"];
+        [
+          {
+            id: folder_id,
+            title: "Invisible text",
+            contexts,
+            parentId: "root",
+          },
+          { id: "encode", title: "Encode", contexts, parentId: folder_id },
+          { id: "decode", title: "Decode", contexts, parentId: folder_id },
+        ].forEach((item) => {
+          chrome.contextMenus.create({
+            title: item.title,
+            contexts: item.contexts,
+            id: item.id,
+            parentId: item.parentId,
+          });
+        });
+      },
+    },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {
+        if (info.parentMenuItemId === "create-invisible-text") {
+          let original = info.selectionText || info.linkUrl;
+          if (original) {
+            let action = info.menuItemId;
+            let result =
+              action === "encode" ? _encode(original) : decode(original);
+            chrome.scripting.executeScript({
+              target: { tabId: tab.id },
+              func: (action, original, result) => {
+                try {
+                  navigator.clipboard.writeText(result);
+                } catch (err) {
+                  console.log("Failed to copy text to clipboard:", err);
+                }
+                const maxLen = 100;
+                if (original?.length > maxLen)
+                  original = original.slice(0, maxLen) + "…";
+                prompt(
+                  `Useful Script - Invisible text - ${action}:\n\nValue:\n${original}\n\nResult: (copy to use)`,
+                  result
+                );
+              },
+              args: [action, original, result],
+            });
+          }
+        }
+      },
     },
   },
 };

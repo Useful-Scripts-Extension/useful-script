@@ -5,8 +5,9 @@
   name: unique name for this rule
   url: regex for url that this rule support
   src: regex for img src that this rule support
+  exclude: regex for img src that this rule should not support
   r: regex(s) for string that will be replaced
-  s: regex(s) for string that will be added
+  s: regex(s) / function(s) to calculate string that will be added
 }
 */
 
@@ -76,7 +77,7 @@ export default [
   {
     name: "font gstatic",
     src: /^https?:\/\/fonts\.gstatic\.com\/(.*)\/notoemoji/i,
-    r: /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)/,
+    r: /(https?:\/\/.*)\/\d+.(png|jpg)(.*?)(=s\d+)?/,
     s: "$1/512.$2",
   },
   {

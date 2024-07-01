@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { hookXHR } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: '<i class="fa-solid fa-eye-slash fa-lg"></i>',
@@ -21,34 +22,22 @@ export default {
 
   pageScript: {
     onDocumentStart: () => {
-      (function () {
-        // Store a reference to the original send method of XMLHttpRequest
-        var originalXMLSend = XMLHttpRequest.prototype.send;
-        // Override the send method
-        XMLHttpRequest.prototype.send = function () {
-          // Check if the request URL contains the "viewSeenAt" string
-          if (
-            typeof arguments[0] === "string" &&
-            arguments[0].includes("viewSeenAt")
-          ) {
+      hookXHR({
+        onBeforeSend: ({ method, url, async, user, password }, dataSend) => {
+          let s = dataSend?.toString() || "";
+          if (s.includes("viewSeenAt") || s.includes("SeenMutation")) {
             UfsGlobal.DOM.notify({
-              msg: "Usefull-script: Blocked story view tracking",
+              msg: "Useful-script: Blocked story view tracking",
             });
-            console.log("blocked");
-            // Block the request by doing nothing
-            // This prevents the "viewSeenAt" field from being sent
-          } else {
-            // If the request URL does not contain "viewSeenAt",
-            // call the original send method to proceed with the request
-            originalXMLSend.apply(this, arguments);
+            return null;
           }
-        };
-      })();
+        },
+      });
     },
 
     onDocumentEnd: () => {
       UfsGlobal.DOM.notify({
-        msg: "Usefull-script: Blocked story view tracking READY",
+        msg: "Useful-script: Blocked story view tracking READY",
       });
     },
   },

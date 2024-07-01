@@ -1,6 +1,26 @@
 ## Change logs
 
 <details>
+  <summary>v1.68 - 01/07/2024 - cập nhật facebook lớn</summary>
+
+- Cập nhật + Tối ưu logic
+- Tool mới cho facebook
+  - [Facebook all in one](https://github.com/Useful-Scripts-Extension/facebook-all-in-one)
+  - Chặn 'đã xem' story facebook [source](/scripts/fb_blockSeenStory.js)
+  - Dừng dòng thời gian facebook [source](/scripts/fb_stopNewFeed.js)
+  - Hiện tổng lượt thích post fb [source](/scripts/fb_getPostReactionCount.js)
+  - Thêm nhiều phím tắt fb: sự kiện, sinh nhật, video đã xem, khôi phục tài khoản
+- Chụp ảnh màn hình web (bypass các web chặn chụp như netflix) [source](/scripts/screenshotVisiblePage.js)
+- Fix font vietnam cho medium [source](/scripts/medium_fixVietnameseFont.js)
+- Xem trước ảnh khi hover chuột qua link [source](/scripts/showImageOnHoverLink.js)
+- Fix install on chrome linus
+- Tool cho github
+  - Xem demo file html [source](/scripts/github_HTMLPreview.js)
+  - Xem trang github pages [source](/scripts/github_openRepoPages.js)
+
+</details>
+
+<details>
   <summary>v1.67 - 29/05/2024</summary>
 
 ### CHỨC NĂNG MỚI

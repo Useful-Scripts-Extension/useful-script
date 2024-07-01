@@ -1,10 +1,17 @@
+body {
+  max-width: 1000px;
+  margin: auto;
+  background-color: #222;
+  color: ccc;
+}
+
 canvas {
   max-height: 500px;
 }
 
 li:hover {
-  background: #eee;
-  color: red;
+  background: #555;
+  color: white;
 }
 
 .hidden,
@@ -20,7 +27,7 @@ button {
 }
 
 button:hover {
-  background: #eee;
+  background: #555;
 }
 
 .btn-active {

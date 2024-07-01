@@ -23,7 +23,7 @@ export default {
     en: `Remove tracking parameters from url, prevent tracking from ${company} etc.<br/>${ul}`,
     vi: `Xoá các tham số theo dõi trong url, chặn theo dõi người dùng từ ${company} ...<br/>${ul}`,
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: '<i class="fa-solid fa-hashtag"></i>',

@@ -1,8 +1,16 @@
+[Tiếng Việt](./README.md) | [English](./README-en.md)
+
 ![Logo](/assets/icon128.png)
 
 # Useful scripts - Chrome extension
 
-[Tiếng Việt](./README.md)
+- [Useful scripts - Chrome extension](#useful-scripts---chrome-extension)
+  - [Overview](#overview)
+  - [Change logs](#change-logs)
+  - [ScreenShots](#screenshots)
+  - [Install](#install)
+  - [For developer (Demo)](#for-developer-demo)
+  - [Contribute](#contribute)
 
 Donate? For better health and ideas <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
@@ -12,7 +20,7 @@ An extension includes a lot of small extensions. Make your life easier.
 
 - Please join [FACEBOOK GROUP](https://www.facebook.com/groups/1154059318582088) of this extension
 
-- View list scripts [Here](./md/LIST_SCRIPTS_EN.md)
+- View list all scripts [HERE](./md/LIST_SCRIPTS_EN.md)
 
 ## Change logs
 
@@ -20,11 +28,12 @@ An extension includes a lot of small extensions. Make your life easier.
 
 Current Versions:
 
-- **v1.67 - huge update** (29/05/2024)
+- **v1.68**: big facebook update (01/07/2024)
 
 <details>
   <summary>Old versions</summary>
 
+- <del>v1.67 - huge update (29/05/2024)</del>
 - <del>v1.66 - big update (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
@@ -40,11 +49,10 @@ Current Versions:
 
 ## ScreenShots
 
-<div style="display:flex">
+<div style="display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start">
 
-![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)
-
-![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)
+  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_light.png" style="max-width:300px;display:inline-block" />
+  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_dark.png" style="max-width:300px;display:inline-block"/>
 
 </div>
 
@@ -63,25 +71,3 @@ Current Versions:
 ## Contribute
 
 Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
-
-## Learn
-
-- Extension Tips
-
-  - [muaz-khan/Chrome-Extensions](https://github.com/muaz-khan/Chrome-Extensions)
-
-  - [scripting docs](https://developer.chrome.com/docs/extensions/reference/scripting/)
-
-  - [focus-mode example](https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js)
-
-  - [execute popup script in webpage](https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script)
-
-- Bookmarks Tips
-
-  - [Bookmarklets hay](https://bookmarklet.vercel.app/)
-
-  - [Bookmarklets hay 2](https://www.thetechbasket.com/most-useful-bookmarklets/)
-
-  - [Blog hongkiat - 100 bookmarklets](https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/)
-
-  - [50 useful bookmarklets](https://www.wordzz.com/50-most-useful-bookmarklets/)

@@ -11,7 +11,7 @@ export default {
     en: "Get all media of instagram user (use instagram API)",
     vi: "Tải về tất cả ảnh/video của người dùng instagram (sử dụng API instagram)",
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-04-03": "optimize flow",
   },

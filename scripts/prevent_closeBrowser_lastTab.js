@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: '<i class="fa-regular fa-window-restore fa-lg"></i>',
   name: {
@@ -13,7 +11,6 @@ export default {
     Tự động mở tab mới khi bạn tắt tab cuối cùng`,
     img: "",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-05-22": "init",
   },

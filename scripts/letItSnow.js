@@ -10,7 +10,7 @@ export default {
     en: "Make website like it snowing",
     vi: "Thêm hiệu ứng tuyết rơi vào trang web",
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-05-23": "better UI",
   },

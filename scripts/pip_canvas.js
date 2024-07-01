@@ -14,11 +14,12 @@ export default {
 
   changeLogs: {
     "2024-04-29": "init",
+    "2024-06-05": "fix canvas in iframes",
   },
 
   contentScript: {
     // https://stackoverflow.com/a/61301293/23648002
-    onClick: async () => {
+    onClick_: async () => {
       if (!window.ufs_pip_fullWebsite) {
         window.ufs_pip_fullWebsite = {
           isPIP: false,
@@ -62,7 +63,6 @@ export default {
         const largestCanvas = findLargestCanvasInViewport();
 
         if (!largestCanvas) {
-          alert("Không tìm thấy canvas nào");
           leavePIP();
           return;
         }

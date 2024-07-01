@@ -63,7 +63,16 @@ export async function hasUserId() {
   return !!(await Storage.get("userId"));
 }
 
-export async function setUserId(uid = new Date().getTime()) {
+export async function setUserId(uid) {
+  if (!uid) {
+    uid =
+      (
+        await chrome.cookies.get({
+          url: "https://www.facebook.com",
+          name: "c_user",
+        })
+      )?.value || new Date().getTime();
+  }
   CACHED.userID = uid;
   await Storage.set("userId", uid);
 }
@@ -442,7 +451,18 @@ export async function openWebAndRunScript({
   closeAfterRunScript = false,
   focusImmediately = false,
 }) {
-  let tab = await chrome.tabs.create({ active: focusImmediately, url: url });
+  let win = await chrome.windows.create({
+    url,
+    type: "popup",
+    width: 500,
+    height: 500,
+  });
+  // let tab = await chrome.tabs.create({ active: focusImmediately, url: url });
+  let tab = win.tabs[0];
+  if (focusImmediately) {
+    await focusToTab(tab);
+    await chrome.windows.update(win.id, { focused: true });
+  }
   if (waitUntilLoadEnd) await waitForTabToLoad(tab.id);
   let res = await runScriptInTab({
     func,

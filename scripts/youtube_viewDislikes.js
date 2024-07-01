@@ -11,7 +11,7 @@ export default {
     en: "Returns ability to see dislikes of youtube video/short",
     vi: "Hiển thị số lượt không thích của video/short youtube",
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.hot],
 
   changeLogs: {
     "2024-05-25": "autorun",
@@ -38,9 +38,7 @@ export default {
               );
               if (!label) return;
               let text = numberFormat(dislikeCount);
-              if (label.textContent !== text) {
-                label.textContent = text;
-              }
+              if (label.textContent != text) label.textContent = text;
             }
 
             let videoId = getVideoId();
@@ -64,7 +62,7 @@ export default {
 
             function makeUI(dislikeCount = 0) {
               let className = "yt-spec-button-shape-next__button-text-content";
-              let exist = button.querySelector(`.${className}`);
+              let exist = button.querySelector(className);
               if (exist) {
                 exist.textContent = numberFormat(dislikeCount);
               } else {
@@ -72,11 +70,14 @@ export default {
                 dislikeText.classList.add(className);
                 dislikeText.textContent = numberFormat(dislikeCount);
                 button.appendChild(dislikeText);
-                UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
-                  makeUI(dislikeCount)
+                listeners.push(
+                  UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
+                    makeUI(dislikeCount)
+                  )
                 );
               }
 
+              // fix button style
               button.style.width = "auto";
               const dislikeIcon = button.querySelector(
                 ".yt-spec-button-shape-next__icon"

@@ -42,7 +42,6 @@
   position: absolute;
   top: 0px;
   left: 0px;
-  font-size: 12px;
   color: #eee;
   background-color: #0005;
   opacity: 0.5;
@@ -79,7 +78,7 @@
 
 #ufs-magnify-image * {
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif !important;
-  font-size: 1em !important;
+  font-size: 14px !important;
 }
 
 #ufs-magnify-image {
@@ -122,19 +121,12 @@
   cursor: pointer;
   padding: 10px;
   margin: 0;
+  line-height: 100%;
   background-color: #111d;
   z-index: 1;
   min-width: 10px;
   border: none;
   user-select: none;
-}
-
-.ufs-btn:first-of-type {
-  border-radius: 0 0 0 5px;
-}
-
-.ufs-btn:last-of-type {
-  border-radius: 0 0 5px 0;
 }
 
 .ufs-btn:hover {
@@ -172,4 +164,63 @@
   height: 40px;
   background-color: #fffa;
   border-radius: 50%;
+}
+
+
+#ufs-magnify-image .ufs-dropdown-menu {
+  position: relative;
+}
+
+#ufs-magnify-image .ufs-dropdown-menu:hover ul {
+  opacity: 1;
+  height: max-content;
+}
+
+#ufs-magnify-image .ufs-dropdown-menu ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 0 5px 5px;
+  list-style: none;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+#ufs-magnify-image .ufs-dropdown-menu ul li {
+  padding: 5px;
+  text-align: left;
+}
+
+#ufs-magnify-image-hover-div {
+  position: fixed;
+  top: -100vh;
+  left: -100vw;
+  width: 15px;
+  height: 15px;
+  z-index: 99999999;
+  background-color: #3339;
+  border: 1px #eee9 solid;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#ufs-magnify-image-hover-div:hover {
+  background-color: #eee9;
+  border: 1px #3339 solid;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+}
+
+#ufs-magnify-image-hover-div.hide:not(:hover) {
+  opacity: 0;
+  transition: all 0.2s 2s ease;
 }

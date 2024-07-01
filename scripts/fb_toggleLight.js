@@ -1,11 +1,10 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: `<i class="fa-solid fa-lightbulb fa-lg"></i>`,
   name: {
-    en: "Turn off light fb newfeed",
-    vi: "Tắt đèn fb newfeed",
+    en: "Turn off light facebook newfeed",
+    vi: "Tắt đèn newfeed facebook",
   },
   description: {
     en:
@@ -21,7 +20,6 @@ export default {
       "<li>Bật tự chạy để tự động ẩn mỗi khi mở facebook.</li>" +
       "</ul>",
   },
-  badges: [BADGES.hot],
   changeLogs: {
     "2024-05-19": "fix auto hide",
   },

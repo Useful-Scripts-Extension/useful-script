@@ -1,6 +1,44 @@
 # WORKING NOTES
 
+## 30/05/2024 - 01/07/2024
+
+- [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
+
+- [ ] check linux compatible -> relative path in manifest + file name camelcase
+
+- [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>
+
+- [ ] auto refresh tab <https://chromewebstore.google.com/detail/aabcgdmkeabbnleenpncegpcngjpnjkc>
+
+- [ ] <https://www.maxai.me/affiliate/> <https://www.maxai.me/partners/installed/?name=Useful-script>
+
+- [ ] decrypt in js <https://github.com/diafygi/webcrypto-examples>
+
+- [ ] how tiktok make floating video? <https://developer.chrome.com/docs/web-platform/document-picture-in-picture> <https://web.swipeinsight.app/posts/tiktok-introduces-new-feature-floating-player-for-desktop-users>
+
+- [x] preview any html file on github <https://htmlpreview.github.io/>?
+
+- [ ] find chrome extension with Id <https://superuser.com/a/1475146>
+
+- [x] down fb album <https://chromewebstore.google.com/detail/esuit-photos-downloader-f/djlgfdiljlmbcfimhkeenolnndblfmoo>
+
+- [x] search by google image/lens <https://chromewebstore.google.com/detail/disable-google-lens/dkapjhgpncbeiebegegdbpgfoabdkilh>
+
+- [ ] pdf to markdown <https://github.com/VikParuchuri/marker>
+
+- [ ] extract color from image <https://lokeshdhakar.com/projects/color-thief/>
+
+- [ ] puppeteer sử dụng only backgroundScript?
+
+- [ ] datatables js <https://github.com/fiduswriter/Simple-DataTables>
+
 ## 28/04/2024 - 29/05/2024
+
+- [x] chặn request bằng ajax hook => Gây lỗi facebook => không ổn định, bỏ
+
+- [x] bài viết hay về js import <https://viblo.asia/p/js-modules-bao-nhieu-kieu-khai-bao-lam-sao-nho-het-gGJ59AY15X2>
+
+- [x] detect screenshot <https://stackoverflow.com/questions/67916474/how-do-you-detect-a-screen-shot-with-js> => bypass Stream DRM
 
 - [ ] options page for smooth scroll: disable for specific sites, config smooth, ...
 
@@ -178,3 +216,25 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 - [x] tiktok download api lỗi => Dùng snaptik api
 
 - [ ] cào data tiktok/douyin <https://github.com/Evil0ctal/Douyin_TikTok_Download_API>
+
+## Learn
+
+- Extension Tips
+
+  - [muaz-khan/Chrome-Extensions](https://github.com/muaz-khan/Chrome-Extensions)
+
+  - [scripting docs](https://developer.chrome.com/docs/extensions/reference/scripting/)
+
+  - [focus-mode example](https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js)
+
+  - [execute popup script in webpage](https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script)
+
+- Bookmarks Tips
+
+  - [Bookmarklets hay](https://bookmarklet.vercel.app/)
+
+  - [Bookmarklets hay 2](https://www.thetechbasket.com/most-useful-bookmarklets/)
+
+  - [Blog hongkiat - 100 bookmarklets](https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/)
+
+  - [50 useful bookmarklets](https://www.wordzz.com/50-most-useful-bookmarklets/)

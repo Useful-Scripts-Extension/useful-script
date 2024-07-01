@@ -152,6 +152,10 @@ export default {
       onInstalled: (reason, context) => {},
       onStartup: (nil, context) => {},
       onMessage: ({ request, sender, sendResponse }, context) => {},
+      onMessageExternal: ({ request, sender, sendResponse }, context) => {},
+    },
+    contextMenus: {
+      onClicked: ({ info, tab }, context) => {},
     },
     webNavigation: {
       onCreatedNavigationTarget: (details, context) => {},

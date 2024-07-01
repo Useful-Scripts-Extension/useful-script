@@ -8,7 +8,19 @@
 </head>
 
 <body>
-  <h1>ABC def</h1>
+  <a href="https://google.com">google.com</a>
+
+  <iframe src="https://example.com" frameborder="0"></iframe>
+
+  <img src="https://picsum.photos/200/300" alt="">
+
+  <script>
+    let a = document.querySelector('a');
+    a.onclick = (e) => {
+      e.preventDefault();
+      window.open("https://example.com")
+    }
+  </script>
 </body>
 
 </html>

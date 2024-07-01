@@ -81,9 +81,9 @@ async function runScriptsTab(eventChain, world, details, silent = false) {
     return;
   }
   const context = world === "MAIN" ? "pageScript" : "contentScript";
-  const scriptIds = CACHED.activeScriptIds.filter((id) =>
-    checkWillRun(id, context, eventChain, details)
-  );
+  const scriptIds = CACHED.activeScriptIds
+    .filter((id) => checkWillRun(id, context, eventChain, details))
+    .sort((a, b) => (a?.priority || Infinity) - (b?.priority || Infinity));
 
   if (scriptIds.length === 0) return;
 
@@ -323,15 +323,15 @@ function listenNavigation() {
       try {
         const { tabId, frameId } = getDetailIds(details);
 
+        runScriptsTab(eventChain, MAIN, details);
+        runScriptsTab(eventChain, ISOLATED, details);
+        runScriptsBackground(eventChain, details);
+
         if (eventChain === "onDocumentStart") {
           // clear badge cache on main frame load
           if (details.frameId === 0) CACHED.badges[tabId] = [];
           injectUfsGlobal(tabId, frameId, details);
         }
-
-        runScriptsTab(eventChain, MAIN, details);
-        runScriptsTab(eventChain, ISOLATED, details);
-        runScriptsBackground(eventChain, details);
       } catch (e) {
         console.log("ERROR:", e);
       }
@@ -393,6 +393,36 @@ function listenMessage() {
   });
 }
 
+function listenExternalMessage() {
+  chrome.runtime.onMessageExternal.addListener(
+    (request, sender, sendResponse) => {
+      console.log("onExternalMessage", request, sender);
+
+      try {
+        let sent = false;
+        let internalSendEvent = (data) => {
+          sent = true;
+          sendResponse(data);
+        };
+        runScriptsBackground(
+          "runtime.onMessageExternal",
+          null,
+          // {
+          //   tabId: sender.tab.id,
+          //   frameIds: [sender.frameId],
+          // },
+          { request, sender, sendResponse: internalSendEvent },
+          true
+        );
+        return !sent;
+      } catch (e) {
+        console.log("ERROR:", e);
+        sendResponse({ error: e.message });
+      }
+    }
+  );
+}
+
 function listenWindows() {
   ["onBoundsChanged", "onCreated", "onFocusChanged", "onRemoved"].forEach(
     (event) => {
@@ -448,6 +478,16 @@ function injectUfsGlobal(tabId, frameId, details) {
   });
 }
 
+function listenContextMenus() {
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    let parent = info.parentMenuItemId;
+    parent = parent === "root" ? "" : parent + ".";
+    utils.trackEvent(parent + info.menuItemId + "-CONTEXT-MENU");
+
+    runScriptsBackground("contextMenus.onClicked", null, { info, tab }, true);
+  });
+}
+
 function main() {
   cacheActiveScriptIds();
   chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -460,11 +500,9 @@ function main() {
   listenNavigation();
   listenTabs();
   listenMessage();
+  listenExternalMessage();
   listenWindows();
-
-  chrome.contextMenus.onClicked.addListener(async (info) => {
-    runScriptsBackground("contextMenus.onClicked", null, info, true);
-  });
+  listenContextMenus();
 
   chrome.runtime.onStartup.addListener(async function () {
     runScriptsBackground("runtime.onStartup", null, null, true);
@@ -479,6 +517,13 @@ function main() {
     // create new unique id and save it
     await setUserId();
     trackEvent("ufs-INSTALLED");
+
+    // create root item in context menu
+    chrome.contextMenus.create({
+      id: "root",
+      title: "Useful Script",
+      contexts: ["all"],
+    });
 
     runScriptsBackground("runtime.onInstalled", null, reason, true);
   });

@@ -19,7 +19,7 @@ export default {
     <h3>BẤM NÚT ${graphIcon} ĐỂ XEM BIỂU ĐỒ.</h3>`,
     img: "/scripts/web_timer.png",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: graphIcon,
@@ -455,7 +455,10 @@ function run() {
   }
 
   async function getTodayTimer() {
-    let host = location.hostname;
+    let host =
+      location.hostname ||
+      location.pathname?.split("/")?.at(-1) ||
+      location.href;
     let today = getToday();
     let web_timer = (await chrome.storage.local.get(["web_timer"]))?.web_timer;
     if (typeof web_timer !== "object") web_timer = {};

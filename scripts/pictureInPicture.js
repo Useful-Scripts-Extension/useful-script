@@ -11,9 +11,12 @@ export default {
     vi: "Xem video trong cửa sổ nổi",
   },
   badges: [BADGES.hot],
+  changeLogs: {
+    "2024-06-05": "fix video in iframes",
+  },
 
   contentScript: {
-    onClick: async function () {
+    onClick_: async function () {
       const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
 
       function findLargestPlayingVideoInViewport() {
@@ -58,10 +61,7 @@ export default {
       }
       (async () => {
         const video = findLargestPlayingVideoInViewport();
-        if (!video) {
-          alert("Không tìm thấy video nào");
-          return;
-        }
+        if (!video) return;
         if (video.hasAttribute("__pip__")) {
           document.exitPictureInPicture();
           return;
