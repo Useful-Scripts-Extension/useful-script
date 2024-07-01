@@ -14,6 +14,24 @@ li:hover {
   color: white;
 }
 
+li a {
+  display: inline-block;
+  position: relative;
+}
+
+li a img {
+  width: 30px;
+  transition: all 0.2s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+li:hover img {
+  transform: scale(2);
+  z-index: 2;
+}
+
 .hidden,
 .not-script {
   display: none;

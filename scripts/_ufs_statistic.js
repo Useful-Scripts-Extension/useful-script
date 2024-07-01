@@ -62,10 +62,12 @@ async function onDocumentEnd() {
     const all_li = allLogs.map((data) => {
       let li = document.createElement("li");
       if (isFbUid(data?.uid)) {
-        li.innerHTML = data.log?.replace(
-          data.uid,
-          `<a href="https://fb.com/${data.uid}" target="_blank">${data.uid}</a>`
-        );
+        li.innerHTML =
+          data.log +
+          ` - <a href="https://fb.com/${data.uid}" target="_blank">
+            <img src="${fbAvatarFromUid(data.uid)}" />
+            fb
+          </a>`;
       } else {
         li.textContent = data.log;
       }
@@ -477,7 +479,13 @@ function randColor() {
 }
 
 function isFbUid(uid) {
-  return uid?.startsWith("100");
+  return (
+    /\d+/.test(uid) &&
+    (uid?.startsWith("100") || (uid?.length && uid?.length != 13))
+  );
+}
+function fbAvatarFromUid(uid) {
+  return `https://graph.facebook.com/${uid}/picture?height=50&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 }
 
 // log example: 5/31/2024, 9:13:41 AM: OPEN-TAB-unlock (1.67-1717121281787) -> 43

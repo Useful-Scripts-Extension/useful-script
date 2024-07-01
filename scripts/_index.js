@@ -167,3 +167,4 @@ export { default as github_HTMLPreview } from "./github_HTMLPreview.js";
 export { default as showImageOnHoverLink } from "./showImageOnHoverLink.js";
 export { default as fb_allInOne } from "./fb_allInOne.js";
 export { default as fb_getPostReactionCount } from "./fb_getPostReactionCount.js";
+export { default as bypass_learnAnything } from "./bypass_learnAnything.js";
