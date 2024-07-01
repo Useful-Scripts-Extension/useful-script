@@ -19,9 +19,7 @@ export default {
 
   popupScript: {
     onClick: () => {
-      window.open(
-        "https://useful-scripts-extension.github.io/facebook-all-in-one/dist/index.html"
-      );
+      window.open("https://facebook-all-in-one.com/dist");
     },
   },
 
