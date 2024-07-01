@@ -61,7 +61,14 @@ async function onDocumentEnd() {
     document.body.appendChild(ol);
     const all_li = allLogs.map((data) => {
       let li = document.createElement("li");
-      li.textContent = data.log;
+      if (isFbUid(data?.uid)) {
+        li.innerHTML = data.log?.replace(
+          data.uid,
+          `<a href="https://fb.com/${data.uid}" target="_blank">${data.uid}</a>`
+        );
+      } else {
+        li.textContent = data.log;
+      }
       ol.appendChild(li);
       return { li, data };
     });
@@ -467,6 +474,10 @@ function getPath(date) {
 
 function randColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
+}
+
+function isFbUid(uid) {
+  return uid?.startsWith("100");
 }
 
 // log example: 5/31/2024, 9:13:41 AM: OPEN-TAB-unlock (1.67-1717121281787) -> 43
