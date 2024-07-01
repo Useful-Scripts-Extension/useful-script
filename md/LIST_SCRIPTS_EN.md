@@ -453,9 +453,19 @@
 
 ### <i class="fa-brands fa-facebook"></i> Facebook
 
+--- All in one ---
+<details>
+  <summary>53. Facebook - All In One</summary>
+
+  [View source](/scripts/fb_allInOne.js)
+
+  <code>Combine all bulk download / statistic features on facebook into single page</code>
+
+</details>
+
 --- Download ---
 <details>
-  <summary>53. Download watching fb video</summary>
+  <summary>54. Download watching fb video</summary>
 
   [View source](/scripts/fb_downloadWatchingVideo.js)
 
@@ -463,7 +473,7 @@
 
 </details>
 <details>
-  <summary>54. Download watching fb Story/Comment</summary>
+  <summary>55. Download watching fb Story/Comment</summary>
 
   [View source](/scripts/fb_storySaver.js)
 
@@ -471,7 +481,7 @@
 
 </details>
 <details>
-  <summary>55. Download fb video/reel/watch from url</summary>
+  <summary>56. Download fb video/reel/watch from url</summary>
 
   [View source](/scripts/fb_videoDownloader.js)
 
@@ -479,25 +489,25 @@
 
 </details>
 <details>
-  <summary>56. Get avatar from fb user id</summary>
+  <summary>57. Get avatar from fb user id</summary>
 
   [View source](/scripts/fb_getAvatarFromUid.js)
 
   <code>Get avatar from list facebook user ids</code>
 
 </details>
+<details>
+  <summary>58. Export saved facebook items</summary>
+
+  [View source](/scripts/fb_exportSaved.js)
+
+  <code>Export all your saved items on facebook to JSON file</code>
+
+</details>
 
 --- Bulk Download ---
 <details>
-  <summary>57. Facebook - Bulk download</summary>
-
-  [View source](/scripts/fb_bulkDownload.js)
-
-  <code>Combine all bulk download features on facebook into single page</code>
-
-</details>
-<details>
-  <summary>58. Download album facebook</summary>
+  <summary>59. Download album facebook</summary>
 
   [View source](/scripts/fb_downloadAlbumMedia.js)
 
@@ -505,7 +515,7 @@
 
 </details>
 <details>
-  <summary>59. Download all photos from posts</summary>
+  <summary>60. Download all photos from posts</summary>
 
   [View source](/scripts/fb_downloadWallMediaFromPosts.js)
 
@@ -513,19 +523,11 @@
 
 </details>
 <details>
-  <summary>60. Get all albums information</summary>
+  <summary>61. Get all albums information</summary>
 
   [View source](/scripts/fb_getAllAlbumInformation.js)
 
   <code>Get all albums information from user, group, page (id, count, link, ...)</code>
-
-</details>
-<details>
-  <summary>61. Export saved facebook items</summary>
-
-  [View source](/scripts/fb_exportSaved.js)
-
-  <code>Export all your saved items on facebook to JSON file</code>
 
 </details>
 
@@ -549,15 +551,7 @@
 
 </details>
 <details>
-  <summary>64. Facebook - Who is typing to you?</summary>
-
-  [View source](/scripts/fb_whoIsTyping.js)
-
-  <code>Notify when someone is typing chat to you.<br/><h2>WARNING</h2>Not work with end-to-end encryption</code>
-
-</details>
-<details>
-  <summary>65. Turn off light fb newfeed</summary>
+  <summary>64. Turn off light facebook newfeed</summary>
 
   [View source](/scripts/fb_toggleLight.js)
 
@@ -565,39 +559,52 @@
 
 </details>
 <details>
-  <summary>66. Hide Newfeed facebook</summary>
+  <summary>65. Hide facebook new feed</summary>
 
   [View source](/scripts/fb_toggleNewFeed.js)
 
-  <code>Hide Newfeed facebook for better focus to work</code>
+  <code>Hide facebook new feed (home page) for better focus to work</code>
+
+</details>
+<details>
+  <summary>66. Stop new feed facebook</summary>
+
+  [View source](/scripts/fb_stopNewFeed.js)
+
+  <code>Stop load new feed on facebook, better for work performance<br/>
+      <ul>
+        <li>Support feeds: stories, home, video, group, marketplace</li>
+      </ul></code>
+
+</details>
+<details>
+  <summary>67. 👀 Block seen story facebook</summary>
+
+  [View source](/scripts/fb_blockSeenStory.js)
+
+  <code>Block 'Seen' story in facebook. Your friend will not know that you have seen his/her stories.</code>
+
+</details>
+<details>
+  <summary>68. Show facebook post reaction count</summary>
+
+  [View source](/scripts/fb_getPostReactionCount.js)
+
+  <code>Show total reaction count on facebook posts when hover mouse over post's reaction section</code>
+
+  ![](/scripts/fb_getPostReactionCount.jpg)
+
+</details>
+<details>
+  <summary>69. Facebook - Who is typing to you?</summary>
+
+  [View source](/scripts/fb_whoIsTyping.js)
+
+  <code>Notify when someone is typing chat to you.<br/><h2>WARNING</h2>Not work with end-to-end encryption</code>
 
 </details>
 
 --- Statistic ---
-<details>
-  <summary>67. Facebook - Detect unfriend</summary>
-
-  [View source](/scripts/fb_detectUnfriend.js)
-
-  <code>Detect unfriend, know who unfriend you on facebook</code>
-
-</details>
-<details>
-  <summary>68. Facebook - Messenger history</summary>
-
-  [View source](/scripts/fb_messengerHistory.js)
-
-  <code>View first message in facebook messenger</code>
-
-</details>
-<details>
-  <summary>69. Facebook - Messenger count</summary>
-
-  [View source](/scripts/fb_messengerCount.js)
-
-  <code>Let see who are your most active friends on facebook messenger</code>
-
-</details>
 <details>
   <summary>70. Facebook - View your friends's joined groups</summary>
 
@@ -615,15 +622,7 @@
 
 </details>
 <details>
-  <summary>72. Facebook - Fetch all added friends</summary>
-
-  [View source](/scripts/fb_fetchAllAddedFriends.js)
-
-  <code>View all friends added to your Facebook account.</code>
-
-</details>
-<details>
-  <summary>73. Facebook - Find all posts of your friends</summary>
+  <summary>72. Facebook - Find all posts of your friends</summary>
 
   [View source](/scripts/fb_searchPostsForOther.js)
 
@@ -633,7 +632,7 @@
 
 --- Access Token ---
 <details>
-  <summary>74. Check fb access token</summary>
+  <summary>73. Check fb access token</summary>
 
   [View source](/scripts/fb_checkToken.js)
 
@@ -641,15 +640,7 @@
 
 </details>
 <details>
-  <summary>75. Get fb token from cookie (ffb.vn)</summary>
-
-  [View source](/scripts/fb_getTokenFfb.js)
-
-  <code>Post your facebook cookie to ffb.vn API</code>
-
-</details>
-<details>
-  <summary>76. Get fb token EAAB (instagram)</summary>
+  <summary>74. Get fb token EAAB (instagram)</summary>
 
   [View source](/scripts/fb_getTokenFacebook.js)
 
@@ -657,15 +648,7 @@
 
 </details>
 <details>
-  <summary>77. Get fb token EAAG (business_locations)</summary>
-
-  [View source](/scripts/fb_getTokenBussinessLocation.js)
-
-  <code>Get facebook token EAAG from business.facebook.com</code>
-
-</details>
-<details>
-  <summary>78. Get fb token EAADo1 (messenger)</summary>
+  <summary>75. Get fb token EAADo1 (messenger)</summary>
 
   [View source](/scripts/fb_getTokenMessage.js)
 
@@ -673,17 +656,33 @@
 
 </details>
 <details>
-  <summary>79. Get fb token EAAB (campaigns)</summary>
+  <summary>76. Get fb token EAAG (business_locations)</summary>
+
+  [View source](/scripts/fb_getTokenBussinessLocation.js)
+
+  <code>Get facebook token EAAG from business.facebook.com</code>
+
+</details>
+<details>
+  <summary>77. Get fb token EAAB (campaigns)</summary>
 
   [View source](/scripts/fb_getTokenCampaigns.js)
 
   <code>Get facebook token EAAB from www.facebook.com (campaigns)</code>
 
 </details>
+<details>
+  <summary>78. Get fb token from cookie (ffb.vn)</summary>
+
+  [View source](/scripts/fb_getTokenFfb.js)
+
+  <code>Post your facebook cookie to ffb.vn API</code>
+
+</details>
 
 --- Get ID ---
 <details>
-  <summary>80. Get fb User ID</summary>
+  <summary>79. Get fb User ID</summary>
 
   [View source](/scripts/fb_getUid.js)
 
@@ -691,7 +690,7 @@
 
 </details>
 <details>
-  <summary>81. Get fb Page ID</summary>
+  <summary>80. Get fb Page ID</summary>
 
   [View source](/scripts/fb_getPageId.js)
 
@@ -699,7 +698,7 @@
 
 </details>
 <details>
-  <summary>82. Get fb Group ID</summary>
+  <summary>81. Get fb Group ID</summary>
 
   [View source](/scripts/fb_getGroupId.js)
 
@@ -707,7 +706,7 @@
 
 </details>
 <details>
-  <summary>83. Get fb Album ID</summary>
+  <summary>82. Get fb Album ID</summary>
 
   [View source](/scripts/fb_getAlbumId.js)
 
@@ -715,7 +714,7 @@
 
 </details>
 <details>
-  <summary>84. Get all fb Album ID from current page</summary>
+  <summary>83. Get all fb Album ID from current page</summary>
 
   [View source](/scripts/fb_getAllAlbumIdFromCurrentWebsite.js)
 
@@ -723,7 +722,7 @@
 
 </details>
 <details>
-  <summary>85. Get fb User ID from url</summary>
+  <summary>84. Get fb User ID from url</summary>
 
   [View source](/scripts/fb_getUidFromUrl.js)
 
@@ -731,7 +730,7 @@
 
 </details>
 <details>
-  <summary>86. Get all fb User ID from search page</summary>
+  <summary>85. Get all fb User ID from search page</summary>
 
   [View source](/scripts/fb_getAllUidFromFbSearch.js)
 
@@ -739,7 +738,7 @@
 
 </details>
 <details>
-  <summary>87. Get all fb User ID from group</summary>
+  <summary>86. Get all fb User ID from group</summary>
 
   [View source](/scripts/fb_getAllUidOfGroupMembers.js)
 
@@ -749,15 +748,15 @@
 
 --- Shortcut ---
 <details>
-  <summary>88. View your facebook saved</summary>
+  <summary>87. View your facebook saved</summary>
 
-  [View source](/scripts/undefined.js)
+  [View source](/scripts/fb_openSaved.js)
 
   <code>View saved contents on Facebook</code>
 
 </details>
 <details>
-  <summary>89. View your memories on facebook</summary>
+  <summary>88. View your memories on facebook</summary>
 
   [View source](/scripts/fb_openMemories.js)
 
@@ -765,7 +764,7 @@
 
 </details>
 <details>
-  <summary>90. View your ads activities</summary>
+  <summary>89. View your ads activities</summary>
 
   [View source](/scripts/fb_openAdsActivities.js)
 
@@ -773,7 +772,7 @@
 
 </details>
 <details>
-  <summary>91. Check your activities on Facebook</summary>
+  <summary>90. Check your activities on Facebook</summary>
 
   [View source](/scripts/fb_openAllActivities.js)
 
@@ -781,18 +780,50 @@
 
 </details>
 <details>
-  <summary>92. Change language Facebook</summary>
+  <summary>91. Video you watched on facebook</summary>
 
-  [View source](/scripts/fb_changeLanguage.js)
+  [View source](/scripts/fb_openVideoActivities.js)
+
+  <code>View all videos you watched on facebook</code>
+
+</details>
+<details>
+  <summary>92. Events joined on facebook</summary>
+
+  [View source](/scripts/fb_openPassEvents.js)
+
+  <code>View pass events that you have joined on facebook.</code>
+
+</details>
+<details>
+  <summary>93. Facebook friend's birthdays</summary>
+
+  [View source](/scripts/fb_openBirthdays.js)
+
+  <code>View your friend's birthdays each month on facebook</code>
+
+</details>
+<details>
+  <summary>94. Change language facebook</summary>
+
+  [View source](/scripts/fb_openChangeLanguage.js)
 
   <code>Change display language on facebook</code>
+
+</details>
+<details>
+  <summary>95. Recover facebook account</summary>
+
+  [View source](/scripts/fb_openAccountHacked.js)
+
+  <code>Your fb account has been hacked? Facebook can help you.</code>
 
 </details>
 
 ### <i class="fa-brands fa-instagram"></i> Instagram
 
 <details>
-  <summary>93. Get insta user info (uid, avatar, ...)</summary>
+  <summary>96. Get insta user info (uid, avatar, ...)</summary>
 
   [View source](/scripts/insta_getUserInfo.js)
 
@@ -800,7 +831,7 @@
 
 </details>
 <details>
-  <summary>94. Add Instagram download button</summary>
+  <summary>97. Add Instagram download button</summary>
 
   [View source](/scripts/insta_injectDownloadBtn.js)
 
@@ -810,7 +841,7 @@
 
 </details>
 <details>
-  <summary>95. Insta - Anonymous story viewer</summary>
+  <summary>98. Insta - Anonymous story viewer</summary>
 
   [View source](/scripts/insta_anonymousStoryViewer.js)
 
@@ -820,7 +851,7 @@
 
 --- Bulk Download ---
 <details>
-  <summary>96. Get all media of insta user (API)</summary>
+  <summary>99. Get all media of insta user (API)</summary>
 
   [View source](/scripts/insta_getAllUserMedia.js)
 
@@ -828,7 +859,7 @@
 
 </details>
 <details>
-  <summary>97. Insta - Export all following/followers</summary>
+  <summary>100. Insta - Export all following/followers</summary>
 
   [View source](/scripts/insta_getFollowForOther.js)
 
@@ -839,7 +870,7 @@
 ### <i class="fa-brands fa-youtube"></i> Youtube
 
 <details>
-  <summary>98. Download youtube video/audio</summary>
+  <summary>101. Download youtube video/audio</summary>
 
   [View source](/scripts/youtube_downloadVideo.js)
 
@@ -847,7 +878,7 @@
 
 </details>
 <details>
-  <summary>99. Toggle light youtube</summary>
+  <summary>102. Toggle light youtube</summary>
 
   [View source](/scripts/youtube_toggleLight.js)
 
@@ -855,7 +886,7 @@
 
 </details>
 <details>
-  <summary>100. Picture in Picture</summary>
+  <summary>103. Picture in Picture</summary>
 
   [View source](/scripts/pictureInPicture.js)
 
@@ -863,7 +894,7 @@
 
 </details>
 <details>
-  <summary>101. PIP full website</summary>
+  <summary>104. PIP full website</summary>
 
   [View source](/scripts/pip_fullWebsite.js)
 
@@ -871,7 +902,7 @@
 
 </details>
 <details>
-  <summary>102. PIP for canvas</summary>
+  <summary>105. PIP for canvas</summary>
 
   [View source](/scripts/pip_canvas.js)
 
@@ -879,7 +910,7 @@
 
 </details>
 <details>
-  <summary>103. Return youtube dislike</summary>
+  <summary>106. Return youtube dislike</summary>
 
   [View source](/scripts/youtube_viewDislikes.js)
 
@@ -887,7 +918,7 @@
 
 </details>
 <details>
-  <summary>104. Youtube nonstop</summary>
+  <summary>107. Youtube nonstop</summary>
 
   [View source](/scripts/youtube_nonstop.js)
 
@@ -897,7 +928,7 @@
 
 </details>
 <details>
-  <summary>105. Improve YouTube - 85+ features</summary>
+  <summary>108. Improve YouTube - 85+ features</summary>
 
   [View source](/scripts/recommend_improve_youtube.js)
 
@@ -909,7 +940,7 @@
 
 --- Tiktok ---
 <details>
-  <summary>106. Tiktok - Download watching video</summary>
+  <summary>109. Tiktok - Download watching video</summary>
 
   [View source](/scripts/tiktok_downloadWatchingVideo.js)
 
@@ -917,7 +948,7 @@
 
 </details>
 <details>
-  <summary>107. Tiktok - Download video from URL</summary>
+  <summary>110. Tiktok - Download video from URL</summary>
 
   [View source](/scripts/tiktok_downloadVideo.js)
 
@@ -925,7 +956,7 @@
 
 </details>
 <details>
-  <summary>108. Tiktok - Batch download</summary>
+  <summary>111. Tiktok - Batch download</summary>
 
   [View source](/scripts/tiktok_batchDownload.js)
 
@@ -937,7 +968,7 @@
 
 --- Douyin ---
 <details>
-  <summary>109. Douyin - Download watching video</summary>
+  <summary>112. Douyin - Download watching video</summary>
 
   [View source](/scripts/douyin_downloadWachingVideo.js)
 
@@ -945,7 +976,7 @@
 
 </details>
 <details>
-  <summary>110. Douyin - Download all user videos</summary>
+  <summary>113. Douyin - Download all user videos</summary>
 
   [View source](/scripts/douyin_downloadAllVideoUser.js)
 
@@ -957,7 +988,7 @@
 
 --- Utility ---
 <details>
-  <summary>111. Web timer</summary>
+  <summary>114. Web timer</summary>
 
   [View source](/scripts/web_timer.js)
 
@@ -968,7 +999,7 @@
 
 </details>
 <details>
-  <summary>112. Auto lock websites</summary>
+  <summary>115. Auto lock websites</summary>
 
   [View source](/scripts/auto_lockWebsite.js)
 
@@ -980,7 +1011,7 @@
 
 </details>
 <details>
-  <summary>113. Super smooth scroll</summary>
+  <summary>116. Super smooth scroll</summary>
 
   [View source](/scripts/smoothScroll.js)
 
@@ -990,7 +1021,7 @@
 
 </details>
 <details>
-  <summary>114. Magnify any Image</summary>
+  <summary>117. Magnify any Image</summary>
 
   [View source](/scripts/magnify_image.js)
 
@@ -998,17 +1029,22 @@
     Where you are able to zoom in/out, rotate, drag, and more.<br/>
     Auto find large version of image to show.
     <br/></br>
-    <p style="color:yellow">3 ways to use:</p>
+    <p style="color:yellow">4 ways to use:</p>
+    Using now:
     <ol>
-      <li>Right click any image</li>
-      <li>Left click this feature and choose image</li>
-      <li>Double Ctrl on any image (require autorun)</li>
+      <li>Right click in website > click magnify image</li>
+      <li>Left click this feature then click image</li>
+    </ol>
+    After turn-on auto-run:
+    <ol>
+      <li>Hover on any image/video > click magnify button</li>
+      <li>Double Ctrl on any image</li>
     </ol>
     </code>
 
 </details>
 <details>
-  <summary>115. Auto - view largest image</summary>
+  <summary>118. Auto - view largest image</summary>
 
   [View source](/scripts/auto_redirectLargestImageSrc.js)
 
@@ -1022,7 +1058,15 @@
 
 </details>
 <details>
-  <summary>116. Prevent tracking url</summary>
+  <summary>119. Show image on hover link</summary>
+
+  [View source](/scripts/showImageOnHoverLink.js)
+
+  <code>Show preview image when you hover mouse over an image link</code>
+
+</details>
+<details>
+  <summary>120. Prevent tracking url</summary>
 
   [View source](/scripts/remove_tracking_in_url.js)
 
@@ -1035,7 +1079,7 @@
 
 </details>
 <details>
-  <summary>117. Don't close browser with last tab</summary>
+  <summary>121. Don't close browser with last tab</summary>
 
   [View source](/scripts/prevent_closeBrowser_lastTab.js)
 
@@ -1044,7 +1088,7 @@
 
 </details>
 <details>
-  <summary>118. Block trackers, spy and malware</summary>
+  <summary>122. Block trackers, spy and malware</summary>
 
   [View source](/scripts/chongLuaDao.js)
 
@@ -1056,7 +1100,7 @@
 
 </details>
 <details>
-  <summary>119. Shorten URL</summary>
+  <summary>123. Shorten URL</summary>
 
   [View source](/scripts/shortenURL.js)
 
@@ -1064,7 +1108,7 @@
 
 </details>
 <details>
-  <summary>120. Unshorten link</summary>
+  <summary>124. Unshorten link</summary>
 
   [View source](/scripts/unshorten.js)
 
@@ -1072,7 +1116,7 @@
 
 </details>
 <details>
-  <summary>121. Create invisible message</summary>
+  <summary>125. Create invisible message</summary>
 
   [View source](/scripts/createInvisibleText.js)
 
@@ -1082,23 +1126,7 @@
 
 --- Automation ---
 <details>
-  <summary>122. Scroll to very end</summary>
-
-  [View source](/scripts/scrollToVeryEnd.js)
-
-  <code>Scoll to end, then wait for load data, then scroll again... <b>Mouse click to cancel</b><br/><h1>Tips</h1>You can press middle mouse button to auto scroll up/down in any website.</code>
-
-</details>
-<details>
-  <summary>123. Screenshot full webpage</summary>
-
-  [View source](/scripts/screenshotFullPage.js)
-
-  <code>Taking a screenshot of an entire webpage</code>
-
-</details>
-<details>
-  <summary>124. Web to PDF</summary>
+  <summary>126. Web to PDF</summary>
 
   [View source](/scripts/webToPDF.js)
 
@@ -1106,7 +1134,31 @@
 
 </details>
 <details>
-  <summary>125. Extract all Emails from website</summary>
+  <summary>127. Screenshot full webpage</summary>
+
+  [View source](/scripts/screenshotFullPage.js)
+
+  <code>Taking a screenshot of an entire webpage</code>
+
+</details>
+<details>
+  <summary>128. Screenshot webpage</summary>
+
+  [View source](/scripts/screenshotVisiblePage.js)
+
+  <code>Taking a screenshot of visible webpage (bypass websites that block screenshots such as Netflix, ...)</code>
+
+</details>
+<details>
+  <summary>129. Scroll to very end</summary>
+
+  [View source](/scripts/scrollToVeryEnd.js)
+
+  <code>Scoll to end, then wait for load data, then scroll again... <b>Mouse click to cancel</b><br/><h1>Tips</h1>You can press middle mouse button to auto scroll up/down in any website.</code>
+
+</details>
+<details>
+  <summary>130. Extract all Emails from website</summary>
 
   [View source](/scripts/getAllEmailsInWeb.js)
 
@@ -1114,7 +1166,7 @@
 
 </details>
 <details>
-  <summary>126. Enable/Disable Hack T-Rex Dino Game</summary>
+  <summary>131. Enable/Disable Hack T-Rex Dino Game</summary>
 
   [View source](/scripts/dino_hack.js)
 
@@ -1122,7 +1174,7 @@
 
 </details>
 <details>
-  <summary>127. Password generator</summary>
+  <summary>132. Password generator</summary>
 
   [View source](/scripts/passwordGenerator.js)
 
@@ -1132,7 +1184,7 @@
 
 --- Tools ---
 <details>
-  <summary>128. Text to QRCode</summary>
+  <summary>133. Text to QRCode</summary>
 
   [View source](/scripts/textToQrCode.js)
 
@@ -1140,7 +1192,7 @@
 
 </details>
 <details>
-  <summary>129. Text to Speech (j2team)</summary>
+  <summary>134. Text to Speech (j2team)</summary>
 
   [View source](/scripts/textToSpeech.js)
 
@@ -1148,7 +1200,7 @@
 
 </details>
 <details>
-  <summary>130. Audio output switcher</summary>
+  <summary>135. Audio output switcher</summary>
 
   [View source](/scripts/changeAudioOutput.js)
 
@@ -1156,7 +1208,7 @@
 
 </details>
 <details>
-  <summary>131. Send - Share file faster</summary>
+  <summary>136. Send - Share file faster</summary>
 
   [View source](/scripts/send_shareFiles.js)
 
@@ -1164,7 +1216,7 @@
 
 </details>
 <details>
-  <summary>132. Vuiz - create logo WAP online</summary>
+  <summary>137. Vuiz - create logo WAP online</summary>
 
   [View source](/scripts/vuiz_createLogo.js)
 
@@ -1172,7 +1224,7 @@
 
 </details>
 <details>
-  <summary>133. Performance Analyzer</summary>
+  <summary>138. Performance Analyzer</summary>
 
   [View source](/scripts/performanceAnalyzer.js)
 
@@ -1180,7 +1232,7 @@
 
 </details>
 <details>
-  <summary>134. IT Tools - All for Developers</summary>
+  <summary>139. IT Tools - All for Developers</summary>
 
   [View source](/scripts/recommend_ItTools.js)
 
@@ -1188,15 +1240,7 @@
 
 </details>
 <details>
-  <summary>135. CSS Portal - Empowered your CSS skills</summary>
-
-  [View source](/scripts/recommend_cssportal.js)
-
-  <code>Empowered your CSS skills with hundreds of CSS tools.</code>
-
-</details>
-<details>
-  <summary>136. CopyIcon - FREE emoji, icon, generator</summary>
+  <summary>140. CopyIcon - FREE emoji, icon, generator</summary>
 
   [View source](/scripts/recommend_copyicon.js)
 
@@ -1204,7 +1248,7 @@
 
 </details>
 <details>
-  <summary>137. Beautify Tools</summary>
+  <summary>141. Beautify Tools</summary>
 
   [View source](/scripts/recommend_beautifytools.js)
 
@@ -1225,7 +1269,7 @@
 
 --- Github ---
 <details>
-  <summary>138. Go to any commit</summary>
+  <summary>142. Github - Go to any commit</summary>
 
   [View source](/scripts/github_goToAnyCommit.js)
 
@@ -1233,7 +1277,25 @@
 
 </details>
 <details>
-  <summary>139. Open repo in github.dev</summary>
+  <summary>143. Github - HTML preview</summary>
+
+  [View source](/scripts/github_HTMLPreview.js)
+
+  <code>Preview github's HTML file in any repo without download code.</code>
+
+</details>
+<details>
+  <summary>144. Github - Open repo pages</summary>
+
+  [View source](/scripts/github_openRepoPages.js)
+
+  <code>Switch between github.com repo and github.io live demo pages
+    <b>username</b>.github.io/<b>repo</b><br/>
+    github.com/<b>username</b>/<b>repo</b><br/></code>
+
+</details>
+<details>
+  <summary>145. Github - Open repo in github.dev</summary>
 
   [View source](/scripts/githubdev.js)
 
@@ -1241,7 +1303,7 @@
 
 </details>
 <details>
-  <summary>140. Open repo in github1s.com</summary>
+  <summary>146. Github - Open repo in github1s.com</summary>
 
   [View source](/scripts/github1s.js)
 
@@ -1249,7 +1311,7 @@
 
 </details>
 <details>
-  <summary>141. Cloc - count line of code</summary>
+  <summary>147. Cloc - count line of code</summary>
 
   [View source](/scripts/recommend_cloc.js)
 
@@ -1258,10 +1320,18 @@
   ![](/scripts/recommend_cloc.png)
 
 </details>
+<details>
+  <summary>148. Refined GitHub </summary>
+
+  [View source](/scripts/recommend_refined_github.js)
+
+  <code>Simplifies the GitHub interface and adds useful features</code>
+
+</details>
 
 --- Shopping ---
 <details>
-  <summary>142. Shopee - Top variation</summary>
+  <summary>149. Shopee - Top variation</summary>
 
   [View source](/scripts/shopee_topVariation.js)
 
@@ -1271,7 +1341,7 @@
 
 </details>
 <details>
-  <summary>143. Shopee - Total spend money</summary>
+  <summary>150. Shopee - Total spend money</summary>
 
   [View source](/scripts/shopee_totalSpendMoney.js)
 
@@ -1279,7 +1349,7 @@
 
 </details>
 <details>
-  <summary>144. Shopee - Export order history (Excel)</summary>
+  <summary>151. Shopee - Export order history (Excel)</summary>
 
   [View source](/scripts/shopee_totalSpendMoney_excel.js)
 
@@ -1287,7 +1357,7 @@
 
 </details>
 <details>
-  <summary>145. Tiki - Total spend money?</summary>
+  <summary>152. Tiki - Total spend money?</summary>
 
   [View source](/scripts/tiki_totalSpendMoney.js)
 
@@ -1295,7 +1365,7 @@
 
 </details>
 <details>
-  <summary>146. Beecost</summary>
+  <summary>153. Beecost</summary>
 
   [View source](/scripts/recommend_Beecost.js)
 
@@ -1305,7 +1375,7 @@
 
 --- PDF ---
 <details>
-  <summary>147. FastDoc - Convert PDF/Photo to Word/Excel</summary>
+  <summary>154. FastDoc - Convert PDF/Photo to Word/Excel</summary>
 
   [View source](/scripts/recommend_fastDoc.js)
 
@@ -1313,7 +1383,7 @@
 
 </details>
 <details>
-  <summary>148. SmartPDF - Tools for PDF</summary>
+  <summary>155. SmartPDF - Tools for PDF</summary>
 
   [View source](/scripts/recommend_smartPDF.js)
 
@@ -1321,7 +1391,7 @@
 
 </details>
 <details>
-  <summary>149. PDF Stuffs - Tools for PDF</summary>
+  <summary>156. PDF Stuffs - Tools for PDF</summary>
 
   [View source](/scripts/recommend_pdfstuffs.js)
 
@@ -1333,7 +1403,7 @@
 
 --- Unlock web ---
 <details>
-  <summary>150. Hack Duck race</summary>
+  <summary>157. Hack Duck race</summary>
 
   [View source](/scripts/duckRace_cheat.js)
 
@@ -1343,7 +1413,7 @@
 
 </details>
 <details>
-  <summary>151. Hack Wheel of Names</summary>
+  <summary>158. Hack Wheel of Names</summary>
 
   [View source](/scripts/wheelOfNames_hack.js)
 
@@ -1351,7 +1421,7 @@
 
 </details>
 <details>
-  <summary>152. Read full medium article</summary>
+  <summary>159. Read full medium article</summary>
 
   [View source](/scripts/medium_readFullArticle.js)
 
@@ -1359,7 +1429,19 @@
 
 </details>
 <details>
-  <summary>153. Fireship - PRO unlocked</summary>
+  <summary>160. Medium - Fix vietnamese font</summary>
+
+  [View source](/scripts/medium_fixVietnameseFont.js)
+
+  <code>Fix vietnamese font in Medium<br/>
+    <ul>
+      <li>Click 1 time to fix font in current Medium page (dont need to reload)</li>
+      <li>Enable autorun for next times you enter Medium</li>
+    </ul></code>
+
+</details>
+<details>
+  <summary>161. Fireship - PRO unlocked</summary>
 
   [View source](/scripts/fireship_vip.js)
 
@@ -1367,15 +1449,7 @@
 
 </details>
 <details>
-  <summary>154. Scribd - bypass preview</summary>
-
-  [View source](/scripts/scribd_bypassPreview.js)
-
-  <code>View VIP document on Scribd.com, bypass preview popup / reveal blurred content.</code>
-
-</details>
-<details>
-  <summary>155. Studocu - Bypass preview</summary>
+  <summary>162. Studocu - Bypass preview</summary>
 
   [View source](/scripts/studocu_bypassPreview.js)
 
@@ -1383,7 +1457,15 @@
 
 </details>
 <details>
-  <summary>156. Studyphim - Watch free movies</summary>
+  <summary>163. Scribd - bypass preview</summary>
+
+  [View source](/scripts/scribd_bypassPreview.js)
+
+  <code>View VIP document on Scribd.com, bypass preview popup / reveal blurred content.</code>
+
+</details>
+<details>
+  <summary>164. Studyphim - Watch free movies</summary>
 
   [View source](/scripts/studyphim_unlimited.js)
 
@@ -1393,7 +1475,7 @@
 
 --- Unlock function ---
 <details>
-  <summary>157. Enable/Disable allow copy</summary>
+  <summary>165. Enable/Disable allow copy</summary>
 
   [View source](/scripts/simpleAllowCopy.js)
 
@@ -1407,7 +1489,7 @@
 
 </details>
 <details>
-  <summary>158. Detect Zero-Width Characters</summary>
+  <summary>166. Detect Zero-Width Characters</summary>
 
   [View source](/scripts/detect_zeroWidthCharacters.js)
 
@@ -1415,7 +1497,7 @@
 
 </details>
 <details>
-  <summary>159. Inject script to website</summary>
+  <summary>167. Inject script to website</summary>
 
   [View source](/scripts/injectScriptToWebsite.js)
 
@@ -1423,7 +1505,7 @@
 
 </details>
 <details>
-  <summary>160. Show hidden fields</summary>
+  <summary>168. Show hidden fields</summary>
 
   [View source](/scripts/showHiddenFields.js)
 
@@ -1431,7 +1513,7 @@
 
 </details>
 <details>
-  <summary>161. View cookies</summary>
+  <summary>169. View cookies</summary>
 
   [View source](/scripts/viewCookies.js)
 
@@ -1439,7 +1521,7 @@
 
 </details>
 <details>
-  <summary>162. Remove cookies</summary>
+  <summary>170. Remove cookies</summary>
 
   [View source](/scripts/removeCookies.js)
 
@@ -1449,7 +1531,7 @@
 
 --- Other ---
 <details>
-  <summary>163. Make browser super fast</summary>
+  <summary>171. Make browser super fast</summary>
 
   [View source](/scripts/recommend_chromeFlags.js)
 
@@ -1457,7 +1539,7 @@
 
 </details>
 <details>
-  <summary>164. View saved wifi passwords</summary>
+  <summary>172. View saved wifi passwords</summary>
 
   [View source](/scripts/recommend_viewSavedWifiPass.js)
 
@@ -1465,7 +1547,7 @@
 
 </details>
 <details>
-  <summary>165. Leak check - your password has been leaked?</summary>
+  <summary>173. Leak check - your password has been leaked?</summary>
 
   [View source](/scripts/recommend_leakCheck.js)
 
@@ -1477,15 +1559,7 @@
 
 --- Hot ---
 <details>
-  <summary>166. Dark reader</summary>
-
-  [View source](/scripts/recommend_DarkReader.js)
-
-  <code>Darkmode for every website</code>
-
-</details>
-<details>
-  <summary>167. Darkmode for pdf</summary>
+  <summary>174. Darkmode for pdf</summary>
 
   [View source](/scripts/darkModePDF.js)
 
@@ -1493,7 +1567,7 @@
 
 </details>
 <details>
-  <summary>168. Toggle edit page</summary>
+  <summary>175. Toggle edit page</summary>
 
   [View source](/scripts/toggleEditPage.js)
 
@@ -1501,7 +1575,7 @@
 
 </details>
 <details>
-  <summary>169. Show FPS</summary>
+  <summary>176. Show FPS</summary>
 
   [View source](/scripts/showFPS.js)
 
@@ -1509,7 +1583,7 @@
 
 </details>
 <details>
-  <summary>170. Show FPS - ver 2</summary>
+  <summary>177. Show FPS - ver 2</summary>
 
   [View source](/scripts/showFps_v2.js)
 
@@ -1517,17 +1591,49 @@
 
 </details>
 <details>
-  <summary>171. Hide/Show password field</summary>
+  <summary>178. Hide/Show password field</summary>
 
   [View source](/scripts/toggle_passwordField.js)
 
   <code>Show/hide value of password fields in website<br/>(eg. **** -> 1234)</code>
 
 </details>
+<details>
+  <summary>179. Dark reader</summary>
+
+  [View source](/scripts/recommend_DarkReader.js)
+
+  <code>Darkmode for every website</code>
+
+</details>
+<details>
+  <summary>180. CSS Portal - Empowered your CSS skills</summary>
+
+  [View source](/scripts/recommend_cssportal.js)
+
+  <code>Empowered your CSS skills with hundreds of CSS tools.</code>
+
+</details>
+<details>
+  <summary>181. CSS Loaders - 600+ css loader</summary>
+
+  [View source](/scripts/recommend_cssloaders.js)
+
+  <code>The Biggest Collection of Loading Animations. Over 600+ CSS-only loaders made using a single element</code>
+
+</details>
+<details>
+  <summary>182. UIverse - Open-Source UI elements</summary>
+
+  [View source](/scripts/recommend_uiverse.js)
+
+  <code>Open-Source UI elements for any project.</code>
+
+</details>
 
 --- View ---
 <details>
-  <summary>172. Font Rendering - better font display</summary>
+  <summary>183. Font Rendering - better font display</summary>
 
   [View source](/scripts/recommend_fontRendering.js)
 
@@ -1535,7 +1641,7 @@
 
 </details>
 <details>
-  <summary>173. What font</summary>
+  <summary>184. What font</summary>
 
   [View source](/scripts/whatFont.js)
 
@@ -1543,7 +1649,7 @@
 
 </details>
 <details>
-  <summary>174. Show all javascript events</summary>
+  <summary>185. Show all javascript events</summary>
 
   [View source](/scripts/visualEvent.js)
 
@@ -1551,7 +1657,7 @@
 
 </details>
 <details>
-  <summary>175. View all images in web</summary>
+  <summary>186. View all images in web</summary>
 
   [View source](/scripts/listAllImagesInWeb.js)
 
@@ -1559,7 +1665,7 @@
 
 </details>
 <details>
-  <summary>176. View all links</summary>
+  <summary>187. View all links</summary>
 
   [View source](/scripts/viewAllLinks.js)
 
@@ -1567,7 +1673,7 @@
 
 </details>
 <details>
-  <summary>177. View scripts used</summary>
+  <summary>188. View scripts used</summary>
 
   [View source](/scripts/viewScriptsUsed.js)
 
@@ -1575,7 +1681,7 @@
 
 </details>
 <details>
-  <summary>178. View stylesheet used</summary>
+  <summary>189. View stylesheet used</summary>
 
   [View source](/scripts/viewStylesUsed.js)
 
@@ -1583,7 +1689,7 @@
 
 </details>
 <details>
-  <summary>179. CSS selector viewer</summary>
+  <summary>190. CSS selector viewer</summary>
 
   [View source](/scripts/cssSelectorViewer.js)
 
@@ -1593,7 +1699,7 @@
 
 --- Remove ---
 <details>
-  <summary>180. Remove all colors in web</summary>
+  <summary>191. Remove all colors in web</summary>
 
   [View source](/scripts/removeColours.js)
 
@@ -1601,7 +1707,7 @@
 
 </details>
 <details>
-  <summary>181. Remove stylesheet</summary>
+  <summary>192. Remove stylesheet</summary>
 
   [View source](/scripts/removeStylesheet.js)
 
@@ -1609,7 +1715,7 @@
 
 </details>
 <details>
-  <summary>182. Remove images</summary>
+  <summary>193. Remove images</summary>
 
   [View source](/scripts/removeImages.js)
 
@@ -1617,7 +1723,7 @@
 
 </details>
 <details>
-  <summary>183. Remove bloat (iframe, embed)</summary>
+  <summary>194. Remove bloat (iframe, embed)</summary>
 
   [View source](/scripts/removeBloat.js)
 
@@ -1627,7 +1733,7 @@
 
 --- Table ---
 <details>
-  <summary>184. Add sort to table</summary>
+  <summary>195. Add sort to table</summary>
 
   [View source](/scripts/table_addSortTable.js)
 
@@ -1635,7 +1741,7 @@
 
 </details>
 <details>
-  <summary>185. Add number columns</summary>
+  <summary>196. Add number columns</summary>
 
   [View source](/scripts/table_addNumberColumn.js)
 
@@ -1643,7 +1749,7 @@
 
 </details>
 <details>
-  <summary>186. Swap rows and columns</summary>
+  <summary>197. Swap rows and columns</summary>
 
   [View source](/scripts/table_swapRowAndColumn.js)
 
@@ -1653,7 +1759,7 @@
 
 --- More ---
 <details>
-  <summary>187. Highlight internal/external link</summary>
+  <summary>198. Highlight internal/external link</summary>
 
   [View source](/scripts/internalOrExternalLink.js)
 
@@ -1663,7 +1769,7 @@
 
 </details>
 <details>
-  <summary>188. Get window size</summary>
+  <summary>199. Get window size</summary>
 
   [View source](/scripts/getWindowSize.js)
 
@@ -1671,7 +1777,7 @@
 
 </details>
 <details>
-  <summary>189. Let it snow</summary>
+  <summary>200. Let it snow</summary>
 
   [View source](/scripts/letItSnow.js)
 

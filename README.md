@@ -29,11 +29,12 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v1.67 - bản cập nhật siêu lớn** (29/05/2024)
+- **v1.68** (01/07/2024)
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
 
+- <del>v1.67 - bản cập nhật siêu lớn (29/05/2024)</del>
 - <del>v1.66 - bản cập nhật lớn (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
