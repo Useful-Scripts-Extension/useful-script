@@ -4,9 +4,9 @@
 
 - [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
 
-- [ ] check linux compatible -> relative path in manifest + file name camelcase
+- [x] check linux compatible -> relative path in manifest + file name camelcase
 
-- [ ] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002>
+- [x] modify responseText xhr <https://stackoverflow.com/a/37532556/23648002> => hard
 
 - [ ] auto refresh tab <https://chromewebstore.google.com/detail/aabcgdmkeabbnleenpncegpcngjpnjkc>
 
