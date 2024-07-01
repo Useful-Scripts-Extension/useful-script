@@ -19,7 +19,7 @@ export default {
     <h3>BẤM NÚT ${graphIcon} ĐỂ XEM BIỂU ĐỒ.</h3>`,
     img: "/scripts/web_timer.png",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: graphIcon,

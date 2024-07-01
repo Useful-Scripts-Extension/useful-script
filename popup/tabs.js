@@ -301,10 +301,10 @@ const tabs = [
       s.fb_videoDownloader,
       s.fb_getAvatarFromUid,
       s.fb_exportSaved,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
-      s.fb_downloadAlbumMedia,
-      s.fb_downloadWallMediaFromPosts,
-      s.fb_getAllAlbumInformation,
+      // createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
+      // s.fb_downloadAlbumMedia,
+      // s.fb_downloadWallMediaFromPosts,
+      // s.fb_getAllAlbumInformation,
       createTitle("--- Hot ---", "--- Nổi bật ---"),
       s.fb_revealDeletedMessages,
       s.fb_moreReactionStory,
@@ -782,7 +782,7 @@ const tabs = [
           en: "Some flags experiments that can make your browser super fast",
           vi: "Các flags giúp trình duyệt của bạn chạy nhanh hơn thỏ",
         },
-        badges: [BADGES.new],
+        badges: [BADGES.recommend],
         popupScript: {
           onClick: () =>
             window.open(

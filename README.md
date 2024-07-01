@@ -11,9 +11,8 @@
   - [Cài đặt](#cài-đặt)
   - [Dành cho dev (Demo)](#dành-cho-dev-demo)
   - [Contribute](#contribute)
-  - [Kiến thức hay](#kiến-thức-hay)
 
-Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
+Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate tại đây](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
 
 ## Giới thiệu
 
@@ -21,7 +20,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate here](https://github.com/Ho
 
 - Hãy tham gia ngay [GROUP FACEBOOK](https://www.facebook.com/groups/1154059318582088) của tiện ích
 
-- Xem danh sách chức năng [Tại đây](./md/LIST_SCRIPTS_VI.md)
+- Xem tất cả chức năng [TẠI ĐÂY](./md/LIST_SCRIPTS_VI.md)
 
 ## Phiên bản
 
@@ -29,7 +28,7 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v1.68** (01/07/2024)
+- **v1.68**: bản cập nhật facebook lớn (01/07/2024)
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
@@ -50,11 +49,10 @@ Phiên bản hiện tại:
 
 ## Ảnh chụp màn hình
 
-<div style="display:flex;flex-direction:row">
+<div style="display:flex;flex-direction:row;justify-content:flex-start;align-items:flex-start">
 
-![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_light.png)
-
-![screenshot](./assets/screenshots/Screen%20Shot%202024-05-29_dark.png)
+  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_light.png" style="max-width:300px;display:inline-block" />
+  <img src="./assets/screenshots/Screen%20Shot%202024-05-29_dark.png" style="max-width:300px;display:inline-block"/>
 
 </div>
 
@@ -73,25 +71,3 @@ Phiên bản hiện tại:
 ## Contribute
 
 Contribute [tại đây (vietnamese)](/md/CONTRIBUTE.md)
-
-## Kiến thức hay
-
-- Extension Tips
-
-  - [muaz-khan/Chrome-Extensions](https://github.com/muaz-khan/Chrome-Extensions)
-
-  - [scripting docs](https://developer.chrome.com/docs/extensions/reference/scripting/)
-
-  - [focus-mode example](https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js)
-
-  - [execute popup script in webpage](https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script)
-
-- Bookmarks Tips
-
-  - [Bookmarklets hay](https://bookmarklet.vercel.app/)
-
-  - [Bookmarklets hay 2](https://www.thetechbasket.com/most-useful-bookmarklets/)
-
-  - [Blog hongkiat - 100 bookmarklets](https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/)
-
-  - [50 useful bookmarklets](https://www.wordzz.com/50-most-useful-bookmarklets/)

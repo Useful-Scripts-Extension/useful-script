@@ -10,7 +10,7 @@ export default {
     en: "Download documents on Studocu.com for free",
     vi: "Tải tài liệu trên Studocu.com miễn phí",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-05-11": "combine + auto download",
   },

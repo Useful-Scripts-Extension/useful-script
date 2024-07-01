@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: `<i class="fa-solid fa-droplet-slash fa-lg"></i>`,
   name: {
@@ -10,7 +8,6 @@ export default {
     en: "Remove all colours in the web.<br/>Click again to undo.",
     vi: "Xoá mọi màu có trong website.<br/>Bấm lại để hoàn tác.",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-05-01": "fix cors + undo",
   },

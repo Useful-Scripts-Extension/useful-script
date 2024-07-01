@@ -15,7 +15,7 @@ export default {
     Hỗ trợ scroll khi bấm chuột giữa.`,
     video: "https://www.smoothscroll.net/mac/img/vid/Demo-Mac-720p.mp4",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: '<i class="fa-solid fa-display"></i>',

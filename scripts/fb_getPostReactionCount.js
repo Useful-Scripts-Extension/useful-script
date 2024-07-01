@@ -1,6 +1,7 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { fetchGraphQl, getFbdtsg } from "./fb_GLOBAL.js";
 import { hookXHR } from "./libs/ajax-hook/index.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-thumbs-up fa-lg"></i>',
@@ -13,7 +14,7 @@ export default {
     vi: "Hiện tổng lượt thích bài viết khi đưa chuột vào xem lượt thích.",
     img: "/scripts/fb_getPostReactionCount.jpg",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-06-25": "init",
   },

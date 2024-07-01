@@ -10,7 +10,7 @@ export default {
     en: "Create invisible text to hide secret messages. Receiver to use this feature to decode messages.",
     vi: "Tạo tin nhắn tàng hình, giúp ẩn đi thông tin quan trọng, người nhận cần dùng chức năng này để có thể giải mã.",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   buttons: [
     {
       icon: '<i class="fa-solid fa-mobile-screen"></i>',

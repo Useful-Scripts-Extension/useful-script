@@ -11,7 +11,7 @@ export default {
     en: "Returns ability to see dislikes of youtube video/short",
     vi: "Hiển thị số lượt không thích của video/short youtube",
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.hot],
 
   changeLogs: {
     "2024-05-25": "autorun",

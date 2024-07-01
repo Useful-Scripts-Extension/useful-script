@@ -1,4 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
 import { md5 } from "./libs/crypto/md5.js";
 import { Storage } from "./helpers/utils.js";
 
@@ -22,7 +21,6 @@ export default {
       <li>Bấm nút ${managerBtn} để mở giao diện quản lý.</li>
     </ul>`,
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-05-20": "init",
   },

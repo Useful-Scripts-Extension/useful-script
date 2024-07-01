@@ -15,7 +15,6 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
-  getUserId,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -40,7 +39,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
-// import _ from "../md/exportScriptsToMd.js";
+import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
 const openInNewTabBtn = document.querySelector(".open-in-newtab");
@@ -979,29 +978,6 @@ const onScrollEnd = UfsGlobal.Utils.debounce(() => {
 
 window.addEventListener("scroll", onScrollEnd);
 
-async function checkUidMessage() {
-  try {
-    let res = await fetch(
-      "https://raw.githubusercontent.com/HoangTran0410/useful-script/dev/md/uid_messages.txt"
-    );
-    let messages = await res.text();
-    let uid = await getUserId();
-    for (let message of messages.split("\n")) {
-      let [targetUid, title, text, target] = message.split("|");
-      if (uid == targetUid) {
-        trackEvent("UID_MESSAGE_" + targetUid);
-        await Swal.fire({
-          icon: "info",
-          title: title,
-          text: text,
-        }).then((result) => {
-          if (result.isConfirmed && target) window.open(target);
-        });
-      }
-    }
-  } catch (e) {}
-}
-
 // #endregion
 
 (async function () {
@@ -1009,7 +985,6 @@ async function checkUidMessage() {
 
   if (!disableSmoothScrollSaver.get())
     disableSmoothScroll = enableSmoothScroll();
-  checkUidMessage();
   initTracking();
   initSearch();
   initTooltip();

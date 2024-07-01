@@ -1,6 +1,6 @@
 # WORKING NOTES
 
-## 30/05/2024 - ?
+## 30/05/2024 - 01/07/2024
 
 - [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
 
@@ -216,3 +216,25 @@ openssl rsa -in useful-script.pem -pubout > public_key.pem
 - [x] tiktok download api lỗi => Dùng snaptik api
 
 - [ ] cào data tiktok/douyin <https://github.com/Evil0ctal/Douyin_TikTok_Download_API>
+
+## Learn
+
+- Extension Tips
+
+  - [muaz-khan/Chrome-Extensions](https://github.com/muaz-khan/Chrome-Extensions)
+
+  - [scripting docs](https://developer.chrome.com/docs/extensions/reference/scripting/)
+
+  - [focus-mode example](https://github.com/GoogleChrome/chrome-extensions-samples/blob/main/tutorials/focus-mode/background.js)
+
+  - [execute popup script in webpage](https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script)
+
+- Bookmarks Tips
+
+  - [Bookmarklets hay](https://bookmarklet.vercel.app/)
+
+  - [Bookmarklets hay 2](https://www.thetechbasket.com/most-useful-bookmarklets/)
+
+  - [Blog hongkiat - 100 bookmarklets](https://www.hongkiat.com/blog/100-useful-bookmarklets-for-better-productivity-ultimate-list/)
+
+  - [50 useful bookmarklets](https://www.wordzz.com/50-most-useful-bookmarklets/)

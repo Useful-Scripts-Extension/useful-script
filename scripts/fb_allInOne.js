@@ -11,7 +11,7 @@ export default {
     en: "Facebook - All In One",
     vi: "Facebook - All In One",
   },
-  badges: [BADGES.hot, BADGES.new],
+  badges: [BADGES.new, BADGES.hot],
   description: {
     en: "Combine all bulk download / statistic features on facebook into single page",
     vi: "Tổng hợp tất cả chức năng tải hàng loạt / thống kê facebook",

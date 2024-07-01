@@ -1,3 +1,5 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
   icon: "https://wheelofnames.com/icons/favicon-96x96.png",
   name: {
@@ -8,6 +10,7 @@ export default {
     en: "Hack result of <ul><li>wheelofnames.com</li><li>wheelrandom.com</li><li>spinthewheel.io</li></ul>always get the result you want.",
     vi: "Hack kết quả trang web <ul><li>wheelofnames.com</li><li>wheelrandom.com</li><li>spinthewheel.io</li></ul>luôn ra kết quả bạn mong muốn.",
   },
+  badges: [BADGES.beta],
   whiteList: [
     "https://wheelofnames.com/*",
     "https://wheelrandom.com/*",
