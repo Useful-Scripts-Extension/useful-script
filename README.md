@@ -9,6 +9,7 @@
   - [Phiên bản](#phiên-bản)
   - [Ảnh chụp màn hình](#ảnh-chụp-màn-hình)
   - [Cài đặt](#cài-đặt)
+  - [Star History](#star-history)
   - [Dành cho dev (Demo)](#dành-cho-dev-demo)
   - [Contribute](#contribute)
 
@@ -58,6 +59,12 @@ Phiên bản hiện tại:
 - Cài đặt thủ công - [Xem hướng dẫn (youtube)](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
+
+## Star History
+
+Dự kiến extension useful-script này sẽ bao gồm cả chức năng của [RevealDeletedFBMessages](https://github.com/HoangTran0410/RevealDeletedFBMessages) và [FBMediaDownloader](https://github.com/HoangTran0410/FBMediaDownloader)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=HoangTran0410/useful-script,HoangTran0410/FBMediaDownloader,HoangTran0410/RevealDeletedFBMessages&type=Date)](https://star-history.com/#HoangTran0410/useful-script&HoangTran0410/FBMediaDownloader&HoangTran0410/RevealDeletedFBMessages&Date)
 
 ## Dành cho dev (Demo)
 
