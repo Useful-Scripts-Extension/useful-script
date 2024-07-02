@@ -9,6 +9,7 @@
   - [Change logs](#change-logs)
   - [ScreenShots](#screenshots)
   - [Install](#install)
+  - [Star History](#star-history)
   - [For developer (Demo)](#for-developer-demo)
   - [Contribute](#contribute)
 
@@ -58,6 +59,12 @@ Current Versions:
 - Local install - [Watch on youtube](https://www.youtube.com/watch?v=2wFTbDK80g0)
 
 [![How to install](https://img.youtube.com/vi/2wFTbDK80g0/0.jpg)](https://www.youtube.com/watch?v=2wFTbDK80g0)
+
+## Star History
+
+Expected that this useful-script extension will include the functions of [RevealDeletedFBMessages](https://github.com/HoangTran0410/RevealDeletedFBMessages) and [FBMediaDownloader](https://github.com/HoangTran0410/FBMediaDownloader)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=HoangTran0410/useful-script,HoangTran0410/FBMediaDownloader,HoangTran0410/RevealDeletedFBMessages&type=Date)](https://star-history.com/#HoangTran0410/useful-script&HoangTran0410/FBMediaDownloader&HoangTran0410/RevealDeletedFBMessages&Date)
 
 ## For developer (Demo)
 
