@@ -1,3 +1,12 @@
+function uuidv4() {
+  let h = new Date().getTime();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (i) {
+    let F = (h + 16 * Math.random()) % 16 | 0;
+    h = Math.floor(h / 16);
+    return (i == "x" ? F : (3 & F) | 8).toString(16);
+  });
+}
+
 (function () {
   "use strict";
   (function () {
@@ -17,25 +26,11 @@
           return code.slice(code.indexOf("{") + 1, code.lastIndexOf("}")) || "";
         })(code),
         fnParams = (function (code) {
-          let i = code.replace(b, ""),
+          let i = code.replace(commentRegex, ""),
             F = i.slice(i.indexOf("(") + 1, i.indexOf(")")).match(s);
           return F === null && (F = []), F;
         })(code),
-        uuid =
-          "id_" +
-          (function () {
-            let h = new Date().getTime();
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-              /[xy]/g,
-              function (i) {
-                var F = (h + 16 * Math.random()) % 16 | 0;
-                return (
-                  (h = Math.floor(h / 16)),
-                  (i == "x" ? F : (3 & F) | 8).toString(16)
-                );
-              }
-            );
-          })();
+        uuid = "id_" + uuidv4();
       let y = `window['__fnCache']["${uuid}"]= function(${fnParams}){${fnBody}}`,
         c = document.createElement("script");
       try {
@@ -48,7 +43,7 @@
       return v.appendChild(c), v.removeChild(c), window.__fnCache[`${uuid}`];
     }
     window.__fnCache = window.__fnCache || {};
-    let b = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm,
+    let commentRegex = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/gm,
       s = /([^\s,]+)/g;
     function m(r, f, u = !1) {
       const w = f.split(/\.|\[(\d+)\]/).filter(Boolean);
@@ -66,19 +61,19 @@
         w = {},
         y = {},
         c = {};
-      let v = window.__d;
+      let modified__d = window.__d;
       window.__d &&
-        (~v.toString().indexOf("__d_stub")
+        (~modified__d.toString().indexOf("__d_stub")
           ? delete window.__d
-          : (v = new Proxy(window.__d, {
+          : (modified__d = new Proxy(window.__d, {
               apply: (e, t, d) => ((d = i(d)), e.apply(t, d)),
             }))),
         Object.defineProperty(window, "__d", {
           get: function () {
-            return v;
+            return modified__d;
           },
           set: function (e) {
-            v = new Proxy(e, {
+            modified__d = new Proxy(e, {
               apply: (t, d, p) => ((p = i(p)), t.apply(d, p)),
             });
           },
