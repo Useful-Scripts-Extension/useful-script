@@ -11,6 +11,7 @@ function make_uuid() {
   "use strict";
   (function () {
     function decodeModuleName(encoded) {
+      return encoded;
       return encoded
         .split("")
         .reverse()
@@ -18,8 +19,9 @@ function make_uuid() {
         .join("");
     }
     function getModuleName(encoded) {
-      const [f, u = "default"] = decodeModuleName(encoded).split("|");
-      return [f, u];
+      const [moduleName, extensionId = "default"] =
+        decodeModuleName(encoded).split("|");
+      return [moduleName, extensionId];
     }
     function cacheFunction(code) {
       const fnBody = (function (code) {
@@ -87,156 +89,154 @@ function make_uuid() {
       const moduleNames = [];
       function i(e) {
         let [moduleName, dependencies, callback] = e;
-        return (
-          typeof moduleName != "string" ||
-            moduleNames.includes(moduleName) ||
-            (moduleNames.push(moduleName),
-            (e[2] = (function (orig, _moduleName) {
-              if (!w[_moduleName]) return orig;
-              const k = w[_moduleName];
-              k.sort((a, A) => a.options.order - A.options.order);
-              const E = k.find((a) => a.options.skipOthers);
-              return cacheFunction(
-                E
-                  ? E.replacement(orig.toString())
-                  : k.reduce((a, A) => (a = A.replacement(a)), orig.toString())
-              );
-            })(e[2], moduleName)),
-            (e[2] = (function (orig, _moduleName) {
-              return u[_moduleName]
-                ? new Proxy(orig, {
-                    apply(target, thisArg, argsList) {
-                      if (argsList[5] && argsList[5].dependencies)
-                        for (
-                          let i = 0;
-                          i < argsList[5].dependencies.length;
-                          i++
-                        )
-                          argsList.push(argsList[5].dependencies[i].exports);
-                      const res = target.apply(thisArg, argsList);
-                      return (
-                        u[_moduleName].map((x) => {
-                          x(argsList);
-                        }),
-                        res
-                      );
-                    },
-                  })
-                : orig;
-            })(e[2], moduleName)),
-            (e[2] = (function (orig, _moduleName) {
-              if (
-                !moduleCached[_moduleName] ||
-                moduleCached[_moduleName].length === 0
-              )
-                return orig;
-              const k = moduleCached[_moduleName];
-              k.sort((a, A) => a.options.order - A.options.order);
-              const E = k.reduce((a, A) => {
-                const x = A.options.definerPath;
-                return (a[x] = a[x] || []), a[x].push(A), a;
-              }, {});
-              return new Proxy(orig, {
+
+        if (typeof moduleName != "string" || moduleNames.includes(moduleName))
+          return;
+
+        moduleNames.push(moduleName);
+        e[2] = (function (orig, _moduleName) {
+          if (!w[_moduleName]) return orig;
+          const k = w[_moduleName];
+          k.sort((a, A) => a.options.order - A.options.order);
+          const E = k.find((a) => a.options.skipOthers);
+          return cacheFunction(
+            E
+              ? E.replacement(orig.toString())
+              : k.reduce((a, A) => (a = A.replacement(a)), orig.toString())
+          );
+        })(e[2], moduleName);
+
+        e[2] = (function (orig, _moduleName) {
+          return u[_moduleName]
+            ? new Proxy(orig, {
                 apply(target, thisArg, argsList) {
-                  const L = target.apply(thisArg, argsList);
                   if (argsList[5] && argsList[5].dependencies)
-                    for (let j = 0; j < argsList[5].dependencies.length; j++)
-                      argsList.push(argsList[5].dependencies[j].exports);
-                  const _import = argsList[3],
-                    Q = (0, argsList[2])("CometErrorBoundary.react"),
-                    B = (j) => (console.error(j), "Error");
-                  for (let j in E) {
-                    const U = m(argsList, j, !0),
-                      G = j.split(".").pop(),
-                      K = m(argsList, j);
-                    U[G] = function (...callingArgs) {
-                      const sourceCmp = K.apply(K, callingArgs),
-                        payload = callingArgs[0],
-                        {
-                          useState: M,
-                          useEffect: W,
-                          jsx: T,
-                          Fragment: O,
-                        } = _import("react"),
-                        [Z, X] = M(0),
-                        V = () => {
-                          if (!E[j]) return I(sourceCmp);
-                          const g = E[j].find((z) => z.options.skipOthers);
-                          if (g && g.component)
-                            return T(g.fallback ? Q : O, {
-                              fallback: g.fallback,
-                              children: T(g.component, {
+                    for (let i = 0; i < argsList[5].dependencies.length; i++)
+                      argsList.push(argsList[5].dependencies[i].exports);
+                  const res = target.apply(thisArg, argsList);
+                  return (
+                    u[_moduleName].map((x) => {
+                      x(argsList);
+                    }),
+                    res
+                  );
+                },
+              })
+            : orig;
+        })(e[2], moduleName);
+
+        e[2] = (function (orig, _moduleName) {
+          if (
+            !moduleCached[_moduleName] ||
+            moduleCached[_moduleName].length === 0
+          )
+            return orig;
+          const k = moduleCached[_moduleName];
+          k.sort((a, A) => a.options.order - A.options.order);
+          const E = k.reduce((a, A) => {
+            const x = A.options.definerPath;
+            return (a[x] = a[x] || []), a[x].push(A), a;
+          }, {});
+          return new Proxy(orig, {
+            apply(target, thisArg, argsList) {
+              const L = target.apply(thisArg, argsList);
+              if (argsList[5] && argsList[5].dependencies)
+                for (let j = 0; j < argsList[5].dependencies.length; j++)
+                  argsList.push(argsList[5].dependencies[j].exports);
+              const _import = argsList[3],
+                Q = (0, argsList[2])("CometErrorBoundary.react"),
+                B = (j) => (console.error(j), "Error");
+              for (let j in E) {
+                const U = m(argsList, j, !0),
+                  G = j.split(".").pop(),
+                  K = m(argsList, j);
+                U[G] = function (...callingArgs) {
+                  const sourceCmp = K.apply(K, callingArgs),
+                    payload = callingArgs[0],
+                    {
+                      useState: M,
+                      useEffect: W,
+                      jsx: T,
+                      Fragment: O,
+                    } = _import("react"),
+                    [Z, X] = M(0),
+                    V = () => {
+                      if (!E[j]) return I(sourceCmp);
+                      const g = E[j].find((z) => z.options.skipOthers);
+                      if (g && g.component)
+                        return T(g.fallback ? Q : O, {
+                          fallback: g.fallback,
+                          children: T(g.component, {
+                            payload: payload,
+                            SourceCmp: sourceCmp,
+                            lastCmp: I(sourceCmp),
+                            definedArgs: argsList,
+                            callingArgs: callingArgs,
+                            extraPayloadFromDefiner: g.options.extraPayload,
+                            proxyCount: 0,
+                            removeThisModuleProxy() {
+                              const z = E[j].indexOf(g);
+                              ~z && E[j].splice(z, 1);
+                            },
+                          }),
+                        });
+                      let $ = 0;
+                      return E[j].reduce(
+                        (lastCmp, P) => (
+                          P.component &&
+                            ((lastCmp = T(P.fallback ? Q : O, {
+                              fallback: P.fallback,
+                              children: T(P.component, {
                                 payload: payload,
                                 SourceCmp: sourceCmp,
-                                lastCmp: I(sourceCmp),
+                                lastCmp: lastCmp,
+                                extraPayloadFromDefiner: P.options.extraPayload,
+                                proxyCount: $,
                                 definedArgs: argsList,
                                 callingArgs: callingArgs,
-                                extraPayloadFromDefiner: g.options.extraPayload,
-                                proxyCount: 0,
                                 removeThisModuleProxy() {
-                                  const z = E[j].indexOf(g);
-                                  ~z && E[j].splice(z, 1);
+                                  const N = E[j].indexOf(P);
+                                  if (~N) {
+                                    const J = k.indexOf(P);
+                                    E[j].splice(N, 1),
+                                      k.splice(J, 1),
+                                      C(_moduleName);
+                                  }
                                 },
                               }),
-                            });
-                          let $ = 0;
-                          return E[j].reduce(
-                            (lastCmp, P) => (
-                              P.component &&
-                                ((lastCmp = T(P.fallback ? Q : O, {
-                                  fallback: P.fallback,
-                                  children: T(P.component, {
-                                    payload: payload,
-                                    SourceCmp: sourceCmp,
-                                    lastCmp: lastCmp,
-                                    extraPayloadFromDefiner:
-                                      P.options.extraPayload,
-                                    proxyCount: $,
-                                    definedArgs: argsList,
-                                    callingArgs: callingArgs,
-                                    removeThisModuleProxy() {
-                                      const N = E[j].indexOf(P);
-                                      if (~N) {
-                                        const J = k.indexOf(P);
-                                        E[j].splice(N, 1),
-                                          k.splice(J, 1),
-                                          C(_moduleName);
-                                      }
-                                    },
-                                  }),
-                                })),
-                                $++),
-                              lastCmp
-                            ),
-                            I(sourceCmp)
-                          );
-                        };
-                      function I(g) {
-                        return g && g.$1 && typeof g.$1 == "function"
-                          ? T(g, g.props)
-                          : g;
-                      }
-                      return (
-                        W(() => {
-                          const g = F(_moduleName, () => {
-                            X(Math.random());
-                          });
-                          return () => g();
-                        }, []),
-                        T(Q, {
-                          fallback: B,
-                          children: V(),
-                        })
+                            })),
+                            $++),
+                          lastCmp
+                        ),
+                        I(sourceCmp)
                       );
                     };
+                  function I(g) {
+                    return g && g.$1 && typeof g.$1 == "function"
+                      ? T(g, g.props)
+                      : g;
                   }
-                  return L;
-                },
-              });
-            })(e[2], moduleName)),
-            isModuleLoaded[moduleName] && console.log(moduleName, e)),
-          e
-        );
+                  return (
+                    W(() => {
+                      const g = F(_moduleName, () => {
+                        X(Math.random());
+                      });
+                      return () => g();
+                    }, []),
+                    T(Q, {
+                      fallback: B,
+                      children: V(),
+                    })
+                  );
+                };
+              }
+              return L;
+            },
+          });
+        })(e[2], moduleName);
+
+        isModuleLoaded[moduleName] && console.log(moduleName, e);
+        return e;
       }
       function F(e, t) {
         return (
@@ -255,12 +255,18 @@ function make_uuid() {
         return window.require(decodeModuleName(e));
       };
       window.zKjQYvcSmF = (e, t, d) => {
-        const [moduleName, _] = getModuleName(e);
+        const [moduleName, extensionId] = getModuleName(e);
         moduleCached[moduleName] ||
-          console.error(`Undefined module ${moduleName} from ${_} #1`);
-        const S = moduleCached[moduleName].find((E) => E.extensionId === _);
+          console.error(
+            `Undefined module ${moduleName} from ${extensionId} #1`
+          );
+        const S = moduleCached[moduleName].find(
+          (E) => E.extensionId === extensionId
+        );
         if (!S)
-          return console.error(`Undefined module ${moduleName} from ${_} #2`);
+          return console.error(
+            `Undefined module ${moduleName} from ${extensionId} #2`
+          );
         const { fallback } = d || {};
         S.component = t;
         S.fallback = fallback;
@@ -278,10 +284,10 @@ function make_uuid() {
           },
           t
         );
-        const [p, _] = getModuleName(e);
+        const [p, extensionId] = getModuleName(e);
         moduleCached[p] = moduleCached[p] || [];
         moduleCached[p].push({
-          extensionId: _,
+          extensionId: extensionId,
           moduleName: p,
           options: d,
           component: void 0,
@@ -312,29 +318,29 @@ function make_uuid() {
         u[encodedModuleName] = u[encodedModuleName] || [];
         u[encodedModuleName].push(t);
       };
-      // 'fb-error|default'
-      window.cheatFbModule_replaceCode("umvbgfe}spssf.cg", (e) =>
+
+      window.cheatFbModule_replaceCode("b-error|default", (e) =>
         e.replace(
           'debugjs.")',
           'debugjs.");console.error(b.stackFrames.slice(0,10).map(e=>e.text).join("\\n"))'
         )
       );
-      // 'ReactDOM-prod.classic|default'
-      window.cheatFbModule_replaceCode("umvbgfe}djttbmd/epsq.NPEudbfS", (e) =>
+
+      window.cheatFbModule_replaceCode("ReactDOM-prod.classic|default", (e) =>
         e.replace(/Error\(\w\(418\)\)/g, "void 0")
       );
-      // 'relay-runtime/store/RelayPublishQueue|default'
+
       window.cheatFbModule_replaceCode(
-        "umvbgfe}fvfvRitjmcvQzbmfS0fsput0fnjuovs.zbmfs",
+        "relay-runtime/store/RelayPublishQueue|default",
         (e) =>
           e.replace(
             /,(\w)=new\(b\("relay-runtime\/mutations\/RelayRecordSourceProxy"/,
             ',$1=window["RlbiULLGWt"]=new(b("relay-runtime/mutations/RelayRecordSourceProxy"'
           )
       );
-      // 'relay-runtime/store/RelayPublishQueue|default'
+
       window.cheatFbModule_replaceCode(
-        "umvbgfe}fvfvRitjmcvQzbmfS0fsput0fnjuovs.zbmfs",
+        "relay-runtime/store/RelayPublishQueue|default",
         (e) =>
           (e = e.replace(
             /;(\w)\.commitPayload=function\(([\w,]+)\){/,
@@ -396,29 +402,29 @@ function make_uuid() {
     (() => {
       if (window.xmxlgxMDjA) return;
       window.xmxlgxMDjA = !0;
-      let f = {};
-      // 'xhrSimpleDataSerializer'
-      window.cheatFbModule_overrideCode("sf{jmbjsfTbubEfmqnjTsiy", (u) => {
-        const w = u[4].exports.default;
-        u[4].exports.default = function (...y) {
-          const c = y[0].fb_api_req_friendly_name;
+      let cache = {};
+      window.cheatFbModule_overrideCode("xhrSimpleDataSerializer", (u) => {
+        const orig = u[4].exports.default;
+        u[4].exports.default = function (...args) {
+          const name = args[0].fb_api_req_friendly_name;
           return (
-            c && f[c] && (y[0] = f[c].reduce((v, h) => (v = h(v)), y[0])),
-            w.apply(w, y)
+            name &&
+              cache[name] &&
+              (args[0] = cache[name].reduce((v, h) => (v = h(v)), args[0])),
+            orig.apply(orig, args)
           );
         };
       });
       window.zkjQYvcSmF = (u, w) => {
         u = decodeModuleName(u);
-        f[u] = f[u] || [];
-        f[u].push(w);
+        cache[u] = cache[u] || [];
+        cache[u].push(w);
       };
     })();
   })();
 
-  // 'MAWJobDefinitions|unseen-for-facebook'
   window.cheatFbModule_replaceCode(
-    "lppcfdbg.spg.offtov}topjujojgfEcpKXBN",
+    "MAWJobDefinitions|unseen-for-facebook",
     (n) => (
       (n = n.replace(
         /markThreadAsRead:function.*?{/,
@@ -428,14 +434,12 @@ function make_uuid() {
     )
   );
 
-  // 'MAWSecureTypingState|unseen-for-facebook'
   window.cheatFbModule_replaceCode(
-    "lppcfdbg.spg.offtov}fubuThojqzUfsvdfTXBN",
+    "MAWSecureTypingState|unseen-for-facebook",
     (n) => ((n = n.replaceAll("sendChatStateFromComposer", "none")), n)
   );
 
-  // LSSendTypingIndicator
-  window.cheatFbModule_overrideCode("spubdjeoJhojqzUeofTTM", (n) => {
+  window.cheatFbModule_overrideCode("LSSendTypingIndicator", (n) => {
     if (n[4].exports)
       if (n[4].exports.default) {
         const l = n[4].exports.default;
@@ -470,8 +474,7 @@ function make_uuid() {
       }
   });
 
-  // 'LSOptimisticMarkThreadReadV2'
-  window.cheatFbModule_overrideCode("3WebfSebfsiUlsbNdjutjnjuqPTM", (n) => {
+  window.cheatFbModule_overrideCode("LSOptimisticMarkThreadReadV2", (n) => {
     if (n[4].exports)
       if (n[4].exports.default) {
         const l = n[4].exports.default;
@@ -500,8 +503,7 @@ function make_uuid() {
       }
   });
 
-  // 'LSOptimisticMarkThreadReadV2Impl'
-  window.cheatFbModule_overrideCode("mqnJ3WebfSebfsiUlsbNdjutjnjuqPTM", (n) => {
+  window.cheatFbModule_overrideCode("LSOptimisticMarkThreadReadV2Impl", (n) => {
     if (n[4].exports)
       if (n[4].exports.default) {
         const l = n[4].exports.default;
@@ -530,9 +532,8 @@ function make_uuid() {
       }
   });
 
-  // 'LSOptimisticMarkThreadReadV2ImplWeb'
   window.cheatFbModule_overrideCode(
-    "cfXmqnJ3WebfSebfsiUlsbNdjutjnjuqPTM",
+    "LSOptimisticMarkThreadReadV2ImplWeb",
     (n) => {
       if (n[4].exports)
         if (n[4].exports.default) {
@@ -563,9 +564,8 @@ function make_uuid() {
     }
   );
 
-  // 'StoriesSuspenseBucketContainer.react|unseen-for-facebook'
   window.cheatFbModule_replaceCode(
-    "lppcfdbg.spg.offtov}udbfs/sfojbuopDufldvCftofqtvTtfjspuT",
+    "StoriesSuspenseBucketContainer.react|unseen-for-facebook",
     (n) => (
       (n = n.replace(
         /,onCardSeen:(\w),/g,
