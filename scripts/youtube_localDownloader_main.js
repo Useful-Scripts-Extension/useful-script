@@ -40,7 +40,7 @@ const xhrDownloadUint8Array = async ({ url, contentLength }, progressCb) => {
           });
         })
         .catch((err) => {
-          console.log("Download error");
+          console.error("Download error", err);
         });
     });
   }

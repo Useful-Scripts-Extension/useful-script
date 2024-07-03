@@ -1,8 +1,12 @@
 # WORKING NOTES
 
-## 30/05/2024 - 01/07/2024
+## 01/07/2024 - ?
+
+- [ ] check down video <https://greasyfork.org/en/scripts/449581-m3u8%E8%A7%86%E9%A2%91%E4%BE%A6%E6%B5%8B%E4%B8%8B%E8%BD%BD%E5%99%A8-%E8%87%AA%E5%8A%A8%E5%97%85%E6%8E%A2/code>
 
 - [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
+
+## 30/05/2024 - 01/07/2024
 
 - [x] check linux compatible -> relative path in manifest + file name camelcase
 
