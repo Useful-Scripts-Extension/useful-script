@@ -13,7 +13,9 @@ javascript: (async function () {
   }
 
   function scrollToBottom() {
-    window.scrollTo(0, document.body.scrollHeight, { behavior: "smooth" });
+    window.scrollTo(0, document.body.scrollHeight, {
+      // behavior: "smooth",
+    });
   }
 
   const doneKey = "auto-like-done";
@@ -37,7 +39,7 @@ javascript: (async function () {
     for (let btn of btns) {
       btn.scrollIntoView({
         block: "center",
-        behavior: "smooth",
+        // behavior: "smooth",
       });
       btn.click();
       await sleep(500);
@@ -51,7 +53,7 @@ javascript: (async function () {
       btns.splice(btns.indexOf(btn), 1);
     }
     scrollToBottom();
-    await sleep(1000);
+    await sleep(3000);
   }
   alert("xong");
 })();
