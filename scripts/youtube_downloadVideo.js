@@ -14,14 +14,6 @@ export default {
 
   contentScript: {
     onClick: function () {
-      // https://stackoverflow.com/a/8260383/11898496
-      function getIdFromYoutubeURL(url) {
-        let regExp =
-          /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-        let match = url.match(regExp);
-        return match && match[1].length == 11 ? match[1] : false;
-      }
-
       let options = [
         {
           name: "y2mate.com",
@@ -79,3 +71,10 @@ export default {
     },
   },
 };
+
+// https://stackoverflow.com/a/8260383/11898496
+export function getIdFromYoutubeURL(url) {
+  let regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+  let match = url.match(regExp);
+  return match && match[1].length == 11 ? match[1] : false;
+}
