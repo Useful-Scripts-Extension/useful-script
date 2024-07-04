@@ -546,6 +546,41 @@ export async function getFbdtsg() {
         RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1]
       );
     },
+    function () {
+      return new Promise(function (resolve, reject) {
+        fetch("https://www.facebook.com/settings?tab=account&section=name&view")
+          .then(function (response) {
+            if (response.status !== 200) {
+              console.log(
+                "Looks like there was a problem. Status Code: " +
+                  response.status
+              );
+              reject(response.status);
+            }
+            response.text().then((r) => {
+              const regex = /name="fb_dtsg" value="\s*(.*?)\s*"/g;
+              const html = r;
+              var newReg = new RegExp(
+                /DTSGInitData(?:.*?):"(.*?)",(?:.*?):"(.*?)"/
+              );
+              var newReg1 = new RegExp(/\"fb_dtsg\",\"value\"\:\"(.+?)\"}/);
+              var reg = new RegExp(
+                regex.source + "|" + newReg.source + "|" + newReg1.source
+              );
+              var dtsgMatches = html.match(reg);
+              if (!dtsgMatches || !dtsgMatches.hasOwnProperty(1)) {
+                resolve("");
+              }
+              resolve(dtsgMatches[3]);
+              //resolve(dtsgMatches[1] || dtsgMatches[2] || dtsgMatches[3]);
+            });
+          })
+          .catch(function (err) {
+            console.log("Fetch Error :-S", err);
+            reject(err);
+          });
+      });
+    },
     () => require("DTSG_ASYNC").getToken(), // TODO: trace xem tại sao method này trả về cấu trúc khác 2 method trên
   ];
   for (let m of methods) {
