@@ -2,6 +2,10 @@
 
 ## 01/07/2024 - ?
 
+- [ ] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000>
+
+- [ ] find fb account using phone or email <https://www.facebook.com/login/web/?email={phone_or_email}>
+
 - [ ] analyze this <https://chromewebstore.google.com/detail/unfriend-finder/olljnkilmblncgcghhaodkpdcnokhpah?hl=en>
 
 - [ ] check down video <https://greasyfork.org/en/scripts/449581-m3u8%E8%A7%86%E9%A2%91%E4%BE%A6%E6%B5%8B%E4%B8%8B%E8%BD%BD%E5%99%A8-%E8%87%AA%E5%8A%A8%E5%97%85%E6%8E%A2/code>
