@@ -500,6 +500,7 @@ const tabs = [
     scripts: [
       // s.youtube_localDownloader,
       s.youtube_downloadVideo,
+      s.youtube_downloadVideoUI,
       s.youtube_toggleLight,
       s.pictureInPicture,
       s.pip_fullWebsite,
