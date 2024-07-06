@@ -74,7 +74,7 @@ export default {
           {
             name: 'ymp4.com',
             color: colors.default,
-            func: (url) => 'https://ymp4.download/en50/?url=' + url,
+            func: (url) => 'https://ymp4.download/?url=' + url,
           },
           {
             name: 'getlinks.vip',
@@ -92,7 +92,11 @@ export default {
 
         const genDownloadLinkFromProvider = (provider, url) =>
           /* html */
-          `<a href="${provider.func(url)}" target="_blank" class="ufs-ytDownloadVideoUI__btn">
+          `<a
+            href="${provider.func(url)}"
+            target="_blank"
+            class="ufs-ytDownloadVideoUI__btn"
+            onclick="((e)=>e.stopPropagation())(event)">
             ${provider.name}
           </a>`;
 
@@ -118,7 +122,7 @@ export default {
             <button
               class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading"
               style="position:relative;margin:6px 0;"
-              onclick="((function(event){event.preventDefault();event.stopPropagation();const el = document.querySelector('#ufs-ytDownloadBtn__container');if (!el) return;el.style.display = el.style.display == 'flex' ? 'none' : 'flex'}))(event)"
+              onclick="((e)=>{e.stopPropagation();const el = document.querySelector('#ufs-ytDownloadBtn__container');if (!el) return;el.style.display = el.style.display == 'flex' ? 'none' : 'flex'})(event)"
             >
               <div class="yt-spec-button-shape-next__icon">
                 ${downloadIcon}
