@@ -1,3 +1,4 @@
+import { UfsGlobal } from './content-scripts/ufs_global.js';
 import { BADGES } from './helpers/badge.js';
 
 export default {
@@ -17,8 +18,8 @@ export default {
       setTimeout(function () {
         // https://stackoverflow.com/a/8260383/11898496
         function getIdFromYoutubeURL(url) {
-          let regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-          let match = url.match(regExp);
+          const regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+          const match = url.match(regExp);
           return match && match[1].length == 11 ? match[1] : false;
         }
 
@@ -73,7 +74,7 @@ export default {
           {
             name: 'ymp4.com',
             color: colors.default,
-            func: (url) => 'https://ymp4.download/en50/?url=' + url,
+            func: (url) => 'https://ymp4.download/?url=' + url,
           },
           {
             name: 'getlinks.vip',
@@ -84,13 +85,22 @@ export default {
 
         const videoUrl = window.location.href;
 
+        const downloadIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false" style="pointer-events:none;display:inherit;width:100%;height:100%;">
+          <path d="M17 18v1H6v-1h11zm-.5-6.6-.7-.7-3.8 3.7V4h-1v10.4l-3.8-3.8-.7.7 5 5 5-4.9z"></path>
+        </svg>`;
+
         const genDownloadLinkFromProvider = (provider, url) =>
           /* html */
-          `<a href="${provider.func(
-            url
-          )}" target="_blank" style="display:inline-block;font-size:16px;padding:8px 12px;background-color:${
-            provider.color
-          };color:white;border-radius:12px;text-decoration:none;font-weight:bold">${provider.name}</a>`;
+          `<a
+            href="${provider.func(url)}"
+            target="_blank"
+            class="ufs-ytDownloadVideoUI__btn"
+            onclick="((e)=>e.stopPropagation())(event)">
+            ${provider.name}
+          </a>`;
+
+        injectCss();
 
         let intervalId = setInterval(function () {
           const container = document.querySelector('#above-the-fold #title > h1');
@@ -98,17 +108,43 @@ export default {
 
           clearInterval(intervalId);
 
+          document.addEventListener('click', () => {
+            const el = document.querySelector('#ufs-ytDownloadBtn__container');
+            if (el && el.style.display === 'flex') el.style.display = 'none';
+          });
+
           const links = providers.map((provider) => genDownloadLinkFromProvider(provider, videoUrl));
 
           container.insertAdjacentHTML(
             'afterend',
             /* html */
-            `<div style="display:flex;justify-content:start;align-items:center;flex-wrap:wrap;gap:6px;width:100%;h:max-content">
-            ${links.join('')}
-          </div>`
+            `
+            <button
+              class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading"
+              style="position:relative;margin:6px 0;"
+              onclick="((e)=>{e.stopPropagation();const el = document.querySelector('#ufs-ytDownloadBtn__container');if (!el) return;el.style.display = el.style.display == 'flex' ? 'none' : 'flex'})(event)"
+            >
+              <div class="yt-spec-button-shape-next__icon">
+                ${downloadIcon}
+              </div>
+
+              <div class="yt-spec-button-shape-next__button-text-content"><span class="yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap" role="text">Tải video</span></div>
+
+              <div id="ufs-ytDownloadBtn__container" class="ufs-ytDownloadVideoUI__container">
+                ${links.join('')}
+              </div>
+            </button>`
           );
         }, 500);
       }, 500);
     },
   },
 };
+
+function injectCss(path = '/scripts/youtube_downloadVideoUI.css', id = 'ufs-yt_downloadVideoUI-css') {
+  if (!document.querySelector('#' + id)) {
+    UfsGlobal.Extension.getURL(path).then((url) => {
+      UfsGlobal.DOM.injectCssFile(url, id);
+    });
+  }
+}
