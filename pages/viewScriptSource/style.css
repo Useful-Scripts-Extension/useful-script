@@ -1,37 +1,69 @@
+@font-face {
+  font-family: JetBrainsMono;
+  src: url(fonts/JetBrainsMono-Regular.woff2);
+}
+
+@font-face {
+  font-family: JetBrainsMono;
+  src: url(fonts/JetBrainsMono-Bold.woff2);
+  font-weight: bold;
+}
+
+* {
+  font-family: JetBrainsMono, 'Courier New', Courier, monospace;
+}
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track-piece {
+  background-color: #23241f;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #e6db74;
+  border-radius: 10px;
+}
+
 body,
 pre,
 code {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    overflow: auto;
-    width: 100vw;
-    height: 100vh;
+  overflow: auto;
+  width: 100vw;
+  height: 100vh;
+}
+
+pre {
+  background-color: #23241f;
+  width: max-content;
+  height: max-content;
 }
 
 code {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    line-height: 20px;
-    margin-top: 30px;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;
 }
 
 button {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    color: #eee;
-    background-color: #555;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  color: #eee;
+  background-color: #555;
+  transition: background-color ease-in-out 0.2s;
 }
 
 button:hover {
-    background-color: #999;
+  background-color: #828282;
 }
