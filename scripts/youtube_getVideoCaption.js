@@ -1,3 +1,4 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { BADGES } from "./helpers/badge.js";
 
 export default {
@@ -18,15 +19,17 @@ export default {
   whiteList: ["https://*.youtube.com/*"],
 
   pageScript: {
-    onClick: () => {
-      function renderCaptions(captions) {
+    onClick: async () => {
+      const { parseXml } = await import("./libs/utils/xmlParser.js");
+
+      function renderCaptions(captions, title) {
         const id = "ufs_youtube_getVideoCaption";
         const exist = document.getElementById(id);
         if (exist) exist.remove();
 
         const div = document.createElement("div");
         div.id = id;
-        div.innerHTML = `
+        div.innerHTML = /*html*/ `
           <style>
             #${id} {
               position: fixed;
@@ -60,58 +63,135 @@ export default {
               overflow-x: hidden;
             }
             #${id} button {
-              position: absolute;
-              top: 10px;
-              right: 10px;
-              padding: 10px;
-              background: #eee;
-              border-radius: 5px;
+              display: inline-block;
               cursor: pointer;
             }
           </style>
           <div>
-            <button>Close</button>
             <h3>Captions</h3><br/>
             <ul>
               ${captions
                 .map(
                   (caption) => `<li>
-                    <a href="${caption.baseUrl}" target="_blank">
-                      ${caption.name.simpleText} (${caption.languageCode})
-                    </a>
+                    ${caption.name.simpleText} (${caption.languageCode})
+                    <a href="${caption.baseUrl}" data-type="srt">srt</a>
+                    <a href="${caption.baseUrl}" data-type="txt">txt</a>
+                    <a href="${caption.baseUrl}" target="_blank">xml</a>
                   </li>`
                 )
                 .join("")}
             </ul>
+            <br/>
+            <a href="https://downsub.com/?url=${encodeURIComponent(
+              location.href
+            )}" target="_blank">Auto translate</a>
           </div>
         `;
-        const button = div.querySelector("button");
-        button.onclick = () => {
-          div.remove();
+        div.onclick = async (e) => {
+          if (e.target == div) div.remove();
+          if (e.target.tagName == "A") {
+            const type = e.target.getAttribute("data-type");
+            if (type) {
+              e.preventDefault();
+              downloadCaption(e.target.getAttribute("href"), type, title);
+            }
+          }
         };
         document.documentElement.appendChild(div);
       }
 
+      async function downloadCaption(url, type, title) {
+        try {
+          const res = await fetch(url, {
+            headers: {
+              contentType: "text/xml",
+            },
+          });
+          const text = await res.text();
+          const xml = parseXml(text);
+
+          const transcript = xml.getElementsByTagName("transcript")[0];
+          const texts = Array.from(transcript.getElementsByTagName("text"));
+
+          if (type === "txt") {
+            const data = texts
+              .map((t) => decodeHtmlEntities(t.textContent))
+              .join("\n");
+            alert(data);
+            // UfsGlobal.Utils.downloadData(data, title + ".txt");
+          } else if (type === "srt") {
+            const data = texts
+              .map((t, i) => {
+                // 1
+                // 00:00:00,120 --> 00:00:01,880
+                // mùa tuyển sinh sắp đến rồi nên là hôm
+                let index = i + 1;
+                let start = Number(t.getAttribute("start"));
+                let dur = Number(t.getAttribute("dur"));
+                let end = start + dur;
+                return (
+                  index +
+                  "\n" +
+                  formatTimeToSRT(start) +
+                  " --> " +
+                  formatTimeToSRT(end) +
+                  "\n" +
+                  decodeHtmlEntities(t.textContent)
+                );
+              })
+              .join("\n\n");
+            UfsGlobal.Utils.downloadData(data, title + ".srt");
+          }
+        } catch (e) {
+          alert(e);
+          console.error(e);
+        }
+      }
+
+      const pad = (num, len = 2) => num.toString().padStart(len, "0");
+
+      // 6.120 -> 00:00:06,120
+      function formatTimeToSRT(seconds) {
+        // Get hours, minutes, and seconds
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = Math.floor(seconds % 60);
+        const milliseconds = Math.floor((seconds % 1) * 1000);
+        // Format the time string
+        return `${pad(hours)}:${pad(minutes)}:${pad(secs)},${pad(
+          milliseconds,
+          3
+        )}`;
+      }
+
+      var textArea = document.createElement("textarea");
+      function decodeHtmlEntities(text) {
+        textArea.innerHTML = text;
+        return textArea.innerHTML;
+      }
+
       const methods = [
-        () =>
-          document.getElementsByTagName("ytd-app")[0].data.playerResponse
-            .captions.playerCaptionsTracklistRenderer.captionTracks,
-        () =>
-          ytplayer.config.args.raw_player_response.captions
-            .playerCaptionsTracklistRenderer.captionTracks,
+        () => document.getElementsByTagName("ytd-app")[0].data.playerResponse,
+        () => ytplayer.config.args.raw_player_response,
       ];
 
       for (let f of methods) {
         try {
-          let captions = f();
+          let p = f();
+          let captions =
+            p.captions.playerCaptionsTracklistRenderer.captionTracks;
+          let title = p.videoDetails?.title || document.title;
+
           if (captions) {
-            renderCaptions(captions);
+            renderCaptions(captions, title);
             return;
           }
         } catch (e) {
           console.error(e);
         }
       }
+
+      alert("No captions found");
     },
   },
 };
