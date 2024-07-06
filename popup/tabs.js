@@ -499,6 +499,7 @@ const tabs = [
     ...CATEGORY.youtube,
     scripts: [
       s.youtube_downloadVideo,
+      s.youtube_downloadVideoUI,
       s.youtube_getVideoThumbnail,
       s.youtube_getVideoCaption,
       s.youtube_toggleLight,

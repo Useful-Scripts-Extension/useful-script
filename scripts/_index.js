@@ -167,5 +167,7 @@ export { default as showImageOnHoverLink } from "./showImageOnHoverLink.js";
 export { default as fb_allInOne } from "./fb_allInOne.js";
 export { default as fb_getPostReactionCount } from "./fb_getPostReactionCount.js";
 export { default as bypass_learnAnything } from "./bypass_learnAnything.js";
+export { default as youtube_downloadVideoUI } from "./youtube_downloadVideoUI.js";
+export { default as youglish_search } from "./youglish_search.js";
 export { default as youtube_getVideoThumbnail } from "./youtube_getVideoThumbnail.js";
 export { default as youtube_getVideoCaption } from "./youtube_getVideoCaption.js";
