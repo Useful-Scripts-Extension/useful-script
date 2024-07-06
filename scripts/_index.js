@@ -169,3 +169,4 @@ export { default as fb_allInOne } from "./fb_allInOne.js";
 export { default as fb_getPostReactionCount } from "./fb_getPostReactionCount.js";
 export { default as bypass_learnAnything } from "./bypass_learnAnything.js";
 export { default as youtube_downloadVideoUI } from "./youtube_downloadVideoUI.js";
+export { default as youglish_search } from "./youglish_search.js";
