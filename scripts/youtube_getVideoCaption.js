@@ -68,7 +68,8 @@ export default {
             }
           </style>
           <div>
-            <h3>Captions</h3><br/>
+            <h3 style="text-align:center">Useful-scripts: Youtube captions</h3><br/>
+            <h4>${title}</h4><br/>
             <ul>
               ${captions
                 .map(
@@ -117,8 +118,7 @@ export default {
             const data = texts
               .map((t) => decodeHtmlEntities(t.textContent))
               .join("\n");
-            alert(data);
-            // UfsGlobal.Utils.downloadData(data, title + ".txt");
+            UfsGlobal.Utils.downloadData(data, title + ".txt");
           } else if (type === "srt") {
             const data = texts
               .map((t, i) => {
