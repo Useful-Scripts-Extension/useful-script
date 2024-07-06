@@ -39,7 +39,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
-import _ from "../md/exportScriptsToMd.js";
+// import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
 const openInNewTabBtn = document.querySelector(".open-in-newtab");

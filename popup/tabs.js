@@ -36,7 +36,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
+      s._test,
       // s._ufs_statistic,
       s.similarWeb,
       s.similarWeb_bypassLimit,
@@ -498,9 +498,10 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
-      // s.youtube_localDownloader,
       s.youtube_downloadVideo,
       s.youtube_downloadVideoUI,
+      s.youtube_getVideoThumbnail,
+      s.youtube_getVideoCaption,
       s.youtube_toggleLight,
       s.pictureInPicture,
       s.pip_fullWebsite,

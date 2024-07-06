@@ -131,7 +131,6 @@ export { default as vuiz_createLogo } from "./vuiz_createLogo.js";
 export { default as vuiz_getLink } from "./vuiz_getLink.js";
 export { default as ggdrive_downloadPdf } from "./ggdrive_downloadPdf.js";
 export { default as ggdrive_downloadPresentation } from "./ggdrive_downloadPresentation.js";
-export { default as youtube_localDownloader } from "./youtube_localDownloader.js";
 export { default as twitter_downloadButton } from "./twitter_downloadButton.js";
 export { default as spotify_downloadButton } from "./spotify_downloadButton.js";
 export { default as ggdrive_downloadDoc } from "./ggdrive_downloadDoc.js";
@@ -170,3 +169,5 @@ export { default as fb_getPostReactionCount } from "./fb_getPostReactionCount.js
 export { default as bypass_learnAnything } from "./bypass_learnAnything.js";
 export { default as youtube_downloadVideoUI } from "./youtube_downloadVideoUI.js";
 export { default as youglish_search } from "./youglish_search.js";
+export { default as youtube_getVideoThumbnail } from "./youtube_getVideoThumbnail.js";
+export { default as youtube_getVideoCaption } from "./youtube_getVideoCaption.js";
