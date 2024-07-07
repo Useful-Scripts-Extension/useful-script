@@ -503,6 +503,7 @@ const tabs = [
       s.youtube_getVideoCaption,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
+      s.youtube_changeCountry,
       s.youtube_getVideoThumbnail,
       s.youtube_toggleLight,
       s.pip_fullWebsite,
