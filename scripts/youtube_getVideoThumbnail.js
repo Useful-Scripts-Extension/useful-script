@@ -2,7 +2,7 @@ import { BADGES } from "./helpers/badge.js";
 import { getIdFromYoutubeURL } from "./youtube_downloadVideo.js";
 
 export default {
-  icon: '<i class="fa-regular fa-image fa-2x"></i>',
+  icon: '<i class="fa-regular fa-image fa-lg"></i>',
   name: {
     en: "Get Youtube video's thumbnail",
     vi: "Lấy thumbnail video trên Youtube",

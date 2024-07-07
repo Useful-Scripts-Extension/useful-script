@@ -2,7 +2,7 @@ import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { BADGES } from "./helpers/badge.js";
 
 export default {
-  icon: "https://lh3.googleusercontent.com/X0-M21C_VbWyXYuUjN55oyMDvOukjbzAxbs_WrUjwzsebWbyjFCIEchOtczI0DBvbyL9MUpuEWnghm19gF6dp8Vriw=w128-h128-e365-rj-sc0x00ffffff",
+  icon: '<i class="fa-solid fa-thumbs-down fa-lg"></i>',
   name: {
     en: "Return youtube dislike",
     vi: "Hiện lượt không thích youtube",

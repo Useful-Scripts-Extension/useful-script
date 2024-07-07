@@ -1,5 +1,5 @@
 export default {
-  icon: "https://lh3.googleusercontent.com/OS9P4SJOFAg8lhCyaRTJ7y4ADF0TGpqFF904BcpCtdBjJIDBbNb_J8PpgoJ9QvariiG_RzgH8fCSSY_kQu-chQQ0Aw=s0",
+  icon: '<i class="fa-solid fa-infinity fa-lg"></i>',
   name: {
     en: "Youtube nonstop",
     vi: "Youtube nonstop",
