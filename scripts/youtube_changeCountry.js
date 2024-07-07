@@ -86,17 +86,36 @@ export default {
 
 function changeCountry(value, persist) {
   if (value) {
-    location.href =
-      "https://www.youtube.com/feed/trending?persist_gl=" +
-      (persist ? "1" : "0") +
-      ("&gl=" + value);
+    let href = "https://www.youtube.com/feed/trending";
+    if (persist) {
+      if (value !== "default") {
+        var date = new Date();
+        date.setTime(date.getTime() + 3.154e10);
+
+        document.cookie =
+          "s_gl=" +
+          value +
+          "; path=/; domain=.youtube.com; expires=" +
+          date.toGMTString();
+      } else {
+        document.cookie =
+          "s_gl=0; path=/; domain=.youtube.com; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      }
+
+      window.location.href = href;
+    } else {
+      href += `?persist_gl=0&gl=${value}`;
+      window.location.href = href;
+    }
   }
 }
 
 function getCurrentCountry() {
   const code =
     window?.ytInitialData?.topbar?.desktopTopbarRenderer?.countryCode ||
-    window.yt?.config_?.GL;
+    window.yt?.config_?.GL ||
+    // regex in cookie
+    document.cookie.match(/s_gl=([^;]+)/)?.[1];
   return code || "default";
 }
 
