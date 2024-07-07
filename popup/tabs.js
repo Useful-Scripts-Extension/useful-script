@@ -498,15 +498,15 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
-      s.youtube_downloadVideo,
-      s.youtube_getVideoThumbnail,
-      s.youtube_getVideoCaption,
-      s.youtube_toggleLight,
       s.pictureInPicture,
-      s.pip_fullWebsite,
-      s.pip_canvas,
+      s.youtube_downloadVideo,
+      s.youtube_getVideoCaption,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
+      s.youtube_getVideoThumbnail,
+      s.youtube_toggleLight,
+      s.pip_fullWebsite,
+      s.pip_canvas,
       {
         id: "recommend_improve_youtube",
         icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",

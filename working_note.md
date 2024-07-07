@@ -2,9 +2,9 @@
 
 ## 01/07/2024 - ?
 
-- [ ] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000>
+- [x] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000> -> dont know now cuid was generated
 
-- [ ] find fb account using phone or email <https://www.facebook.com/login/web/?email={phone_or_email}>
+- [x] find fb account using phone or email <https://www.facebook.com/login/web/?email={phone_or_email}> -> too hard, fb not always show user's avatar/name
 
 - [ ] analyze this <https://chromewebstore.google.com/detail/unfriend-finder/olljnkilmblncgcghhaodkpdcnokhpah?hl=en>
 

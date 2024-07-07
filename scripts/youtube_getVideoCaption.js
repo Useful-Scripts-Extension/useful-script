@@ -1,15 +1,17 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { runScriptInCurrentTab } from "./helpers/utils.js";
 import { BADGES } from "./helpers/badge.js";
 
 export default {
-  icon: '<i class="fa-solid fa-closed-captioning fa-2x"></i>',
+  icon: '<i class="fa-solid fa-closed-captioning fa-lg"></i>',
   name: {
     en: "Get Youtube video's captions",
     vi: "Lấy phụ đề video trên Youtube",
   },
   description: {
-    en: "Get all captions of playing youtube video",
-    vi: "Tải về tất cả phụ đề của video youtube đang xem",
+    en: "- Click to get all captions of playing youtube video<br/>- Enable autorun to show realtime captions (transcript)",
+    vi: "- Bấm để tải về tất cả phụ đề của video youtube đang xem<br/>- Bật tự chạy để hiển thị phụ đề thời gian thực",
+    img: "/scripts/youtube_getVideoCaption.png",
   },
   badges: [BADGES.new],
   changeLogs: {
@@ -18,7 +20,21 @@ export default {
 
   whiteList: ["https://*.youtube.com/*"],
 
+  popupScript: {
+    onEnable: () => {
+      runScriptInCurrentTab(showTranscript, [true]);
+    },
+    onDisable: () => {
+      runScriptInCurrentTab(showTranscript, [false]);
+    },
+  },
+
   pageScript: {
+    onDocumentEnd: () => {
+      setInterval(() => {
+        showTranscript(true);
+      }, 1000);
+    },
     onClick: async () => {
       const { parseXml } = await import("./libs/utils/xmlParser.js");
 
@@ -195,3 +211,15 @@ export default {
     },
   },
 };
+
+function showTranscript(show) {
+  if (show) {
+    document
+      .querySelector("*[target-id*=transcript]")
+      ?.removeAttribute("visibility");
+  } else {
+    document
+      .querySelector("*[target-id*=transcript] #visibility-button button")
+      ?.click();
+  }
+}
