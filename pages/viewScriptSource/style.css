@@ -12,16 +12,19 @@
 * {
   font-family: JetBrainsMono, 'Courier New', Courier, monospace;
 }
+
 *::-webkit-scrollbar {
   height: 10px;
   width: 10px;
 }
+
 *::-webkit-scrollbar-track,
 *::-webkit-scrollbar-track-piece {
   background-color: #23241f;
 }
+
 *::-webkit-scrollbar-thumb {
-  background-color: #e6db74;
+  background-color: #828282;
   border-radius: 10px;
 }
 
