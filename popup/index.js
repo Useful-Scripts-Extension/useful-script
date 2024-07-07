@@ -669,7 +669,7 @@ function initSettings() {
         })}"
         data-flow="bottom"
       >${t({
-        vi: "Cuôn chuột siêu mượt",
+        vi: "Cuộn chuột siêu mượt",
         en: "Super smooth scroll",
       })}</div>
       <div class="right-container">
