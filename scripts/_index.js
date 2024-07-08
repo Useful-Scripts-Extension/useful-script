@@ -171,3 +171,4 @@ export { default as youglish_search } from "./youglish_search.js";
 export { default as youtube_getVideoThumbnail } from "./youtube_getVideoThumbnail.js";
 export { default as youtube_getVideoCaption } from "./youtube_getVideoCaption.js";
 export { default as youtube_changeCountry } from "./youtube_changeCountry.js";
+export { default as fb_autoLike } from "./fb_autoLike.js";

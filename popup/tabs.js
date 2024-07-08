@@ -306,6 +306,7 @@ const tabs = [
       // s.fb_downloadWallMediaFromPosts,
       // s.fb_getAllAlbumInformation,
       createTitle("--- Hot ---", "--- Nổi bật ---"),
+      s.fb_autoLike,
       s.fb_revealDeletedMessages,
       s.fb_moreReactionStory,
       s.fb_toggleLight,

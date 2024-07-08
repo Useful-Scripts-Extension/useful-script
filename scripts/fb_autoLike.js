@@ -1,15 +1,16 @@
+import { BADGES } from "./helpers/badge.js";
+
 export default {
-  icon: "",
+  icon: '<i class="fa-solid fa-heart fa-lg"></i>',
   name: {
-    en: "",
-    vi: "",
+    en: "Auto like post on Facebook",
+    vi: "Tự động thích bài đăng Facebook",
   },
   description: {
-    en: "",
-    vi: "",
-    img: "",
+    en: "Auto like post on Facebook. Support all reactions, all post types (page, group, user, feed, ...)",
+    vi: "Tự động thả cảm xúc cho bài đăng trên Facebook. Hỗ trợ mọi cảm xúc, mọi loài bài đăng (trang, nhóm, người dùng, new feed, ...)",
   },
-
+  badges: [BADGES.new],
   changeLogs: {
     "2024-07-08": "init",
   },
