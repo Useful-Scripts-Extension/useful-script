@@ -95,8 +95,15 @@ export default {
 
         const btns = [];
         UfsGlobal.DOM.onElementsAdded(
-          [type.en, type.vi]
-            .map((_) => `[aria-label*='${_}']:not(li *)`)
+          ["en", "vi"]
+            .map((l) =>
+              type === Types.removeReact
+                ? Object.values(Reactions).map(
+                    (r) => `[aria-label='${type[l]}${r[l]}']:not(li *)`
+                  )
+                : `[aria-label='${type[l]}']:not(li *)`
+            )
+            .flat()
             .join(", "),
           (nodes) => {
             btns.push(...nodes);
@@ -124,6 +131,7 @@ export default {
             block: "center",
             behavior: "smooth",
           });
+          await sleep(500);
           btn.click();
 
           if (type === Types.addReact) {
@@ -134,16 +142,15 @@ export default {
                 .map((_) => `[aria-label='${_}']`)
                 .join(", ")
             );
-            console.log(reactBtn);
             if (reactBtn) {
               focusTo(reactBtn);
-              await sleep(50);
+              await sleep(100);
               reactBtn.click();
-              await sleep(50);
+              await sleep(100);
             }
           }
 
-          let waitFor = rand(2000, 5000);
+          let waitFor = rand(1000, 4000);
           count++;
           if (count >= maxPosts) break;
           notify.setText(
