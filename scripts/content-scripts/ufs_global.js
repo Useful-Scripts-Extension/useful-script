@@ -561,9 +561,10 @@ function notify({
       }
       return false;
     },
-    setText(text) {
+    setText(text, duration) {
       if (div) {
         div.innerHTML = createTrustedHtml(text);
+        if (duration) closeAfter(duration);
         return true;
       }
       return false;
