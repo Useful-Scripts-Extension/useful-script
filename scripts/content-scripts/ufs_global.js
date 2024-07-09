@@ -143,6 +143,12 @@ function runInContentScript(fnPath, params) {
   });
 }
 function runInBackground(fnPath, params) {
+  if (typeof chrome?.runtime?.sendMessage == "function") {
+    return chrome.runtime.sendMessage({
+      action: "ufs-runInBackground",
+      data: { fnPath, params },
+    });
+  }
   return sendToContentScript("ufs-runInBackground", {
     fnPath,
     params,
@@ -165,15 +171,31 @@ async function fetchByPassOrigin(url, options = {}) {
 function getURL(filePath) {
   return runInContentScript("chrome.runtime.getURL", [filePath]);
 }
-function download(options) {
-  return runInBackground("chrome.downloads.download", [options]);
-}
 function trackEvent(scriptId) {
   return runInBackground("trackEvent", [scriptId]);
 }
 function waitForTabToLoad(tabId) {
   return runInBackground("utils.waitForTabToLoad", [tabId]);
 }
+
+// https://developer.chrome.com/docs/extensions/reference/api/downloads#type-DownloadOptions
+/**
+ * A function to trigger a download using chrome.downloads API.
+ *
+ * @param {Object} options - The options for the download operation.
+ * @param {string} options.url - The URL to download.
+ * @param {string} [options.body] - Post body.
+ * @param {{name: string, value: string}[]} [options.headers] - Extra HTTP headers to send with the request if the URL uses the HTTP[s] protocol. Each header is represented as a dictionary containing the keys name and either value or binaryValue, restricted to those allowed by XMLHttpRequest.
+ * @param {'GET'|'POST'} [options.method] - The HTTP method to use for the download.
+ * @param {string} [options.filename] - A file path relative to the Downloads directory to contain the downloaded file, possibly containing subdirectories.
+ * @param {string} [options.saveAs] - Use a file-chooser to allow the user to select a filename regardless of whether filename is set or already exists.
+ * @param {'uniquify'|'overwrite'|'prompt'} [options.conflictAction] - The action to take if filename already exists.
+ * @return {Promise<number>} - A promise that resolves to the ID of the created download.
+ */
+function download(options) {
+  return runInBackground("chrome.downloads.download", [options]);
+}
+
 // #endregion
 
 // #region DOM
@@ -1834,9 +1856,7 @@ function downloadBlob(blob, filename) {
   a.href = blobUrl;
   a.download = filename;
   a.style.display = "none";
-  document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
   URL.revokeObjectURL(blobUrl);
 }
 // https://stackoverflow.com/a/15832662/11898496
@@ -1846,9 +1866,7 @@ function downloadURL(url, name) {
   link.target = "_blank";
   link.download = name;
   link.href = url;
-  document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
 }
 function downloadData(data, filename, type = "text/plain") {
   let file = new Blob([data], { type: type });

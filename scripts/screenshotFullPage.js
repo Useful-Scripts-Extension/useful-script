@@ -45,10 +45,10 @@ export default {
           console.log(img);
 
           setLoadingText("Đang lưu ảnh...");
-          UfsGlobal.Utils.downloadURL(
-            "data:image/png;base64," + img.data,
-            "fullpage.png"
-          );
+          UfsGlobal.Extension.download({
+            url: "data:image/png;base64," + img.data,
+            filename: "fullpage.png",
+          });
         }
         await detachDebugger(tab);
       } catch (e) {

@@ -84,8 +84,15 @@ export default {
         setLoadingText(
           t({ vi: `Đang tải video ${title}...`, en: `Downloading ${title}...` })
         );
-        const { formatSize, downloadBlob } = UfsGlobal.Utils;
-        const blob = await UfsGlobal.Utils.getBlobFromUrlWithProgress(
+
+        // UfsGlobal.Extension.download({
+        //   url: link,
+        //   filename: title + ".mp4",
+        // });
+
+        const { formatSize, downloadBlob, getBlobFromUrlWithProgress } =
+          UfsGlobal.Utils;
+        const blob = await getBlobFromUrlWithProgress(
           link,
           ({ loaded, total, speed }) => {
             let desc =

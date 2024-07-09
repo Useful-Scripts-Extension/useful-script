@@ -2,6 +2,8 @@
 
 ## 01/07/2024 - ?
 
+- [ ] hotfix - use chrome.downloads instead of library
+
 - [x] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000> -> dont know now cuid was generated
 
 - [x] find fb account using phone or email <https://www.facebook.com/login/web/?email={phone_or_email}> -> too hard, fb not always show user's avatar/name

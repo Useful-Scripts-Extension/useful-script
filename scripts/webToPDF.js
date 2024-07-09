@@ -33,11 +33,10 @@ export default {
         });
         await detachDebugger(tab);
 
-        // https://stackoverflow.com/a/59352848/11898496
-        UfsGlobal.Utils.downloadURL(
-          "data:application/pdf;base64," + res.data,
-          "web.pdf"
-        );
+        UfsGlobal.Extension.download({
+          url: "data:application/pdf;base64," + res.data,
+          filename: "web.pdf",
+        });
       } catch (e) {
         if (
           confirm(
