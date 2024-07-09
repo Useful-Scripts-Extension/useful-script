@@ -26,7 +26,7 @@ export default {
     "2024-07-08": "init",
   },
 
-  // whiteList: ["https://*.facebook.com/*"],
+  whiteList: ["https://*.facebook.com/*"],
 
   pageScript: {
     onClick: () => {
