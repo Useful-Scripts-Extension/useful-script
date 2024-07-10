@@ -156,8 +156,8 @@ function runInBackground(fnPath, params) {
 }
 async function fetchByPassOrigin(url, options = {}) {
   try {
-    let _url = url;
-    let urlObject = new URL(url);
+    let _url = makeUrlValid(url);
+    let urlObject = new URL(_url);
     // https://stackoverflow.com/a/9375786/23648002
     if (location.hostname == urlObject?.hostname) {
       _url = urlObject.pathname;
@@ -925,6 +925,9 @@ function makeUrlValid(url) {
   if (url.startsWith("//")) {
     url = "https:" + url;
   }
+  if (url.startsWith("/")) {
+    url = location.origin + url;
+  }
   return url;
 }
 function getWatchingVideoSrc() {
@@ -1299,6 +1302,7 @@ async function getLargestImageSrc(imgSrc, webUrl) {
   }
 
   // bypass redirect
+  imgSrc = makeUrlValid(imgSrc);
   let redirectedUrl = await getRedirectedUrl(imgSrc);
   if (redirectedUrl) {
     imgSrc = redirectedUrl;
