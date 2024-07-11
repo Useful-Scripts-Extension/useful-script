@@ -8,6 +8,9 @@ export default {
     en: "You only have to remember 1 password",
     vi: "Bạn chỉ còn cần phải nhớ 1 mật khẩu",
   },
+  changeLogs: {
+    "2024-07-11": "hotfix",
+  },
 
   contentScript: {
     onClick: function () {
@@ -125,6 +128,7 @@ export default {
             " + Tự động điền vào trang web khi nhập đúng Mật_khẩu_Chính\n" +
             "\nNhập Mật_khẩu_Chính của bạn:"
         );
+        let host, sld, domain, D;
         if (master != "" && master != null) {
           host = document.location.href.match(/http(s*):\/\/([^/]+)/)[2];
           if (
