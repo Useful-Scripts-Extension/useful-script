@@ -2,6 +2,8 @@
 
 ## 01/07/2024 - ?
 
+- [ ] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
+
 - [ ] hotfix - use chrome.downloads instead of library
 
 - [x] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000> -> dont know now cuid was generated
