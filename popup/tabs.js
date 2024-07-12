@@ -36,7 +36,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      s._test,
+      // s._test,
       // s._ufs_statistic,
       s.similarWeb,
       s.similarWeb_bypassLimit,
@@ -120,6 +120,32 @@ const tabs = [
     ...CATEGORY.download,
     scripts: [
       createTitle("--- All in one ---", "--- Tổng hợp ---"),
+      {
+        id: "recommend_cobalt",
+        icon: "https://cobalt.tools/favicon.ico",
+        name: {
+          en: "Cobalt - Media downloader",
+          vi: "Cobalt - Tải video/nhạc",
+        },
+        description: {
+          en: "Support youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
+          vi: "Hỗ trợ youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
+        },
+        badges: [BADGES.recommend, BADGES.new],
+        buttons: [
+          {
+            icon: '<i class="fa-brands fa-github"></i>',
+            name: {
+              vi: "Github",
+              en: "Github",
+            },
+            onClick: () => window.open("https://github.com/imputnet/cobalt"),
+          },
+        ],
+        popupScript: {
+          onClick: () => window.open("https://cobalt.tools/"),
+        },
+      },
       s.saveAllVideo,
       s.vuiz_getLink,
       s.savevideo_me,
