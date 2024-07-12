@@ -2,6 +2,14 @@
 
 ## 01/07/2024 - ?
 
+- [ ] take a look at <https://www.npmjs.com/package/memory-fs>
+
+- [ ] ffmpeg in browser <https://github.com/ffmpegwasm/ffmpeg.wasm>
+
+- [ ] youtube reverse api??? <https://github.com/LuanRT/YouTube.js>
+
+- [ ] add this beautiful video downloader tool <https://github.com/imputnet/cobalt> <https://github.com/imputnet/cobalt/blob/current/docs/api.md>
+
 - [ ] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
 
 - [ ] hotfix - use chrome.downloads instead of library
