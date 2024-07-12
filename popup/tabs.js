@@ -1038,6 +1038,20 @@ const recommendTab = {
           window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
       },
     },
+    // https://www.nirsoft.net/
+    { name: { en: "--- Tools ---", vi: "--- Công cụ hay ---" } },
+    {
+      id: "recommend_nirsoft",
+      icon: "https://www.nirsoft.net/favicon.ico",
+      name: { en: "Nirsoft", vi: "Nirsoft" },
+      description: {
+        en: "A unique collection of small and useful freeware utilities",
+        vi: "Tổng hợp bộ công cụ nhanh, nhẹ, miễn phí dành cho windows",
+      },
+      popupScript: {
+        onClick: () => window.open("https://www.nirsoft.net/"),
+      },
+    },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },
     {
       id: "recommend_CRXViewer",
