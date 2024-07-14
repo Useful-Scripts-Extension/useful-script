@@ -172,3 +172,4 @@ export { default as youtube_getVideoThumbnail } from "./youtube_getVideoThumbnai
 export { default as youtube_getVideoCaption } from "./youtube_getVideoCaption.js";
 export { default as youtube_changeCountry } from "./youtube_changeCountry.js";
 export { default as fb_autoLike } from "./fb_autoLike.js";
+export { default as guland_VIP } from "./guland_VIP.js";

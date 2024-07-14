@@ -837,6 +837,7 @@ const tabs = [
       s.scribd_bypassPreview,
       s.studyphim_unlimited,
       s.bypass_learnAnything,
+      s.guland_VIP,
       createTitle("--- Unlock function ---", "--- Mở khoá chức năng ---"),
       s.simpleAllowCopy,
       s.detect_zeroWidthCharacters,
