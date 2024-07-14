@@ -1,7 +1,7 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 
 export default {
-  icon: "https://www.studyphim.vn/assets/ico/favicon.ico",
+  icon: "https://s2.googleusercontent.com/s2/favicons?domain=www.studyphim.vn",
   name: {
     en: "Studyphim - Watch free movies",
     vi: "Studyphim - Xem miễn phí",
