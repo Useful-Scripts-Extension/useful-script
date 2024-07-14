@@ -1,6 +1,32 @@
 ## Change logs
 
 <details>
+  <summary>v1.69 - 14/07/2024</summary>
+
+- Facebook
+  - Auto like for facebook [source](/scripts/fb_autoLike.js)
+  - Fix download watching video [source](/scripts/fb_downloadWatchingVideo.js)
+  - Fix download story [source](/scripts/fb_storySaver.js)
+
+- Youtube:
+  - change country [source](/scripts/youtube_changeCountry.js)
+  - download thumbnail [source](/scripts/youtube_getVideoThumbnail.js)
+  - show/download captions [source](/scripts/youtube_getVideoCaption.js)
+
+- Smooth scroll:
+  - click to disable/enable for current website [source](/scripts/smoothScroll.js)
+
+- Merge request
+  - [fix: 🐛 fix fireship_vip script](https://github.com/HoangTran0410/useful-script/pull/28)
+  - [feat: youglish search
+  ](https://github.com/HoangTran0410/useful-script/pull/30)
+  - [feat: youtube download video UI](https://github.com/HoangTran0410/useful-script/pull/31)
+  - [style: 🪄 beautify ui for viewScriptSource](https://github.com/HoangTran0410/useful-script/pull/32)
+- More shortcuts: google trend, time.is, aiforthat, cobalt, nirsoft
+
+</details>
+
+<details>
   <summary>v1.68 - 01/07/2024 - cập nhật facebook lớn</summary>
 
 - Cập nhật + Tối ưu logic

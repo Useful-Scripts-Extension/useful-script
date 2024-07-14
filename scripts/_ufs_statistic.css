@@ -9,6 +9,10 @@ canvas {
   max-height: 500px;
 }
 
+li {
+  position: relative;
+}
+
 li:hover {
   background: #555;
   color: white;
@@ -16,14 +20,13 @@ li:hover {
 
 li a {
   display: inline-block;
-  position: relative;
 }
 
 li a img {
   width: 30px;
   transition: all 0.2s ease;
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
 }
 

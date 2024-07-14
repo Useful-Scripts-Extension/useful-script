@@ -1,0 +1,35 @@
+.ufs-ytDownloadVideo__btn {
+  color: #f1f1f1;
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ufs-ytDownloadVideo__btn:hover {
+  background-color: #333;
+}
+
+.ufs-ytDownloadVideo__dropdown {
+  background-color: #272727;
+  z-index: 999;
+  position: absolute;
+  top: 45px;
+  left: 0;
+
+  display: none;
+  flex-flow: column;
+  justify-content: start;
+  align-items: start;
+
+  overflow: hidden auto;
+  width: max-content;
+  max-height: 250px;
+  padding: 8px;
+  border-radius: 12px;
+}

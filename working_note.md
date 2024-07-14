@@ -1,8 +1,30 @@
 # WORKING NOTES
 
-## 30/05/2024 - 01/07/2024
+## 01/07/2024 - ?
+
+- [ ] take a look at <https://www.npmjs.com/package/memory-fs>
+
+- [ ] ffmpeg in browser <https://github.com/ffmpegwasm/ffmpeg.wasm>
+
+- [ ] youtube reverse api??? <https://github.com/LuanRT/YouTube.js>
+
+- [x] add this beautiful video downloader tool <https://github.com/imputnet/cobalt> <https://github.com/imputnet/cobalt/blob/current/docs/api.md>
+
+- [ ] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
+
+- [x] hotfix - use chrome.downloads instead of library => can not apply to all scripts
+
+- [x] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000> -> dont know now cuid was generated
+
+- [x] find fb account using phone or email <https://www.facebook.com/login/web/?email={phone_or_email}> -> too hard, fb not always show user's avatar/name
+
+- [ ] analyze this <https://chromewebstore.google.com/detail/unfriend-finder/olljnkilmblncgcghhaodkpdcnokhpah?hl=en>
+
+- [ ] check down video <https://greasyfork.org/en/scripts/449581-m3u8%E8%A7%86%E9%A2%91%E4%BE%A6%E6%B5%8B%E4%B8%8B%E8%BD%BD%E5%99%A8-%E8%87%AA%E5%8A%A8%E5%97%85%E6%8E%A2/code>
 
 - [ ] analyze this <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
+
+## 30/05/2024 - 01/07/2024
 
 - [x] check linux compatible -> relative path in manifest + file name camelcase
 

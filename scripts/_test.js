@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { fetchGraphQl, getFbdtsg } from "./fb_GLOBAL.js";
 
 export default {
   icon: "",
@@ -12,6 +13,79 @@ export default {
   },
 
   popupScript: {
+    onClick: async () => {
+      function getAverageRGB(img) {
+        var blockSize = 5, // only visit every 5 pixels
+          defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
+          canvas = document.createElement("canvas"),
+          context = canvas.getContext && canvas.getContext("2d"),
+          data,
+          width,
+          height,
+          i = -4,
+          length,
+          rgb = { r: 0, g: 0, b: 0 },
+          count = 0;
+
+        if (!context) {
+          return defaultRGB;
+        }
+
+        height = canvas.height =
+          img.naturalHeight || img.offsetHeight || img.height;
+        width = canvas.width = img.naturalWidth || img.offsetWidth || img.width;
+
+        context.drawImage(img, 0, 0);
+
+        try {
+          data = context.getImageData(0, 0, width, height);
+        } catch (e) {
+          /* security error, img on diff domain */
+          return defaultRGB;
+        }
+
+        length = data.data.length;
+
+        while ((i += blockSize * 4) < length) {
+          ++count;
+          rgb.r += data.data[i];
+          rgb.g += data.data[i + 1];
+          rgb.b += data.data[i + 2];
+        }
+
+        // ~~ used to floor values
+        rgb.r = ~~(rgb.r / count);
+        rgb.g = ~~(rgb.g / count);
+        rgb.b = ~~(rgb.b / count);
+
+        return rgb;
+      }
+
+      function getAverageRGBFromUrl(url) {
+        return new Promise((resolve, reject) => {
+          let img = new Image();
+          img.src = url;
+          img.onload = () => {
+            let rgb = getAverageRGB(img);
+            resolve(rgb);
+          };
+          img.onerror = (error) => {
+            alert("Error: " + JSON.stringify(error));
+            console.log(error);
+            reject();
+          };
+        });
+      }
+
+      getAverageRGBFromUrl(
+        "https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/352545274_2285354618338828_3224207586206963955_n.jpg?stp=dst-jpg_p480x480&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=7D3Usqt8u2UQ7kNvgEeWxht&_nc_ht=scontent.fsgn2-7.fna&oh=00_AYAeunf-6BuCakj2L59wVi8mNA5QuGlLuVQ6eROL5UKC8A&oe=668D93B9"
+      ).then(console.log);
+
+      getAverageRGBFromUrl(
+        "https://www.facebook.com/profile/pic.php?cuid=AYjse6TURBs86Oy-7iO2UdCZFqYOhyemrWC2KV8yPo6ABGAHCWi87GNGtXwITHZJRPIOPLMTbuZetu6t3T9WQllYE5xhBm4t5rAZVKC1IGjSqGbJiwr9z4g-bDx6bHAPuqqXgfCaH4Yml-_UAAJgEGdftXSGc4uCKUer8j3oCtpLakjxWAOTYeNAzt-rWWp0fNtY03PE0XzLzPqKEI8leoS_08eYd_V9L4O_P1lwGxHyMA&square_px=64"
+      ).then(console.log);
+    },
+
     // selenium automation get album's images
     _onClick: async () => {
       const { openWebAndRunScript } = await import("./helpers/utils.js");

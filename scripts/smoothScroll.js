@@ -8,11 +8,17 @@ export default {
   },
   description: {
     en: `Scroll smoothly on all websites with your mouse and keyboard.<br/>
-    Smooth like when you scroll this extension.<br/><br/>
-    Support middle click to scroll.`,
+    <ul>
+      <li>Suggested if you use mouse (turn off if use touchpad)</li>
+      <li>Click to Disable/Enable for current website</li>
+      <li>Support middle click to scroll</li>
+    </ul><br/>`,
     vi: `Cuộn chuột siêu mượt cho mọi trang web.<br/>
-    Mượt như khi cuộn chuột trong extension này vậy.<br/><br/>
-    Hỗ trợ scroll khi bấm chuột giữa.`,
+    <ul>
+      <li>Khuyên dùng với chuột (tắt nếu dùng touchpad)</li>
+      <li>Bấm để Tắt/Mở cho trang web hiện tại</li>
+      <li>Hỗ trợ bấm chuột giữa để cuộn trang</li>
+    </ul><br/>`,
     video: "https://www.smoothscroll.net/mac/img/vid/Demo-Mac-720p.mp4",
   },
   badges: [BADGES.hot],
@@ -28,107 +34,90 @@ export default {
   ],
 
   changeLogs: {
+    "2024-07-11": "click to disable/enable for current site",
     "2024-05-26": "init",
   },
 
   popupScript: {
-    onEnable: async () => {
-      const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab, getAllTabs: getAllAvailableTabs } = await import(
-        "./helpers/utils.js"
-      );
-      const tabs = await getAllAvailableTabs();
-      let count = 0;
-      for (let tab of tabs) {
-        try {
-          runScriptInTab({
-            target: {
-              tabId: tab.id,
-              allFrames: true,
-            },
-            func: enableSmoothScroll,
-            world: "ISOLATED",
-          });
-          count++;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      if (count)
-        Swal.fire({
-          icon: "success",
-          title: t({
-            vi: "Đã bật Cuộn chuột Siêu mượt",
-            en: "Super smooth scroll enabled",
-          }),
-          html: t({
-            vi:
-              `Đã tự BẬT cho ${count} tab đang mở<br/><br/>` +
-              "Bạn có thể dùng ngay không cần tải lại trang.",
-            en:
-              `Enabled smooth scroll for ${count} opening tabs<br/><br/>` +
-              "Dont need to reload websites.",
-          }),
-        });
-    },
-    onDisable: async () => {
-      const { t } = await import("../popup/helpers/lang.js");
-      const { runScriptInTab, getAllTabs: getAllAvailableTabs } = await import(
-        "./helpers/utils.js"
-      );
-      const tabs = await getAllAvailableTabs();
-      let count = 0;
-      for (let tab of tabs) {
-        try {
-          runScriptInTab({
-            target: {
-              tabId: tab.id,
-              allFrames: true,
-            },
-            func: () => {
-              window.ufs_smoothScroll_disable?.();
-            },
-            world: "ISOLATED",
-          });
-          count++;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      if (count)
-        Swal.fire({
-          icon: "success",
-          title: t({
-            vi: "Đã tắt Cuộn chuột Siêu mượt",
-            en: "Super smooth scroll disabled",
-          }),
-          html: t({
-            vi:
-              `Đã tự TẮT cho ${count} tab đang mở<br/><br/>` +
-              "Không cần tải lại trang.",
-            en:
-              `Disabled smooth scroll for ${count} opening tabs<br/><br/>` +
-              "Dont need to reload websites.",
-          }),
-        });
-    },
+    onEnable: () => setEnableForAllTab(true),
+    onDisable: () => setEnableForAllTab(false),
   },
 
   contentScript: {
-    onDocumentStart_: (details) => {
-      enableSmoothScroll();
+    onDocumentStart_: enableSmoothScroll,
+    onClick_: () => {
+      if (typeof window.ufs_smoothScroll_disable === "function") {
+        window.ufs_smoothScroll_disable();
+        localStorage.setItem("ufs_smoothScroll_disable", 1);
+        if (window === window.top)
+          alert("DISABLED smooth scroll for this site: " + location.hostname);
+      } else {
+        localStorage.setItem("ufs_smoothScroll_disable", 0);
+        enableSmoothScroll();
+        if (window === window.top)
+          alert("ENABLED smooth scroll for this site: " + location.hostname);
+      }
     },
   },
 };
 
+async function setEnableForAllTab(enable) {
+  const { t } = await import("../popup/helpers/lang.js");
+  const { runScriptInTab, getAllTabs: getAllAvailableTabs } = await import(
+    "./helpers/utils.js"
+  );
+  const tabs = await getAllAvailableTabs();
+  let count = 0;
+  for (let tab of tabs) {
+    try {
+      runScriptInTab({
+        target: {
+          tabId: tab.id,
+          allFrames: true,
+        },
+        func: enable
+          ? enableSmoothScroll
+          : () => {
+              window.ufs_smoothScroll_disable?.();
+            },
+        world: "ISOLATED",
+      });
+      count++;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  let text = enable
+    ? { vi: "Bật", en: "Enabled" }
+    : { vi: "Tắt", en: "Disabled" };
+
+  if (count)
+    Swal.fire({
+      icon: "success",
+      title: t({
+        vi: "Đã " + text.vi + " Cuộn chuột Siêu mượt",
+        en: "Super smooth scroll " + text.en,
+      }),
+      html: t({
+        vi:
+          `Đã tự ${text.vi} cho ${count} tab đang mở<br/><br/>` +
+          "Bạn có thể dùng ngay không cần tải lại trang.",
+        en:
+          `${text.en} smooth scroll for ${count} opening tabs<br/><br/>` +
+          "Dont need to reload websites.",
+      }),
+    });
+}
+
 // TODO:
-// + setting page
-// + horizontal scroll
-// + fix window.scrollTo with behavior: "smooth"
-// + check excluded
+// [ ] setting page
+// [ ] horizontal scroll
+// [x] fix window.scrollTo with behavior: "smooth"
+// [x] check excluded
 
 // https://chromewebstore.google.com/detail/smoothscroll/nbokbjkabcmbfdlbddjidfmibcpneigj
 export function enableSmoothScroll() {
+  if (localStorage.getItem("ufs_smoothScroll_disable") == 1) return;
   // =======================================================================
   // ============================ sscr.js ==================================
   // =======================================================================
@@ -979,6 +968,7 @@ export function enableSmoothScroll() {
   window.ufs_smoothScroll_disable = () => {
     cleanup();
     cleanupMiddlemouse();
+    window.ufs_smoothScroll_disable = null;
   };
 
   return window.ufs_smoothScroll_disable;

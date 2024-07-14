@@ -38,6 +38,51 @@ const tabs = [
     scripts: [
       // s._test,
       // s._ufs_statistic,
+      {
+        id: "recommend_theresanaiforthat",
+        icon: "https://theresanaiforthat.com/favicon.ico",
+        name: {
+          en: "There's an AI for that",
+          vi: "There's an AI for that - Tìm AI",
+        },
+        description: {
+          en: "Collection of thousand of AI tools. Easy to search by category",
+          vi: "Tổng hợp hàng ngàn công cụ AI hiện có. Dễ dàng tìm kiếm theo chủ đề",
+        },
+        popupScript: {
+          onClick: () => window.open("https://theresanaiforthat.com/"),
+        },
+      },
+      {
+        id: "recommend_timeis",
+        icon: "https://time.is/favicon.ico",
+        name: {
+          en: "Time.is - Check your time",
+          vi: "Time.is - Kiểm tra thời gian",
+        },
+        description: {
+          en: "Exact time for any time zone.",
+          vi: "Đồng hồ chính xác nhất. Kiểm tra đồng hồ trên máy của bạn nhanh hay chậm.",
+        },
+        popupScript: {
+          onClick: () => window.open("https://time.is/"),
+        },
+      },
+      {
+        id: "recommend_googleTrending",
+        icon: "https://www.gstatic.com/trends/favicon.ico",
+        name: {
+          en: "Google trending - See what trending now",
+          vi: "Google trending - Nội dung nổi bật",
+        },
+        description: {
+          en: "See what people are searching on Google. Top treding every day, realtime.",
+          vi: "Xem mọi người đang tìm gì trên google. Thống kê từng ngày, thời gian thực.",
+        },
+        popupScript: {
+          onClick: () => window.open("https://trends.google.com/"),
+        },
+      },
       s.similarWeb,
       s.similarWeb_bypassLimit,
       s.search_sharedAccount,
@@ -120,6 +165,32 @@ const tabs = [
     ...CATEGORY.download,
     scripts: [
       createTitle("--- All in one ---", "--- Tổng hợp ---"),
+      {
+        id: "recommend_cobalt",
+        icon: "https://cobalt.tools/favicon.ico",
+        name: {
+          en: "Cobalt - Media downloader",
+          vi: "Cobalt - Tải video/nhạc",
+        },
+        description: {
+          en: "Support youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
+          vi: "Hỗ trợ youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
+        },
+        badges: [BADGES.recommend, BADGES.new],
+        buttons: [
+          {
+            icon: '<i class="fa-brands fa-github"></i>',
+            name: {
+              vi: "Github",
+              en: "Github",
+            },
+            onClick: () => window.open("https://github.com/imputnet/cobalt"),
+          },
+        ],
+        popupScript: {
+          onClick: () => window.open("https://cobalt.tools/"),
+        },
+      },
       s.saveAllVideo,
       s.vuiz_getLink,
       s.savevideo_me,
@@ -211,7 +282,6 @@ const tabs = [
       s.studocu_downs,
       s.scribd_downloadDocuments,
       s.tailieu_vn,
-
       {
         id: "recommend_docsdownloader",
         icon: "https://docsdownloader.com/assets/img/android-icon-192x192.png",
@@ -306,6 +376,7 @@ const tabs = [
       // s.fb_downloadWallMediaFromPosts,
       // s.fb_getAllAlbumInformation,
       createTitle("--- Hot ---", "--- Nổi bật ---"),
+      s.fb_autoLike,
       s.fb_revealDeletedMessages,
       s.fb_moreReactionStory,
       s.fb_toggleLight,
@@ -498,14 +569,16 @@ const tabs = [
   {
     ...CATEGORY.youtube,
     scripts: [
-      // s.youtube_localDownloader,
-      s.youtube_downloadVideo,
-      s.youtube_toggleLight,
       s.pictureInPicture,
-      s.pip_fullWebsite,
-      s.pip_canvas,
+      s.youtube_downloadVideo,
+      s.youtube_getVideoCaption,
       s.youtube_viewDislikes,
       s.youtube_nonstop,
+      s.youtube_changeCountry,
+      s.youtube_getVideoThumbnail,
+      s.youtube_toggleLight,
+      s.pip_fullWebsite,
+      s.pip_canvas,
       {
         id: "recommend_improve_youtube",
         icon: "https://lh3.googleusercontent.com/WDytHNO8o0Ev6sWp_yLbya_SSS9kXZWGJIc-WJ3goInHJalzD02Aq5wVhExFlbzrzNsOxo-V1O_TgF-JLJNyTkvB=s0",
@@ -1007,6 +1080,20 @@ const recommendTab = {
       popupScript: {
         onClick: () =>
           window.open("https://github.com/HoangTran0410/FBMediaDownloader"),
+      },
+    },
+    // https://www.nirsoft.net/
+    { name: { en: "--- Tools ---", vi: "--- Công cụ hay ---" } },
+    {
+      id: "recommend_nirsoft",
+      icon: "https://www.nirsoft.net/favicon.ico",
+      name: { en: "Nirsoft", vi: "Nirsoft" },
+      description: {
+        en: "A unique collection of small and useful freeware utilities",
+        vi: "Tổng hợp bộ công cụ nhanh, nhẹ, miễn phí dành cho windows",
+      },
+      popupScript: {
+        onClick: () => window.open("https://www.nirsoft.net/"),
       },
     },
     { name: { en: "--- Extensions ---", vi: "--- Extensions hay ---" } },

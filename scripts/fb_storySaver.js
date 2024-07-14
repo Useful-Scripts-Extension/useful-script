@@ -11,7 +11,7 @@ export default {
     vi: "Tải facebook story / video bình luận bạn đang xem",
   },
 
-  contentScript: {
+  pageScript: {
     onClick: function () {
       // Source code extracted from: https://chrome.google.com/webstore/detail/story-saver/mafcolokinicfdmlidhaebadidhdehpk
 
@@ -22,45 +22,55 @@ export default {
         if (videos[i].offsetHeight === 0) continue;
         let reactKey = "";
         let keys = Object.keys(videos[i]);
-        for (let key of keys) {
-          if (key.indexOf("__reactFiber") != -1) {
-            reactKey = key.split("__reactFiber")[1];
+        for (let j = 0; j < keys.length; j++) {
+          if (keys[j].indexOf("__reactFiber") != -1) {
+            reactKey = keys[j].split("__reactFiber")[1];
             break;
           }
         }
         let storyUrl;
         try {
-          //prettier-ignore
-          storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.hdSrc;
+          storyUrl =
+            videos[i].parentElement.parentElement.parentElement.parentElement[
+              "__reactProps" + reactKey
+            ].children[0].props.children.props.implementations[1].data.hdSrc;
         } catch (e) {}
         if (storyUrl == null) {
           try {
-            //prettier-ignore
-            storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children[0].props.children.props.implementations[1].data.sdSrc;
+            storyUrl =
+              videos[i].parentElement.parentElement.parentElement.parentElement[
+                "__reactProps" + reactKey
+              ].children[0].props.children.props.implementations[1].data.sdSrc;
           } catch (e) {}
         }
         if (storyUrl == null) {
           try {
-            //prettier-ignore
-            storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.hdSrc;
+            storyUrl =
+              videos[i].parentElement.parentElement.parentElement.parentElement[
+                "__reactProps" + reactKey
+              ].children.props.children.props.implementations[1].data.hdSrc;
           } catch (e) {}
         }
         if (storyUrl == null) {
           try {
-            //prettier-ignore
-            storyUrl = videos[i].parentElement.parentElement.parentElement.parentElement['__reactProps' + reactKey].children.props.children.props.implementations[1].data.sdSrc;
+            storyUrl =
+              videos[i].parentElement.parentElement.parentElement.parentElement[
+                "__reactProps" + reactKey
+              ].children.props.children.props.implementations[1].data.sdSrc;
           } catch (e) {}
         }
         if (storyUrl == null) {
           try {
-            //prettier-ignore
-            storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.hd_src;
+            storyUrl =
+              videos[i]["__reactFiber" + reactKey].return.stateNode.props
+                .videoData.$1.hd_src;
           } catch (e) {}
         }
         if (storyUrl == null) {
           try {
-            //prettier-ignore
-            storyUrl = videos[i]['__reactFiber' + reactKey].return.stateNode.props.videoData.$1.sd_src;
+            storyUrl =
+              videos[i]["__reactFiber" + reactKey].return.stateNode.props
+                .videoData.$1.sd_src;
           } catch (e) {}
         }
         if (storyUrl != null) {
@@ -69,16 +79,24 @@ export default {
       }
 
       let storyImgUrl = Array.from(
-        document.querySelectorAll('div[data-id] img[draggable="false"]')
+        document.querySelectorAll('img[draggable="false"]')
       ).find((_) => _.alt)?.src;
       if (storyImgUrl) {
         listUrls.push({ url: storyImgUrl, type: "img" });
       }
 
+      let profile_pic = document.querySelector(
+        "a[role=link][tabindex='0'][href*='https://www.facebook']>img"
+      );
+      let username = profile_pic?.alt || "fb_story";
+
       if (!listUrls.length) {
         alert("Không tìm thấy facebook story nào trong trang web.");
       } else if (listUrls.length === 1) {
-        UfsGlobal.Utils.downloadURL(listUrls[0].url, "fb_story_video.mp4");
+        UfsGlobal.Extension.download({
+          url: listUrls[0].url,
+          filename: username + (listUrls[0].type === "img" ? ".jpg" : ".mp4"),
+        });
       } else {
         let w = window.open("", "", "width=500,height=700");
         w.document.write(

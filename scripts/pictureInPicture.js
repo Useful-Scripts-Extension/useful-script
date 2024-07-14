@@ -1,7 +1,7 @@
 import { BADGES } from "./helpers/badge.js";
 
 export default {
-  icon: "https://lh3.googleusercontent.com/cvfpnTKw3B67DtM1ZpJG2PNAIjP6hVMOyYy403X4FMkOuStgG1y4cjCn21vmTnnsip1dTZSVsWBA9IxutGuA3dVDWhg=w128-h128-e365-rj-sc0x00ffffff",
+  icon: '<i class="fa-regular fa-object-group fa-2x"></i>',
   name: {
     en: "Picture in Picture",
     vi: "Picture in Picture",

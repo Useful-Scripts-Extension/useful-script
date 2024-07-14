@@ -119,6 +119,45 @@ export async function getUidFromUrl(url) {
   }
   return null;
 }
+export async function searchUser(keyword, exact_match = true) {
+  const res = await fetchGraphQl(
+    {
+      doc_id: 7561210460668291,
+      variables: {
+        count: 5,
+        allow_streaming: false,
+        args: {
+          callsite: "COMET_GLOBAL_SEARCH",
+          config: {
+            exact_match: exact_match,
+            high_confidence_config: null,
+            intercept_config: null,
+            sts_disambiguation: null,
+            watch_config: null,
+          },
+          experience: {
+            client_defined_experiences: [],
+            encoded_server_defined_params: null,
+            fbid: null,
+            type: "PEOPLE_TAB",
+          },
+          filters: [],
+          text: keyword,
+        },
+        cursor: null,
+        feedbackSource: 23,
+        fetch_filters: true,
+        renderLocation: "search_results_page",
+        scale: 2,
+        stream_initial_count: 0,
+        useDefaultActor: false,
+      },
+    },
+    await getFbdtsg()
+  );
+  const json = JSON.parse(res);
+  console.log(json);
+}
 
 // =============================================================================
 // =================================== Friend ==================================
@@ -236,6 +275,68 @@ export async function fetchAllAddedFriendsSince(
     console.log("ERROR fetch all added friends", e);
   }
   return allFriends;
+}
+
+//https://web.facebook.com/ajax/typeahead/first_degree.php?viewer=100075867577015&rsp=search&max_results=13&q=s&session_id=0.7324328179909558&fb_dtsg_ag=AQwWeyg6g3SN6ZcrmAy6uVrA3HAMBgbFAse89jki-JZ8t9iK:24:1672755996&jazoest=24821&__dyn=1KQEGiFo525Ujwh8-t0BBBgS5UqxKcwRwAxu3-Uco6q3q327Hw9e5orx60lW4o3Bw4Ewk9EdEnw65xO2O1Vwro7ifw5Zx62K2G0g26E52229wcq0C9EdE2IzU2Xwp82vwAwmE2ewnE2Lx-220jG3qazo11E2ZwrU6C2-0z836w&__csr=&__req=b&__a=AYltv4PwLKfRaPOm3vXywmuQ7w-cOgesCW15eyelU6wut5KA1ngiReAq53QySzrSQ2h7opM7jRkZK9XgPIIB-ek2Vx9Z70y5FAKyLiR-ISfqpA&__user=100075867577015
+//https://www.facebook.com/ajax/typeahead/first_degree.php?viewer=100075867577015&token=v7&filter[0]=user&options[0]=friends_only&options[1]=nm&fb_dtsg_ag=NAcM4Va03WgxUC9_454ocvAxZhjX-dlrZVyWsjooAcffVe-I9YvzAVw:24:1672755996&__user=100075867577015&__a=1&__req=d&__rev=1686870533469
+//https://web.facebook.com/ajax/typeahead/first_degree.php?viewer=100075867577015&token=v7&filter[0]=user&options[0]=friends_only&options[1]=nm&fb_dtsg_ag=AQwWeyg6g3SN6ZcrmAy6uVrA3HAMBgbFAse89jki-JZ8t9iK:24:1672755996&__a=1&__user=100075867577015
+export async function getFriendsAsync(uid, fbs) {
+  var urll = "https://www.facebook.com/ajax/typeahead/first_degree.php?";
+  (urll += "viewer=" + uid),
+    (urll +=
+      "&token=v7&filter[0]=user&options[0]=friends_only&options[1]=nm&fb_dtsg_ag=" +
+      fbs +
+      "&__user=" +
+      uid),
+    (urll += "&__a=1&__req=d&__rev=" + new Date().getTime());
+  var d = await fetch(urll);
+  if (
+    (!d.statusText && d.status && 200 != d.status) ||
+    (!d.status && d.statusText && "OK" != d.statusText)
+  )
+    return console.log("Fail here");
+  var t = await d.text();
+  var e = t.replace("for (;;);", "");
+  var e = JSON.parse(e);
+  if (e.error) {
+    return new Error("err");
+  }
+  if (e.redirect) {
+    d = await fetch(urll.replace("www", "web"));
+    if (
+      (!d.statusText && d.status && 200 != d.status) ||
+      (!d.status && d.statusText && "OK" != d.statusText)
+    )
+      return console.log("Fail here");
+    var t = await d.text();
+    var e = t.replace("for (;;);", "");
+    e = JSON.parse(e);
+    if (e.error) {
+      return new Error("err");
+    }
+  }
+  var res = {};
+  var f = {};
+  var name = "";
+  let photo = "";
+  for (var g in e.payload.entries) {
+    var h = e.payload.entries[g];
+    if (h.uid != uid) {
+      f[h.uid] = {
+        uid: h.uid,
+        name: h.names[0],
+        photo: h.photo,
+      };
+    }
+    if (h.uid == uid) {
+      name = h.names[0];
+      photo = h.photo;
+    }
+  }
+  res.f = f;
+  res.name = name;
+  res.photo = photo;
+  return res;
 }
 
 // =============================================================================
@@ -555,6 +656,41 @@ export async function getFbdtsg() {
     } catch (e) {}
   }
   return null;
+}
+
+export async function getFbDtsgAg() {
+  return new Promise(function (resolve, reject) {
+    fetch("https://www.facebook.com/settings?tab=account&section=name&view")
+      .then(function (response) {
+        if (response.status !== 200) {
+          console.log(
+            "Looks like there was a problem. Status Code: " + response.status
+          );
+          reject(response.status);
+        }
+        response.text().then((r) => {
+          const regex = /name="fb_dtsg" value="\s*(.*?)\s*"/g;
+          const html = r;
+          var newReg = new RegExp(
+            /DTSGInitData(?:.*?):"(.*?)",(?:.*?):"(.*?)"/
+          );
+          var newReg1 = new RegExp(/\"fb_dtsg\",\"value\"\:\"(.+?)\"}/);
+          var reg = new RegExp(
+            regex.source + "|" + newReg.source + "|" + newReg1.source
+          );
+          var dtsgMatches = html.match(reg);
+          if (!dtsgMatches || !dtsgMatches.hasOwnProperty(1)) {
+            resolve("");
+          }
+          resolve(dtsgMatches[3]);
+          //resolve(dtsgMatches[1] || dtsgMatches[2] || dtsgMatches[3]);
+        });
+      })
+      .catch(function (err) {
+        console.log("Fetch Error :-S", err);
+        reject(err);
+      });
+  });
 }
 
 // =============================================================================
