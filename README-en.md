@@ -29,11 +29,12 @@ An extension includes a lot of small extensions. Make your life easier.
 
 Current Versions:
 
-- **v1.68**: big facebook update (01/07/2024)
+- **v1.69**: small update (14/07/2024)
 
 <details>
   <summary>Old versions</summary>
 
+- <del>v1.68: big facebook update (01/07/2024)</del>
 - <del>v1.67 - huge update (29/05/2024)</del>
 - <del>v1.66 - big update (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>

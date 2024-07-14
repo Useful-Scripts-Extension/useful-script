@@ -1,7 +1,31 @@
 ### <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
 
 <details>
-  <summary>1. Tìm trang web tương tự</summary>
+  <summary>1. There's an AI for that - Tìm AI</summary>
+
+  [Xem mã nguồn](/scripts/recommend_theresanaiforthat.js)
+
+  <code>Tổng hợp hàng ngàn công cụ AI hiện có. Dễ dàng tìm kiếm theo chủ đề</code>
+
+</details>
+<details>
+  <summary>2. Time.is - Kiểm tra thời gian</summary>
+
+  [Xem mã nguồn](/scripts/recommend_timeis.js)
+
+  <code>Đồng hồ chính xác nhất. Kiểm tra đồng hồ trên máy của bạn nhanh hay chậm.</code>
+
+</details>
+<details>
+  <summary>3. Google trending - Nội dung nổi bật</summary>
+
+  [Xem mã nguồn](/scripts/recommend_googleTrending.js)
+
+  <code>Xem mọi người đang tìm gì trên google. Thống kê từng ngày, thời gian thực.</code>
+
+</details>
+<details>
+  <summary>4. Tìm trang web tương tự</summary>
 
   [Xem mã nguồn](/scripts/similarWeb.js)
 
@@ -9,7 +33,7 @@
 
 </details>
 <details>
-  <summary>2. SimilarWeb - không bị giới hạn</summary>
+  <summary>5. SimilarWeb - không bị giới hạn</summary>
 
   [Xem mã nguồn](/scripts/similarWeb_bypassLimit.js)
 
@@ -19,7 +43,7 @@
 
 </details>
 <details>
-  <summary>3. Tìm tài khoản miễn phí</summary>
+  <summary>6. Tìm tài khoản miễn phí</summary>
 
   [Xem mã nguồn](/scripts/search_sharedAccount.js)
 
@@ -27,7 +51,7 @@
 
 </details>
 <details>
-  <summary>4. Internet archive - Thư viện miễn phí</summary>
+  <summary>7. Internet archive - Thư viện miễn phí</summary>
 
   [Xem mã nguồn](/scripts/recommend_archive.js)
 
@@ -37,7 +61,7 @@
 
 </details>
 <details>
-  <summary>5. Wappalyzer - Web dùng công nghệ gì?</summary>
+  <summary>8. Wappalyzer - Web dùng công nghệ gì?</summary>
 
   [Xem mã nguồn](/scripts/recommend_wappalyzer.js)
 
@@ -45,7 +69,7 @@
 
 </details>
 <details>
-  <summary>6. Who.is</summary>
+  <summary>9. Who.is</summary>
 
   [Xem mã nguồn](/scripts/whois.js)
 
@@ -53,7 +77,7 @@
 
 </details>
 <details>
-  <summary>7. Xem thông tin meta của web (SEO)</summary>
+  <summary>10. Xem thông tin meta của web (SEO)</summary>
 
   [Xem mã nguồn](/scripts/viewWebMetaInfo.js)
 
@@ -61,7 +85,7 @@
 
 </details>
 <details>
-  <summary>8. Bài nhạc top treding toàn cầu?</summary>
+  <summary>11. Bài nhạc top treding toàn cầu?</summary>
 
   [Xem mã nguồn](/scripts/recommend_search_musicTreding.js)
 
@@ -69,7 +93,7 @@
 
 </details>
 <details>
-  <summary>9. Tìm bài báo/sách/pdf/...ở đâu?</summary>
+  <summary>12. Tìm bài báo/sách/pdf/...ở đâu?</summary>
 
   [Xem mã nguồn](/scripts/search_paperWhere.js)
 
@@ -77,7 +101,7 @@
 
 </details>
 <details>
-  <summary>10. Tìm hợp âm guitar</summary>
+  <summary>13. Tìm hợp âm guitar</summary>
 
   [Xem mã nguồn](/scripts/search_hopamchuan.js)
 
@@ -85,7 +109,7 @@
 
 </details>
 <details>
-  <summary>11. Dowfor - Kiểm tra web die</summary>
+  <summary>14. Dowfor - Kiểm tra web die</summary>
 
   [Xem mã nguồn](/scripts/checkWebDie.js)
 
@@ -93,7 +117,7 @@
 
 </details>
 <details>
-  <summary>12. DownDetector - Thống kê sự cố web</summary>
+  <summary>15. DownDetector - Thống kê sự cố web</summary>
 
   [Xem mã nguồn](/scripts/downDetector.js)
 
@@ -101,7 +125,7 @@
 
 </details>
 <details>
-  <summary>13. Xem wayback url của website</summary>
+  <summary>16. Xem wayback url của website</summary>
 
   [Xem mã nguồn](/scripts/openWaybackUrl.js)
 
@@ -109,7 +133,7 @@
 
 </details>
 <details>
-  <summary>14. Lưu trữ online trang hiện tại</summary>
+  <summary>17. Lưu trữ online trang hiện tại</summary>
 
   [Xem mã nguồn](/scripts/archiveToday.js)
 
@@ -117,7 +141,7 @@
 
 </details>
 <details>
-  <summary>15. Tìm Userscripts</summary>
+  <summary>18. Tìm Userscripts</summary>
 
   [Xem mã nguồn](/scripts/recommend_search_userscript.js)
 
@@ -129,7 +153,15 @@
 
 --- Tổng hợp ---
 <details>
-  <summary>16. Save All Video</summary>
+  <summary>19. Cobalt - Tải video/nhạc</summary>
+
+  [Xem mã nguồn](/scripts/recommend_cobalt.js)
+
+  <code>Hỗ trợ youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...</code>
+
+</details>
+<details>
+  <summary>20. Save All Video</summary>
 
   [Xem mã nguồn](/scripts/saveAllVideo.js)
 
@@ -137,7 +169,7 @@
 
 </details>
 <details>
-  <summary>17. Vuiz - Get link nhạc/video/album</summary>
+  <summary>21. Vuiz - Get link nhạc/video/album</summary>
 
   [Xem mã nguồn](/scripts/vuiz_getLink.js)
 
@@ -145,7 +177,7 @@
 
 </details>
 <details>
-  <summary>18. SaveVideo - Tải video</summary>
+  <summary>22. SaveVideo - Tải video</summary>
 
   [Xem mã nguồn](/scripts/savevideo_me.js)
 
@@ -153,7 +185,7 @@
 
 </details>
 <details>
-  <summary>19. Tải nhạc/video (luanxt)</summary>
+  <summary>23. Tải nhạc/video (luanxt)</summary>
 
   [Xem mã nguồn](/scripts/getLinkLuanxt_newtab.js)
 
@@ -163,7 +195,7 @@
 
 --- Ảnh ---
 <details>
-  <summary>20. Twitter X - Thêm nút tải video/ảnh</summary>
+  <summary>24. Twitter X - Thêm nút tải video/ảnh</summary>
 
   [Xem mã nguồn](/scripts/twitter_downloadButton.js)
 
@@ -173,7 +205,7 @@
 
 </details>
 <details>
-  <summary>21. Tải favicon của trang web</summary>
+  <summary>25. Tải favicon của trang web</summary>
 
   [Xem mã nguồn](/scripts/getFavicon.js)
 
@@ -181,7 +213,7 @@
 
 </details>
 <details>
-  <summary>22. Picviewer CE+ tải ảnh</summary>
+  <summary>26. Picviewer CE+ tải ảnh</summary>
 
   [Xem mã nguồn](/scripts/recommend_picviewer_ce+.js)
 
@@ -191,7 +223,7 @@
 
 </details>
 <details>
-  <summary>23. File-converter.io - chuyển đổi ảnh</summary>
+  <summary>27. File-converter.io - chuyển đổi ảnh</summary>
 
   [Xem mã nguồn](/scripts/recommend_file_converter.js)
 
@@ -201,7 +233,7 @@
 
 </details>
 <details>
-  <summary>24. Squoosh.app - nén ảnh</summary>
+  <summary>28. Squoosh.app - nén ảnh</summary>
 
   [Xem mã nguồn](/scripts/recommend_squoosh_app.js)
 
@@ -211,7 +243,7 @@
 
 --- Nhạc ---
 <details>
-  <summary>25. Spotify - Thêm nút tải nhạc</summary>
+  <summary>29. Spotify - Thêm nút tải nhạc</summary>
 
   [Xem mã nguồn](/scripts/spotify_downloadButton.js)
 
@@ -221,7 +253,7 @@
 
 </details>
 <details>
-  <summary>26. Soundcloud - Thêm nút tải nhạc</summary>
+  <summary>30. Soundcloud - Thêm nút tải nhạc</summary>
 
   [Xem mã nguồn](/scripts/soundcloud_downloadMusic.js)
 
@@ -231,7 +263,7 @@
 
 </details>
 <details>
-  <summary>27. Nhaccuatui tải nhạc/lời</summary>
+  <summary>31. Nhaccuatui tải nhạc/lời</summary>
 
   [Xem mã nguồn](/scripts/nhaccuatui_downloader.js)
 
@@ -239,7 +271,7 @@
 
 </details>
 <details>
-  <summary>28. Zingmp3 tải nhạc (API)</summary>
+  <summary>32. Zingmp3 tải nhạc (API)</summary>
 
   [Xem mã nguồn](/scripts/zingmp3_downloadMusic.js)
 
@@ -247,7 +279,7 @@
 
 </details>
 <details>
-  <summary>29. Hiển thị mọi audio trong trang web</summary>
+  <summary>33. Hiển thị mọi audio trong trang web</summary>
 
   [Xem mã nguồn](/scripts/showTheAudios.js)
 
@@ -257,7 +289,7 @@
 
 --- Video ---
 <details>
-  <summary>30. Tải video đang xem</summary>
+  <summary>34. Tải video đang xem</summary>
 
   [Xem mã nguồn](/scripts/download_watchingVideo.js)
 
@@ -265,7 +297,7 @@
 
 </details>
 <details>
-  <summary>31. Vimeo - tải video</summary>
+  <summary>35. Vimeo - tải video</summary>
 
   [Xem mã nguồn](/scripts/vimeo_downloader.js)
 
@@ -273,7 +305,7 @@
 
 </details>
 <details>
-  <summary>32. Hiển thị mọi video có trong web</summary>
+  <summary>36. Hiển thị mọi video có trong web</summary>
 
   [Xem mã nguồn](/scripts/showTheVideos.js)
 
@@ -283,7 +315,7 @@
 
 --- Tài liệu ---
 <details>
-  <summary>33. Studocu - Tải documents</summary>
+  <summary>37. Studocu - Tải documents</summary>
 
   [Xem mã nguồn](/scripts/studocu_downs.js)
 
@@ -291,7 +323,7 @@
 
 </details>
 <details>
-  <summary>34. Scribd - Tải documents</summary>
+  <summary>38. Scribd - Tải documents</summary>
 
   [Xem mã nguồn](/scripts/scribd_downloadDocuments.js)
 
@@ -299,7 +331,7 @@
 
 </details>
 <details>
-  <summary>35. Tải miễn phí từ tailieu.vn</summary>
+  <summary>39. Tải miễn phí từ tailieu.vn</summary>
 
   [Xem mã nguồn](/scripts/tailieu_vn.js)
 
@@ -307,7 +339,7 @@
 
 </details>
 <details>
-  <summary>36. DocDownloader - Tải document</summary>
+  <summary>40. DocDownloader - Tải document</summary>
 
   [Xem mã nguồn](/scripts/recommend_docsdownloader.js)
 
@@ -315,7 +347,7 @@
 
 </details>
 <details>
-  <summary>37. Xuất bookmarks ra file</summary>
+  <summary>41. Xuất bookmarks ra file</summary>
 
   [Xem mã nguồn](/scripts/bookmark_exporter.js)
 
@@ -323,7 +355,7 @@
 
 </details>
 <details>
-  <summary>38. Bookmark Sidebar</summary>
+  <summary>42. Bookmark Sidebar</summary>
 
   [Xem mã nguồn](/scripts/recommend_BookmarkSidebar.js)
 
@@ -335,7 +367,7 @@
 
 --- Tải xuống ---
 <details>
-  <summary>39. Google drive - tạo link tải ngay</summary>
+  <summary>43. Google drive - tạo link tải ngay</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_generateDirectLink.js)
 
@@ -343,7 +375,7 @@
 
 </details>
 <details>
-  <summary>40. GG Drive - Tải PDF</summary>
+  <summary>44. GG Drive - Tải PDF</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_downloadPdf.js)
 
@@ -351,7 +383,7 @@
 
 </details>
 <details>
-  <summary>41. GG Drive - Tải PowerPoint (Slides)</summary>
+  <summary>45. GG Drive - Tải PowerPoint (Slides)</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_downloadPresentation.js)
 
@@ -359,7 +391,7 @@
 
 </details>
 <details>
-  <summary>42. GG Drive - Tải Document (sang PDF)</summary>
+  <summary>46. GG Drive - Tải Document (sang PDF)</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_downloadDoc.js)
 
@@ -367,7 +399,7 @@
 
 </details>
 <details>
-  <summary>43. GG Drive - Tải Sheet (copy nội dung)</summary>
+  <summary>47. GG Drive - Tải Sheet (copy nội dung)</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_copySheetText.js)
 
@@ -375,7 +407,7 @@
 
 </details>
 <details>
-  <summary>44. GG Drive - Tải video</summary>
+  <summary>48. GG Drive - Tải video</summary>
 
   [Xem mã nguồn](/scripts/ggdrive_downloadVideo.js)
 
@@ -383,7 +415,7 @@
 
 </details>
 <details>
-  <summary>45. Google - Tải xuống dữ liệu của bạn</summary>
+  <summary>49. Google - Tải xuống dữ liệu của bạn</summary>
 
   [Xem mã nguồn](/scripts/google_downloadAllYourData.js)
 
@@ -393,7 +425,7 @@
 
 --- Tải hàng loạt ---
 <details>
-  <summary>46. GGDrive - Tải mọi video trong folder</summary>
+  <summary>50. GGDrive - Tải mọi video trong folder</summary>
 
   [Xem mã nguồn](/scripts/ggDrive_downloadAllVideosInFolder.js)
 
@@ -403,7 +435,7 @@
 
 --- Khác ---
 <details>
-  <summary>47. Google tìm kiếm nâng cao</summary>
+  <summary>51. Google tìm kiếm nâng cao</summary>
 
   [Xem mã nguồn](/scripts/recommend_googleAdvanced.js)
 
@@ -411,7 +443,7 @@
 
 </details>
 <details>
-  <summary>48. Xem các pages được google quét</summary>
+  <summary>52. Xem các pages được google quét</summary>
 
   [Xem mã nguồn](/scripts/search_totalIndexedPages.js)
 
@@ -419,7 +451,7 @@
 
 </details>
 <details>
-  <summary>49. Tìm kiếm trên trang web này</summary>
+  <summary>53. Tìm kiếm trên trang web này</summary>
 
   [Xem mã nguồn](/scripts/search_googleSite.js)
 
@@ -427,7 +459,7 @@
 
 </details>
 <details>
-  <summary>50. Google phím tắt</summary>
+  <summary>54. Google phím tắt</summary>
 
   [Xem mã nguồn](/scripts/googleShortcuts.js)
 
@@ -435,7 +467,7 @@
 
 </details>
 <details>
-  <summary>51. Xem Google cache của trang web</summary>
+  <summary>55. Xem Google cache của trang web</summary>
 
   [Xem mã nguồn](/scripts/googleCache.js)
 
@@ -443,7 +475,7 @@
 
 </details>
 <details>
-  <summary>52. Google mirror - I'm elgooG</summary>
+  <summary>56. Google mirror - I'm elgooG</summary>
 
   [Xem mã nguồn](/scripts/google_mirror.js)
 
@@ -455,7 +487,7 @@
 
 --- Tất cả trong một ---
 <details>
-  <summary>53. Facebook - All In One</summary>
+  <summary>57. Facebook - All In One</summary>
 
   [Xem mã nguồn](/scripts/fb_allInOne.js)
 
@@ -465,7 +497,7 @@
 
 --- Tải xuống ---
 <details>
-  <summary>54. Tải video fb đang xem</summary>
+  <summary>58. Tải video fb đang xem</summary>
 
   [Xem mã nguồn](/scripts/fb_downloadWatchingVideo.js)
 
@@ -473,7 +505,7 @@
 
 </details>
 <details>
-  <summary>55. Tải Story/Comment fb đang xem</summary>
+  <summary>59. Tải Story/Comment fb đang xem</summary>
 
   [Xem mã nguồn](/scripts/fb_storySaver.js)
 
@@ -481,7 +513,7 @@
 
 </details>
 <details>
-  <summary>56. Tải video/reel/watch fb từ url</summary>
+  <summary>60. Tải video/reel/watch fb từ url</summary>
 
   [Xem mã nguồn](/scripts/fb_videoDownloader.js)
 
@@ -489,7 +521,7 @@
 
 </details>
 <details>
-  <summary>57. Tải avatar từ fb user id</summary>
+  <summary>61. Tải avatar từ fb user id</summary>
 
   [Xem mã nguồn](/scripts/fb_getAvatarFromUid.js)
 
@@ -497,7 +529,7 @@
 
 </details>
 <details>
-  <summary>58. Xuất mục đã lưu trên facebook</summary>
+  <summary>62. Xuất mục đã lưu trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_exportSaved.js)
 
@@ -507,7 +539,20 @@
 
 --- Nổi bật ---
 <details>
-  <summary>59. Facebook - Xem tin nhắn bị gỡ</summary>
+  <summary>63. Tự động thích bài đăng Facebook</summary>
+
+  [Xem mã nguồn](/scripts/fb_autoLike.js)
+
+  <code>Tự động thả cảm xúc cho bài đăng trên Facebook.
+    <ul>
+      <li>Hỗ trợ mọi loại bài đăng (trang, nhóm, người dùng, new feed, ...)</li>
+      <li>Hỗ trợ gỡ/thêm cảm xúc hàng loạt</li>
+      <li>Hỗ trợ mọi loại cảm xúc</li>
+    </ul></code>
+
+</details>
+<details>
+  <summary>64. Facebook - Xem tin nhắn bị gỡ</summary>
 
   [Xem mã nguồn](/scripts/fb_revealDeletedMessages.js)
 
@@ -515,7 +560,7 @@
 
 </details>
 <details>
-  <summary>60. Facebook Story - Thêm cảm xúc</summary>
+  <summary>65. Facebook Story - Thêm cảm xúc</summary>
 
   [Xem mã nguồn](/scripts/fb_moreReactionStory.js)
 
@@ -525,7 +570,7 @@
 
 </details>
 <details>
-  <summary>61. Tắt đèn newfeed facebook</summary>
+  <summary>66. Tắt đèn newfeed facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_toggleLight.js)
 
@@ -533,7 +578,7 @@
 
 </details>
 <details>
-  <summary>62. Ẩn dòng thời gian facebook</summary>
+  <summary>67. Ẩn dòng thời gian facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_toggleNewFeed.js)
 
@@ -541,7 +586,7 @@
 
 </details>
 <details>
-  <summary>63. Dừng dòng thời gian facebook</summary>
+  <summary>68. Dừng dòng thời gian facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_stopNewFeed.js)
 
@@ -552,7 +597,7 @@
 
 </details>
 <details>
-  <summary>64. 👀 Chặn "Đã xem" story facebook</summary>
+  <summary>69. 👀 Chặn "Đã xem" story facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_blockSeenStory.js)
 
@@ -560,7 +605,7 @@
 
 </details>
 <details>
-  <summary>65. Hiện tổng lượt thích bài viết facebook</summary>
+  <summary>70. Hiện tổng lượt thích bài viết facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_getPostReactionCount.js)
 
@@ -570,7 +615,7 @@
 
 </details>
 <details>
-  <summary>66. Facebook - Ai đang nhắn cho bạn?</summary>
+  <summary>71. Facebook - Ai đang nhắn cho bạn?</summary>
 
   [Xem mã nguồn](/scripts/fb_whoIsTyping.js)
 
@@ -580,7 +625,7 @@
 
 --- Thống kê ---
 <details>
-  <summary>67. Facebook - Xem các nhóm bạn bè tham gia</summary>
+  <summary>72. Facebook - Xem các nhóm bạn bè tham gia</summary>
 
   [Xem mã nguồn](/scripts/fb_searchGroupForOther.js)
 
@@ -588,7 +633,7 @@
 
 </details>
 <details>
-  <summary>68. Facebook - Xem các trang bạn bè thích</summary>
+  <summary>73. Facebook - Xem các trang bạn bè thích</summary>
 
   [Xem mã nguồn](/scripts/fb_searchPageForOther.js)
 
@@ -596,7 +641,7 @@
 
 </details>
 <details>
-  <summary>69. Facebook - Tìm mọi bài viết của bạn bè</summary>
+  <summary>74. Facebook - Tìm mọi bài viết của bạn bè</summary>
 
   [Xem mã nguồn](/scripts/fb_searchPostsForOther.js)
 
@@ -606,7 +651,7 @@
 
 --- Access Token ---
 <details>
-  <summary>70. Kiểm tra fb access token</summary>
+  <summary>75. Kiểm tra fb access token</summary>
 
   [Xem mã nguồn](/scripts/fb_checkToken.js)
 
@@ -614,7 +659,7 @@
 
 </details>
 <details>
-  <summary>71. Lấy fb token EAAB (instagram)</summary>
+  <summary>76. Lấy fb token EAAB (instagram)</summary>
 
   [Xem mã nguồn](/scripts/fb_getTokenFacebook.js)
 
@@ -622,7 +667,7 @@
 
 </details>
 <details>
-  <summary>72. Lấy fb token EAADo1 (messenger)</summary>
+  <summary>77. Lấy fb token EAADo1 (messenger)</summary>
 
   [Xem mã nguồn](/scripts/fb_getTokenMessage.js)
 
@@ -630,7 +675,7 @@
 
 </details>
 <details>
-  <summary>73. Lấy fb token EAAG (business_locations)</summary>
+  <summary>78. Lấy fb token EAAG (business_locations)</summary>
 
   [Xem mã nguồn](/scripts/fb_getTokenBussinessLocation.js)
 
@@ -638,7 +683,7 @@
 
 </details>
 <details>
-  <summary>74. Lấy fb token EAAB (campaigns)</summary>
+  <summary>79. Lấy fb token EAAB (campaigns)</summary>
 
   [Xem mã nguồn](/scripts/fb_getTokenCampaigns.js)
 
@@ -646,7 +691,7 @@
 
 </details>
 <details>
-  <summary>75. Lấy fb token từ cookie (ffb.vn)</summary>
+  <summary>80. Lấy fb token từ cookie (ffb.vn)</summary>
 
   [Xem mã nguồn](/scripts/fb_getTokenFfb.js)
 
@@ -656,7 +701,7 @@
 
 --- Lấy ID ---
 <details>
-  <summary>76. Lấy fb User ID</summary>
+  <summary>81. Lấy fb User ID</summary>
 
   [Xem mã nguồn](/scripts/fb_getUid.js)
 
@@ -664,7 +709,7 @@
 
 </details>
 <details>
-  <summary>77. Lấy fb Page ID</summary>
+  <summary>82. Lấy fb Page ID</summary>
 
   [Xem mã nguồn](/scripts/fb_getPageId.js)
 
@@ -672,7 +717,7 @@
 
 </details>
 <details>
-  <summary>78. Lấy fb Group ID</summary>
+  <summary>83. Lấy fb Group ID</summary>
 
   [Xem mã nguồn](/scripts/fb_getGroupId.js)
 
@@ -680,7 +725,7 @@
 
 </details>
 <details>
-  <summary>79. Lấy fb Album ID</summary>
+  <summary>84. Lấy fb Album ID</summary>
 
   [Xem mã nguồn](/scripts/fb_getAlbumId.js)
 
@@ -688,7 +733,7 @@
 
 </details>
 <details>
-  <summary>80. Lấy tất cả fb album id từ trang hiện tại</summary>
+  <summary>85. Lấy tất cả fb album id từ trang hiện tại</summary>
 
   [Xem mã nguồn](/scripts/fb_getAllAlbumIdFromCurrentWebsite.js)
 
@@ -696,7 +741,7 @@
 
 </details>
 <details>
-  <summary>81. Lấy fb User ID từ URL</summary>
+  <summary>86. Lấy fb User ID từ URL</summary>
 
   [Xem mã nguồn](/scripts/fb_getUidFromUrl.js)
 
@@ -704,7 +749,7 @@
 
 </details>
 <details>
-  <summary>82. Lấy tất cả fb user ID từ trang tìm kiếm</summary>
+  <summary>87. Lấy tất cả fb user ID từ trang tìm kiếm</summary>
 
   [Xem mã nguồn](/scripts/fb_getAllUidFromFbSearch.js)
 
@@ -712,7 +757,7 @@
 
 </details>
 <details>
-  <summary>83. Lấy tất cả fb user ID từ group</summary>
+  <summary>88. Lấy tất cả fb user ID từ group</summary>
 
   [Xem mã nguồn](/scripts/fb_getAllUidOfGroupMembers.js)
 
@@ -722,7 +767,7 @@
 
 --- Phím tắt ---
 <details>
-  <summary>84. Xem mục đã lưu trên facebook</summary>
+  <summary>89. Xem mục đã lưu trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openSaved.js)
 
@@ -730,7 +775,7 @@
 
 </details>
 <details>
-  <summary>85. Xem kỷ niệm của bạn trên facebook</summary>
+  <summary>90. Xem kỷ niệm của bạn trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openMemories.js)
 
@@ -738,7 +783,7 @@
 
 </details>
 <details>
-  <summary>86. Xem các quảng cáo fb bạn đã xem</summary>
+  <summary>91. Xem các quảng cáo fb bạn đã xem</summary>
 
   [Xem mã nguồn](/scripts/fb_openAdsActivities.js)
 
@@ -746,7 +791,7 @@
 
 </details>
 <details>
-  <summary>87. Xem nhật ký hoạt động trên facebook</summary>
+  <summary>92. Xem nhật ký hoạt động trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openAllActivities.js)
 
@@ -754,7 +799,7 @@
 
 </details>
 <details>
-  <summary>88. Video bạn vừa xem trên facebook</summary>
+  <summary>93. Video bạn vừa xem trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openVideoActivities.js)
 
@@ -762,7 +807,7 @@
 
 </details>
 <details>
-  <summary>89. Sự kiện đã tham gia trên facebook</summary>
+  <summary>94. Sự kiện đã tham gia trên facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openPassEvents.js)
 
@@ -770,7 +815,7 @@
 
 </details>
 <details>
-  <summary>90. Sinh nhật bạn bè facebook</summary>
+  <summary>95. Sinh nhật bạn bè facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openBirthdays.js)
 
@@ -778,7 +823,7 @@
 
 </details>
 <details>
-  <summary>91. Đổi ngôn ngữ facebook</summary>
+  <summary>96. Đổi ngôn ngữ facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openChangeLanguage.js)
 
@@ -786,7 +831,7 @@
 
 </details>
 <details>
-  <summary>92. Khôi phục tài khoản facebook</summary>
+  <summary>97. Khôi phục tài khoản facebook</summary>
 
   [Xem mã nguồn](/scripts/fb_openAccountHacked.js)
 
@@ -797,7 +842,7 @@
 ### <i class="fa-brands fa-instagram"></i> Instagram
 
 <details>
-  <summary>93. Lấy insta thông tin user (uid, avatar, ...)</summary>
+  <summary>98. Lấy insta thông tin user (uid, avatar, ...)</summary>
 
   [Xem mã nguồn](/scripts/insta_getUserInfo.js)
 
@@ -805,7 +850,7 @@
 
 </details>
 <details>
-  <summary>94. Thêm nút tải cho Instagram</summary>
+  <summary>99. Thêm nút tải cho Instagram</summary>
 
   [Xem mã nguồn](/scripts/insta_injectDownloadBtn.js)
 
@@ -815,7 +860,7 @@
 
 </details>
 <details>
-  <summary>95. Insta - Xem story ẩn danh</summary>
+  <summary>100. Insta - Xem story ẩn danh</summary>
 
   [Xem mã nguồn](/scripts/insta_anonymousStoryViewer.js)
 
@@ -825,7 +870,7 @@
 
 --- Tải hàng loạt ---
 <details>
-  <summary>96. Tải về tất cả media của insta user (API)</summary>
+  <summary>101. Tải về tất cả media của insta user (API)</summary>
 
   [Xem mã nguồn](/scripts/insta_getAllUserMedia.js)
 
@@ -833,7 +878,7 @@
 
 </details>
 <details>
-  <summary>97. Insta - Tải tất cả following/follower</summary>
+  <summary>102. Insta - Tải tất cả following/follower</summary>
 
   [Xem mã nguồn](/scripts/insta_getFollowForOther.js)
 
@@ -844,23 +889,7 @@
 ### <i class="fa-brands fa-youtube"></i> Youtube
 
 <details>
-  <summary>98. Tải video/audio youtube</summary>
-
-  [Xem mã nguồn](/scripts/youtube_downloadVideo.js)
-
-  <code>Tải cả video giới hạn độ tuổi, không cần đăng nhập</code>
-
-</details>
-<details>
-  <summary>99. Tắt/Mở đèn youtube</summary>
-
-  [Xem mã nguồn](/scripts/youtube_toggleLight.js)
-
-  <code>Tắt/Mở đèn để tập trung xem video youtube</code>
-
-</details>
-<details>
-  <summary>100. Picture in Picture</summary>
+  <summary>103. Picture in Picture</summary>
 
   [Xem mã nguồn](/scripts/pictureInPicture.js)
 
@@ -868,23 +897,31 @@
 
 </details>
 <details>
-  <summary>101. PIP toàn website</summary>
+  <summary>104. Tải video/audio youtube</summary>
 
-  [Xem mã nguồn](/scripts/pip_fullWebsite.js)
+  [Xem mã nguồn](/scripts/youtube_downloadVideo.js)
 
-  <code>Picture in picture: Xem toàn bộ website (thay vì chỉ video) trong của sổ nổi</code>
+  <code>Tải cả video giới hạn độ tuổi, không cần đăng nhập
+    <ul>
+      <li>Bấm 1 lần để tải video hiện tại</li>
+      <li>Bật tự chạy để hiển thị nút tải</li>
+    </ul></code>
 
-</details>
-<details>
-  <summary>102. PIP cho canvas</summary>
-
-  [Xem mã nguồn](/scripts/pip_canvas.js)
-
-  <code>Picture in picture: Xem canvas trong của sổ nổi</code>
+  ![](/scripts/youtube_downloadVideo.png)
 
 </details>
 <details>
-  <summary>103. Hiện lượt không thích youtube</summary>
+  <summary>105. Lấy phụ đề video trên Youtube</summary>
+
+  [Xem mã nguồn](/scripts/youtube_getVideoCaption.js)
+
+  <code>- Bấm để tải về tất cả phụ đề của video youtube đang xem<br/>- Bật tự chạy để hiển thị phụ đề thời gian thực</code>
+
+  ![](/scripts/youtube_getVideoCaption.png)
+
+</details>
+<details>
+  <summary>106. Hiện lượt không thích youtube</summary>
 
   [Xem mã nguồn](/scripts/youtube_viewDislikes.js)
 
@@ -892,7 +929,7 @@
 
 </details>
 <details>
-  <summary>104. Youtube nonstop</summary>
+  <summary>107. Youtube nonstop</summary>
 
   [Xem mã nguồn](/scripts/youtube_nonstop.js)
 
@@ -902,7 +939,47 @@
 
 </details>
 <details>
-  <summary>105. Improve YouTube - 85+ chức năng</summary>
+  <summary>108. Đổi quốc gia Youtube</summary>
+
+  [Xem mã nguồn](/scripts/youtube_changeCountry.js)
+
+  <code>Đổi quốc gia youtube để xem nội dung youtube bên các nước khác</code>
+
+</details>
+<details>
+  <summary>109. Lấy thumbnail video trên Youtube</summary>
+
+  [Xem mã nguồn](/scripts/youtube_getVideoThumbnail.js)
+
+  <code>Tải về hình thumbnail độ phân giải lớn nhất của video youtube đang xem</code>
+
+</details>
+<details>
+  <summary>110. Tắt/Mở đèn youtube</summary>
+
+  [Xem mã nguồn](/scripts/youtube_toggleLight.js)
+
+  <code>Tắt/Mở đèn để tập trung xem video youtube</code>
+
+</details>
+<details>
+  <summary>111. PIP toàn website</summary>
+
+  [Xem mã nguồn](/scripts/pip_fullWebsite.js)
+
+  <code>Picture in picture: Xem toàn bộ website (thay vì chỉ video) trong của sổ nổi</code>
+
+</details>
+<details>
+  <summary>112. PIP cho canvas</summary>
+
+  [Xem mã nguồn](/scripts/pip_canvas.js)
+
+  <code>Picture in picture: Xem canvas trong của sổ nổi</code>
+
+</details>
+<details>
+  <summary>113. Improve YouTube - 85+ chức năng</summary>
 
   [Xem mã nguồn](/scripts/recommend_improve_youtube.js)
 
@@ -914,7 +991,7 @@
 
 --- Tiktok ---
 <details>
-  <summary>106. Tiktok - Tải video đang xem</summary>
+  <summary>114. Tiktok - Tải video đang xem</summary>
 
   [Xem mã nguồn](/scripts/tiktok_downloadWatchingVideo.js)
 
@@ -922,7 +999,7 @@
 
 </details>
 <details>
-  <summary>107. Tiktok - Tải video từ URL</summary>
+  <summary>115. Tiktok - Tải video từ URL</summary>
 
   [Xem mã nguồn](/scripts/tiktok_downloadVideo.js)
 
@@ -930,7 +1007,7 @@
 
 </details>
 <details>
-  <summary>108. Tiktok - Tải hàng loạt</summary>
+  <summary>116. Tiktok - Tải hàng loạt</summary>
 
   [Xem mã nguồn](/scripts/tiktok_batchDownload.js)
 
@@ -942,7 +1019,7 @@
 
 --- Douyin ---
 <details>
-  <summary>109. Douyin - Tải video đang xem</summary>
+  <summary>117. Douyin - Tải video đang xem</summary>
 
   [Xem mã nguồn](/scripts/douyin_downloadWachingVideo.js)
 
@@ -950,7 +1027,7 @@
 
 </details>
 <details>
-  <summary>110. Douyin - Tải tất cả video người dùng</summary>
+  <summary>118. Douyin - Tải tất cả video người dùng</summary>
 
   [Xem mã nguồn](/scripts/douyin_downloadAllVideoUser.js)
 
@@ -962,7 +1039,7 @@
 
 --- Tiện ích ---
 <details>
-  <summary>111. Thời gian lướt web</summary>
+  <summary>119. Thời gian lướt web</summary>
 
   [Xem mã nguồn](/scripts/web_timer.js)
 
@@ -973,7 +1050,7 @@
 
 </details>
 <details>
-  <summary>112. Tự động khoá trang web</summary>
+  <summary>120. Tự động khoá trang web</summary>
 
   [Xem mã nguồn](/scripts/auto_lockWebsite.js)
 
@@ -985,17 +1062,20 @@
 
 </details>
 <details>
-  <summary>113. Cuộn chuột siêu mượt</summary>
+  <summary>121. Cuộn chuột siêu mượt</summary>
 
   [Xem mã nguồn](/scripts/smoothScroll.js)
 
   <code>Cuộn chuột siêu mượt cho mọi trang web.<br/>
-    Mượt như khi cuộn chuột trong extension này vậy.<br/><br/>
-    Hỗ trợ scroll khi bấm chuột giữa.</code>
+    <ul>
+      <li>Khuyên dùng với chuột (tắt nếu dùng touchpad)</li>
+      <li>Bấm để Tắt/Mở cho trang web hiện tại</li>
+      <li>Hỗ trợ bấm chuột giữa để cuộn trang</li>
+    </ul><br/></code>
 
 </details>
 <details>
-  <summary>114. Phóng to mọi hình ảnh</summary>
+  <summary>122. Phóng to mọi hình ảnh</summary>
 
   [Xem mã nguồn](/scripts/magnify_image.js)
 
@@ -1017,7 +1097,7 @@
 
 </details>
 <details>
-  <summary>115. Tự động - xem ảnh lớn nhất</summary>
+  <summary>123. Tự động - xem ảnh lớn nhất</summary>
 
   [Xem mã nguồn](/scripts/auto_redirectLargestImageSrc.js)
 
@@ -1031,7 +1111,7 @@
 
 </details>
 <details>
-  <summary>116. Hiện ảnh khi di chuột qua link</summary>
+  <summary>124. Hiện ảnh khi di chuột qua link</summary>
 
   [Xem mã nguồn](/scripts/showImageOnHoverLink.js)
 
@@ -1039,7 +1119,7 @@
 
 </details>
 <details>
-  <summary>117. Xoá theo dõi trong url</summary>
+  <summary>125. Xoá theo dõi trong url</summary>
 
   [Xem mã nguồn](/scripts/remove_tracking_in_url.js)
 
@@ -1052,7 +1132,7 @@
 
 </details>
 <details>
-  <summary>118. Không tắt trình duyệt khi tắt tab cuối</summary>
+  <summary>126. Không tắt trình duyệt khi tắt tab cuối</summary>
 
   [Xem mã nguồn](/scripts/prevent_closeBrowser_lastTab.js)
 
@@ -1061,7 +1141,7 @@
 
 </details>
 <details>
-  <summary>119. Chống lừa đảo</summary>
+  <summary>127. Chống lừa đảo</summary>
 
   [Xem mã nguồn](/scripts/chongLuaDao.js)
 
@@ -1073,7 +1153,7 @@
 
 </details>
 <details>
-  <summary>120. Rút gọn link</summary>
+  <summary>128. Rút gọn link</summary>
 
   [Xem mã nguồn](/scripts/shortenURL.js)
 
@@ -1081,7 +1161,7 @@
 
 </details>
 <details>
-  <summary>121. Giải mã link rút gọn</summary>
+  <summary>129. Giải mã link rút gọn</summary>
 
   [Xem mã nguồn](/scripts/unshorten.js)
 
@@ -1089,7 +1169,7 @@
 
 </details>
 <details>
-  <summary>122. Tạo tin nhắn tàng hình</summary>
+  <summary>130. Tạo tin nhắn tàng hình</summary>
 
   [Xem mã nguồn](/scripts/createInvisibleText.js)
 
@@ -1099,7 +1179,7 @@
 
 --- Tự động ---
 <details>
-  <summary>123. In web ra PDF</summary>
+  <summary>131. In web ra PDF</summary>
 
   [Xem mã nguồn](/scripts/webToPDF.js)
 
@@ -1107,7 +1187,7 @@
 
 </details>
 <details>
-  <summary>124. Chụp ảnh toàn bộ web</summary>
+  <summary>132. Chụp ảnh toàn bộ web</summary>
 
   [Xem mã nguồn](/scripts/screenshotFullPage.js)
 
@@ -1115,7 +1195,7 @@
 
 </details>
 <details>
-  <summary>125. Chụp ảnh web</summary>
+  <summary>133. Chụp ảnh web</summary>
 
   [Xem mã nguồn](/scripts/screenshotVisiblePage.js)
 
@@ -1123,7 +1203,7 @@
 
 </details>
 <details>
-  <summary>126. Cuộn trang xuống cuối cùng</summary>
+  <summary>134. Cuộn trang xuống cuối cùng</summary>
 
   [Xem mã nguồn](/scripts/scrollToVeryEnd.js)
 
@@ -1131,7 +1211,7 @@
 
 </details>
 <details>
-  <summary>127. Trích xuất mọi emails từ trang web</summary>
+  <summary>135. Trích xuất mọi emails từ trang web</summary>
 
   [Xem mã nguồn](/scripts/getAllEmailsInWeb.js)
 
@@ -1139,7 +1219,7 @@
 
 </details>
 <details>
-  <summary>128. Bật/Tắt Hack game T-Rex Dino</summary>
+  <summary>136. Bật/Tắt Hack game T-Rex Dino</summary>
 
   [Xem mã nguồn](/scripts/dino_hack.js)
 
@@ -1147,7 +1227,7 @@
 
 </details>
 <details>
-  <summary>129. Tạo mật khẩu cho trang web</summary>
+  <summary>137. Tạo mật khẩu cho trang web</summary>
 
   [Xem mã nguồn](/scripts/passwordGenerator.js)
 
@@ -1157,7 +1237,7 @@
 
 --- Công cụ ---
 <details>
-  <summary>130. Chữ sang QRCode</summary>
+  <summary>138. Chữ sang QRCode</summary>
 
   [Xem mã nguồn](/scripts/textToQrCode.js)
 
@@ -1165,7 +1245,7 @@
 
 </details>
 <details>
-  <summary>131. Văn bản thành Giọng nói (j2team)</summary>
+  <summary>139. Văn bản thành Giọng nói (j2team)</summary>
 
   [Xem mã nguồn](/scripts/textToSpeech.js)
 
@@ -1173,7 +1253,7 @@
 
 </details>
 <details>
-  <summary>132. Thay đổi đầu ra âm thanh</summary>
+  <summary>140. Thay đổi đầu ra âm thanh</summary>
 
   [Xem mã nguồn](/scripts/changeAudioOutput.js)
 
@@ -1181,7 +1261,7 @@
 
 </details>
 <details>
-  <summary>133. Send - Chia sẻ file nhanh</summary>
+  <summary>141. Send - Chia sẻ file nhanh</summary>
 
   [Xem mã nguồn](/scripts/send_shareFiles.js)
 
@@ -1189,7 +1269,7 @@
 
 </details>
 <details>
-  <summary>134. Vuiz - Tạo logo WAP online</summary>
+  <summary>142. Vuiz - Tạo logo WAP online</summary>
 
   [Xem mã nguồn](/scripts/vuiz_createLogo.js)
 
@@ -1197,7 +1277,7 @@
 
 </details>
 <details>
-  <summary>135. Phân tích hiệu suất</summary>
+  <summary>143. Phân tích hiệu suất</summary>
 
   [Xem mã nguồn](/scripts/performanceAnalyzer.js)
 
@@ -1205,7 +1285,7 @@
 
 </details>
 <details>
-  <summary>136. IT Tools - Vì tương lai Developer</summary>
+  <summary>144. IT Tools - Vì tương lai Developer</summary>
 
   [Xem mã nguồn](/scripts/recommend_ItTools.js)
 
@@ -1213,7 +1293,7 @@
 
 </details>
 <details>
-  <summary>137. CopyIcon - emoji, icon, svg miễn phí</summary>
+  <summary>145. CopyIcon - emoji, icon, svg miễn phí</summary>
 
   [Xem mã nguồn](/scripts/recommend_copyicon.js)
 
@@ -1221,7 +1301,7 @@
 
 </details>
 <details>
-  <summary>138. Beautify Tools</summary>
+  <summary>146. Beautify Tools</summary>
 
   [Xem mã nguồn](/scripts/recommend_beautifytools.js)
 
@@ -1242,7 +1322,7 @@
 
 --- Github ---
 <details>
-  <summary>139. Github - Đi tới commit bất kỳ</summary>
+  <summary>147. Github - Đi tới commit bất kỳ</summary>
 
   [Xem mã nguồn](/scripts/github_goToAnyCommit.js)
 
@@ -1250,7 +1330,7 @@
 
 </details>
 <details>
-  <summary>140. Github - xem trước file HTML</summary>
+  <summary>148. Github - xem trước file HTML</summary>
 
   [Xem mã nguồn](/scripts/github_HTMLPreview.js)
 
@@ -1258,7 +1338,7 @@
 
 </details>
 <details>
-  <summary>141. Github - Mở repo pages</summary>
+  <summary>149. Github - Mở repo pages</summary>
 
   [Xem mã nguồn](/scripts/github_openRepoPages.js)
 
@@ -1268,7 +1348,7 @@
 
 </details>
 <details>
-  <summary>142. Github - Mở repo trong github.dev</summary>
+  <summary>150. Github - Mở repo trong github.dev</summary>
 
   [Xem mã nguồn](/scripts/githubdev.js)
 
@@ -1276,7 +1356,7 @@
 
 </details>
 <details>
-  <summary>143. Github - Mở repo trong github1s.com</summary>
+  <summary>151. Github - Mở repo trong github1s.com</summary>
 
   [Xem mã nguồn](/scripts/github1s.js)
 
@@ -1284,7 +1364,7 @@
 
 </details>
 <details>
-  <summary>144. Cloc - đếm số dòng code</summary>
+  <summary>152. Cloc - đếm số dòng code</summary>
 
   [Xem mã nguồn](/scripts/recommend_cloc.js)
 
@@ -1294,7 +1374,7 @@
 
 </details>
 <details>
-  <summary>145. Refined GitHub</summary>
+  <summary>153. Refined GitHub</summary>
 
   [Xem mã nguồn](/scripts/recommend_refined_github.js)
 
@@ -1304,7 +1384,7 @@
 
 --- Mua sắm ---
 <details>
-  <summary>146. Shopee - Loại hàng mua nhiều nhất</summary>
+  <summary>154. Shopee - Loại hàng mua nhiều nhất</summary>
 
   [Xem mã nguồn](/scripts/shopee_topVariation.js)
 
@@ -1314,7 +1394,7 @@
 
 </details>
 <details>
-  <summary>147. Shopee - Thống kê chi tiêu</summary>
+  <summary>155. Shopee - Thống kê chi tiêu</summary>
 
   [Xem mã nguồn](/scripts/shopee_totalSpendMoney.js)
 
@@ -1322,7 +1402,7 @@
 
 </details>
 <details>
-  <summary>148. Shopee - Xuất lịch sử đơn hàng (Excel)</summary>
+  <summary>156. Shopee - Xuất lịch sử đơn hàng (Excel)</summary>
 
   [Xem mã nguồn](/scripts/shopee_totalSpendMoney_excel.js)
 
@@ -1330,7 +1410,7 @@
 
 </details>
 <details>
-  <summary>149. Tiki - Đã mua bao nhiêu tiền?</summary>
+  <summary>157. Tiki - Đã mua bao nhiêu tiền?</summary>
 
   [Xem mã nguồn](/scripts/tiki_totalSpendMoney.js)
 
@@ -1338,7 +1418,7 @@
 
 </details>
 <details>
-  <summary>150. Beecost</summary>
+  <summary>158. Beecost</summary>
 
   [Xem mã nguồn](/scripts/recommend_Beecost.js)
 
@@ -1348,7 +1428,7 @@
 
 --- PDF ---
 <details>
-  <summary>151. FastDoc - Chuyển PDF/Ảnh sang Word/Excel</summary>
+  <summary>159. FastDoc - Chuyển PDF/Ảnh sang Word/Excel</summary>
 
   [Xem mã nguồn](/scripts/recommend_fastDoc.js)
 
@@ -1356,7 +1436,7 @@
 
 </details>
 <details>
-  <summary>152. SmartPDF - Công cụ cho PDF</summary>
+  <summary>160. SmartPDF - Công cụ cho PDF</summary>
 
   [Xem mã nguồn](/scripts/recommend_smartPDF.js)
 
@@ -1364,7 +1444,7 @@
 
 </details>
 <details>
-  <summary>153. PDF Stuffs - Công cụ PDF</summary>
+  <summary>161. PDF Stuffs - Công cụ PDF</summary>
 
   [Xem mã nguồn](/scripts/recommend_pdfstuffs.js)
 
@@ -1376,7 +1456,7 @@
 
 --- Mở khoá web ---
 <details>
-  <summary>154. Hack Duck race</summary>
+  <summary>162. Hack Duck race</summary>
 
   [Xem mã nguồn](/scripts/duckRace_cheat.js)
 
@@ -1386,7 +1466,7 @@
 
 </details>
 <details>
-  <summary>155. Hack Wheel of Names</summary>
+  <summary>163. Hack Wheel of Names</summary>
 
   [Xem mã nguồn](/scripts/wheelOfNames_hack.js)
 
@@ -1394,7 +1474,7 @@
 
 </details>
 <details>
-  <summary>156. Đọc bài viết medium full</summary>
+  <summary>164. Đọc bài viết medium full</summary>
 
   [Xem mã nguồn](/scripts/medium_readFullArticle.js)
 
@@ -1402,7 +1482,7 @@
 
 </details>
 <details>
-  <summary>157. Medium - Fix font Tiếng Việt</summary>
+  <summary>165. Medium - Fix font Tiếng Việt</summary>
 
   [Xem mã nguồn](/scripts/medium_fixVietnameseFont.js)
 
@@ -1414,7 +1494,7 @@
 
 </details>
 <details>
-  <summary>158. Fireship - Mở khoá PRO</summary>
+  <summary>166. Fireship - Mở khoá PRO</summary>
 
   [Xem mã nguồn](/scripts/fireship_vip.js)
 
@@ -1422,7 +1502,7 @@
 
 </details>
 <details>
-  <summary>159. Studocu - Xem miễn phí VIP</summary>
+  <summary>167. Studocu - Xem miễn phí VIP</summary>
 
   [Xem mã nguồn](/scripts/studocu_bypassPreview.js)
 
@@ -1430,7 +1510,7 @@
 
 </details>
 <details>
-  <summary>160. Scribd - Xem miễn phí VIP</summary>
+  <summary>168. Scribd - Xem miễn phí VIP</summary>
 
   [Xem mã nguồn](/scripts/scribd_bypassPreview.js)
 
@@ -1438,17 +1518,27 @@
 
 </details>
 <details>
-  <summary>161. Studyphim - Xem miễn phí</summary>
+  <summary>169. Studyphim - Xem miễn phí</summary>
 
   [Xem mã nguồn](/scripts/studyphim_unlimited.js)
 
   <code>Xem phim miễn phí trên Studyphim không cần đăng nhập</code>
 
 </details>
+<details>
+  <summary>170. Bypass Learn Anything</summary>
+
+  [Xem mã nguồn](/scripts/bypass_learnAnything.js)
+
+  <code>Xem nội dung web learn-anything.xyz không cần đăng ký member</code>
+
+  ![](/scripts/bypass_LearnAnything.png)
+
+</details>
 
 --- Mở khoá chức năng ---
 <details>
-  <summary>162. Bật/Tắt cho phép sao chép</summary>
+  <summary>171. Bật/Tắt cho phép sao chép</summary>
 
   [Xem mã nguồn](/scripts/simpleAllowCopy.js)
 
@@ -1462,7 +1552,7 @@
 
 </details>
 <details>
-  <summary>163. Phát hiện ký tự ẩn (Zero-Width)</summary>
+  <summary>172. Phát hiện ký tự ẩn (Zero-Width)</summary>
 
   [Xem mã nguồn](/scripts/detect_zeroWidthCharacters.js)
 
@@ -1470,7 +1560,7 @@
 
 </details>
 <details>
-  <summary>164. Nhúng script vào trang web</summary>
+  <summary>173. Nhúng script vào trang web</summary>
 
   [Xem mã nguồn](/scripts/injectScriptToWebsite.js)
 
@@ -1478,7 +1568,7 @@
 
 </details>
 <details>
-  <summary>165. Hiện các thành phần web bị ẩn</summary>
+  <summary>174. Hiện các thành phần web bị ẩn</summary>
 
   [Xem mã nguồn](/scripts/showHiddenFields.js)
 
@@ -1486,7 +1576,7 @@
 
 </details>
 <details>
-  <summary>166. Xem cookies</summary>
+  <summary>175. Xem cookies</summary>
 
   [Xem mã nguồn](/scripts/viewCookies.js)
 
@@ -1494,7 +1584,7 @@
 
 </details>
 <details>
-  <summary>167. Xoá Cookies</summary>
+  <summary>176. Xoá Cookies</summary>
 
   [Xem mã nguồn](/scripts/removeCookies.js)
 
@@ -1504,7 +1594,7 @@
 
 --- Khác ---
 <details>
-  <summary>168. Tăng tốc tối đa trình duyệt</summary>
+  <summary>177. Tăng tốc tối đa trình duyệt</summary>
 
   [Xem mã nguồn](/scripts/recommend_chromeFlags.js)
 
@@ -1512,7 +1602,7 @@
 
 </details>
 <details>
-  <summary>169. Xem mật khẩu wifi đã lưu</summary>
+  <summary>178. Xem mật khẩu wifi đã lưu</summary>
 
   [Xem mã nguồn](/scripts/recommend_viewSavedWifiPass.js)
 
@@ -1520,7 +1610,7 @@
 
 </details>
 <details>
-  <summary>170. Leak check - lộ mật khẩu email?</summary>
+  <summary>179. Leak check - lộ mật khẩu email?</summary>
 
   [Xem mã nguồn](/scripts/recommend_leakCheck.js)
 
@@ -1532,7 +1622,7 @@
 
 --- Nổi bật ---
 <details>
-  <summary>171. Chế độ tối cho PDF</summary>
+  <summary>180. Chế độ tối cho PDF</summary>
 
   [Xem mã nguồn](/scripts/darkModePDF.js)
 
@@ -1540,7 +1630,7 @@
 
 </details>
 <details>
-  <summary>172. Bật/tắt chế độ chỉnh sửa website</summary>
+  <summary>181. Bật/tắt chế độ chỉnh sửa website</summary>
 
   [Xem mã nguồn](/scripts/toggleEditPage.js)
 
@@ -1548,7 +1638,7 @@
 
 </details>
 <details>
-  <summary>173. Hiện thị FPS</summary>
+  <summary>182. Hiện thị FPS</summary>
 
   [Xem mã nguồn](/scripts/showFPS.js)
 
@@ -1556,7 +1646,7 @@
 
 </details>
 <details>
-  <summary>174. Hiện thị FPS - ver 2</summary>
+  <summary>183. Hiện thị FPS - ver 2</summary>
 
   [Xem mã nguồn](/scripts/showFps_v2.js)
 
@@ -1564,7 +1654,7 @@
 
 </details>
 <details>
-  <summary>175. Ẩn/Hiện ô nhập mật khẩu</summary>
+  <summary>184. Ẩn/Hiện ô nhập mật khẩu</summary>
 
   [Xem mã nguồn](/scripts/toggle_passwordField.js)
 
@@ -1572,7 +1662,7 @@
 
 </details>
 <details>
-  <summary>176. Dark reader</summary>
+  <summary>185. Dark reader</summary>
 
   [Xem mã nguồn](/scripts/recommend_DarkReader.js)
 
@@ -1580,7 +1670,7 @@
 
 </details>
 <details>
-  <summary>177. CSS Portal - Nâng trình CSS</summary>
+  <summary>186. CSS Portal - Nâng trình CSS</summary>
 
   [Xem mã nguồn](/scripts/recommend_cssportal.js)
 
@@ -1588,7 +1678,7 @@
 
 </details>
 <details>
-  <summary>178. CSS Loaders - 600+ css loading</summary>
+  <summary>187. CSS Loaders - 600+ css loading</summary>
 
   [Xem mã nguồn](/scripts/recommend_cssloaders.js)
 
@@ -1596,7 +1686,7 @@
 
 </details>
 <details>
-  <summary>179. UIverse - Tổng hợp code UI xịn</summary>
+  <summary>188. UIverse - Tổng hợp code UI xịn</summary>
 
   [Xem mã nguồn](/scripts/recommend_uiverse.js)
 
@@ -1606,7 +1696,7 @@
 
 --- Xem ---
 <details>
-  <summary>180. Font Rendering - font chữ dễ nhìn</summary>
+  <summary>189. Font Rendering - font chữ dễ nhìn</summary>
 
   [Xem mã nguồn](/scripts/recommend_fontRendering.js)
 
@@ -1614,7 +1704,7 @@
 
 </details>
 <details>
-  <summary>181. Kiểm tra font chữ</summary>
+  <summary>190. Kiểm tra font chữ</summary>
 
   [Xem mã nguồn](/scripts/whatFont.js)
 
@@ -1622,7 +1712,7 @@
 
 </details>
 <details>
-  <summary>182. Xem tất cả tất cả javascript events</summary>
+  <summary>191. Xem tất cả tất cả javascript events</summary>
 
   [Xem mã nguồn](/scripts/visualEvent.js)
 
@@ -1630,7 +1720,7 @@
 
 </details>
 <details>
-  <summary>183. Xem mọi hình ảnh có trong website</summary>
+  <summary>192. Xem mọi hình ảnh có trong website</summary>
 
   [Xem mã nguồn](/scripts/listAllImagesInWeb.js)
 
@@ -1638,7 +1728,7 @@
 
 </details>
 <details>
-  <summary>184. Xem tất cả link</summary>
+  <summary>193. Xem tất cả link</summary>
 
   [Xem mã nguồn](/scripts/viewAllLinks.js)
 
@@ -1646,7 +1736,7 @@
 
 </details>
 <details>
-  <summary>185. Xem tất cả scripts</summary>
+  <summary>194. Xem tất cả scripts</summary>
 
   [Xem mã nguồn](/scripts/viewScriptsUsed.js)
 
@@ -1654,7 +1744,7 @@
 
 </details>
 <details>
-  <summary>186. Xem tất cả stylesheet</summary>
+  <summary>195. Xem tất cả stylesheet</summary>
 
   [Xem mã nguồn](/scripts/viewStylesUsed.js)
 
@@ -1662,7 +1752,7 @@
 
 </details>
 <details>
-  <summary>187. Trình kiểm tra css cục bộ</summary>
+  <summary>196. Trình kiểm tra css cục bộ</summary>
 
   [Xem mã nguồn](/scripts/cssSelectorViewer.js)
 
@@ -1672,7 +1762,7 @@
 
 --- Xoá ---
 <details>
-  <summary>188. Xoá màu website</summary>
+  <summary>197. Xoá màu website</summary>
 
   [Xem mã nguồn](/scripts/removeColours.js)
 
@@ -1680,7 +1770,7 @@
 
 </details>
 <details>
-  <summary>189. Xoá stylesheet</summary>
+  <summary>198. Xoá stylesheet</summary>
 
   [Xem mã nguồn](/scripts/removeStylesheet.js)
 
@@ -1688,7 +1778,7 @@
 
 </details>
 <details>
-  <summary>190. Xoá mọi hình ảnh</summary>
+  <summary>199. Xoá mọi hình ảnh</summary>
 
   [Xem mã nguồn](/scripts/removeImages.js)
 
@@ -1696,7 +1786,7 @@
 
 </details>
 <details>
-  <summary>191. Xoá mọi iframe/embed</summary>
+  <summary>200. Xoá mọi iframe/embed</summary>
 
   [Xem mã nguồn](/scripts/removeBloat.js)
 
@@ -1706,7 +1796,7 @@
 
 --- Bảng ---
 <details>
-  <summary>192. Thêm sắp xếp cho bảng</summary>
+  <summary>201. Thêm sắp xếp cho bảng</summary>
 
   [Xem mã nguồn](/scripts/table_addSortTable.js)
 
@@ -1714,7 +1804,7 @@
 
 </details>
 <details>
-  <summary>193. Thêm cột số thứ tự</summary>
+  <summary>202. Thêm cột số thứ tự</summary>
 
   [Xem mã nguồn](/scripts/table_addNumberColumn.js)
 
@@ -1722,7 +1812,7 @@
 
 </details>
 <details>
-  <summary>194. Đổi chỗ hàng và cột</summary>
+  <summary>203. Đổi chỗ hàng và cột</summary>
 
   [Xem mã nguồn](/scripts/table_swapRowAndColumn.js)
 
@@ -1732,7 +1822,7 @@
 
 --- Khác ---
 <details>
-  <summary>195. Tô màu cho link</summary>
+  <summary>204. Tô màu cho link</summary>
 
   [Xem mã nguồn](/scripts/internalOrExternalLink.js)
 
@@ -1742,7 +1832,7 @@
 
 </details>
 <details>
-  <summary>196. Lấy kích thước trang web</summary>
+  <summary>205. Lấy kích thước trang web</summary>
 
   [Xem mã nguồn](/scripts/getWindowSize.js)
 
@@ -1750,7 +1840,7 @@
 
 </details>
 <details>
-  <summary>197. Hiệu ứng tuyết rơi</summary>
+  <summary>206. Hiệu ứng tuyết rơi</summary>
 
   [Xem mã nguồn](/scripts/letItSnow.js)
 

@@ -8,11 +8,11 @@
 
 - [ ] youtube reverse api??? <https://github.com/LuanRT/YouTube.js>
 
-- [ ] add this beautiful video downloader tool <https://github.com/imputnet/cobalt> <https://github.com/imputnet/cobalt/blob/current/docs/api.md>
+- [x] add this beautiful video downloader tool <https://github.com/imputnet/cobalt> <https://github.com/imputnet/cobalt/blob/current/docs/api.md>
 
 - [ ] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
 
-- [ ] hotfix - use chrome.downloads instead of library
+- [x] hotfix - use chrome.downloads instead of library => can not apply to all scripts
 
 - [x] get fb profile pic <https://www.facebook.com/profile/pic.php?cuid={}&square_px=1000> -> dont know now cuid was generated
 

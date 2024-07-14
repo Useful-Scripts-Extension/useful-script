@@ -38,6 +38,51 @@ const tabs = [
     scripts: [
       // s._test,
       // s._ufs_statistic,
+      {
+        id: "recommend_theresanaiforthat",
+        icon: "https://theresanaiforthat.com/favicon.ico",
+        name: {
+          en: "There's an AI for that",
+          vi: "There's an AI for that - Tìm AI",
+        },
+        description: {
+          en: "Collection of thousand of AI tools. Easy to search by category",
+          vi: "Tổng hợp hàng ngàn công cụ AI hiện có. Dễ dàng tìm kiếm theo chủ đề",
+        },
+        popupScript: {
+          onClick: () => window.open("https://theresanaiforthat.com/"),
+        },
+      },
+      {
+        id: "recommend_timeis",
+        icon: "https://time.is/favicon.ico",
+        name: {
+          en: "Time.is - Check your time",
+          vi: "Time.is - Kiểm tra thời gian",
+        },
+        description: {
+          en: "Exact time for any time zone.",
+          vi: "Đồng hồ chính xác nhất. Kiểm tra đồng hồ trên máy của bạn nhanh hay chậm.",
+        },
+        popupScript: {
+          onClick: () => window.open("https://time.is/"),
+        },
+      },
+      {
+        id: "recommend_googleTrending",
+        icon: "https://www.gstatic.com/trends/favicon.ico",
+        name: {
+          en: "Google trending - See what trending now",
+          vi: "Google trending - Nội dung nổi bật",
+        },
+        description: {
+          en: "See what people are searching on Google. Top treding every day, realtime.",
+          vi: "Xem mọi người đang tìm gì trên google. Thống kê từng ngày, thời gian thực.",
+        },
+        popupScript: {
+          onClick: () => window.open("https://trends.google.com/"),
+        },
+      },
       s.similarWeb,
       s.similarWeb_bypassLimit,
       s.search_sharedAccount,
@@ -237,7 +282,6 @@ const tabs = [
       s.studocu_downs,
       s.scribd_downloadDocuments,
       s.tailieu_vn,
-
       {
         id: "recommend_docsdownloader",
         icon: "https://docsdownloader.com/assets/img/android-icon-192x192.png",
