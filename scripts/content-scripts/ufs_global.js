@@ -10,6 +10,7 @@ export const UfsGlobal = {
     waitForTabToLoad,
   },
   DOM: {
+    pickElement,
     getMousePos,
     isInCrossOriginFrame,
     isInIframe,
@@ -19,6 +20,7 @@ export const UfsGlobal = {
     addLoadingAnimationAtPos,
     addEventListener,
     enableDragAndZoom,
+    getElementBoundingClientRect,
     getContentClientRect,
     dataURLToCanvas,
     notifyStack,
@@ -199,6 +201,188 @@ function download(options) {
 // #endregion
 
 // #region DOM
+function pickElement() {
+  return new Promise((resolve) => {
+    // #region init elements
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "closed" });
+
+    const style = document.createElement("style");
+    style.textContent = /*css*/ `
+      :host {
+        position: fixed;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0);
+        z-index: 99999999;
+        pointer-events: none;
+      }
+      #highlighter {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        background: #ff3f3f33;
+        border: 1px solid #F00;
+        mix-blend-mode: screen;
+      }
+      #confirmer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 200px;
+        height: 200px;
+      }
+      #confirmer input {
+        width: 100%;
+      }
+    `;
+    shadow.append(style);
+
+    const highlighter = document.createElement("div");
+    highlighter.id = "highlighter";
+    shadow.append(highlighter);
+
+    // const confirmer = document.createElement("div");
+    // confirmer.id = "confirmer";
+    // confirmer.innerHTML = `
+    //   <input type="range"></input>
+    //   <butotn>Pick</button>
+    //   <button>Confirm</button>
+    // `;
+    // shadow.append(confirmer);
+
+    document.documentElement.append(host);
+    // #endregion
+
+    // #region pick element
+    const STATES = {
+      picking: "picking",
+      confirming: "confirming",
+    };
+    let state = STATES.picking;
+    let currentTarget = null;
+    function onMouseOver(e) {
+      e.preventDefault();
+      const target = e.target;
+      if (state !== STATES.picking || !target || target === highlighter) return;
+
+      highlightElement(target);
+    }
+
+    function highlightElement(elem) {
+      const rect = getElementBoundingClientRect(elem);
+      highlighter.style.cssText = `
+        top: ${rect.top}px;
+        left: ${rect.left}px;
+        width: ${rect.width}px;
+        height: ${rect.height}px;
+      `;
+      currentTarget = elem;
+    }
+
+    window.addEventListener("mouseover", onMouseOver, { capture: true });
+    window.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        // confirmPick(currentTarget);
+
+        host.remove();
+        resolve(currentTarget);
+        window.removeEventListener("mouseover", onMouseOver);
+      },
+      { once: true, capture: true }
+    );
+    // #endregion
+
+    // #region confirm pick
+    // function confirmPick(elem) {
+    //   state = STATES.confirming;
+
+    //   const nodes = getAllNodes(elem);
+    //   const input = confirmer.querySelector("input");
+    //   confirmer.style.display = "block";
+    //   input.min = 0;
+    //   input.max = nodes.length - 1;
+    //   input.value = 0;
+    //   input.step = 1;
+    //   input.oninput = (e) => {
+    //     const index = parseInt(e.target.value);
+    //     const node = nodes[index];
+    //     highlightElement(node);
+    //   };
+    // }
+    // function getAllNodes(elem) {
+    //   const result = [];
+    //   result.push(...getAllChilds(elem));
+    //   result.unshift(...(getAllParents(elem).reverse() || []));
+    //   return result;
+    // }
+    // function getAllChilds(elem) {
+    //   const result = [];
+    //   if (elem.children) {
+    //     for (const child of elem.children) {
+    //       result.push(child);
+    //       result.push(...getAllChilds(child));
+    //     }
+    //   }
+    //   return result;
+    // }
+    // function getAllParents(elem) {
+    //   const result = [];
+    //   if (elem.parentElement) {
+    //     result.push(elem.parentElement);
+    //     result.push(...getAllParents(elem.parentElement));
+    //   }
+    //   return result;
+    // }
+    // #endregion
+  });
+}
+// https://stackoverflow.com/a/5178132/11898496
+function createXPathFromElement(elm) {
+  var allNodes = document.getElementsByTagName("*");
+  for (var segs = []; elm && elm.nodeType == 1; elm = elm.parentNode) {
+    if (elm.hasAttribute("id")) {
+      var uniqueIdCount = 0;
+      for (var n = 0; n < allNodes.length; n++) {
+        if (allNodes[n].hasAttribute("id") && allNodes[n].id == elm.id)
+          uniqueIdCount++;
+        if (uniqueIdCount > 1) break;
+      }
+      if (uniqueIdCount == 1) {
+        segs.unshift('id("' + elm.getAttribute("id") + '")');
+        return segs.join("/");
+      } else {
+        segs.unshift(
+          elm.localName.toLowerCase() + '[@id="' + elm.getAttribute("id") + '"]'
+        );
+      }
+    } else if (elm.hasAttribute("class")) {
+      segs.unshift(
+        elm.localName.toLowerCase() +
+          '[@class="' +
+          elm.getAttribute("class") +
+          '"]'
+      );
+    } else {
+      for (
+        var i = 1, sib = elm.previousSibling;
+        sib;
+        sib = sib.previousSibling
+      ) {
+        if (sib.localName == elm.localName) i++;
+      }
+      segs.unshift(elm.localName.toLowerCase() + "[" + i + "]");
+    }
+  }
+  return segs.length ? "/" + segs.join("/") : null;
+}
 function isInCrossOriginFrame() {
   let result = true;
   try {
@@ -442,6 +626,37 @@ function enableDragAndZoom(element, container, onUpdateCallback) {
       listeners.forEach((l) => l?.());
     },
   };
+}
+function getElementBoundingClientRect(elem) {
+  let rect =
+    typeof elem.getBoundingClientRect === "function"
+      ? elem.getBoundingClientRect()
+      : { height: 0, left: 0, top: 0, width: 0 };
+
+  // https://github.com/gorhill/uBlock/issues/1024
+  // Try not returning an empty bounding rect.
+  if (rect.width !== 0 && rect.height !== 0) return rect;
+  if (elem.shadowRoot instanceof DocumentFragment)
+    return getElementBoundingClientRect(elem.shadowRoot);
+
+  let left = rect.left,
+    right = left + rect.width,
+    top = rect.top,
+    bottom = top + rect.height;
+
+  for (const child of elem.children) {
+    rect = getElementBoundingClientRect(child);
+    if (rect.width === 0 || rect.height === 0) continue;
+    if (rect.left < left) left = rect.left;
+    if (rect.right > right) right = rect.right;
+    if (rect.top < top) top = rect.top;
+    if (rect.bottom > bottom) bottom = rect.bottom;
+  }
+
+  let height = bottom - top,
+    width = right - left;
+
+  return { bottom, height, left, right, top, width };
 }
 // prettier-ignore
 function getContentClientRect(target, win = window) {

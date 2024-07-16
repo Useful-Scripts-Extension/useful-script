@@ -577,6 +577,7 @@ const tabs = [
       s.youtube_changeCountry,
       s.youtube_getVideoThumbnail,
       s.youtube_toggleLight,
+      s.pip_anything,
       s.pip_fullWebsite,
       s.pip_canvas,
       {
