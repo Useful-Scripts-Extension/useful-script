@@ -92,7 +92,7 @@ async function setEnableForAllTab(enable) {
     : { vi: "Tắt", en: "Disabled" };
 
   if (count)
-    Swal.fire({
+    await Swal.fire({
       icon: "success",
       title: t({
         vi: "Đã " + text.vi + " Cuộn chuột Siêu mượt",

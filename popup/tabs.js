@@ -9,8 +9,6 @@ import {
   recentScriptsSaver,
 } from "./helpers/storageScripts.js";
 
-console.log(s);
-
 const createTitle = (en, vi) => ({ name: { en, vi } });
 
 const specialTabs = [

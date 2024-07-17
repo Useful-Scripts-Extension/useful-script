@@ -15,6 +15,7 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
+  getAllActiveScriptIds,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -39,6 +40,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
+import allScripts from "../scripts/_allScripts.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
@@ -810,7 +812,7 @@ async function restore() {
     ))
   )
     return;
-  Swal.fire({
+  const result = await Swal.fire({
     title: t({ en: "Restore data", vi: "Khôi phục dữ liệu" }),
     text: t({ en: "Select file to restore", vi: "Chọn file để khôi phục" }),
     input: "file",
@@ -834,44 +836,57 @@ async function restore() {
       });
     },
     allowOutsideClick: () => !Swal.isLoading(),
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        trackEvent("RESTORE");
-        const json = JSON.parse(result.value);
-        const { localStorage: l, chromeStorage } = json;
+  });
 
-        if (l) {
-          localStorage.clear();
-          Object.keys(l).forEach((key) => {
-            localStorage[key] = l[key];
-          });
-        }
+  if (!result.isConfirmed) return;
+  try {
+    trackEvent("RESTORE");
+    const json = JSON.parse(result.value);
+    const { localStorage: l, chromeStorage } = json;
 
-        if (chromeStorage) {
-          await chrome.storage.local.clear();
-          for (let key in chromeStorage) {
-            await chrome.storage.local.set({ [key]: chromeStorage[key] });
-          }
-        }
+    // override localStorage
+    if (l) {
+      localStorage.clear();
+      Object.keys(l).forEach((key) => {
+        localStorage[key] = l[key];
+      });
+    }
 
-        Swal.fire({
-          icon: "success",
-          title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
-          text: t({
-            en: "Imported data from",
-            vi: "Đã nạp dữ liệu",
-          }),
-        });
-      } catch (e) {
-        Swal.fire({
-          icon: "error",
-          title: t({ en: "Error", vi: "Lỗi" }),
-          text: e?.message || e,
-        });
+    if (chromeStorage) {
+      // trigger onDisable current active scripts
+      const oldActiveScriptIds = await getAllActiveScriptIds();
+      for (let s of oldActiveScriptIds.map((id) => allScripts[id])) {
+        if (typeof s?.popupScript?.onDisable === "function")
+          await s.popupScript.onDisable();
+      }
+
+      // override chrome.storage
+      await chrome.storage.local.clear();
+      await chrome.storage.local.set(chromeStorage);
+
+      // trigger onEnable new active scripts
+      const newActiveScriptIds = await getAllActiveScriptIds();
+      for (let s of newActiveScriptIds.map((id) => allScripts[id])) {
+        if (typeof s?.popupScript?.onEnable === "function")
+          await s.popupScript.onEnable();
       }
     }
-  });
+
+    Swal.fire({
+      icon: "success",
+      title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
+      text: t({
+        en: "Imported data from",
+        vi: "Đã nạp dữ liệu",
+      }),
+    });
+  } catch (e) {
+    Swal.fire({
+      icon: "error",
+      title: t({ en: "Error", vi: "Lỗi" }),
+      text: e?.message || e,
+    });
+  }
 }
 
 async function reset() {

@@ -68,7 +68,7 @@ export default {
         }
       }
       if (count)
-        Swal.fire({
+        await Swal.fire({
           icon: "success",
           title: t({
             vi: "Đã bật",
@@ -107,7 +107,7 @@ export default {
         }
       }
       if (count)
-        Swal.fire({
+        await Swal.fire({
           icon: "success",
           title: t({
             vi: "Đã tắt",
