@@ -872,7 +872,7 @@ async function restore() {
       }
     }
 
-    Swal.fire({
+    await Swal.fire({
       icon: "success",
       title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
       text: t({
@@ -880,6 +880,8 @@ async function restore() {
         vi: "Đã nạp dữ liệu",
       }),
     });
+
+    location.reload();
   } catch (e) {
     Swal.fire({
       icon: "error",
