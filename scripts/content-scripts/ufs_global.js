@@ -216,7 +216,6 @@ function pickElement() {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0, 0, 0, 0);
         z-index: 99999999;
         pointer-events: none;
       }
@@ -226,9 +225,9 @@ function pickElement() {
         left: 0;
         width: 0;
         height: 0;
-        background: #ff3f3f33;
+        background: #ff3f3f22;
         border: 1px solid #F00;
-        mix-blend-mode: screen;
+        box-shadow: 0 0 0 99999px rgba(0, 0, 0, .5);
       }
       #confirmer {
         position: absolute;
@@ -298,49 +297,6 @@ function pickElement() {
       },
       { once: true, capture: true }
     );
-    // #endregion
-
-    // #region confirm pick
-    // function confirmPick(elem) {
-    //   state = STATES.confirming;
-
-    //   const nodes = getAllNodes(elem);
-    //   const input = confirmer.querySelector("input");
-    //   confirmer.style.display = "block";
-    //   input.min = 0;
-    //   input.max = nodes.length - 1;
-    //   input.value = 0;
-    //   input.step = 1;
-    //   input.oninput = (e) => {
-    //     const index = parseInt(e.target.value);
-    //     const node = nodes[index];
-    //     highlightElement(node);
-    //   };
-    // }
-    // function getAllNodes(elem) {
-    //   const result = [];
-    //   result.push(...getAllChilds(elem));
-    //   result.unshift(...(getAllParents(elem).reverse() || []));
-    //   return result;
-    // }
-    // function getAllChilds(elem) {
-    //   const result = [];
-    //   if (elem.children) {
-    //     for (const child of elem.children) {
-    //       result.push(child);
-    //       result.push(...getAllChilds(child));
-    //     }
-    //   }
-    //   return result;
-    // }
-    // function getAllParents(elem) {
-    //   const result = [];
-    //   if (elem.parentElement) {
-    //     result.push(elem.parentElement);
-    //     result.push(...getAllParents(elem.parentElement));
-    //   }
-    //   return result;
-    // }
     // #endregion
   });
 }

@@ -1,3 +1,7 @@
-import("./index.js").then(() => {
-  document.querySelector("#loading-fullscreen")?.remove();
-});
+setTimeout(
+  () =>
+    import("./index.js").then(() => {
+      document.querySelector("#loading-fullscreen")?.remove();
+    }),
+  0
+);
