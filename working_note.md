@@ -2,6 +2,10 @@
 
 ## 01/07/2024 - ?
 
+- [ ] good feature - medium unlock <https://readmedium.com/> <https://chromewebstore.google.com/detail/medium-unlock/babnnfmbjokkeieobamoifmeapbbfhje>
+
+- [ ] good feature - facebook adblocker (SEEM broken) <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
+
 - [ ] take a look at <https://www.npmjs.com/package/memory-fs>
 
 - [ ] ffmpeg in browser <https://github.com/ffmpegwasm/ffmpeg.wasm>
