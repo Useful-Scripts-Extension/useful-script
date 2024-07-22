@@ -90,6 +90,10 @@ export const UfsGlobal = {
     zipAndDownloadBlobs,
     getBlobFromUrl,
     getBlobFromUrlWithProgress,
+    sanitizeFileName,
+    getOriginalWindowFunction,
+    chooseFolderToDownload,
+    downloadToFolder,
     downloadBlobUrl,
     downloadBlob,
     downloadURL,
@@ -2013,6 +2017,83 @@ async function getBlobFromUrlWithProgress(url, progressCallback) {
   });
 
   return blob;
+}
+function sanitizeFileName(fileName) {
+  // Định nghĩa các ký tự hợp lệ (chữ cái, số, dấu gạch dưới, dấu gạch ngang và dấu chấm)
+  const validChars = /^[a-zA-Z0-9_\-.]+$/;
+
+  // Lược bỏ các ký tự không hợp lệ
+  let sanitizedFileName = "";
+  for (let char of fileName) {
+    if (validChars.test(char)) {
+      sanitizedFileName += char;
+    }
+  }
+
+  // Trả về tên tệp đã lược bỏ các ký tự không hợp lệ
+  return sanitizedFileName;
+}
+
+// Ví dụ sử dụng hàm
+let originalFileName = "tên-tệp!không@hợp#lệ$.txt";
+let sanitizedFileName = sanitizeFileName(originalFileName);
+console.log(sanitizedFileName); // Output: tên-tệpkhônghợpệ.txt
+
+// https://stackoverflow.com/a/69543476/11898496
+function getOriginalWindowFunction(fnName) {
+  const key = "ufs_original_windown_fn";
+  if (!window[key]) window[key] = {};
+
+  if (!window[key][fnName]) {
+    const iframe = document.createElement("iframe");
+
+    iframe.style.display = "none";
+    document.body.appendChild(iframe); // add element
+
+    window[key][fnName] = iframe.contentWindow[fnName];
+  }
+
+  return window[key][fnName];
+}
+async function chooseFolderToDownload(subDirName = "") {
+  const dirHandler = await window.showDirectoryPicker({
+    mode: "readwrite",
+    // startIn: 'downloads',
+  });
+  await dirHandler.requestPermission({ writable: true });
+  if (!subDirName) return dirHandler;
+
+  const subDir = await dirHandler.getDirectoryHandle(subDirName, {
+    create: true,
+  });
+  return subDir;
+}
+async function downloadToFolder(url, fileName, dirHandler, subFolderName = "") {
+  try {
+    const f = getOriginalWindowFunction("fetch");
+
+    // try download directly, using fetch blob
+    const res = await f(url);
+    const blob = await res.blob();
+    const fileHandler = await dirHandler.getFileHandle(fileName, {
+      create: true,
+    });
+    const writable = await fileHandler.createWritable();
+    await writable.write(blob);
+    await writable.close();
+    return true;
+  } catch (e) {
+    console.error(e);
+    debugger;
+
+    // backup download: using extension api
+    await download({
+      url: url,
+      conflictAction: "overwrite",
+      filename: (subFolderName ? subFolderName + "/" : "") + fileName,
+    });
+    return false;
+  }
 }
 
 // TODO use saveAs instead all of these download functions

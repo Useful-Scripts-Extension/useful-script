@@ -1,8 +1,16 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { hookFetch } from "./libs/ajax-hook/index.js";
 import {
   downloadTiktokVideoFromUrl,
   downloadTiktokVideoFromId,
 } from "./tiktok_GLOBAL.js";
+
+const CACHED = {
+  list: [],
+  videoById: new Map(),
+};
+
+const commId = "ufs_tiktok_batchDownload_startDownload";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -32,7 +40,46 @@ export default {
     },
   },
 
+  contentScript: {
+    onDocumentStart: () => {
+      window.addEventListener("message", async (event) => {
+        console.log(event.data);
+        if (event.data?.type === commId) {
+          const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
+          for (const { url, name } of event.data.data) {
+            await UfsGlobal.Utils.downloadToFolder(url, name, dir);
+          }
+        }
+      });
+    },
+  },
+
   pageScript: {
+    onDocumentStart: () => {
+      // reference to Cached
+      window.ufs_tiktok_batchDownload = CACHED;
+
+      hookFetch({
+        onAfter: async (url, options, response) => {
+          if (url.includes("api/post/item_list")) {
+            // clone to new response
+            const res = response.clone();
+            const json = await res.json();
+            console.log(json);
+
+            if (json?.itemList) {
+              CACHED.list.push(...json.itemList);
+              json.itemList.forEach((_) => {
+                CACHED.videoById.set(_.video.id, {
+                  url: _.video.playAddr,
+                  name: _.desc,
+                });
+              });
+            }
+          }
+        },
+      });
+    },
     onDocumentIdle: async () => {
       let checkboxes = [];
 
@@ -193,14 +240,18 @@ export default {
             videoUrls.length
           }]`;
           try {
-            console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
-            progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
-            downloadBtn.innerText = `Đang get link ${progress}...`;
-            let link = await downloadTiktokVideoFromUrl(queue[0], true);
+            const url = queue[0];
+            const id = getId(url);
 
-            if (!link) {
-              link = await downloadTiktokVideoFromId(getId(queue[0]));
-            }
+            console.log(`${progress} Đang tìm link cho video ${url}`);
+            progressDiv.innerText = `${progress} Đang tìm link video ${id}...`;
+            downloadBtn.innerText = `Đang get link ${progress}...`;
+
+            const cached = CACHED.videoById.get(id);
+            const link =
+              cached?.url ||
+              (await downloadTiktokVideoFromUrl(url, true)) ||
+              (await downloadTiktokVideoFromId(id));
 
             if (link) {
               resultTxt.hidden = false;
@@ -208,9 +259,24 @@ export default {
               let count = resultTxt.value.split("\n").filter((i) => i).length;
               resultLabel.innerText = `Link tại đây, ${count} video, copy bỏ vào IDM tải hàng loạt nhé:`;
 
-              links.push(link);
+              // await UfsGlobal.Utils.downloadToFolder(link, id + ".mp4", dir);
+              // await UfsGlobal.Extension.download({
+              //   url: link,
+              //   conflictAction: "overwrite",
+              //   filename:
+              //     "tiktok/" +
+              //     UfsGlobal.Utils.sanitizeFileName(
+              //       CACHED.videoById.get(id)?.name || id
+              //     ) +
+              //     ".mp4",
+              // });
+              links.push({
+                url: link,
+                name:
+                  UfsGlobal.Utils.sanitizeFileName(cached?.name || id) + ".mp4",
+              });
             } else {
-              progressDiv.innerText = `[LỖI] Không thể tải video ${queue[0]}.`;
+              progressDiv.innerText = `[LỖI] Không thể tải video ${url}.`;
               await sleep(1000);
             }
             queue.shift();
@@ -226,7 +292,10 @@ export default {
         downloadBtn.disabled = false;
         downloadBtn.innerText = "GET LINK 🔗";
 
-        if (links?.length) UfsGlobal.Utils.copyToClipboard(links.join("\n"));
+        if (links?.length) {
+          UfsGlobal.Utils.copyToClipboard(links.map((_) => _.url).join("\n"));
+          // window.postMessage({ type: commId, data: links }, "*"); // send to content script to download
+        }
         console.log(links);
       }
 

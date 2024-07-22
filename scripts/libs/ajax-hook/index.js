@@ -26,17 +26,47 @@ let readyFetch = false;
 
 function initFetch() {
   const originalFetch = window.fetch;
-  window.fetch = async function (url, options) {
+  window.fetch = async function (urlOrRequest, options) {
+    let url = urlOrRequest;
+    if (urlOrRequest instanceof Request) {
+      url = urlOrRequest?.url;
+      options = options || {};
+      for (const key in urlOrRequest) {
+        const type = typeof urlOrRequest[key];
+        if (type === "string" || type === "number" || type === "boolean") {
+          options[key] = urlOrRequest[key];
+        }
+      }
+    }
+
     let request = { url, options };
     for (const { fn } of onBeforeFetchFn) {
-      const res = await fn?.(request.url, request.options);
+      const res = await fn?.(request.url, request.options)?.catch(
+        console.error
+      );
       if (res) request = res;
       if (res === null) return null;
     }
 
-    let response = await originalFetch(...request);
+    if (urlOrRequest instanceof Request) {
+      try {
+        // TODO modify options
+        // for (const key in request.options) {
+        //   urlOrRequest[key] = request.options[key];
+        // }
+        if (urlOrRequest.url !== request.url) {
+          urlOrRequest = new Request(request.url, urlOrRequest);
+        }
+      } catch (e) {
+        debugger;
+      }
+    }
+
+    let response = await originalFetch(urlOrRequest);
     for (const { fn } of onAfterFetchFn) {
-      const res = await fn?.(request.url, request.options, response);
+      const res = await fn?.(request.url, request.options, response)?.catch(
+        console.error
+      );
       if (res) response = res;
       if (res === null) return null;
     }
