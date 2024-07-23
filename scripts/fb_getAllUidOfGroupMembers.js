@@ -21,10 +21,6 @@ export default {
 
   pageScript: {
     onClick: async function () {
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
-
       function getGroupId() {
         try {
           return require("CometRouteStore").getRoute(location.pathname)

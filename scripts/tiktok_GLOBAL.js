@@ -171,7 +171,22 @@ export const SnapTik = {
     let result = c(...params);
     let jwt = result.match(/d\?token=(.*?)\&dl=1/)?.[1];
     if (!jwt) return null;
-    let payload = UfsGlobal.Utils.parseJwt(jwt);
+    let payload = parseJwt(jwt);
     return payload?.url;
   },
 };
+
+// https://stackoverflow.com/a/38552302/11898496
+function parseJwt(token) {
+  let base64Url = token.split(".")[1];
+  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  let jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}

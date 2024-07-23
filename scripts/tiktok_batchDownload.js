@@ -224,9 +224,7 @@ export default {
         return checkbox;
       }
 
-      async function sleep(time) {
-        await new Promise((resolve) => setTimeout(resolve, time));
-      }
+      const sleep = UfsGlobal.Utils.sleep;
 
       async function getLinkVideos(videoUrls) {
         if (!videoUrls.length) return;
@@ -265,15 +263,14 @@ export default {
               //   conflictAction: "overwrite",
               //   filename:
               //     "tiktok/" +
-              //     UfsGlobal.Utils.sanitizeFileName(
+              //     sanitizeFileName(
               //       CACHED.videoById.get(id)?.name || id
               //     ) +
               //     ".mp4",
               // });
               links.push({
                 url: link,
-                name:
-                  UfsGlobal.Utils.sanitizeFileName(cached?.name || id) + ".mp4",
+                name: sanitizeFileName(cached?.name || id) + ".mp4",
               });
             } else {
               progressDiv.innerText = `[LỖI] Không thể tải video ${url}.`;
@@ -340,3 +337,19 @@ export default {
     },
   },
 };
+
+function sanitizeFileName(fileName) {
+  // Định nghĩa các ký tự hợp lệ (chữ cái, số, dấu gạch dưới, dấu gạch ngang và dấu chấm)
+  const validChars = /^[a-zA-Z0-9_\-.]+$/;
+
+  // Lược bỏ các ký tự không hợp lệ
+  let sanitizedFileName = "";
+  for (let char of fileName) {
+    if (validChars.test(char)) {
+      sanitizedFileName += char;
+    }
+  }
+
+  // Trả về tên tệp đã lược bỏ các ký tự không hợp lệ
+  return sanitizedFileName;
+}

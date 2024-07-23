@@ -90,8 +90,7 @@ export default {
         //   filename: title + ".mp4",
         // });
 
-        const { formatSize, downloadBlob, getBlobFromUrlWithProgress } =
-          UfsGlobal.Utils;
+        const { formatSize, downloadBlob } = UfsGlobal.Utils;
         const blob = await getBlobFromUrlWithProgress(
           link,
           ({ loaded, total, speed }) => {
@@ -149,3 +148,35 @@ export const shared = {
     });
   },
 };
+
+async function getBlobFromUrlWithProgress(url, progressCallback) {
+  const response = await fetch(url, {});
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status} - ${response.statusText}`);
+  }
+  const contentLength = response.headers.get("content-length");
+  const total = parseInt(contentLength, 10);
+  let loaded = 0;
+  const reader = response.body.getReader();
+  const chunks = [];
+
+  const startTime = Date.now();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    loaded += value.byteLength;
+    const ds = (Date.now() - startTime + 1) / 1000;
+    progressCallback?.({
+      loaded,
+      total,
+      speed: loaded / ds,
+    });
+    chunks.push(value);
+  }
+
+  const blob = new Blob(chunks, {
+    type: response.headers.get("content-type"),
+  });
+
+  return blob;
+}

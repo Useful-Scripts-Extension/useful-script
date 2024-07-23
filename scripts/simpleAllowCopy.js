@@ -32,7 +32,7 @@ export default {
     },
 
     onClick_: function () {
-      let isMainFrame = !UfsGlobal.DOM.isInIframe();
+      let isMainFrame = window === window.top;
       if (!window.ufs_simpleAllowCopy) {
         if (isMainFrame)
           alert("Vui lòng mở chức năng trước, rồi tải lại trang web.");

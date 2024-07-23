@@ -147,7 +147,7 @@ function run() {
 
   // track user events: mouse, keyboard, touch, ...
   let needUpdateLastActive = true;
-  let updateLastActive = UfsGlobal.Utils.throttle(function (e, mainframe) {
+  let updateLastActive = throttle(function (e, mainframe) {
     needUpdateLastActive = true;
   }, 1000 / 24);
 
@@ -505,6 +505,22 @@ function run() {
     let newTitle = revert ? curTitle : time + curTitle;
     document.title = newTitle;
   }
+}
+// https://dev.to/jeetvora331/throttling-in-javascript-easiest-explanation-1081
+function throttle(mainFunction, delay) {
+  let timerFlag = null; // Variable to keep track of the timer
+
+  // Returning a throttled version
+  return (...args) => {
+    if (timerFlag === null) {
+      // If there is no timer currently running
+      mainFunction(...args); // Execute the main function
+      timerFlag = setTimeout(() => {
+        // Set a timer to clear the timerFlag after the specified delay
+        timerFlag = null; // Clear the timerFlag to allow the main function to be executed again
+      }, delay);
+    }
+  };
 }
 const backup = () => {
   // export data from https://chrome.google.com/webstore/detail/ppaojnbmmaigjmlpjaldnkgnklhicppk
