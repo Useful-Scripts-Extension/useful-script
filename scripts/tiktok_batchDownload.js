@@ -59,9 +59,169 @@ export default {
       // reference to Cached
       window.ufs_tiktok_batchDownload = CACHED;
 
+      const id = "ufs_tiktok_batchDownload";
+      const floatingBtnId = `${id}_floating_btn`;
+      const containerId = `${id}_container`;
+
+      const ui = document.createElement("div");
+      ui.id = id;
+      (document.body || document.documentElement).appendChild(ui);
+
+      ui.innerHTML = /*html*/ `
+        <style>
+          #${id} {
+            position: fixed;
+            z-index: 99999999999;
+          }
+          #${floatingBtnId} {
+            border-radius: 25px;
+            background: #444;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            border: 1px solid #777;
+            cursor: pointer;
+          }
+          #${floatingBtnId}:hover {
+            background: #666;
+          }
+          #${containerId} {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+          }
+          .ufs_popup {
+            background: #444;
+            color: #eee;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+          }
+          .ufs_popup table, .ufs_popup th, .ufs_popup td {
+            border: 1px solid #aaa;
+            border-collapse: collapse;
+          }
+          .ufs_popup table td {
+            padding: 10px;
+          }
+          .ufs_popup table th {
+            position: sticky;
+            top: -22px;
+            background: #333;
+          }
+        </style>
+
+        <div id="${floatingBtnId}">📥</div>
+
+        <div id="${containerId}">
+
+        </div>
+      `;
+      const floatingBtn = ui.querySelector("#" + floatingBtnId);
+      const container = ui.querySelector("#" + containerId);
+
+      function toggle(willShow) {
+        if (!(typeof willShow === "boolean")) {
+          let isShowing = container.style.display == "flex";
+          willShow = !isShowing;
+        }
+        container.style.display = willShow ? "flex" : "none";
+        return willShow;
+      }
+
+      function renderData() {
+        container.innerHTML = /*html*/ `
+<div class="ufs_popup">
+  <h1 style="text-align:center">Tiktok - Useful Scripts</h1>
+  <h2 style="text-align:center">Found ${CACHED.videoById.size} videos</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-sort="index">#</th>
+        <th>Video</th>
+        <th data-sort="title">Title</th>
+        <th data-sort="user">User</th>
+        <th data-sort="view">View</th>
+        <th data-sort="length">Length</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>`;
+
+        const tbody = container.querySelector("tbody");
+        renderTable(tbody);
+      }
+
+      function renderTable(
+        tbody,
+        data = Array.from(CACHED.videoById.values())
+      ) {
+        tbody.innerHTML = data
+          .map(
+            (v, i) => /*html*/ `
+<tr>
+<td>${i + 1}</td>
+<td>
+  <a target="_blank" href="${v.video.playAddr}">
+    <img src="${v.video.originCover}" style="width:150px" />
+  </a>
+</td>
+<td><p style="max-width:200px">${v.desc}</p></td>
+<td>
+  <a target="_blank" href="https://www.tiktok.com/@${v.author.uniqueId}">
+    <img src="${v.author.avatarThumb}" style="width:50px;height:50px" />
+  </a>
+  ${v.author.uniqueId}<br/>
+  ${v.author.nickname}<br/>
+  ${v.id}
+</td>
+<td>${UfsGlobal.Utils.moneyFormat(v.stats.playCount)}</td>
+<td>${v.video.duration}s</td>
+<td>
+  <p style="max-width:200px">
+    <a href="${v.video.playAddr}" download target="_blank">Video</a><br/>
+    <a href="${v.author.avatarLarger}" download target="_blank">
+      Avatar
+    </a><br/>
+    <a href="${v.music.playUrl}" download target="_blank">
+      Music: ${v.music.title}
+    </a>
+  </p>
+</td>
+</tr>`
+          )
+          .join("");
+      }
+
+      container.onclick = (e) => {
+        if (e.target === container) {
+          toggle(false);
+        }
+      };
+
+      floatingBtn.onclick = () => {
+        let isShow = toggle();
+        if (isShow) renderData();
+      };
+
       hookFetch({
         onAfter: async (url, options, response) => {
-          if (url.includes("api/post/item_list")) {
+          if (url.includes("item_list/")) {
             // clone to new response
             const res = response.clone();
             const json = await res.json();
@@ -70,17 +230,15 @@ export default {
             if (json?.itemList) {
               CACHED.list.push(...json.itemList);
               json.itemList.forEach((_) => {
-                CACHED.videoById.set(_.video.id, {
-                  url: _.video.playAddr,
-                  name: _.desc,
-                });
+                if (_.video.playAddr) CACHED.videoById.set(_.video.id, _);
               });
+              floatingBtn.innerHTML = `📥 (${CACHED.videoById.size})`;
             }
           }
         },
       });
     },
-    onDocumentIdle: async () => {
+    _onDocumentIdle: async () => {
       let checkboxes = [];
 
       // Setup DOM
