@@ -534,6 +534,8 @@ const updateTargetTab = UfsGlobal.Utils.debounce(async () => {
 }, 500);
 
 async function initOpenInNewTab() {
+  if (!chrome?.tabs) return;
+
   let currentTab = await chrome.tabs.getCurrent();
   isInNewTab = currentTab != null;
 
@@ -1010,7 +1012,7 @@ window.addEventListener("scroll", onScrollEnd);
   initScrollToTop();
   createTabs().then(restoreScroll);
 
-  chrome.windows.onFocusChanged.addListener((windowId) => {
+  chrome?.windows?.onFocusChanged?.addListener?.((windowId) => {
     setTimeout(async () => {
       let currentTab = await getCurrentTab();
     }, 200);
