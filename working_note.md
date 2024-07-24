@@ -2,6 +2,8 @@
 
 ## 01/07/2024 - ?
 
+- [ ] <https://clearthis.page/?u=https://khaidon.substack.com/p/water-washes-clean-a-fable>
+
 - [ ] good feature - global video speed <https://chromewebstore.google.com/detail/global-speed/jpbjcnkcffbooppibceonlgknpkniiff?hl=en> <https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk?hl=en>
 
 - [ ] good feature - medium unlock <https://readmedium.com/> <https://chromewebstore.google.com/detail/medium-unlock/babnnfmbjokkeieobamoifmeapbbfhje>
