@@ -40,7 +40,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
-import allScripts from "../scripts/_allScripts.js";
+import allScripts from "../scripts/@allScripts.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");

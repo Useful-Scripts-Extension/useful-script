@@ -1,4 +1,4 @@
-import * as allScripts from "./_index.js";
+import * as allScripts from "./@index.js";
 
 // inject id to all scripts
 Object.entries(allScripts).forEach(([variableName, script]) => {

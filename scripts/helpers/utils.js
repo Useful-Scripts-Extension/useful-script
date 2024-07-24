@@ -255,7 +255,7 @@ export const getAllTabs = async () => {
 };
 
 export function getPopupURL() {
-  return chrome.runtime.getURL("/popup/popup.html");
+  return chrome?.runtime?.getURL?.("/popup/popup.html");
 }
 
 export const getLastFocusedWindowIds = () => {
@@ -288,14 +288,19 @@ export const getLastFocusedTab = async () => {
 };
 
 export const getCurrentTab = async () => {
-  // case normal popup
-  let tabs = await chrome.tabs.query({
-    active: true,
-    currentWindow: true,
-  });
-  if (tabs?.[0]?.url !== getPopupURL()) return tabs[0];
+  try {
+    // case normal popup
+    let tabs = await chrome?.tabs?.query?.({
+      active: true,
+      currentWindow: true,
+    });
+    if (tabs?.[0]?.url !== getPopupURL()) return tabs[0];
 
-  return await getLastFocusedTab();
+    return await getLastFocusedTab();
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 };
 
 export const getCurrentTabId = async () => {

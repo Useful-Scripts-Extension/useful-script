@@ -1,4 +1,4 @@
-import s from "../scripts/_allScripts.js";
+import s from "../scripts/@allScripts.js";
 import { Recommend as R } from "./recommend.js";
 import { canAutoRun } from "./helpers/utils.js";
 import { CATEGORY } from "./helpers/category.js";
@@ -33,8 +33,8 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s._test,
-      // s._ufs_statistic,
+      // s.test,
+      // s.ufs_statistic,
       R.theresanaiforthat,
       R.timeis,
       R.googleTrending,

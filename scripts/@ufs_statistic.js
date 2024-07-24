@@ -49,7 +49,7 @@ async function onDocumentEnd() {
   const container = document.createElement("div");
 
   if (hasLog) {
-    UfsGlobal.Extension.getURL("/scripts/_ufs_statistic.css").then(
+    UfsGlobal.Extension.getURL("/scripts/@ufs_statistic.css").then(
       UfsGlobal.DOM.injectCssFile
     );
 

@@ -20,7 +20,7 @@ Nếu bạn có 1 `script hay`, hoặc `bookmarklets hay`, muốn `thêm vào ex
 3. Ghi nội dung script:
     - Đọc cấu trúc code và comment trong file [templates/full.js](/templates/full.js) để biết thêm chi tiết.
 
-4. Import script của bạn trong file [/scripts/_index.js](/scripts/_index.js)
+4. Import script của bạn trong file [/scripts/@index.js](/scripts/@index.js)
 
 5. Ghi tên script của bạn trong biến `tabs` trong file [/popup/tabs.js](/popup/tabs.js)
 

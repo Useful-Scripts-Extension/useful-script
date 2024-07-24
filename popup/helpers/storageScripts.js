@@ -1,4 +1,4 @@
-import allScripts from "../../scripts/_allScripts.js";
+import allScripts from "../../scripts/@allScripts.js";
 
 const createScriptsSaver = (key, addToHead = true) => {
   const getIds = () =>
