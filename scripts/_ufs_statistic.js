@@ -398,7 +398,8 @@ async function onDocumentEnd() {
     h1.innerHTML = `${allLogs.length} logs (~${_logsPerHour} logs/hour)<br/>
       ${eventNameCount.size} unique events<br/><br/>
       ${scriptUsedTotalCount} scripts used (~${_scriptsPerHour} scripts/hour)<br/>
-      ${scriptsUsed.size} unique scripts`;
+      ${scriptsUsed.size} unique scripts<br/><br/>
+      ${logByUid.size} unique users`;
 
     // ======================== Append Charts ========================
     container.prepend(
