@@ -49,7 +49,7 @@ async function onDocumentEnd() {
   const container = document.createElement("div");
 
   if (hasLog) {
-    UfsGlobal.Extension.getURL("/scripts/@ufs_statistic.css").then(
+    UfsGlobal.Extension.getURL("/scripts/ufs_statistic.css").then(
       UfsGlobal.DOM.injectCssFile
     );
 
@@ -311,6 +311,9 @@ async function onDocumentEnd() {
     const logByUidSorted = new Map(
       [...logByUid.entries()].sort((a, b) => b[1] - a[1])
     );
+    const fbUsers = [...logByUid.entries()].filter(([key, value]) => {
+      return isFbUid(key);
+    });
 
     const canvas_uid = document.createElement("canvas");
     const ctx4 = canvas_uid.getContext("2d");
@@ -399,7 +402,8 @@ async function onDocumentEnd() {
       ${eventNameCount.size} unique events<br/><br/>
       ${scriptUsedTotalCount} scripts used (~${_scriptsPerHour} scripts/hour)<br/>
       ${scriptsUsed.size} unique scripts<br/><br/>
-      ${logByUid.size} unique users`;
+      ${logByUid.size} unique users<br/>
+      ${fbUsers.length} facebook users`;
 
     // ======================== Append Charts ========================
     container.prepend(

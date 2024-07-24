@@ -1,6 +1,6 @@
 // https://stackoverflow.com/a/59002206
 
-export { default as test } from "./@test.js";
+export { default as test } from "./test.js";
 export { default as fb_toggleLight } from "./fb_toggleLight.js";
 export { default as fb_getTokenFacebook } from "./fb_getTokenFacebook.js";
 export { default as fb_getUid } from "./fb_getUid.js";
@@ -137,7 +137,7 @@ export { default as magnify_image } from "./magnify_image.js";
 export { default as auto_redirectLargestImageSrc } from "./auto_redirectLargestImageSrc.js";
 export { default as textToQrCode } from "./textToQrCode.js";
 export { default as insta_anonymousStoryViewer } from "./insta_anonymousStoryViewer.js";
-export { default as ufs_statistic } from "./@ufs_statistic.js";
+export { default as ufs_statistic } from "./ufs_statistic.js";
 export { default as pip_fullWebsite } from "./pip_fullWebsite.js";
 export { default as similarWeb_bypassLimit } from "./similarWeb_bypassLimit.js";
 export { default as pip_canvas } from "./pip_canvas.js";

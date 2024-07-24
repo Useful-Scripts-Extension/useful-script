@@ -176,6 +176,8 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark";
     checkmark.onclick = async (e) => {
+      if (checkIsPreview(script)) return;
+
       let oldVal = await isActiveScript(script.id);
       let newVal = !oldVal;
 
@@ -447,7 +449,39 @@ function showError(e) {
   });
 }
 
+function checkIsPreview(script) {
+  if (
+    location.hostname === "hoangtran0410.github.io" ||
+    location.hostname === "127.0.0.1"
+  ) {
+    trackEvent("CLICK_PREVIEW_" + script.id);
+    Swal.fire({
+      icon: "info",
+      title: t({ vi: "Đây là bản xem trước", en: "This is a preview" }),
+      text: t({
+        vi: "Vui lòng tải và cài đặt tiện ích Useful-script để sử dung chức năng này nhé",
+        en: "Please install Useful-script extension to use these features",
+      }),
+      confirmButtonText: t({ vi: "Xem hướng dẫn", en: "View tutorial" }),
+      cancelButtonText: t({ vi: "Đã hiểu", en: "Ok" }),
+      showCancelButton: true,
+      reverseButtons: true,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        window.open(
+          "https://www.facebook.com/groups/1154059318582088/posts/1453443235310360/",
+          "_blank"
+        );
+      }
+    });
+    return true;
+  }
+  return false;
+}
+
 async function runScript(script) {
+  if (checkIsPreview(script)) return;
+
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
