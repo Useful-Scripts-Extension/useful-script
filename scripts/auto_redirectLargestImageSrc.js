@@ -71,7 +71,7 @@ export async function getLargestImageSrc(imgSrc, webUrl) {
 
   // bypass redirect
   imgSrc = UfsGlobal.Utils.makeUrlValid(imgSrc);
-  let redirectedUrl = await getRedirectedUrl(imgSrc);
+  let redirectedUrl = await UfsGlobal.Utils.getRedirectedUrl(imgSrc);
   if (redirectedUrl) {
     imgSrc = redirectedUrl;
   }
@@ -449,22 +449,4 @@ function testRegex(str, regexs) {
     }
   }
   return false;
-}
-async function getRedirectedUrl(url) {
-  try {
-    while (true) {
-      let res = await UfsGlobal.Extension.fetchByPassOrigin(url, {
-        method: "HEAD",
-      });
-      if (res?.redirected) {
-        console.log("redirected:", url, "->", res.url);
-        url = res.url;
-      } else {
-        return url;
-      }
-    }
-  } catch (e) {
-    console.log("ERROR:", e);
-    return url;
-  }
 }

@@ -107,6 +107,8 @@ export default {
             max-height: 90vh;
             overflow-y: auto;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
           }
           .ufs_popup table, .ufs_popup th, .ufs_popup td {
             border: 1px solid #aaa;
@@ -120,6 +122,19 @@ export default {
             top: -22px;
             background: #333;
           }
+          .ufs_popup input {
+            padding: 5px;
+          }
+          .ufs_popup button {
+            padding: 5px;
+            background: #333;
+            color: #eee;
+            border: 1px solid #777;
+            cursor: pointer;
+          }
+          .ufs_popup button:hover {
+            background: #666;
+          }
         </style>
 
         <div id="${floatingBtnId}">📥</div>
@@ -130,6 +145,17 @@ export default {
       `;
       const floatingBtn = ui.querySelector("#" + floatingBtnId);
       const container = ui.querySelector("#" + containerId);
+
+      container.onclick = (e) => {
+        if (e.target === container) {
+          toggle(false);
+        }
+      };
+
+      floatingBtn.onclick = () => {
+        let isShow = toggle();
+        if (isShow) renderData();
+      };
 
       function toggle(willShow) {
         if (!(typeof willShow === "boolean")) {
@@ -146,15 +172,23 @@ export default {
   <h1 style="text-align:center">Tiktok - Useful Scripts</h1>
   <h2 style="text-align:center">Found ${CACHED.videoById.size} videos</h2>
 
+  <div style="align-self: flex-end;">
+    <button id="video">🎬 Download video</button>
+    <button id="audio">🎧 Download audio</button>
+    <button id="json">📄 Download json</button>
+    <button id="clear">🗑️ Clear all</button>
+    <input type="text" id="search" placeholder="🔎 Search..." >
+  </div>
+
   <table>
     <thead>
       <tr>
         <th data-sort="index">#</th>
-        <th>Video</th>
+        <th>🎬 Video</th>
         <th data-sort="title">Title</th>
-        <th data-sort="user">User</th>
-        <th data-sort="view">View</th>
-        <th data-sort="length">Length</th>
+        <th data-sort="user">👤 User</th>
+        <th data-sort="view">👀 View</th>
+        <th data-sort="length">🕒 Length</th>
         <th>Download</th>
       </tr>
     </thead>
@@ -164,18 +198,153 @@ export default {
 </div>`;
 
         const tbody = container.querySelector("tbody");
-        renderTable(tbody);
+
+        // render initial data
+        let data = Array.from(CACHED.videoById.values()).map((_, index) => ({
+          ..._,
+          index,
+        }));
+        renderTable(tbody, data);
+
+        // btn
+        const clearBtn = container.querySelector("button#clear");
+        clearBtn.addEventListener("click", () => {
+          if (confirm("Are you sure want to clear all data?")) {
+            CACHED.videoById.clear();
+            renderData();
+            floatingBtn.innerText = "📥";
+          }
+        });
+        const downVideoBtn = container.querySelector("button#video");
+        downVideoBtn.addEventListener("click", () => {
+          download(
+            data.map((_, i) => {
+              const urlList =
+                _.video.bitrateInfo.find((b) => b.Bitrate === _.video.bitrate)
+                  ?.PlayAddr?.UrlList || [];
+
+              const bestUrl = urlList[urlList.length - 1];
+
+              return {
+                url: bestUrl || _.video.playAddr,
+                filename:
+                  i +
+                  "_" +
+                  UfsGlobal.Utils.sanitizeName(_.desc.substr(0, 50)) +
+                  ".mp4",
+              };
+            }),
+            (i, total) => {
+              downVideoBtn.textContent = `🎬 Download video (${i}/${total})`;
+            }
+          );
+        });
+        const downAudioBtn = container.querySelector("button#audio");
+        downAudioBtn.addEventListener("click", () => {
+          const uniqueMusic = new Map();
+          for (const item of data) {
+            if (!uniqueMusic.has(item.music.id))
+              uniqueMusic.set(item.music.id, item);
+          }
+          download(
+            Array.from(uniqueMusic.values()).map((_, i) => ({
+              url: _.music.playUrl,
+              filename:
+                i +
+                "_" +
+                UfsGlobal.Utils.sanitizeName(
+                  _.music.title.substr(0, 50) || "audio"
+                ) +
+                ".mp3",
+            })),
+            (i, total) => {
+              downAudioBtn.textContent = `🎧 Download audio (${i}/${total})`;
+            }
+          );
+        });
+        const downJsonBtn = container.querySelector("button#json");
+        downJsonBtn.addEventListener("click", () => {
+          UfsGlobal.Utils.downloadData(
+            JSON.stringify(data, null, 4),
+            "tiktok.json"
+          );
+        });
+
+        // search
+        const searchInp = container.querySelector("#search");
+        searchInp.addEventListener("input", (event) => {
+          const value = event.target.value;
+          let trs = tbody.querySelectorAll("tr");
+          for (const tr of trs) {
+            const tds = tr.querySelectorAll("td");
+            let found = false;
+            for (const td of tds) {
+              if (td.textContent.toLowerCase().includes(value)) {
+                found = true;
+                break;
+              }
+            }
+            tr.style.display = found ? "" : "none";
+          }
+        });
+
+        // sorting
+        const sorting = {};
+        const ths = container.querySelectorAll("th");
+        for (const th of ths) {
+          const sort = th.getAttribute("data-sort");
+          // if (!sort) return;
+          th.style.cursor = "pointer";
+          th.title = "Sort";
+
+          th.addEventListener("click", () => {
+            sorting[sort] = sorting[sort] == 1 ? -1 : 1;
+            switch (sort) {
+              case "index":
+                data = data.sort((a, b) =>
+                  sorting[sort] == -1 ? a.index - b.index : b.index - a.index
+                );
+                break;
+              case "title":
+                data = data.sort((a, b) =>
+                  sorting[sort] == -1
+                    ? a.desc.localeCompare(b.desc)
+                    : b.desc.localeCompare(a.desc)
+                );
+                break;
+              case "user":
+                data = data.sort((a, b) =>
+                  sorting[sort] == -1
+                    ? a.author.uniqueId.localeCompare(b.author.uniqueId)
+                    : b.author.uniqueId.localeCompare(a.author.uniqueId)
+                );
+                break;
+              case "view":
+                data = data.sort((a, b) =>
+                  sorting[sort] == -1
+                    ? a.stats.playCount - b.stats.playCount
+                    : b.stats.playCount - a.stats.playCount
+                );
+                break;
+              case "length":
+                data = data.sort((a, b) =>
+                  sorting[sort] == -1
+                    ? a.video.duration - b.video.duration
+                    : b.video.duration - a.video.duration
+                );
+                break;
+            }
+            renderTable(tbody, data);
+          });
+        }
       }
 
-      function renderTable(
-        tbody,
-        data = Array.from(CACHED.videoById.values())
-      ) {
+      function renderTable(tbody, data) {
         tbody.innerHTML = data
           .map(
             (v, i) => /*html*/ `
 <tr>
-<td>${i + 1}</td>
+<td>${v.index}</td>
 <td>
   <a target="_blank" href="${v.video.playAddr}">
     <img src="${v.video.originCover}" style="width:150px" />
@@ -194,12 +363,13 @@ export default {
 <td>${v.video.duration}s</td>
 <td>
   <p style="max-width:200px">
-    <a href="${v.video.playAddr}" download target="_blank">Video</a><br/>
+    <a href="${v.video.playAddr}" download target="_blank">🎬 Video</a><br/>
+    <a href="${v.video.cover}" download target="_blank">🖼️ Cover</a><br/>
     <a href="${v.author.avatarLarger}" download target="_blank">
-      Avatar
+    👤 Avatar
     </a><br/>
     <a href="${v.music.playUrl}" download target="_blank">
-      Music: ${v.music.title}
+    🎧 Music: ${v.music.title}
     </a>
   </p>
 </td>
@@ -208,16 +378,20 @@ export default {
           .join("");
       }
 
-      container.onclick = (e) => {
-        if (e.target === container) {
-          toggle(false);
-        }
-      };
+      async function download(data, onProgress) {
+        const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
 
-      floatingBtn.onclick = () => {
-        let isShow = toggle();
-        if (isShow) renderData();
-      };
+        for (let i = 0; i < data.length; ++i) {
+          try {
+            const { url, filename } = data[i];
+            const realUrl = await UfsGlobal.Utils.getRedirectedUrl(url);
+            await UfsGlobal.Utils.downloadToFolder(realUrl, filename, dir);
+            onProgress?.(i + 1, data.length);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
 
       hookFetch({
         onAfter: async (url, options, response) => {

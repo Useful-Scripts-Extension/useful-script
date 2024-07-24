@@ -32,6 +32,7 @@ export const UfsGlobal = {
     getWatchingVideoSrc,
   },
   Utils: {
+    getRedirectedUrl,
     sanitizeName,
     debounce,
     makeUrlValid,
@@ -522,6 +523,25 @@ function getWatchingVideoSrc() {
 
 // #region Utils
 
+async function getRedirectedUrl(url) {
+  try {
+    while (true) {
+      let res = await UfsGlobal.Extension.fetchByPassOrigin(url, {
+        method: "HEAD",
+      });
+      if (res?.redirected) {
+        console.log("redirected:", url, "->", res.url);
+        url = res.url;
+      } else {
+        return url;
+      }
+    }
+  } catch (e) {
+    console.log("ERROR:", e);
+    return url;
+  }
+}
+
 // https://github.com/parshap/node-sanitize-filename/blob/master/index.js
 // https://github.com/Dinoosauro/tiktok-to-ytdlp/blob/main/script.js
 function sanitizeName(name, modifyIfPosible = true) {
@@ -745,11 +765,12 @@ async function chooseFolderToDownload(subDirName = "") {
   return subDir;
 }
 async function downloadToFolder(url, fileName, dirHandler, subFolderName = "") {
+  if (!url) return false;
   try {
-    const f = getOriginalWindowFunction("fetch");
-
+    // const f = getOriginalWindowFunction("fetch");
     // try download directly, using fetch blob
-    const res = await f(url);
+    console.log(url);
+    const res = await fetch(url);
     const blob = await res.blob();
     const fileHandler = await dirHandler.getFileHandle(fileName, {
       create: true,
@@ -760,7 +781,6 @@ async function downloadToFolder(url, fileName, dirHandler, subFolderName = "") {
     return true;
   } catch (e) {
     console.error(e);
-    debugger;
 
     // backup download: using extension api
     await download({
