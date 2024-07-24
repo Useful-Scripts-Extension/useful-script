@@ -332,8 +332,10 @@ function createScriptButton(script, isFavorite = false) {
   tooltip.classList.add("tooltiptext");
   tooltip.innerHTML = t(script.description);
 
-  if (script.description?.img) {
-    tooltip.innerHTML += `<img src="${script.description.img}"/>`;
+  let img = script.description?.img;
+  if (img) {
+    if (!img.startsWith("http")) img = ".." + img; // /script/abc.png => ../script/abc.png
+    tooltip.innerHTML += `<img src="${img}"/>`;
   }
   if (script.description?.video) {
     let video = document.createElement("video");
