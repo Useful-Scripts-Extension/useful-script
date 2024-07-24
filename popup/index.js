@@ -346,6 +346,7 @@ function createScriptButton(script, isFavorite = false) {
     video.muted = true;
     video.loop = true;
     video.style.width = "80vw";
+    video.style.maxWidth = "100%";
     // TODO why this not working??
     button.addEventListener("mouseenter", () => {
       setTimeout(() => {
