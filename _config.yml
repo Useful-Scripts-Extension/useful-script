@@ -3,5 +3,4 @@
 # inside the include variable in your site’s _config.yml file:
 
 # include all /scripts/_*.js file
-include:
-  - /scripts/_*.js
+include: ["/scripts/_*.js", "/scripts/_*.css"]
