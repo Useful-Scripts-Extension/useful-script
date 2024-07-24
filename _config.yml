@@ -1,0 +1,7 @@
+# If you’re using Jekyll to build your site and would like to include a file or directory that
+# Jekyll excludes by default you can do this by specifying the path to the file/folder
+# inside the include variable in your site’s _config.yml file:
+
+# include all /scripts/_*.js file
+include:
+  - /scripts/_*.js
