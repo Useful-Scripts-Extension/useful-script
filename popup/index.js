@@ -334,7 +334,7 @@ function createScriptButton(script, isFavorite = false) {
 
   let img = script.description?.img;
   if (img) {
-    if (!img.startsWith("http")) img = ".." + img; // /script/abc.png => ../script/abc.png
+    if (img.startsWith("/scripts")) img = ".." + img; // /scripts/abc.png => ../scripts/abc.png
     tooltip.innerHTML += `<img src="${img}"/>`;
   }
   if (script.description?.video) {
