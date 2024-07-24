@@ -764,14 +764,23 @@ async function chooseFolderToDownload(subDirName = "") {
   });
   return subDir;
 }
-async function downloadToFolder(url, fileName, dirHandler, subFolderName = "") {
+async function downloadToFolder({
+  url,
+  fileName,
+  dirHandler,
+  expectBlobType,
+  subFolderName = "",
+}) {
   if (!url) return false;
   try {
     // const f = getOriginalWindowFunction("fetch");
-    // try download directly, using fetch blob
-    console.log(url);
     const res = await fetch(url);
     const blob = await res.blob();
+    if (expectBlobType && blob.type !== expectBlobType) {
+      throw new Error(
+        `Blob type ${blob.type} doesn't match expected type ${expectBlobType}`
+      );
+    }
     const fileHandler = await dirHandler.getFileHandle(fileName, {
       create: true,
     });

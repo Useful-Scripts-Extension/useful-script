@@ -47,7 +47,11 @@ export default {
         if (event.data?.type === commId) {
           const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
           for (const { url, name } of event.data.data) {
-            await UfsGlobal.Utils.downloadToFolder(url, name, dir);
+            await UfsGlobal.Utils.downloadToFolder({
+              url,
+              fileName: name,
+              dirHandler: dir,
+            });
           }
         }
       });
@@ -218,10 +222,12 @@ export default {
         const downVideoBtn = container.querySelector("button#video");
         downVideoBtn.addEventListener("click", () => {
           download(
+            "video/mp4",
             data.map((_, i) => {
               const urlList =
-                _.video.bitrateInfo.find((b) => b.Bitrate === _.video.bitrate)
-                  ?.PlayAddr?.UrlList || [];
+                _.video?.bitrateInfo?.find?.(
+                  (b) => b.Bitrate === _.video.bitrate
+                )?.PlayAddr?.UrlList || [];
 
               const bestUrl = urlList[urlList.length - 1];
 
@@ -378,14 +384,19 @@ export default {
           .join("");
       }
 
-      async function download(data, onProgress) {
+      async function download(expectBlobType, data, onProgress) {
         const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
 
         for (let i = 0; i < data.length; ++i) {
           try {
             const { url, filename } = data[i];
             const realUrl = await UfsGlobal.Utils.getRedirectedUrl(url);
-            await UfsGlobal.Utils.downloadToFolder(realUrl, filename, dir);
+            await UfsGlobal.Utils.downloadToFolder({
+              url: realUrl,
+              fileName: filename,
+              dirHandler: dir,
+              expectBlobType,
+            });
             onProgress?.(i + 1, data.length);
           } catch (e) {
             console.error(e);
@@ -396,19 +407,33 @@ export default {
       hookFetch({
         onAfter: async (url, options, response) => {
           if (url.includes("item_list/")) {
-            // clone to new response
             const res = response.clone();
             const json = await res.json();
             console.log(json);
 
             if (json?.itemList) {
-              CACHED.list.push(...json.itemList);
               json.itemList.forEach((_) => {
                 if (_.video.playAddr) CACHED.videoById.set(_.video.id, _);
               });
-              floatingBtn.innerHTML = `📥 (${CACHED.videoById.size})`;
             }
           }
+
+          if (url.includes("api/search")) {
+            const res = response.clone();
+            const json = await res.json();
+            console.log(json);
+
+            if (json.data?.length) {
+              json.data.forEach((_) => {
+                if (_.type === 1) {
+                  CACHED.videoById.set(_.item.video.id, _.item);
+                }
+              });
+            }
+          }
+
+          if (CACHED.videoById.size)
+            floatingBtn.innerHTML = `📥 (${CACHED.videoById.size})`;
         },
       });
     },
