@@ -264,9 +264,10 @@ export default {
         });
         const downVideoBtn = container.querySelector("button#video");
         downVideoBtn.addEventListener("click", () => {
-          download(
-            "video/mp4",
-            getShowingVideos().map((_, i) => {
+          download({
+            folderName: "tiktok_videos",
+            expectBlobType: "video/mp4",
+            data: getShowingVideos().map((_, i) => {
               const urlList =
                 _.video?.bitrateInfo?.find?.(
                   (b) => b.Bitrate === _.video.bitrate
@@ -284,17 +285,17 @@ export default {
                   ".mp4",
               };
             }),
-            (i, total) => {
+            onProgressItem: (i, total) => {
               UfsGlobal.DOM.notify({
                 msg: `Downloading... ${i}/${total} videos`,
                 duration: 30000,
               });
             },
-            (i, total) => {
+            onFinishItem: (i, total) => {
               downVideoBtn.textContent = `🎬 Download video (${i}/${total})`;
               UfsGlobal.DOM.notify({ msg: `Downloaded ${i}/${total} videos` });
-            }
-          );
+            },
+          });
         });
         const downAudioBtn = container.querySelector("button#audio");
         downAudioBtn.addEventListener("click", () => {
@@ -303,8 +304,9 @@ export default {
             if (!uniqueMusic.has(item.music.id))
               uniqueMusic.set(item.music.id, item);
           }
-          download(
-            Array.from(uniqueMusic.values()).map((_, i) => ({
+          download({
+            folderName: "tiktok_musics",
+            data: Array.from(uniqueMusic.values()).map((_, i) => ({
               url: _.music.playUrl,
               filename:
                 i +
@@ -316,17 +318,17 @@ export default {
                 ) +
                 ".mp3",
             })),
-            (i, total) => {
+            onProgressItem: (i, total) => {
               UfsGlobal.DOM.notify({
                 msg: `Downloading... ${i}/${total} audios`,
                 duration: 30000,
               });
             },
-            (i, total) => {
+            onFinishItem: (i, total) => {
               downAudioBtn.textContent = `🎧 Download audio (${i}/${total})`;
               UfsGlobal.DOM.notify({ msg: `Downloaded ${i}/${total} audios` });
-            }
-          );
+            },
+          });
         });
         const downJsonBtn = container.querySelector("button#json");
         downJsonBtn.addEventListener("click", () => {
@@ -425,13 +427,14 @@ export default {
           .join("");
       }
 
-      async function download(
+      async function download({
+        folderName = "tiktok",
         expectBlobType,
         data,
         onProgressItem,
-        onFinishItem
-      ) {
-        const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
+        onFinishItem,
+      }) {
+        const dir = await UfsGlobal.Utils.chooseFolderToDownload(folderName);
         onProgressItem?.(0, data.length);
 
         for (let i = 0; i < data.length; ++i) {
