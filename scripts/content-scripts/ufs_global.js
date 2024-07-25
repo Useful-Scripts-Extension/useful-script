@@ -1,3 +1,5 @@
+// TODO: split this file into multiple helper files
+
 export const UfsGlobal = {
   Extension: {
     sendToContentScript,

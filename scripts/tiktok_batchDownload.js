@@ -75,7 +75,7 @@ export default {
         <style>
           #${id} {
             position: fixed;
-            z-index: 99999999999;
+            z-index: 16777269;
           }
           #${floatingBtnId} {
             border-radius: 25px;
@@ -114,6 +114,12 @@ export default {
             display: flex;
             flex-direction: column;
           }
+          .ufs_popup .table_wrap {
+            overflow: auto;
+          }
+          .ufs_popup table {
+            width: 100%;
+          }
           .ufs_popup table, .ufs_popup th, .ufs_popup td {
             border: 1px solid #aaa;
             border-collapse: collapse;
@@ -121,10 +127,14 @@ export default {
           .ufs_popup table td {
             padding: 10px;
           }
-          .ufs_popup table th {
+          .ufs_popup table thead {
             position: sticky;
-            top: -22px;
+            top: -2px;
             background: #333;
+          }
+          .ufs_popup th[data-sort]:hover {
+            cursor: pointer;
+            background: #555;
           }
           .ufs_popup input {
             padding: 5px;
@@ -170,13 +180,15 @@ export default {
         return willShow;
       }
 
+      const formatter = UfsGlobal.Utils.getNumberFormatter("compactShort");
+
       function renderData() {
         container.innerHTML = /*html*/ `
 <div class="ufs_popup">
   <h1 style="text-align:center">Tiktok - Useful Scripts</h1>
   <h2 style="text-align:center">Found ${CACHED.videoById.size} videos</h2>
 
-  <div style="align-self: flex-end;">
+  <div style="align-self: flex-end;padding: 10px;">
     <button id="video">🎬 Download video</button>
     <button id="audio">🎧 Download audio</button>
     <button id="json">📄 Download json</button>
@@ -184,31 +196,62 @@ export default {
     <input type="text" id="search" placeholder="🔎 Search..." >
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th data-sort="index">#</th>
-        <th>🎬 Video</th>
-        <th data-sort="title">Title</th>
-        <th data-sort="user">👤 User</th>
-        <th data-sort="view">👀 View</th>
-        <th data-sort="length">🕒 Length</th>
-        <th>Download</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+  <div class="table_wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="index">#</th>
+          <th>🎬 Video</th>
+          <th data-sort="title">Title</th>
+          <th data-sort="user">👤 User</th>
+          <th data-sort="view">👀 View</th>
+          <th data-sort="length">🕒 Length</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 </div>`;
 
         const tbody = container.querySelector("tbody");
 
         // render initial data
-        let data = Array.from(CACHED.videoById.values()).map((_, index) => ({
-          ..._,
-          index,
-        }));
-        renderTable(tbody, data);
+        let allVideoData = Array.from(CACHED.videoById.values()).map(
+          (_, i) => ({
+            ..._,
+            index: i + 1,
+          })
+        );
+        renderTable(tbody, allVideoData);
+
+        // search
+        const hiddenVideos = new Set();
+        const searchInp = container.querySelector("#search");
+        searchInp.addEventListener("input", (event) => {
+          const value = event.target.value;
+          let trs = tbody.querySelectorAll("tr");
+          for (const tr of trs) {
+            const tds = tr.querySelectorAll("td");
+            let found = false;
+            for (const td of tds) {
+              if (td.textContent.toLowerCase().includes(value)) {
+                found = true;
+                break;
+              }
+            }
+            tr.style.display = found ? "" : "none";
+
+            let videoId = tr.getAttribute("data-video-id");
+            if (found) hiddenVideos.delete(videoId);
+            else hiddenVideos.add(videoId);
+          }
+        });
+
+        function getShowingVideos() {
+          return allVideoData.filter((_) => !hiddenVideos.has(_.video.id));
+        }
 
         // btn
         const clearBtn = container.querySelector("button#clear");
@@ -223,7 +266,7 @@ export default {
         downVideoBtn.addEventListener("click", () => {
           download(
             "video/mp4",
-            data.map((_, i) => {
+            getShowingVideos().map((_, i) => {
               const urlList =
                 _.video?.bitrateInfo?.find?.(
                   (b) => b.Bitrate === _.video.bitrate
@@ -248,7 +291,7 @@ export default {
         const downAudioBtn = container.querySelector("button#audio");
         downAudioBtn.addEventListener("click", () => {
           const uniqueMusic = new Map();
-          for (const item of data) {
+          for (const item of getShowingVideos()) {
             if (!uniqueMusic.has(item.music.id))
               uniqueMusic.set(item.music.id, item);
           }
@@ -271,27 +314,9 @@ export default {
         const downJsonBtn = container.querySelector("button#json");
         downJsonBtn.addEventListener("click", () => {
           UfsGlobal.Utils.downloadData(
-            JSON.stringify(data, null, 4),
+            JSON.stringify(getShowingVideos(), null, 4),
             "tiktok.json"
           );
-        });
-
-        // search
-        const searchInp = container.querySelector("#search");
-        searchInp.addEventListener("input", (event) => {
-          const value = event.target.value;
-          let trs = tbody.querySelectorAll("tr");
-          for (const tr of trs) {
-            const tds = tr.querySelectorAll("td");
-            let found = false;
-            for (const td of tds) {
-              if (td.textContent.toLowerCase().includes(value)) {
-                found = true;
-                break;
-              }
-            }
-            tr.style.display = found ? "" : "none";
-          }
         });
 
         // sorting
@@ -299,48 +324,47 @@ export default {
         const ths = container.querySelectorAll("th");
         for (const th of ths) {
           const sort = th.getAttribute("data-sort");
-          // if (!sort) return;
-          th.style.cursor = "pointer";
+          if (!sort) continue;
           th.title = "Sort";
 
           th.addEventListener("click", () => {
             sorting[sort] = sorting[sort] == 1 ? -1 : 1;
             switch (sort) {
               case "index":
-                data = data.sort((a, b) =>
+                allVideoData = allVideoData.sort((a, b) =>
                   sorting[sort] == -1 ? a.index - b.index : b.index - a.index
                 );
                 break;
               case "title":
-                data = data.sort((a, b) =>
+                allVideoData = allVideoData.sort((a, b) =>
                   sorting[sort] == -1
                     ? a.desc.localeCompare(b.desc)
                     : b.desc.localeCompare(a.desc)
                 );
                 break;
               case "user":
-                data = data.sort((a, b) =>
+                allVideoData = allVideoData.sort((a, b) =>
                   sorting[sort] == -1
                     ? a.author.uniqueId.localeCompare(b.author.uniqueId)
                     : b.author.uniqueId.localeCompare(a.author.uniqueId)
                 );
                 break;
               case "view":
-                data = data.sort((a, b) =>
+                allVideoData = allVideoData.sort((a, b) =>
                   sorting[sort] == -1
                     ? a.stats.playCount - b.stats.playCount
                     : b.stats.playCount - a.stats.playCount
                 );
                 break;
               case "length":
-                data = data.sort((a, b) =>
+                allVideoData = allVideoData.sort((a, b) =>
                   sorting[sort] == -1
                     ? a.video.duration - b.video.duration
                     : b.video.duration - a.video.duration
                 );
                 break;
             }
-            renderTable(tbody, data);
+            renderTable(tbody, allVideoData);
           });
         }
       }
@@ -349,11 +373,13 @@ export default {
         tbody.innerHTML = data
           .map(
             (v, i) => /*html*/ `
-<tr>
+<tr data-video-id="${v.id}">
 <td>${v.index}</td>
 <td>
   <a target="_blank" href="${v.video.playAddr}">
-    <img src="${v.video.dynamicCover || v.video.cover}" style="width:150px" />
+    <object data="${v.video.dynamicCover}" type="image/png" style="width:150px">
+        <img src="${v.video.cover}" style="width:150px" />
+    </object>
   </a>
 </td>
 <td><p style="max-width:200px">${v.desc}</p></td>
@@ -361,11 +387,11 @@ export default {
   <a target="_blank" href="https://www.tiktok.com/@${v.author.uniqueId}">
     <img src="${v.author.avatarThumb}" style="width:50px;height:50px" />
   </a>
-  ${v.author.uniqueId}<br/>
   ${v.author.nickname}<br/>
-  ${v.id}
+  ${v.author.uniqueId}<br/>
+  ${v.author.id}
 </td>
-<td>${UfsGlobal.Utils.moneyFormat(v.stats.playCount)}</td>
+<td>${formatter.format(v.stats.playCount)}</td>
 <td>${v.video.duration}s</td>
 <td>
   <p style="max-width:200px">

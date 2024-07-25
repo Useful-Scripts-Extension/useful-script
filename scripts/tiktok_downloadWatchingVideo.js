@@ -85,31 +85,31 @@ export default {
           t({ vi: `Đang tải video ${title}...`, en: `Downloading ${title}...` })
         );
 
-        // UfsGlobal.Extension.download({
-        //   url: link,
-        //   filename: title + ".mp4",
-        // });
+        UfsGlobal.Extension.download({
+          url: link,
+          filename: title + ".mp4",
+        });
 
-        const { formatSize, downloadBlob } = UfsGlobal.Utils;
-        const blob = await getBlobFromUrlWithProgress(
-          link,
-          ({ loaded, total, speed }) => {
-            let desc =
-              formatSize(loaded, 1) +
-              " / " +
-              formatSize(total, 1) +
-              " (" +
-              formatSize(speed, 1) +
-              "/s)";
-            setLoadingText(
-              t({
-                vi: `Đang tải ${desc}...<br/>${title}`,
-                en: `Downloading ${desc}...<br/>${title}`,
-              })
-            );
-          }
-        );
-        downloadBlob(blob, title + ".mp4");
+        // const { formatSize, downloadBlob } = UfsGlobal.Utils;
+        // const blob = await getBlobFromUrlWithProgress(
+        //   link,
+        //   ({ loaded, total, speed }) => {
+        //     let desc =
+        //       formatSize(loaded, 1) +
+        //       " / " +
+        //       formatSize(total, 1) +
+        //       " (" +
+        //       formatSize(speed, 1) +
+        //       "/s)";
+        //     setLoadingText(
+        //       t({
+        //         vi: `Đang tải ${desc}...<br/>${title}`,
+        //         en: `Downloading ${desc}...<br/>${title}`,
+        //       })
+        //     );
+        //   }
+        // );
+        // downloadBlob(blob, title + ".mp4");
       }
 
       closeLoading();
