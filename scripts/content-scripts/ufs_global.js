@@ -551,7 +551,7 @@ function sanitizeName(name, modifyIfPosible = true) {
     throw new Error("Input must be string");
   }
   const replacement = "";
-  const illegalRe = /[\/\?<>\\:\*\|"]/g;
+  const illegalRe = /[\/\?<>\\:\*\|"’#]/g;
   const controlRe = /[\x00-\x1f\x80-\x9f]/g;
   const reservedRe = /^\.+$/;
   const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
@@ -791,7 +791,7 @@ async function downloadToFolder({
     await writable.close();
     return true;
   } catch (e) {
-    console.error(e);
+    console.error(e, arguments);
 
     // backup download: using extension api
     await download({

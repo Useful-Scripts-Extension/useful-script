@@ -278,13 +278,21 @@ export default {
                 url: bestUrl || _.video.playAddr,
                 filename:
                   i +
+                  1 +
                   "_" +
-                  UfsGlobal.Utils.sanitizeName(_.desc.substr(0, 50)) +
+                  UfsGlobal.Utils.sanitizeName(_.id, false) +
                   ".mp4",
               };
             }),
             (i, total) => {
+              UfsGlobal.DOM.notify({
+                msg: `Downloading... ${i}/${total} videos`,
+                duration: 30000,
+              });
+            },
+            (i, total) => {
               downVideoBtn.textContent = `🎬 Download video (${i}/${total})`;
+              UfsGlobal.DOM.notify({ msg: `Downloaded ${i}/${total} videos` });
             }
           );
         });
@@ -300,14 +308,23 @@ export default {
               url: _.music.playUrl,
               filename:
                 i +
+                1 +
                 "_" +
                 UfsGlobal.Utils.sanitizeName(
-                  _.music.title.substr(0, 50) || "audio"
+                  _.music.title.substr(0, 50) || "audio",
+                  false
                 ) +
                 ".mp3",
             })),
             (i, total) => {
+              UfsGlobal.DOM.notify({
+                msg: `Downloading... ${i}/${total} audios`,
+                duration: 30000,
+              });
+            },
+            (i, total) => {
               downAudioBtn.textContent = `🎧 Download audio (${i}/${total})`;
+              UfsGlobal.DOM.notify({ msg: `Downloaded ${i}/${total} audios` });
             }
           );
         });
@@ -364,7 +381,7 @@ export default {
                 );
                 break;
             }
-            renderTable(tbody, allVideoData);
+            renderTable(tbody, getShowingVideos());
           });
         }
       }
@@ -377,9 +394,7 @@ export default {
 <td>${v.index}</td>
 <td>
   <a target="_blank" href="${v.video.playAddr}">
-    <object data="${v.video.dynamicCover}" type="image/png" style="width:150px">
-        <img src="${v.video.cover}" style="width:150px" />
-    </object>
+  <img src="${v.video.cover}" style="width:150px" />
   </a>
 </td>
 <td><p style="max-width:200px">${v.desc}</p></td>
@@ -410,11 +425,18 @@ export default {
           .join("");
       }
 
-      async function download(expectBlobType, data, onProgress) {
+      async function download(
+        expectBlobType,
+        data,
+        onProgressItem,
+        onFinishItem
+      ) {
         const dir = await UfsGlobal.Utils.chooseFolderToDownload("tiktok");
+        onProgressItem?.(0, data.length);
 
         for (let i = 0; i < data.length; ++i) {
           try {
+            onProgressItem?.(i + 1, data.length);
             const { url, filename } = data[i];
             const realUrl = await UfsGlobal.Utils.getRedirectedUrl(url);
             await UfsGlobal.Utils.downloadToFolder({
@@ -423,7 +445,7 @@ export default {
               dirHandler: dir,
               expectBlobType,
             });
-            onProgress?.(i + 1, data.length);
+            onFinishItem?.(i + 1, data.length);
           } catch (e) {
             console.error(e);
           }
@@ -653,7 +675,7 @@ export default {
               // });
               links.push({
                 url: link,
-                name: sanitizeName(cached?.name || id) + ".mp4",
+                name: sanitizeName(cached?.name || id, false) + ".mp4",
               });
             } else {
               progressDiv.innerText = `[LỖI] Không thể tải video ${url}.`;
