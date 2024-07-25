@@ -353,7 +353,7 @@ export default {
 <td>${v.index}</td>
 <td>
   <a target="_blank" href="${v.video.playAddr}">
-    <img src="${v.video.originCover}" style="width:150px" />
+    <img src="${v.video.dynamicCover || v.video.cover}" style="width:150px" />
   </a>
 </td>
 <td><p style="max-width:200px">${v.desc}</p></td>
