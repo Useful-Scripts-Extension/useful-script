@@ -85,7 +85,7 @@ export default {
         <button id="audio" @click="downloadAudio">🎧 {{audioTitle}}</button>
         <button id="json" @click="downloadJson">📄 Download json</button>
         <button id="clear" @click="clear">🗑️ Clear</button>
-        <input type="text" id="search" placeholder="🔎 Search..." v-model="search" >
+        <input type="text" id="search" placeholder="🔎 Search..." :value="search" @input="e => search = e.target.value" >
         {{search}}
       </div>
 
