@@ -1,0 +1,111 @@
+#ufs_tiktok_batchDownload {
+  position: fixed;
+  z-index: 16777269;
+}
+
+#ufs_tiktok_batchDownload a:hover {
+  text-decoration: underline;
+}
+
+#ufs_tiktok_batchDownload .ufs_floating_btn {
+  border-radius: 25px;
+  background: #444;
+  color: white;
+  padding: 15px;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  border: 1px solid #777;
+  cursor: pointer;
+}
+
+#ufs_tiktok_batchDownload .ufs_floating_btn:hover {
+  background: #666;
+}
+
+#ufs_tiktok_batchDownload .ufs_container {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.ufs_popup {
+  background: #444;
+  color: #eee;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ufs_popup .ufs_popup_header {
+  align-self: flex-end;
+  padding: 10px;
+}
+
+.ufs_popup .table_wrap {
+  overflow: auto;
+}
+
+.ufs_popup table {
+  width: 100%;
+}
+
+.ufs_popup table,
+.ufs_popup th,
+.ufs_popup td {
+  border: 1px solid #aaa;
+  border-collapse: collapse;
+}
+
+.ufs_popup table td {
+  padding: 10px;
+}
+
+.ufs_popup table thead {
+  position: sticky;
+  top: -2px;
+  background: #333;
+}
+
+.ufs_popup input {
+  padding: 5px;
+}
+
+.ufs_popup button {
+  padding: 5px;
+  background: #333;
+  color: #eee;
+  border: 1px solid #777;
+  cursor: pointer;
+}
+
+.ufs_popup button:hover {
+  background: #666;
+}
+
+.ufs_popup .ufs_avatar {
+  width: 50px;
+  height: 50px;
+  cursor: pointer
+}
+
+.ufs_popup .clickable {
+  cursor: pointer;
+  background: #333;
+  user-select: none;
+}
+
+.ufs_popup .clickable:hover {
+  background: #666;
+}
