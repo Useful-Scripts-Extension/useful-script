@@ -51,8 +51,10 @@
 }
 
 .ufs_popup .ufs_popup_header {
-  align-self: flex-end;
   padding: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .ufs_popup .table_wrap {
@@ -85,7 +87,7 @@
 }
 
 .ufs_popup button {
-  padding: 5px;
+  padding: 5px 10px;
   background: #333;
   color: #eee;
   border: 1px solid #777;
@@ -112,7 +114,7 @@
   background: #666;
 }
 
-.ufs_popup .ufs-scroll-to-top {
+.ufs_popup .ufs_scroll_top {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -148,7 +150,30 @@
   transform: scale(1.3);
 }
 
-.ufs-video-checkbox {
+.ufs_video_checkbox {
   width: 30px;
   height: 30px;
+}
+
+.ufs_dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ufs_dropdown .ufs_dropdown_content {
+  visibility: hidden;
+  overflow: hidden;
+  position: absolute;
+  width: max-content;
+  top: 100%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.ufs_dropdown .ufs_dropdown_trigger:hover~.ufs_dropdown_content,
+.ufs_dropdown .ufs_dropdown_content:hover {
+  visibility: visible;
 }

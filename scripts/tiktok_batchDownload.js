@@ -1,5 +1,6 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { hookFetch } from "./libs/ajax-hook/index.js";
+import { scrollToVeryEnd } from "./scrollToVeryEnd.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -84,11 +85,21 @@ export default {
       <h2 style="text-align:center">Found {{totalCount}} videos</h2>
 
       <div class="ufs_popup_header">
-      <button id="clear" @click="clear">🗑️ Clear</button>
-      <button id="json" @click="downloadJson">📄 Download json</button>
-      <button id="audio" @click="downloadAudio">🎧 {{audioTitle}}</button>
-      <button id="video" @click="downloadVideo">🎬 {{videoTitle}}</button>
-        <input type="text" id="search" placeholder="🔎 Search..." :value="search" @input="e => search = e.target.value" >
+        <button @click="scrollToVeryEnd">⏬ Auto scroll</button>
+        <div class="ufs_dropdown">
+          <button @click="clear" class="ufs_dropdown_trigger">🗑️ Clear</button>
+          <div class="ufs_dropdown_content" v-if="selectedCount > 0">
+            <button @click="clearSelected">🗑️ Remove {{selectedCount}} selected</button>
+          </div>
+        </div>
+        <div class="ufs_dropdown">
+          <button @click="downloadVideo" class="ufs_dropdown_trigger">🎬  {{videoTitle}}</button>
+          <div class="ufs_dropdown_content">
+            <button @click="downloadAudio">🎧 {{audioTitle}}</button>
+            <button @click="downloadJson">📄 Download json</button>
+          </div>
+        </div>
+        <input type="text" placeholder="🔎 Search..." :value="search" @input="e => search = e.target.value" >
       </div>
 
       <div class="table_wrap">
@@ -105,44 +116,44 @@ export default {
             </tr>
           </thead>
           <tbody>
-            <tr v-if="videosToShow.length === 0">
-              <td colspan="7"><h2 style="text-align:center">No video</h2></td>
-            </tr>
-            <tr v-for="v in videosToShow" :key="v.id">
-<td style="text-align:center">{{v.index}}<br/>
-  <input type="checkbox" v-model="selected[v.id]" class="ufs-video-checkbox" />
-</td>
-<td>
-  <a target="_blank" :href="v.video.playAddr">
-    <img :src="v.video.cover" style="width:150px" />
-  </a>
-</td>
-<td><p style="max-width:200px">{{v.desc}}</p></td>
-<td>
-  <img :src="v.author.avatarThumb" class="ufs_avatar" @click="openUser(v.author.uniqueId)"/>
-  {{v.author.nickname}}<br/>
-  {{v.author.uniqueId}}<br/>
-  {{v.author.id}}
-</td>
-<td>{{format(v.stats.playCount)}}</td>
-<td>{{v.video.duration}}s</td>
-<td>
-  <p style="max-width:200px">
-    <a :href="v.video.playAddr" v-if="v.video.playAddr" target="_blank">🎬 Video</a><br/>
-    <a :href="v.video.cover" target="_blank">🖼️ Cover</a><br/>
-    <a :href="v.author.avatarLarger" target="_blank">
-    👤 Avatar
-    </a><br/>
-    <a :href="v.music.playUrl" target="_blank">
-    🎧 Music: {{v.music.title}}
+<tr v-if="videosToShow.length === 0">
+  <td colspan="7"><h2 style="text-align:center">No video</h2></td>
+</tr>
+<tr v-for="v in videosToShow" :key="v.id">
+  <td style="text-align:center">{{v.index}}<br/>
+    <input type="checkbox" v-model="selected[v.id]" class="ufs_video_checkbox" />
+  </td>
+  <td>
+    <a target="_blank" :href="v.video.playAddr">
+      <img :src="v.video.dynamicCover || v.video.originCover || v.video.cover" style="width:150px" />
     </a>
-  </p>
-</td>
-            </tr>
+  </td>
+  <td><p style="max-width:200px">{{v.desc}}</p></td>
+  <td>
+    <img :src="v.author.avatarThumb" class="ufs_avatar" @click="openUser(v.author.uniqueId)"/>
+    {{v.author.nickname}}<br/>
+    {{v.author.uniqueId}}<br/>
+    {{v.author.id}}
+  </td>
+  <td>{{format(v.stats.playCount)}}</td>
+  <td>{{v.video.duration}}s</td>
+  <td>
+    <p style="max-width:200px">
+      <a :href="v.video.playAddr" v-if="v.video.playAddr" target="_blank">🎬 Video</a><br/>
+      <a :href="v.video.cover" target="_blank">🖼️ Cover</a><br/>
+      <a :href="v.author.avatarLarger" target="_blank">
+      👤 Avatar
+      </a><br/>
+      <a :href="v.music.playUrl" target="_blank">
+      🎧 Music: {{v.music.title}}
+      </a>
+    </p>
+  </td>
+</tr>
           </tbody>
         </table>
 
-        <button v-if="videosToShow.length > 2" @click="scrollToTop" class="ufs-scroll-to-top">⬆</button>
+        <button v-if="videosToShow.length > 2" @click="scrollToTop" class="ufs_scroll_top">⬆</button>
       </div>
     </div>
   </div>
@@ -166,8 +177,16 @@ export default {
           };
         },
         computed: {
+          selectedIds() {
+            return Object.entries(this.selected)
+              .filter((v) => v[1])
+              .map((v) => v[0]);
+          },
+          selectedCount() {
+            return Object.values(this.selected).filter((v) => v).length;
+          },
           hasSelected() {
-            return Object.values(this.selected).find((v) => v);
+            return this.selectedCount > 0;
           },
           videoToDownload() {
             return this.hasSelected
@@ -355,8 +374,17 @@ export default {
               this.videosToShow.length + "_videos_tiktok.json"
             );
           },
+          scrollToVeryEnd() {
+            setTimeout(() => scrollToVeryEnd(), 100);
+          },
           scrollToTop(e) {
             e.target.parentElement.scrollTo({ top: 0, behavior: "smooth" });
+          },
+          clearSelected() {
+            this.selectedIds.forEach((vidId) => {
+              CACHED.videoById.delete(vidId);
+            });
+            this.selected = {};
           },
           clear() {
             if (confirm("Are you sure want to clear all?")) {
