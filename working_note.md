@@ -2,6 +2,8 @@
 
 ## 01/07/2024 - ?
 
+- [x] Tải video bằng cách record??? <https://chromewebstore.google.com/detail/fetchv-ti%E1%BB%87n-%C3%ADch-m%E1%BB%9F-r%E1%BB%99ng-%C4%91/nfmmmhanepmpifddlkkmihkalkoekpfd> => cannot record full video
+
 - [ ] <https://clearthis.page/?u=https://khaidon.substack.com/p/water-washes-clean-a-fable>
 
 - [ ] good feature - global video speed <https://chromewebstore.google.com/detail/global-speed/jpbjcnkcffbooppibceonlgknpkniiff?hl=en> <https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk?hl=en>
