@@ -770,7 +770,7 @@ async function downloadToFolder({
   url,
   fileName,
   dirHandler,
-  expectBlobType,
+  expectBlobTypes,
   subFolderName = "",
 }) {
   if (!url) return false;
@@ -778,9 +778,15 @@ async function downloadToFolder({
     // const f = getOriginalWindowFunction("fetch");
     const res = await fetch(url);
     const blob = await res.blob();
-    if (expectBlobType && blob.type !== expectBlobType) {
+    // blobtype canbe regex
+    if (
+      expectBlobTypes?.length &&
+      !expectBlobTypes.find((t) =>
+        t?.test ? t.test(blob.type) : t === blob.type
+      )
+    ) {
       throw new Error(
-        `Blob type ${blob.type} doesn't match expected type ${expectBlobType}`
+        `Blob type ${blob.type} doesn't match expected type ${expectBlobTypes}`
       );
     }
     const fileHandler = await dirHandler.getFileHandle(fileName, {

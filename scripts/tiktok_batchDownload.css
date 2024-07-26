@@ -36,6 +36,7 @@
 }
 
 .ufs_popup {
+  position: relative;
   background: #444;
   color: #eee;
   padding: 20px;
@@ -109,4 +110,45 @@
 
 .ufs_popup .clickable:hover {
   background: #666;
+}
+
+.ufs_popup .ufs-scroll-to-top {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  padding: 10px;
+}
+
+/* check boxes */
+.ufs_is_private {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  background: black;
+  padding: 8px;
+  font-weight: bold;
+}
+
+.ufs_tiktok_checkbox {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  transition: all 0.1s ease;
+}
+
+.ufs_tiktok_checkbox:hover {
+  transform: scale(1.3);
+}
+
+.ufs-video-checkbox {
+  width: 30px;
+  height: 30px;
 }
