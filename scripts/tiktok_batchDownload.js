@@ -77,7 +77,7 @@ export default {
   <div class="ufs_floating_btn" @click="showModal = true">📥 {{totalCount}}</div>
   <div class="ufs_container" v-if="showModal" @click.self="showModal = false">
     <div class="ufs_popup">
-      <h1 style="text-align:center">Tiktok - Useful Scripts</h1>
+      <h1 style="text-align:center">Tiktok - <a href="https://github.com/HoangTran0410/useful-script">Useful Scripts</a></h1>
       <h2 style="text-align:center">Found {{totalCount}} videos</h2>
 
       <div class="ufs_popup_header">
@@ -166,10 +166,10 @@ export default {
                 this.downloading.video +
                 "/" +
                 this.videosToShow.length +
-                " videos"
+                " video"
               );
             }
-            return "Downloaded " + this.videosToShow.length + " videos";
+            return "Downloaded " + this.videosToShow.length + " video";
           },
           audioTitle() {
             if (this.downloading.audio) {
@@ -178,10 +178,10 @@ export default {
                 this.downloading.audio +
                 "/" +
                 this.uniqueAudio.length +
-                " audios"
+                " audio"
               );
             }
-            return "Downloaded " + this.uniqueAudio.length + " audios";
+            return "Downloaded " + this.uniqueAudio.length + " audio";
           },
           uniqueAudio() {
             const result = new Map();

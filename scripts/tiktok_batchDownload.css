@@ -41,11 +41,12 @@
   padding: 20px;
   border-radius: 10px;
   max-width: 90vw;
-  max-height: 90vh;
+  height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
 }
 
 .ufs_popup .ufs_popup_header {
