@@ -6,6 +6,22 @@ const contextMenuId = "magnify-image";
 
 const CACHED = {
   mouse: { x: 0, y: 0 },
+  configSize: null,
+};
+
+const MagnifySizeKey = "ufs_magnify_image_size";
+const getConfigSize = async () => {
+  if (!CACHED.configSize) {
+    const { Storage } = await import("./helpers/utils.js");
+    const data = await Storage.get(MagnifySizeKey);
+    CACHED.configSize = data?.split("x") || [20, 20];
+  }
+  return CACHED.configSize;
+};
+const setConfigSize = async (width, height) => {
+  const { Storage } = await import("./helpers/utils.js");
+  CACHED.configSize = [width, height];
+  return Storage.set(MagnifySizeKey, width + "x" + height);
 };
 
 export default {
@@ -56,6 +72,62 @@ export default {
     "2024-06-07":
       "support video frame + right click anywhere + magnify on hover + search by images",
   },
+  buttons: [
+    {
+      icon: '<i class="fa-solid fa-gear"></i>',
+      name: {
+        vi: "Cài đặt",
+        en: "Setting",
+      },
+      onClick: async () => {
+        const { t } = await import("../popup/helpers/lang.js");
+        const [width, height] = await getConfigSize();
+
+        const result = await Swal.fire({
+          title: t({ vi: "Cài đặt phóng to", en: "Magnify Setting" }),
+          html: `
+            <p>${t({
+              vi: "Chỉ hiện nút phóng to cho hình ảnh có kích thước lớn hơn:",
+              en: "Only show the magnify button when the image's size is larger than:",
+            })}</p>
+            <input
+              style="display: inline-block;width: 40%"
+              type="number"
+              id="swal-input1"
+              class="swal2-input"
+              value="${width}"
+              placeholder="${t({ vi: "Rộng", en: "Width" })}">X
+            <input
+              style="display: inline-block;width: 40%"
+              type="number"
+              id="swal-input2"
+              class="swal2-input"
+              value="${height}"
+              placeholder="${t({ vi: "Cao", en: "Height" })}">
+          `,
+          preConfirm: () => {
+            return [
+              document.getElementById("swal-input1").value,
+              document.getElementById("swal-input2").value,
+            ];
+          },
+        });
+
+        if (result.isConfirmed) {
+          const [width, height] = result.value;
+          await setConfigSize(width, height);
+          Swal.fire({
+            icon: "success",
+            title: t({ vi: "Thành công", en: "Success" }),
+            text: t({
+              vi: "Cài đặt phóng to đã được cập nhật.",
+              en: "Magnify setting has been updated.",
+            }),
+          });
+        }
+      },
+    },
+  ],
 
   popupScript: {
     onClick: () => {
@@ -138,7 +210,11 @@ export default {
       addToDom();
       UfsGlobal.DOM.onElementRemoved(div, addToDom);
 
-      window.addEventListener("mouseover", (e) => {
+      window.addEventListener("mouseover", async (e) => {
+        const [width, height] = await getConfigSize();
+        if (e.target.clientWidth < width || e.target.clientHeight < height)
+          return;
+
         let srcs = getImgSrcsFromElement(e.target);
         if (!srcs?.length) {
           div.classList.toggle("hide", e.target !== div);
