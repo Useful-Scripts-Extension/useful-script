@@ -1,6 +1,6 @@
 # WORKING NOTES
 
-## 01/07/2024 - ?
+## 01/07/2024 - 28/7/2024
 
 - [x] Tải video bằng cách record??? <https://chromewebstore.google.com/detail/fetchv-ti%E1%BB%87n-%C3%ADch-m%E1%BB%9F-r%E1%BB%99ng-%C4%91/nfmmmhanepmpifddlkkmihkalkoekpfd> => cannot record full video
 
@@ -8,7 +8,7 @@
 
 - [ ] good feature - global video speed <https://chromewebstore.google.com/detail/global-speed/jpbjcnkcffbooppibceonlgknpkniiff?hl=en> <https://chromewebstore.google.com/detail/video-speed-controller/nffaoalbilbmmfgbnbgppjihopabppdk?hl=en>
 
-- [ ] good feature - medium unlock <https://readmedium.com/> <https://chromewebstore.google.com/detail/medium-unlock/babnnfmbjokkeieobamoifmeapbbfhje>
+- [x] good feature - medium unlock <https://readmedium.com/> <https://chromewebstore.google.com/detail/medium-unlock/babnnfmbjokkeieobamoifmeapbbfhje>
 
 - [ ] good feature - facebook adblocker <https://chromewebstore.google.com/detail/esuit-ad-blocker-for-face/jkbklfkombochacjoeagggbiohipcbaj>
 
@@ -20,7 +20,7 @@
 
 - [x] add this beautiful video downloader tool <https://github.com/imputnet/cobalt> <https://github.com/imputnet/cobalt/blob/current/docs/api.md>
 
-- [ ] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
+- [x] savefile using new api <https://web.dev/patterns/files/save-a-file#js>
 
 - [x] hotfix - use chrome.downloads instead of library => can not apply to all scripts
 
