@@ -438,6 +438,7 @@ export default {
         const dir = await UfsGlobal.Utils.chooseFolderToDownload(folderName);
         onProgressItem?.(0, data.length);
 
+        UfsGlobal.Extension.trackEvent("tiktok_batchDownload-download");
         for (let i = 0; i < data.length; ++i) {
           try {
             onProgressItem?.(i + 1, data.length);

@@ -1,6 +1,24 @@
 ## Change logs
 
 <details>
+  <summary>v1.7 - 28/07/2024</summary>
+
+- Tiktok
+  - NEW batch download [source](/scripts/tiktok_batchDownload.js)
+
+- Google
+  - Download private video [source](/scripts/ggdrive_downloadVideo.js)
+
+- More
+  - Magnify image: support config min-size for hover [source](/scripts/magnify_image.js)
+  - Fix Medium VIP [source](/scripts/medium_readFullArticle.js)
+  - Guland VIP [source](/scripts/guland_VIP.js)
+  - Picture in picture anything (beta) [source](/scripts/pip_anything.js)
+  - Optimize performance UfsGlobal [source](/scripts/content-scripts/ufs_global.js)
+
+</details>
+
+<details>
   <summary>v1.69 - 14/07/2024</summary>
 
 - Facebook
