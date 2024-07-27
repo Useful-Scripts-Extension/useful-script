@@ -705,8 +705,8 @@ function initSettings() {
     smoothScrollRow.innerHTML = `
       <div class="label"
         data-tooltip="${t({
-          vi: "Tắt nếu bạn đã cài app SmoothScroll",
-          en: "Turn off if installed SmoothScroll app",
+          vi: "Tắt nếu bạn dùng touchpad",
+          en: "Turn off if using touchpad",
         })}"
         data-flow="bottom"
       >${t({
