@@ -92,14 +92,13 @@ export default {
               en: "Only show the magnify button when the image's size is larger than:",
             })}</p>
             <input
-              style="display: inline-block;width: 40%"
+              style="display: inline-block;width: 40%;margin: 5px;"
               type="number"
               id="swal-input1"
               class="swal2-input"
               value="${width}"
-              placeholder="${t({ vi: "Rộng", en: "Width" })}">X
-            <input
-              style="display: inline-block;width: 40%"
+              placeholder="${t({ vi: "Rộng", en: "Width" })}">X<input
+              style="display: inline-block;width: 40%;margin: 5px;"
               type="number"
               id="swal-input2"
               class="swal2-input"
