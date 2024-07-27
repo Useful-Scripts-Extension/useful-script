@@ -71,6 +71,7 @@ export default {
     "2024-05-21": "not require autorun",
     "2024-06-07":
       "support video frame + right click anywhere + magnify on hover + search by images",
+    "2024-07-28": "config img size for hover",
   },
   buttons: [
     {
