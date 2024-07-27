@@ -1,5 +1,5 @@
 import * as utils from "../helpers/utils.js";
-import allScripts from "../_allScripts.js";
+import allScripts from "../@allScripts.js";
 import { UfsGlobal } from "../content-scripts/ufs_global.js";
 // import "../content-scripts/ufs_global.js"; // https://stackoverflow.com/a/62806068/23648002
 // importScripts()

@@ -15,6 +15,7 @@ import {
   Storage,
   checkBlackWhiteList,
   runScriptInTabWithEventChain,
+  getAllActiveScriptIds,
 } from "../scripts/helpers/utils.js";
 import {
   LANG,
@@ -39,6 +40,7 @@ import {
   viewScriptSource,
 } from "./helpers/utils.js";
 import { checkPass } from "../scripts/auto_lockWebsite.js";
+import allScripts from "../scripts/@allScripts.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 const settingsBtn = document.querySelector(".settings");
@@ -174,6 +176,8 @@ function createScriptButton(script, isFavorite = false) {
     const checkmark = document.createElement("button");
     checkmark.className = "checkmark";
     checkmark.onclick = async (e) => {
+      if (checkIsPreview(script)) return;
+
       let oldVal = await isActiveScript(script.id);
       let newVal = !oldVal;
 
@@ -330,8 +334,10 @@ function createScriptButton(script, isFavorite = false) {
   tooltip.classList.add("tooltiptext");
   tooltip.innerHTML = t(script.description);
 
-  if (script.description?.img) {
-    tooltip.innerHTML += `<img src="${script.description.img}"/>`;
+  let img = script.description?.img;
+  if (img) {
+    if (img.startsWith("/scripts")) img = ".." + img; // /scripts/abc.png => ../scripts/abc.png
+    tooltip.innerHTML += `<img src="${img}"/>`;
   }
   if (script.description?.video) {
     let video = document.createElement("video");
@@ -340,6 +346,7 @@ function createScriptButton(script, isFavorite = false) {
     video.muted = true;
     video.loop = true;
     video.style.width = "80vw";
+    video.style.maxWidth = "100%";
     // TODO why this not working??
     button.addEventListener("mouseenter", () => {
       setTimeout(() => {
@@ -443,7 +450,39 @@ function showError(e) {
   });
 }
 
+function checkIsPreview(script) {
+  if (
+    location.hostname === "hoangtran0410.github.io" ||
+    location.hostname === "127.0.0.1"
+  ) {
+    trackEvent("CLICK_PREVIEW_" + script.id);
+    Swal.fire({
+      icon: "info",
+      title: t({ vi: "Đây là bản xem trước", en: "This is a preview" }),
+      text: t({
+        vi: "Vui lòng tải và cài đặt tiện ích Useful-script để sử dung chức năng này nhé",
+        en: "Please install Useful-script extension to use these features",
+      }),
+      confirmButtonText: t({ vi: "Xem hướng dẫn", en: "View tutorial" }),
+      cancelButtonText: t({ vi: "Đã hiểu", en: "Ok" }),
+      showCancelButton: true,
+      reverseButtons: true,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        window.open(
+          "https://www.facebook.com/groups/1154059318582088/posts/1453443235310360/",
+          "_blank"
+        );
+      }
+    });
+    return true;
+  }
+  return false;
+}
+
 async function runScript(script) {
+  if (checkIsPreview(script)) return;
+
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(script, tab.url);
   if (willRun) {
@@ -532,6 +571,8 @@ const updateTargetTab = UfsGlobal.Utils.debounce(async () => {
 }, 500);
 
 async function initOpenInNewTab() {
+  if (!chrome?.tabs) return;
+
   let currentTab = await chrome.tabs.getCurrent();
   isInNewTab = currentTab != null;
 
@@ -664,8 +705,8 @@ function initSettings() {
     smoothScrollRow.innerHTML = `
       <div class="label"
         data-tooltip="${t({
-          vi: "Tắt nếu bạn đã cài app SmoothScroll",
-          en: "Turn off if installed SmoothScroll app",
+          vi: "Tắt nếu bạn dùng touchpad",
+          en: "Turn off if using touchpad",
         })}"
         data-flow="bottom"
       >${t({
@@ -810,7 +851,7 @@ async function restore() {
     ))
   )
     return;
-  Swal.fire({
+  const result = await Swal.fire({
     title: t({ en: "Restore data", vi: "Khôi phục dữ liệu" }),
     text: t({ en: "Select file to restore", vi: "Chọn file để khôi phục" }),
     input: "file",
@@ -834,44 +875,59 @@ async function restore() {
       });
     },
     allowOutsideClick: () => !Swal.isLoading(),
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        trackEvent("RESTORE");
-        const json = JSON.parse(result.value);
-        const { localStorage: l, chromeStorage } = json;
+  });
 
-        if (l) {
-          localStorage.clear();
-          Object.keys(l).forEach((key) => {
-            localStorage[key] = l[key];
-          });
-        }
+  if (!result.isConfirmed) return;
+  try {
+    trackEvent("RESTORE");
+    const json = JSON.parse(result.value);
+    const { localStorage: l, chromeStorage } = json;
 
-        if (chromeStorage) {
-          await chrome.storage.local.clear();
-          for (let key in chromeStorage) {
-            await chrome.storage.local.set({ [key]: chromeStorage[key] });
-          }
-        }
+    // override localStorage
+    if (l) {
+      localStorage.clear();
+      Object.keys(l).forEach((key) => {
+        localStorage[key] = l[key];
+      });
+    }
 
-        Swal.fire({
-          icon: "success",
-          title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
-          text: t({
-            en: "Imported data from",
-            vi: "Đã nạp dữ liệu",
-          }),
-        });
-      } catch (e) {
-        Swal.fire({
-          icon: "error",
-          title: t({ en: "Error", vi: "Lỗi" }),
-          text: e?.message || e,
-        });
+    if (chromeStorage) {
+      // trigger onDisable current active scripts
+      const oldActiveScriptIds = await getAllActiveScriptIds();
+      for (let s of oldActiveScriptIds.map((id) => allScripts[id])) {
+        if (typeof s?.popupScript?.onDisable === "function")
+          await s.popupScript.onDisable();
+      }
+
+      // override chrome.storage
+      await chrome.storage.local.clear();
+      await chrome.storage.local.set(chromeStorage);
+
+      // trigger onEnable new active scripts
+      const newActiveScriptIds = await getAllActiveScriptIds();
+      for (let s of newActiveScriptIds.map((id) => allScripts[id])) {
+        if (typeof s?.popupScript?.onEnable === "function")
+          await s.popupScript.onEnable();
       }
     }
-  });
+
+    await Swal.fire({
+      icon: "success",
+      title: t({ en: "Restore Success", vi: "Khôi phục thành công" }),
+      text: t({
+        en: "Imported data from",
+        vi: "Đã nạp dữ liệu",
+      }),
+    });
+
+    location.reload();
+  } catch (e) {
+    Swal.fire({
+      icon: "error",
+      title: t({ en: "Error", vi: "Lỗi" }),
+      text: e?.message || e,
+    });
+  }
 }
 
 async function reset() {
@@ -957,6 +1013,43 @@ function initScrollToTop() {
   // });
 }
 
+async function initShowDonate() {
+  const clickedDonate = await Storage.get("clickedDonate");
+  let count = (await Storage.get("openPopupCount")) || 0;
+  count++;
+  Storage.set("openPopupCount", count);
+  if (count > 0 && count % 10 === 0 && !clickedDonate) {
+    const res = await Swal.fire({
+      icon: "info",
+      title: t({
+        vi: "Cảm ơn bạn tin dùng",
+        en: "Thanks for using Useful-scripts",
+      }),
+      text: t({
+        vi: "Useful-scripts là miễn phí. Nhưng nếu bạn thích nó, bạn có thể hỗ trợ mình 1 ly cà phê. Một đồng cũng đáng quý 💓",
+        en: "It's free. But you can support me if you like. I'll appreciate if you give me some love 💓",
+      }),
+      confirmButtonText: "Donate",
+      showCancelButton: true,
+      cancelButtonText: t({ vi: "Để sau", en: "Later" }),
+      showDenyButton: true,
+      denyButtonText: t({ vi: "Tặng sao", en: "Star github" }),
+      reverseButtons: true,
+      focusConfirm: true,
+    });
+    if (res.isConfirmed) {
+      Storage.set("clickedDonate", true);
+      window.open(
+        "https://hoangtran0410.github.io/HoangTran0410/DONATE",
+        "_blank"
+      );
+    }
+    if (res.isDenied) {
+      window.open("https://github.com/HoangTran0410/useful-script", "_blank");
+    }
+  }
+}
+
 function saveScroll() {
   const scrollY = window.scrollY;
   Storage.set("popupScrollY", scrollY);
@@ -993,11 +1086,12 @@ window.addEventListener("scroll", onScrollEnd);
   initScrollToTop();
   createTabs().then(restoreScroll);
 
-  chrome.windows.onFocusChanged.addListener((windowId) => {
+  chrome?.windows?.onFocusChanged?.addListener?.((windowId) => {
     setTimeout(async () => {
       let currentTab = await getCurrentTab();
     }, 200);
   });
 
   checkForUpdate();
+  initShowDonate();
 })();

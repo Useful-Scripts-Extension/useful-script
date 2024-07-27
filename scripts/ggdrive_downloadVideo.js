@@ -14,6 +14,10 @@ export default {
   infoLink:
     "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
 
+  changeLogs: {
+    "2024-07-25": "add backup plan",
+  },
+
   popupScript: {
     onClick: async function () {
       const { getCurrentTab, openPopupWithHtml, showLoading } = await import(
@@ -57,6 +61,31 @@ export default {
       }
     },
   },
+  contentScript: {
+    onClick_: async () => {
+      let url = new URL(location.href);
+      const player_response = url.searchParams.get("player_response");
+      if (player_response) {
+        const json = JSON.parse(player_response);
+        console.log(document.title, json);
+
+        const { openPopupWithHtml } = await import("./helpers/utils.js");
+        openPopupWithHtml(
+          `<h1>${document.title}</h1>
+        ${json.streamingData.formats
+          .map((_) => {
+            return /*html*/ `<div>
+              <h1><a href="${_.url}" target="_blank">${_.quality}</a></h1>
+              <video src="${_.url}" controls style="max-width:95%" />
+            </div>`;
+          })
+          .join("<br/>")}`,
+          700,
+          700
+        );
+      }
+    },
+  },
 };
 
 export const shared = {
@@ -75,14 +104,15 @@ export const shared = {
   // Post: https://www.facebook.com/groups/j2team.community/posts/974953859503401/
   getLinkVideoGDriveFromDocId: async function (docid) {
     function parse(e) {
-      var result = {};
-      return (
-        e.split("&").forEach(function (e) {
-          result[decodeURIComponent(e.substring(0, e.indexOf("=")))] =
-            decodeURIComponent(e.substring(e.indexOf("=") + 1));
-        }),
-        result
-      );
+      let result = {};
+      let a = new URLSearchParams(e);
+      a.entries().forEach((e) => {
+        result[e[0]] = e[1];
+      });
+      return result;
+
+      // Array.from(new URLSearchParams("").entries())
+      // .reduce((total, cur) => ({ ...total, [cur[0]]: cur[1] }), {});
     }
 
     function parseStream(e) {
@@ -102,6 +132,10 @@ export const shared = {
 
       let text = await res.text();
       let json = parse(text);
+
+      if (json?.status === "fail") {
+        throw Error("FAILED: " + json.reason);
+      }
 
       json.url_encoded_fmt_stream_map = parseStream(
         json.url_encoded_fmt_stream_map

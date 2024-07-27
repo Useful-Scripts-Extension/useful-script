@@ -1,8 +1,7 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import {
-  downloadTiktokVideoFromUrl,
-  downloadTiktokVideoFromId,
-} from "./tiktok_GLOBAL.js";
+import { BADGES } from "./helpers/badge.js";
+import { hookFetch } from "./libs/ajax-hook/index.js";
+import { scrollToVeryEnd } from "./scrollToVeryEnd.js";
 
 export default {
   icon: "https://www.tiktok.com/favicon.ico",
@@ -13,222 +12,453 @@ export default {
   description: {
     en: "Select and download all tiktok video (user profile, tiktok explore).",
     vi: "Tải hàng loạt video tiktok (trang người dùng, trang tìm kiếm), có giao diện chọn video muốn tải.",
-    img: "/scripts/tiktok_batchDownload.jpg",
+    img: "/scripts/tiktok_batchDownload.png",
   },
-
+  badges: [BADGES.new, BADGES.hot],
   changeLogs: {
     "2024-04-27": "fix bug - use snaptik",
     "2024-05-16": "fix style",
+    "2024-07-28": "re-build hook fetch",
   },
 
   whiteList: ["https://www.tiktok.com/*"],
 
-  popupScript: {
-    onClick: () => {
-      alert(`Làm các bước sau:
-      1: Tích chọn nút bên trái để mở chức năng.
-      2: Tải lại trang web tiktok.
-      3: Sẽ hiện giao diện giúp tải hàng loạt ngay trong trang web.`);
-    },
-  },
-
   pageScript: {
-    onDocumentIdle: async () => {
-      let checkboxes = [];
+    onDocumentStart: async () => {
+      const CACHED = {
+        hasNew: true,
+        videoById: new Map(),
+      };
 
-      // Setup DOM
-      let id = "ufs-tiktok-batch-download";
-      let container = document.createElement("div");
-      container.id = id;
+      // reference to Cached
+      window.ufs_tiktok_batchDownload = CACHED;
 
-      const style = document.createElement("style");
-      style.textContent = `
-        #${id} {
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: #333e;
-          color: white;
-          min-height: 50px;
-          padding: 15px;
-          z-index: 6;
-          border-radius: 5px;
-          border: 1px solid #eee;
-        }
-        #${id} button {
-          padding: 5px 10px;
-          background: #444;
-          color: white !important;
-          border: none;
-        }
-        #${id} button:hover {
-          background: #666;
-        }
-      `;
-      container.appendChild(style);
+      hookFetch({
+        onAfter: async (url, options, response) => {
+          if (url.includes("item_list/")) {
+            const res = response.clone();
+            const json = await res.json();
+            console.log(json);
 
-      (document.body || document.documentElement).appendChild(container);
+            if (json?.itemList) {
+              json.itemList.forEach((_) => {
+                if (_.video.playAddr || _.imagePost?.images?.length) {
+                  CACHED.videoById.set(_.video.id, _);
+                  CACHED.hasNew = true;
+                }
 
-      let progressDiv = document.createElement("p");
-      progressDiv.innerText = "Useful script: Tiktok tải hàng loạt";
-      progressDiv.style = "margin-bottom: 5px; font-family: monospace;";
-      container.appendChild(progressDiv);
-
-      // scroll button
-      let scrolling = false;
-      const scrollBtn = document.createElement("button");
-      scrollBtn.innerText = "Scroll xuống ⏬";
-      scrollBtn.onclick = async () => {
-        scrolling = !scrolling;
-
-        scrollBtn.innerText = scrolling
-          ? "Đang scroll... ⏳"
-          : "Scroll xuống ⏬";
-
-        let doubleCheck = 0;
-        while (scrolling) {
-          let previousHeight = document.body.scrollHeight;
-          window.scrollTo(0, document.body.scrollHeight);
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          if (document.body.scrollHeight <= previousHeight) {
-            doubleCheck++;
-            console.log(doubleCheck);
-            if (doubleCheck > 5) {
-              scrolling = false;
-              scrollBtn.innerText = "Scroll xuống ⏬";
+                if (_.imagePost?.images?.length) console.log(_);
+              });
             }
           }
-        }
-      };
-      container.appendChild(scrollBtn);
 
-      // Select all button
-      const selectAllBtn = document.createElement("button");
-      selectAllBtn.innerText = "Chọn/Huỷ chọn ✅";
-      selectAllBtn.onclick = function () {
-        let value = checkboxes[0].checked;
-        for (let checkbox of checkboxes) {
-          checkbox.checked = !value;
-        }
-      };
-      container.appendChild(selectAllBtn);
+          if (url.includes("api/search")) {
+            const res = response.clone();
+            const json = await res.json();
+            console.log(json);
 
-      // Revert all Button
-      const revertAllBtn = document.createElement("button");
-      revertAllBtn.innerText = "Đảo ngược 🔁";
-      revertAllBtn.onclick = function () {
-        for (let checkbox of checkboxes) {
-          checkbox.checked = !checkbox.checked;
-        }
-      };
-      container.appendChild(revertAllBtn);
-
-      // Download button
-      const downloadBtn = document.createElement("button");
-      downloadBtn.innerText = "GET LINK 🔗";
-      downloadBtn.onclick = function () {
-        let videoUrls = [];
-        for (let checkbox of checkboxes) {
-          if (checkbox.checked) {
-            videoUrls.push(checkbox["data-url"]);
+            if (json.data?.length) {
+              json.data.forEach((_) => {
+                if (_.type === 1) {
+                  CACHED.videoById.set(_.item.video.id, _.item);
+                  CACHED.hasNew = true;
+                }
+              });
+            }
           }
-        }
-        console.log(videoUrls);
-        getLinkVideos(videoUrls);
-      };
-      container.appendChild(downloadBtn);
+        },
+      });
 
-      // result div
-      let resultDiv = document.createElement("div");
-      resultDiv.style = "margin-top: 10px";
-      container.appendChild(resultDiv);
+      UfsGlobal.Extension.getURL("/scripts/tiktok_batchDownload.css").then(
+        UfsGlobal.DOM.injectCssFile
+      );
+      await UfsGlobal.DOM.injectScriptSrcAsync(
+        await UfsGlobal.Extension.getURL("/scripts/libs/vue/index.js")
+      );
 
-      let resultLabel = document.createElement("label");
-      resultDiv.appendChild(resultLabel);
+      const div = document.createElement("div");
+      document.documentElement.appendChild(div);
 
-      let resultTxt = document.createElement("textarea");
-      resultTxt.style = "width: 100%; height: 50px";
-      resultTxt.hidden = true;
-      resultDiv.appendChild(resultTxt);
-
-      // click listener
-      window.onclick = function (e) {
-        if (
-          e.target.type === "checkbox" ||
-          e.target == selectAllBtn ||
-          e.target == revertAllBtn
-        ) {
-          let selected = checkboxes.filter(
-            (checkbox) => checkbox.checked
-          ).length;
-          progressDiv.innerText = `Đã chọn ${selected}/${checkboxes.length} video. Bấm nút Get link khi chọn xong nhé.`;
-        }
-      };
-
-      function createCheckBox(url) {
-        let checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.name = "video";
-        checkbox.checked = false;
-        checkbox["data-url"] = url;
-        checkbox.style =
-          "z-index: 0; position: absolute; top: 0; right: 0; width: 60px; height: 60px;";
-        return checkbox;
+      const formatter = UfsGlobal.Utils.getNumberFormatter("compactShort");
+      function getNow() {
+        // return year + month + day + hour + minute + second
+        const day = new Date();
+        return (
+          [day.getFullYear(), day.getMonth() + 1, day.getDate()].join("-") +
+          "_" +
+          [day.getHours(), day.getMinutes(), day.getSeconds()].join("-")
+        );
       }
 
-      async function sleep(time) {
-        await new Promise((resolve) => setTimeout(resolve, time));
-      }
+      const app = new Vue({
+        template: /*html*/ `
+<div id="ufs_tiktok_batchDownload">
+  <div class="ufs_floating_btn" @click="showModal = true">📥 {{totalCount}}</div>
+  <div class="ufs_container" v-if="showModal" @click.self="showModal = false">
+    <div class="ufs_popup">
+      <h1 style="text-align:center">Tiktok - <a target="_blank" href="https://github.com/HoangTran0410/useful-script">Useful Scripts</a></h1>
+      <h2 style="text-align:center">Found {{totalCount}} videos</h2>
 
-      async function getLinkVideos(videoUrls) {
-        if (!videoUrls.length) return;
-        const getId = (url) => url.split("/").at(-1);
-        const queue = [...videoUrls];
-        const links = [];
-        downloadBtn.disabled = true;
+      <div class="ufs_popup_header">
+        <button @click="scrollToVeryEnd">⏬ Auto scroll</button>
+        <div class="ufs_dropdown">
+          <button @click="clear" class="ufs_dropdown_trigger">🗑️ Clear</button>
+          <div class="ufs_dropdown_content" v-if="selectedCount > 0">
+            <button @click="clearSelected">🗑️ Remove {{selectedCount}} selected</button>
+          </div>
+        </div>
+        <div class="ufs_dropdown">
+          <button @click="downloadVideo" class="ufs_dropdown_trigger">🎬  {{videoTitle}}</button>
+          <div class="ufs_dropdown_content">
+            <button @click="downloadAudio">🎧 {{audioTitle}}</button>
+            <button @click="downloadJson">📄 Download json</button>
+          </div>
+        </div>
+        <input type="text" placeholder="🔎 Search..." :value="search" @input="e => search = e.target.value" >
+      </div>
 
-        while (queue.length) {
-          let progress = `[${videoUrls.length - queue.length + 1}/${
-            videoUrls.length
-          }]`;
+      <div class="table_wrap">
+        <table>
+          <thead>
+            <tr>
+              <th @click="setSortBy('index')" class="clickable">#</th>
+              <th>🎬 Video</th>
+              <th @click="setSortBy('title')" class="clickable">Title</th>
+              <th @click="setSortBy('author')" class="clickable">👤 User</th>
+              <th @click="setSortBy('view')" class="clickable">View</th>
+              <th @click="setSortBy('duration')" class="clickable">Length</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+<tr v-if="videosToShow.length === 0">
+  <td colspan="7"><h2 style="text-align:center">No video</h2></td>
+</tr>
+<tr v-for="v in videosToShow" :key="v.id">
+  <td style="text-align:center">{{v.index}}<br/>
+    <input type="checkbox" v-model="selected[v.id]" class="ufs_video_checkbox" />
+  </td>
+  <td>
+    <a target="_blank" :href="v.video.playAddr">
+      <img :src="v.video.dynamicCover || v.video.originCover || v.video.cover" style="width:150px" />
+    </a>
+  </td>
+  <td><p style="max-width:200px">{{v.desc}}</p></td>
+  <td>
+    <img :src="v.author.avatarThumb" class="ufs_avatar" @click="openUser(v.author.uniqueId)"/>
+    {{v.author.nickname}}<br/>
+    {{v.author.uniqueId}}<br/>
+    {{v.author.id}}
+  </td>
+  <td>{{format(v.stats.playCount)}}</td>
+  <td>{{v.video.duration}}s</td>
+  <td>
+    <p style="max-width:200px">
+      <a :href="v.video.playAddr" v-if="v.video.playAddr" target="_blank">🎬 Video</a><br/>
+      <a :href="v.video.cover" target="_blank">🖼️ Cover</a><br/>
+      <a :href="v.author.avatarLarger" target="_blank">
+      👤 Avatar
+      </a><br/>
+      <a :href="v.music.playUrl" target="_blank">
+      🎧 Music: {{v.music.title}}
+      </a>
+    </p>
+  </td>
+</tr>
+          </tbody>
+        </table>
+
+        <button v-if="videosToShow.length > 2" @click="scrollToTop" class="ufs_scroll_top">⬆</button>
+      </div>
+    </div>
+  </div>
+</div>`,
+        created() {
+          setInterval(() => {
+            if (CACHED.hasNew) {
+              this.videos = Array.from(CACHED.videoById.values())
+                // inject index
+                .map((v, i) => ({ ...v, index: i + 1 }));
+
+              CACHED.hasNew = false;
+            }
+          }, 1000);
+        },
+        data() {
+          return {
+            showModal: false,
+            videos: [],
+            search: "",
+            sortBy: "index",
+            sortDir: "asc",
+            downloading: {},
+            selected: {},
+          };
+        },
+        computed: {
+          selectedIds() {
+            return Object.entries(this.selected)
+              .filter((v) => v[1])
+              .map((v) => v[0]);
+          },
+          selectedCount() {
+            return Object.values(this.selected).filter((v) => v).length;
+          },
+          hasSelected() {
+            return this.selectedCount > 0;
+          },
+          videoToDownload() {
+            return this.hasSelected
+              ? this.videosToShow.filter((v) => this.selected[v.id])
+              : this.videosToShow;
+          },
+          audioToDownload() {
+            const list = this.hasSelected
+              ? this.videosToShow.filter((v) => this.selected[v.id])
+              : this.videosToShow;
+
+            // get unique
+            const result = new Map();
+            for (const item of list) {
+              if (!result.has(item.music.id)) result.set(item.music.id, item);
+            }
+            return Array.from(result.values());
+          },
+          videoTitle() {
+            if (this.downloading.video) {
+              return (
+                "Downloading " +
+                this.downloading.video +
+                "/" +
+                this.videoToDownload.length +
+                " video"
+              );
+            }
+            return (
+              "Download " +
+              this.videoToDownload.length +
+              (this.hasSelected ? " selected" : "") +
+              " video"
+            );
+          },
+          audioTitle() {
+            if (this.downloading.audio) {
+              return (
+                "Downloading " +
+                this.downloading.audio +
+                "/" +
+                this.audioToDownload.length +
+                " audio"
+              );
+            }
+            return (
+              "Download " +
+              this.audioToDownload.length +
+              (this.hasSelected ? " selected" : "") +
+              " audio"
+            );
+          },
+          totalCount() {
+            return this.videos.length;
+          },
+          videosToShow() {
+            return (
+              this.videos
+                // filter by search
+                .filter((v) => {
+                  return [
+                    v.desc,
+                    v.author.id,
+                    v.author.nickname,
+                    v.author.uniqueId,
+                  ].some((s) =>
+                    s.toLowerCase().includes(this.search.toLowerCase())
+                  );
+                })
+                // sorting
+                .sort((a, b) => {
+                  switch (this.sortBy) {
+                    case "index":
+                      return this.sortDir === "asc"
+                        ? a.index - b.index
+                        : b.index - a.index;
+                    case "title":
+                      return this.sortDir === "asc"
+                        ? a.desc.localeCompare(b.desc)
+                        : b.desc.localeCompare(a.desc);
+                    case "author":
+                      return this.sortDir === "asc"
+                        ? a.author.nickname.localeCompare(b.author.nickname)
+                        : b.author.nickname.localeCompare(a.author.nickname);
+                    case "view":
+                      return this.sortDir === "asc"
+                        ? a.stats.playCount - b.stats.playCount
+                        : b.stats.playCount - a.stats.playCount;
+                    case "duration":
+                      return this.sortDir === "asc"
+                        ? a.video.duration - b.video.duration
+                        : b.video.duration - a.video.duration;
+                  }
+                })
+            );
+          },
+        },
+        methods: {
+          async downloadVideo() {
+            const total = this.videoToDownload.length;
+            if (!total) return;
+            let success = 0;
+            await download({
+              folderName: "tiktok_videos_" + getNow(),
+              expectBlobTypes: ["video/mp4", "image/jpeg"],
+              data: this.videoToDownload
+                .map((_, i) => {
+                  // image
+                  const imgs = _.imagePost?.images;
+                  if (imgs?.length) {
+                    return imgs.map((img, j) => ({
+                      url:
+                        img.imageURL?.urlList?.[1] ||
+                        img.imageURL?.urlList?.[0],
+                      filename:
+                        i +
+                        1 +
+                        "_" +
+                        (j + 1) +
+                        "_" +
+                        UfsGlobal.Utils.sanitizeName(_.id, false) +
+                        ".jpg",
+                    }));
+                  }
+
+                  // video
+                  const urlList =
+                    _.video?.bitrateInfo?.find?.(
+                      (b) => b.Bitrate === _.video.bitrate
+                    )?.PlayAddr?.UrlList || [];
+                  const bestUrl = urlList[urlList.length - 1];
+                  return {
+                    url: bestUrl || _.video.playAddr,
+                    filename:
+                      i +
+                      1 +
+                      "_" +
+                      UfsGlobal.Utils.sanitizeName(_.id, false) +
+                      ".mp4",
+                  };
+                })
+                .flat()
+                .filter((_) => _.url),
+              onProgressItem: (i, total) => {
+                this.downloading.video = i;
+              },
+              onFinishItem: (i, total) => {
+                success++;
+              },
+            });
+            this.downloading.video = false;
+            alert("Downloaded " + success + "/" + total + " videos!");
+          },
+          async downloadAudio() {
+            const total = this.audioToDownload.length;
+            if (!total) return;
+            let success = 0;
+            await download({
+              folderName: "tiktok_musics_" + getNow(),
+              data: this.audioToDownload.map((_, i) => ({
+                url: _.music.playUrl,
+                filename:
+                  i +
+                  1 +
+                  "_" +
+                  UfsGlobal.Utils.sanitizeName(
+                    _.music.title.substr(0, 50) || "audio",
+                    false
+                  ) +
+                  ".mp3",
+              })),
+              onProgressItem: (i, total) => {
+                this.downloading.audio = i;
+              },
+              onFinishItem: (i, total) => {
+                success++;
+              },
+            });
+            this.downloading.audio = false;
+            alert("Downloaded " + success + "/" + total + " videos!");
+          },
+          downloadJson() {
+            UfsGlobal.Utils.downloadData(
+              JSON.stringify(this.videosToShow, null, 4),
+              this.videosToShow.length + "_videos_tiktok.json"
+            );
+          },
+          scrollToVeryEnd() {
+            setTimeout(() => scrollToVeryEnd(false), 100);
+          },
+          scrollToTop(e) {
+            e.target.parentElement.scrollTo({ top: 0, behavior: "smooth" });
+          },
+          clearSelected() {
+            this.selectedIds.forEach((vidId) => {
+              CACHED.videoById.delete(vidId);
+            });
+            this.selected = {};
+          },
+          clear() {
+            if (confirm("Are you sure want to clear all?")) {
+              CACHED.videoById.clear();
+              this.videos = [];
+            }
+          },
+          setSortBy(key) {
+            this.sortBy = key;
+            if (key === this.sortBy)
+              this.sortDir = this.sortDir === "asc" ? "desc" : "asc";
+          },
+          openUser(id) {
+            window.open("https://www.tiktok.com/@" + id, "_blank");
+          },
+          format(v) {
+            return formatter.format(v);
+          },
+          onClickContainer(e) {
+            if (e.target === this.$el) this.showModal = false;
+          },
+        },
+      }).$mount(div);
+
+      async function download({
+        folderName = "tiktok",
+        expectBlobTypes,
+        data,
+        onProgressItem,
+        onFinishItem,
+      }) {
+        const dir = await UfsGlobal.Utils.chooseFolderToDownload(folderName);
+        onProgressItem?.(0, data.length);
+
+        UfsGlobal.Extension.trackEvent("tiktok_batchDownload-download");
+        for (let i = 0; i < data.length; ++i) {
           try {
-            console.log(`${progress} Đang tìm link cho video ${queue[0]}`);
-            progressDiv.innerText = `${progress} Đang tìm link video ${queue[0]}...`;
-            downloadBtn.innerText = `Đang get link ${progress}...`;
-            let link = await downloadTiktokVideoFromUrl(queue[0], true);
-
-            if (!link) {
-              link = await downloadTiktokVideoFromId(getId(queue[0]));
-            }
-
-            if (link) {
-              resultTxt.hidden = false;
-              resultTxt.value += link + "\n";
-              let count = resultTxt.value.split("\n").filter((i) => i).length;
-              resultLabel.innerText = `Link tại đây, ${count} video, copy bỏ vào IDM tải hàng loạt nhé:`;
-
-              links.push(link);
-            } else {
-              progressDiv.innerText = `[LỖI] Không thể tải video ${queue[0]}.`;
-              await sleep(1000);
-            }
-            queue.shift();
+            onProgressItem?.(i + 1, data.length);
+            const { url, filename } = data[i];
+            const realUrl = await UfsGlobal.Utils.getRedirectedUrl(url);
+            await UfsGlobal.Utils.downloadToFolder({
+              url: realUrl,
+              fileName: filename,
+              dirHandler: dir,
+              expectBlobTypes,
+            });
+            onFinishItem?.(i + 1, data.length);
           } catch (e) {
-            console.log(`${progress} Lỗi tải, thử lại sau 1s...`);
-            let failId = queue.shift();
-            queue.push(failId);
-            await sleep(1000);
+            console.error(e);
           }
         }
-
-        progressDiv.innerText = "Bạn vẫn có thể chọn thêm video để get link.";
-        downloadBtn.disabled = false;
-        downloadBtn.innerText = "GET LINK 🔗";
-
-        if (links?.length) UfsGlobal.Utils.copyToClipboard(links.join("\n"));
-        console.log(links);
       }
+      return;
+      // checkbox on videos
+      let checkboxes = [];
 
       // Listen for videos
       UfsGlobal.DOM.onElementsAdded('a[href*="/video/"]', (nodes) => {
@@ -247,15 +477,7 @@ export default {
           if (isPrivate) {
             let p = document.createElement("p");
             p.innerText = "Riêng tư";
-            p.style = [
-              "position: absolute;",
-              "top: 0;",
-              "right: 0;",
-              "color: red",
-              "background: black",
-              "padding: 8px",
-              "font-weight: bold",
-            ].join(";");
+            p.className = "ufs_is_private";
             node.parentElement.appendChild(p);
           } else {
             let url = node.getAttribute("href");
@@ -264,10 +486,17 @@ export default {
             checkboxes.push(checkbox);
           }
         }
-
-        let selected = checkboxes.filter((checkbox) => checkbox.checked).length;
-        progressDiv.innerText = `Đã chọn ${selected}/${checkboxes.length} video. Bấm nút Get link khi chọn xong nhé.`;
       });
+
+      function createCheckBox(url) {
+        let checkbox = document.createElement("input");
+        checkbox.className = "ufs_tiktok_checkbox";
+        checkbox.type = "checkbox";
+        checkbox.name = "video";
+        checkbox.checked = false;
+        checkbox["data-url"] = url;
+        return checkbox;
+      }
     },
   },
 };

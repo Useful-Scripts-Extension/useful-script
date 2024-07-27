@@ -1,4 +1,3 @@
-import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { BADGES } from "./helpers/badge.js";
 
 export default {
@@ -24,6 +23,9 @@ export default {
     </ul>`,
   },
   badges: [BADGES.hot],
+  changeLogs: {
+    "2024-07-24": "hotfix",
+  },
 
   contentScript: {
     onDocumentStart_: function () {
@@ -32,7 +34,7 @@ export default {
     },
 
     onClick_: function () {
-      let isMainFrame = !UfsGlobal.DOM.isInIframe();
+      let isMainFrame = window === window.top;
       if (!window.ufs_simpleAllowCopy) {
         if (isMainFrame)
           alert("Vui lòng mở chức năng trước, rồi tải lại trang web.");
@@ -95,7 +97,7 @@ const unlocker = (() => {
   const addCss = () => {
     try {
       const doc = window.document;
-      removeCss(wnd);
+      removeCss();
       const style = doc.createElement("STYLE");
       style.id = CSS_ELEM_ID;
       style.innerHTML =

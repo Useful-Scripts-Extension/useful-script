@@ -1,5 +1,3 @@
-// javascript:window.open("https://freedium.cfd/"+encodeURIComponent(window.location))
-
 export default {
   icon: "https://cdn-icons-png.flaticon.com/512/5968/5968906.png",
   name: {
@@ -20,7 +18,8 @@ export default {
       url = prompt("Nhập link medium:", url);
 
       if (url) {
-        window.open("https://freedium.cfd/" + url);
+        window.open("https://readmedium.com/" + url);
+        // window.open("https://freedium.cfd/" + url);
       }
     },
   },

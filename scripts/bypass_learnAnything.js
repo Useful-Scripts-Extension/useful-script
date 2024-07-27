@@ -1,5 +1,4 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: "https://learn-anything.xyz/favicon.ico",
@@ -12,7 +11,6 @@ export default {
     vi: "Xem nội dung web learn-anything.xyz không cần đăng ký member",
     img: "/scripts/bypass_LearnAnything.png",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-07-01": "init",
   },

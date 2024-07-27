@@ -92,7 +92,7 @@ async function setEnableForAllTab(enable) {
     : { vi: "Tắt", en: "Disabled" };
 
   if (count)
-    Swal.fire({
+    await Swal.fire({
       icon: "success",
       title: t({
         vi: "Đã " + text.vi + " Cuộn chuột Siêu mượt",
@@ -182,12 +182,13 @@ export function enableSmoothScroll() {
   /***********************************************
    * SETTINGS
    ***********************************************/
-  chrome.storage.sync.get(defaultOptions, function (syncedOptions) {
-    options = syncedOptions;
-    // it seems that sometimes settings come late
-    // and we need to test again for excluded pages
-    initTest();
-  });
+  // chrome.storage.sync.get(defaultOptions, function (syncedOptions) {
+  //   options = syncedOptions;
+  //   // it seems that sometimes settings come late
+  //   // and we need to test again for excluded pages
+  //   initTest();
+  // });
+  initTest();
   /***********************************************
    * INITIALIZE
    ***********************************************/
@@ -735,11 +736,11 @@ export function enableSmoothScroll() {
     if (deltaY < 50) tp = true;
     clearTimeout(deltaBufferTimer);
     deltaBufferTimer = setTimeout(function () {
-      chrome.storage.local.set({
+      chrome?.storage?.local?.set?.({
         deltaBuffer: deltaBuffer,
       });
       if (!tp)
-        chrome.storage.local.set({
+        chrome?.storage?.local?.set?.({
           lastDiscreetWheel: dateNow(),
         });
     }, 1000);
@@ -755,7 +756,7 @@ export function enableSmoothScroll() {
       isDivisible(deltaBuffer[2], divisor)
     );
   }
-  chrome.storage.local.get("deltaBuffer", function (stored) {
+  chrome?.storage?.local?.get?.("deltaBuffer", function (stored) {
     if (stored.deltaBuffer) {
       deltaBuffer = stored.deltaBuffer;
     }
@@ -838,21 +839,21 @@ export function enableSmoothScroll() {
     // we check the OS for default middle mouse behavior only!
     let isLinux = navigator.platform.indexOf("Linux") != -1;
     // get global settings
-    chrome.storage.sync.get(defaultOptions, function (syncedOptions) {
-      options = syncedOptions;
-      // leave time for the main script to check excluded pages
-      setTimeout(function () {
-        // if we shouldn't run, stop listening to events
-        if (isExcluded && !options.middleMouse) {
-          cleanup();
-        }
-      }, 10);
-    });
+    // chrome.storage.sync.get(defaultOptions, function (syncedOptions) {
+    //   options = syncedOptions;
+    //   // leave time for the main script to check excluded pages
+    //   setTimeout(function () {
+    //     // if we shouldn't run, stop listening to events
+    //     if (isExcluded && !options.middleMouse) {
+    //       cleanup();
+    //     }
+    //   }, 10);
+    // });
     /**
      * Initializes the image at the reference point.
      */
     function init() {
-      let url = chrome.runtime.getURL("/scripts/smoothscroll_cursor.png");
+      let url = chrome?.runtime?.getURL?.("/scripts/smoothscroll_cursor.png");
       img.style.background = "url(" + url + ") no-repeat";
       img.style.position = "fixed";
       img.style.zIndex = "999999999";

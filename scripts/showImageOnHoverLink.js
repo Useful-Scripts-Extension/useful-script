@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: '<i class="fa-solid fa-arrow-pointer fa-lg"></i>',
   name: {
@@ -10,7 +8,6 @@ export default {
     en: "Show preview image when you hover mouse over an image link",
     vi: "Xem trước hình ảnh khi bạn đưa chuột qua link hình ảnh",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-06-19": "init",
   },

@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: '<i class="fa-solid fa-map-location-dot fa-lg"></i>',
   name: {
@@ -10,7 +8,6 @@ export default {
     en: "Change youtube country to view content in other country",
     vi: "Đổi quốc gia youtube để xem nội dung youtube bên các nước khác",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-07-07": "init",
   },

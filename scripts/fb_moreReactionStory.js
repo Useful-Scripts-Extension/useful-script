@@ -37,7 +37,7 @@ export default {
 
           window.ufs_reactStory = async (text) => {
             const storyId = getStoryId();
-            if (!UfsGlobal.Utils.isEmoji(text)) {
+            if (!isEmoji(text)) {
               alert("Must be emoji");
               return;
             }
@@ -196,6 +196,12 @@ export default {
             reject(error);
           }
         });
+      }
+      // https://stackoverflow.com/a/67705964/23648002
+      function isEmoji(text) {
+        return text?.match(
+          /^(\u00a9|\u00ae|[\u25a0-\u27bf]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+$/
+        );
       }
     },
 

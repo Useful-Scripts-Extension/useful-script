@@ -1,4 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
 import { getIdFromYoutubeURL } from "./youtube_downloadVideo.js";
 
 export default {
@@ -11,7 +10,6 @@ export default {
     en: "Get largest thumbnail of playing youtube video",
     vi: "Tải về hình thumbnail độ phân giải lớn nhất của video youtube đang xem",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-07-04": "init",
   },

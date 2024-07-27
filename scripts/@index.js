@@ -1,8 +1,7 @@
 // https://stackoverflow.com/a/59002206
 
-export { default as _test } from "./_test.js";
+export { default as test } from "./test.js";
 export { default as fb_toggleLight } from "./fb_toggleLight.js";
-export { default as fb_getTokenBusinessStudio } from "./fb_getTokenBusinessStudio.js";
 export { default as fb_getTokenFacebook } from "./fb_getTokenFacebook.js";
 export { default as fb_getUid } from "./fb_getUid.js";
 export { default as fb_getPageId } from "./fb_getPageId.js";
@@ -13,7 +12,6 @@ export { default as fb_getUidFromUrl } from "./fb_getUidFromUrl.js";
 export { default as fb_getAllUidFromFbSearch } from "./fb_getAllUidFromFbSearch.js";
 export { default as fb_getAllUidOfGroupMembers } from "./fb_getAllUidOfGroupMembers.js";
 export { default as fb_getAvatarFromUid } from "./fb_getAvatarFromUid.js";
-export { default as fb_downloadAlbumMedia } from "./fb_downloadAlbumMedia.js";
 export { default as insta_getUserInfo } from "./insta_getUserInfo.js";
 export { default as insta_getAllUserMedia } from "./insta_getAllUserMedia.js";
 export { default as pictureInPicture } from "./pictureInPicture.js";
@@ -116,7 +114,6 @@ export { default as scribd_bypassPreview } from "./scribd_bypassPreview.js";
 export { default as fb_searchGroupForOther } from "./fb_searchGroupForOther.js";
 export { default as fb_searchPageForOther } from "./fb_searchPageForOther.js";
 export { default as tailieu_vn } from "./tailieu_vn.js";
-export { default as fb_downloadWallMediaFromPosts } from "./fb_downloadWallMediaFromPosts.js";
 export { default as fb_getAllAlbumInformation } from "./fb_getAllAlbumInformation.js";
 export { default as textToSpeech } from "./textToSpeech.js";
 export { default as shopee_totalSpendMoney_excel } from "./shopee_totalSpendMoney_excel.js";
@@ -140,7 +137,7 @@ export { default as magnify_image } from "./magnify_image.js";
 export { default as auto_redirectLargestImageSrc } from "./auto_redirectLargestImageSrc.js";
 export { default as textToQrCode } from "./textToQrCode.js";
 export { default as insta_anonymousStoryViewer } from "./insta_anonymousStoryViewer.js";
-export { default as _ufs_statistic } from "./_ufs_statistic.js";
+export { default as ufs_statistic } from "./ufs_statistic.js";
 export { default as pip_fullWebsite } from "./pip_fullWebsite.js";
 export { default as similarWeb_bypassLimit } from "./similarWeb_bypassLimit.js";
 export { default as pip_canvas } from "./pip_canvas.js";
@@ -172,3 +169,5 @@ export { default as youtube_getVideoThumbnail } from "./youtube_getVideoThumbnai
 export { default as youtube_getVideoCaption } from "./youtube_getVideoCaption.js";
 export { default as youtube_changeCountry } from "./youtube_changeCountry.js";
 export { default as fb_autoLike } from "./fb_autoLike.js";
+export { default as guland_VIP } from "./guland_VIP.js";
+export { default as pip_anything } from "./pip_anything.js";

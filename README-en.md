@@ -6,6 +6,7 @@
 
 - [Useful scripts - Chrome extension](#useful-scripts---chrome-extension)
   - [Overview](#overview)
+  - [Demo](#demo)
   - [Change logs](#change-logs)
   - [ScreenShots](#screenshots)
   - [Install](#install)
@@ -21,7 +22,9 @@ An extension includes a lot of small extensions. Make your life easier.
 
 - Please join [FACEBOOK GROUP](https://www.facebook.com/groups/1154059318582088) of this extension
 
-- View list all scripts [HERE](./md/LIST_SCRIPTS_EN.md)
+## Demo
+
+Try online [Here](https://hoangtran0410.github.io/useful-script/popup/popup.html)
 
 ## Change logs
 
@@ -29,11 +32,12 @@ An extension includes a lot of small extensions. Make your life easier.
 
 Current Versions:
 
-- **v1.69**: small update (14/07/2024)
+- **v1.7**: tiktok update 28/07/2024
 
 <details>
   <summary>Old versions</summary>
 
+- <del>v1.69: small update (14/07/2024)</del>
 - <del>v1.68: big facebook update (01/07/2024)</del>
 - <del>v1.67 - huge update (29/05/2024)</del>
 - <del>v1.66 - big update (27/04/2024)</del>

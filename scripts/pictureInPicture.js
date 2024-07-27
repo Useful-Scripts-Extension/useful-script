@@ -13,16 +13,18 @@ export default {
   badges: [BADGES.hot],
   changeLogs: {
     "2024-06-05": "fix video in iframes",
+    "2024-07-19": "fix video that disable pip",
   },
 
   contentScript: {
     onClick_: async function () {
       const { UfsGlobal } = await import("./content-scripts/ufs_global.js");
 
+      const Mark = "__pip__";
+
       function findLargestPlayingVideoInViewport() {
         const videos = Array.from(document.querySelectorAll("video"))
           .filter((video) => video.readyState != 0)
-          .filter((video) => video.disablePictureInPicture == false)
           .sort(
             (v1, v2) =>
               UfsGlobal.DOM.getOverlapScore(v2) -
@@ -35,11 +37,11 @@ export default {
       }
       async function requestPictureInPicture(video) {
         await video.requestPictureInPicture();
-        video.setAttribute("__pip__", true);
+        video.setAttribute(Mark, true);
         video.addEventListener(
           "leavepictureinpicture",
           (event) => {
-            video.removeAttribute("__pip__");
+            video.removeAttribute(Mark);
           },
           {
             once: true,
@@ -49,12 +51,12 @@ export default {
       }
       function maybeUpdatePictureInPictureVideo(entries, observer) {
         const observedVideo = entries[0].target;
-        if (!document.querySelector("[__pip__]")) {
+        if (!document.querySelector("[" + Mark + "]")) {
           observer.unobserve(observedVideo);
           return;
         }
         const video = findLargestPlayingVideoInViewport();
-        if (video && !video.hasAttribute("__pip__")) {
+        if (video && !video.hasAttribute(Mark)) {
           observer.unobserve(observedVideo);
           requestPictureInPicture(video);
         }
@@ -62,7 +64,9 @@ export default {
       (async () => {
         const video = findLargestPlayingVideoInViewport();
         if (!video) return;
-        if (video.hasAttribute("__pip__")) {
+        if (video.disablePictureInPicture)
+          video.disablePictureInPicture = false;
+        if (video.hasAttribute(Mark)) {
           document.exitPictureInPicture();
           return;
         }
