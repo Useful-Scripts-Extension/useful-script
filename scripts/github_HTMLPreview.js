@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: '<i class="fa-solid fa-square-arrow-up-right fa-lg"></i>',
   name: {
@@ -10,7 +8,6 @@ export default {
     en: "Preview github's HTML file in any repo without download code.",
     vi: "Xem trước giao diện file HTML trên bất kỳ repo github nào mà không cần tải code về.",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-06-14": "init",
   },

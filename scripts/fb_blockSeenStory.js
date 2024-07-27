@@ -12,7 +12,7 @@ export default {
     en: "Block 'Seen' story in facebook. Your friend will not know that you have seen his/her stories.",
     vi: "Chặn 'Đã xem' cho story facebook. Bạn bè sẽ không biết được bạn đã xem story của họ.",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
   changeLogs: {
     "2024-05-31": "init",
   },

@@ -1,4 +1,4 @@
-import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-regular fa-object-group fa-lg"></i>',
@@ -11,9 +11,9 @@ export default {
     vi: "Xem bất kỳ giao diện nào trong cửa sổ nổi (Picture in picture), không chỉ mỗi video, click chọn phần tử từ website để xem trong cửa sổ nổi.",
     img: "",
   },
-
+  badges: [BADGES.beta],
   changeLogs: {
-    date: "description",
+    "2024-07-20": "init",
   },
 
   popupScript: {

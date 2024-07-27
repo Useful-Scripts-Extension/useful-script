@@ -1,5 +1,4 @@
 import { getRepoNameFromUrl } from "./github_goToAnyCommit.js";
-import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-square-arrow-up-right fa-lg"></i>',
@@ -15,7 +14,6 @@ export default {
     <b>username</b>.github.io/<b>repo</b><br/>
     github.com/<b>username</b>/<b>repo</b><br/>`,
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-06-03": "init",
   },

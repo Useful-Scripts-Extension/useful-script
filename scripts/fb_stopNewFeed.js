@@ -21,7 +21,7 @@ export default {
   changeLogs: {
     "2024-06-12": "init",
   },
-  badges: [BADGES.new],
+  badges: [BADGES.hot],
 
   whiteList: ["https://www.facebook.com/*"],
 

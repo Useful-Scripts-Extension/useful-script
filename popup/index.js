@@ -1018,7 +1018,7 @@ async function initShowDonate() {
   let count = (await Storage.get("openPopupCount")) || 0;
   count++;
   Storage.set("openPopupCount", count);
-  if (!clickedDonate && count > 0 && count % 10 === 0) {
+  if (count > 0 && count % 10 === 0 && !clickedDonate) {
     const res = await Swal.fire({
       icon: "info",
       title: t({

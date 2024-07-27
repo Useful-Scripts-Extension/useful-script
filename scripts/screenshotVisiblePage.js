@@ -1,5 +1,4 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { BADGES } from "./helpers/badge.js";
 import {
   attachDebugger,
   detachDebugger,
@@ -47,9 +46,6 @@ export default {
       },
     },
   ],
-
-  badges: [BADGES.new],
-
   changeLogs: {
     "2024-06-10": "init",
   },

@@ -123,7 +123,7 @@ export const Recommend = {
       en: "Support youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
       vi: "Hỗ trợ youtube, tiktok, instagram, twitter/x, bilibili, twitch, vimeo, soundcloud, dailymotion, pinterest, reddit, tumblr, ...",
     },
-    badges: [BADGES.recommend, BADGES.new],
+    badges: [BADGES.recommend, BADGES.hot],
     buttons: [
       {
         icon: '<i class="fa-brands fa-github"></i>',
@@ -333,7 +333,7 @@ export const Recommend = {
       en: "View all videos you watched on facebook",
       vi: "Xem lại những video bạn đã xem trên facebook",
     },
-    badges: [BADGES.new],
+    badges: [BADGES.hot],
     popupScript: {
       onClick: () =>
         window.open(
@@ -352,7 +352,6 @@ export const Recommend = {
       en: "View pass events that you have joined on facebook.",
       vi: "Xem tất cả sự kiện bạn từng tham gia trên facebook.",
     },
-    badges: [BADGES.new],
     popupScript: {
       onClick: () => window.open("https://www.facebook.com/events/past"),
     },
@@ -368,7 +367,6 @@ export const Recommend = {
       en: "View your friend's birthdays each month on facebook",
       vi: "Xem từng tháng có những sinh nhật nào của bạn bè trên facebook.",
     },
-    badges: [BADGES.new],
     popupScript: {
       onClick: () => window.open("https://www.facebook.com/events/birthdays"),
     },
@@ -400,7 +398,7 @@ export const Recommend = {
       en: "Your fb account has been hacked? Facebook can help you.",
       vi: "Tài khoản fb của bạn bị hack? Facebook có thể giúp bạn.",
     },
-    badges: [BADGES.new],
+    badges: [BADGES.hot],
     popupScript: {
       onClick: () => window.open("https://fb.com/hacked"),
     },

@@ -1,6 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { runScriptInCurrentTab } from "./helpers/utils.js";
-import { BADGES } from "./helpers/badge.js";
 
 export default {
   icon: '<i class="fa-solid fa-closed-captioning fa-lg"></i>',
@@ -13,7 +12,6 @@ export default {
     vi: "- Bấm để tải về tất cả phụ đề của video youtube đang xem<br/>- Bật tự chạy để hiển thị phụ đề thời gian thực",
     img: "/scripts/youtube_getVideoCaption.png",
   },
-  badges: [BADGES.new],
   changeLogs: {
     "2024-07-04": "init",
   },
