@@ -74,6 +74,15 @@ export default {
       document.documentElement.appendChild(div);
 
       const formatter = UfsGlobal.Utils.getNumberFormatter("compactShort");
+      function getNow() {
+        // return year + month + day + hour + minute + second
+        const day = new Date();
+        return (
+          [day.getFullYear(), day.getMonth() + 1, day.getDate()].join("-") +
+          "_" +
+          [day.getHours(), day.getMinutes(), day.getSeconds()].join("-")
+        );
+      }
 
       const app = new Vue({
         template: /*html*/ `
@@ -290,7 +299,7 @@ export default {
             if (!total) return;
             let success = 0;
             await download({
-              folderName: "tiktok_videos",
+              folderName: "tiktok_videos_" + getNow(),
               expectBlobTypes: ["video/mp4", "image/jpeg"],
               data: this.videoToDownload
                 .map((_, i) => {
@@ -345,7 +354,7 @@ export default {
             if (!total) return;
             let success = 0;
             await download({
-              folderName: "tiktok_musics",
+              folderName: "tiktok_musics_" + getNow(),
               data: this.audioToDownload.map((_, i) => ({
                 url: _.music.playUrl,
                 filename:
