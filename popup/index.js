@@ -1013,6 +1013,43 @@ function initScrollToTop() {
   // });
 }
 
+async function initShowDonate() {
+  const clickedDonate = await Storage.get("clickedDonate");
+  let count = (await Storage.get("openPopupCount")) || 0;
+  count++;
+  Storage.set("openPopupCount", count);
+  if (!clickedDonate && count > 0 && count % 10 === 0) {
+    const res = await Swal.fire({
+      icon: "info",
+      title: t({
+        vi: "Cảm ơn bạn tin dùng",
+        en: "Thanks for using Useful-scripts",
+      }),
+      text: t({
+        vi: "Useful-scripts là miễn phí. Nhưng nếu bạn thích nó, bạn có thể hỗ trợ mình 1 ly cà phê. Một đồng cũng đáng quý 💓",
+        en: "It's free. But you can support me if you like. I'll appreciate if you give me some love 💓",
+      }),
+      confirmButtonText: "Donate",
+      showCancelButton: true,
+      cancelButtonText: t({ vi: "Để sau", en: "Later" }),
+      showDenyButton: true,
+      denyButtonText: t({ vi: "Tặng sao", en: "Star github" }),
+      reverseButtons: true,
+      focusConfirm: true,
+    });
+    if (res.isConfirmed) {
+      Storage.set("clickedDonate", true);
+      window.open(
+        "https://hoangtran0410.github.io/HoangTran0410/DONATE",
+        "_blank"
+      );
+    }
+    if (res.isDenied) {
+      window.open("https://github.com/HoangTran0410/useful-script", "_blank");
+    }
+  }
+}
+
 function saveScroll() {
   const scrollY = window.scrollY;
   Storage.set("popupScrollY", scrollY);
@@ -1056,4 +1093,5 @@ window.addEventListener("scroll", onScrollEnd);
   });
 
   checkForUpdate();
+  initShowDonate();
 })();

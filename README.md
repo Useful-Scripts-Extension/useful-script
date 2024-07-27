@@ -6,6 +6,7 @@
 
 - [Useful scripts - Chrome extension](#useful-scripts---chrome-extension)
   - [Giới thiệu](#giới-thiệu)
+  - [Demo](#demo)
   - [Phiên bản](#phiên-bản)
   - [Ảnh chụp màn hình](#ảnh-chụp-màn-hình)
   - [Cài đặt](#cài-đặt)
@@ -21,7 +22,9 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate tại đây](https://github
 
 - Hãy tham gia ngay [GROUP FACEBOOK](https://www.facebook.com/groups/1154059318582088) của tiện ích
 
-- Xem tất cả chức năng [TẠI ĐÂY](./md/LIST_SCRIPTS_VI.md)
+## Demo
+
+Dùng thử online [Tại đây](https://hoangtran0410.github.io/useful-script/popup/popup.html)
 
 ## Phiên bản
 
@@ -29,11 +32,12 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v1.69**: small update (14/07/2024)
+- **v1.7**: tiktok update 28/07/2024
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
 
+- <del>v1.69: small update (14/07/2024)</del>
 - <del>v1.68: bản cập nhật facebook lớn (01/07/2024)</del>
 - <del>v1.67 - bản cập nhật siêu lớn (29/05/2024)</del>
 - <del>v1.66 - bản cập nhật lớn (27/04/2024)</del>
