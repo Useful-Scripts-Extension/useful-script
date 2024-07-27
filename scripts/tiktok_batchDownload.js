@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { BADGES } from "./helpers/badge.js";
 import { hookFetch } from "./libs/ajax-hook/index.js";
 import { scrollToVeryEnd } from "./scrollToVeryEnd.js";
 
@@ -11,12 +12,13 @@ export default {
   description: {
     en: "Select and download all tiktok video (user profile, tiktok explore).",
     vi: "Tải hàng loạt video tiktok (trang người dùng, trang tìm kiếm), có giao diện chọn video muốn tải.",
-    img: "/scripts/tiktok_batchDownload.jpg",
+    img: "/scripts/tiktok_batchDownload.png",
   },
-
+  badges: [BADGES.new, BADGES.hot],
   changeLogs: {
     "2024-04-27": "fix bug - use snaptik",
     "2024-05-16": "fix style",
+    "2024-07-28": "re-build hook fetch",
   },
 
   whiteList: ["https://www.tiktok.com/*"],
@@ -24,6 +26,7 @@ export default {
   pageScript: {
     onDocumentStart: async () => {
       const CACHED = {
+        hasNew: true,
         videoById: new Map(),
       };
 
@@ -39,8 +42,10 @@ export default {
 
             if (json?.itemList) {
               json.itemList.forEach((_) => {
-                if (_.video.playAddr || _.imagePost?.images?.length)
+                if (_.video.playAddr || _.imagePost?.images?.length) {
                   CACHED.videoById.set(_.video.id, _);
+                  CACHED.hasNew = true;
+                }
 
                 if (_.imagePost?.images?.length) console.log(_);
               });
@@ -56,6 +61,7 @@ export default {
               json.data.forEach((_) => {
                 if (_.type === 1) {
                   CACHED.videoById.set(_.item.video.id, _.item);
+                  CACHED.hasNew = true;
                 }
               });
             }
@@ -169,9 +175,13 @@ export default {
 </div>`,
         created() {
           setInterval(() => {
-            this.videos = Array.from(CACHED.videoById.values())
-              // inject index
-              .map((v, i) => ({ ...v, index: i + 1 }));
+            if (CACHED.hasNew) {
+              this.videos = Array.from(CACHED.videoById.values())
+                // inject index
+                .map((v, i) => ({ ...v, index: i + 1 }));
+
+              CACHED.hasNew = false;
+            }
           }, 1000);
         },
         data() {
@@ -384,7 +394,7 @@ export default {
             );
           },
           scrollToVeryEnd() {
-            setTimeout(() => scrollToVeryEnd(), 100);
+            setTimeout(() => scrollToVeryEnd(false), 100);
           },
           scrollToTop(e) {
             e.target.parentElement.scrollTo({ top: 0, behavior: "smooth" });

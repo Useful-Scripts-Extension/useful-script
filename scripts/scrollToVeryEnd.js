@@ -24,7 +24,7 @@ export default {
   },
 };
 
-export function scrollToVeryEnd() {
+export function scrollToVeryEnd(animation = true) {
   return new Promise(async (resolve, reject) => {
     const notify = UfsGlobal.DOM.notify({
       msg: "Useful-script: Scrolling to very end...",
@@ -49,8 +49,6 @@ export function scrollToVeryEnd() {
         }
       }
 
-      console.log(scrollableElements);
-
       // If only one scrollable element is found, return it
       if (scrollableElements.length === 1) {
         return scrollableElements[0];
@@ -72,7 +70,12 @@ export function scrollToVeryEnd() {
     }
 
     let height = (ele) => (ele || document.body).scrollHeight;
-    let down = (ele = document) => ele.scrollTo({ left: 0, top: height(ele) });
+    let down = (ele = document) =>
+      ele.scrollTo({
+        left: 0,
+        top: height(ele),
+        behavior: animation ? "smooth" : "instant",
+      });
     let sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     let lastScroll = {
@@ -90,8 +93,6 @@ export function scrollToVeryEnd() {
     document.addEventListener("click", clickToCancel);
 
     let scrollEle = findMainScrollableElement();
-
-    console.log(scrollEle);
 
     while (running) {
       down(scrollEle);
