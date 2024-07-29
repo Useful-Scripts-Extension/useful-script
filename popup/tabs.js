@@ -201,6 +201,7 @@ const tabs = [
       s.tiktok_downloadVideo,
       s.tiktok_batchDownload,
       createTitle("--- Douyin ---", "--- Douyin ---"),
+      s.douyin_batchDownload,
       s.douyin_downloadWachingVideo,
       s.douyin_downloadAllVideoUser,
     ],

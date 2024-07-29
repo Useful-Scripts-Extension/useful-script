@@ -171,3 +171,4 @@ export { default as youtube_changeCountry } from "./youtube_changeCountry.js";
 export { default as fb_autoLike } from "./fb_autoLike.js";
 export { default as guland_VIP } from "./guland_VIP.js";
 export { default as pip_anything } from "./pip_anything.js";
+export { default as douyin_batchDownload } from "./douyin_batchDownload.js";
