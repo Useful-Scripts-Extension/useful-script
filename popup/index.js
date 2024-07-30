@@ -452,6 +452,7 @@ function showError(e) {
 
 function checkIsPreview(script) {
   if (
+    location.hostname === "useful-scripts-extension.github.io" ||
     location.hostname === "hoangtran0410.github.io" ||
     location.hostname === "127.0.0.1"
   ) {
