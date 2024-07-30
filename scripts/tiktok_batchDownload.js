@@ -422,9 +422,6 @@ export default {
           format(v) {
             return formatter.format(v);
           },
-          onClickContainer(e) {
-            if (e.target === this.$el) this.showModal = false;
-          },
         },
       }).$mount(div);
 

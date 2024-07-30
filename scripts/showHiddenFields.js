@@ -20,11 +20,12 @@ export default {
         div,
         label,
         ne,
-        found = false;
+        found = false,
+        D = document,
+        count = 0;
       for (i = 0; (f = document.forms[i]); ++i)
         for (j = 0; (e = f[j]); ++j)
           if (e.type == "hidden") {
-            D = document;
             function C(t) {
               return D.createElement(t);
             }
@@ -45,9 +46,11 @@ export default {
             --j; /*for moz*/
 
             found = true;
+            count++;
           }
 
       if (!found) alert("Nothing is hidden! / Không có thành phần nào bị ẩn!");
+      alert("Showed " + count + " hidden fields.");
     },
   },
 };

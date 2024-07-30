@@ -35,11 +35,11 @@ export default {
           dataSend,
           response
         ) => {
-          console.log(method, url, dataSend, response);
-
-          if (url.includes("aweme/") && url.includes("/post")) {
-            const res = response.clone();
-            const json = await res.json();
+          if (
+            url.includes("aweme/") &&
+            (url.includes("/post") || url.includes("/tab/feed"))
+          ) {
+            const json = JSON.parse(response);
             console.log(json);
 
             if (json?.aweme_list?.length) {
