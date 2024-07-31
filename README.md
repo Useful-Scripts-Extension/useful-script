@@ -24,7 +24,7 @@ Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate tại đây](https://github
 
 ## Demo
 
-Dùng thử online [Tại đây](https://hoangtran0410.github.io/useful-script/popup/popup.html)
+Dùng thử online [Tại đây](https://useful-scripts-extension.github.io/useful-script/popup/popup.html)
 
 ## Phiên bản
 
