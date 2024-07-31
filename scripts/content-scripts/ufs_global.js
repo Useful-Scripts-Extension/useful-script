@@ -12,6 +12,8 @@ export const UfsGlobal = {
     waitForTabToLoad,
   },
   DOM: {
+    keyDown,
+    keyUp,
     closest,
     notifyStack,
     notify,
@@ -139,6 +141,12 @@ function download(options) {
 // #endregion
 
 // #region DOM
+
+//prettier-ignore
+function keyDown(e){let n=document.createEvent("KeyboardEvent");Object.defineProperty(n,"keyCode",{get:function(){return this.keyCodeVal}}),n.initKeyboardEvent?n.initKeyboardEvent("keydown",!0,!0,document.defaultView,e,e,"","",!1,""):n.initKeyEvent("keydown",!0,!0,document.defaultView,!1,!1,!1,!1,e,0),n.keyCodeVal=e,document.body.dispatchEvent(n)}
+//prettier-ignore
+function keyUp(e){let n=document.createEvent("KeyboardEvent");Object.defineProperty(n,"keyCode",{get:function(){return this.keyCodeVal}}),n.initKeyboardEvent?n.initKeyboardEvent("keyup",!0,!0,document.defaultView,e,e,"","",!1,""):n.initKeyEvent("keyup",!0,!0,document.defaultView,!1,!1,!1,!1,e,0),n.keyCodeVal=e,document.body.dispatchEvent(n)}
+
 function closest(element, selector) {
   let el = element;
   while (el !== null) {
