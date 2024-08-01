@@ -1,5 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { getUserAvatarFromUid, getUserInfoFromUid } from "./fb_GLOBAL.js";
+import { getUserAvatarFromUid } from "./fb_GLOBAL.js";
 
 export default {
   icon: "/assets/icon32.png",
