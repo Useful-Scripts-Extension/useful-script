@@ -20,6 +20,11 @@ li:hover {
 
 li a {
   display: inline-block;
+  color: yellow;
+}
+
+li a:visited {
+  color: green;
 }
 
 li a img {
@@ -31,7 +36,7 @@ li a img {
 }
 
 li:hover img {
-  transform: scale(2);
+  transform: scale(3.5);
   z-index: 2;
 }
 

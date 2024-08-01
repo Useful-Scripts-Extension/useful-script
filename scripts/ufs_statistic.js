@@ -1,4 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
+import { getUserAvatarFromUid, getUserInfoFromUid } from "./fb_GLOBAL.js";
 
 export default {
   icon: "/assets/icon32.png",
@@ -65,8 +66,10 @@ async function onDocumentEnd() {
         li.innerHTML =
           data.log +
           ` - <a href="https://fb.com/${data.uid}" target="_blank">
-            <img src="${fbAvatarFromUid(data.uid)}" />
-            fb
+            <img
+              data-profile-avatar="${data.uid}"
+              src="${getUserAvatarFromUid(data.uid)}" />
+            <span data-profile-name="${data.uid}">fb</span>
           </a>`;
       } else {
         li.textContent = data.log;
@@ -75,6 +78,34 @@ async function onDocumentEnd() {
       return { li, data };
     });
     console.log(all_li);
+
+    // load fb profiles
+    const allUid = allLogs
+      .filter((log) => isFbUid(log?.uid))
+      .map((log) => log.uid);
+
+    const uniqueUid = [...new Set(allUid)].filter(Boolean);
+
+    if (uniqueUid.length) {
+      initCache().then(() => {
+        const promises = uniqueUid.map(
+          (uid) => () =>
+            getFbProfile(uid).then((info) => {
+              document
+                .querySelectorAll(`[data-profile-name="${uid}"]`)
+                .forEach((el) => {
+                  el.textContent = info.name;
+                });
+              document
+                .querySelectorAll(`[data-profile-avatar="${uid}"]`)
+                .forEach((el) => {
+                  el.src = info.avatar.replace(/\\\//g, "/") || el.src;
+                });
+            })
+        );
+        UfsGlobal.Utils.promiseAllStepN(5, promises);
+      });
+    }
 
     const traceUidCheckmark = document.createElement("input");
     traceUidCheckmark.id = "trace-uid";
@@ -489,8 +520,83 @@ function isFbUid(uid) {
     (uid?.startsWith("100") || (uid?.length && uid?.length != 13))
   );
 }
-function fbAvatarFromUid(uid) {
-  return `https://graph.facebook.com/${uid}/picture?height=50&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+
+const CACHED = {
+  fbProfile: null,
+  fb_dtsg: null,
+};
+
+async function initCache() {
+  if (!CACHED.fbProfile) {
+    CACHED.fbProfile = new Map();
+    try {
+      const c = localStorage.getItem("fbProfile");
+      if (c) {
+        const arr = JSON.parse(c);
+        console.log(arr);
+        arr.forEach((info) => CACHED.fbProfile.set(info.uid, info));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  if (!CACHED.fb_dtsg) {
+    let res = await UfsGlobal.Extension.runInBackground("fetch", [
+      "https://mbasic.facebook.com/photos/upload/",
+    ]);
+    CACHED.fb_dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(res.body)?.[1];
+  }
+}
+
+async function getFbProfile(uid) {
+  if (CACHED.fbProfile.has(uid)) return CACHED.fbProfile.get(uid);
+
+  const variables = {
+    userID: uid,
+    shouldDeferProfilePic: false,
+    useVNextHeader: false,
+    scale: 1.5,
+  };
+  let f = new URLSearchParams();
+  f.append("fb_dtsg", CACHED.fb_dtsg);
+  f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
+  f.append("variables", JSON.stringify(variables));
+  f.append("doc_id", "4159355184147969");
+
+  let res = await UfsGlobal.Extension.runInBackground("fetch", [
+    "https://www.facebook.com/api/graphql/",
+    {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: f.toString(),
+    },
+  ]);
+
+  let text = await res.body;
+  const info = {
+    uid: uid,
+    name: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+      /"name":"(.*?)"/.exec(text)?.[1]
+    ),
+    avatar: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+      /"profilePicLarge":{"uri":"(.*?)"/.exec(text)?.[1] ||
+        /"profilePicMedium":{"uri":"(.*?)"/.exec(text)?.[1] ||
+        /"profilePicSmall":{"uri":"(.*?)"/.exec(text)?.[1] ||
+        /"profilePic160":{"uri":"(.*?)"/.exec(text)?.[1]
+    ),
+    gender: /"gender":"(.*?)"/.exec(text)?.[1],
+    alternateName: UfsGlobal.DEBUG.decodeEscapedUnicodeString(
+      /"alternate_name":"(.*?)"/.exec(text)?.[1]
+    ),
+  };
+  CACHED.fbProfile.set(uid, info);
+  localStorage.setItem(
+    "fbProfile",
+    JSON.stringify(Array.from(CACHED.fbProfile.values()))
+  );
+  console.log(info);
+  return info;
 }
 
 // log example: 5/31/2024, 9:13:41 AM: OPEN-TAB-unlock (1.67-1717121281787) -> 43
