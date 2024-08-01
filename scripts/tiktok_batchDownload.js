@@ -403,6 +403,7 @@ export default {
             this.selectedIds.forEach((vidId) => {
               CACHED.videoById.delete(vidId);
             });
+            CACHED.hasNew = true;
             this.selected = {};
           },
           clear() {
