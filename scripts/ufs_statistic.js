@@ -103,7 +103,17 @@ async function onDocumentEnd() {
                 });
             })
         );
-        UfsGlobal.Utils.promiseAllStepN(5, promises);
+        UfsGlobal.Utils.promiseAllStepN(5, promises).then(() => {
+          if (CACHED.newFbUsers.size) {
+            const arr = Array.from(CACHED.newFbUsers.values());
+            console.log("New users", arr);
+            alert(
+              CACHED.newFbUsers.size +
+                " new users:\n\n" +
+                arr.map((_) => _.name).join("\n")
+            );
+          }
+        });
       });
     }
 
@@ -524,6 +534,7 @@ function isFbUid(uid) {
 const CACHED = {
   fbProfile: null,
   fb_dtsg: null,
+  newFbUsers: new Map(),
 };
 
 async function initCache() {
@@ -590,6 +601,7 @@ async function getFbProfile(uid) {
       /"alternate_name":"(.*?)"/.exec(text)?.[1]
     ),
   };
+  CACHED.newFbUsers.set(uid, info);
   CACHED.fbProfile.set(uid, info);
   localStorage.setItem(
     "fbProfile",
