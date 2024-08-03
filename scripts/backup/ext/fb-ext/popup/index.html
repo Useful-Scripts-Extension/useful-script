@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Extension</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Facebook Tools</h1>
+
+    <h3>Chọn hành động</h3>
+    <label class="container">Đăng bài
+        <input type="radio" checked="checked" name="action">
+        <span class="checkmark"></span>
+    </label>
+    <label class="container">Xoá bài
+        <input type="radio" name="action">
+        <span class="checkmark"></span>
+    </label>
+
+    <div class="slidecontainer">
+        <h3>Thời gian chờ: <span id="wait-time"></span></h3>
+        <input type="range" min="1000" max="20000" value="1000" step="100" class="slider" id="slider-wait-time">
+    </div>
+
+    <h3>Duyệt tối đa bao nhiêu bài?</h3>
+    <span><i>(nhập 0 để duyệt hết)</i></span><br />
+    <input type="number" id="max-posts" value="10">
+
+    <button class="button" id="start-btn">Bắt đầu</button>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

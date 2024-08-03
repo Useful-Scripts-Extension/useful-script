@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Facebook Extension",
+  "description": "Hoang Tran - Quyen Anh Vo",
+  "version": "1.0",
+  "action": {
+    "default_popup": "./popup/index.html",
+    "default_icon": "./assets/icon32.png"
+  },
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": ["*://*/*", "<all_urls>"]
+}
