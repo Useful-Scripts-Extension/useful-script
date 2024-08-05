@@ -68,6 +68,7 @@ async function onDocumentEnd() {
 
     // #region create list
     const ol = document.createElement("ol");
+    ol.classList.add("log-list");
     ol.setAttribute("reversed", true);
     document.body.appendChild(ol);
     const all_li = allLogs.map((data) => {
@@ -425,17 +426,82 @@ async function onDocumentEnd() {
       ${fbUsers.length} facebook users`;
     // #endregion
 
+    // #region ======================== modal sortby uid/script ========================
+    const modalByUid = document.createElement("div");
+    modalByUid.classList.add("modal");
+    modalByUid.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Rank by uid</h2>
+      </div>
+      <div class="modal-body">
+        <ol class="list-group">
+          ${Array.from(logByUidSorted.entries())
+            .map(([uid, count], index) => {
+              return `<li>
+              ${index + 1}.
+              <a href="https://fb.com/${uid}" target="_blank">
+                <img data-profile-avatar="${uid}" class="avatar" />
+                <span data-profile-name="${uid}">${uid}</span>
+                (${count})
+              </a>
+            </li>`;
+            })
+            .join("")}
+        </ol>
+      </div>
+    </div>`;
+
+    const modalByScript = document.createElement("div");
+    modalByScript.classList.add("modal");
+    modalByScript.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Rank by event name</h2>
+      </div>
+      <div class="modal-body">
+        <ol class="list-group">
+          ${Array.from(eventNameCountSorted.entries())
+            .map(([eventName, count], index) => {
+              return `<li> ${index + 1}. ${eventName} (${count})</li>`;
+            })
+            .join("")}
+        </ol>
+      </div>
+    </div>`;
+
+    const btnOpenModalByUid = document.createElement("button");
+    btnOpenModalByUid.textContent = "Rank by uid";
+    btnOpenModalByUid.onclick = () => {
+      modalByUid.style.display = "flex";
+    };
+
+    const btnOpenModalByScript = document.createElement("button");
+    btnOpenModalByScript.textContent = "Rank by event name";
+    btnOpenModalByScript.onclick = () => {
+      modalByScript.style.display = "flex";
+    };
+
+    document.body.addEventListener("click", (event) => {
+      if (event.target.classList.contains("modal")) {
+        event.target.style.display = "none";
+      }
+    });
+
+    document.body.append(modalByUid, modalByScript);
+    // #endregion
+
     container.prepend(
       h1,
       toggleShowHideAllBtn,
       canvas_eventPerHour,
+      btnOpenModalByScript,
       canvas_events,
+      btnOpenModalByUid,
       canvas_uid,
       scriptOnlyToggle
     );
     // #endregion
-
-    // #region list by uid/script
 
     // #region load fb profiles
     const allUid = allLogs
