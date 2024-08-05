@@ -42,7 +42,7 @@ li a img,
   transition: all 0.2s ease;
 }
 
-li:hover img {
+li a:hover img {
   transform: scale(3.5);
   z-index: 2;
 }
