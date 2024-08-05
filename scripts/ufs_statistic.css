@@ -11,6 +11,7 @@ canvas {
 
 li {
   position: relative;
+  white-space: pre;
 }
 
 li:hover {
@@ -19,8 +20,16 @@ li:hover {
 }
 
 li a {
-  display: inline-block;
+  position: absolute;
+  display: flex;
+  align-items: center;
   color: yellow;
+  right: 0;
+  top: 0;
+}
+
+li a span {
+  margin-right: 5px;
 }
 
 li a:visited {
@@ -30,9 +39,6 @@ li a:visited {
 li a img {
   width: 30px;
   transition: all 0.2s ease;
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 
 li:hover img {
@@ -58,4 +64,18 @@ button:hover {
 
 .btn-active {
   box-shadow: inset 0 0 10px 5px #333;
+}
+
+.show-on-hover {
+  display: inline-block;
+  width: 0;
+  opacity: 0;
+  transition: all 0.5s ease 2s;
+  overflow: hidden;
+}
+
+li:hover .show-on-hover {
+  width: max-content;
+  opacity: 1;
+  transition: all 0s ease 0.5s;
 }

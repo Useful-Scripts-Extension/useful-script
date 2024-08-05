@@ -36,15 +36,24 @@ async function onDocumentEnd() {
   let hasLog = logs[0] != "Log not found" && logs[0] != "Waking up";
 
   const allLogs = logs.map((log) => {
-    return {
+    const data = {
       log,
       uid: extractUid(log),
       time: new Date(extractTime(log)),
-      timeString: extractTime(log),
+      timeString: extractTime(log).replace(/\d+\/\d+\/\d+, /, ""),
       eventName: extractEventName(log),
       version: extractVersion(log),
+      totalCount: extractTotalCount(log),
       isScript: isScript(log),
     };
+    const eventNameWithoutVersion = data.eventName
+      .replace("(" + data.version + ")", "")
+      .trim();
+    const version = padStr(data.version, 4, " ");
+    if (version && eventNameWithoutVersion)
+      data.logPretty = `${data.timeString} | ${version} | ${eventNameWithoutVersion} <i class="show-on-hover">${data.totalCount} ${data.uid}</i>`;
+    else data.logPretty = data.log;
+    return data;
   });
 
   const container = document.createElement("div");
@@ -54,9 +63,10 @@ async function onDocumentEnd() {
       UfsGlobal.DOM.injectCssFile
     );
 
-    // #region add search box
+    // #region re-make UI
     document.body.innerText = "";
 
+    // #region create list
     const ol = document.createElement("ol");
     ol.setAttribute("reversed", true);
     document.body.appendChild(ol);
@@ -64,59 +74,23 @@ async function onDocumentEnd() {
       let li = document.createElement("li");
       if (isFbUid(data?.uid)) {
         li.innerHTML =
-          data.log +
-          ` - <a href="https://fb.com/${data.uid}" target="_blank">
+          data.logPretty +
+          ` <a href="https://fb.com/${data.uid}" target="_blank">
+            <span data-profile-name="${data.uid}">fb </span>
             <img
               data-profile-avatar="${data.uid}"
               src="${getUserAvatarFromUid(data.uid)}" />
-            <span data-profile-name="${data.uid}">fb</span>
           </a>`;
       } else {
-        li.textContent = data.log;
+        li.innerHTML = data.logPretty;
       }
       ol.appendChild(li);
       return { li, data };
     });
     console.log(all_li);
+    // #endregion
 
-    // load fb profiles
-    const allUid = allLogs
-      .filter((log) => isFbUid(log?.uid))
-      .map((log) => log.uid);
-
-    const uniqueUid = [...new Set(allUid)].filter(Boolean);
-
-    if (uniqueUid.length) {
-      initCache().then(() => {
-        const promises = uniqueUid.map(
-          (uid) => () =>
-            getFbProfile(uid).then((info) => {
-              document
-                .querySelectorAll(`[data-profile-name="${uid}"]`)
-                .forEach((el) => {
-                  el.textContent = info.name;
-                });
-              document
-                .querySelectorAll(`[data-profile-avatar="${uid}"]`)
-                .forEach((el) => {
-                  el.src = info.avatar.replace(/\\\//g, "/") || el.src;
-                });
-            })
-        );
-        UfsGlobal.Utils.promiseAllStepN(5, promises).then(() => {
-          if (CACHED.newFbUsers.size) {
-            const arr = Array.from(CACHED.newFbUsers.values());
-            console.log("New users", arr);
-            alert(
-              CACHED.newFbUsers.size +
-                " new users:\n\n" +
-                arr.map((_) => _.name).join("\n")
-            );
-          }
-        });
-      });
-    }
-
+    // #region trace uid
     const traceUidCheckmark = document.createElement("input");
     traceUidCheckmark.id = "trace-uid";
     traceUidCheckmark.type = "checkbox";
@@ -129,7 +103,9 @@ async function onDocumentEnd() {
     label.textContent = "Trace by uid";
     label.setAttribute("for", traceUidCheckmark.id);
     container.appendChild(label);
+    // #endregion
 
+    // #region search box
     const searchBox = document.createElement("input");
     searchBox.placeholder = "Search logs...";
     container.prepend(searchBox);
@@ -211,6 +187,7 @@ async function onDocumentEnd() {
         }
       }
     });
+    // #endregion
 
     // #endregion
 
@@ -403,7 +380,7 @@ async function onDocumentEnd() {
 
     // #endregion
 
-    // ======================== show scripts only ========================
+    // #region ======================== show scripts only ========================
 
     let scriptOnlyState = false;
     const scriptOnlyToggle = document.createElement("button");
@@ -422,8 +399,9 @@ async function onDocumentEnd() {
         }
       });
     };
+    // #endregion
 
-    // ======================== Average section ========================
+    // #region ======================== Average section ========================
     const scriptsUsed = new Map();
     allLogs.forEach((data) => {
       if (data.isScript) {
@@ -445,8 +423,8 @@ async function onDocumentEnd() {
       ${scriptsUsed.size} unique scripts<br/><br/>
       ${logByUid.size} unique users<br/>
       ${fbUsers.length} facebook users`;
+    // #endregion
 
-    // ======================== Append Charts ========================
     container.prepend(
       h1,
       toggleShowHideAllBtn,
@@ -455,6 +433,47 @@ async function onDocumentEnd() {
       canvas_uid,
       scriptOnlyToggle
     );
+    // #endregion
+
+    // #region list by uid/script
+
+    // #region load fb profiles
+    const allUid = allLogs
+      .filter((log) => isFbUid(log?.uid))
+      .map((log) => log.uid);
+
+    const uniqueUid = [...new Set(allUid)].filter(Boolean);
+
+    if (uniqueUid.length) {
+      initCache().then(() => {
+        const promises = uniqueUid.map(
+          (uid) => () =>
+            getFbProfile(uid).then((info) => {
+              document
+                .querySelectorAll(`[data-profile-name="${uid}"]`)
+                .forEach((el) => {
+                  el.textContent = limitString(info.name, 40);
+                });
+              document
+                .querySelectorAll(`[data-profile-avatar="${uid}"]`)
+                .forEach((el) => {
+                  el.src = info.avatar.replace(/\\\//g, "/") || el.src;
+                });
+            })
+        );
+        UfsGlobal.Utils.promiseAllStepN(5, promises).then(() => {
+          if (CACHED.newFbUsers.size) {
+            const arr = Array.from(CACHED.newFbUsers.values());
+            console.log("New users", arr);
+            alert(
+              CACHED.newFbUsers.size +
+                " new users:\n\n" +
+                arr.map((_) => _.name).join("\n")
+            );
+          }
+        });
+      });
+    }
     // #endregion
   }
 
@@ -613,25 +632,22 @@ async function getFbProfile(uid) {
 
 // log example: 5/31/2024, 9:13:41 AM: OPEN-TAB-unlock (1.67-1717121281787) -> 43
 function extractUid(log) {
-  return /-(\d+)\)/.exec(log)?.[1];
+  return /-(\d+)\)/.exec(log)?.[1] || "?";
 }
 function extractTime(log) {
-  let lastColon = log.lastIndexOf(":");
-  let time = log.substring(0, lastColon);
-  return time;
+  return (
+    /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{1,2}:\d{1,2} \w{2}/.exec(log)?.[0] ||
+    ""
+  );
 }
 function extractEventName(log) {
-  let logWithoutUid = log.replace(/-\d+/, "");
-  let lastColon = logWithoutUid.lastIndexOf(":");
-  let lastArrow = logWithoutUid.lastIndexOf("->");
-  let scriptName = logWithoutUid.substring(lastColon + 1, lastArrow - 1).trim();
-  return scriptName;
+  return /: (.*?) \(/.exec(log)?.[1] || "";
 }
-
+function extractTotalCount(log) {
+  return / -> (\d+)/.exec(log)?.[1] || "";
+}
 function extractVersion(log) {
-  let lastBracket = log.lastIndexOf("(");
-  let nextDash = log.indexOf("-", lastBracket);
-  return log.substring(lastBracket + 1, nextDash - 1).trim();
+  return / \((.*?)-\d*\)/.exec(log)?.[1] || "";
 }
 
 function isScript(log) {
@@ -642,6 +658,20 @@ function isScript(log) {
     log.includes("CLICK_") ||
     log.includes("-INFO") ||
     log.includes("-FAVORITE") ||
-    log.includes("-VIEW-SOURCE")
+    log.includes("-VIEW-SOURCE") ||
+    log.includes("CHECK-FOR-UPDATE") ||
+    log.includes("RESTORE") ||
+    log.includes("BACKUP") ||
+    log.includes("CHANGE-THEME") ||
+    log.includes("CHANGE-SMOOTH-SCROLL")
   );
+}
+
+function limitString(string, length) {
+  if (string.length <= length) return string;
+  return string.substring(0, length - 3) + "...";
+}
+
+function padStr(string, length, char = " ") {
+  return string + char.repeat(length - string.length);
 }
