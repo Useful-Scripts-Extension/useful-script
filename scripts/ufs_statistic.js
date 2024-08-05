@@ -445,6 +445,7 @@ async function onDocumentEnd() {
                 <span data-profile-name="${uid}">${uid}</span>
                 (${count})
               </a>
+              <span data-search="${uid}">${uid}🔎</span>
             </li>`;
             })
             .join("")}
@@ -463,7 +464,10 @@ async function onDocumentEnd() {
         <ol class="list-group">
           ${Array.from(eventNameCountSorted.entries())
             .map(([eventName, count], index) => {
-              return `<li> ${index + 1}. ${eventName} (${count})</li>`;
+              return `<li>
+                ${index + 1}. ${eventName} (${count})
+                <span data-search="${eventName}">🔎</span>
+              </li>`;
             })
             .join("")}
         </ol>
@@ -485,6 +489,11 @@ async function onDocumentEnd() {
     document.body.addEventListener("click", (event) => {
       if (event.target.classList.contains("modal")) {
         event.target.style.display = "none";
+      }
+      const dataSearch = event.target.getAttribute("data-search");
+      if (dataSearch) {
+        searchBox.value = dataSearch;
+        searchBox.dispatchEvent(new Event("input", { bubbles: true }));
       }
     });
 

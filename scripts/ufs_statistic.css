@@ -104,7 +104,7 @@ li:hover .show-on-hover {
   max-height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
-  min-width: 50vw;
+  min-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,6 +119,7 @@ li:hover .show-on-hover {
 
 .modal-body {
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .modal .close {
@@ -139,4 +140,18 @@ li:hover .show-on-hover {
 .modal ol a {
   color: white;
   text-decoration: none;
+}
+
+.modal li {
+  width: 100%;
+  clear: right;
+}
+
+[data-search] {
+  cursor: pointer;
+  float: right;
+}
+
+[data-search]:hover {
+  text-decoration: underline;
 }
