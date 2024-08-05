@@ -1,11 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "Facebook Extension",
-  "description": "Hoang Tran - Quyen Anh Vo",
+  "name": "Facebook Group Extension",
+  "description": "Quản lý nhóm facebook",
   "version": "1.0",
   "action": {
-    "default_popup": "./popup/index.html",
-    "default_icon": "./assets/icon32.png"
+    "default_popup": "./popup/index.html"
+  },
+  "icons": {
+    "16": "assets/icon_default_16.png",
+    "48": "assets/icon_default_48.png",
+    "128": "assets/icon_default_128.png"
   },
   "permissions": ["tabs", "scripting"],
   "host_permissions": ["*://*/*", "<all_urls>"]

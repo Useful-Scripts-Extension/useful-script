@@ -29,14 +29,32 @@ async function main() {
     let action = radioAction[0].checked ? 1 : 2;
     let max = parseInt(inputMaxPosts.value);
     let wait = parseInt(sliderWaitTime.value);
-
-    const currentTab = await getCurrentTab();
     runScriptInTab({
-      target: { tabId: currentTab.id },
+      target: { tabId: tab.id },
       func: start,
       args: [action, max, wait],
     });
   });
+
+  // check is running
+  (async function checkIsRunning() {
+    const isRunning = await runScriptInTab({
+      target: { tabId: tab.id },
+      func: () => window.fb_group_ext_running,
+    });
+    if (isRunning) {
+      // disable button
+      startBtn.disabled = true;
+      startBtn.innerHTML = "Đang xử lý...";
+      startBtn.classList.add("disabled");
+    } else {
+      // enable button
+      startBtn.disabled = false;
+      startBtn.innerHTML = "Bắt đầu";
+      startBtn.classList.remove("disabled");
+    }
+    setTimeout(checkIsRunning, 500);
+  })();
 }
 
 function start(action, max, wait) {
@@ -48,6 +66,12 @@ function start(action, max, wait) {
   if (max == 0) max = Infinity;
 
   const btns = Array.from(document.querySelectorAll(selector));
+
+  if (!btns.length) {
+    alert("Không tìm thấy bài nào");
+    return;
+  }
+
   onElementsAdded(selector, (nodes) => {
     for (let node of nodes) {
       if (btns.includes(node)) continue;
@@ -56,15 +80,18 @@ function start(action, max, wait) {
   });
 
   async function main() {
+    window.fb_group_ext_running = true;
+
+    // for test
+    // setTimeout(() => (window.fb_group_ext_running = false), 5000);
+    // return;
+
     let counter = 0;
     while (counter < max) {
       if (btns.length > 0) {
         const btn = btns.shift();
 
-        btn.scrollIntoView({
-          block: "center",
-          //   behavior: "smooth",
-        });
+        btn.scrollIntoView({ block: "center", behavior: "smooth" });
         console.log("click", btn);
         btn.click();
 
@@ -73,8 +100,10 @@ function start(action, max, wait) {
 
       if (wait) await sleep(wait);
     }
+    window.fb_group_ext_running = false;
     alert("Duyệt xong " + counter + " bài");
   }
+
   main();
 
   function sleep(time) {
@@ -126,6 +155,7 @@ async function getCurrentTab() {
   });
   return tabs[0];
 }
+
 const runScriptInTab = async (config = {}) => {
   return new Promise((resolve, reject) => {
     chrome.scripting.executeScript(

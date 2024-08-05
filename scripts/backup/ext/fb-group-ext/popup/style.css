@@ -132,3 +132,8 @@ input[type=number] {
     width: 100%;
     margin-top: 30px;
 }
+
+.button.disabled {
+    background-color: rgb(151, 12, 12);
+    cursor: not-allowed;
+}
