@@ -1,5 +1,5 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
-import { fetchGraphQl, getFbdtsg } from "./fb_GLOBAL.js";
+import { hookFetch } from "./libs/ajax-hook/index.js";
 
 export default {
   icon: "",
@@ -11,6 +11,8 @@ export default {
     en: "",
     vi: "",
   },
+
+  whiteList: ["https://chatgpt.com/*"],
 
   popupScript: {
     onClick: async () => {
@@ -329,6 +331,26 @@ export default {
   },
 
   pageScript: {
+    onDocumentStart: () => {
+      hookFetch({
+        onBefore: (url, options) => {
+          if (
+            url === "https://chatgpt.com/backend-anon/conversation" ||
+            url === "https://chatgpt.com/backend-api/conversation"
+          ) {
+            console.log(url, options);
+            const body = JSON.parse(options.body);
+            // body.model = "gpt-4o";
+            body.messages.forEach((m) => {
+              m.author.role = "system";
+              // m.content.parts = ["what is your name"];
+            });
+            console.log("body", body);
+            options.body = JSON.stringify(body);
+          }
+        },
+      });
+    },
     // download album
     _onClick: async () => {
       (async () => {
