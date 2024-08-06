@@ -132,6 +132,8 @@ function start(action, maxPosts, waitMin, waitMax) {
         window.fb_group_ext.nextExecuteTime = Date.now() + waitTime;
         await sleep(waitTime, () => window.fb_group_ext.stop);
       } else {
+        // scroll to end
+        window.scrollTo(0, document.body.scrollHeight);
         // wait for load more
         await sleep(1000);
       }
