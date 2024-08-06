@@ -1,21 +1,27 @@
-const sliderWaitTime = document.getElementById("slider-wait-time");
-const spanWaitTime = document.getElementById("wait-time");
+const waitMinInp = document.getElementById("inputWaitMin");
+const waitMaxInp = document.getElementById("inputWaitMax");
 const inputMaxPosts = document.getElementById("max-posts");
 const radioAction = document.getElementsByName("action");
 const startBtn = document.getElementById("start-btn");
 
-sliderWaitTime.value = localStorage.getItem("wait-time") || 3000;
-spanWaitTime.innerHTML = renderTime(sliderWaitTime.value);
-sliderWaitTime.oninput = function () {
-  spanWaitTime.innerHTML = renderTime(this.value);
-  localStorage.setItem("wait-time", this.value);
-};
+function initCacheInput(input, cacheName) {
+  if (localStorage.getItem(cacheName)) {
+    input.value = localStorage.getItem(cacheName);
+  }
+  input.addEventListener("input", () => {
+    localStorage.setItem(cacheName, input.value);
+  });
+}
 
-function renderTime(time) {
-  return (time / 1000).toFixed(1) + "s";
+function renderTime(time, fixed = 1) {
+  return (time / 1000).toFixed(fixed) + "s";
 }
 
 async function main() {
+  initCacheInput(waitMinInp, "wait-min");
+  initCacheInput(waitMaxInp, "wait-max");
+  initCacheInput(inputMaxPosts, "max-posts");
+
   const tab = await getCurrentTab();
 
   if (!tab.url.includes("groups") || !tab.url.includes("spam")) {
@@ -26,44 +32,70 @@ async function main() {
   }
 
   startBtn.addEventListener("click", async () => {
+    const state = await getCurrentState(tab);
+    if (state?.running) {
+      return stop(tab);
+    }
+
     let action = radioAction[0].checked ? 1 : 2;
-    let max = parseInt(inputMaxPosts.value);
-    let wait = parseInt(sliderWaitTime.value);
+    let maxPosts = parseInt(inputMaxPosts.value);
+    let waitMin = parseInt(waitMinInp.value) * 1000;
+    let waitMax = parseInt(waitMaxInp.value) * 1000;
+
+    if (waitMin > waitMax) {
+      return alert(
+        "Thời gian chờ không hợp lệ\nBên trái phải bé hơn hoặc bằng bên phải"
+      );
+    }
+
     runScriptInTab({
       target: { tabId: tab.id },
       func: start,
-      args: [action, max, wait],
+      args: [action, maxPosts, waitMin, waitMax],
     });
   });
 
   // check is running
   (async function checkIsRunning() {
-    const isRunning = await runScriptInTab({
-      target: { tabId: tab.id },
-      func: () => window.fb_group_ext_running,
-    });
-    if (isRunning) {
-      // disable button
-      startBtn.disabled = true;
-      startBtn.innerHTML = "Đang xử lý...";
-      startBtn.classList.add("disabled");
+    const state = await getCurrentState(tab);
+    const { running, nextExecuteTime } = state || {};
+    if (running) {
+      startBtn.innerHTML =
+        "Đang xử lý... (chờ " +
+        renderTime(nextExecuteTime - Date.now(), 0) +
+        ")<br/>(<i>Bấm để dừng</i>)";
+      startBtn.classList.add("running");
     } else {
-      // enable button
-      startBtn.disabled = false;
       startBtn.innerHTML = "Bắt đầu";
-      startBtn.classList.remove("disabled");
+      startBtn.classList.remove("running");
     }
-    setTimeout(checkIsRunning, 500);
+    setTimeout(checkIsRunning, 1000);
   })();
 }
 
-function start(action, max, wait) {
+function getCurrentState(tab) {
+  return runScriptInTab({
+    target: { tabId: tab.id },
+    func: () => window.fb_group_ext,
+  });
+}
+
+function stop(tab) {
+  runScriptInTab({
+    target: { tabId: tab.id },
+    func: () => {
+      window.fb_group_ext.stop = true;
+    },
+  });
+}
+
+function start(action, maxPosts, waitMin, waitMax) {
   const selector =
     action == 1
       ? '[role="main"] [aria-label="Đăng"]'
       : '[role="main"] [aria-label="Từ chối"]';
 
-  if (max == 0) max = Infinity;
+  if (maxPosts == 0) maxPosts = Infinity;
 
   const btns = Array.from(document.querySelectorAll(selector));
 
@@ -80,14 +112,14 @@ function start(action, max, wait) {
   });
 
   async function main() {
-    window.fb_group_ext_running = true;
-
-    // for test
-    // setTimeout(() => (window.fb_group_ext_running = false), 5000);
-    // return;
+    window.fb_group_ext = {
+      running: true,
+      nextExecuteTime: 0,
+      stop: false,
+    };
 
     let counter = 0;
-    while (counter < max) {
+    while (counter < maxPosts && !window.fb_group_ext.stop) {
       if (btns.length > 0) {
         const btn = btns.shift();
 
@@ -96,18 +128,34 @@ function start(action, max, wait) {
         btn.click();
 
         counter++;
+        const waitTime = ranInt(waitMin, waitMax);
+        window.fb_group_ext.nextExecuteTime = Date.now() + waitTime;
+        await sleep(waitTime, () => window.fb_group_ext.stop);
+      } else {
+        // wait for load more
+        await sleep(1000);
       }
-
-      if (wait) await sleep(wait);
     }
-    window.fb_group_ext_running = false;
+
+    window.fb_group_ext.running = false;
     alert("Duyệt xong " + counter + " bài");
   }
 
   main();
 
-  function sleep(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+  function ranInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  function sleep(time, cancelFn) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+      if (cancelFn) {
+        setInterval(() => {
+          if (cancelFn()) resolve();
+        }, 100);
+      }
+    });
   }
 
   function onElementsAdded(selector, callback, once) {
