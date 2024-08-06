@@ -168,11 +168,11 @@ const tabs = [
   {
     ...CATEGORY.instagram,
     scripts: [
+      R.insta_bulkDownload,
+      // s.insta_getAllUserMedia,
       s.insta_getUserInfo,
       s.insta_injectDownloadBtn,
       s.insta_anonymousStoryViewer,
-      createTitle("--- Bulk Download ---", "--- Tải hàng loạt ---"),
-      s.insta_getAllUserMedia,
       s.insta_getFollowForOther,
     ],
   },

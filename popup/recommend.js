@@ -886,4 +886,21 @@ export const Recommend = {
         ),
     },
   },
+  insta_bulkDownload: {
+    id: "recommend_fbAIOInstagram",
+    icon: "https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png",
+    name: {
+      en: "Instagram - Bulk download",
+      vi: "Instagram - Tải hàng loạt",
+    },
+    description: {
+      en: "Download all user's media on instagram (video/photo/reels/highlight)",
+      vi: "Tải mọi ảnh/video/reel/highlight của người dùng Instagram",
+    },
+    badges: [BADGES.new, BADGES.hot],
+    popupScript: {
+      onClick: () =>
+        window.open("https://facebook-all-in-one.com/dist/#/bulk-downloader"),
+    },
+  },
 };

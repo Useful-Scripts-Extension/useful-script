@@ -25,6 +25,8 @@ export function getUniversalCdnUrl(cdnLink) {
     return cdnLink;
   }
 }
+
+// WARNING: not working anymore??
 export async function getAllMedia({ uid, progressCallback, limit = 0 }) {
   let all_urls = [];
   let after = "";
