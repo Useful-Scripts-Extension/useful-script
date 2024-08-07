@@ -151,10 +151,14 @@ function start(action, maxPosts, waitMin, waitMax) {
 
   function sleep(time, cancelFn) {
     return new Promise((resolve) => {
-      setTimeout(resolve, time);
+      const timeout = setTimeout(resolve, time);
       if (cancelFn) {
-        setInterval(() => {
-          if (cancelFn()) resolve();
+        const interval = setInterval(() => {
+          if (cancelFn()) {
+            clearInterval(interval);
+            clearTimeout(timeout);
+            resolve();
+          }
         }, 100);
       }
     });
