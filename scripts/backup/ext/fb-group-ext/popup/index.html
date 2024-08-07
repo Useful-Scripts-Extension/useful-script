@@ -4,40 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý nhóm Facebook</title>
+    <title>Document</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            min-width: 300px;
+            min-height: 300px;
+        }
+
+        a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+            font-size: 20px;
+        }
+
+        a:hover {
+            background-color: #ccc;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Facebook Tools</h1>
+    <a href="./auto_duyet_bai/index.html">Auto duyệt bài group</a>
 
-    <h3>Chọn hành động</h3>
-    <label class="container">Đăng comment
-        <input type="radio" checked="checked" name="action">
-        <span class="checkmark"></span>
-    </label>
-    <label class="container">Xoá comment
-        <input type="radio" name="action">
-        <span class="checkmark"></span>
-    </label>
-
-    <div class="input-container">
-        <h3>Thời gian chờ (giây):</h3>
-        <span><i>(ngẫu nhiên trong khoảng)</i></span><br />
-        <div class="input-row">
-            <input type="number" min="0" value="5" id="inputWaitMin" /> ➡️ <input type="number" min="0" value="20"
-                id="inputWaitMax" />
-        </div>
-    </div>
-
-    <h3>Duyệt tối đa bao nhiêu bài?</h3>
-    <span><i>(nhập 0 để duyệt hết)</i></span><br />
-    <input type="number" id="max-posts" value="10">
-
-    <button class="button" id="start-btn">Bắt đầu</button>
-
-    <script src="main.js"></script>
 </body>
 
 </html>
