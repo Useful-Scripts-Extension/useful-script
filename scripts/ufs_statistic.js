@@ -533,6 +533,26 @@ async function onDocumentEnd() {
                 .querySelectorAll(`[data-profile-avatar="${uid}"]`)
                 .forEach((el) => {
                   el.src = info.avatar.replace(/\\\//g, "/") || el.src;
+
+                  let tried = 0,
+                    loading = false;
+
+                  // in case cached avatqr expired
+                  el.onerror = () => {
+                    if (loading) return;
+                    tried++;
+                    if (tried > 3) el.src = getUserAvatarFromUid(uid);
+                    else {
+                      loading = true;
+                      getFbProfile(uid, true)
+                        .then((info) => {
+                          el.src = info.avatar.replace(/\\\//g, "/") || el.src;
+                        })
+                        .finally(() => {
+                          loading = false;
+                        });
+                    }
+                  };
                 });
             })
         );
@@ -654,8 +674,8 @@ async function initCache() {
   }
 }
 
-async function getFbProfile(uid) {
-  if (CACHED.fbProfile.has(uid)) return CACHED.fbProfile.get(uid);
+async function getFbProfile(uid, force = false) {
+  if (CACHED.fbProfile.has(uid) && !force) return CACHED.fbProfile.get(uid);
 
   const variables = {
     userID: uid,
