@@ -1,6 +1,16 @@
 const CACHED = {
+  uid: null,
   fb_dtsg: null,
 };
+
+export async function getMyUid() {
+  if (CACHED.uid) return CACHED.uid;
+  const d = await runExtFunc("chrome.cookies.get", [
+    { url: "https://www.facebook.com", name: "c_user" },
+  ]);
+  CACHED.uid = d?.value;
+  return CACHED.uid;
+}
 
 export async function fetchGraphQl(params, url) {
   let query = "";
@@ -79,4 +89,19 @@ export async function getFbDtsg() {
   }
   CACHED.fb_dtsg = dtsg || null;
   return CACHED.fb_dtsg;
+}
+
+export function findDataObject(object) {
+  if (!object) return null;
+
+  // Check if the current object has edges and page_info properties
+  if (object.edges && object.page_info) return object;
+
+  for (let key in object) {
+    if (typeof object[key] === "object" && object[key] !== null) {
+      let found = findDataObject(object[key]);
+      if (found) return found;
+    }
+  }
+  return null;
 }

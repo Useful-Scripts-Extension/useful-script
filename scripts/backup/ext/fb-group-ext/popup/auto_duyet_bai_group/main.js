@@ -60,11 +60,11 @@ async function main() {
   // check is running
   (async function checkIsRunning() {
     const state = await getCurrentState(tab);
-    const { running, nextExecuteTime, count } = state || {};
+    const { running, nextExecuteTime, count, action } = state || {};
     if (running) {
       startBtn.innerHTML =
         "Đang " +
-        (radioAction[0].checked ? "đăng" : "xoá") +
+        (action === 1 ? "đăng" : "từ chối") +
         "... " +
         count +
         " bài (chờ " +
@@ -119,6 +119,7 @@ function start(action, maxPosts, waitMin, waitMax) {
 
   async function main() {
     window.fb_group_ext = {
+      action,
       running: true,
       nextExecuteTime: 0,
       stop: false,

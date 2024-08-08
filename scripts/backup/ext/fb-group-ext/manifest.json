@@ -11,6 +11,22 @@
     "48": "assets/icon_default_48.png",
     "128": "assets/icon_default_128.png"
   },
-  "permissions": ["tabs", "scripting"],
-  "host_permissions": ["*://*/*", "<all_urls>"]
+  "permissions": [
+    "tabs",
+    "cookies",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": ["*://*/*", "<all_urls>"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "./rules.json"
+      }
+    ]
+  }
 }
