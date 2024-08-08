@@ -26,7 +26,9 @@ async function main() {
 
   if (!tab.url.includes("groups") || !tab.url.includes("spam")) {
     return prompt(
-      "Bạn cần mở trang duyệt bài spam của group trước. Ví dụ:",
+      "\n\nBạn cần mở trang duyệt bài spam của group trước.\n\nLink hiện tại:" +
+        tab.url +
+        "\nLink đúng ví dụ:",
       "https://www.facebook.com/groups/gamecode/spam"
     );
   }
@@ -58,10 +60,14 @@ async function main() {
   // check is running
   (async function checkIsRunning() {
     const state = await getCurrentState(tab);
-    const { running, nextExecuteTime } = state || {};
+    const { running, nextExecuteTime, count } = state || {};
     if (running) {
       startBtn.innerHTML =
-        "Đang xử lý... (chờ " +
+        "Đang " +
+        (radioAction[0].checked ? "đăng" : "xoá") +
+        "... " +
+        count +
+        " bài (chờ " +
         renderTime(nextExecuteTime - Date.now(), 0) +
         ")<br/>(<i>Bấm để dừng</i>)";
       startBtn.classList.add("running");
@@ -116,10 +122,10 @@ function start(action, maxPosts, waitMin, waitMax) {
       running: true,
       nextExecuteTime: 0,
       stop: false,
+      count: 0,
     };
 
-    let counter = 0;
-    while (counter < maxPosts && !window.fb_group_ext.stop) {
+    while (window.fb_group_ext.count < maxPosts && !window.fb_group_ext.stop) {
       if (btns.length > 0) {
         const btn = btns.shift();
 
@@ -127,7 +133,7 @@ function start(action, maxPosts, waitMin, waitMax) {
         console.log("click", btn);
         btn.click();
 
-        counter++;
+        window.fb_group_ext.count++;
         const waitTime = ranInt(waitMin, waitMax);
         window.fb_group_ext.nextExecuteTime = Date.now() + waitTime;
         await sleep(waitTime, () => window.fb_group_ext.stop);
@@ -140,7 +146,7 @@ function start(action, maxPosts, waitMin, waitMax) {
     }
 
     window.fb_group_ext.running = false;
-    alert("Duyệt xong " + counter + " bài");
+    alert("Duyệt xong " + window.fb_group_ext.count + " bài");
   }
 
   main();
