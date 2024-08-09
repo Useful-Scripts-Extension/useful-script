@@ -768,5 +768,8 @@ function limitString(string, length) {
 }
 
 function padStr(string, length, char = " ") {
-  return string + char.repeat(length - string.length);
+  return (
+    string +
+    (length - string.length > 0 ? char.repeat(length - string.length) : "")
+  );
 }
