@@ -607,6 +607,26 @@ async function onDocumentEnd() {
   document.body.prepend(container);
 
   // #endregion
+
+  // #region auto get fb info of selected text on press A
+
+  document.addEventListener("keydown", (event) => {
+    const selectedText = UfsGlobal.DOM.getSelectionText();
+    if (selectedText) {
+      if (event.key === "a") {
+        getEntityAbout(selectedText)
+          .then((data) =>
+            alert(data.type + ":\n" + data.name + "\n\n" + data.url)
+          )
+          .catch((e) => alert("ERROR: " + e.message));
+      }
+      if (event.key === "d") {
+        window.open("https://fb.com/" + selectedText, "_blank");
+      }
+    }
+  });
+
+  // #endregion
 }
 
 function getCurrentLogDate() {
@@ -677,24 +697,22 @@ async function initCache() {
 async function getFbProfile(uid, force = false) {
   if (CACHED.fbProfile.has(uid) && !force) return CACHED.fbProfile.get(uid);
 
-  const variables = {
-    userID: uid,
-    shouldDeferProfilePic: false,
-    useVNextHeader: false,
-    scale: 1.5,
-  };
-  let f = new URLSearchParams();
-  f.append("fb_dtsg", CACHED.fb_dtsg);
-  f.append("fb_api_req_friendly_name", "ProfileCometHeaderQuery");
-  f.append("variables", JSON.stringify(variables));
-  f.append("doc_id", "4159355184147969");
-
   let res = await UfsGlobal.Extension.runInBackground("fetch", [
     "https://www.facebook.com/api/graphql/",
     {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: f.toString(),
+      body: new URLSearchParams({
+        fb_api_req_friendly_name: "ProfileCometHeaderQuery",
+        fb_dtsg: CACHED.fb_dtsg,
+        variables: JSON.stringify({
+          userID: uid,
+          shouldDeferProfilePic: false,
+          useVNextHeader: false,
+          scale: 1.5,
+        }),
+        doc_id: "4159355184147969",
+      }).toString(),
     },
   ]);
 
@@ -723,6 +741,58 @@ async function getFbProfile(uid, force = false) {
   );
   console.log(info);
   return info;
+}
+
+export const TargetType = {
+  User: "user",
+  Page: "page",
+  Group: "group",
+  IGUser: "ig_user",
+};
+
+export async function getEntityAbout(entityID, context = "DEFAULT") {
+  let res = await UfsGlobal.Extension.runInBackground("fetch", [
+    "https://www.facebook.com/api/graphql/",
+    {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        fb_api_req_friendly_name: "CometHovercardQueryRendererQuery",
+        fb_dtsg: CACHED.fb_dtsg,
+        variables: JSON.stringify({
+          actionBarRenderLocation: "WWW_COMET_HOVERCARD",
+          context: context,
+          entityID: entityID,
+          includeTdaInfo: true,
+          scale: 1,
+        }),
+        doc_id: "7257793420991802",
+      }).toString(),
+    },
+  ]);
+  console.log(res);
+  const text = await res.body;
+  const json = JSON.parse(text);
+  const node = json.data.node;
+  if (!node) throw new Error("Wrong ID / Entity not found");
+  const typeText = node.__typename.toLowerCase();
+  if (!Object.values(TargetType).includes(typeText))
+    throw new Error("Not supported type: " + typeText);
+  const card = node.comet_hovercard_renderer[typeText];
+  const type =
+    typeText === "user"
+      ? card.profile_plus_transition_path?.startsWith("PAGE")
+        ? TargetType.Page
+        : TargetType.User
+      : TargetType.Group;
+  return {
+    type,
+    id: node.id || card.id,
+    name: card.name,
+    avatar: card.profile_picture.uri,
+    url: card.profile_url || card.url,
+    raw: json,
+  };
 }
 
 // log example: 5/31/2024, 9:13:41 AM: OPEN-TAB-unlock (1.67-1717121281787) -> 43

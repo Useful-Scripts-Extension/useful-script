@@ -12,6 +12,7 @@ export const UfsGlobal = {
     waitForTabToLoad,
   },
   DOM: {
+    getSelectionText,
     keyDown,
     keyUp,
     closest,
@@ -141,6 +142,16 @@ function download(options) {
 // #endregion
 
 // #region DOM
+
+function getSelectionText() {
+  var text = "";
+  if (window.getSelection) {
+    text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+    text = document.selection.createRange().text;
+  }
+  return text;
+}
 
 //prettier-ignore
 function keyDown(e){let n=document.createEvent("KeyboardEvent");Object.defineProperty(n,"keyCode",{get:function(){return this.keyCodeVal}}),n.initKeyboardEvent?n.initKeyboardEvent("keydown",!0,!0,document.defaultView,e,e,"","",!1,""):n.initKeyEvent("keydown",!0,!0,document.defaultView,!1,!1,!1,!1,e,0),n.keyCodeVal=e,document.body.dispatchEvent(n)}
