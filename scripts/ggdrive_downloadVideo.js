@@ -145,32 +145,43 @@ export const shared = {
     }
 
     async function getLink(docid) {
-      let res = await fetch(
-        "https://drive.google.com/get_video_info?docid=" + docid
-      );
+      let lastError;
+      for (let u of ["", 0, 1, 2, 3, 4, 5, 6]) {
+        let res = await fetch(
+          "https://drive.google.com/" +
+            (u !== "" ? `u/${u}/` : "") +
+            "get_video_info?docid=" +
+            docid
+        );
 
-      let text = await res.text();
-      let json = parse(text);
+        let text = await res.text();
+        let json = parse(text);
 
-      if (json?.status === "fail") {
-        throw Error("FAILED: " + json.reason);
+        if (json?.status === "fail") {
+          lastError = Error("FAILED: " + json.reason);
+          console.log(u, lastError);
+          continue;
+        }
+
+        json.url_encoded_fmt_stream_map = parseStream(
+          json.url_encoded_fmt_stream_map
+        );
+
+        let result = json.url_encoded_fmt_stream_map.map(function (stream) {
+          let name = json.title.replace(/\+/g, " ");
+          return {
+            idfile: docid,
+            name: name,
+            quality: stream.quality,
+            url: stream.url,
+          };
+        });
+
+        return result;
       }
 
-      json.url_encoded_fmt_stream_map = parseStream(
-        json.url_encoded_fmt_stream_map
-      );
-
-      let result = json.url_encoded_fmt_stream_map.map(function (stream) {
-        let name = json.title.replace(/\+/g, " ");
-        return {
-          idfile: docid,
-          name: name,
-          quality: stream.quality,
-          url: stream.url,
-        };
-      });
-
-      return result;
+      if (lastError) throw lastError;
+      return null;
     }
 
     return await getLink(docid);
