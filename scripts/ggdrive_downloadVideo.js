@@ -146,7 +146,7 @@ export const shared = {
 
     async function getLink(docid) {
       let lastError;
-      for (let u of ["", 0, 1, 2, 3, 4, 5, 6]) {
+      for (let u of ["", 0, 1, 2]) {
         let res = await fetch(
           "https://drive.google.com/" +
             (u !== "" ? `u/${u}/` : "") +
@@ -158,8 +158,8 @@ export const shared = {
         let json = parse(text);
 
         if (json?.status === "fail") {
-          lastError = Error("FAILED: " + json.reason);
-          console.log(u, lastError);
+          lastError = "FAILED: " + json.reason;
+          console.log(u, docid, lastError);
           continue;
         }
 
@@ -180,7 +180,7 @@ export const shared = {
         return result;
       }
 
-      if (lastError) throw lastError;
+      if (lastError) throw new Error(lastError);
       return null;
     }
 
