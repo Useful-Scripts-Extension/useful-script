@@ -38,6 +38,8 @@ export default {
               );
               if (!label) return;
               let text = numberFormat(dislikeCount);
+
+              // Kiểm tra và chỉ cập nhật nếu cần thiết
               if (label.textContent != text) label.textContent = text;
             }
 
@@ -62,14 +64,23 @@ export default {
 
             function makeUI(dislikeCount = 0) {
               let className = "yt-spec-button-shape-next__button-text-content";
-              let exist = button.querySelector(className);
+              let exist = button.querySelector(`.${className}`);
+
+              // Kiểm tra nếu phần tử đã tồn tại, chỉ cập nhật nội dung
               if (exist) {
-                exist.textContent = numberFormat(dislikeCount);
+                const currentText = exist.textContent;
+                const newText = numberFormat(dislikeCount);
+
+                // Chỉ cập nhật nếu nội dung thay đổi
+                if (currentText !== newText) {
+                  exist.textContent = newText;
+                }
               } else {
                 let dislikeText = document.createElement("div");
                 dislikeText.classList.add(className);
                 dislikeText.textContent = numberFormat(dislikeCount);
                 button.appendChild(dislikeText);
+
                 listeners.push(
                   UfsGlobal.DOM.onElementRemoved(dislikeText, () =>
                     makeUI(dislikeCount)
@@ -77,7 +88,7 @@ export default {
                 );
               }
 
-              // fix button style
+              // Sửa lại phong cách của nút
               button.style.width = "auto";
               const dislikeIcon = button.querySelector(
                 ".yt-spec-button-shape-next__icon"
@@ -94,9 +105,9 @@ export default {
       }
 
       function run() {
-        // remove all pre listeners
+        // Xóa tất cả listeners trước đó
         listeners.forEach((fn) => fn?.());
-        listeners = []; // Reset listeners array after clearing
+        listeners = []; // Reset listeners array sau khi xóa
 
         if (isShorts()) listeners.push(listenShort());
         else listeners.push(listenVideo());
@@ -124,7 +135,6 @@ const cached = {};
 
 const getDislikeDataDebounced = UfsGlobal.Utils.debounce(getDislikeData, 100);
 
-// Source code extracted from https://chrome.google.com/webstore/detail/return-youtube-dislike/gebbhagfogifgggkldgodflihgfeippi
 async function getDislikeData(videoId, callback) {
   if (!videoId) return;
 
