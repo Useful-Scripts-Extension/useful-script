@@ -996,7 +996,7 @@ UfsGlobal.DEBUG = {
         JSON.parse('"' + res.replace(/\"/g, '\\"') + '"')
       );
     }
-    return res;
+    return res.replaceAll("\\/", "/");
   },
 
   // https://stackoverflow.com/a/8649003
