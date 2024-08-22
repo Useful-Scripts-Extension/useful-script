@@ -894,8 +894,8 @@ export const Recommend = {
       vi: "Instagram - Tải hàng loạt",
     },
     description: {
-      en: "Download all user's media on instagram (video/photo/reels/highlight)",
-      vi: "Tải mọi ảnh/video/reel/highlight của người dùng Instagram",
+      en: "Download all user's media on instagram (video/photo/reels/highlight) on Facebook AIO",
+      vi: "Tải mọi ảnh/video/reel/highlight của người dùng Instagram với Facebook AIO",
     },
     badges: [BADGES.new, BADGES.hot],
     popupScript: {
