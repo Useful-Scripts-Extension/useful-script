@@ -10,9 +10,9 @@ export default {
     vi: "Douyin - Tải hàng loạt",
   },
   description: {
-    en: "",
-    vi: "",
-    img: "",
+    en: "Select and download all douyin video (user profile, tiktok explore).<br/><br/> Same as tiktok batch download.",
+    vi: "Tải hàng loạt video douyin (trang người dùng, trang tìm kiếm), có giao diện chọn video muốn tải.<br/><br/> Giống chức năng tải hàng loạt tiktok.",
+    img: "/scripts/douyin_batchDownload.png",
   },
 
   badges: [BADGES.new, BADGES.hot],
@@ -97,7 +97,7 @@ export default {
   <div class="ufs_floating_btn" @click="showModal = true">📥 {{totalCount}}</div>
   <div class="ufs_container" v-if="showModal" @click.self="showModal = false">
     <div class="ufs_popup">
-      <h1 style="text-align:center">Douyin - <a target="_blank" href="https://github.com/HoangTran0410/useful-script">Useful Scripts</a></h1>
+      <h1 style="text-align:center">Douyin - <a target="_blank" href="https://github.com/Useful-Scripts-Extension/useful-script">Useful Scripts</a></h1>
       <h2 style="text-align:center">Found {{totalCount}} videos</h2>
 
       <div class="ufs_popup_header">
@@ -192,7 +192,10 @@ export default {
             search: "",
             sortBy: "index",
             sortDir: "asc",
-            downloading: {},
+            downloading: {
+              video: null,
+              audio: null,
+            },
             selected: {},
           };
         },
@@ -227,7 +230,7 @@ export default {
             return Array.from(result.values());
           },
           videoTitle() {
-            if (this.downloading.video) {
+            if (Number.isInteger(this.downloading.video)) {
               return (
                 "Downloading " +
                 this.downloading.video +
@@ -244,7 +247,7 @@ export default {
             );
           },
           audioTitle() {
-            if (this.downloading.audio) {
+            if (Number.isInteger(this.downloading.audio)) {
               return (
                 "Downloading " +
                 this.downloading.audio +

@@ -96,7 +96,7 @@ export default {
   <div class="ufs_floating_btn" @click="showModal = true">📥 {{totalCount}}</div>
   <div class="ufs_container" v-if="showModal" @click.self="showModal = false">
     <div class="ufs_popup">
-      <h1 style="text-align:center">Tiktok - <a target="_blank" href="https://github.com/HoangTran0410/useful-script">Useful Scripts</a></h1>
+      <h1 style="text-align:center">Tiktok - <a target="_blank" href="https://github.com/Useful-Scripts-Extension/useful-script">Useful Scripts</a></h1>
       <h2 style="text-align:center">Found {{totalCount}} videos</h2>
 
       <div class="ufs_popup_header">
@@ -191,7 +191,10 @@ export default {
             search: "",
             sortBy: "index",
             sortDir: "asc",
-            downloading: {},
+            downloading: {
+              video: null,
+              audio: null,
+            },
             selected: {},
           };
         },
@@ -225,7 +228,7 @@ export default {
             return Array.from(result.values());
           },
           videoTitle() {
-            if (this.downloading.video) {
+            if (Number.isInteger(this.downloading.video)) {
               return (
                 "Downloading " +
                 this.downloading.video +
@@ -242,7 +245,7 @@ export default {
             );
           },
           audioTitle() {
-            if (this.downloading.audio) {
+            if (Number.isInteger(this.downloading.audio)) {
               return (
                 "Downloading " +
                 this.downloading.audio +
@@ -313,22 +316,25 @@ export default {
               expectBlobTypes: ["video/mp4", "image/jpeg"],
               data: this.videoToDownload
                 .map((_, i) => {
+                  const all = [];
                   // image
                   const imgs = _.imagePost?.images;
                   if (imgs?.length) {
-                    return imgs.map((img, j) => ({
-                      url:
-                        img.imageURL?.urlList?.[1] ||
-                        img.imageURL?.urlList?.[0],
-                      filename:
-                        i +
-                        1 +
-                        "_" +
-                        (j + 1) +
-                        "_" +
-                        UfsGlobal.Utils.sanitizeName(_.id, false) +
-                        ".jpg",
-                    }));
+                    all.push(
+                      ...imgs.map((img, j) => ({
+                        url:
+                          img.imageURL?.urlList?.[1] ||
+                          img.imageURL?.urlList?.[0],
+                        filename:
+                          i +
+                          1 +
+                          "_" +
+                          (j + 1) +
+                          "_" +
+                          UfsGlobal.Utils.sanitizeName(_.id, false) +
+                          ".jpg",
+                      }))
+                    );
                   }
 
                   // video
@@ -337,7 +343,7 @@ export default {
                       (b) => b.Bitrate === _.video.bitrate
                     )?.PlayAddr?.UrlList || [];
                   const bestUrl = urlList[urlList.length - 1];
-                  return {
+                  all.push({
                     url: bestUrl || _.video.playAddr,
                     filename:
                       i +
@@ -345,7 +351,8 @@ export default {
                       "_" +
                       UfsGlobal.Utils.sanitizeName(_.id, false) +
                       ".mp4",
-                  };
+                  });
+                  return all;
                 })
                 .flat()
                 .filter((_) => _.url),

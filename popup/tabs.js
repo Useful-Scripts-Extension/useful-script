@@ -199,9 +199,9 @@ const tabs = [
     ...CATEGORY.tiktok,
     scripts: [
       createTitle("--- Tiktok ---", "--- Tiktok ---"),
+      s.tiktok_batchDownload,
       s.tiktok_downloadWatchingVideo,
       s.tiktok_downloadVideo,
-      s.tiktok_batchDownload,
       createTitle("--- Douyin ---", "--- Douyin ---"),
       s.douyin_batchDownload,
       s.douyin_downloadWachingVideo,

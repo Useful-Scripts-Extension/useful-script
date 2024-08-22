@@ -35,11 +35,11 @@
   - click to disable/enable for current website [source](/scripts/smoothScroll.js)
 
 - Merge request
-  - [fix: 🐛 fix fireship_vip script](https://github.com/HoangTran0410/useful-script/pull/28)
+  - [fix: 🐛 fix fireship_vip script](https://github.com/Useful-Scripts-Extension/useful-script/pull/28)
   - [feat: youglish search
-  ](https://github.com/HoangTran0410/useful-script/pull/30)
-  - [feat: youtube download video UI](https://github.com/HoangTran0410/useful-script/pull/31)
-  - [style: 🪄 beautify ui for viewScriptSource](https://github.com/HoangTran0410/useful-script/pull/32)
+  ](https://github.com/Useful-Scripts-Extension/useful-script/pull/30)
+  - [feat: youtube download video UI](https://github.com/Useful-Scripts-Extension/useful-script/pull/31)
+  - [style: 🪄 beautify ui for viewScriptSource](https://github.com/Useful-Scripts-Extension/useful-script/pull/32)
 - More shortcuts: google trend, time.is, aiforthat, cobalt, nirsoft
 
 </details>
