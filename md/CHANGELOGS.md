@@ -1,6 +1,29 @@
 ## Change logs
 
 <details>
+  <summary>v1.8 - 22/08/2024</summary>
+
+- Facebook
+  - NEW / SUPER HOT: Facebook All in one [web](https://facebook-all-in-one.com)
+  - NEW: auto duyệt bài spam group facebook [source](/scripts/fb_autoRemoveSpamPostGroup.js)
+
+- Douyin
+  - NEW: batch download [source](/scripts/douyin_batchDownload.js)
+
+- Google
+  - FIX: download private (shared to you) videos that dont have download button [source](/scripts/ggdrive_downloadVideo.js)
+
+- Youtube
+  - FIX: change country [source](/scripts/youtube_changeCountry.js)
+
+- More
+  - FIX: show hidden fields [source](/scripts/showHiddenFields.js)
+  - FIX: dino hack [source](/scripts/dino_hack.js)
+  - FIX: create invisible text (web version) [source](/scripts/createInvisibleText.js)
+
+</details>
+
+<details>
   <summary>v1.7 - 28/07/2024</summary>
 
 - Tiktok

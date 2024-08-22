@@ -32,15 +32,15 @@ Try online [Here](https://useful-scripts-extension.github.io/useful-script/popup
 
 Current Versions:
 
-- **v1.7**: tiktok update 28/07/2024
+- **v1.8**: douyin + facebook + youtube update 22/08/2024
 
 <details>
   <summary>Old versions</summary>
 
-- <del>v1.69: small update (14/07/2024)</del>
+- <del>v1.7: tiktok update (28/07/2024)</del>
 - <del>v1.68: big facebook update (01/07/2024)</del>
-- <del>v1.67 - huge update (29/05/2024)</del>
-- <del>v1.66 - big update (27/04/2024)</del>
+- <del>v1.67: huge update (29/05/2024)</del>
+- <del>v1.66: big update (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>
