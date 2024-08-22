@@ -3,8 +3,8 @@
   "manifest_version": 3,
   "name": "Useful Scripts",
   "description": "Scripts that can make your life faster and better",
-  "homepage_url": "https://github.com/HoangTran0410/useful-script",
-  "version": "1.7",
+  "homepage_url": "https://github.com/Useful-Scripts-Extension/useful-script",
+  "version": "1.8",
   "icons": {
     "16": "./assets/icon16.png",
     "32": "./assets/icon32.png",

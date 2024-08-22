@@ -62,7 +62,7 @@ function initFetch() {
       }
     }
 
-    let response = await originalFetch(urlOrRequest);
+    let response = await originalFetch(urlOrRequest, options);
     for (const { fn } of onAfterFetchFn) {
       const res = await fn?.(request.url, request.options, response)?.catch(
         console.error

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto giới hạn members</title>
+
+    <style>
+        html,
+        body {
+            background: #333;
+            color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        textarea {
+            background: #444;
+            color: #eee;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Auto giới hạn members</h1>
+
+    <textarea name="data" id="data" rows="10" cols="50"
+        placeholder="Nhập dữ liệu vào đây theo từng dòng: uid|ngày hết hạn|group id">100040851258332|2024-08-28|2138246213171561</textarea>
+
+    <button>Bắt đầu</button>
+
+    <textarea name="result" id="result" cols="80" rows="20" placeholder="Kết quả sẽ hiện ở đây" disabled></textarea>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>

@@ -1,5 +1,3 @@
-import { BADGES } from "./helpers/badge.js";
-
 export default {
   icon: '<i class="fa-solid fa-flag fa-lg"></i>',
   name: {
@@ -10,7 +8,6 @@ export default {
     en: "Know about your friends's liked pages (public pages) on facebook",
     vi: "Biết bạn bè của bạn đang thích các trang (công khai) nào trên facebook",
   },
-  badges: [BADGES.hot],
 
   popupScript: {
     onClick: async () => {

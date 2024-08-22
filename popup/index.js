@@ -1046,7 +1046,10 @@ async function initShowDonate() {
       );
     }
     if (res.isDenied) {
-      window.open("https://github.com/HoangTran0410/useful-script", "_blank");
+      window.open(
+        "https://github.com/Useful-Scripts-Extension/useful-script",
+        "_blank"
+      );
     }
   }
 }

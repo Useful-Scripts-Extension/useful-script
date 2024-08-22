@@ -47,7 +47,9 @@ export default {
           <p style="max-width:200px">${name}</p><br/><br/>
           Lỗi: ${errors.length} video<br/>
           <div style="max-height:150px;overflow:auto">
-            ${errors.map(({ id, name, e }) => name).join("<br/>")}
+            ${errors
+              .map(({ id, name, e }) => name + ": " + e.message)
+              .join("<br/>")}
           </div>`);
           try {
             // prettier-ignore
@@ -57,6 +59,8 @@ export default {
             errors.push({ id, name, e });
           }
         }
+
+        if (!result.length) throw new Error("Không tải được video nào");
 
         // =========== Render Data ===========
         let allUrls = {};

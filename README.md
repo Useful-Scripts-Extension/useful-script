@@ -14,7 +14,7 @@
   - [Dành cho dev (Demo)](#dành-cho-dev-demo)
   - [Contribute](#contribute)
 
-Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate tại đây](https://github.com/HoangTran0410/HoangTran0410/blob/main/DONATE.md)
+Donate? Muốn hỗ trợ mình 1 ly cafe <3 [Donate tại đây](https://hoangtran0410.github.io/HoangTran0410/DONATE)
 
 ## Giới thiệu
 
@@ -32,15 +32,16 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v1.7**: tiktok update 28/07/2024
+- **v1.8**: douyin + facebook + youtube update 22/08/2024
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
 
+- <del>v1.7: tiktok update (28/07/2024)</del>
 - <del>v1.69: small update (14/07/2024)</del>
 - <del>v1.68: bản cập nhật facebook lớn (01/07/2024)</del>
-- <del>v1.67 - bản cập nhật siêu lớn (29/05/2024)</del>
-- <del>v1.66 - bản cập nhật lớn (27/04/2024)</del>
+- <del>v1.67: bản cập nhật siêu lớn (29/05/2024)</del>
+- <del>v1.66: bản cập nhật lớn (27/04/2024)</del>
 - <del>v1.65-hotfix (08/04/2024)</del>
 - <del>v1.64-hotfix (07/04/2024)</del>
 - <del>v1.63 (03/04/2024)</del>
@@ -69,7 +70,7 @@ Phiên bản hiện tại:
 
 Dự kiến extension useful-script này sẽ bao gồm cả chức năng của [RevealDeletedFBMessages](https://github.com/HoangTran0410/RevealDeletedFBMessages) và [FBMediaDownloader](https://github.com/HoangTran0410/FBMediaDownloader)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=HoangTran0410/useful-script,HoangTran0410/FBMediaDownloader,HoangTran0410/RevealDeletedFBMessages&type=Date)](https://star-history.com/#HoangTran0410/useful-script&HoangTran0410/FBMediaDownloader&HoangTran0410/RevealDeletedFBMessages&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Useful-Scripts-Extension/useful-script,HoangTran0410/FBMediaDownloader,HoangTran0410/RevealDeletedFBMessages&type=Date)](https://star-history.com/#Useful-Scripts-Extension/useful-script&HoangTran0410/FBMediaDownloader&HoangTran0410/RevealDeletedFBMessages&Date)
 
 ## Dành cho dev (Demo)
 

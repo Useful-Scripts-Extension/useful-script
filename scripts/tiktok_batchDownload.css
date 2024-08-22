@@ -70,6 +70,7 @@
 .ufs_popup td {
   border: 1px solid #aaa;
   border-collapse: collapse;
+  vertical-align: middle;
 }
 
 .ufs_popup table td {

@@ -509,7 +509,7 @@ function getImgSrcsFromElement(ele) {
         results = results.concat(srcs.map((src) => relativeUrlToAbsolute(src)));
       }
     } catch (e) {
-      console.log("error", e);
+      // console.log("error", e);
     }
   }
   return results;

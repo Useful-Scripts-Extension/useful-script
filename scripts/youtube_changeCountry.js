@@ -1,3 +1,5 @@
+import { UfsGlobal } from "./content-scripts/ufs_global.js";
+
 export default {
   icon: '<i class="fa-solid fa-map-location-dot fa-lg"></i>',
   name: {
@@ -22,7 +24,7 @@ export default {
 
       const popup = document.createElement("div");
       popup.id = id;
-      popup.innerHTML = `
+      popup.innerHTML = UfsGlobal.DOM.createTrustedHtml(`
         <style>
           #${id} {
             position: fixed;
@@ -56,7 +58,7 @@ export default {
           <input type="checkbox" id="ufs_checkbox" />
           <label for="ufs_checkbox">Remember</label>
         </div>
-      `;
+      `);
 
       document.body.appendChild(popup);
 
@@ -64,10 +66,13 @@ export default {
       const saveBtn = popup.querySelector("#ufs_btnApply");
       const rememberCheckbox = popup.querySelector("#ufs_checkbox");
 
+      let str = "";
       for (const contry of countries) {
         const { name, name_en, code } = contry;
-        select.innerHTML += `<option value="${code}">${code}: ${name} (${name_en})</option>`;
+        str += `<option value="${code}">${code}: ${name} (${name_en})</option>`;
       }
+      select.innerHTML = UfsGlobal.DOM.createTrustedHtml(str);
+
       let current = getCurrentCountry();
       select.value = countries.find((c) => c.code == current)
         ? current

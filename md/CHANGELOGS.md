@@ -1,6 +1,29 @@
 ## Change logs
 
 <details>
+  <summary>v1.8 - 22/08/2024</summary>
+
+- Facebook
+  - NEW / SUPER HOT: Facebook All in one [web](https://facebook-all-in-one.com)
+  - NEW: auto duyệt bài spam group facebook [source](/scripts/fb_autoRemoveSpamPostGroup.js)
+
+- Douyin
+  - NEW: batch download [source](/scripts/douyin_batchDownload.js)
+
+- Google
+  - FIX: download private (shared to you) videos that dont have download button [source](/scripts/ggdrive_downloadVideo.js)
+
+- Youtube
+  - FIX: change country [source](/scripts/youtube_changeCountry.js)
+
+- More
+  - FIX: show hidden fields [source](/scripts/showHiddenFields.js)
+  - FIX: dino hack [source](/scripts/dino_hack.js)
+  - FIX: create invisible text (web version) [source](/scripts/createInvisibleText.js)
+
+</details>
+
+<details>
   <summary>v1.7 - 28/07/2024</summary>
 
 - Tiktok
@@ -35,11 +58,11 @@
   - click to disable/enable for current website [source](/scripts/smoothScroll.js)
 
 - Merge request
-  - [fix: 🐛 fix fireship_vip script](https://github.com/HoangTran0410/useful-script/pull/28)
+  - [fix: 🐛 fix fireship_vip script](https://github.com/Useful-Scripts-Extension/useful-script/pull/28)
   - [feat: youglish search
-  ](https://github.com/HoangTran0410/useful-script/pull/30)
-  - [feat: youtube download video UI](https://github.com/HoangTran0410/useful-script/pull/31)
-  - [style: 🪄 beautify ui for viewScriptSource](https://github.com/HoangTran0410/useful-script/pull/32)
+  ](https://github.com/Useful-Scripts-Extension/useful-script/pull/30)
+  - [feat: youtube download video UI](https://github.com/Useful-Scripts-Extension/useful-script/pull/31)
+  - [style: 🪄 beautify ui for viewScriptSource](https://github.com/Useful-Scripts-Extension/useful-script/pull/32)
 - More shortcuts: google trend, time.is, aiforthat, cobalt, nirsoft
 
 </details>

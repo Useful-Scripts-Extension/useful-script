@@ -15,6 +15,7 @@ export default {
     "https://www.facebook.com/groups/j2team.community/posts/974953859503401/",
 
   changeLogs: {
+    "2024-08-14": "get video url directly",
     "2024-07-25": "add backup plan",
   },
 
@@ -63,13 +64,14 @@ export default {
   },
   contentScript: {
     onClick_: async () => {
+      const { openPopupWithHtml } = await import("./helpers/utils.js");
+
       let url = new URL(location.href);
       const player_response = url.searchParams.get("player_response");
       if (player_response) {
         const json = JSON.parse(player_response);
         console.log(document.title, json);
 
-        const { openPopupWithHtml } = await import("./helpers/utils.js");
         openPopupWithHtml(
           `<h1>${document.title}</h1>
         ${json.streamingData.formats
@@ -83,6 +85,23 @@ export default {
           700,
           700
         );
+      } else {
+        const videos = document.querySelectorAll("video");
+        if (videos.length) {
+          openPopupWithHtml(
+            `<h1>${document.title}</h1>
+                ${Array.from(videos)
+                  .map((_) => {
+                    return /*html*/ `<div>
+                      <h1><a href="${_.src}" target="_blank">Link</a></h1>
+                      <video src="${_.src}" controls style="max-width:95%" />
+                    </div>`;
+                  })
+                  .join("<br/>")}`,
+            700,
+            700
+          );
+        }
       }
     },
   },
@@ -126,32 +145,43 @@ export const shared = {
     }
 
     async function getLink(docid) {
-      let res = await fetch(
-        "https://drive.google.com/get_video_info?docid=" + docid
-      );
+      let lastError;
+      for (let u of ["", 0, 1, 2]) {
+        let res = await fetch(
+          "https://drive.google.com/" +
+            (u !== "" ? `u/${u}/` : "") +
+            "get_video_info?docid=" +
+            docid
+        );
 
-      let text = await res.text();
-      let json = parse(text);
+        let text = await res.text();
+        let json = parse(text);
 
-      if (json?.status === "fail") {
-        throw Error("FAILED: " + json.reason);
+        if (json?.status === "fail") {
+          lastError = "FAILED: " + json.reason;
+          console.log(u, docid, lastError);
+          continue;
+        }
+
+        json.url_encoded_fmt_stream_map = parseStream(
+          json.url_encoded_fmt_stream_map
+        );
+
+        let result = json.url_encoded_fmt_stream_map.map(function (stream) {
+          let name = json.title.replace(/\+/g, " ");
+          return {
+            idfile: docid,
+            name: name,
+            quality: stream.quality,
+            url: stream.url,
+          };
+        });
+
+        return result;
       }
 
-      json.url_encoded_fmt_stream_map = parseStream(
-        json.url_encoded_fmt_stream_map
-      );
-
-      let result = json.url_encoded_fmt_stream_map.map(function (stream) {
-        let name = json.title.replace(/\+/g, " ");
-        return {
-          idfile: docid,
-          name: name,
-          quality: stream.quality,
-          url: stream.url,
-        };
-      });
-
-      return result;
+      if (lastError) throw new Error(lastError);
+      return null;
     }
 
     return await getLink(docid);

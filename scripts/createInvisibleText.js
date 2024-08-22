@@ -20,7 +20,7 @@ export default {
       },
       onClick: () =>
         window.open(
-          "https://hoangtran0410.github.io/useful-script/scripts/createInvisibleText.html"
+          "https://Useful-Scripts-Extension.github.io/useful-script/scripts/createInvisibleText.html"
         ),
     },
   ],
