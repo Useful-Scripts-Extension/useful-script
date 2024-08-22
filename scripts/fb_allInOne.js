@@ -6,7 +6,7 @@ const GLOBAL = {
 };
 
 export default {
-  icon: '<i class="fa-brands fa-square-facebook fa-2xl"></i>',
+  icon: "/scripts/fb_aio.png",
   name: {
     en: "Facebook - All In One",
     vi: "Facebook - All In One",
@@ -19,7 +19,7 @@ export default {
 
   popupScript: {
     onClick: () => {
-      window.open("https://facebook-all-in-one.com/dist");
+      window.open("https://facebook-all-in-one.com");
     },
   },
 

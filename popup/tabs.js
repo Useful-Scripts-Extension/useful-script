@@ -135,6 +135,7 @@ const tabs = [
       s.fb_autoRemoveSpamPostGroup,
       // s.fb_blockSeenAndTyping,
       createTitle("--- Statistic ---", "--- Thống kê ---"),
+      R.facebook_aio_stalker,
       s.fb_searchGroupForOther,
       s.fb_searchPageForOther,
       s.fb_searchPostsForOther,

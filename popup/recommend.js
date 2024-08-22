@@ -903,4 +903,20 @@ export const Recommend = {
         window.open("https://facebook-all-in-one.com/dist/#/bulk-downloader"),
     },
   },
+  facebook_aio_stalker: {
+    id: "recommend_facebook_aio_stalker",
+    icon: "/scripts/fb_aio.png",
+    name: {
+      en: "Stalk anyone on Facebook AIO",
+      vi: "Stalk bất cứ ai với Facebook AIO",
+    },
+    description: {
+      en: "Download all Stories, Photos ,Videos, Albums, Reels, Groups, Pages, ... on Facebook AIO",
+      vi: "Tải mọi thứ Story, Ảnh, Video, Album, Reels, Nhóm, Trang, ... với Facebook AIO",
+    },
+    badges: [BADGES.recommend, BADGES.hot],
+    popupScript: {
+      onClick: () => window.open("https://facebook-all-in-one.com/"),
+    },
+  },
 };
