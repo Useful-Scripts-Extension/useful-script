@@ -33,7 +33,7 @@ const tabs = [
   {
     ...CATEGORY.search,
     scripts: [
-      // s.test,
+      s.test,
       // s.ufs_statistic,
       R.theresanaiforthat,
       R.timeis,
