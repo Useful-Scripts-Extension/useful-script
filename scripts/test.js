@@ -12,7 +12,7 @@ export default {
     vi: "",
   },
 
-  whiteList: ["https://chatgpt.com/*"],
+  whiteList: ["https://adminapp.momocdn.net/*"],
 
   popupScript: {
     onClick: async () => {
@@ -332,24 +332,30 @@ export default {
 
   pageScript: {
     onDocumentStart: () => {
-      hookFetch({
-        onBefore: (url, options) => {
-          if (
-            url === "https://chatgpt.com/backend-anon/conversation" ||
-            url === "https://chatgpt.com/backend-api/conversation"
-          ) {
-            console.log(url, options);
-            const body = JSON.parse(options.body);
-            // body.model = "gpt-4o";
-            body.messages.forEach((m) => {
-              m.author.role = "system";
-              // m.content.parts = ["what is your name"];
-            });
-            console.log("body", body);
-            options.body = JSON.stringify(body);
-          }
-        },
-      });
+      // hookFetch({
+      //   onBefore: (url, options) => {
+      //     if (
+      //       url === "https://chatgpt.com/backend-anon/conversation" ||
+      //       url === "https://chatgpt.com/backend-api/conversation"
+      //     ) {
+      //       console.log(url, options);
+      //       const body = JSON.parse(options.body);
+      //       // body.model = "gpt-4o";
+      //       body.messages.forEach((m) => {
+      //         m.author.role = "system";
+      //         // m.content.parts = ["what is your name"];
+      //       });
+      //       console.log("body", body);
+      //       options.body = JSON.stringify(body);
+      //     }
+      //   },
+      // });
+      const style = document.createElement("style");
+      style.innerText = `
+      .bg-white {
+        background-color: transparent !important;
+      }`;
+      document.documentElement.appendChild(style);
     },
     // download album
     _onClick: async () => {

@@ -524,6 +524,7 @@ async function onDocumentEnd() {
         const promises = uniqueUid.map(
           (uid) => () =>
             getFbProfile(uid).then((info) => {
+              if (!info.name || !info.avatar) return;
               document
                 .querySelectorAll(`[data-profile-name="${uid}"]`)
                 .forEach((el) => {
