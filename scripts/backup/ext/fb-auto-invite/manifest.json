@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Facebook Group Extension",
+  "description": "Quản lý nhóm facebook",
+  "version": "1.0",
+  "action": {
+    "default_popup": "./popup/index.html"
+  },
+  "icons": {
+    "16": "assets/icon_default_16.png",
+    "48": "assets/icon_default_48.png",
+    "128": "assets/icon_default_128.png"
+  },
+  "permissions": [
+    "tabs",
+    "cookies",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": ["*://*/*", "<all_urls>"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "./rules.json"
+      }
+    ]
+  }
+}
