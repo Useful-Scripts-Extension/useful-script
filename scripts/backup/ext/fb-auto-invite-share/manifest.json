@@ -11,6 +11,10 @@
     "48": "assets/icon_default_48.png",
     "128": "assets/icon_default_128.png"
   },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "permissions": [
     "tabs",
     "cookies",

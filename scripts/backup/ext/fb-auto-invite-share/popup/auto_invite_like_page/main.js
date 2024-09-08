@@ -17,9 +17,9 @@ function renderTime(time, fixed = 1) {
 }
 
 async function main() {
-  initCacheInput(waitMinInp, "wait-min");
-  initCacheInput(waitMaxInp, "wait-max");
-  initCacheInput(inputMaxPeople, "max-posts");
+  initCacheInput(waitMinInp, "like-page-wait-min");
+  initCacheInput(waitMaxInp, "like-page-wait-max");
+  initCacheInput(inputMaxPeople, "like-page-max-people");
 
   const tab = await getCurrentTab();
 

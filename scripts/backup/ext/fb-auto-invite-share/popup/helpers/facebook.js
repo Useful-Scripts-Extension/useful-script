@@ -1,0 +1,370 @@
+import { deepFindKeyInObject, getRedirectedUrl, sleep } from "./utils.js";
+
+const CACHED = {
+  uid: null,
+  fb_dtsg: null,
+  urlToId: {},
+};
+
+export async function getMyUid() {
+  if (CACHED.uid) return CACHED.uid;
+  const d = await chrome.cookies.get({
+    url: "https://www.facebook.com",
+    name: "c_user",
+  });
+  CACHED.uid = d?.value;
+  return CACHED.uid;
+}
+
+export async function fetchGraphQl(params, url) {
+  let query = "";
+  if (typeof params === "string") query = "&q=" + encodeURIComponent(params);
+  else
+    query = wrapGraphQlParams({
+      dpr: 1,
+      __a: 1,
+      __aaid: 0,
+      __ccg: "GOOD",
+      server_timestamps: true,
+      ...params,
+    });
+
+  const res = await fetch(url || "https://www.facebook.com/api/graphql/", {
+    body: query + "&fb_dtsg=" + (await getFbDtsg()),
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    credentials: "include",
+  });
+  const text = await res.text();
+
+  // check error response
+  try {
+    const json = JSON.parse(text);
+    if (json.errors) {
+      const { summary, message, description_raw } = json.errors[0];
+      if (summary) {
+        console.log(json);
+
+        const div = document.createElement("div");
+        div.innerHTML = description_raw?.__html;
+        const description = div.innerText;
+
+        // notification.error({
+        //   message: i18n.t("Facebook response Error"),
+        //   description: summary + ". " + message + ". " + description,
+        //   duration: 0,
+        // });
+      }
+    }
+  } catch (e) {}
+
+  return text;
+}
+
+export function wrapGraphQlParams(params = {}) {
+  const formBody = [];
+  for (const property in params) {
+    const encodedKey = encodeURIComponent(property);
+    const value =
+      typeof params[property] === "string"
+        ? params[property]
+        : JSON.stringify(params[property]);
+    const encodedValue = encodeURIComponent(value);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  return formBody.join("&");
+}
+
+export async function getFbDtsg() {
+  if (CACHED.fb_dtsg) return CACHED.fb_dtsg;
+  let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+  let text = await res.text();
+  let dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(text)?.[1];
+  if (!dtsg) {
+    res = await fetch("https://m.facebook.com/home.php", {
+      headers: {
+        Accept: "text/html",
+      },
+    });
+    text = res.text();
+    dtsg =
+      RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
+      RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1];
+  }
+  CACHED.fb_dtsg = dtsg || null;
+  return CACHED.fb_dtsg;
+}
+
+export function findDataObject(object) {
+  if (!object) return null;
+
+  // Check if the current object has edges and page_info properties
+  if (object.edges && object.page_info) return object;
+
+  for (let key in object) {
+    if (typeof object[key] === "object" && object[key] !== null) {
+      let found = findDataObject(object[key]);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+export async function convertStoryIdToPostId(storyId) {
+  const res = await fetchGraphQl({
+    q: `node(${storyId}){id}`,
+  });
+  // {"2616483865189864":null}
+  const json = JSON.parse(res);
+  return Object.keys(json)?.[0];
+}
+
+export async function getPostIdFromUrl(url, checkRedirected = true) {
+  // https://www.facebook.com/caothuvn/posts/1066080038417112
+  let postId = /\/posts\/(\d+)/.exec(url)?.[1];
+  if (postId) return postId;
+
+  // https://www.facebook.com/daiphatthanh.sound/posts/pfbid021KejdfZnm1d3qcoJorbvd5QYbPAx11YZR62qjhKjfHLWD1UsKBjECRmpweC3RYNKl
+  let pid = /\/posts\/(pfbid\w+)/.exec(url)?.[1];
+  if (pid) return await convertStoryIdToPostId(pid);
+
+  // https://www.facebook.com/permalink.php?story_fbid=pfbid0AAqALTc2SMYDmt6YQ7iNWw5oa7bD55jrqjaSF5FXwC6fSGrgWZ4a464Q4L3n9qxFl&id=100092839501799
+  if (url.includes("permalink.php?")) {
+    const search = new URLSearchParams(url.split("?")[1]);
+    if (search.has("story_fbid") && search.has("id"))
+      return await convertStoryIdToPostId(search.get("story_fbid"));
+  }
+
+  // https://www.facebook.com/groups/4820209227992744?multi_permalinks=9013525281994430&hoisted_section_header_type=recently_seen
+  if (url.includes("multi_permalinks=")) {
+    const search = new URLSearchParams(url.split("?")[1]);
+    if (search.has("multi_permalinks")) return search.get("multi_permalinks");
+  }
+
+  // https://www.facebook.com/photo/?fbid=944169551077550&set=a.543172274510615&__cft__[0]=AZXddfHpNPxKlTAsfhW83Mh-qz04FYpnHYmAMsit9L8kMDvEYFNiNb4E96zAtEtBYuj1oKhalnTAXaOd7LHK2FzWbCuLl2xMLbw1IjadNyAkW0A1FZ4p9tij0uT5kZtidmf1_AYNSGGbns9BCNnGB9s3LjpaprsWonHK15VnX-63fPWsl66ZIzGQuxXp3dxKVikiExSEU9cdjf89Cq89twXtug8WBbxXZNt6JurbUtH5Gg&__tn__=%2CO%2CP-R
+  if (url.includes("/photo/")) {
+    const search = new URLSearchParams(url.split("?")[1]);
+    if (search.has("fbid")) return search.get("fbid");
+  }
+
+  // https://www.facebook.com/groups/1154059318582088/posts/1471295353525148/
+  // https://www.facebook.com/groups/j2team.community.girls/posts/1726466718113049/
+  const groupPostId = /\/groups\/(.*?)\/posts\/(\d+)\//.exec(url)?.[2];
+  if (groupPostId) return groupPostId;
+
+  // https://www.facebook.com/tuilamaytrongsang/posts/%F0%9D%90%82%F0%9D%90%87%F0%9D%90%80%F0%9D%90%8F-%F0%9D%9F%91%F0%9D%9F%95-%F0%9D%90%8D%F0%9D%90%86%F0%9D%90%80%F0%9D%90%8D%F0%9D%90%86-%F0%9D%90%91%F0%9D%90%80%F0%9D%90%96-t%C3%B4i-%C4%91%C3%A3-k%C3%BD-kh%E1%BA%BF-%C6%B0%E1%BB%9Bc-v%E1%BB%9Bi-%C3%A1c-qu%E1%BB%B7-chap-n%C3%A0y-c%C3%B3-59-%E1%BA%A3nh-ai-th%E1%BA%A5y-thi%E1%BA%BFu-/334865756348955/
+  const postId2 = /\/posts\/(.*?)\/(\d+)/.exec(url)?.[2];
+  if (postId2) return postId2;
+
+  // https://www.facebook.com/groups/1154059318582088/permalink/1473755286612488/?rdid=p1PnzhKIkIrnRu46&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fp%2F4NLUasyEHMpZx4uk%2F
+  const postId3 = /\/permalink\/(\d+)\//.exec(url)?.[1];
+  if (postId3) return postId3;
+
+  return checkRedirected
+    ? await getPostIdFromUrl(await getRedirectedUrl(url), false)
+    : null;
+}
+
+export async function getIdFromUrl(url, regex) {
+  try {
+    if (CACHED.urlToId[url]) return CACHED.urlToId[url];
+    let text = await fetchExtension(url);
+    if (text) {
+      let id = regex.exec(text);
+      if (id?.length) {
+        CACHED.urlToId[url] = id[0];
+        return id[0];
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
+export async function getUidFromUrl(url, checkRedirected = true) {
+  const id = /^\d+$/.exec(url)?.[0];
+  if (id) return id;
+
+  // https://www.facebook.com/groups/4602188389829432/user/100090201240566
+  const userInGroupId = /\/groups\/(\d+)\/user\/(\d+)/.exec(url)?.[2];
+  if (userInGroupId) return userInGroupId;
+
+  // groups case: https://www.facebook.com/groups/1154059318582088
+  const groupId = /groups\/(\d+)/.exec(url)?.[1];
+  if (groupId) return groupId;
+
+  // user profile case: https://www.facebook.com/profile.php?id=1678639977
+  const userId = /profile.php\?id=(\d+)/.exec(url)?.[1];
+  if (userId) return userId;
+
+  // https://www.facebook.com/permalink.php?story_fbid=pfbid0AAqALTc2SMYDmt6YQ7iNWw5oa7bD55jrqjaSF5FXwC6fSGrgWZ4a464Q4L3n9qxFl&id=100092839501799
+  if (url.includes("permalink.php?")) {
+    const search = new URLSearchParams(url.split("?")[1]);
+    if (search.has("story_fbid") && search.has("id")) return search.get("id");
+  }
+
+  // https://www.facebook.com/nhandandientutiengviet/posts/pfbid02yN59UuP7fQLqX5E96D7MmxiH5YcMYVYwEpwYhZ6gAEiSAb5h4XvTvGpvkdrh4joxl
+  const targetId = /facebook.com\/(.*?)\/posts\//.exec(url)?.[1];
+  if (targetId) url = `https://www.facebook.com/${targetId}`;
+
+  // https://www.facebook.com/groups/j2team.community.girls
+  const groupIdStr = /\/groups\/([^\/]+)/.exec(url)?.[1];
+  if (groupIdStr) {
+    return await getIdFromUrl(url, /(?<="groupID":")(.\d+?)(?=")/);
+  }
+
+  const uid = await getIdFromUrl(url, /(?<="userID":")(.\d+?)(?=")/);
+  if (uid) return uid;
+
+  return checkRedirected
+    ? await getUidFromUrl(await getRedirectedUrl(url), false)
+    : null;
+}
+
+export async function getEntityAbout(entityID, context = "DEFAULT") {
+  let res = await fetchGraphQl({
+    fb_api_req_friendly_name: "CometHovercardQueryRendererQuery",
+    variables: {
+      actionBarRenderLocation: "WWW_COMET_HOVERCARD",
+      context: context,
+      entityID: entityID,
+      includeTdaInfo: false,
+      scale: 1,
+    },
+    doc_id: "7257793420991802",
+  });
+  const json = JSON.parse(res);
+  const node = json.data.node;
+  if (!node) throw new Error("Wrong ID / Entity not found");
+  const typeText = node.__typename.toLowerCase();
+  if (!Object.values(TargetType).includes(typeText))
+    throw new Error("Not supported type: " + typeText);
+  const card = node.comet_hovercard_renderer[typeText];
+  const type =
+    typeText === "page"
+      ? TargetType.Page
+      : typeText !== "user"
+      ? TargetType.Group
+      : card.profile_plus_transition_path?.startsWith("PAGE") ||
+        card.profile_plus_transition_path === "ADDITIONAL_PROFILE_CREATION"
+      ? TargetType.Page
+      : TargetType.User;
+  return {
+    type,
+    id: node.id || card.id,
+    name: card.name,
+    avatar: card.profile_picture.uri,
+    url: card.profile_url || card.url,
+    raw: json,
+  };
+}
+
+export const TargetType = {
+  User: "user",
+  Page: "page",
+  Group: "group",
+  IGUser: "ig_user",
+};
+
+export async function sharePostToGroup({
+  postUrl = "",
+  note = "",
+  groupUrl = "",
+}) {
+  const postId = await getPostIdFromUrl(postUrl);
+  if (!postId) {
+    alert("Cannot find post id");
+    return;
+  }
+  const postOwnerId = await getUidFromUrl(postUrl);
+  if (!postOwnerId) {
+    alert("Cannot find post owner id from post Url");
+    return;
+  }
+  const postOwner = await getEntityAbout(postOwnerId);
+  if (!postOwner) {
+    alert("Cannot find post owner info");
+    return;
+  }
+  const groupId = await getUidFromUrl(groupUrl);
+  if (!groupId) {
+    alert("Cannot find group id");
+    return;
+  }
+  console.log("group", groupId, "postOwner", postOwner, "post", postId);
+
+  // await sleep(2000);
+  // return "https://fb.com/abc";
+
+  const res = await fetchGraphQl({
+    fb_api_req_friendly_name: "ComposerStoryCreateMutation",
+    variables: {
+      input: {
+        composer_entry_point: "inline_composer",
+        composer_source_surface: "group",
+        composer_type: "group",
+        source: "WWW",
+        message: { ranges: [], text: note },
+        with_tags_ids: null,
+        inline_activities: [],
+        explicit_place_id: "0",
+        text_format_preset_id: "0",
+        attachments: [
+          {
+            link: {
+              // group -> group: 37
+              // page -> group: 22
+              share_scrape_data: JSON.stringify({
+                share_type: postOwner.type === TargetType.Group ? 37 : 22,
+                share_params: [postId],
+              }),
+            },
+          },
+          // {
+          //     photo: {
+          //         id: '2619470008224583',
+          //     },
+          // },
+        ],
+        event_share_metadata: { surface: "newsfeed" },
+        audience: { to_id: groupId }, // target group to share
+        actor_id: await getMyUid(),
+      },
+      feedLocation: "GROUP",
+      feedbackSource: 0,
+      focusCommentID: null,
+      gridMediaWidth: null,
+      groupID: null,
+      scale: 2,
+      privacySelectorRenderLocation: "COMET_STREAM",
+      checkPhotosToReelsUpsellEligibility: false,
+      renderLocation: "group",
+      useDefaultActor: false,
+      inviteShortLinkKey: null,
+      isFeed: false,
+      isFundraiser: false,
+      isFunFactPost: false,
+      isGroup: true,
+      isEvent: false,
+      isTimeline: false,
+      isSocialLearning: false,
+      isPageNewsFeed: false,
+      isProfileReviews: false,
+      isWorkSharedDraft: false,
+      hashtag: null,
+      canUserManageOffers: false,
+      __relay_internal__pv__CometUFIShareActionMigrationrelayprovider: true,
+      __relay_internal__pv__IncludeCommentWithAttachmentrelayprovider: true,
+      __relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider: false,
+      __relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider: false,
+      __relay_internal__pv__IsWorkUserrelayprovider: false,
+      __relay_internal__pv__IsMergQAPollsrelayprovider: false,
+      __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
+      __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
+    },
+    doc_id: "8148691861851794",
+  });
+  const json = JSON.parse(res?.split?.("\n")?.[0]);
+  return deepFindKeyInObject(json, "story")?.url;
+}
