@@ -107,7 +107,7 @@ function start(maxPosts, waitMin, waitMax) {
 
         btn.scrollIntoView({ block: "center", behavior: "smooth" });
         console.log("click", btn);
-        // btn.click();
+        btn.click();
 
         window.fb_group_ext.count++;
         const waitTime = ranInt(waitMin, waitMax);
