@@ -168,7 +168,8 @@ export async function getPostIdFromUrl(url, checkRedirected = true) {
 export async function getIdFromUrl(url, regex) {
   try {
     if (CACHED.urlToId[url]) return CACHED.urlToId[url];
-    let text = await fetchExtension(url);
+    let res = await fetch(url);
+    let text = await res.text();
     if (text) {
       let id = regex.exec(text);
       if (id?.length) {
@@ -274,28 +275,21 @@ export async function sharePostToGroup({
 }) {
   const postId = await getPostIdFromUrl(postUrl);
   if (!postId) {
-    alert("Cannot find post id");
-    return;
+    throw new Error("Không tìm thấy post id");
   }
   const postOwnerId = await getUidFromUrl(postUrl);
   if (!postOwnerId) {
-    alert("Cannot find post owner id from post Url");
-    return;
+    throw new Error("Không tìm thấy uid của tác giả bài viết");
   }
   const postOwner = await getEntityAbout(postOwnerId);
   if (!postOwner) {
-    alert("Cannot find post owner info");
-    return;
+    throw new Error("Không lấy được thông tin tác giả bài viết");
   }
   const groupId = await getUidFromUrl(groupUrl);
   if (!groupId) {
-    alert("Cannot find group id");
-    return;
+    throw new Error("Không lấy được group id");
   }
   console.log("group", groupId, "postOwner", postOwner, "post", postId);
-
-  // await sleep(2000);
-  // return "https://fb.com/abc";
 
   const res = await fetchGraphQl({
     fb_api_req_friendly_name: "ComposerStoryCreateMutation",
@@ -366,5 +360,6 @@ export async function sharePostToGroup({
     doc_id: "8148691861851794",
   });
   const json = JSON.parse(res?.split?.("\n")?.[0]);
+  console.log(json);
   return deepFindKeyInObject(json, "story")?.url;
 }

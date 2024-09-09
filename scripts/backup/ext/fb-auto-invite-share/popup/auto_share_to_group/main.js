@@ -14,18 +14,18 @@ const clearLogBtn = document.getElementById("clear-logs");
 let listenClick = false;
 
 async function main() {
+  initCacheInput(inputPostURL, "share-group-post-url");
+  initCacheInput(inputCaption, "share-group-caption");
+  initCacheInput(inputGroups, "share-group-groups");
+  initCacheInput(waitMinInp, "share-group-wait-min");
+  initCacheInput(waitMaxInp, "share-group-wait-max");
+
   renderJobs();
   renderLogs();
 
   clearLogBtn.addEventListener("click", () => {
     clearLog();
   });
-
-  inputGroups.value = [
-    // "1154059318582088",
-    // "https://www.facebook.com/groups/1154059318582088",
-    "https://www.facebook.com/groups/311528245988035",
-  ].join("\n");
 
   inputTimer.value = formatTime();
   inputTimer.addEventListener("input", () => {
@@ -53,6 +53,11 @@ async function main() {
           "Không tìm thấy id bài viết, vui lòng kiểm tra lại link bài viết"
         );
 
+      const postOwnerId = await getUidFromUrl(inputPostURL.value);
+      if (!postOwnerId) {
+        throw new Error("Không tìm thấy uid của tác giả bài viết");
+      }
+
       const groupUrls = inputGroups.value.split("\n");
       for (let i = 0; i < groupUrls.length; ++i) {
         startBtn.innerHTML =
@@ -66,12 +71,21 @@ async function main() {
     } catch (e) {
       alert("LỖI: " + e.message);
     } finally {
-      startBtn.innerHTML = "Tiếp tục";
+      startBtn.innerHTML = "Lưu";
     }
   });
 }
 
 main();
+
+function initCacheInput(input, cacheName) {
+  if (localStorage.getItem(cacheName)) {
+    input.value = localStorage.getItem(cacheName);
+  }
+  input.addEventListener("input", () => {
+    localStorage.setItem(cacheName, input.value);
+  });
+}
 
 function renderJobs() {
   if (!listenClick) {

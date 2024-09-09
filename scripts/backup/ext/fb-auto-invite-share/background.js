@@ -19,7 +19,6 @@ const sharePostToGroups = [
 ];
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log(request);
   if (request.action === "get_sharePostToGroups") {
     sendResponse(sharePostToGroups);
   } else if (request.action === "add_sharePostToGroups") {
