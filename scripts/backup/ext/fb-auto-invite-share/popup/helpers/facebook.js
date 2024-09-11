@@ -1,19 +1,19 @@
 import { deepFindKeyInObject, getRedirectedUrl, sleep } from "./utils.js";
 
 const CACHED = {
-  uid: null,
-  fb_dtsg: null,
+  fb_dtsg: {},
   urlToId: {},
 };
 
 export async function getMyUid() {
-  if (CACHED.uid) return CACHED.uid;
-  const d = await chrome.cookies.get({
-    url: "https://www.facebook.com",
-    name: "c_user",
-  });
-  CACHED.uid = d?.value;
-  return CACHED.uid;
+  for (let i of ["i_user", "c_user"]) {
+    const d = await chrome.cookies.get({
+      url: "https://www.facebook.com",
+      name: i,
+    });
+    if (d?.value) return d?.value;
+  }
+  return null;
 }
 
 export async function fetchGraphQl(params, url) {
@@ -76,7 +76,9 @@ export function wrapGraphQlParams(params = {}) {
 }
 
 export async function getFbDtsg() {
-  if (CACHED.fb_dtsg) return CACHED.fb_dtsg;
+  const uid = await getMyUid();
+
+  if (CACHED.fb_dtsg[uid]) return CACHED.fb_dtsg[uid];
   let res = await fetch("https://mbasic.facebook.com/photos/upload/");
   let text = await res.text();
   let dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(text)?.[1];
@@ -91,8 +93,8 @@ export async function getFbDtsg() {
       RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
       RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1];
   }
-  CACHED.fb_dtsg = dtsg || null;
-  return CACHED.fb_dtsg;
+  CACHED.fb_dtsg[uid] = dtsg || null;
+  return CACHED.fb_dtsg[uid];
 }
 
 export function findDataObject(object) {
@@ -236,6 +238,7 @@ export async function getEntityAbout(entityID, context = "DEFAULT") {
     doc_id: "7257793420991802",
   });
   const json = JSON.parse(res);
+  console.log(json);
   const node = json.data.node;
   if (!node) throw new Error("Wrong ID / Entity not found");
   const typeText = node.__typename.toLowerCase();
@@ -289,7 +292,21 @@ export async function sharePostToGroup({
   if (!groupId) {
     throw new Error("Không lấy được group id");
   }
-  console.log("group", groupId, "postOwner", postOwner, "post", postId);
+  const myUid = await getMyUid();
+  const me = await getEntityAbout(myUid);
+  if (!me) {
+    throw new Error("Không lấy được thông tin nick của bạn");
+  }
+  console.log(
+    "group",
+    groupId,
+    "postOwner",
+    postOwner,
+    "post",
+    postId,
+    "me",
+    me
+  );
 
   const res = await fetchGraphQl({
     fb_api_req_friendly_name: "ComposerStoryCreateMutation",
@@ -307,10 +324,8 @@ export async function sharePostToGroup({
         attachments: [
           {
             link: {
-              // group -> group: 37
-              // page -> group: 22
               share_scrape_data: JSON.stringify({
-                share_type: postOwner.type === TargetType.Group ? 37 : 22,
+                share_type: me.type === TargetType.Page ? 37 : 22,
                 share_params: [postId],
               }),
             },
@@ -357,7 +372,7 @@ export async function sharePostToGroup({
       __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
       __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
     },
-    doc_id: "8148691861851794",
+    doc_id: "8358507460852422",
   });
   const json = JSON.parse(res?.split?.("\n")?.[0]);
   console.log(json);
