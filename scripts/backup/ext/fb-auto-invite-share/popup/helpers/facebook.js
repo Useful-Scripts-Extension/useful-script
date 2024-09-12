@@ -325,7 +325,7 @@ export async function sharePostToGroup({
           {
             link: {
               share_scrape_data: JSON.stringify({
-                share_type: me.type === TargetType.Page ? 37 : 22,
+                share_type: postOwner.type === TargetType.Group ? 37 : 22,
                 share_params: [postId],
               }),
             },
@@ -372,9 +372,13 @@ export async function sharePostToGroup({
       __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
       __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
     },
-    doc_id: "8358507460852422",
+    doc_id: "8288041211276925",
   });
   const json = JSON.parse(res?.split?.("\n")?.[0]);
   console.log(json);
+
+  const err = json?.errors?.[0]?.description;
+  if (err) throw new Error(err);
+
   return deepFindKeyInObject(json, "story")?.url;
 }
