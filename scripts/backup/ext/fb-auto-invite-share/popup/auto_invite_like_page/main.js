@@ -82,7 +82,7 @@ function start(maxPosts, waitMin, waitMax) {
   const btns = Array.from(document.querySelectorAll(selector));
 
   if (!btns.length) {
-    alert("Không tìm thấy bài nào");
+    alert("Không tìm thấy người nào để mời");
     return;
   }
 
@@ -101,12 +101,16 @@ function start(maxPosts, waitMin, waitMax) {
       count: 0,
     };
 
+    let container;
     while (window.fb_group_ext.count < maxPosts && !window.fb_group_ext.stop) {
       if (btns.length > 0) {
         const btn = btns.shift();
 
+        container = findParent(btn, ".html-div")?.children?.[0];
+        console.log(container);
+
         btn.scrollIntoView({ block: "start", behavior: "smooth" });
-        console.log("click", btn);
+        // console.log("click", btn);
         btn.click();
 
         window.fb_group_ext.count++;
@@ -115,17 +119,25 @@ function start(maxPosts, waitMin, waitMax) {
         await sleep(waitTime, () => window.fb_group_ext.stop);
       } else {
         // scroll to end
-        window.scrollTo(0, document.body.scrollHeight);
+        if (container) container.scrollTo(0, container.scrollHeight);
+        else window.scrollTo(0, document.body.scrollHeight);
+
         // wait for load more
         await sleep(1000);
       }
     }
 
     window.fb_group_ext.running = false;
-    alert("Duyệt xong " + window.fb_group_ext.count + " bài");
+    alert("Mời xong " + window.fb_group_ext.count + " người");
   }
 
   main();
+
+  function findParent(ele, selector) {
+    if (!ele) return null;
+    if (ele.matches(selector)) return ele;
+    return findParent(ele.parentElement, selector);
+  }
 
   function ranInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
