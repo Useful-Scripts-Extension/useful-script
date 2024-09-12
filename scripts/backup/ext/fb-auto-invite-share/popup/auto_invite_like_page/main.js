@@ -105,7 +105,7 @@ function start(maxPosts, waitMin, waitMax) {
       if (btns.length > 0) {
         const btn = btns.shift();
 
-        btn.scrollIntoView({ block: "center", behavior: "smooth" });
+        btn.scrollIntoView({ block: "start", behavior: "smooth" });
         console.log("click", btn);
         btn.click();
 
