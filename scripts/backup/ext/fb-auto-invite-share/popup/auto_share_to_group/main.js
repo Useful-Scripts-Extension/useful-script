@@ -98,10 +98,11 @@ async function main() {
         const groupsLeft = groupUrls.filter(
           (url) => !failedGroups.map((_) => _.url).includes(url)
         );
-        inputGroups.value = groupsLeft.join("\n");
 
-        if (groupsLeft.length) addJob();
-        else alert("Không còn group để chia sẻ");
+        if (groupsLeft.length) {
+          inputGroups.value = groupsLeft.join("\n");
+          addJob();
+        } else alert("Không còn group hợp lệ để chia sẻ. Vui lòng nhập lại.");
       }
     } catch (e) {
       alert("LỖI: " + e.message);
