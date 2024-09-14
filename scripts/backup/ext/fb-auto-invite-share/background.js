@@ -1,5 +1,5 @@
 import { sharePostToGroup } from "./popup/helpers/facebook.js";
-import { ranInt } from "./popup/helpers/utils.js";
+import { randInt } from "./popup/helpers/utils.js";
 
 console.log("background");
 
@@ -88,7 +88,8 @@ setInterval(() => {
                 `DONE: share ${job.postUrl} to ${job.groups.length} groups`
               );
             } else {
-              job.nextShareTime = Date.now() + ranInt(job.waitMin, job.waitMax);
+              job.nextShareTime =
+                Date.now() + randInt(job.waitMin, job.waitMax);
             }
             job.sharing = false;
           });

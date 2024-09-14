@@ -1,4 +1,9 @@
-import { getPostIdFromUrl, getUidFromUrl } from "../helpers/facebook.js";
+import {
+  getEntityAbout,
+  getPostIdFromUrl,
+  getUidFromUrl,
+  TargetType,
+} from "../helpers/facebook.js";
 
 const runningDiv = document.getElementById("running");
 const inputPostURL = document.getElementById("inputPostURL");
@@ -59,15 +64,45 @@ async function main() {
       }
 
       const groupUrls = inputGroups.value.split("\n");
+      const failedGroups = [];
       for (let i = 0; i < groupUrls.length; ++i) {
-        startBtn.innerHTML =
-          "Đang kiểm tra các group... " + (i + 1) + "/" + groupUrls.length;
-        const groupId = await getUidFromUrl(groupUrls[i]);
-        console.log(groupId);
-        if (!groupId) throw Error("Không thấy id group của " + groupUrls[i]);
+        try {
+          startBtn.innerHTML =
+            "Đang kiểm tra các group... " + (i + 1) + "/" + groupUrls.length;
+          const groupId = await getUidFromUrl(groupUrls[i]);
+          const groupInfo = await getEntityAbout(groupId);
+          console.log(groupId, groupInfo);
+          if (groupInfo?.type !== TargetType.Group)
+            failedGroups.push({
+              url: groupUrls[i],
+              info: groupInfo,
+              error: "Không phải là group: " + groupInfo?.type,
+            });
+        } catch (e) {
+          failedGroups.push({
+            url: groupUrls[i],
+            error: e,
+          });
+        }
       }
+      if (!failedGroups.length) addJob();
+      else if (
+        confirm(
+          `Có ${failedGroups.length} group không hợp lệ. Bạn có muốn tiếp tục không?\n\n` +
+            failedGroups
+              .map((_, i) => `+ ${_.url} ${_.info?.name || ""}: ${_.error}`)
+              .join("\n") +
+            "\n\n> Bấm Huỷ/Cancel để nhập lại\n> Bấm Ok để bỏ qua group lỗi"
+        )
+      ) {
+        const groupsLeft = groupUrls.filter(
+          (url) => !failedGroups.map((_) => _.url).includes(url)
+        );
+        inputGroups.value = groupsLeft.join("\n");
 
-      addJob();
+        if (groupsLeft.length) addJob();
+        else alert("Không còn group để chia sẻ");
+      }
     } catch (e) {
       alert("LỖI: " + e.message);
     } finally {
