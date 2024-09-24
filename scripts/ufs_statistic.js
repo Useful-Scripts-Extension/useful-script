@@ -818,8 +818,7 @@ function extractVersion(log) {
 
 function isScript(log) {
   return !(
-    log.includes("ufs-INSTALLED") ||
-    log.includes("ufs-RE-INSTALLED") ||
+    log.includes("INSTALLED") ||
     log.includes("OPEN-") ||
     log.includes("CLICK_") ||
     log.includes("-INFO") ||
@@ -829,7 +828,8 @@ function isScript(log) {
     log.includes("RESTORE") ||
     log.includes("BACKUP") ||
     log.includes("CHANGE-THEME") ||
-    log.includes("CHANGE-SMOOTH-SCROLL")
+    log.includes("CHANGE-SMOOTH-SCROLL") ||
+    log.includes("getVIP")
   );
 }
 
