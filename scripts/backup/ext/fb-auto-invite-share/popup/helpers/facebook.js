@@ -18,6 +18,12 @@ export async function getMyUid() {
 
 export async function fetchGraphQl(params, url) {
   let query = "";
+  const fb_dtsg = await getFbDtsg();
+  if (!fb_dtsg) {
+    console.error("fb_dtsg not found");
+    return null;
+  }
+
   if (typeof params === "string") query = "&q=" + encodeURIComponent(params);
   else
     query = wrapGraphQlParams({
@@ -30,7 +36,7 @@ export async function fetchGraphQl(params, url) {
     });
 
   const res = await fetch(url || "https://www.facebook.com/api/graphql/", {
-    body: query + "&fb_dtsg=" + (await getFbDtsg()),
+    body: query + "&fb_dtsg=" + fb_dtsg,
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     credentials: "include",
@@ -88,7 +94,7 @@ export async function getFbDtsg() {
         Accept: "text/html",
       },
     });
-    text = res.text();
+    text = await res.text();
     dtsg =
       RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
       RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1];
@@ -113,12 +119,17 @@ export function findDataObject(object) {
 }
 
 export async function convertStoryIdToPostId(storyId) {
-  const res = await fetchGraphQl({
-    q: `node(${storyId}){id}`,
-  });
-  // {"2616483865189864":null}
-  const json = JSON.parse(res);
-  return Object.keys(json)?.[0];
+  try {
+    const res = await fetchGraphQl({
+      q: `node(${storyId}){id}`,
+    });
+    // {"2616483865189864":null}
+    const json = JSON.parse(res);
+    return Object.keys(json)?.[0];
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
 }
 
 export async function getPostIdFromUrl(url, checkRedirected = true) {
@@ -326,7 +337,7 @@ export async function sharePostToGroup({
             link: {
               share_scrape_data: JSON.stringify({
                 share_type: postOwner.type === TargetType.Group ? 37 : 22,
-                share_params: [postId],
+                share_params: [parseInt(postId)],
               }),
             },
           },
@@ -364,15 +375,19 @@ export async function sharePostToGroup({
       hashtag: null,
       canUserManageOffers: false,
       __relay_internal__pv__CometUFIShareActionMigrationrelayprovider: true,
+      __relay_internal__pv__GHLShouldChangeSponsoredDataFieldNamerelayprovider: true,
+      __relay_internal__pv__GHLShouldChangeAdIdFieldNamerelayprovider: false,
       __relay_internal__pv__IncludeCommentWithAttachmentrelayprovider: true,
       __relay_internal__pv__CometUFIReactionsEnableShortNamerelayprovider: false,
       __relay_internal__pv__CometImmersivePhotoCanUserDisable3DMotionrelayprovider: false,
       __relay_internal__pv__IsWorkUserrelayprovider: false,
       __relay_internal__pv__IsMergQAPollsrelayprovider: false,
+      __relay_internal__pv__FBReelsMediaFooter_comet_enable_reels_ads_gkrelayprovider: false,
       __relay_internal__pv__StoriesArmadilloReplyEnabledrelayprovider: true,
       __relay_internal__pv__EventCometCardImage_prefetchEventImagerelayprovider: false,
+      __relay_internal__pv__GHLShouldChangeSponsoredAuctionDistanceFieldNamerelayprovider: false,
     },
-    doc_id: "8288041211276925",
+    doc_id: "8530376237028021",
   });
   const json = JSON.parse(res?.split?.("\n")?.[0]);
   console.log(json);
