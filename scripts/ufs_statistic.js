@@ -206,7 +206,7 @@ async function onDocumentEnd() {
       data: createLogCountPerHour(allLogs),
       series: [
         {
-          type: "line",
+          type: "bar",
           xKey: "x",
           yKey: "y",
           title: "Count",
@@ -271,21 +271,29 @@ async function onDocumentEnd() {
         {
           field: "fbName",
           cellRenderer: (params) => {
-            if (params.data.fbName)
-              return `<a
-                href="https://fb.com/${params.data.uid}"
-                target="_blank"
-                style="display:flex">
-                  <img
-                    class="avatar"
-                    src="${getUserAvatarFromUid(params.data.uid, 40)}"
-                    style="margin-right: 5px;" />
-                  ${params.data.fbName}
-                </a>`;
+            if (params.data.fbName) {
+              const a = document.createElement("a");
+              a.href = `https://fb.com/${params.data.uid}`;
+              a.target = "_blank";
+              a.style.display = "flex";
+
+              const img = document.createElement("img");
+              img.src = params.data.fbAvatar;
+              img.className = "avatar";
+              img.style = "margin-right: 5px;";
+              img.onerror = () => {
+                img.src = getUserAvatarFromUid(params.data.uid, 40);
+              };
+              a.appendChild(img);
+
+              a.appendChild(document.createTextNode(params.data.fbName));
+
+              return a;
+            }
           },
         },
         { field: "isScript", width: 80 },
-        { field: "eventName", width: 500 },
+        { field: "eventName", width: 500, filter: "agTextColumnFilter" },
         {
           field: "totalCount",
           filter: "agNumberColumnFilter",
@@ -309,7 +317,6 @@ async function onDocumentEnd() {
           data.push(node.data);
         });
         chartOptions.data = createLogCountPerHour(data);
-        debugger;
         AgCharts.update(chart, chartOptions);
       },
     });
@@ -497,7 +504,6 @@ async function getFbProfile(uid, force = false) {
       }).toString(),
     },
   ]);
-
   let text = await res.body;
   const info = {
     uid: uid,
