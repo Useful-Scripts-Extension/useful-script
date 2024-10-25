@@ -35,16 +35,25 @@ async function onDocumentEnd() {
 
   let hasLog = logs[0] != "Log not found" && logs[0] != "Waking up";
 
-  const allLogs = logs.map((log) => {
+  const allLogs = logs.map((log, i) => {
+    const timeString = extractTime(log).replace(/\d+\/\d+\/\d+, /, "");
+    const pm_am = timeString?.split(" ")[1];
+    let hour = parseInt(timeString?.split(":")[0]) + (pm_am == "PM" ? 12 : 0);
+    if (hour == 12 && pm_am == "AM") hour = 0;
+
     const data = {
+      i,
       log,
       uid: extractUid(log),
       time: new Date(extractTime(log)),
-      timeString: extractTime(log).replace(/\d+\/\d+\/\d+, /, ""),
+      timeString,
+      hour,
       eventName: extractEventName(log),
       version: extractVersion(log),
       totalCount: extractTotalCount(log),
       isScript: isScript(log),
+      fbName: "",
+      fbAvatar: "",
     };
     const eventNameWithoutVersion = data.eventName
       .replace("(" + data.version + ")", "")
@@ -56,155 +65,42 @@ async function onDocumentEnd() {
     return data;
   });
 
+  console.log(allLogs);
+
+  document.body.innerText = "";
   const container = document.createElement("div");
 
   if (hasLog) {
     UfsGlobal.Extension.getURL("/scripts/ufs_statistic.css").then(
       UfsGlobal.DOM.injectCssFile
     );
-
-    // #region re-make UI
-    document.body.innerText = "";
-
-    // #region create list
-    const ol = document.createElement("ol");
-    ol.classList.add("log-list");
-    ol.setAttribute("reversed", true);
-    document.body.appendChild(ol);
-    const all_li = allLogs.map((data) => {
-      let li = document.createElement("li");
-      if (isFbUid(data?.uid)) {
-        li.innerHTML =
-          data.logPretty +
-          ` <a href="https://fb.com/${data.uid}" target="_blank">
-            <span data-profile-name="${data.uid}">fb </span>
-            <img
-              data-profile-avatar="${data.uid}"
-              src="${getUserAvatarFromUid(data.uid)}" />
-          </a>`;
-      } else {
-        li.innerHTML = data.logPretty;
-      }
-      ol.appendChild(li);
-      return { li, data };
-    });
-    console.log(all_li);
-    // #endregion
-
-    // #region trace uid
-    const traceUidCheckmark = document.createElement("input");
-    traceUidCheckmark.id = "trace-uid";
-    traceUidCheckmark.type = "checkbox";
-    traceUidCheckmark.checked = false;
-    container.appendChild(traceUidCheckmark);
-    traceUidCheckmark.addEventListener("change", (e) => {
-      searchBox.dispatchEvent(new Event("input", { bubbles: true }));
-    });
-    const label = document.createElement("label");
-    label.textContent = "Trace by uid";
-    label.setAttribute("for", traceUidCheckmark.id);
-    container.appendChild(label);
-    // #endregion
-
-    // #region search box
-    const searchBox = document.createElement("input");
-    searchBox.placeholder = "Search logs...";
-    container.prepend(searchBox);
-    searchBox.addEventListener("input", (e) => {
-      let searchText = e.target.value;
-
-      if (!traceUidCheckmark.checked) {
-        all_li.forEach(({ li, data }) => {
-          if (
-            !searchText ||
-            data.log.toLowerCase().includes(searchText.toLowerCase())
-          )
-            li.classList.remove("hidden");
-          else li.classList.add("hidden");
-        });
-      } else {
-        let index = all_li.findIndex(({ li, data }) =>
-          data.log?.includes?.(searchText)
-        );
-        if (!searchText || index == -1) {
-          all_li.forEach(({ li }) => li.classList.remove("hidden"));
-          return;
-        }
-
-        console.log(index);
-
-        let indexes = [];
-
-        // trace backward
-        let uid = all_li[index].data.uid;
-        for (let i = index; i >= 0; i--) {
-          let cur = all_li[i];
-          let pre = all_li[i - 1];
-
-          if (cur.data.uid == uid) {
-            indexes.unshift(i);
-          }
-          if (
-            pre &&
-            cur.data.uid == uid &&
-            cur.data.version == pre.data.version &&
-            cur.data.eventName.includes("ufs-RE-INSTALLED") &&
-            pre?.data?.eventName?.includes?.("ufs-INSTALLED") &&
-            Math.abs(pre.data.time.getTime() - cur.data.time.getTime()) < 2000 // 2s
-          ) {
-            indexes.unshift(i, i - 1);
-            uid = pre.data.uid;
-            console.log(uid);
-          }
-        }
-
-        // forward
-        uid = all_li[index].data.uid;
-        for (let i = index; i < all_li.length - 1; i++) {
-          let cur = all_li[i];
-          let next = all_li[i + 1];
-          if (cur.data.uid == uid) {
-            indexes.push(i);
-          }
-          if (
-            next &&
-            next.data.uid == uid &&
-            cur.data.version == next.data.version &&
-            next.data.eventName.includes("ufs-INSTALLED") &&
-            cur?.data?.eventName?.includes?.("ufs-RE-INSTALLED") &&
-            Math.abs(next.data.time.getTime() - cur.data.time.getTime()) < 2000 // 2s
-          ) {
-            indexes.push(i, i + 1);
-            uid = next.data.uid;
-            console.log(uid);
-          }
-        }
-
-        if (indexes.length) {
-          all_li.forEach(({ li }) => li.classList.add("hidden"));
-          indexes.forEach((i) => all_li[i].li.classList.remove("hidden"));
-        } else {
-          all_li.forEach(({ li }) => li.classList.remove("hidden"));
-        }
-      }
-    });
-    // #endregion
-
-    // #endregion
-
-    // #region add graphs
+    UfsGlobal.DOM.injectCssFile(
+      "https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.2/styles/ag-grid.css",
+      "ag-grid-css"
+    );
+    UfsGlobal.DOM.injectCssFile(
+      "https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.2/styles/ag-theme-quartz-dark.css",
+      "ag-grid-theme-css"
+    );
     await UfsGlobal.DOM.injectScriptSrcAsync(
-      "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+      "https://cdn.jsdelivr.net/npm/ag-charts-community@9.0.0/dist/umd/ag-charts-community.js",
+      () => {}
+    );
+    await UfsGlobal.DOM.injectScriptSrcAsync(
+      "https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js",
+      () => {}
     );
 
-    // Count logs per hour
-    const logsPerHour = Array(24).fill(0);
-    allLogs.forEach((data) => {
-      const hour = data.time.getHours();
-      logsPerHour[hour]++;
-    });
+    console.log(arguments);
 
-    // #region ======================== Per event name ========================
+    // #region data
+    // Count logs per hour
+    // const logsPerHour = Array(24).fill(0);
+    // allLogs.forEach((data) => {
+    //   const hour = data.time.getHours();
+    //   logsPerHour[hour]++;
+    // });
+
     const eventNameCount = new Map();
     allLogs.forEach((data) => {
       eventNameCount.set(
@@ -218,54 +114,7 @@ async function onDocumentEnd() {
       [...eventNameCount.entries()].sort((a, b) => b[1] - a[1])
     );
 
-    const canvas_events = document.createElement("canvas");
-    const ctx2 = canvas_events.getContext("2d");
-    const eventNameChart = new Chart(ctx2, {
-      type: "doughnut",
-      data: {
-        labels: Array.from(eventNameCountSorted.keys()),
-        datasets: [
-          {
-            data: Array.from(eventNameCountSorted.values()),
-            backgroundColor: [
-              "rgb(255, 99, 132)",
-              "rgb(255, 159, 64)",
-              "rgb(255, 205, 86)",
-              "rgb(75, 192, 192)",
-              "rgb(54, 162, 235)",
-              "rgb(153, 102, 255)",
-              "rgb(201, 203, 207)",
-            ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: `Number of logs per script name (${eventNameCount.size} scripts)`,
-          },
-        },
-        responsive: true,
-        onClick: (event, elements, chart) => {
-          if (elements[0]) {
-            const i = elements[0].index;
-            let scriptId = chart.data.labels[i].split("(")[0];
-            searchBox.value = scriptId;
-            searchBox.dispatchEvent(new Event("input", { bubbles: true }));
-          }
-        },
-      },
-    });
-
-    // #endregion
-
-    // #region ======================== Event name Per hour ========================
-    //   Stacked Bar Chart for each script
+    // Stacked Bar Chart for each script
     const eventNamePerHour_dataset = Array.from(eventNameCount.keys()).map(
       (eventName) => {
         const data = Array(24).fill(0);
@@ -285,42 +134,6 @@ async function onDocumentEnd() {
       }
     );
 
-    const canvas_eventPerHour = document.createElement("canvas");
-    const ctx3 = canvas_eventPerHour.getContext("2d");
-    const eventNamePerHourChart = new Chart(ctx3, {
-      type: "line",
-      data: {
-        labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
-        datasets: eventNamePerHour_dataset.concat({
-          label: "Total",
-          data: logsPerHour,
-          borderColor: "rgb(75, 192, 192)",
-          type: "line",
-          fill: false,
-          tension: 0.5,
-        }),
-      },
-      options: {
-        datalabels: {
-          display: true,
-          formatter: (value) => value > 0,
-        },
-        responsive: true,
-      },
-    });
-
-    const toggleShowHideAllBtn = document.createElement("button");
-    toggleShowHideAllBtn.textContent = "Show/hide all";
-    toggleShowHideAllBtn.onclick = function () {
-      eventNamePerHourChart.data.datasets.forEach(function (ds) {
-        ds.hidden = !ds.hidden;
-      });
-      eventNamePerHourChart.update();
-    };
-    // #endregion
-
-    // #region ======================== Per uid ========================
-
     let logByUid = new Map();
     allLogs.forEach((data) => {
       logByUid.set(data.uid, (logByUid.get(data.uid) || 0) + 1);
@@ -334,75 +147,6 @@ async function onDocumentEnd() {
       return isFbUid(key);
     });
 
-    const canvas_uid = document.createElement("canvas");
-    const ctx4 = canvas_uid.getContext("2d");
-    const uidChart = new Chart(ctx4, {
-      type: "doughnut",
-      data: {
-        labels: Array.from(logByUidSorted.keys()),
-        datasets: [
-          {
-            data: Array.from(logByUidSorted.values()),
-            backgroundColor: [
-              "rgb(255, 99, 132)",
-              "rgb(255, 159, 64)",
-              "rgb(255, 205, 86)",
-              "rgb(75, 192, 192)",
-              "rgb(54, 162, 235)",
-              "rgb(153, 102, 255)",
-              "rgb(201, 203, 207)",
-            ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        onClick: (event, elements, chart) => {
-          if (elements[0]) {
-            const i = elements[0].index;
-            let uid = chart.data.labels[i];
-            let value = chart.data.datasets[0].data[i];
-            searchBox.value = uid;
-            searchBox.dispatchEvent(new Event("input", { bubbles: true }));
-          }
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          title: {
-            display: true,
-            text: `Scripts used by uid (${logByUid.size} uids)`,
-          },
-        },
-        responsive: true,
-      },
-    });
-
-    // #endregion
-
-    // #region ======================== show scripts only ========================
-
-    let scriptOnlyState = false;
-    const scriptOnlyToggle = document.createElement("button");
-    scriptOnlyToggle.textContent = "Show scripts only (OFF)";
-    scriptOnlyToggle.onclick = function () {
-      scriptOnlyState = !scriptOnlyState;
-      scriptOnlyToggle.textContent = scriptOnlyState
-        ? "Show scripts only (ON)"
-        : "Show scripts only (OFF)";
-      scriptOnlyToggle.classList.toggle("btn-active", scriptOnlyState);
-      all_li.forEach(({ li, data }) => {
-        if (scriptOnlyState && !data.isScript) {
-          li.classList.add("not-script");
-        } else {
-          li.classList.remove("not-script");
-        }
-      });
-    };
-    // #endregion
-
-    // #region ======================== Average section ========================
     const scriptsUsed = new Map();
     allLogs.forEach((data) => {
       if (data.isScript) {
@@ -412,152 +156,189 @@ async function onDocumentEnd() {
     });
 
     let scriptUsedTotalCount = scriptsUsed.values().reduce((a, b) => a + b, 0);
-
-    const h1 = document.createElement("h1");
     let hour = new Date().getHours() + 1;
     let _logsPerHour = ~~(allLogs.length / hour);
     let _eventsPerHour = ~~(eventNameCount.size / hour);
     let _scriptsPerHour = ~~(scriptUsedTotalCount / hour);
+
+    const allUid = allLogs
+      .filter((log) => isFbUid(log?.uid))
+      .map((log) => log.uid);
+
+    // #endregion
+
+    const h1 = document.createElement("h1");
     h1.innerHTML = `${allLogs.length} logs (~${_logsPerHour} logs/hour)<br/>
       ${eventNameCount.size} unique events<br/><br/>
       ${scriptUsedTotalCount} scripts used (~${_scriptsPerHour} scripts/hour)<br/>
       ${scriptsUsed.size} unique scripts<br/><br/>
       ${logByUid.size} unique users<br/>
       ${fbUsers.length} facebook users`;
+    container.appendChild(h1);
+
+    // #region chart
+    const { AgCharts } = agCharts;
+    const interpolation = { type: "smooth" };
+
+    function createLogCountPerHour(data) {
+      const logsCountPerHour = Array(24).fill(0);
+      data.forEach((data) => {
+        const hour = data.time.getHours();
+        logsCountPerHour[hour]++;
+      });
+      return logsCountPerHour.map((_, i) => ({
+        x: i + "",
+        y: _,
+      }));
+    }
+
+    const chartContainer = document.createElement("div");
+    chartContainer.id = "ag-charts";
+    chartContainer.classList.add("ag-theme-quartz-dark");
+    container.appendChild(chartContainer);
+
+    const chartOptions = {
+      container: chartContainer,
+      autoSize: true,
+      title: {
+        text: "Logs per hour",
+      },
+      data: createLogCountPerHour(allLogs),
+      series: [
+        {
+          type: "line",
+          xKey: "x",
+          yKey: "y",
+          title: "Count",
+          marker: {
+            shape: "square",
+          },
+        },
+      ],
+      axes: [
+        {
+          type: "category",
+          position: "bottom",
+          title: {
+            text: "Hour",
+          },
+        },
+        {
+          type: "number",
+          position: "left",
+          title: {
+            text: "Count",
+          },
+        },
+      ],
+      legend: {
+        enabled: false,
+      },
+    };
+
+    const chart = AgCharts.create(chartOptions);
+
     // #endregion
 
-    // #region ======================== modal sortby uid/script ========================
-    const modalByUid = document.createElement("div");
-    modalByUid.classList.add("modal");
-    modalByUid.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Rank by uid</h2>
-      </div>
-      <div class="modal-body">
-        <ol class="list-group">
-          ${Array.from(logByUidSorted.entries())
-            .map(([uid, count], index) => {
-              return `<li>
-              ${index + 1}.
-              <a href="https://fb.com/${uid}" target="_blank">
-                <img data-profile-avatar="${uid}" class="avatar" />
-                <span data-profile-name="${uid}">${uid}</span>
-                (${count})
-              </a>
-              <span data-search="${uid}">${uid}🔎</span>
-            </li>`;
-            })
-            .join("")}
-        </ol>
-      </div>
-    </div>`;
+    // #region table
+    const div = document.createElement("div");
+    div.id = "ag-grid";
+    div.classList.add("ag-theme-quartz-dark");
 
-    const modalByScript = document.createElement("div");
-    modalByScript.classList.add("modal");
-    modalByScript.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Rank by event name</h2>
-      </div>
-      <div class="modal-body">
-        <ol class="list-group">
-          ${Array.from(eventNameCountSorted.entries())
-            .map(([eventName, count], index) => {
-              return `<li>
-                ${index + 1}. ${eventName} (${count})
-                <span data-search="${eventName}">🔎</span>
-              </li>`;
-            })
-            .join("")}
-        </ol>
-      </div>
-    </div>`;
-
-    const btnOpenModalByUid = document.createElement("button");
-    btnOpenModalByUid.textContent = "Rank by uid";
-    btnOpenModalByUid.onclick = () => {
-      modalByUid.style.display = "flex";
-    };
-
-    const btnOpenModalByScript = document.createElement("button");
-    btnOpenModalByScript.textContent = "Rank by event name";
-    btnOpenModalByScript.onclick = () => {
-      modalByScript.style.display = "flex";
-    };
-
-    document.body.addEventListener("click", (event) => {
-      if (event.target.classList.contains("modal")) {
-        event.target.style.display = "none";
-      }
-      const dataSearch = event.target.getAttribute("data-search");
-      if (dataSearch) {
-        searchBox.value = dataSearch;
-        searchBox.dispatchEvent(new Event("input", { bubbles: true }));
-      }
+    const gridApi = agGrid.createGrid(div, {
+      enableCellTextSelection: true,
+      suppressDragLeaveHidesColumns: true,
+      rowData: allLogs,
+      columnDefs: [
+        {
+          field: "i",
+          headerName: "#",
+          width: 60,
+          filter: false,
+        },
+        {
+          field: "timeString",
+          // valueFormatter: (params) => params.value.toLocaleTimeString(),
+          width: 120,
+        },
+        {
+          field: "hour",
+          // filter: "agNumberColumnFilter",
+          width: 100,
+        },
+        { field: "version", width: 120 },
+        { field: "uid" },
+        {
+          field: "fbName",
+          cellRenderer: (params) => {
+            if (params.data.fbName)
+              return `<a
+                href="https://fb.com/${params.data.uid}"
+                target="_blank"
+                style="display:flex">
+                  <img
+                    class="avatar"
+                    src="${getUserAvatarFromUid(params.data.uid, 40)}"
+                    style="margin-right: 5px;" />
+                  ${params.data.fbName}
+                </a>`;
+          },
+        },
+        { field: "isScript", width: 80 },
+        { field: "eventName", width: 500 },
+        {
+          field: "totalCount",
+          filter: "agNumberColumnFilter",
+          width: 100,
+        },
+        // { field: "log", width: 400 },
+      ],
+      defaultColDef: {
+        // flex: 1,
+        filter: true,
+        floatingFilter: true,
+        filterParams: {
+          maxNumConditions: 10,
+          defaultJoinOperator: "OR",
+        },
+        suppressMovable: true,
+      },
+      onFilterChanged(params) {
+        const data = [];
+        params.api.forEachNodeAfterFilter((node) => {
+          data.push(node.data);
+        });
+        chartOptions.data = createLogCountPerHour(data);
+        debugger;
+        AgCharts.update(chart, chartOptions);
+      },
     });
 
-    document.body.append(modalByUid, modalByScript);
+    container.append(div);
     // #endregion
 
-    container.prepend(
-      h1,
-      toggleShowHideAllBtn,
-      canvas_eventPerHour,
-      btnOpenModalByScript,
-      canvas_events,
-      btnOpenModalByUid,
-      canvas_uid,
-      scriptOnlyToggle
-    );
-    // #endregion
-
-    // #region load fb profiles
-    const allUid = allLogs
-      .filter((log) => isFbUid(log?.uid))
-      .map((log) => log.uid);
-
+    // #region update fb users
     const uniqueUid = [...new Set(allUid)].filter(Boolean);
-
     if (uniqueUid.length) {
       initCache().then(() => {
         const promises = uniqueUid.map(
           (uid) => () =>
             getFbProfile(uid).then((info) => {
               if (!info.name || !info.avatar) return;
-              document
-                .querySelectorAll(`[data-profile-name="${uid}"]`)
-                .forEach((el) => {
-                  el.textContent = limitString(info.name, 40);
-                });
-              document
-                .querySelectorAll(`[data-profile-avatar="${uid}"]`)
-                .forEach((el) => {
-                  el.src = info.avatar.replace(/\\\//g, "/") || el.src;
+              const name = limitString(info.name, 40);
+              const avatar = info.avatar.replace(/\\\//g, "/") || "";
 
-                  let tried = 0,
-                    loading = false;
-
-                  // in case cached avatqr expired
-                  el.onerror = () => {
-                    if (loading) return;
-                    tried++;
-                    if (tried > 3) el.src = getUserAvatarFromUid(uid);
-                    else {
-                      loading = true;
-                      getFbProfile(uid, true)
-                        .then((info) => {
-                          el.src = info.avatar.replace(/\\\//g, "/") || el.src;
-                        })
-                        .finally(() => {
-                          loading = false;
-                        });
-                    }
-                  };
-                });
+              allLogs.forEach((log) => {
+                if (log.uid === uid) {
+                  log.fbName = name;
+                  log.fbAvatar = avatar;
+                }
+              });
             })
         );
         UfsGlobal.Utils.promiseAllStepN(5, promises).then(() => {
+          gridApi.setGridOption("rowData", allLogs);
+
           if (CACHED.newFbUsers.size) {
             const arr = Array.from(CACHED.newFbUsers.values());
             console.log("New users", arr);
@@ -570,8 +351,8 @@ async function onDocumentEnd() {
         });
       });
     }
-    // #endregion
   }
+  // #endregion
 
   // #region add date selector
   const prevDayBtn = document.createElement("button");
@@ -771,8 +552,8 @@ export async function getEntityAbout(entityID, context = "DEFAULT") {
       }).toString(),
     },
   ]);
-  console.log(res);
   const text = await res.body;
+  // console.log(res, text);
   const json = JSON.parse(text);
   const node = json.data.node;
   if (!node) throw new Error("Wrong ID / Entity not found");
