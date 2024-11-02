@@ -477,14 +477,17 @@ async function initCache() {
 
   if (!CACHED.fb_dtsg) {
     let res = await UfsGlobal.Extension.runInBackground("fetch", [
-      "https://mbasic.facebook.com/photos/upload/",
+      "https://www.facebook.com/policies_center/",
     ]);
-    CACHED.fb_dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(res.body)?.[1];
+    CACHED.fb_dtsg = res?.body?.match?.(
+      /DTSGInitData",\[\],\{"token":"(.*?)"/
+    )?.[1];
   }
 }
 
 async function getFbProfile(uid, force = false) {
-  if (CACHED.fbProfile.has(uid) && !force) return CACHED.fbProfile.get(uid);
+  const cached = CACHED.fbProfile.get(uid);
+  if (cached?.name && !force) return cached;
 
   let res = await UfsGlobal.Extension.runInBackground("fetch", [
     "https://www.facebook.com/api/graphql/",

@@ -625,6 +625,11 @@ export async function getFbdtsg() {
   let methods = [
     () => require("DTSGInitData").token,
     () => require("DTSG").getToken(),
+    async () => {
+      let text = await fetch("https://www.facebook.com/policies_center/");
+      let token = text.match(/DTSGInitData",\[\],\{"token":"(.*?)"/)[1];
+      return token;
+    },
     () => {
       return RegExp(/"DTSGInitialData",\[],{"token":"(.+?)"/).exec(
         document.documentElement.innerHTML

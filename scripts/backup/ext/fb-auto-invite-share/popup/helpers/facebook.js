@@ -83,24 +83,44 @@ export function wrapGraphQlParams(params = {}) {
 
 export async function getFbDtsg() {
   const uid = await getMyUid();
-
   if (CACHED.fb_dtsg[uid]) return CACHED.fb_dtsg[uid];
-  let res = await fetch("https://mbasic.facebook.com/photos/upload/");
-  let text = await res.text();
-  let dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(text)?.[1];
-  if (!dtsg) {
-    res = await fetch("https://m.facebook.com/home.php", {
-      headers: {
-        Accept: "text/html",
-      },
-    });
-    text = await res.text();
-    dtsg =
-      RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
-      RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1];
+
+  for (let fn of [
+    async () => {
+      let text = await fetch("https://www.facebook.com/policies_center/");
+      let token = text.match(/DTSGInitData",\[\],\{"token":"(.*?)"/)[1];
+      return token;
+    },
+    async () => {
+      let res = await fetch("https://mbasic.facebook.com/photos/upload/");
+      let text = await res.text();
+      let dtsg = RegExp(/name="fb_dtsg" value="(.*?)"/).exec(text)?.[1];
+      return dtsg;
+    },
+    async () => {
+      const res = await fetch("https://m.facebook.com/home.php", {
+        headers: {
+          Accept: "text/html",
+        },
+      });
+      const text = await res.text();
+      const dtsg =
+        RegExp(/"dtsg":{"token":"([^"]+)"/).exec(text)?.[1] ||
+        RegExp(/"name":"fb_dtsg","value":"([^"]+)/).exec(text)?.[1];
+      return dtsg;
+    },
+  ]) {
+    try {
+      const res = await fn();
+      if (res) {
+        CACHED.fb_dtsg[uid] = res;
+        return CACHED.fb_dtsg[uid];
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
-  CACHED.fb_dtsg[uid] = dtsg || null;
-  return CACHED.fb_dtsg[uid];
+  return null;
 }
 
 export function findDataObject(object) {
