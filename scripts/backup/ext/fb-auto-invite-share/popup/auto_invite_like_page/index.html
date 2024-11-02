@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Tools</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Tự động mời like page</h1>
+
+    <div class="input-container">
+        <h3>Thời gian chờ (giây):</h3>
+        <span><i>(ngẫu nhiên trong khoảng)</i></span><br />
+        <div class="input-row">
+            <input type="number" min="0" value="5" id="inputWaitMin" /> ➡️ <input type="number" min="0" value="20"
+                id="inputWaitMax" />
+        </div>
+    </div>
+
+    <h3>Mời tối đa bao nhiêu người?</h3>
+    <span><i>(nhập 0 để mời hết)</i></span><br />
+    <input type="number" id="max-people" value="10">
+
+    <button class="button" id="start-btn">Bắt đầu</button>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

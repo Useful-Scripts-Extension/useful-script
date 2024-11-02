@@ -1,5 +1,6 @@
 body {
-  max-width: 1000px;
+  /* max-width: 1000px; */
+  padding: 10px;
   margin: auto;
   background-color: #222;
   color: ccc;
@@ -38,12 +39,13 @@ ol.log-list li a:visited {
 
 li a img,
 .avatar {
-  width: 30px;
+  width: 40px;
   transition: all 0.2s ease;
 }
 
-li a:hover img {
-  transform: scale(3.5);
+li a:hover img,
+a:hover .avatar {
+  /* transform: scale(3.5); */
   z-index: 2;
 }
 
@@ -163,4 +165,8 @@ li:hover .show-on-hover {
 
 [data-search]:hover {
   text-decoration: underline;
+}
+
+.ag-chart-wrapper {
+  height: auto !important;
 }

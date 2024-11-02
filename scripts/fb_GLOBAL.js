@@ -5,8 +5,8 @@ import { UfsGlobal } from "./content-scripts/ufs_global.js";
 // =============================================================================
 // ================================= User Data =================================
 // =============================================================================
-export function getUserAvatarFromUid(uid) {
-  return `https://graph.facebook.com/${uid}/picture?height=500&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+export function getUserAvatarFromUid(uid, size = 500) {
+  return `https://graph.facebook.com/${uid}/picture?height=${size}&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 }
 export async function getYourUserId() {
   let methods = [
@@ -625,6 +625,11 @@ export async function getFbdtsg() {
   let methods = [
     () => require("DTSGInitData").token,
     () => require("DTSG").getToken(),
+    async () => {
+      let text = await fetch("https://www.facebook.com/policies_center/");
+      let token = text.match(/DTSGInitData",\[\],\{"token":"(.*?)"/)[1];
+      return token;
+    },
     () => {
       return RegExp(/"DTSGInitialData",\[],{"token":"(.+?)"/).exec(
         document.documentElement.innerHTML
