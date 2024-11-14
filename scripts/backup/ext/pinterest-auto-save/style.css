@@ -1,0 +1,15 @@
+#pinterest-auto-save-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #eee6;
+
+  z-index: 999999999999;
+}

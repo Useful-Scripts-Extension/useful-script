@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Pinterest Auto Save",
+  "version": "1.0",
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": ["https://www.pinterest.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.pinterest.com/*"],
+      "js": ["content.js"],
+      "css": ["style.css"],
+      "run_at": "document_start"
+    }
+  ]
+}
