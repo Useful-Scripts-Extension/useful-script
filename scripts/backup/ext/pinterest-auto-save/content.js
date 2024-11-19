@@ -1,8 +1,11 @@
 console.log("pinterest-auto-save loaded");
 
 const cached = getCache();
+const reloadIfNotClickIn = 30000;
 let allBoardBtn,
-  isAutoClick = false;
+  isAutoClick = false,
+  lastClickTime = 0,
+  intervalCheckClickTime = null;
 
 const saveAllBtn = document.createElement("button");
 saveAllBtn.innerText = "Save to All boards";
@@ -11,6 +14,15 @@ saveAllBtn.onclick = async () => {
     const fromIndex = prompt("From index?", cached?.lastSaveIndex || 0);
     setCache("lastSaveIndex", parseInt(fromIndex) || 0);
   }
+
+  lastClickTime = Date.now();
+  if (intervalCheckClickTime) clearInterval(intervalCheckClickTime);
+  intervalCheckClickTime = setInterval(() => {
+    if (Date.now() - lastClickTime > reloadIfNotClickIn) {
+      // alert("reload");
+      location.reload();
+    }
+  }, 1000);
 
   savingText.innerText =
     "Auto Saving to board " + ((cached?.lastSaveIndex || 0) + 1) + " ...";
@@ -64,6 +76,7 @@ saveAllBtn.onclick = async () => {
   // if save button appear -> click it
   const saveBtn = cur.querySelector('button[aria-label="save button"]');
   if (saveBtn) {
+    lastClickTime = Date.now();
     clickSave(saveBtn, targetIndex);
   }
   // else -> click row
@@ -89,6 +102,7 @@ saveAllBtn.onclick = async () => {
       await sleep(1000);
       const saveBtn = target.querySelector('button[aria-label="save button"]');
       if (saveBtn) {
+        lastClickTime = Date.now();
         clickSave(saveBtn, targetIndex);
         done = true;
       }
@@ -122,7 +136,7 @@ window.onload = async () => {
 };
 
 onElementsAdded(
-  '[data-test-id="closeup-body"] button[aria-label="Select a board you want to save to"]',
+  '[data-test-id*="closeup-body"] button[aria-label="Select a board you want to save to"]',
   (nodes) => {
     if (nodes[0]) {
       console.log("add save all btn", nodes[0]);
