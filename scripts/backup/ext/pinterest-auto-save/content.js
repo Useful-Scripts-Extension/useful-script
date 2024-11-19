@@ -18,8 +18,10 @@ saveAllBtn.onclick = async () => {
   lastClickTime = Date.now();
   if (intervalCheckClickTime) clearInterval(intervalCheckClickTime);
   intervalCheckClickTime = setInterval(() => {
-    if (Date.now() - lastClickTime > reloadIfNotClickIn) {
-      // alert("reload");
+    const time = Date.now() - lastClickTime;
+    console.log(time);
+    if (time > reloadIfNotClickIn) {
+      clearInterval(intervalCheckClickTime);
       location.reload();
     }
   }, 1000);
