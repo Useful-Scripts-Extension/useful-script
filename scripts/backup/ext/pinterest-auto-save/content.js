@@ -7,7 +7,10 @@ let allBoardBtn,
 const saveAllBtn = document.createElement("button");
 saveAllBtn.innerText = "Save to All boards";
 saveAllBtn.onclick = async () => {
-  if (!isAutoClick) setCache("lastSaveIndex", 0);
+  if (!isAutoClick) {
+    const fromIndex = prompt("From index?", cached?.lastSaveIndex || 0);
+    setCache("lastSaveIndex", parseInt(fromIndex) || 0);
+  }
 
   savingText.innerText =
     "Auto Saving to board " + ((cached?.lastSaveIndex || 0) + 1) + " ...";
@@ -69,14 +72,14 @@ saveAllBtn.onclick = async () => {
 
     let done = false;
     while (!done) {
-      const selector = `[data-test-id="${cur
-        .getAttribute("data-test-id")
-        .replaceAll('"', '\\"')}"]`;
-      console.log("selector", selector);
-      const nodes = await waitForElements(selector);
+      const nodes = document.querySelectorAll(selector);
       const target = Array.from(nodes).find(
-        (e) => cur != e && !beforeAllBoard.includes(e)
+        (e) =>
+          cur != e &&
+          e.getAttribute("data-test-id") === cur.getAttribute("data-test-id") &&
+          !beforeAllBoard.includes(e)
       );
+      console.log(nodes, target);
       if (!target) {
         console.log("target not found, wait for load more...");
         await sleep(1000);
@@ -132,10 +135,13 @@ onElementsAdded(
 
 const cacheKey = "pinterest-auto-save";
 function setCache(key, value) {
-  const cached = JSON.parse(localStorage.getItem(cacheKey) || "{}");
-  cached[key] = value;
-  localStorage.setItem(cacheKey, JSON.stringify(cached));
-  return cached;
+  const _ = JSON.parse(localStorage.getItem(cacheKey) || "{}");
+  _[key] = value;
+  for (const k in _) {
+    cached[k] = _[k];
+  }
+  localStorage.setItem(cacheKey, JSON.stringify(_));
+  return _;
 }
 
 function getCache(key) {
@@ -168,6 +174,14 @@ function focusTo(ele) {
     })
   );
   ele.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function escapeCssSelector(str, deep = true) {
+  if (!deep) return str.replaceAll('"', '\\"');
+  return str
+    .replace(/\\/g, "\\\\") // Escape backslashes first
+    .replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g, "\\$1") // Escape other special characters
+    .replace(/\s/g, "\\ "); // Escape spaces
 }
 
 function sleep(ms) {
