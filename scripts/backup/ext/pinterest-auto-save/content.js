@@ -52,7 +52,9 @@ saveAllBtn.onclick = async () => {
     }
   }
 
+  let canAdd = true;
   onElementsAdded(selector, (nodes) => {
+    if (!canAdd) return;
     for (let node of nodes) {
       if (boardRows.includes(node) || beforeAllBoard.includes(node)) continue;
       boardRows.push(node);
@@ -83,6 +85,7 @@ saveAllBtn.onclick = async () => {
   }
   // else -> click row
   else {
+    canAdd = false;
     cur.click();
 
     let done = false;
@@ -92,9 +95,10 @@ saveAllBtn.onclick = async () => {
         (e) =>
           cur != e &&
           e.getAttribute("data-test-id") === cur.getAttribute("data-test-id") &&
-          !beforeAllBoard.includes(e)
+          !beforeAllBoard.includes(e) &&
+          !boardRows.includes(e)
       );
-      console.log(nodes, target);
+      console.log(target);
       if (!target) {
         console.log("target not found, wait for load more...");
         await sleep(1000);
@@ -109,6 +113,7 @@ saveAllBtn.onclick = async () => {
         done = true;
       }
     }
+    canAdd = true;
   }
 };
 
