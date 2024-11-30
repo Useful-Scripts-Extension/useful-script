@@ -1,6 +1,18 @@
 import { UfsGlobal } from "./content-scripts/ufs_global.js";
 import { getUserAvatarFromUid } from "./fb_GLOBAL.js";
 
+/*
+    temp1.reduce((b, a ) => {
+        const e = a.eventName;
+        if(b.has(e)) b.set(e, b.get(e) + 1)
+        else b.set(e, 1)
+        return b;
+    }, new Map())
+
+    new Map(Array.from(temp2).sort((a, b) => a[1] - b[1]))
+
+    */
+
 export default {
   icon: "/assets/icon32.png",
   name: {
