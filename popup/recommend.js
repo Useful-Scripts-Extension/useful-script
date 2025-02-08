@@ -900,7 +900,7 @@ export const Recommend = {
     badges: [BADGES.new, BADGES.hot],
     popupScript: {
       onClick: () =>
-        window.open("https://facebook-all-in-one.com/dist/#/bulk-downloader"),
+        window.open("https://facebook-all-in-one.com/#/bulk-downloader"),
     },
   },
   facebook_aio_stalker: {
