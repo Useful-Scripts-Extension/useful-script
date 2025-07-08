@@ -201,9 +201,13 @@ function createScriptButton(script, isFavorite = false) {
   const button = document.createElement("button");
   button.className = "tooltip";
   if (canClick(script)) {
-    button.onclick = () => runScript(script);
+    button.onclick = () => {
+      if (checkIsPreview(script)) return;
+      runScript(script);
+    };
   } else if (canAutoRun(script)) {
     button.onclick = () => {
+      if (checkIsPreview(script)) return;
       openModal(
         t({
           vi: "Chức năng này Tự động chạy",
@@ -222,13 +226,15 @@ function createScriptButton(script, isFavorite = false) {
       );
     };
   } else {
-    button.onclick = () =>
+    button.onclick = () => {
+      if (checkIsPreview(script)) return;
       alert(
         t({
           vi: "Chức năng chưa hoàn thành " + script.id,
           en: "Coming soon " + script.id,
         })
       );
+    };
   }
 
   // script badges
@@ -282,6 +288,8 @@ function createScriptButton(script, isFavorite = false) {
     btn.setAttribute("data-tooltip", title);
     btn.setAttribute("data-flow", "left");
     btn.onclick = (e) => {
+      if (checkIsPreview(script)) return;
+
       // prevent to trigger other script's onClick funcs
       e.stopPropagation();
       e.preventDefault();
@@ -306,6 +314,7 @@ function createScriptButton(script, isFavorite = false) {
   viewSourceBtn.onclick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    if (checkIsPreview(script)) return;
 
     trackEvent(script.id + "-VIEW-SOURCE");
     viewScriptSource(script);
