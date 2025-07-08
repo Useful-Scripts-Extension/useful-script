@@ -124,7 +124,7 @@ async function createTabContent(tab) {
     vi: `Tìm trong ${scriptsCount} chức năng ${name}...`,
     en: `Search in ${scriptsCount} scripts ${name}...`,
   });
-  searchInput.focus?.();
+  // searchInput.focus?.();
 
   // create tab content
   const contentContainer = document.createElement("div");
