@@ -43,6 +43,63 @@ import { checkPass } from "../scripts/auto_lockWebsite.js";
 import allScripts from "../scripts/@allScripts.js";
 // import _ from "../md/exportScriptsToMd.js";
 
+// ============================================================================
+// ⚡ LAZY LOADING OPTIMIZATION
+// ============================================================================
+// Cache for dynamically loaded scripts
+const scriptCache = new Map();
+
+/**
+ * Lazy load a full script when needed (on-demand loading)
+ * @param {string} scriptId - The script ID
+ * @returns {Promise<Object>} The full script object with all functions
+ */
+async function loadFullScript(scriptId) {
+  // Return from cache if already loaded
+  if (scriptCache.has(scriptId)) {
+    return scriptCache.get(scriptId);
+  }
+
+  try {
+    // Dynamic import - only loads this one script
+    const module = await import(`../scripts/${scriptId}.js`);
+    const fullScript = module.default;
+
+    // Inject the ID
+    fullScript.id = scriptId;
+
+    // Cache for future use
+    scriptCache.set(scriptId, fullScript);
+
+    return fullScript;
+  } catch (error) {
+    console.error(`Failed to lazy load script ${scriptId}:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Preload popular/commonly used scripts in background
+ */
+function preloadPopularScripts() {
+  const popular = [
+    'fb_toggleLight',
+    'youtube_downloadVideo',
+    'simpleAllowCopy',
+    'darkModePDF',
+  ];
+
+  setTimeout(() => {
+    popular.forEach(id => {
+      loadFullScript(id).catch(() => {
+        // Silently fail - not critical
+      });
+    });
+  }, 100);
+}
+
+// ============================================================================
+
 const settingsBtn = document.querySelector(".settings");
 const openInNewTabBtn = document.querySelector(".open-in-newtab");
 const tabDiv = document.querySelector("div.tab");
@@ -181,9 +238,12 @@ function createScriptButton(script, isFavorite = false) {
       let oldVal = await isActiveScript(script.id);
       let newVal = !oldVal;
 
+      // ⚡ LAZY LOAD: Load full script for onEnable/onDisable
+      const fullScript = await loadFullScript(script.id);
+
       if (
-        (newVal && (await script.popupScript?.onEnable?.()) === false) ||
-        (!newVal && (await script.popupScript?.onDisable?.()) === false)
+        (newVal && (await fullScript.popupScript?.onEnable?.()) === false) ||
+        (!newVal && (await fullScript.popupScript?.onDisable?.()) === false)
       )
         return;
 
@@ -274,27 +334,54 @@ function createScriptButton(script, isFavorite = false) {
 
   // script buttons
   let scriptBtns = script.buttons ?? [];
-  if (typeof script.infoLink === "string")
+  let hasInfoLink = typeof script.infoLink === "string";
+
+  if (hasInfoLink) {
     scriptBtns.unshift({
       icon: `<i class="fa-regular fa-circle-question"></i>`,
       name: { en: "Info", vi: "Thông tin" },
       onClick: () => window.open(script.infoLink),
+      _isInfoLink: true, // Mark this as special infoLink button
     });
-  scriptBtns.forEach((btnConfig) => {
+  }
+
+  scriptBtns.forEach((btnConfig, btnIndex) => {
     const btn = document.createElement("div");
     btn.appendChild(createIcon(btnConfig.icon));
     btn.classList.add("more-item");
     const title = t(btnConfig.name);
     btn.setAttribute("data-tooltip", title);
     btn.setAttribute("data-flow", "left");
-    btn.onclick = (e) => {
+    btn.onclick = async (e) => {
       if (checkIsPreview(script)) return;
 
       // prevent to trigger other script's onClick funcs
       e.stopPropagation();
       e.preventDefault();
       trackEvent(script.id + "-BUTTON-" + title);
-      btnConfig.onClick();
+
+      // Special case: infoLink button has inline onClick
+      if (btnConfig._isInfoLink && btnConfig.onClick) {
+        btnConfig.onClick();
+        return;
+      }
+
+      // ⚡ LAZY LOAD: Load full script to get onClick function
+      try {
+        const fullScript = await loadFullScript(script.id);
+
+        // Calculate correct index in full script (subtract 1 if infoLink button exists)
+        const fullScriptBtnIndex = hasInfoLink ? btnIndex - 1 : btnIndex;
+        const fullBtnConfig = fullScript.buttons?.[fullScriptBtnIndex];
+
+        if (fullBtnConfig?.onClick && typeof fullBtnConfig.onClick === 'function') {
+          await fullBtnConfig.onClick();
+        } else {
+          console.error(`Button onClick not found in script ${script.id} at index ${fullScriptBtnIndex}`);
+        }
+      } catch (error) {
+        console.error(`Failed to execute button onClick for ${script.id}:`, error);
+      }
     };
     more.appendChild(btn);
   });
@@ -490,14 +577,17 @@ function checkIsPreview(script) {
   return false;
 }
 
-async function runScript(script) {
-  if (checkIsPreview(script)) return;
+async function runScript(scriptMetadata) {
+  if (checkIsPreview(scriptMetadata)) return;
 
   let tab = await getCurrentTab();
-  let willRun = checkBlackWhiteList(script, tab.url);
+  let willRun = checkBlackWhiteList(scriptMetadata, tab.url);
   if (willRun) {
-    recentScriptsSaver.add(script);
-    trackEvent(script.id);
+    recentScriptsSaver.add(scriptMetadata);
+    trackEvent(scriptMetadata.id);
+
+    // ⚡ LAZY LOAD: Load full script on-demand
+    const script = await loadFullScript(scriptMetadata.id);
 
     try {
       if (isFunction(script.popupScript?.onClick)) {
@@ -904,7 +994,9 @@ async function restore() {
     if (chromeStorage) {
       // trigger onDisable current active scripts
       const oldActiveScriptIds = await getAllActiveScriptIds();
-      for (let s of oldActiveScriptIds.map((id) => allScripts[id])) {
+      for (let id of oldActiveScriptIds) {
+        // ⚡ LAZY LOAD: Load full script for onDisable
+        const s = await loadFullScript(id);
         if (typeof s?.popupScript?.onDisable === "function")
           await s.popupScript.onDisable();
       }
@@ -915,7 +1007,9 @@ async function restore() {
 
       // trigger onEnable new active scripts
       const newActiveScriptIds = await getAllActiveScriptIds();
-      for (let s of newActiveScriptIds.map((id) => allScripts[id])) {
+      for (let id of newActiveScriptIds) {
+        // ⚡ LAZY LOAD: Load full script for onEnable
+        const s = await loadFullScript(id);
         if (typeof s?.popupScript?.onEnable === "function")
           await s.popupScript.onEnable();
       }
@@ -1098,6 +1192,9 @@ window.addEventListener("scroll", onScrollEnd);
   initOpenInNewTab();
   initScrollToTop();
   createTabs().then(restoreScroll);
+
+  // ⚡ OPTIMIZATION: Preload popular scripts in background
+  preloadPopularScripts();
 
   chrome?.windows?.onFocusChanged?.addListener?.((windowId) => {
     setTimeout(async () => {

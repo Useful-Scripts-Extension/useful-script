@@ -94,7 +94,18 @@ Have a useful script or bookmarklet? Share it with the community!
    export { default as yourScriptName } from "./yourScriptName.js";
    ```
 
-4. **Add to category in `/popup/tabs.js`**
+4. **⚡ Regenerate metadata (IMPORTANT!)**
+   ```bash
+   npm run build:metadata
+   ```
+
+   **Why?** The popup uses a lazy loading system for fast performance:
+   - Popup loads only lightweight metadata (not full scripts)
+   - Scripts are loaded on-demand when clicked
+   - This step updates `scripts/@metadata.js` so your new script appears in popup
+   - **Without this, your script won't show up!**
+
+5. **Add to category in `/popup/tabs.js`**
    ```javascript
    const tabs = [
      {
@@ -107,7 +118,7 @@ Have a useful script or bookmarklet? Share it with the community!
    ];
    ```
 
-5. **Test your script**
+6. **Test your script**
    - Load the extension in Chrome (`chrome://extensions/`)
    - Click "Load unpacked" and select the project folder
    - Open the popup and find your script
@@ -118,6 +129,7 @@ Have a useful script or bookmarklet? Share it with the community!
 - Look at existing scripts (e.g., `fb_toggleLight.js`) for examples
 - Use `whiteList` to restrict scripts to specific websites
 - Scripts can run automatically (autorun) or on-click
+- **Always run `npm run build:metadata` after changes!** This ensures popup sees your updates
 
 ---
 
@@ -377,7 +389,18 @@ Bạn có một script hay hoặc bookmarklet hữu ích? Hãy chia sẻ với c
    export { default as tenScript } from "./tenScript.js";
    ```
 
-4. **Thêm vào danh mục trong `/popup/tabs.js`**
+4. **⚡ Regenerate metadata (QUAN TRỌNG!)**
+   ```bash
+   npm run build:metadata
+   ```
+
+   **Tại sao?** Popup dùng lazy loading để tăng tốc:
+   - Popup chỉ load metadata nhẹ (không load toàn bộ scripts)
+   - Scripts được load on-demand khi click
+   - Bước này update `scripts/@metadata.js` để script mới xuất hiện
+   - **Không chạy lệnh này script sẽ không hiện!**
+
+5. **Thêm vào danh mục trong `/popup/tabs.js`**
    ```javascript
    const tabs = [
      {
@@ -390,7 +413,7 @@ Bạn có một script hay hoặc bookmarklet hữu ích? Hãy chia sẻ với c
    ];
    ```
 
-5. **Kiểm tra script**
+6. **Kiểm tra script**
    - Mở extension trong Chrome (`chrome://extensions/`)
    - Click "Load unpacked" và chọn thư mục dự án
    - Mở popup và tìm script của bạn
@@ -401,6 +424,7 @@ Bạn có một script hay hoặc bookmarklet hữu ích? Hãy chia sẻ với c
 - Xem các script có sẵn (VD: `fb_toggleLight.js`) để tham khảo
 - Dùng `whiteList` để giới hạn script chỉ chạy trên website cụ thể
 - Script có thể tự chạy (autorun) hoặc chạy khi click
+- **Luôn chạy `npm run build:metadata` sau khi thay đổi!** Đảm bảo popup nhận được updates
 
 ---
 

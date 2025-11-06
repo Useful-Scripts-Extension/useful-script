@@ -1,52 +1,24 @@
-const CONTEXTS = [
-  "popupScript",
-  "contentScript",
-  "pageScript",
-  "backgroundScript",
-];
+// Import shared detection logic
+import {
+  detectCanClick,
+  detectCanAutoRun
+} from "../../scripts/helpers/scriptDetection.js";
 
 export const canClick = (script) => {
-  for (let context of CONTEXTS) {
-    for (let fn of injectAllFramesFns(["onClick"])) {
-      if (typeof script[context]?.[fn] === "function") {
-        return true;
-      }
-    }
-  }
-  return false;
+  // Use shared detection logic
+  return detectCanClick(script);
 };
-
-function hasChildFunction(object, excludedNamesSet = new Set()) {
-  for (let key in object) {
-    if (key.startsWith("_")) continue; // ignore private member
-    if (!object[key]) continue;
-    if (excludedNamesSet.has(key)) continue;
-    if (typeof object[key] === "function") return true;
-    if (typeof object[key] !== "object") continue;
-    if (hasChildFunction(object[key], excludedNamesSet)) return true;
-  }
-  return false;
-}
 
 export const canAutoRun = (script) => {
-  let excludedNameSet = new Set(
-    injectAllFramesFns([
-      "onClick",
-      "onInstalled",
-      "onStartup",
-      "onMessage",
-      "onMessageExternal",
-      "contextMenus",
-    ])
-  );
-  for (let context of CONTEXTS) {
-    if (hasChildFunction(script[context], excludedNameSet)) return true;
+  // ⚡ OPTIMIZATION: Use pre-calculated canAutoRun from metadata
+  // This is more accurate and handles nested event handlers (tabs, runtime, etc.)
+  if (script.canAutoRun !== undefined) {
+    return script.canAutoRun;
   }
-  return false;
-};
 
-// input ["onClick", "abc"] => output ["onClick", "onClick_", "abc", "abc_"]
-const injectAllFramesFns = (fns) => fns.map((key) => [key, key + "_"]).flat();
+  // Fallback: use shared detection logic for non-metadata scripts
+  return detectCanAutoRun(script);
+};
 
 export const isTitle = (script) => !(canClick(script) || canAutoRun(script));
 

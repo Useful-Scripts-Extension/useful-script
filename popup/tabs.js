@@ -1,4 +1,6 @@
-import s from "../scripts/@allScripts.js";
+// ⚡ OPTIMIZATION: Load only metadata for fast popup
+// Full scripts are loaded on-demand via lazy loading in index.js
+import metadata from "../scripts/@metadata.js";
 import { Recommend as R } from "./recommend.js";
 import { canAutoRun } from "./helpers/utils.js";
 import { CATEGORY } from "./helpers/category.js";
@@ -9,6 +11,31 @@ import {
 } from "./helpers/storageScripts.js";
 
 const createTitle = (en, vi) => ({ name: { en, vi } });
+
+// Create script proxy from metadata (lightweight, no implementation code)
+// Add dummy context objects so canClick() and canAutoRun() work correctly
+const s = {};
+const dummyFn = () => {}; // Placeholder function
+
+Object.entries(metadata).forEach(([id, meta]) => {
+  s[id] = {
+    ...meta,
+    // Add context objects with dummy functions based on metadata
+    // This allows popup/helpers/utils.js to correctly identify clickable scripts
+    // Real functions are loaded lazily in index.js
+    popupScript: meta.contexts?.popup ? { onClick: dummyFn } : undefined,
+    contentScript: meta.contexts?.content ? { onClick: dummyFn } : undefined,
+    pageScript: meta.contexts?.page ? { onClick: dummyFn } : undefined,
+    backgroundScript: meta.contexts?.background ? { onClick: dummyFn } : undefined,
+  };
+
+  // If marked as canAutoRun, add dummy lifecycle function
+  if (meta.canAutoRun) {
+    if (s[id].contentScript) s[id].contentScript.onDocumentIdle = dummyFn;
+    if (s[id].pageScript) s[id].pageScript.onDocumentIdle = dummyFn;
+    if (s[id].backgroundScript) s[id].backgroundScript.onDocumentIdle = dummyFn;
+  }
+});
 
 const specialTabs = [
   {
