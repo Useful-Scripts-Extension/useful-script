@@ -32,11 +32,12 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v1.8**: douyin + facebook + youtube update 22/08/2024
+- **v1.9**: tối ưu hoá script, load popup nhanh hơn x100
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
 
+- <del>- **v1.8**: douyin + facebook + youtube update 22/08/2024</del>
 - <del>v1.7: tiktok update (28/07/2024)</del>
 - <del>v1.69: small update (14/07/2024)</del>
 - <del>v1.68: bản cập nhật facebook lớn (01/07/2024)</del>

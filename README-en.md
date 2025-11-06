@@ -32,11 +32,12 @@ Try online [Here](https://useful-scripts-extension.github.io/useful-script/popup
 
 Current Versions:
 
-- **v1.8**: douyin + facebook + youtube update 22/08/2024
+- **v1.9**: optimize scripts, load popup faster than x100
 
 <details>
   <summary>Old versions</summary>
 
+- <del>- **v1.8**: douyin + facebook + youtube update 22/08/2024</del>
 - <del>v1.7: tiktok update (28/07/2024)</del>
 - <del>v1.68: big facebook update (01/07/2024)</del>
 - <del>v1.67: huge update (29/05/2024)</del>
