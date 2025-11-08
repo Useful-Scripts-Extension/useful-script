@@ -4,7 +4,6 @@ import { BADGES_CONFIG } from "../scripts/helpers/badge.js";
 import { checkForUpdate } from "./helpers/checkForUpdate.js";
 import { UfsGlobal } from "../scripts/content-scripts/ufs_global.js";
 import { THEME, THEME_KEY, getTheme, setTheme } from "./helpers/theme.js";
-import { enableSmoothScroll } from "../scripts/smoothScroll.js";
 import {
   isActiveScript,
   getCurrentTab,
@@ -39,8 +38,8 @@ import {
   isTitle,
   viewScriptSource,
 } from "./helpers/utils.js";
-import { checkPass } from "../scripts/auto_lockWebsite.js";
-import allScripts from "../scripts/@allScripts.js";
+// import { checkPass } from "../scripts/auto_lockWebsite.js";
+// import allScripts from "../scripts/@allScripts.js";
 // import _ from "../md/exportScriptsToMd.js";
 
 // ============================================================================
@@ -83,19 +82,21 @@ async function loadFullScript(scriptId) {
  */
 function preloadPopularScripts() {
   const popular = [
-    'fb_toggleLight',
-    'youtube_downloadVideo',
-    'simpleAllowCopy',
-    'darkModePDF',
+    // "ggdrive_downloadPdf",
   ];
 
   setTimeout(() => {
-    popular.forEach(id => {
+    popular.forEach((id) => {
       loadFullScript(id).catch(() => {
         // Silently fail - not critical
       });
     });
   }, 100);
+}
+
+async function lazyEnableSmoothScroll() {
+  const { enableSmoothScroll } = await import("../scripts/smoothScroll.js");
+  return enableSmoothScroll();
 }
 
 // ============================================================================
@@ -374,13 +375,21 @@ function createScriptButton(script, isFavorite = false) {
         const fullScriptBtnIndex = hasInfoLink ? btnIndex - 1 : btnIndex;
         const fullBtnConfig = fullScript.buttons?.[fullScriptBtnIndex];
 
-        if (fullBtnConfig?.onClick && typeof fullBtnConfig.onClick === 'function') {
+        if (
+          fullBtnConfig?.onClick &&
+          typeof fullBtnConfig.onClick === "function"
+        ) {
           await fullBtnConfig.onClick();
         } else {
-          console.error(`Button onClick not found in script ${script.id} at index ${fullScriptBtnIndex}`);
+          console.error(
+            `Button onClick not found in script ${script.id} at index ${fullScriptBtnIndex}`
+          );
         }
       } catch (error) {
-        console.error(`Failed to execute button onClick for ${script.id}:`, error);
+        console.error(
+          `Failed to execute button onClick for ${script.id}:`,
+          error
+        );
       }
     };
     more.appendChild(btn);
@@ -582,12 +591,13 @@ async function runScript(scriptMetadata) {
 
   let tab = await getCurrentTab();
   let willRun = checkBlackWhiteList(scriptMetadata, tab.url);
+
+  // ⚡ LAZY LOAD: Load full script on-demand
+  const script = await loadFullScript(scriptMetadata.id);
+
   if (willRun) {
     recentScriptsSaver.add(scriptMetadata);
     trackEvent(scriptMetadata.id);
-
-    // ⚡ LAZY LOAD: Load full script on-demand
-    const script = await loadFullScript(scriptMetadata.id);
 
     try {
       if (isFunction(script.popupScript?.onClick)) {
@@ -822,7 +832,7 @@ function initSettings() {
       "active",
       !(disableSmoothScrollSaver.get() ?? false)
     );
-    checkbox.onclick = () => {
+    checkbox.onclick = async () => {
       let curVal = disableSmoothScrollSaver.get();
       let newVal = !curVal;
       disableSmoothScrollSaver.set(newVal);
@@ -830,7 +840,7 @@ function initSettings() {
       let enabled = !newVal;
       trackEvent("CHANGE-SMOOTH-SCROLL-" + (enabled ? "ON" : "OFF"));
       checkbox.classList.toggle("active", enabled);
-      if (enabled) disableSmoothScroll = enableSmoothScroll();
+      if (enabled) disableSmoothScroll = await lazyEnableSmoothScroll();
       else if (typeof disableSmoothScroll == "function") disableSmoothScroll();
     };
     body.appendChild(smoothScrollRow);
@@ -942,6 +952,8 @@ async function backup() {
 }
 
 async function restore() {
+  const { checkPass } = await import("../scripts/auto_lockWebsite.js");
+
   if (
     !(await checkPass(
       t({
@@ -1035,6 +1047,7 @@ async function restore() {
 }
 
 async function reset() {
+  const { checkPass } = await import("../scripts/auto_lockWebsite.js");
   if (
     !(await checkPass(
       t({
@@ -1184,7 +1197,9 @@ window.addEventListener("scroll", onScrollEnd);
   trackEvent("OPEN-POPUP");
 
   if (!disableSmoothScrollSaver.get())
-    disableSmoothScroll = enableSmoothScroll();
+    lazyEnableSmoothScroll().then((_) => {
+      disableSmoothScroll = _;
+    });
   initTracking();
   initSearch();
   initTooltip();
