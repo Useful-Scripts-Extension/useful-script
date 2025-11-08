@@ -1,6 +1,15 @@
 ## Change logs
 
 <details>
+  <summary>v2.0 - 08/11/2025</summary>
+
+- Optimize scripts, load popup faster than x100 (v1.9 - Bug crash popup)
+- -> v2.0: Hotfix bug crash popup
+- [Read more](https://www.facebook.com/groups/fbaio/posts/1777282759593071)
+
+</details>
+
+<details>
   <summary>v1.8 - 22/08/2024</summary>
 
 - Facebook
@@ -60,7 +69,7 @@
 - Merge request
   - [fix: 🐛 fix fireship_vip script](https://github.com/Useful-Scripts-Extension/useful-script/pull/28)
   - [feat: youglish search
-  ](https://github.com/Useful-Scripts-Extension/useful-script/pull/30)
+](https://github.com/Useful-Scripts-Extension/useful-script/pull/30)
   - [feat: youtube download video UI](https://github.com/Useful-Scripts-Extension/useful-script/pull/31)
   - [style: 🪄 beautify ui for viewScriptSource](https://github.com/Useful-Scripts-Extension/useful-script/pull/32)
 - More shortcuts: google trend, time.is, aiforthat, cobalt, nirsoft
