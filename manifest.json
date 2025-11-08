@@ -4,7 +4,7 @@
   "name": "Useful Scripts",
   "description": "Scripts that can make your life faster and better",
   "homepage_url": "https://github.com/Useful-Scripts-Extension/useful-script",
-  "version": "1.9",
+  "version": "2.0",
   "icons": {
     "16": "./assets/icon16.png",
     "32": "./assets/icon32.png",
