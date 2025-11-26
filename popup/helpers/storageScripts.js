@@ -1,9 +1,11 @@
-import allScripts from "../../scripts/@allScripts.js";
+// ⚡ LAZY LOADING OPTIMIZATION
+// Import only metadata instead of full scripts for faster popup loading
+import metadata from "../../scripts/@metadata.js";
 
 const createScriptsSaver = (key, addToHead = true) => {
   const getIds = () =>
     JSON.parse(localStorage.getItem(key) ?? "[]").filter(
-      (savedScriptId) => savedScriptId in allScripts
+      (savedScriptId) => savedScriptId in metadata
     );
   const has = (script) => {
     let current = getIds();
@@ -31,7 +33,7 @@ const createScriptsSaver = (key, addToHead = true) => {
   const clear = () => {
     localStorage.setItem(key, "[]");
   };
-  const get = () => getIds().map((savedScriptId) => allScripts[savedScriptId]);
+  const get = () => getIds().map((savedScriptId) => metadata[savedScriptId]);
 
   return { add, remove, has, toggle, clear, getIds, get };
 };

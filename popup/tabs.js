@@ -14,11 +14,14 @@ const createTitle = (en, vi) => ({ name: { en, vi } });
 
 // Create script proxy from metadata (lightweight, no implementation code)
 // Add dummy context objects so canClick() and canAutoRun() work correctly
-const s = {};
 const dummyFn = () => {}; // Placeholder function
+const s = Object.entries(metadata).reduce((acc, [id, meta]) => {
+  acc[id] = enrichMetadata(meta);
+  return acc;
+}, {});
 
-Object.entries(metadata).forEach(([id, meta]) => {
-  s[id] = {
+function enrichMetadata(meta) {
+  const res = {
     ...meta,
     // Add context objects with dummy functions based on metadata
     // This allows popup/helpers/utils.js to correctly identify clickable scripts
@@ -26,16 +29,17 @@ Object.entries(metadata).forEach(([id, meta]) => {
     popupScript: meta.contexts?.popup ? { onClick: dummyFn } : undefined,
     contentScript: meta.contexts?.content ? { onClick: dummyFn } : undefined,
     pageScript: meta.contexts?.page ? { onClick: dummyFn } : undefined,
-    backgroundScript: meta.contexts?.background ? { onClick: dummyFn } : undefined,
+    backgroundScript: meta.contexts?.background
+      ? { onClick: dummyFn }
+      : undefined,
   };
-
-  // If marked as canAutoRun, add dummy lifecycle function
   if (meta.canAutoRun) {
-    if (s[id].contentScript) s[id].contentScript.onDocumentIdle = dummyFn;
-    if (s[id].pageScript) s[id].pageScript.onDocumentIdle = dummyFn;
-    if (s[id].backgroundScript) s[id].backgroundScript.onDocumentIdle = dummyFn;
+    if (res.contentScript) res.contentScript.onDocumentIdle = dummyFn;
+    if (res.pageScript) res.pageScript.onDocumentIdle = dummyFn;
+    if (res.backgroundScript) res.backgroundScript.onDocumentIdle = dummyFn;
   }
-});
+  return res;
+}
 
 const specialTabs = [
   {
@@ -401,10 +405,12 @@ const allScriptInTabs = [
 async function refreshSpecialTabs() {
   // add data to special tabs
   let recentTab = specialTabs.find((tab) => tab.id === CATEGORY.recently.id);
-  if (recentTab) recentTab.scripts = recentScriptsSaver.get();
+  if (recentTab)
+    recentTab.scripts = recentScriptsSaver.get().map(enrichMetadata);
 
   let favoriteTab = specialTabs.find((tab) => tab.id === CATEGORY.favorite.id);
-  if (favoriteTab) favoriteTab.scripts = favoriteScriptsSaver.get();
+  if (favoriteTab)
+    favoriteTab.scripts = favoriteScriptsSaver.get().map(enrichMetadata);
 
   let allTab = specialTabs.find((tab) => tab.id === CATEGORY.all.id);
   if (allTab) allTab.scripts = sortScriptsByTab(allScriptInTabs, tabs);

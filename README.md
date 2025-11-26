@@ -32,11 +32,12 @@ Xem [Lịch sử cập nhật](/md/CHANGELOGS.md)
 
 Phiên bản hiện tại:
 
-- **v2.0**: Hotfix bug crash popup
+- **v2.1**: Sửa lỗi tối ưu hoá: xoá import @allScripts trong storageScripts.js
 
 <details>
   <summary>Xem phiên bản cũ hơn</summary>
 
+- <del>- **v2.0**: Hotfix bug crash popup</del>
 - <del>- **v1.9**: tối ưu hoá script, load popup nhanh hơn x100 (LỖI)</del>
 - <del>- **v1.8**: douyin + facebook + youtube update 22/08/2024</del>
 - <del>v1.7: tiktok update (28/07/2024)</del>

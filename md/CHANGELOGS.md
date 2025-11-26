@@ -1,6 +1,14 @@
 ## Change logs
 
 <details>
+  <summary>v2.1 - 26/11/2025</summary>
+
+- Optimize popup loading time, load popup faster than x100
+- Fix import @allScripts in storageScripts.js
+
+</details>
+
+<details>
   <summary>v2.0 - 08/11/2025</summary>
 
 - Optimize scripts, load popup faster than x100 (v1.9 - Bug crash popup)

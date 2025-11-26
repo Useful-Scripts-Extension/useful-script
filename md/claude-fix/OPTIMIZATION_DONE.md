@@ -23,7 +23,14 @@ Popup loading optimization has been successfully implemented using lazy loading 
 - Updated auto-run checkbox handler to lazy load
 - Updated restore settings to use lazy loading
 
-### 4. Created `package.json`
+### 4. Updated `popup/helpers/storageScripts.js` (NEW)
+
+- **Before:** Imported full scripts via `@allScripts.js`
+- **After:** Imports only metadata via `@metadata.js`
+- Fixed `getIds()` filter to check against metadata
+- Fixed `get()` to return metadata objects
+
+### 5. Created `package.json`
 - Added build script: `npm run build:metadata`
 - Set type to "module" for ES6 imports
 
@@ -91,7 +98,8 @@ Created:
 
 Modified:
 ├── popup/tabs.js                       # Now uses metadata
-└── popup/index.js                      # Added lazy loading
+├── popup/index.js                      # Added lazy loading
+└── popup/helpers/storageScripts.js     # Now uses metadata (fixed!)
 ```
 
 ## 🔄 Development Workflow
@@ -174,6 +182,7 @@ export { onClick } from './script-impl.js';
 - [x] Metadata file generated (173 scripts)
 - [x] popup/tabs.js uses metadata
 - [x] popup/index.js implements lazy loading
+- [x] popup/helpers/storageScripts.js uses metadata (FIXED!)
 - [x] runScript() lazy loads before execution
 - [x] Auto-run toggle lazy loads before onEnable/onDisable
 - [x] Restore settings lazy loads scripts
